@@ -41,8 +41,8 @@ export default function HomePage() {
             icon: <PieChart className="w-6 h-6" />,
             link: '/tax',
             color: 'bg-brand-accent',
-            tag: '開發中',
-            status: 'pending'
+            tag: '新上線',
+            status: 'hot'
         },
         {
             title: '資本決策',
@@ -50,8 +50,8 @@ export default function HomePage() {
             icon: <TrendingUp className="w-6 h-6" />,
             link: '/capital',
             color: 'bg-brand-warning',
-            tag: '開發中',
-            status: 'pending'
+            tag: 'PRO',
+            status: 'hot'
         },
     ];
 
