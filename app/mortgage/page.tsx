@@ -135,8 +135,8 @@ export default function MortgageCalculator() {
                         <span className="text-lg font-bold text-slate-600 group-hover:text-brand-primary transition-colors">返回首頁</span>
                     </Link>
                     <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">M</div>
-                        <span className="text-lg font-bold tracking-tight text-slate-900">Mortgage <span className="text-brand-primary">Pro</span></span>
+                        <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
+                        <span className="text-lg font-bold tracking-tight text-slate-900">TaiCalc <span className="text-brand-primary">數策</span></span>
                     </div>
                 </div>
             </nav>
@@ -356,10 +356,16 @@ export default function MortgageCalculator() {
                             </div>
                         </div>
 
-                        <button className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all active:scale-95">
+                        <button
+                            onClick={() => window.print()}
+                            className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all active:scale-95 print:hidden"
+                        >
                             <Download className="w-5 h-5" />
                             <span>下載完整房貸決策報告 (PDF)</span>
                         </button>
+                        <p className="text-xs text-center text-slate-400 mt-2 print:hidden">
+                            提示：點擊後選擇「另存為 PDF」即可高畫質保存報告。
+                        </p>
                     </div>
                 </div>
             </div>

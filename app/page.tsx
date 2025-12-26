@@ -64,7 +64,7 @@ export default function HomePage() {
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200 border border-blue-100">
-                            <span className="font-bold text-xl">S</span>
+                            <span className="font-bold text-xl">T</span>
                         </div>
                         <span className="text-2xl font-black tracking-tight text-slate-900">
                             TaiCalc <span className="text-brand-primary">數策</span>
@@ -72,7 +72,7 @@ export default function HomePage() {
                     </div>
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
                         <Link href="/salary" className="hover:text-brand-primary transition-colors">薪資戰略</Link>
-                        <Link href="#" className="hover:text-brand-primary transition-colors">房貸佈局</Link>
+                        <Link href="/mortgage" className="hover:text-brand-primary transition-colors">房貸佈局</Link>
                         <Link href="#" className="hover:text-brand-primary transition-colors">資本決策</Link>
                         <button className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
                             開始佈局
