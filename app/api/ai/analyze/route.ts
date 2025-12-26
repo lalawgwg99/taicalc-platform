@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const { google } = await import('@ai-sdk/google');
-    const { generateText } = await import('ai');
+    const { streamText } = await import('ai');
 
     const { prompt, context } = await req.json();
 
@@ -51,23 +51,18 @@ export async function POST(req: Request) {
       ${JSON.stringify(context, null, 2)}
     `;
 
-    // 使用非串流模式測試
-    const { text } = await generateText({
+    const result = await streamText({
       model: google('gemini-2.0-flash'),
       system: systemInstruction,
       prompt: fullPrompt,
     });
 
-    return new Response(text, {
-      status: 200,
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-    });
+    return result.toTextStreamResponse();
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
     return new Response(JSON.stringify({
       error: 'AI 服務發生錯誤',
-      details: error.message,
-      stack: error.stack
+      details: error.message
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
