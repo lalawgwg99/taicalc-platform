@@ -76,6 +76,7 @@ export default function SalaryCalculatorPage() {
                         <button
                             onClick={() => setActiveTab('normal')}
                             className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'normal' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
+                            aria-label="切換到正向推算模式"
                         >
                             <Calculator className="w-4 h-4" />
                             <span>正向推算 (已知月薪)</span>
@@ -83,6 +84,7 @@ export default function SalaryCalculatorPage() {
                         <button
                             onClick={() => setActiveTab('reverse')}
                             className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'reverse' ? 'bg-brand-accent text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
+                            aria-label="切換到逆向推算模式"
                         >
                             <RefreshCw className="w-4 h-4" />
                             <span>逆向推算 (已知實領)</span>
@@ -107,6 +109,8 @@ export default function SalaryCalculatorPage() {
                                             className="w-full pl-10 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all text-2xl font-black text-slate-900 placeholder-slate-300 shadow-sm"
                                             value={inputSalary}
                                             onChange={(e) => setInputSalary(Number(e.target.value))}
+                                            placeholder="例如：45000"
+                                            aria-label="輸入月薪"
                                         />
                                     </div>
                                     {activeTab === 'reverse' && (
@@ -129,6 +133,8 @@ export default function SalaryCalculatorPage() {
                                             className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
                                             value={bonusMonths}
                                             onChange={(e) => setBonusMonths(Number(e.target.value))}
+                                            placeholder="例如：2"
+                                            aria-label="輸入年終月數"
                                         />
                                     </div>
                                 </div>
@@ -282,11 +288,11 @@ export default function SalaryCalculatorPage() {
 
             <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
                 <div className="max-w-7xl mx-auto flex gap-4">
-                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2">
+                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載分析報表">
                         <Download className="w-5 h-5" />
                         <span>下載報表</span>
                     </button>
-                    <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all">
+                    <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all" aria-label="分享分析結果">
                         <Share2 className="w-5 h-5" />
                     </button>
                 </div>
