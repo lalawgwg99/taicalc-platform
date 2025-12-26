@@ -66,10 +66,10 @@ export default function SalaryCalculatorPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
-                        <h1 className="text-4xl cmd:text-5xl font-black text-white mb-4 tracking-tight">
+                        <h1 className="text-4xl cmd:text-5xl font-black text-slate-900 mb-4 tracking-tight">
                             薪資戰略中樞
                         </h1>
-                        <p className="text-lg text-brand-text-secondary font-medium max-w-2xl">
+                        <p className="text-lg text-slate-500 font-medium max-w-2xl">
                             不僅是計算，更是佈局。切換攻守視角，掌握談判與資產主動權。
                         </p>
                     </motion.div>
@@ -77,17 +77,17 @@ export default function SalaryCalculatorPage() {
 
                 {/* 模式切換 Tabs */}
                 <div className="flex justify-center md:justify-start mb-8">
-                    <div className="bg-brand-surface p-1.5 rounded-2xl flex space-x-1 border border-white/5">
+                    <div className="bg-slate-100 p-1.5 rounded-2xl flex space-x-1 border border-slate-200">
                         <button
                             onClick={() => setActiveTab('normal')}
-                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'normal' ? 'bg-brand-primary text-white shadow-lg' : 'text-brand-text-secondary hover:text-white'}`}
+                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'normal' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
                         >
                             <Calculator className="w-4 h-4" />
                             <span>正向推算 (已知月薪)</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('reverse')}
-                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'reverse' ? 'bg-brand-accent text-white shadow-lg' : 'text-brand-text-secondary hover:text-white'}`}
+                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'reverse' ? 'bg-brand-accent text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
                         >
                             <RefreshCw className="w-4 h-4" />
                             <span>逆向推算 (已知實領)</span>
@@ -99,17 +99,17 @@ export default function SalaryCalculatorPage() {
 
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
-                        <section className="glass-card rounded-[32px] p-8 relative overflow-hidden">
+                        <section className="glass-card rounded-[32px] p-8 relative overflow-hidden bg-white/70 border border-slate-200">
                             <div className="relative z-10 space-y-8">
                                 <div>
-                                    <label className="block text-sm font-bold text-brand-text-secondary mb-3 ml-1">
+                                    <label className="block text-sm font-bold text-slate-600 mb-3 ml-1">
                                         {activeTab === 'normal' ? '月薪 (Taxable Salary)' : '期望實領 (Target Take-home)'}
                                     </label>
                                     <div className="relative group">
-                                        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-brand-text-muted font-black text-xl">$</span>
+                                        <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-black text-xl">$</span>
                                         <input
                                             type="number"
-                                            className="w-full pl-10 pr-6 py-4 bg-brand-background border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all text-2xl font-black text-white placeholder-brand-text-muted"
+                                            className="w-full pl-10 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all text-2xl font-black text-slate-900 placeholder-slate-300 shadow-sm"
                                             value={inputSalary}
                                             onChange={(e) => setInputSalary(Number(e.target.value))}
                                         />
@@ -124,14 +124,14 @@ export default function SalaryCalculatorPage() {
 
                                 <div>
                                     <div className="flex justify-between mb-4 px-1">
-                                        <label className="text-sm font-bold text-brand-text-secondary">年終獎金 (Months)</label>
-                                        <span className="text-lg font-black text-brand-primary px-3 py-1 bg-brand-primary/10 rounded-lg border border-brand-primary/20">{bonusMonths} 個月</span>
+                                        <label className="text-sm font-bold text-slate-600">年終獎金 (Months)</label>
+                                        <span className="text-lg font-black text-brand-primary px-3 py-1 bg-blue-50 rounded-lg border border-blue-100">{bonusMonths} 個月</span>
                                     </div>
                                     <div className="px-1">
                                         <input
                                             type="range"
                                             min="0" max="12" step="0.5"
-                                            className="w-full h-2 bg-brand-background rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                                            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
                                             value={bonusMonths}
                                             onChange={(e) => setBonusMonths(Number(e.target.value))}
                                         />
