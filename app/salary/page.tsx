@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { analyzeSalary, calculateGrossFromNet } from '@/lib/calculations';
+import AIInsightCard from '@/components/AI/AIInsightCard';
 
 // 使用自定義的 Sankey Nodes/Links 介面
 // 注意：recharts 的 sankey 需要特定格式
@@ -264,6 +265,25 @@ export default function SalaryCalculatorPage() {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* AI 顧問區塊 */}
+                        <div className="mt-6">
+                            <AIInsightCard
+                                title="✨ AI 薪資戰略顧問"
+                                buttonText="AI 戰略分析：這份薪水值得嗎？"
+                                prompt={activeTab === 'normal'
+                                    ? "請分析這份薪資結構。考量台灣的物價與勞健保隱形成本，這份薪水在台灣職場的競爭力如何？針對「實領率」給我 3 個具體的談判或理財建議。請用條列式回答。"
+                                    : "我正在進行逆向談薪。我的目標是實領這個金額，請幫我分析：如果我跟 HR 開這個稅前價格，會不會太高？有沒有什麼話術可以確保我不吃虧？請提供 3 個談判籌碼。"
+                                }
+                                context={{
+                                    mode: activeTab,
+                                    input: inputSalary,
+                                    salaryStructure: results.monthly,
+                                    annualOverview: results.annual,
+                                    effectiveTaxRate: results.effectiveTaxRate
+                                }}
+                            />
                         </div>
 
                     </div>

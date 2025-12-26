@@ -8,6 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.1",
+    "ai": "^6.0.3",
     "autoprefixer": "^10.4.23",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -17,7 +19,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.0",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "zoll": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.17.10",
