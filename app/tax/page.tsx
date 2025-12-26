@@ -2,31 +2,33 @@
 
 import React, { useState, useMemo } from 'react';
 import {
-    PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip,
+    PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip
 } from 'recharts';
 import {
-    Users,
-    Wallet,
-    Download,
-    BarChart3,
-    ShieldCheck,
-    TrendingDown,
+    Calculator,
     Info,
     ChevronLeft,
-    ChevronRight
+    Download,
+    Share2,
+    TrendingDown,
+    Users,
+    Target,
+    Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { TAIWAN_PARAMS } from '@/lib/constants';
+import { calculateIncomeTax } from '@/lib/calculations';
 
-export default function TaxCalculatorPage() {
-    // --- 狀態管理 ---
-    const [annualIncome, setAnnualIncome] = useState(1200000); // 預設年薪 120 萬
-    const [otherIncome, setOtherIncome] = useState(0);         // 兼職/租金等
+export default function TaxPage() {
+    // 狀態管理
+    const [annualIncome, setAnnualIncome] = useState(1200000); // 預設 120 萬
+    const [otherIncome, setOtherIncome] = useState(0); // 其他所得
     const [isMarried, setIsMarried] = useState(false);
-    const [dependents, setDependents] = useState(0);           // 扶養親屬 (一般)
-    const [seniorDependents, setSeniorDependents] = useState(0); // 70歲以上扶養
+    const [childrenCount, setChildrenCount] = useState(0);
+    const [parentsCount, setParentsCount] = useState(0); // 70歲以下
+    const [elderlyParentsCount, setElderlyParentsCount] = useState(0); // 70歲以上
 
     // --- 核心計算引擎 (整合 lib/calculations 邏輯) ---
     const results = useMemo(() => {
@@ -39,72 +41,73 @@ export default function TaxCalculatorPage() {
         // 本人 + 配偶 + 扶養親屬
         // 70歲以上扶養親屬免稅額增加 50%
         const taxpayerCount = 1 + (isMarried ? 1 : 0);
-        const totalExemption = (taxpayerCount * EXEMPTION) +
-            (dependents * EXEMPTION) +
-            (seniorDependents * EXEMPTION * 1.5);
+        const totalExemption = (taxpayerCount + childrenCount + parentsCount) * EXEMPTION +
+            (elderlyParentsCount * EXEMPTION * 1.5);
 
-        // 2. 扣除額計算 (Deductions)
-        // 標準扣除額：有配偶 x2
+        // 2. 標準扣除額 (Standard Deduction)
         const standardDeduction = isMarried ? STANDARD * 2 : STANDARD;
-        // 薪資特別扣除額：不可超過薪資收入
-        const actualSalaryDeduction = Math.min(annualIncome, SALARY_SPECIAL);
 
-        // 3. 基本生活費差額邏輯 (Basic Living Expense Difference)
-        // 比較基礎 = 免稅額 + 標準扣除額 (不含薪資扣除額!)
-        const basicLivingCheckSum = totalExemption + standardDeduction;
-        // 基本生活費總額 = (納稅者 + 配偶 + 受扶養親屬) * 基本生活費
-        const totalHouseholdSize = taxpayerCount + dependents + seniorDependents;
-        const basicLivingTotal = totalHouseholdSize * BASIC_LIVING_EXPENSE;
-        const basicLivingDifference = Math.max(0, basicLivingTotal - basicLivingCheckSum);
+        // 3. 薪資特別扣除額 (Special Deduction for Salary)
+        // 不能超過薪資收入本身
+        const salaryDeduction = Math.min(annualIncome, SALARY_SPECIAL);
 
-        // 總扣除額
-        const totalDeductions = standardDeduction + actualSalaryDeduction + basicLivingDifference;
+        // 4. 基本生活費差額 (Basic Living Expense Difference)
+        // 比較基礎 = 免稅額 + 標準扣除額 + (身心障礙/教育/幼兒/長照...這裡暫簡化不計入，只計前兩項)
+        // 正確邏輯：比較項目包含「免稅額、標準/列舉扣除額、特別扣除額(不含薪資/財產交易損失/儲蓄)」
+        // 這裡做一個簡化模擬：只比 免稅額 + 標扣
+        // 實際申報戶人數
+        const householdSize = taxpayerCount + childrenCount + parentsCount + elderlyParentsCount;
+        const basicLivingTotal = householdSize * BASIC_LIVING_EXPENSE;
+        const comparisonSum = totalExemption + standardDeduction; // 簡化
+        const basicLivingDifference = Math.max(0, basicLivingTotal - comparisonSum);
 
-        // 4. 課稅所得 (Taxable Income)
-        const taxableIncome = Math.max(0, totalGross - totalExemption - totalDeductions);
+        // 總扣除額 (不含列舉)
+        const totalDeductions = totalExemption + standardDeduction + salaryDeduction + basicLivingDifference;
 
-        // 5. 稅額計算
-        let finalTax = 0;
-        // 修正：顯式宣告型別，避免 TS 推斷為 tuple 的第一個 element type
-        let currentBracket: (typeof TAIWAN_PARAMS.INCOME_TAX_BRACKETS)[number] = TAIWAN_PARAMS.INCOME_TAX_BRACKETS[0];
-        let nextBracketDistance = 0;
-        let nextBracketRate = 0;
+        // 淨所得 (Net Taxable Income)
+        const netTaxableIncome = Math.max(0, totalGross - totalDeductions);
 
-        for (let i = 0; i < TAIWAN_PARAMS.INCOME_TAX_BRACKETS.length; i++) {
-            const b = TAIWAN_PARAMS.INCOME_TAX_BRACKETS[i];
-            if (taxableIncome <= b.limit) {
-                finalTax = Math.round((taxableIncome * b.rate) - b.deduction);
-                currentBracket = b;
-                nextBracketDistance = b.limit === Infinity ? 0 : b.limit - taxableIncome;
-                const nextB = TAIWAN_PARAMS.INCOME_TAX_BRACKETS[i + 1];
-                nextBracketRate = nextB ? nextB.rate : currentBracket.rate;
+        // 稅額計算 (Tax Payable) - 累進稅率
+        let taxPayable = 0;
+        let currentBracket = { rate: 0.05, deduction: 0 }; // 預設
+
+        // 尋找適用級距
+        for (const bracket of TAIWAN_PARAMS.INCOME_TAX_BRACKETS) {
+            if (netTaxableIncome <= bracket.limit) {
+                currentBracket = bracket;
+                taxPayable = Math.round(netTaxableIncome * bracket.rate - bracket.deduction);
                 break;
+            }
+            // 超過最高級距，則直接適用最高級距
+            if (bracket.limit === Infinity || bracket === TAIWAN_PARAMS.INCOME_TAX_BRACKETS[TAIWAN_PARAMS.INCOME_TAX_BRACKETS.length - 1]) {
+                currentBracket = bracket;
+                taxPayable = Math.round(netTaxableIncome * bracket.rate - bracket.deduction);
             }
         }
 
-        const netIncome = totalGross - finalTax;
-        const effectiveRate = totalGross > 0 ? (finalTax / totalGross) * 100 : 0;
+        // 有效稅率
+        const effectiveRate = totalGross > 0 ? (taxPayable / totalGross) * 100 : 0;
 
         return {
             totalGross,
             totalExemption,
+            standardDeduction,
+            salaryDeduction,
+            basicLivingDifference,
             totalDeductions,
-            basicLivingDifference, // 新增：顯示基本生活費紅利
-            taxableIncome,
-            finalTax,
-            netIncome,
+            netTaxableIncome,
+            taxPayable,
             effectiveRate,
-            currentBracket,
-            nextBracketDistance,
-            nextBracketRate,
-            totalHouseholdSize,
-            pieData: [
-                { name: '實領淨所得', value: netIncome, color: '#3b82f6' }, // brand-primary
-                { name: '應繳所得稅', value: finalTax, color: '#ef4444' },    // red-500
-                { name: '免稅與扣除額', value: totalExemption + totalDeductions, color: '#e2e8f0' }, // slate-200
-            ]
+            marginalRate: currentBracket.rate * 100,
+            householdSize
         };
-    }, [annualIncome, otherIncome, isMarried, dependents, seniorDependents]);
+    }, [annualIncome, otherIncome, isMarried, childrenCount, parentsCount, elderlyParentsCount]);
+
+    // 視覺化數據
+    const chartData = [
+        { name: '實領', value: results.totalGross - results.taxPayable, color: '#3b82f6' }, // Brand Primary
+        { name: '繳稅', value: results.taxPayable, color: '#ef4444' }, // Brand Error
+    ];
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
@@ -127,6 +130,7 @@ export default function TaxCalculatorPage() {
             </nav>
 
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+
                 {/* Header */}
                 <header className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
@@ -135,292 +139,276 @@ export default function TaxCalculatorPage() {
                             animate={{ opacity: 1, y: 0 }}
                             className="flex items-center space-x-3 mb-3"
                         >
-                            <div className="bg-brand-primary text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-blue-200">2025 Tax Edition</div>
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">所得稅決策精算 <span className="text-brand-primary">PRO</span></h1>
+                            <div className="bg-brand-error text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-red-200">2025 最新稅制</div>
+                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">所得稅精算戰情室</h1>
                         </motion.div>
                         <p className="text-slate-500 font-medium max-w-2xl text-lg">
-                            基於財政部 2024 年度最新稅制調升參數。導入「基本生活費差額」演算法，精算您的每一分合法節稅權益。
+                            不僅是計算，更是節稅佈局。掌握免稅額、扣除額與基本生活費差額的交互影響。
                         </p>
-                    </div>
-                    <div className="flex gap-3">
-                        <button
-                            onClick={() => window.print()}
-                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95 print:hidden"
-                        >
-                            <Download className="w-4 h-4" />
-                            <span>導出申報試算表</span>
-                        </button>
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                    {/* 左側：參數配置 */}
-                    <div className="lg:col-span-4 space-y-6 print:hidden">
-                        <section className="glass-card rounded-[32px] p-6 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
-                            <div className="flex items-center space-x-2 mb-6 text-brand-primary">
-                                <Wallet className="w-5 h-5" />
-                                <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">收入配置</h2>
+                    {/* 左側：控制面板 */}
+                    <div className="lg:col-span-4 space-y-6">
+                        <section className="glass-card rounded-[32px] p-8 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
+                            <div className="flex items-center space-x-2 text-brand-primary mb-6">
+                                <Calculator className="w-5 h-5" />
+                                <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">所得來源設定</h2>
                             </div>
 
                             <div className="space-y-6">
+                                {/* 薪資收入 */}
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">年度薪資總額 (含獎金)</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                        年度薪資總額
+                                    </label>
                                     <div className="relative group">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg group-focus-within:text-brand-primary">$</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 font-black text-lg">$</span>
                                         <input
                                             type="number"
-                                            className="w-full bg-white border border-slate-200 rounded-2xl px-10 py-4 text-xl font-black text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all shadow-inner"
+                                            className="w-full pl-8 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 text-lg shadow-sm"
                                             value={annualIncome}
                                             onChange={(e) => setAnnualIncome(Number(e.target.value))}
+                                            placeholder="請輸入年度薪資"
+                                            aria-label="輸入年度薪資總額"
                                         />
                                     </div>
                                 </div>
 
+                                {/* 其他所得 */}
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">其他所得 (租金/兼職/股利)</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                        其他所得 (股利/利息等)
+                                    </label>
                                     <div className="relative group">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg group-focus-within:text-brand-primary">$</span>
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 font-black text-lg">$</span>
                                         <input
                                             type="number"
-                                            className="w-full bg-white border border-slate-200 rounded-2xl px-10 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all shadow-inner"
+                                            className="w-full pl-8 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 shadow-sm"
                                             value={otherIncome}
                                             onChange={(e) => setOtherIncome(Number(e.target.value))}
+                                            placeholder="選填"
+                                            aria-label="輸入其他所得"
                                         />
+                                    </div>
+                                </div>
+
+                                {/* 婚姻狀態 */}
+                                <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-200">
+                                    <span className="text-sm font-bold text-slate-700">婚姻狀態</span>
+                                    <div className="flex bg-slate-100 p-1 rounded-xl">
+                                        <button
+                                            onClick={() => setIsMarried(false)}
+                                            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${!isMarried ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                            aria-label="設定為單身"
+                                        >
+                                            單身
+                                        </button>
+                                        <button
+                                            onClick={() => setIsMarried(true)}
+                                            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${isMarried ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                            aria-label="設定為已婚"
+                                        >
+                                            已婚
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </section>
 
-                        <section className="glass-card rounded-[32px] p-6 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
-                            <div className="flex items-center space-x-2 mb-6 text-brand-primary">
+                        <section className="glass-card rounded-[32px] p-8 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
+                            <div className="flex items-center space-x-2 text-brand-primary mb-6">
                                 <Users className="w-5 h-5" />
-                                <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">家庭與扣除額</h2>
+                                <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">扶養親屬 (免稅額)</h2>
                             </div>
 
-                            <div className="space-y-6">
-                                <label className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-brand-primary transition-all shadow-sm">
-                                    <span className="text-sm font-bold text-slate-700">合併申報 (已婚)</span>
+                            <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 text-center">子女</label>
                                     <input
-                                        type="checkbox"
-                                        className="w-5 h-5 accent-brand-primary rounded-md"
-                                        checked={isMarried}
-                                        onChange={(e) => setIsMarried(e.target.checked)}
+                                        type="number" min="0" max="10"
+                                        className="w-full p-3 bg-white border border-slate-200 rounded-xl text-center font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20"
+                                        value={childrenCount}
+                                        onChange={(e) => setChildrenCount(Number(e.target.value))}
+                                        aria-label="輸入子女人數"
                                     />
-                                </label>
-
-                                <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-3 ml-1">扶養親屬 (未滿70歲)</label>
-                                    <div className="grid grid-cols-5 gap-2">
-                                        {[0, 1, 2, 3, 4].map(n => (
-                                            <button
-                                                key={n}
-                                                onClick={() => setDependents(n)}
-                                                className={`py-3 rounded-xl text-sm font-bold transition-all shadow-sm ${dependents === n ? 'bg-brand-primary text-white shadow-brand-primary/30' : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50'}`}
-                                            >
-                                                {n}
-                                            </button>
-                                        ))}
-                                    </div>
                                 </div>
-
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-3 ml-1">扶養親屬 (70歲以上)</label>
-                                    <div className="flex items-center space-x-4 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
-                                        <button
-                                            onClick={() => setSeniorDependents(Math.max(0, seniorDependents - 1))}
-                                            className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-black text-slate-600 hover:bg-slate-200 active:scale-95 transition-all"
-                                        >-</button>
-                                        <span className="flex-1 text-center font-black text-xl text-slate-900">{seniorDependents}</span>
-                                        <button
-                                            onClick={() => setSeniorDependents(seniorDependents + 1)}
-                                            className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center font-black text-slate-600 hover:bg-slate-200 active:scale-95 transition-all"
-                                        >+</button>
-                                    </div>
-                                    <p className="text-[10px] text-slate-400 mt-2 ml-1 text-center">
-                                        * 70歲以上免稅額增加 50%
-                                    </p>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 text-center">長輩(&lt;70)</label>
+                                    <input
+                                        type="number" min="0" max="4"
+                                        className="w-full p-3 bg-white border border-slate-200 rounded-xl text-center font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20"
+                                        value={parentsCount}
+                                        onChange={(e) => setParentsCount(Number(e.target.value))}
+                                        aria-label="輸入70歲以下長輩人數"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase mb-2 text-center">長輩(&gt;70)</label>
+                                    <input
+                                        type="number" min="0" max="4"
+                                        className="w-full p-3 bg-white border border-slate-200 rounded-xl text-center font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20"
+                                        value={elderlyParentsCount}
+                                        onChange={(e) => setElderlyParentsCount(Number(e.target.value))}
+                                        aria-label="輸入70歲以上長輩人數"
+                                    />
                                 </div>
                             </div>
+                            <p className="text-[10px] text-slate-400 mt-4 text-center">
+                                * 70歲以上長輩免稅額加成 50%
+                            </p>
                         </section>
                     </div>
 
-                    {/* 右側：決策儀表板 */}
+                    {/* 右側：儀表板 */}
                     <div className="lg:col-span-8 space-y-6">
 
                         {/* 核心指標卡片 */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-gradient-to-br from-brand-primary to-blue-600 text-white rounded-[32px] p-6 shadow-2xl shadow-blue-500/30 flex flex-col justify-between h-[180px]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-gradient-to-br from-brand-error to-red-600 rounded-[32px] p-8 shadow-2xl shadow-red-500/30 text-white flex flex-col justify-between h-[200px] relative overflow-hidden">
+                                <Target className="absolute right-4 top-4 text-white/10 w-32 h-32 -rotate-12" />
                                 <div>
-                                    <p className="text-xs font-black text-blue-100 uppercase mb-2 tracking-wider">預估應繳所得稅</p>
-                                    <h3 className="text-4xl font-black text-white tracking-tight">${formatCurrency(results.finalTax)}</h3>
+                                    <h3 className="text-xs font-black text-red-100 uppercase tracking-widest mb-1">預估應繳稅額</h3>
+                                    <div className="text-5xl font-black tracking-tight">${formatCurrency(results.taxPayable)}</div>
                                 </div>
-                                <div className="flex items-center text-xs font-black text-blue-600 bg-white/90 backdrop-blur w-fit px-3 py-1.5 rounded-lg shadow-sm">
-                                    <TrendingDown className="w-3.5 h-3.5 mr-1.5" />
-                                    有效稅率 {results.effectiveRate.toFixed(2)}%
-                                </div>
-                            </div>
-
-                            <div className="bg-white border border-slate-200 rounded-[32px] p-6 shadow-lg shadow-slate-100 flex flex-col justify-between h-[180px]">
                                 <div>
-                                    <div className="flex justify-between items-start">
-                                        <p className="text-xs font-black text-slate-400 uppercase mb-2 tracking-wider">免稅與扣除額紅利</p>
-                                        {results.basicLivingDifference > 0 && (
-                                            <div className="bg-brand-accent/10 text-brand-accent px-2 py-0.5 rounded text-[10px] font-bold">
-                                                生活費差額啟用
-                                            </div>
-                                        )}
+                                    <div className="flex items-center space-x-2 text-sm font-bold bg-white/10 w-fit px-3 py-1.5 rounded-lg mb-2">
+                                        <TrendingDown className="w-4 h-4" />
+                                        <span>實際有效稅率 {results.effectiveRate.toFixed(2)}%</span>
                                     </div>
-                                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">${formatCurrency(results.totalExemption + results.totalDeductions)}</h3>
                                 </div>
-                                <p className="text-xs text-slate-500 font-medium">包含薪資、標準扣除額與<br />基本生活費差額 <span className="font-bold text-brand-accent">+${formatCurrency(results.basicLivingDifference)}</span></p>
                             </div>
 
-                            <div className="bg-white border border-slate-200 rounded-[32px] p-6 border-l-4 border-l-emerald-400 shadow-lg shadow-emerald-500/10 flex flex-col justify-between h-[180px]">
+                            <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
+                                <Zap className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
                                 <div>
-                                    <p className="text-xs font-black text-emerald-600 uppercase mb-2 tracking-wider">稅後實領淨額 (Net)</p>
-                                    <h3 className="text-3xl font-black text-emerald-600 tracking-tight">${formatCurrency(results.netIncome)}</h3>
+                                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
+                                        邊際稅率 (級距)
+                                    </h3>
+                                    <div className="text-4xl font-black tracking-tight text-slate-900">{results.marginalRate}%</div>
                                 </div>
-                                <p className="text-xs text-slate-400 font-medium">這是您今年可完全支配的<br />真實財務能量。</p>
+                                <div className="mt-4">
+                                    <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                                        您的淨所得為 <span className="text-slate-900 font-bold">${formatCurrency(results.netTaxableIncome)}</span>。<br />
+                                        若再增加收入，每 $100 元需多繳 ${results.marginalRate} 元稅金。
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        {/* 視覺化與決策引導 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="glass-card rounded-[32px] p-8 bg-white border border-slate-200 shadow-lg shadow-slate-100">
-                                <div className="flex items-center space-x-2 mb-6">
-                                    <BarChart3 className="w-5 h-5 text-brand-primary" />
-                                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">所得分配模型</h3>
+                        {/* 深度分析與決策卡片 */}
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                            {/* 扣除額總覽 (Table) */}
+                            <div className="md:col-span-7 glass-card rounded-[32px] p-8 bg-white border border-slate-200 shadow-xl shadow-slate-100">
+                                <div className="flex items-center justify-between mb-8">
+                                    <div className="flex items-center space-x-2 text-slate-900">
+                                        <Info className="w-5 h-5 text-brand-primary" />
+                                        <h3 className="font-black uppercase tracking-widest text-sm text-slate-400">扣除額明細分析</h3>
+                                    </div>
                                 </div>
-                                <div className="h-[200px] w-full relative">
+
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                                        <span className="text-sm text-slate-500 font-bold">免稅額 (Exemptions)</span>
+                                        <span className="text-slate-900 font-mono font-bold">${formatCurrency(results.totalExemption)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                                        <span className="text-sm text-slate-500 font-bold">標準扣除額</span>
+                                        <span className="text-slate-900 font-mono font-bold">${formatCurrency(results.standardDeduction)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                                        <span className="text-sm text-slate-500 font-bold">薪資特別扣除額</span>
+                                        <span className="text-slate-900 font-mono font-bold">${formatCurrency(results.salaryDeduction)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-slate-100 bg-emerald-50/50 px-2 rounded-lg -mx-2">
+                                        <div className="flex flex-col">
+                                            <span className="text-sm text-emerald-700 font-bold">基本生活費差額</span>
+                                            <span className="text-[10px] text-emerald-600/70">多口之家節稅關鍵</span>
+                                        </div>
+                                        <span className="text-emerald-700 font-mono font-black">+${formatCurrency(results.basicLivingDifference)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center pt-2 mt-2">
+                                        <span className="text-sm text-slate-900 font-black">扣除額總計</span>
+                                        <span className="text-lg text-brand-primary font-mono font-black">${formatCurrency(results.totalDeductions)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 圓餅圖 */}
+                            <div className="md:col-span-5 glass-card rounded-[32px] p-6 bg-white border border-slate-200 shadow-xl shadow-slate-100 flex flex-col items-center justify-center">
+                                <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4 w-full text-center">實領 vs 繳稅</h3>
+                                <div className="w-full h-[180px]">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <PieChart>
                                             <Pie
-                                                data={results.pieData}
-                                                cx="50%" cy="50%" innerRadius={70} outerRadius={90}
-                                                paddingAngle={5} dataKey="value" stroke="none"
+                                                data={chartData}
+                                                cx="50%" cy="50%"
+                                                innerRadius={60}
+                                                outerRadius={80}
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                                stroke="none"
                                             >
-                                                {results.pieData.map((entry, index) => (
+                                                {chartData.map((entry, index) => (
                                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                                 ))}
                                             </Pie>
                                             <RechartsTooltip
-                                                formatter={(v: any) => `$${formatCurrency(Number(v))}`}
-                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                                                formatter={(value: any) => `$${formatCurrency(value)}`}
+                                                contentStyle={{ borderRadius: '12px' }}
                                             />
                                         </PieChart>
                                     </ResponsiveContainer>
-                                    {/* 中央文字 */}
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">實領佔比</span>
-                                        <span className="text-2xl font-black text-slate-900">
-                                            {Math.round((results.netIncome / (results.totalGross || 1)) * 100)}%
-                                        </span>
-                                    </div>
                                 </div>
-                                {/* 圖例 */}
-                                <div className="mt-4 space-y-2">
-                                    {results.pieData.map((item, i) => (
-                                        <div key={i} className="flex items-center justify-between text-xs">
-                                            <div className="flex items-center space-x-2">
-                                                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                                                <span className="text-slate-500 font-bold">{item.name}</span>
-                                            </div>
-                                            <span className="text-slate-900 font-black">${formatCurrency(item.value)}</span>
-                                        </div>
-                                    ))}
+                                <div className="flex gap-4 mt-2 text-xs font-bold">
+                                    <div className="flex items-center"><div className="w-2 h-2 rounded-full bg-brand-primary mr-1" />實領收入</div>
+                                    <div className="flex items-center"><div className="w-2 h-2 rounded-full bg-brand-error mr-1" />稅金</div>
                                 </div>
                             </div>
 
-                            {/* 級距決策引導卡 (Nudge) */}
-                            <div className="bg-slate-900 rounded-[32px] p-8 border border-white/10 relative overflow-hidden group shadow-2xl shadow-slate-900/20">
-                                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                                    <ShieldCheck size={140} className="text-white" />
-                                </div>
-                                <h3 className="text-xs font-black text-blue-400 uppercase tracking-widest mb-8">稅務級距決策引導 (Tax Nudge)</h3>
-
-                                <div className="space-y-8 relative z-10">
-                                    <div>
-                                        <p className="text-[10px] font-black text-slate-500 uppercase mb-2">當前適用邊際稅率</p>
-                                        <div className="flex items-end space-x-3">
-                                            <span className="text-6xl font-black text-white">{(results.currentBracket.rate * 100).toFixed(0)}%</span>
-                                            <div className="pb-2">
-                                                <span className="text-xs font-bold text-slate-400 block">累進差額 (稅盾)</span>
-                                                <span className="text-sm font-black text-blue-400">${formatCurrency(results.currentBracket.deduction)}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase">
-                                            <span>目前位置</span>
-                                            <span>距離下一級距 ({(results.nextBracketRate * 100).toFixed(0)}%)</span>
-                                        </div>
-                                        <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden border border-white/5">
-                                            <div
-                                                className="bg-gradient-to-r from-blue-500 to-indigo-400 h-full transition-all duration-1000 relative"
-                                                style={{ width: `${Math.min(100, (results.taxableIncome / (results.currentBracket.limit || results.taxableIncome * 1.2)) * 100)}%` }}
-                                            >
-                                                <div className="absolute right-0 top-0 bottom-0 w-1 bg-white/50 animate-pulse" />
-                                            </div>
-                                        </div>
-                                        {results.nextBracketDistance > 0 ? (
-                                            <div className="flex items-start space-x-3 p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
-                                                <Info className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                                                <p className="text-xs text-blue-100 leading-relaxed font-bold">
-                                                    安全空間：<span className="text-white text-sm">${formatCurrency(results.nextBracketDistance)}</span>
-                                                    <br />
-                                                    <span className="text-[10px] text-blue-300 font-normal">在此額度內的額外獎金、股利或加班費，皆不會觸發 {(results.nextBracketRate * 100).toFixed(0)}% 的懲罰性稅率。</span>
-                                                </p>
-                                            </div>
-                                        ) : (
-                                            <p className="text-xs text-red-300 font-bold bg-red-900/20 p-3 rounded-xl border border-red-500/20 flex items-center">
-                                                <Info className="w-4 h-4 mr-2" />
-                                                您已進入最高稅率級距，建議諮詢專業會計師進行資產配置。
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
-                        {/* 明細表格 */}
-                        <div className="bg-white border border-slate-200 rounded-[32px] overflow-hidden shadow-lg shadow-slate-100/50">
-                            <div className="p-6 border-b border-slate-100 bg-slate-50/50">
-                                <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest">2025 申報參考明細 (Detail Logic)</h3>
+                        <div className="bg-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl shadow-slate-900/20">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                            <div className="relative z-10 flex items-start gap-4">
+                                <div className="p-3 bg-white/10 rounded-xl">
+                                    <Target className="w-6 h-6 text-brand-accent" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-white mb-2">數策節稅洞察</h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                                        您的家庭成員共 {results.householdSize} 人。基於 2024 年度每人基本生活費 ${formatCurrency(TAIWAN_PARAMS.DEDUCTIONS.BASIC_LIVING_EXPENSE)} 元，
+                                        {results.basicLivingDifference > 0
+                                            ? `系統已自動為您計算出 ${formatCurrency(results.basicLivingDifference)} 元的基本生活費差額，這筆額外的扣除額有效降低了您的稅負。`
+                                            : '目前的免稅額與標準扣除額總和已超過基本生活費標準，無需額外調整。'}
+                                    </p>
+                                    {results.marginalRate >= 12 && (
+                                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-brand-error/20 text-brand-error text-xs font-bold border border-brand-error/20">
+                                            級距警示：建議運用勞退自提 6% 降低 {results.marginalRate}% 的稅率成本
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <table className="w-full text-sm text-left border-collapse">
-                                <tbody className="divide-y divide-slate-100">
-                                    <TableRow label="總所得 (年度總額)" value={results.totalGross} subtext="薪資 + 其他來源" />
-                                    <TableRow label="免稅額總計" value={results.totalExemption} isDeduction subtext={`${results.totalHouseholdSize} 人 (含 70歲以上加給)`} />
-                                    <TableRow label="扣除額總計" value={results.totalDeductions} isDeduction subtext="標準 + 薪資特別 + 基本生活費差額" />
-                                    <tr className="bg-slate-50/50">
-                                        <td className="px-6 py-4">
-                                            <div className="text-xs font-black text-slate-500 uppercase">應稅所得 (Net Taxable)</div>
-                                            <div className="text-[10px] text-slate-400">課稅級距判定基準</div>
-                                        </td>
-                                        <td className="px-6 py-4 text-right font-black text-lg text-slate-900 tracking-tight">${formatCurrency(results.taxableIncome)}</td>
-                                    </tr>
-                                    <TableRow label="應繳所得稅" value={results.finalTax} isRed subtext={`適用 ${(results.currentBracket.rate * 100).toFixed(0)}% 稅率 - 累進差額`} />
-                                </tbody>
-                            </table>
                         </div>
 
                     </div>
                 </div>
             </div>
+
+            <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
+                <div className="max-w-7xl mx-auto flex gap-4">
+                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載報表">
+                        <Download className="w-5 h-5" />
+                        <span>下載報表</span>
+                    </button>
+                    <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all" aria-label="分享結果">
+                        <Share2 className="w-5 h-5" />
+                    </button>
+                </div>
+            </footer>
         </div>
     );
 }
-
-const TableRow = ({ label, value, isDeduction = false, isRed = false, subtext = '' }: any) => (
-    <tr className="hover:bg-slate-50/50 transition-colors">
-        <td className="px-6 py-4">
-            <div className="text-sm font-bold text-slate-600">{label}</div>
-            {subtext && <div className="text-[10px] text-slate-400 mt-0.5">{subtext}</div>}
-        </td>
-        <td className={`px-6 py-4 text-right font-mono font-bold text-base ${isDeduction ? 'text-brand-accent' : isRed ? 'text-red-500' : 'text-slate-900'}`}>
-            {isDeduction ? '-' : ''}${formatCurrency(value)}
-        </td>
-    </tr>
-);
