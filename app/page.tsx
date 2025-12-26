@@ -19,7 +19,7 @@ export default function HomePage() {
     const tools = [
         {
             title: '薪資戰略系統',
-            description: '導入2024勞健保大數據，含 AI 談薪與稅務偵測雷達。',
+            description: '導入2025勞健保大數據，含 AI 談薪與稅務偵測雷達。',
             icon: <Calculator className="w-6 h-6" />,
             link: '/salary',
             color: 'bg-brand-primary',
