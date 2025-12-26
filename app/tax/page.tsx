@@ -65,7 +65,8 @@ export default function TaxCalculatorPage() {
 
         // 5. 稅額計算
         let finalTax = 0;
-        let currentBracket = TAIWAN_PARAMS.INCOME_TAX_BRACKETS[0];
+        // 修正：顯式宣告型別，避免 TS 推斷為 tuple 的第一個 element type
+        let currentBracket: (typeof TAIWAN_PARAMS.INCOME_TAX_BRACKETS)[number] = TAIWAN_PARAMS.INCOME_TAX_BRACKETS[0];
         let nextBracketDistance = 0;
         let nextBracketRate = 0;
 
