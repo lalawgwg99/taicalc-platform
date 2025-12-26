@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       prompt: fullPrompt,
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
     return new Response(JSON.stringify({

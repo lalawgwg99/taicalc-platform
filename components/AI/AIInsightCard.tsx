@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
-import { useCompletion } from '@ai-sdk/react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Bot, AlertCircle, Play, Loader2 } from 'lucide-react';
+import { Sparkles, Bot, AlertCircle, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface AIInsightCardProps {
-    prompt: string;      // 給 AI 的具體指令 (e.g. "分析這份薪資單的談判空間")
-    context: any;        // JSON 數據 (e.g. { monthlySalary: 50000, ... })
+    prompt: string;
+    context: any;
     buttonText?: string;
     title?: string;
 }
@@ -19,12 +18,45 @@ export default function AIInsightCard({
     buttonText = "AI 戰略分析",
     title = "AI 智慧財稅顧問"
 }: AIInsightCardProps) {
-    const { completion, isLoading, error, complete } = useCompletion({
-        api: '/api/ai/analyze',
-    });
+    const [completion, setCompletion] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleAnalyze = () => {
-        complete(prompt, { body: { context } });
+    const handleAnalyze = async () => {
+        setIsLoading(true);
+        setError(null);
+        setCompletion('');
+
+        try {
+            const response = await fetch('/api/ai/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, context }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'AI 服務異常');
+            }
+
+            const reader = response.body?.getReader();
+            const decoder = new TextDecoder();
+
+            if (!reader) {
+                throw new Error('無法讀取串流回應');
+            }
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                const chunk = decoder.decode(value, { stream: true });
+                setCompletion(prev => prev + chunk);
+            }
+        } catch (err: any) {
+            setError(err.message || 'AI 連線失敗');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -65,7 +97,7 @@ export default function AIInsightCard({
                                 ) : error ? (
                                     <div className="flex items-center text-red-500 space-x-2 bg-red-50 p-3 rounded-lg">
                                         <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <span className="font-bold text-sm">AI 連線失敗，請檢查 API Key 設定或稍後再試。</span>
+                                        <span className="font-bold text-sm">{error}</span>
                                     </div>
                                 ) : (
                                     <div className="space-y-3 animate-pulse">
