@@ -20,6 +20,7 @@ import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { TAIWAN_PARAMS } from '@/lib/constants';
 import { calculateIncomeTax } from '@/lib/calculations';
+import AIInsightCard from '@/components/AI/AIInsightCard';
 
 export default function TaxPage() {
     // 狀態管理
@@ -369,6 +370,31 @@ export default function TaxPage() {
                                 </div>
                             </div>
 
+                        </div>
+
+                        {/* AI 智慧診斷區塊 */}
+                        <div className="mb-6">
+                            <AIInsightCard
+                                title="AI 稅務優化顧問"
+                                buttonText="點擊進行 AI 節稅戰略分析"
+                                prompt="你是 TaiCalc 首席稅務顧問。請分析這份台灣所得稅數據，並提供 3 個具體的節稅建議。重點包括：1.目前的邊際稅率級距分析。2.勞退自提或捐贈的節稅潛力。3.扶養親屬與基本生活費的佈局建議。請直接切入重點，字數控制在 250 字內。"
+                                context={{
+                                    annualIncome,
+                                    otherIncome,
+                                    isMarried,
+                                    householdSize: results.householdSize,
+                                    netTaxableIncome: results.netTaxableIncome,
+                                    taxPayable: results.taxPayable,
+                                    marginalRate: results.marginalRate,
+                                    effectiveRate: results.effectiveRate,
+                                    deductions: {
+                                        exemption: results.totalExemption,
+                                        standard: results.standardDeduction,
+                                        salarySpecial: results.salaryDeduction,
+                                        basicLivingDiff: results.basicLivingDifference
+                                    }
+                                }}
+                            />
                         </div>
 
                         <div className="bg-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl shadow-slate-900/20">
