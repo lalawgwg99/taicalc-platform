@@ -39,7 +39,7 @@ export default function HomePage() {
             title: '稅務優化',
             description: '針對 2025 新制模型，含扶養策略與列舉扣除額模擬。',
             icon: <PieChart className="w-6 h-6" />,
-            link: '#',
+            link: '/tax',
             color: 'bg-brand-accent',
             tag: '開發中',
             status: 'pending'
@@ -48,7 +48,7 @@ export default function HomePage() {
             title: '資本決策',
             description: '複利、通膨與現金流預測，制定長期的資產增長藍圖。',
             icon: <TrendingUp className="w-6 h-6" />,
-            link: '#',
+            link: '/capital',
             color: 'bg-brand-warning',
             tag: '開發中',
             status: 'pending'
@@ -73,7 +73,7 @@ export default function HomePage() {
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
                         <Link href="/salary" className="hover:text-brand-primary transition-colors">薪資戰略</Link>
                         <Link href="/mortgage" className="hover:text-brand-primary transition-colors">房貸佈局</Link>
-                        <Link href="#" className="hover:text-brand-primary transition-colors">資本決策</Link>
+                        <Link href="/capital" className="hover:text-brand-primary transition-colors">資本決策</Link>
                         <button className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
                             開始佈局
                         </button>
