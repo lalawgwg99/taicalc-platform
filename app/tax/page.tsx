@@ -305,7 +305,7 @@ export default function TaxCalculatorPage() {
                                                 ))}
                                             </Pie>
                                             <RechartsTooltip
-                                                formatter={(v) => `$${formatCurrency(v)}`}
+                                                formatter={(v: any) => `$${formatCurrency(Number(v))}`}
                                                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
                                             />
                                         </PieChart>
