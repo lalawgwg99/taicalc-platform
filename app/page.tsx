@@ -67,7 +67,7 @@ export default function HomePage() {
                             <span className="font-bold text-xl">S</span>
                         </div>
                         <span className="text-2xl font-black tracking-tight text-slate-900">
-                            数策 <span className="text-brand-primary">Strategy</span>
+                            數策 <span className="text-brand-primary">Strategy</span>
                         </span>
                     </div>
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
@@ -98,7 +98,7 @@ export default function HomePage() {
                             <span className="text-brand-primary">戰略與機遇</span>
                         </h1>
                         <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-500 font-medium leading-relaxed mb-10">
-                            從被動計算到主動佈局。数策 (TaiCalc) 整合大數據與法規模型，<br className="hidden md:block" />
+                            從被動計算到主動佈局。數策 (TaiCalc) 整合大數據與法規模型，<br className="hidden md:block" />
                             為您的薪資談判、資產配置提供軍師級的決策建議。
                         </p>
                         <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
@@ -152,7 +152,7 @@ export default function HomePage() {
                     <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
                         <div>
                             <h2 className="text-3xl md:text-5xl font-black mb-8 leading-tight text-slate-900">
-                                為什麼選擇 <span className="text-brand-primary">数策</span>？
+                                為什麼選擇 <span className="text-brand-primary">數策</span>？
                             </h2>
                             <div className="space-y-8">
                                 <div className="flex items-start space-x-4">
@@ -214,7 +214,7 @@ export default function HomePage() {
 
             <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-slate-100">
                 <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-slate-400 text-sm font-medium">
-                    <p>© 2025 数策 NumStrat. 戰略數據僅供決策參考，實際法規以政府公告為準。</p>
+                    <p>© 2025 數策 NumStrat. 戰略數據僅供決策參考，實際法規以政府公告為準。</p>
                     <div className="flex space-x-8">
                         <a href="#" className="hover:text-brand-primary transition-colors">隱私戰略</a>
                         <a href="#" className="hover:text-brand-primary transition-colors">聯絡顧問</a>

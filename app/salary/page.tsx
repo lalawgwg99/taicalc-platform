@@ -55,7 +55,7 @@ export default function SalaryCalculatorPage() {
                     </Link>
                     <div className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                        <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">数策</span></span>
+                        <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">數策</span></span>
                     </div>
                 </div>
             </nav>
