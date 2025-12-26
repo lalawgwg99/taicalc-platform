@@ -3,6 +3,7 @@ import { streamText } from 'ai';
 
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
