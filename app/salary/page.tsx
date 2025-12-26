@@ -36,6 +36,48 @@ export default function SalaryCalculatorPage() {
         return analyzeSalary(calculatedSalary, bonusMonths);
     }, [inputSalary, bonusMonths, activeTab]);
 
+    // 下載報表功能
+    const handleDownload = () => {
+        const reportContent = `
+TaiCalc 數策 - 薪資分析報表
+==============================
+生成時間: ${new Date().toLocaleString('zh-TW')}
+
+【基本資料】
+月薪: ${formatCurrency(inputSalary)}
+年終: ${bonusMonths} 個月
+計算模式: ${activeTab === 'normal' ? '正向計算' : '逆向推算'}
+
+【薪資明細】
+稅前月薪: ${formatCurrency(results.monthly.gross)}
+實領月薪: ${formatCurrency(results.monthly.takeHome)}
+實領率: ${((results.monthly.takeHome / results.monthly.gross) * 100).toFixed(1)}%
+
+【扣款明細】
+勞保費: ${formatCurrency(results.monthly.labor)}
+健保費: ${formatCurrency(results.monthly.health)}
+勞退提撥 (6%): ${formatCurrency(results.monthly.pension)}
+
+【年度統計】
+年薪總額: ${formatCurrency(results.annual.gross)}
+年度淨收入: ${formatCurrency(results.annual.net)}
+
+==============================
+由 TaiCalc 數策 提供 | https://taicalc.com
+        `.trim();
+
+        const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `薪資報表_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+
     return (
         <div className="min-h-screen font-sans pb-32 overflow-x-hidden">
             {/* 極光背景 */}
@@ -308,7 +350,7 @@ export default function SalaryCalculatorPage() {
 
             <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
                 <div className="max-w-7xl mx-auto flex gap-4">
-                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載分析報表">
+                    <button onClick={handleDownload} className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載分析報表">
                         <Download className="w-5 h-5" />
                         <span>下載報表</span>
                     </button>
