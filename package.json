@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npx @cloudflare/next-on-pages",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,6 +25,7 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@types/node": "^20.17.10",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
