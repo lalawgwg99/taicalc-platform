@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 
     // 使用非串流模式測試
     const { text } = await generateText({
-      model: google('gemini-1.5-flash'),
+      model: google('gemini-2.0-flash'),
       system: systemInstruction,
       prompt: fullPrompt,
     });
