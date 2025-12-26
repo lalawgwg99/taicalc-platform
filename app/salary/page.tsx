@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
-import { analyzeSalary } from '@/lib/calculations';
+import { analyzeSalary, calculateGrossFromNet } from '@/lib/calculations';
 
 // 使用自定義的 Sankey Nodes/Links 介面
 // 注意：recharts 的 sankey 需要特定格式
@@ -25,16 +25,11 @@ export default function SalaryCalculatorPage() {
 
     // 根據該模式計算結果
     const results = useMemo(() => {
-        // 簡單的逆向推算邏輯：如果是在逆向模式，我們嘗試找到一個可以產生該實領薪資的稅前薪資
-        // 這裡使用簡單的暴力逼近法 (Binary Search 會更準，但對於此範圍線性逼近足夠)
         let calculatedSalary = inputSalary;
 
         if (activeTab === 'reverse') {
-            // 粗略估算：實領 = 稅前 * 0.95 (扣勞健保) -> 稅前 = 實領 / 0.95
-            // 這裡做一個簡單的模擬，實際應用應使用二分搜尋法
-            const estimate = Math.round(inputSalary / 0.92);
-            // 暫時直接使用估算值作為 "稅前薪資" 進行分析，展示給用戶
-            calculatedSalary = estimate;
+            // 使用二分搜尋精算引擎反推稅前薪資
+            calculatedSalary = calculateGrossFromNet(inputSalary);
         }
 
         return analyzeSalary(calculatedSalary, bonusMonths);

@@ -11,6 +11,7 @@ export const TAIWAN_PARAMS = {
     EXEMPTION: 97000,        // 免稅額
     STANDARD: 131000,       // 標準扣除額
     SALARY_SPECIAL: 218000, // 薪資特別扣除額
+    BASIC_LIVING_EXPENSE: 202000, // 基本生活費 (2024/2025)
   },
   INSURANCE: {
     LABOR_RATE: 0.12,           // 勞保
