@@ -58,3 +58,4 @@ npm run dev
 
 MIT License.
 歡迎 Fork 與貢獻代碼，共同優化台灣的財務決策工具生態。
+force update
