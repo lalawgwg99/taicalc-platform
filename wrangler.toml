@@ -1,3 +1,4 @@
 name = "taicalc-platform"
+pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2024-12-26"
 compatibility_flags = ["nodejs_compat"]
