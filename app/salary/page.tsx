@@ -55,7 +55,7 @@ export default function SalaryCalculatorPage() {
                     </Link>
                     <div className="flex items-center space-x-2">
                         <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                        <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">Salary 2.0</span></span>
+                        <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">数策</span></span>
                     </div>
                 </div>
             </nav>
@@ -67,10 +67,10 @@ export default function SalaryCalculatorPage() {
                         animate={{ opacity: 1, y: 0 }}
                     >
                         <h1 className="text-4xl cmd:text-5xl font-black text-white mb-4 tracking-tight">
-                            薪資決策中樞
+                            薪資戰略中樞
                         </h1>
                         <p className="text-lg text-brand-text-secondary font-medium max-w-2xl">
-                            不僅是計算器，更是您的談薪軍師。切換視角，掌握談判主動權。
+                            不僅是計算，更是佈局。切換攻守視角，掌握談判與資產主動權。
                         </p>
                     </motion.div>
                 </header>

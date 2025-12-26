@@ -7,9 +7,9 @@ const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '70
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'TaiCalc 台算 — 2025 決策級薪資試算',
-  description: '全台最精準的薪資計算器，整合勞健保分級表、逆向談薪與資金流向視覺化分析。',
-  keywords: ['薪資計算', '所得稅計算', '勞健保分級表', '實領薪資', '逆向推算'],
+  title: 'TaiCalc 数策 — 2025 薪資戰略決策系統',
+  description: '全台最精準的薪資戰略工具。整合大數據分級查表、逆向談薪與資金流向視覺化分析，助您做出最佳財務決策。',
+  keywords: ['薪資戰略', '数策', '薪資計算', '逆向談薪', '勞健保分級'],
 };
 
 export default function RootLayout({
