@@ -78,6 +78,46 @@ export default function CapitalPage() {
         return null;
     };
 
+    // 下載報表功能
+    const handleDownload = () => {
+        const lastYear = simulationData[simulationData.length - 1];
+        const reportContent = `
+TaiCalc 數策 - 資本增長模擬報表
+==============================
+生成時間: ${new Date().toLocaleString('zh-TW')}
+
+【投資參數】
+初始本金: ${formatCurrency(initialCapital)}
+月定期投入: ${formatCurrency(monthlyContribution)}
+預估年報酬率: ${annualReturnRate}%
+通膨預估: ${inflationRate}%
+投資期間: ${years} 年
+
+【模擬結果 (第 ${years} 年)】
+名目總資產: ${formatCurrency(lastYear.totalAssets)}
+實質購買力: ${formatCurrency(lastYear.realAssets)}
+累計投入本金: ${formatCurrency(lastYear.principal)}
+投資報酬率: ${roi.toFixed(1)}%
+
+【關鍵洞察】
+通膨侵蝕: ${formatCurrency(lastYear.totalAssets - lastYear.realAssets)}
+實質報酬率 (扣除通膨): ${(annualReturnRate - inflationRate).toFixed(1)}%
+
+==============================
+由 TaiCalc 數策 提供 | https://taicalc.com
+        `.trim();
+
+        const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `資本增長報表_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
             {/* 極光背景 */}
@@ -117,7 +157,7 @@ export default function CapitalPage() {
                     </div>
                     <div className="flex gap-3">
                         <button
-                            onClick={() => window.print()}
+                            onClick={handleDownload}
                             className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95 print:hidden"
                             aria-label="導出分析報告"
                         >

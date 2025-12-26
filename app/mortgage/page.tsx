@@ -96,6 +96,44 @@ export default function MortgagePage() {
         return data;
     }, [loanAmount, interestRate, years, gracePeriod]);
 
+    // 下載報表功能
+    const handleDownload = () => {
+        const reportContent = `
+TaiCalc 數策 - 房貸試算報表
+==============================
+生成時間: ${new Date().toLocaleString('zh-TW')}
+
+【貸款條件】
+貸款金額: ${formatCurrency(loanAmount)}
+年利率: ${interestRate}%
+貸款年限: ${years} 年
+寬限期: ${gracePeriod} 年
+
+【還款資訊】
+寬限期月付金 (僅利息): ${formatCurrency(result.gracePeriodPayment)}
+寬限期後月付金: ${formatCurrency(result.monthlyPayment)}
+總利息支出: ${formatCurrency(result.totalInterest)}
+總還款金額: ${formatCurrency(result.totalPayment)}
+
+【分析指標】
+利息佔比: ${((result.totalInterest / result.totalPayment) * 100).toFixed(1)}%
+每萬元月付: ${formatCurrency(Math.round(result.monthlyPayment / (loanAmount / 10000)))}
+
+==============================
+由 TaiCalc 數策 提供 | https://taicalc.com
+        `.trim();
+
+        const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `房貸報表_${new Date().toISOString().split('T')[0]}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
             {/* 極光背景 */}
@@ -354,7 +392,7 @@ export default function MortgagePage() {
 
             <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
                 <div className="max-w-7xl mx-auto flex gap-4">
-                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載房貸試算報表">
+                    <button onClick={handleDownload} className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載房貸試算報表">
                         <Download className="w-5 h-5" />
                         <span>下載報表</span>
                     </button>
