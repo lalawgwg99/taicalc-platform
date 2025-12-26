@@ -12,6 +12,7 @@ import {
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
+import AIInsightCard from '@/components/AI/AIInsightCard';
 
 // --- 內聯計算邏輯 (避免 Import Error) ---
 function calculateMortgage(loanAmount: number, annualRate: number, years: number, gracePeriod: number) {
@@ -269,6 +270,25 @@ export default function MortgagePage() {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* AI 智慧診斷區塊 */}
+                        <div className="mb-6">
+                            <AIInsightCard
+                                title="AI 房地產戰略顧問"
+                                buttonText="點擊進行 AI 房貸戰略分析"
+                                prompt="你是 TaiCalc 首席房地產戰略官。請分析這份房貸試算數據，並提供 3 個精確的戰略洞察。重點包括：1.目前的寬限期設定對後續 20+ 年現金流壓力的真實影響。2.總利息支出比率是否在合理範圍內。3.針對目前的置產條件（如新青安或首購）給予風險控管或佈局建議。請直接切入重點，字數控制在 250 字內。"
+                                context={{
+                                    loanAmount,
+                                    interestRate,
+                                    years,
+                                    gracePeriod,
+                                    monthlyPayment: result.monthlyPayment,
+                                    gracePeriodPayment: result.gracePeriodPayment,
+                                    totalInterest: result.totalInterest,
+                                    interestRatio: Math.round((result.totalInterest / (loanAmount + result.totalInterest)) * 100)
+                                }}
+                            />
                         </div>
 
                         {/* 圖表分析區 */}
