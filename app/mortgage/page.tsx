@@ -12,7 +12,41 @@ import {
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
-import { calculateMortgage } from '@/lib/calculations';
+
+// --- 內聯計算邏輯 (避免 Import Error) ---
+function calculateMortgage(loanAmount: number, annualRate: number, years: number, gracePeriod: number) {
+    const monthlyRate = (annualRate / 100) / 12;
+    const totalMonths = years * 12;
+    const graceMonths = gracePeriod * 12;
+    const payMonths = totalMonths - graceMonths;
+
+    // 寬限期月付 (僅利息)
+    const graceMonthlyPayment = Math.round(loanAmount * monthlyRate);
+
+    // 寬限期後月付 (本息攤還) - 本息平均攤還法
+    let postGraceMonthlyPayment = 0;
+    if (payMonths > 0) {
+        if (monthlyRate === 0) {
+            postGraceMonthlyPayment = Math.round(loanAmount / payMonths);
+        } else {
+            // PMT = P * r * (1+r)^n / ((1+r)^n - 1)
+            const x = Math.pow(1 + monthlyRate, payMonths);
+            postGraceMonthlyPayment = Math.round((loanAmount * monthlyRate * x) / (x - 1));
+        }
+    }
+
+    const totalPaymentGrace = graceMonthlyPayment * graceMonths;
+    const totalPaymentPost = postGraceMonthlyPayment * payMonths;
+    const totalPayment = totalPaymentGrace + totalPaymentPost;
+    const totalInterest = totalPayment - loanAmount;
+
+    return {
+        monthlyPayment: postGraceMonthlyPayment, // 寬限期後主要月付
+        gracePeriodPayment: graceMonthlyPayment, // 寬限期月付
+        totalInterest,
+        totalPayment
+    };
+}
 
 export default function MortgagePage() {
     // 狀態管理
@@ -33,17 +67,15 @@ export default function MortgagePage() {
     ];
 
     const monthlyData = useMemo(() => {
-        // 生成每月還款趨勢數據 (簡化版：只取每年的第一個月)
-        // 為了效能，我們不需要畫出 360 個點，畫 30 個點 (每年)
+        // 生成每月還款趨勢數據 (每年一筆)
         const data = [];
-        let balance = loanAmount;
         const monthlyRate = interestRate / 100 / 12;
         const totalMonths = years * 12;
         const graceMonths = gracePeriod * 12;
 
         // 本息攤還月付金公式
         const remainingMonths = totalMonths - graceMonths;
-        const pmt = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, remainingMonths)) / (Math.pow(1 + monthlyRate, remainingMonths) - 1);
+        const pmt = monthlyRate === 0 ? (loanAmount / remainingMonths) : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, remainingMonths)) / (Math.pow(1 + monthlyRate, remainingMonths) - 1);
 
         for (let y = 1; y <= years; y++) {
             const m = y * 12;
@@ -62,7 +94,6 @@ export default function MortgagePage() {
         }
         return data;
     }, [loanAmount, interestRate, years, gracePeriod]);
-
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
@@ -101,7 +132,6 @@ export default function MortgagePage() {
                             精算新青安與寬限期影響，為您的置產佈局提供清晰視野。
                         </p>
                     </div>
-                    {/* Share Button Placeholder */}
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
