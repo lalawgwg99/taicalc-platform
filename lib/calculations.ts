@@ -80,30 +80,46 @@ export function calculateTakeHomePay(monthlySalary: number): number {
 }
 
 /**
- * 完整薪資分析
+ * 完整薪資分析（含年終獎金）
  * @param monthlySalary - 月薪（元）
+ * @param bonusMonths - 年終獎金月數（預設 0）
  * @returns 詳細的薪資結構分析
  */
-export function analyzeSalary(monthlySalary: number) {
-    const annualSalary = monthlySalary * 12;
+export function analyzeSalary(monthlySalary: number, bonusMonths: number = 0) {
+    const annualSalary = monthlySalary * (12 + bonusMonths);
     const insurance = calculateInsurance(monthlySalary);
     const pension = calculatePension(monthlySalary);
     const takeHome = calculateTakeHomePay(monthlySalary);
     const annualTax = calculateIncomeTax(annualSalary);
+    const annualInsurance = insurance * 12;
+    const annualNet = annualSalary - annualInsurance - annualTax;
+
+    // 計算勞保與健保分項
+    const { LABOR_RATE, HEALTH_RATE } = TAIWAN_PARAMS.INSURANCE;
+    const laborInsurance = Math.round(monthlySalary * LABOR_RATE * 0.2);
+    const healthInsurance = Math.round(monthlySalary * HEALTH_RATE * 0.3);
 
     return {
         monthly: {
             gross: monthlySalary,
             insurance,
+            labor: laborInsurance,
+            health: healthInsurance,
             pension,
             takeHome,
         },
         annual: {
             gross: annualSalary,
-            insurance: insurance * 12,
+            insurance: annualInsurance,
             pension: pension * 12,
             tax: annualTax,
-            net: annualSalary - insurance * 12 - annualTax,
+            net: annualNet,
         },
+        chartData: [
+            { name: '實領薪資', value: annualNet, color: '#3b82f6' },
+            { name: '所得稅', value: annualTax, color: '#ef4444' },
+            { name: '勞健保費', value: annualInsurance, color: '#f59e0b' },
+        ],
+        effectiveTaxRate: annualSalary > 0 ? (annualTax / annualSalary) * 100 : 0,
     };
 }
