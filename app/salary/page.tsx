@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import {
     Info, Calculator, TrendingUp, ShieldCheck,
-    Download, Share2, ChevronLeft, ArrowRight
+    Download, Share2, ChevronLeft, ArrowRight, Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
