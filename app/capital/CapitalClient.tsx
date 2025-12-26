@@ -135,6 +135,7 @@ export default function CapitalPage() {
                                     className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
                                 >
                                     <RefreshCw className="w-4 h-4" />
+                                    <span className="sr-only">重置參數</span>
                                 </button>
                             </div>
 
@@ -150,6 +151,7 @@ export default function CapitalPage() {
                                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
                                         value={initialCapital}
                                         onChange={(e) => setInitialCapital(Number(e.target.value))}
+                                        aria-label="調整初始本金"
                                     />
                                 </div>
 
@@ -164,6 +166,7 @@ export default function CapitalPage() {
                                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
                                         value={monthlyContribution}
                                         onChange={(e) => setMonthlyContribution(Number(e.target.value))}
+                                        aria-label="調整每月定期定額"
                                     />
                                 </div>
 
@@ -178,6 +181,7 @@ export default function CapitalPage() {
                                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-accent"
                                         value={annualReturnRate}
                                         onChange={(e) => setAnnualReturnRate(Number(e.target.value))}
+                                        aria-label="調整預期年化報酬率"
                                     />
                                     <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
                                         <span>定存 (1.5%)</span>
@@ -197,6 +201,7 @@ export default function CapitalPage() {
                                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-500"
                                         value={inflationRate}
                                         onChange={(e) => setInflationRate(Number(e.target.value))}
+                                        aria-label="調整預估通膨率"
                                     />
                                     <div className="text-[10px] text-slate-400 mt-1 text-right">
                                         {inflationRate > 3 ? '😱 高通膨警報' : (inflationRate < 1 ? '🥶 緊縮風險' : '正常區間')}
@@ -214,6 +219,7 @@ export default function CapitalPage() {
                                         className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-600"
                                         value={years}
                                         onChange={(e) => setYears(Number(e.target.value))}
+                                        aria-label="調整計畫年期"
                                     />
                                 </div>
                             </div>
@@ -280,7 +286,7 @@ export default function CapitalPage() {
                                 </div>
                                 <div className="flex flex-col justify-center border-l border-white/10 pl-8">
                                     <p className="text-sm text-slate-300 font-medium leading-relaxed italic">
-                                        "如果您的月開銷低於 <span className="text-emerald-400 font-bold">${formatCurrency(finalResult.realMonthlyPassiveIncome)}</span>，恭喜您，這個計畫能讓您在 {years} 年後達成財務自由，本金理論上永遠花不完。"
+                                        &quot;如果您的月開銷低於 <span className="text-emerald-400 font-bold">${formatCurrency(finalResult.realMonthlyPassiveIncome)}</span>，恭喜您，這個計畫能讓您在 {years} 年後達成財務自由，本金理論上永遠花不完。&quot;
                                     </p>
                                     <div className="mt-4 flex gap-2">
                                         <div className="px-3 py-1 rounded bg-white/10 text-[10px] font-bold text-slate-300">提領率 4%</div>
