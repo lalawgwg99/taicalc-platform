@@ -4,16 +4,31 @@ import { streamText } from 'ai';
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
 
+export async function GET() {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  return new Response(JSON.stringify({
+    status: "API Route is Alive",
+    env_detected: !!apiKey,
+    message: apiKey ? "Key detected successfully" : "Warning: Key NOT detected in environment"
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const { prompt, context } = await req.json();
 
-    // 檢查環境變數 (Debug Only)
+    // 檢查環境變數
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    console.log('AI Request received. Has Proxy Key (Check 1):', !!apiKey);
 
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'Missing API Key in Environment' }), {
+      console.error('Missing GOOGLE_GENERATIVE_AI_API_KEY in process.env');
+      return new Response(JSON.stringify({
+        error: '系統設定錯誤：找不到 API Key。請確保您已在 Cloudflare 設定環境變數並重新部署。',
+        debug_info: 'Environment Key Not Found'
+      }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -47,7 +62,10 @@ export async function POST(req: Request) {
     return result.toTextStreamResponse();
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
-    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), {
+    return new Response(JSON.stringify({
+      error: 'AI 服務暫時無法連線',
+      details: error.message
+    }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
