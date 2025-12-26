@@ -2,127 +2,70 @@
 
 import React, { useState, useMemo } from 'react';
 import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
-    PieChart, Pie, Cell
+    PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip,
+    AreaChart, Area, XAxis, YAxis, CartesianGrid
 } from 'recharts';
 import {
-    Home, Landmark, Calendar, Percent, ArrowRight,
-    Info, ShieldCheck, Download, Calculator, TrendingDown, ChevronLeft, Zap
+    Home, Calculator, Percent, Calendar, DollarSign,
+    TrendingUp, AlertCircle, ChevronLeft, Download, Share2, Building
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { formatCurrency } from '@/lib/utils';
+import { calculateMortgage } from '@/lib/calculations';
 
-// --- 內部工具函數 ---
-const formatCurrency = (amount: number) => {
-    if (isNaN(amount) || amount === null) return "0";
-    return new Intl.NumberFormat('zh-TW', {
-        style: 'decimal',
-        maximumFractionDigits: 0,
-    }).format(amount);
-};
-
-// --- 房貸計算核心邏輯 ---
-type CalculationMethod = 'average' | 'principal';
-
-interface MortgageParams {
-    loanAmount: number; // 萬元
-    annualRate: number; // %
-    years: number;
-    gracePeriod: number; // 年
-    method: CalculationMethod;
-}
-
-const calculateMortgage = ({
-    loanAmount,
-    annualRate,
-    years,
-    gracePeriod,
-    method
-}: MortgageParams) => {
-    const amount = loanAmount * 10000;
-    const monthlyRate = (annualRate / 100) / 12;
-    const totalMonths = years * 12;
-    const graceMonths = gracePeriod * 12;
-    const payMonths = totalMonths - graceMonths;
-
-    // 避免除以零
-    if (totalMonths <= 0) return { monthlyPayment: 0, graceMonthlyPayment: 0, postGraceMonthlyPayment: 0, totalInterest: 0, totalPayment: 0, schedule: [] };
-
-    // 1. 計算每月應付本息 (EMI) - 適用於本息平均攤還
-    const emi = monthlyRate === 0
-        ? amount / payMonths
-        : (amount * monthlyRate * Math.pow(1 + monthlyRate, payMonths)) / (Math.pow(1 + monthlyRate, payMonths) - 1);
-
-    // 預先決定寬限期與非寬限期的金額
-    const graceMonthlyPayment = amount * monthlyRate;
-    const postGraceMonthlyPayment = method === 'average' ? emi : (amount / payMonths + amount * monthlyRate);
-
-    // 初始顯示的月繳金額 (若有寬限期則顯示寬限期金額)
-    const monthlyPayment = graceMonths > 0 ? graceMonthlyPayment : postGraceMonthlyPayment;
-
-    let schedule = [];
-    let remainingBalance = amount;
-    let totalInterest = 0;
-
-    for (let m = 1; m <= totalMonths; m++) {
-        let interestPayment = remainingBalance * monthlyRate;
-        let principalPayment = 0;
-
-        if (m <= graceMonths) {
-            principalPayment = 0;
-        } else {
-            if (method === 'average') {
-                principalPayment = emi - interestPayment;
-            } else {
-                // 本金平均攤還：每月本金固定
-                principalPayment = amount / payMonths;
-            }
-        }
-
-        remainingBalance = Math.max(0, remainingBalance - principalPayment);
-        totalInterest += interestPayment;
-
-        // 每年度記錄一個點 (供圖表使用)
-        if (m % 12 === 0 || m === 1) {
-            schedule.push({
-                year: Math.ceil(m / 12),
-                balance: Math.round(remainingBalance),
-                cumulativeInterest: Math.round(totalInterest)
-            });
-        }
-    }
-
-    return {
-        monthlyPayment,
-        graceMonthlyPayment,
-        postGraceMonthlyPayment,
-        totalInterest,
-        totalPayment: amount + totalInterest,
-        schedule
-    };
-};
-
-export default function MortgageCalculator() {
-    // 基本狀態
-    const [loanAmount, setLoanAmount] = useState(1000); // 1000萬
-    const [rate, setRate] = useState(2.185); // 目前一般房貸低點
-    const [years, setYears] = useState(30);
-    const [graceYear, setGraceYear] = useState(0);
-    const [method, setMethod] = useState<CalculationMethod>('average');
+export default function MortgagePage() {
+    // 狀態管理
+    const [loanAmount, setLoanAmount] = useState(15000000); // 1500萬
+    const [interestRate, setInterestRate] = useState(2.15); // 2.15%
+    const [years, setYears] = useState(30); // 30年
+    const [gracePeriod, setGracePeriod] = useState(3); // 寬限期3年
 
     // 計算結果
-    const results = useMemo(() => {
-        return calculateMortgage({ loanAmount, annualRate: rate, years, gracePeriod: graceYear, method });
-    }, [loanAmount, rate, years, graceYear, method]);
+    const result = useMemo(() => {
+        return calculateMortgage(loanAmount, interestRate, years, gracePeriod);
+    }, [loanAmount, interestRate, years, gracePeriod]);
 
-    // 新青安對比
-    const qingAnResults = useMemo(() => {
-        // 青安補貼後約 1.775%
-        return calculateMortgage({ loanAmount, annualRate: 1.775, years, gracePeriod: 5, method: 'average' });
-    }, [loanAmount, years]);
+    // 視覺化圖表數據
+    const chartData = [
+        { name: '本金償還', value: loanAmount, color: '#3b82f6' }, // Brand Primary
+        { name: '總利息', value: result.totalInterest, color: '#f59e0b' }, // Brand Warning
+    ];
+
+    const monthlyData = useMemo(() => {
+        // 生成每月還款趨勢數據 (簡化版：只取每年的第一個月)
+        // 為了效能，我們不需要畫出 360 個點，畫 30 個點 (每年)
+        const data = [];
+        let balance = loanAmount;
+        const monthlyRate = interestRate / 100 / 12;
+        const totalMonths = years * 12;
+        const graceMonths = gracePeriod * 12;
+
+        // 本息攤還月付金公式
+        const remainingMonths = totalMonths - graceMonths;
+        const pmt = (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, remainingMonths)) / (Math.pow(1 + monthlyRate, remainingMonths) - 1);
+
+        for (let y = 1; y <= years; y++) {
+            const m = y * 12;
+            let payment = 0;
+            // 概算該年度的月付金
+            if (m <= graceMonths) {
+                payment = loanAmount * monthlyRate;
+            } else {
+                payment = pmt;
+            }
+            data.push({
+                year: y,
+                payment: Math.round(payment),
+                label: `第${y}年`
+            });
+        }
+        return data;
+    }, [loanAmount, interestRate, years, gracePeriod]);
+
 
     return (
-        <div className="min-h-screen bg-brand-background font-sans pb-32">
+        <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
             {/* 極光背景 */}
             <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
 
@@ -141,234 +84,235 @@ export default function MortgageCalculator() {
                 </div>
             </nav>
 
-            <div className="max-w-6xl mx-auto px-4 md:px-6 py-12">
-                <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+
+                {/* Header */}
+                <header className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
+                            className="flex items-center space-x-3 mb-3"
                         >
-                            <div className="flex items-center space-x-2 mb-2">
-                                <span className="bg-blue-50 text-brand-primary text-[10px] font-black px-2 py-1 rounded border border-blue-100">MORTGAGE PRO</span>
-                                <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">房貸決策工具</h1>
-                            </div>
-                            <p className="text-slate-500 font-medium">對比不同方案，找出最適合您的還款策略。包含新青安貸款方案參考。</p>
+                            <div className="bg-brand-primary text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-blue-200">New</div>
+                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">房貸決策戰情室</h1>
                         </motion.div>
+                        <p className="text-slate-500 font-medium max-w-2xl text-lg">
+                            精算新青安與寬限期影響，為您的置產佈局提供清晰視野。
+                        </p>
                     </div>
+                    {/* Share Button Placeholder */}
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                    {/* 左側：輸入與配置 */}
+                    {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
-                        <section className="bg-white/70 border border-slate-200 rounded-[32px] p-8 backdrop-blur-xl shadow-sm">
-                            <div className="flex items-center space-x-2 mb-6 text-brand-primary">
+                        <section className="glass-card rounded-[32px] p-8 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
+                            <div className="flex items-center space-x-2 text-brand-primary mb-6">
                                 <Calculator className="w-5 h-5" />
-                                <h2 className="font-bold">貸款參數</h2>
+                                <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">貸款條件設定</h2>
                             </div>
 
                             <div className="space-y-6">
+                                {/* 貸款金額 */}
                                 <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">貸款總額 (萬元)</label>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                        貸款總額 (NTD)
+                                    </label>
                                     <div className="relative group">
-                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-black text-lg">$</span>
+                                        <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors w-5 h-5" />
                                         <input
                                             type="number"
-                                            className="w-full pl-8 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-xl font-black text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all shadow-sm"
+                                            className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 text-lg shadow-sm"
                                             value={loanAmount}
                                             onChange={(e) => setLoanAmount(Number(e.target.value))}
+                                            aria-label="輸入貸款總額"
                                         />
                                     </div>
                                 </div>
 
+                                {/* 年利率 & 寬限期 */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase mb-2">貸款年限</label>
-                                        <select
-                                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/50"
-                                            value={years}
-                                            onChange={(e) => setYears(Number(e.target.value))}
-                                        >
-                                            <option value={20}>20 年</option>
-                                            <option value={30}>30 年</option>
-                                            <option value={40}>40 年</option>
-                                        </select>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                            年利率 (%)
+                                        </label>
+                                        <div className="relative group">
+                                            <Percent className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-accent transition-colors w-4 h-4" />
+                                            <input
+                                                type="number"
+                                                step="0.01"
+                                                className="w-full pl-10 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent outline-none transition-all font-bold text-slate-900 shadow-sm"
+                                                value={interestRate}
+                                                onChange={(e) => setInterestRate(Number(e.target.value))}
+                                                aria-label="輸入年利率"
+                                            />
+                                        </div>
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-slate-500 uppercase mb-2">年利率 (%)</label>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                            寬限期 (年)
+                                        </label>
+                                        <div className="relative group">
+                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors w-4 h-4" />
+                                            <select
+                                                className="w-full pl-10 pr-8 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 shadow-sm appearance-none cursor-pointer"
+                                                value={gracePeriod}
+                                                onChange={(e) => setGracePeriod(Number(e.target.value))}
+                                                aria-label="選擇寬限期年份"
+                                            >
+                                                {[0, 1, 2, 3, 4, 5].map(y => (
+                                                    <option key={y} value={y}>{y} 年</option>
+                                                ))}
+                                            </select>
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">▼</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* 貸款年限 */}
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">
+                                        貸款期限 (年)
+                                    </label>
+                                    <div className="relative p-1">
+                                        <div className="flex justify-between text-xs font-bold text-slate-400 mb-2 px-1">
+                                            <span>20年</span>
+                                            <span className="text-brand-primary">{years}年</span>
+                                            <span>40年</span>
+                                        </div>
                                         <input
-                                            type="number" step="0.001"
-                                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/50"
-                                            value={rate}
-                                            onChange={(e) => setRate(Number(e.target.value))}
+                                            type="range"
+                                            min="20" max="40" step="5"
+                                            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                                            value={years}
+                                            onChange={(e) => setYears(Number(e.target.value))}
+                                            aria-label="調整貸款年限"
                                         />
                                     </div>
                                 </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">還款方式</label>
-                                    <div className="flex bg-slate-100 p-1 rounded-xl">
-                                        <button
-                                            onClick={() => setMethod('average')}
-                                            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${method === 'average' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                                        >
-                                            本息平均
-                                        </button>
-                                        <button
-                                            onClick={() => setMethod('principal')}
-                                            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${method === 'principal' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                                        >
-                                            本金平均
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs font-bold text-slate-500 uppercase mb-2">寬限期 (年)</label>
-                                    <input
-                                        type="number" min="0" max="5"
-                                        className="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/50"
-                                        value={graceYear}
-                                        onChange={(e) => setGraceYear(Number(e.target.value))}
-                                    />
-                                </div>
                             </div>
                         </section>
 
-                        {/* 決策建議區 */}
-                        <section className="bg-gradient-to-br from-brand-primary to-blue-600 rounded-[32px] p-8 text-white shadow-lg shadow-blue-200 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                            <h3 className="text-sm font-black mb-4 flex items-center uppercase tracking-wider relative z-10">
-                                <ShieldCheck className="w-4 h-4 mr-2" />
-                                數策建議
-                            </h3>
-                            <div className="space-y-4 relative z-10">
-                                <div className="bg-white/10 rounded-xl p-4 border border-white/20 backdrop-blur-md">
-                                    <p className="text-xs text-blue-50 leading-relaxed font-medium">
-                                        若您具備首購資格，<span className="font-black text-white underline decoration-blue-300 decoration-2 underline-offset-2">新青安貸款</span> 前五年寬限期可節省約 <span className="text-2xl font-black block mt-2 text-white">${formatCurrency(Math.max(0, results.monthlyPayment - qingAnResults.graceMonthlyPayment))}/月</span>
-                                    </p>
-                                </div>
-                                <p className="text-[10px] text-blue-100 font-medium opacity-80 flex items-start">
-                                    <Info className="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
-                                    建議房貸支出不超過家庭月收入的 1/3，以維持生活品質。
-                                </p>
+                        {/* 手機版快速結果 */}
+                        <div className="lg:hidden glass-card rounded-[24px] p-6 bg-white border border-slate-200">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-slate-500 font-bold">寬限期後月付</span>
+                                <span className="text-2xl font-black text-brand-primary">${formatCurrency(result.monthlyPayment)}</span>
                             </div>
-                        </section>
+                        </div>
                     </div>
 
-                    {/* 右側：核心數據與視覺化 */}
+                    {/* 右側：儀表板 */}
                     <div className="lg:col-span-8 space-y-6">
 
-                        {/* 數據概要 */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-white border border-slate-200 rounded-[24px] p-6 shadow-sm">
-                                <p className="text-xs font-bold text-slate-500 uppercase mb-2">每月繳款 (初期)</p>
-                                <h3 className="text-3xl font-black text-slate-900 tracking-tight">${formatCurrency(results.monthlyPayment)}</h3>
-                            </div>
-                            <div className="bg-white border border-slate-200 rounded-[24px] p-6 shadow-sm">
-                                <p className="text-xs font-bold text-slate-500 uppercase mb-2">利息總額</p>
-                                <h3 className="text-3xl font-black text-brand-error tracking-tight">${formatCurrency(results.totalInterest)}</h3>
-                            </div>
-                            <div className="bg-white border-l-4 border-l-brand-primary border-y border-r border-slate-200 rounded-[24px] p-6 shadow-sm">
-                                <p className="text-xs font-bold text-slate-500 uppercase mb-2">本利總額</p>
-                                <h3 className="text-3xl font-black text-brand-primary tracking-tight">${formatCurrency(results.totalPayment)}</h3>
-                            </div>
-                        </div>
-
-                        {/* 圖表分析 */}
-                        <div className="bg-white border border-slate-200 rounded-[32px] p-8 relative overflow-hidden shadow-sm">
-                            <div className="flex items-center justify-between mb-10">
-                                <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest flex items-center">
-                                    <TrendingDown className="w-4 h-4 mr-2 text-brand-primary" />
-                                    貸款餘額與利息累積趨勢
-                                </h2>
-                                <div className="flex items-center space-x-4">
-                                    <div className="flex items-center space-x-1.5">
-                                        <div className="w-2 h-2 rounded-full bg-brand-primary" />
-                                        <span className="text-xs font-bold text-slate-500">剩餘本金</span>
-                                    </div>
-                                    <div className="flex items-center space-x-1.5">
-                                        <div className="w-2 h-2 rounded-full bg-brand-error" />
-                                        <span className="text-xs font-bold text-slate-500">累積利息</span>
+                        {/* 核心指標卡片 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-gradient-to-br from-brand-primary to-blue-600 rounded-[32px] p-8 shadow-2xl shadow-blue-500/30 text-white flex flex-col justify-between h-[200px] relative overflow-hidden">
+                                <Home className="absolute right-4 top-4 text-white/10 w-32 h-32 -rotate-12" />
+                                <div>
+                                    <h3 className="text-xs font-black text-blue-100 uppercase tracking-widest mb-1">本息攤還月付金 (寬限期後)</h3>
+                                    <div className="text-5xl font-black tracking-tight">${formatCurrency(result.monthlyPayment)}</div>
+                                </div>
+                                <div>
+                                    <div className="flex items-center space-x-2 text-sm font-bold bg-white/10 w-fit px-3 py-1.5 rounded-lg mb-2">
+                                        <Calendar className="w-4 h-4" />
+                                        <span>寬限期前月付 ${formatCurrency(result.gracePeriodPayment)}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="h-[300px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={results.schedule} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1} />
-                                                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                                        <XAxis
-                                            dataKey="year"
-                                            stroke="#94a3b8"
-                                            fontSize={10}
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tickFormatter={(val) => `第${val}年`}
-                                            tickMargin={10}
-                                        />
-                                        <YAxis hide />
-                                        <RechartsTooltip
-                                            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                                            formatter={(val: number) => [`$${formatCurrency(val)}`]}
-                                            itemStyle={{ color: '#0f172a', fontWeight: 'bold' }}
-                                            labelStyle={{ color: '#64748b', marginBottom: '0.5rem' }}
-                                        />
-                                        <Area type="monotone" dataKey="balance" stroke="#2563eb" strokeWidth={3} fillOpacity={1} fill="url(#colorBalance)" activeDot={{ r: 6, strokeWidth: 0 }} />
-                                        <Area type="monotone" dataKey="cumulativeInterest" stroke="#dc2626" strokeWidth={2} fill="transparent" strokeDasharray="5 5" />
-                                    </AreaChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </div>
-
-                        {/* 詳細對比清單 */}
-                        <div className="bg-white border border-slate-200 rounded-[32px] overflow-hidden shadow-sm">
-                            <div className="p-6 border-b border-slate-100 bg-slate-50">
-                                <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest">還款計畫核心明細</h3>
-                            </div>
-                            <div className="p-6 grid md:grid-cols-2 gap-8">
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center py-3 border-b border-slate-100">
-                                        <span className="text-xs text-slate-500 font-bold">平均每日支出</span>
-                                        <span className="text-sm font-black text-slate-900">${formatCurrency(results.monthlyPayment / 30)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-3 border-b border-slate-100">
-                                        <span className="text-xs text-slate-500 font-bold">利息佔總支出比例</span>
-                                        <span className="text-sm font-black text-brand-error">{results.totalPayment > 0 ? ((results.totalInterest / results.totalPayment) * 100).toFixed(1) : 0}%</span>
-                                    </div>
+                            <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
+                                <DollarSign className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
+                                <div>
+                                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
+                                        總利息支出
+                                        <AlertCircle className="w-3 h-3 ml-1 text-slate-300" />
+                                    </h3>
+                                    <div className="text-4xl font-black tracking-tight text-brand-warning">${formatCurrency(result.totalInterest)}</div>
                                 </div>
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center py-3 border-b border-slate-100">
-                                        <span className="text-xs text-slate-500 font-bold">建議家庭月收入下限</span>
-                                        <span className="text-sm font-black text-brand-success">${formatCurrency(results.monthlyPayment * 3)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center py-3 border-b border-slate-100">
-                                        <span className="text-xs text-slate-500 font-bold">總還款槓桿倍數</span>
-                                        <span className="text-sm font-black text-slate-900">{(loanAmount > 0 ? results.totalPayment / (loanAmount * 10000) : 0).toFixed(2)}x</span>
-                                    </div>
+                                <div className="mt-4">
+                                    <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                                        利息佔總還款金額的 <span className="text-brand-warning font-bold">{Math.round((result.totalInterest / (loanAmount + result.totalInterest)) * 100)}%</span>。
+                                        {gracePeriod > 0 ? `寬限期 ${gracePeriod} 年雖減輕初期負擔，但會增加後期月付壓力。` : '無寬限期雖然初期壓力較大，但總利息支出最少。'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => window.print()}
-                            className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center space-x-2 shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all active:scale-95 print:hidden"
-                        >
-                            <Download className="w-5 h-5" />
-                            <span>下載完整房貸決策報告 (PDF)</span>
-                        </button>
-                        <p className="text-xs text-center text-slate-400 mt-2 print:hidden">
-                            提示：點擊後選擇「另存為 PDF」即可高畫質保存報告。
-                        </p>
+                        {/* 圖表分析區 */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {/* 圓餅圖：本金利息比 */}
+                            <div className="md:col-span-1 glass-card rounded-[32px] p-6 bg-white border border-slate-200 shadow-xl shadow-slate-100 flex flex-col items-center justify-center">
+                                <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4 w-full text-center">總還款結構</h3>
+                                <div className="w-full h-[180px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <PieChart>
+                                            <Pie
+                                                data={chartData}
+                                                cx="50%" cy="50%"
+                                                innerRadius={60}
+                                                outerRadius={80}
+                                                paddingAngle={5}
+                                                dataKey="value"
+                                                stroke="none"
+                                            >
+                                                {chartData.map((entry, index) => (
+                                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                                ))}
+                                            </Pie>
+                                            <RechartsTooltip />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className="flex gap-4 mt-2 text-xs font-bold">
+                                    <div className="flex items-center"><div className="w-2 h-2 rounded-full bg-brand-primary mr-1" />本金</div>
+                                    <div className="flex items-center"><div className="w-2 h-2 rounded-full bg-brand-warning mr-1" />利息</div>
+                                </div>
+                            </div>
+
+                            {/* 折線圖：月付金趨勢 */}
+                            <div className="md:col-span-2 glass-card rounded-[32px] p-6 bg-white border border-slate-200 shadow-xl shadow-slate-100">
+                                <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">月付金壓力趨勢 (30年)</h3>
+                                <div className="w-full h-[200px]">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={monthlyData}>
+                                            <defs>
+                                                <linearGradient id="colorPayment" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
+                                                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                            <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => `Y${v}`} />
+                                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} tickFormatter={(v) => `${v / 1000}k`} width={40} />
+                                            <RechartsTooltip
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                                                formatter={(value: any) => `$${formatCurrency(value)}`}
+                                            />
+                                            <Area type="stepAfter" dataKey="payment" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPayment)" />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
+            <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
+                <div className="max-w-7xl mx-auto flex gap-4">
+                    <button className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載房貸試算報表">
+                        <Download className="w-5 h-5" />
+                        <span>下載報表</span>
+                    </button>
+                    <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all" aria-label="分享房貸試算結果">
+                        <Share2 className="w-5 h-5" />
+                    </button>
+                </div>
+            </footer>
         </div>
     );
-};
+}
