@@ -67,7 +67,7 @@ export default function HomePage() {
                             <span className="font-bold text-xl">S</span>
                         </div>
                         <span className="text-2xl font-black tracking-tight text-slate-900">
-                            數策 <span className="text-brand-primary">Strategy</span>
+                            TaiCalc <span className="text-brand-primary">數策</span>
                         </span>
                     </div>
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
