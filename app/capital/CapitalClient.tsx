@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { calculateCapitalGrowth, analyzeFinancialFreedom } from '@/lib/financials';
+import AIInsightCard from '@/components/AI/AIInsightCard';
 
 export default function CapitalPage() {
     // --- 狀態管理 ---
@@ -303,6 +304,27 @@ export default function CapitalPage() {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* AI 智慧診斷區塊 */}
+                        <div className="mb-6">
+                            <AIInsightCard
+                                title="AI 資本戰略顧問"
+                                buttonText="點擊進行 AI 資產增長戰略分析"
+                                prompt="你是 TaiCalc 首席資本戰略官。請分析這份複利增長模擬數據，並提供 3 個精確的戰略洞察。重點包括：1.目前的報酬率與通膨率之間的博弈。2.達成財務自由（FIRE）的可能性與時間表建議。3.針對資產配置或投入金額的優化建議。請直接切入重點，字數控制在 250 字內。"
+                                context={{
+                                    initialCapital,
+                                    monthlyContribution,
+                                    annualReturnRate,
+                                    inflationRate,
+                                    years,
+                                    totalAssets: finalResult.totalAssets,
+                                    realAssets: finalResult.realAssets,
+                                    monthlyPassiveIncome: finalResult.monthlyPassiveIncome,
+                                    realMonthlyPassiveIncome: finalResult.realMonthlyPassiveIncome,
+                                    roi: roi
+                                }}
+                            />
                         </div>
 
                         {/* Chart */}
