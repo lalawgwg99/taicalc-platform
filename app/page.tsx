@@ -30,10 +30,10 @@ export default function HomePage() {
             title: '房貸佈局',
             description: '多情境還款壓力測試，幫您精算寬限期與最佳進場點。',
             icon: <Home className="w-6 h-6" />,
-            link: '#',
+            link: '/mortgage',
             color: 'bg-brand-success',
-            tag: '開發中',
-            status: 'pending'
+            tag: '新戰略',
+            status: 'hot'
         },
         {
             title: '稅務優化',
