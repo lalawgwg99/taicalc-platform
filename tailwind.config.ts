@@ -10,17 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          background: '#0f172a', // 深海藍底色
-          surface: '#1e293b',    // 卡片表面色
-          primary: '#3b82f6',    // 電光藍
-          accent: '#8b5cf6',     // 霓虹紫
-          success: '#10b981',    // 翡翠綠
-          warning: '#f59e0b',    // 琥珀金
-          error: '#ef4444',      // 警示紅
+          background: '#f8fafc', // 雲朵白 (回歸清新)
+          surface: '#ffffff',    // 純白卡片
+          primary: '#2563eb',    // 蘋果藍 (更亮一點)
+          accent: '#7c3aed',     // 皇室紫
+          success: '#059669',    // 森林綠
+          warning: '#d97706',    // 琥珀橘
+          error: '#dc2626',      // 警示紅
           text: {
-            primary: '#f8fafc',  // 極致白
-            secondary: '#94a3b8', // 霧灰
-            muted: '#64748b'     // 深灰
+            primary: '#0f172a',  // 深藍黑文字 (高對比)
+            secondary: '#64748b', // 舒適灰
+            muted: '#94a3b8'     // 淺灰
           }
         },
       },
@@ -33,8 +33,8 @@ const config: Config = {
         'card': '24px',
       },
       boxShadow: {
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-        'glow': '0 0 20px rgba(59, 130, 246, 0.5)',
+        'glass': '0 8px 30px rgba(0, 0, 0, 0.04)', // 輕量化陰影
+        'glow': '0 0 20px rgba(37, 99, 235, 0.15)',
       },
     },
   },
