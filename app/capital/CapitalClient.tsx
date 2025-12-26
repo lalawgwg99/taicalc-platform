@@ -107,14 +107,23 @@ export default function CapitalPage() {
                             animate={{ opacity: 1, y: 0 }}
                             className="flex items-center space-x-3 mb-3"
                         >
-                            <div className="bg-brand-warning text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-amber-200">Beta</div>
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">資本決策模擬 <span className="text-brand-warning">Future</span></h1>
+                            <div className="bg-brand-warning text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-amber-200">New</div>
+                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">資本決策模擬 <span className="text-brand-warning">PRO</span></h1>
                         </motion.div>
                         <p className="text-slate-500 font-medium max-w-2xl text-lg">
                             不僅看見複利的力量，更看清通膨的代價。為您的財務自由制定真實可行的時間表。
                         </p>
                     </div>
-                    {/* Share Button Placeholder */}
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => window.print()}
+                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95 print:hidden"
+                            aria-label="導出分析報告"
+                        >
+                            <Download className="w-4 h-4" />
+                            <span>導出分析報告</span>
+                        </button>
+                    </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -357,6 +366,7 @@ export default function CapitalPage() {
                                             strokeDasharray="5 5"
                                             fillOpacity={1}
                                             fill="url(#colorReal)"
+                                            activeDot={{ r: 6, strokeWidth: 0 }}
                                         />
                                         <Area
                                             type="monotone"
