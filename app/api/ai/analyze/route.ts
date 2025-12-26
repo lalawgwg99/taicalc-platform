@@ -5,9 +5,9 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   return new Response(JSON.stringify({
-    status: "API Route is Alive (Dynamic Import Mode)",
+    status: "API Route is Alive",
     env_detected: !!apiKey,
-    message: apiKey ? "Key detected successfully" : "Warning: Key NOT detected in environment"
+    message: apiKey ? "Key detected successfully" : "Warning: Key NOT detected"
   }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' }
@@ -16,20 +16,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    // Dynamic import to prevent top-level crashes on Edge
     const { google } = await import('@ai-sdk/google');
-    const { streamText } = await import('ai');
+    const { generateText } = await import('ai');
 
     const { prompt, context } = await req.json();
 
-    // 檢查環境變數
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
     if (!apiKey) {
-      console.error('Missing GOOGLE_GENERATIVE_AI_API_KEY in process.env');
       return new Response(JSON.stringify({
-        error: '系統設定錯誤：找不到 API Key。請確保您已在 Cloudflare 設定環境變數並重新部署。',
-        debug_info: 'Environment Key Not Found'
+        error: '系統設定錯誤：找不到 API Key'
       }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
@@ -42,7 +38,7 @@ export async function POST(req: Request) {
       ## 風格指引
       - **極簡專業**：不要廢話，直接切入重點。
       - **戰略視角**：要解釋數字背後的「意義」與「機會」。
-      - **行動導向**：每一個建議都要包含一個具體的行動 (Call to Action)。
+      - **行動導向**：每一個建議都要包含一個具體的行動。
 
       ## 輸出格式
       - 使用 Markdown。回答請在 300 字以內。
@@ -55,17 +51,21 @@ export async function POST(req: Request) {
       ${JSON.stringify(context, null, 2)}
     `;
 
-    const result = await streamText({
+    // 使用非串流模式測試
+    const { text } = await generateText({
       model: google('gemini-1.5-flash'),
       system: systemInstruction,
       prompt: fullPrompt,
     });
 
-    return result.toTextStreamResponse();
+    return new Response(text, {
+      status: 200,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+    });
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
     return new Response(JSON.stringify({
-      error: 'AI 服務發生內部錯誤',
+      error: 'AI 服務發生錯誤',
       details: error.message,
       stack: error.stack
     }), {
