@@ -1,6 +1,3 @@
-import { google } from '@ai-sdk/google';
-import { streamText } from 'ai';
-
 // Set the runtime to edge for best performance
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -8,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   return new Response(JSON.stringify({
-    status: "API Route is Alive",
+    status: "API Route is Alive (Dynamic Import Mode)",
     env_detected: !!apiKey,
     message: apiKey ? "Key detected successfully" : "Warning: Key NOT detected in environment"
   }), {
@@ -19,6 +16,10 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    // Dynamic import to prevent top-level crashes on Edge
+    const { google } = await import('@ai-sdk/google');
+    const { streamText } = await import('ai');
+
     const { prompt, context } = await req.json();
 
     // 檢查環境變數
@@ -37,7 +38,7 @@ export async function POST(req: Request) {
 
     const systemInstruction = `
       你現在是 "TaiCalc 數策" 的首席財務顧問 AI。你的任務是分析使用者的財務數據，並提供具體、可執行的戰略建議。
-
+      
       ## 風格指引
       - **極簡專業**：不要廢話，直接切入重點。
       - **戰略視角**：要解釋數字背後的「意義」與「機會」。
@@ -64,8 +65,9 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
     return new Response(JSON.stringify({
-      error: 'AI 服務暫時無法連線',
-      details: error.message
+      error: 'AI 服務發生內部錯誤',
+      details: error.message,
+      stack: error.stack
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
