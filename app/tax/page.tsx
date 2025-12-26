@@ -195,9 +195,46 @@ TaiCalc 數策 - 所得稅分析報表
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
                         <section className="glass-card rounded-[32px] p-8 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
-                            <div className="flex items-center space-x-2 text-brand-primary mb-6">
+                            <div className="flex items-center space-x-2 text-brand-primary mb-4">
                                 <Calculator className="w-5 h-5" />
                                 <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">所得來源設定</h2>
+                            </div>
+
+                            {/* 快速填入情境 */}
+                            <div className="mb-6">
+                                <p className="text-xs text-slate-400 mb-2">快速套用情境：</p>
+                                <div className="flex flex-wrap gap-2">
+                                    <button
+                                        onClick={() => {
+                                            setAnnualIncome(800000); setOtherIncome(0);
+                                            setIsMarried(false); setChildrenCount(0);
+                                            setParentsCount(0); setElderlyParentsCount(0);
+                                        }}
+                                        className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                    >
+                                        👤 單身 80萬
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setAnnualIncome(1500000); setOtherIncome(50000);
+                                            setIsMarried(true); setChildrenCount(2);
+                                            setParentsCount(0); setElderlyParentsCount(0);
+                                        }}
+                                        className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                    >
+                                        👫 雙薪+2小孩
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setAnnualIncome(1200000); setOtherIncome(0);
+                                            setIsMarried(true); setChildrenCount(1);
+                                            setParentsCount(0); setElderlyParentsCount(2);
+                                        }}
+                                        className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                    >
+                                        👨‍👩‍👧 扶養長輩
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="space-y-6">

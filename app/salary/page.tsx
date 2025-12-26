@@ -140,7 +140,31 @@ TaiCalc 數策 - 薪資分析報表
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
                         <section className="glass-card rounded-[32px] p-8 relative overflow-hidden bg-white/70 border border-slate-200">
-                            <div className="relative z-10 space-y-8">
+                            <div className="relative z-10 space-y-8">                                {/* 快速填入情境 */}
+                                <div className="mb-6">
+                                    <p className="text-xs text-slate-400 mb-2">快速套用：</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        <button
+                                            onClick={() => { setInputSalary(35000); setBonusMonths(1); }}
+                                            className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                        >
+                                            新鮮人 3.5萬
+                                        </button>
+                                        <button
+                                            onClick={() => { setInputSalary(55000); setBonusMonths(2); }}
+                                            className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                        >
+                                            資深員工 5.5萬
+                                        </button>
+                                        <button
+                                            onClick={() => { setInputSalary(85000); setBonusMonths(3); }}
+                                            className="px-3 py-1.5 text-xs font-bold bg-slate-100 hover:bg-brand-primary hover:text-white rounded-full transition-all"
+                                        >
+                                            主管級 8.5萬
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label className="block text-sm font-bold text-slate-600 mb-3 ml-1">
                                         {activeTab === 'normal' ? '月薪 (Taxable Salary)' : '期望實領 (Target Take-home)'}
