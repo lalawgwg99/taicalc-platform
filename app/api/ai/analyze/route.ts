@@ -5,9 +5,9 @@ import { streamText } from 'ai';
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
-    const { prompt, context } = await req.json();
+  const { prompt, context } = await req.json();
 
-    const systemInstruction = `
+  const systemInstruction = `
     你現在是 "TaiCalc 數策" 的首席財務顧問 AI。你的任務是分析使用者的財務數據，並提供具體、可執行的戰略建議。
     
     ## 風格指引
@@ -22,19 +22,19 @@ export async function POST(req: Request) {
     - 嚴格控制長度，回答請在 300 字以內。
   `;
 
-    // Combine user prompt with standardized context
-    const fullPrompt = `
+  // Combine user prompt with standardized context
+  const fullPrompt = `
     ${prompt}
     
     [財務數據背景]
     ${JSON.stringify(context, null, 2)}
   `;
 
-    const result = await streamText({
-        model: google('gemini-1.5-flash'), // 使用 1.5-flash，速度快且成本低
-        system: systemInstruction,
-        prompt: fullPrompt,
-    });
+  const result = await streamText({
+    model: google('gemini-1.5-flash'), // 使用 1.5-flash，速度快且成本低
+    system: systemInstruction,
+    prompt: fullPrompt,
+  });
 
-    return result.toDataStreamResponse();
+  return result.toTextStreamResponse();
 }
