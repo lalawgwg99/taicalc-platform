@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Bot, AlertCircle, Play, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
