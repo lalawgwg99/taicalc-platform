@@ -19,38 +19,38 @@ export default function HomePage() {
     const tools = [
         {
             title: '薪資戰略系統',
-            description: '導入2024勞健保大數據查表，含逆向談薪與稅務偵測雷達。',
+            description: '導入2024勞健保大數據，含 AI 談薪與稅務偵測雷達。',
             icon: <Calculator className="w-6 h-6" />,
             link: '/salary',
             color: 'bg-brand-primary',
-            tag: '核心引擎',
+            tag: 'AI 智慧型',
             status: 'hot'
         },
         {
             title: '房貸佈局',
-            description: '多情境還款壓力測試，幫您精算寬限期與最佳進場點。',
+            description: '多情境還款壓力測試，AI 協助精算寬限期與置產戰略。',
             icon: <Home className="w-6 h-6" />,
             link: '/mortgage',
             color: 'bg-brand-success',
-            tag: '新戰略',
+            tag: 'AI 診斷',
             status: 'hot'
         },
         {
             title: '稅務優化',
-            description: '針對 2025 新制模型，含扶養策略與列舉扣除額模擬。',
+            description: '2025 新制法規模型，AI 自動尋找最佳節稅佈局路徑。',
             icon: <PieChart className="w-6 h-6" />,
             link: '/tax',
             color: 'bg-brand-accent',
-            tag: '新上線',
+            tag: 'AI 賦能',
             status: 'hot'
         },
         {
             title: '資本決策',
-            description: '複利、通膨與現金流預測，制定長期的資產增長藍圖。',
+            description: '複利、通膨與現金流預測，AI 生成專屬財富自由藍圖。',
             icon: <TrendingUp className="w-6 h-6" />,
             link: '/capital',
             color: 'bg-brand-warning',
-            tag: 'PRO',
+            tag: 'AI 首席官',
             status: 'hot'
         },
     ];
