@@ -7,12 +7,14 @@ import {
 } from 'recharts';
 import {
     Home, Calculator, Percent, Calendar, DollarSign,
-    TrendingUp, AlertCircle, ChevronLeft, Download, Share2, Building
+    TrendingUp, AlertCircle, ChevronLeft, Download, Share2, Building,
+    RefreshCw, ArrowRightLeft, Zap, Table, CheckCircle, XCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import AIInsightCard from '@/components/AI/AIInsightCard';
+import { calculateRefinance, calculateEarlyRepayment } from '@/lib/calculations/mortgage';
 
 // --- 內聯計算邏輯 (避免 Import Error) ---
 function calculateMortgage(loanAmount: number, annualRate: number, years: number, gracePeriod: number) {
@@ -56,9 +58,73 @@ export default function MortgagePage() {
     const [years, setYears] = useState(30); // 30年
     const [gracePeriod, setGracePeriod] = useState(3); // 寬限期3年
 
+    // 轉貸試算狀態
+    const [newRate, setNewRate] = useState(1.9); // 新利率
+    const [refinanceCost, setRefinanceCost] = useState(30000); // 轉貸成本
+
+    // 提前還款狀態
+    const [extraPayment, setExtraPayment] = useState(500000); // 額外還款金額
+    const [isMonthlyExtra, setIsMonthlyExtra] = useState(false); // 是否每月額外還款
+
     // 計算結果
     const result = useMemo(() => {
         return calculateMortgage(loanAmount, interestRate, years, gracePeriod);
+    }, [loanAmount, interestRate, years, gracePeriod]);
+
+    // 轉貸計算結果
+    const refinanceResult = useMemo(() => {
+        const remainingYears = years - gracePeriod;
+        return calculateRefinance(loanAmount, interestRate, remainingYears, newRate, remainingYears, refinanceCost);
+    }, [loanAmount, interestRate, years, gracePeriod, newRate, refinanceCost]);
+
+    // 提前還款計算結果
+    const earlyRepaymentResult = useMemo(() => {
+        const remainingYears = years - gracePeriod;
+        return calculateEarlyRepayment(loanAmount, interestRate, remainingYears, extraPayment, isMonthlyExtra);
+    }, [loanAmount, interestRate, years, gracePeriod, extraPayment, isMonthlyExtra]);
+
+    // 生成攤還表數據
+    const amortizationData = useMemo(() => {
+        const data = [];
+        const monthlyRate = interestRate / 100 / 12;
+        const totalMonths = years * 12;
+        const graceMonths = gracePeriod * 12;
+        const remainingMonths = totalMonths - graceMonths;
+
+        let balance = loanAmount;
+        const pmt = monthlyRate === 0
+            ? loanAmount / remainingMonths
+            : (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, remainingMonths)) / (Math.pow(1 + monthlyRate, remainingMonths) - 1);
+
+        for (let y = 1; y <= Math.min(years, 40); y++) {
+            let yearlyPrincipal = 0;
+            let yearlyInterest = 0;
+
+            for (let m = 1; m <= 12; m++) {
+                const month = (y - 1) * 12 + m;
+                if (month <= graceMonths) {
+                    // 寬限期只付利息
+                    yearlyInterest += balance * monthlyRate;
+                } else if (balance > 0) {
+                    const interest = balance * monthlyRate;
+                    const principal = Math.min(pmt - interest, balance);
+                    yearlyPrincipal += principal;
+                    yearlyInterest += interest;
+                    balance -= principal;
+                }
+            }
+
+            data.push({
+                year: y,
+                principal: Math.round(yearlyPrincipal),
+                interest: Math.round(yearlyInterest),
+                payment: Math.round(yearlyPrincipal + yearlyInterest),
+                balance: Math.round(Math.max(0, balance)),
+            });
+
+            if (balance <= 0) break;
+        }
+        return data;
     }, [loanAmount, interestRate, years, gracePeriod]);
 
     // 視覺化圖表數據
@@ -448,7 +514,180 @@ TaiCalc 數策 - 房貸試算報表
                     </div>
                 </div>
 
-                {/* 延伸閱讀區塊 */}
+                {/* 轉貸試算區塊 */}
+                <section className="mt-8 glass-card rounded-2xl p-6 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 shadow-md">
+                    <div className="flex items-center space-x-2 mb-6">
+                        <ArrowRightLeft className="w-5 h-5 text-blue-600" />
+                        <h3 className="text-lg font-black text-blue-700">🔄 轉貸試算：轉貸划算嗎？</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="bg-white/80 rounded-xl p-4">
+                            <label className="text-xs font-bold text-slate-500 block mb-2">新貸款利率 (%)</label>
+                            <input
+                                type="text"
+                                inputMode="decimal"
+                                className="w-full bg-transparent text-2xl font-black text-blue-600 outline-none border-b-2 border-blue-200 focus:border-blue-500"
+                                value={newRate}
+                                onChange={(e) => setNewRate(parseFloat(e.target.value) || 0)}
+                                aria-label="設定新貸款利率"
+                            />
+                        </div>
+                        <div className="bg-white/80 rounded-xl p-4">
+                            <label className="text-xs font-bold text-slate-500 block mb-2">轉貸成本（手續費+違約金）</label>
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                className="w-full bg-transparent text-xl font-black text-slate-700 outline-none border-b-2 border-slate-200 focus:border-blue-500"
+                                value={refinanceCost === 0 ? '' : formatCurrency(refinanceCost)}
+                                onChange={(e) => {
+                                    const val = e.target.value.replace(/[^0-9]/g, '');
+                                    setRefinanceCost(val === '' ? 0 : parseInt(val, 10));
+                                }}
+                                aria-label="設定轉貸成本"
+                            />
+                        </div>
+                        <div className={`rounded-xl p-4 text-center ${refinanceResult.isWorthIt ? 'bg-green-100 border-2 border-green-400' : 'bg-red-100 border-2 border-red-300'}`}>
+                            <div className="flex items-center justify-center space-x-2 mb-1">
+                                {refinanceResult.isWorthIt ? <CheckCircle className="w-5 h-5 text-green-600" /> : <XCircle className="w-5 h-5 text-red-500" />}
+                                <span className={`font-black ${refinanceResult.isWorthIt ? 'text-green-700' : 'text-red-600'}`}>
+                                    {refinanceResult.isWorthIt ? '建議轉貸 ✓' : '不建議轉貸 ✗'}
+                                </span>
+                            </div>
+                            <div className="text-sm text-slate-600">
+                                回本期 {refinanceResult.breakEvenMonths === Infinity ? '無法回本' : `${Math.ceil(refinanceResult.breakEvenMonths / 12)} 年`}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="bg-white/60 rounded-lg p-3 text-center">
+                            <div className="text-xs text-slate-500 mb-1">現有月付金</div>
+                            <div className="text-lg font-bold text-slate-700">${formatCurrency(refinanceResult.currentMonthly)}</div>
+                        </div>
+                        <div className="bg-white/60 rounded-lg p-3 text-center">
+                            <div className="text-xs text-slate-500 mb-1">新月付金</div>
+                            <div className="text-lg font-bold text-blue-600">${formatCurrency(refinanceResult.newMonthly)}</div>
+                        </div>
+                        <div className="bg-white/60 rounded-lg p-3 text-center">
+                            <div className="text-xs text-slate-500 mb-1">每月省下</div>
+                            <div className="text-lg font-bold text-green-600">${formatCurrency(refinanceResult.monthlySavings)}</div>
+                        </div>
+                        <div className="bg-white/60 rounded-lg p-3 text-center">
+                            <div className="text-xs text-slate-500 mb-1">淨節省（扣除成本）</div>
+                            <div className={`text-lg font-bold ${refinanceResult.netSavings > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                                ${formatCurrency(refinanceResult.netSavings)}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 提前還款試算區塊 */}
+                <section className="mt-6 glass-card rounded-2xl p-6 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 shadow-md">
+                    <div className="flex items-center space-x-2 mb-6">
+                        <Zap className="w-5 h-5 text-emerald-600" />
+                        <h3 className="text-lg font-black text-emerald-700">⚡ 提前還款試算：省多少利息？</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-white/80 rounded-xl p-4">
+                            <label className="text-xs font-bold text-slate-500 block mb-2">額外還款金額</label>
+                            <input
+                                type="text"
+                                inputMode="numeric"
+                                className="w-full bg-transparent text-2xl font-black text-emerald-600 outline-none border-b-2 border-emerald-200 focus:border-emerald-500"
+                                value={extraPayment === 0 ? '' : formatCurrency(extraPayment)}
+                                onChange={(e) => {
+                                    const val = e.target.value.replace(/[^0-9]/g, '');
+                                    setExtraPayment(val === '' ? 0 : parseInt(val, 10));
+                                }}
+                                aria-label="設定額外還款金額"
+                            />
+                        </div>
+                        <div className="bg-white/80 rounded-xl p-4 flex items-center justify-between">
+                            <span className="text-sm font-bold text-slate-600">還款方式</span>
+                            <div className="flex bg-slate-100 p-1 rounded-lg">
+                                <button
+                                    onClick={() => setIsMonthlyExtra(false)}
+                                    className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${!isMonthlyExtra ? 'bg-emerald-500 text-white' : 'text-slate-500'}`}
+                                >
+                                    單筆還款
+                                </button>
+                                <button
+                                    onClick={() => setIsMonthlyExtra(true)}
+                                    className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${isMonthlyExtra ? 'bg-emerald-500 text-white' : 'text-slate-500'}`}
+                                >
+                                    每月額外還
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-white/80 rounded-xl p-4 border-2 border-emerald-300">
+                            <h4 className="font-bold text-slate-700 mb-3">📉 縮短期限模式</h4>
+                            <div className="space-y-2 text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-slate-500">提早還清</span>
+                                    <span className="font-bold text-emerald-600">{earlyRepaymentResult.shortenSavedYears.toFixed(1)} 年</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-slate-500">節省利息</span>
+                                    <span className="font-bold text-emerald-600">${formatCurrency(Math.round(earlyRepaymentResult.shortenSavedInterest))}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-white/80 rounded-xl p-4 border border-slate-200">
+                            <h4 className="font-bold text-slate-700 mb-3">💰 降低月付模式</h4>
+                            <div className="space-y-2 text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-slate-500">每月減少</span>
+                                    <span className="font-bold text-blue-600">${formatCurrency(Math.round(earlyRepaymentResult.reducedMonthlySavings))}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-slate-500">節省利息</span>
+                                    <span className="font-bold text-blue-600">${formatCurrency(Math.round(earlyRepaymentResult.reducedSavedInterest))}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* 攤還表區塊 */}
+                <section className="mt-6 glass-card rounded-2xl p-6 bg-white border border-slate-200 shadow-md">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center space-x-2">
+                            <Table className="w-5 h-5 text-slate-600" />
+                            <h3 className="text-lg font-black text-slate-700">📋 年度攤還表</h3>
+                        </div>
+                        <span className="text-xs text-slate-400">（自動計算每年度本金/利息/餘額）</span>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="bg-slate-50">
+                                    <th className="px-4 py-3 text-left font-bold text-slate-600">年度</th>
+                                    <th className="px-4 py-3 text-right font-bold text-slate-600">還本金</th>
+                                    <th className="px-4 py-3 text-right font-bold text-slate-600">利息</th>
+                                    <th className="px-4 py-3 text-right font-bold text-slate-600">年還款額</th>
+                                    <th className="px-4 py-3 text-right font-bold text-slate-600">剩餘本金</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {amortizationData.slice(0, 10).map((row, i) => (
+                                    <tr key={row.year} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                        <td className="px-4 py-2 font-bold text-slate-700">第 {row.year} 年</td>
+                                        <td className="px-4 py-2 text-right text-blue-600 font-mono">${formatCurrency(row.principal)}</td>
+                                        <td className="px-4 py-2 text-right text-amber-600 font-mono">${formatCurrency(row.interest)}</td>
+                                        <td className="px-4 py-2 text-right text-slate-700 font-mono">${formatCurrency(row.payment)}</td>
+                                        <td className="px-4 py-2 text-right text-slate-500 font-mono">${formatCurrency(row.balance)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    {amortizationData.length > 10 && (
+                        <div className="text-center mt-4 text-sm text-slate-400">
+                            顯示前 10 年，共 {amortizationData.length} 年資料
+                        </div>
+                    )}
+                </section>
                 <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
                     <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
