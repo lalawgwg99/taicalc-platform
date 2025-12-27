@@ -185,10 +185,15 @@ TaiCalc 數策 - 薪資分析報表
                                     <div className="relative group">
                                         <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-black text-xl">$</span>
                                         <input
-                                            type="number"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                             className="w-full pl-10 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all text-2xl font-black text-slate-900 placeholder-slate-300 shadow-sm"
-                                            value={inputSalary}
-                                            onChange={(e) => setInputSalary(Number(e.target.value))}
+                                            value={inputSalary === 0 ? '' : inputSalary}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setInputSalary(val === '' ? 0 : parseInt(val, 10));
+                                            }}
                                             placeholder="例如：45000"
                                             aria-label="輸入月薪"
                                         />
