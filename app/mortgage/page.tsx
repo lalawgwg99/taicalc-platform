@@ -392,8 +392,8 @@ TaiCalc 數策 - 房貸試算報表
 
             <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
                 <div className="max-w-7xl mx-auto flex gap-4">
-                    <button onClick={handleDownload} className="flex-1 bg-brand-primary text-white h-14 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all shadow-glow flex items-center justify-center space-x-2" aria-label="下載房貸試算報表">
-                        <Download className="w-5 h-5" />
+                    <button onClick={handleDownload} className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95" aria-label="下載房貸試算報表">
+                        <Download className="w-4 h-4" />
                         <span>下載報表</span>
                     </button>
                     <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all" aria-label="分享房貸試算結果">
