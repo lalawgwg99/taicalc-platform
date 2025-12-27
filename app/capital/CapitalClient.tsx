@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
     ReferenceLine
 } from 'recharts';
 import {
     Home, Calculator, Percent, Calendar, DollarSign,
-    TrendingUp, TrendingDown, AlertCircle, ChevronLeft, Download, Share2, Building,
+    TrendingUp, TrendingDown, AlertCircle, ChevronLeft, ChevronRight, Download, Share2, Building,
     Target, RefreshCw, Flame, Wallet, Trophy, Info, ShieldCheck, PiggyBank
 } from 'lucide-react';
 import Link from 'next/link';
@@ -78,6 +78,18 @@ export default function CapitalPage() {
         setMonthlyContribution(scenario.monthlyContribution);
         setYears(scenario.years);
         setAnnualReturnRate(scenario.expectedReturn);
+    };
+
+    // 捲動控制
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollContainerRef.current) {
+            const scrollAmount = 120;
+            scrollContainerRef.current.scrollBy({
+                left: direction === 'right' ? scrollAmount : -scrollAmount,
+                behavior: 'smooth'
+            });
+        }
     };
 
     // 自定義 Tooltip
@@ -578,7 +590,7 @@ TaiCalc 數策 - 資本增長模擬報表
                                             <span className="text-xs text-slate-400">$</span>
                                             <input
                                                 type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-2xl font-black text-slate-900 outline-none"
+                                                className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
                                                 value={formatCurrency(targetPassiveIncome)}
                                                 onChange={(e) => setTargetPassiveIncome(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
                                             />
@@ -586,19 +598,39 @@ TaiCalc 數策 - 資本增長模擬報表
                                     </div>
                                     <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-emerald-50">
                                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">所需本金 (5% 殖利率)</div>
-                                        <div className="text-2xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
+                                        <div className="text-xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
                                     </div>
                                 </div>
-                                <div className="flex justify-between gap-1 overflow-x-auto pb-2">
-                                    {[3, 4, 5, 6, 7].map((rate) => (
-                                        <div key={rate} className={`flex-1 min-w-[60px] p-2 rounded-xl text-center border transition-colors ${rate === 5 ? 'bg-emerald-100 border-emerald-200' : 'bg-white border-slate-100'}`}>
-                                            <div className="text-[9px] font-black text-slate-400 mb-1">{rate}%</div>
-                                            <div className="text-[10px] font-black text-slate-700">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)))}</div>
-                                        </div>
-                                    ))}
+                                <div className="relative group/scroll">
+                                    <button
+                                        onClick={() => scroll('left')}
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-lg z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110"
+                                    >
+                                        <ChevronLeft className="w-4 h-4" />
+                                    </button>
+                                    <div
+                                        ref={scrollContainerRef}
+                                        className="flex gap-2 pb-2 overflow-x-auto no-scrollbar scroll-smooth mask-linear-fade"
+                                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                                    >
+                                        {[3, 4, 5, 6, 7].map((rate) => (
+                                            <div key={rate} className={`flex-shrink-0 w-[80px] p-2 rounded-xl text-center border transition-all cursor-pointer ${rate === 5 ? 'bg-emerald-100 border-emerald-200 shadow-sm scale-105' : 'bg-white border-slate-100 hover:border-emerald-200 hover:shadow-sm'}`}>
+                                                <div className="text-[10px] font-black text-slate-400 mb-1">{rate}%</div>
+                                                <div className="text-[11px] font-black text-slate-700">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)))}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button
+                                        onClick={() => scroll('right')}
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-lg z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110"
+                                    >
+                                        <ChevronRight className="w-4 h-4" />
+                                    </button>
                                 </div>
                             </motion.div>
                         </div>
+
+
 
                         {/* 目標反推區塊 (New) - Full Width */}
                         <div className="w-full">
@@ -647,9 +679,9 @@ TaiCalc 數策 - 資本增長模擬報表
                                             />
                                         </div>
                                     </div>
-                                    <div className="bg-indigo-600 rounded-2xl p-4 shadow-lg shadow-indigo-200 text-white">
-                                        <div className="text-[10px] font-bold text-indigo-200 uppercase mb-1">每月需存</div>
-                                        <div className="text-2xl font-black">${formatCurrency(goalReverseResult.monthlyInvestment)}</div>
+                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-indigo-50">
+                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">每月需存</div>
+                                        <div className="text-xl font-black text-indigo-600">${formatCurrency(goalReverseResult.monthlyInvestment)}</div>
                                     </div>
                                 </div>
                                 <div className="text-[11px] text-slate-500 text-center bg-indigo-50/50 rounded-lg p-2">
@@ -703,7 +735,7 @@ TaiCalc 數策 - 資本增長模擬報表
                         </Link>
                     </div>
                 </section>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
