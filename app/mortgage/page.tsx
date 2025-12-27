@@ -429,6 +429,25 @@ TaiCalc 數策 - 房貸試算報表
 
                     </div>
                 </div>
+
+                {/* 延伸閱讀區塊 */}
+                <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
+                    <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Link href="/tax" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">稅務優化計算器</p>
+                            <p className="text-sm text-slate-500">房貸利息可以抵稅嗎？搭配試算</p>
+                        </Link>
+                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
+                            <p className="text-sm text-slate-500">先還房貸還是先投資？</p>
+                        </Link>
+                        <Link href="/salary" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>
+                            <p className="text-sm text-slate-500">計算你的還款能力上限</p>
+                        </Link>
+                    </div>
+                </section>
             </div>
 
 
