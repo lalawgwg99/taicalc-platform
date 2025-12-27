@@ -9,20 +9,28 @@
   }
 
   body {
-    @apply antialiased text-brand-text-primary bg-brand-background;
+    @apply antialiased text-brand-text-primary;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
+/* 新版卡片樣式 - 極簡風格 */
 .glass-card {
+  @apply bg-white border border-slate-100 shadow-md;
+}
+
+/* 保留舊版（已註解）
+.glass-card-old {
   @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-glass;
 }
 
-.aurora-bg {
+.aurora-bg-old {
   background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05) 0%, transparent 60%),
     radial-gradient(circle at 85% 30%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 10% 20%, rgba(5, 150, 105, 0.03) 0%, transparent 40%);
 }
+*/
 
 .premium-gradient {
   @apply bg-gradient-to-br from-brand-primary via-blue-500 to-brand-accent;

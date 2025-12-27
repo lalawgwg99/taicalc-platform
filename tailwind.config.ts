@@ -29,12 +29,13 @@ const config: Config = {
         mono: ['JetBrains Mono', 'monospace'],
       },
       borderRadius: {
-        'taicalc': '16px',
-        'card': '24px',
+        'taicalc': '12px',  // 從 16px 降為 12px
+        'card': '16px',     // 從 24px 降為 16px
       },
       boxShadow: {
-        'glass': '0 8px 30px rgba(0, 0, 0, 0.04)', // 輕量化陰影
-        'glow': '0 0 20px rgba(37, 99, 235, 0.15)',
+        'glass': '0 4px 6px rgba(0, 0, 0, 0.07)',  // 更輕量（舊：0 8px 30px 0.04）
+        'glow': '0 0 15px rgba(37, 99, 235, 0.12)', // 更柔和（舊：0 0 20px 0.15）
+        'card': '0 2px 8px rgba(0, 0, 0, 0.06)',    // 新增：卡片陰影
       },
     },
   },

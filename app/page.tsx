@@ -56,9 +56,7 @@ export default function HomePage() {
     ];
 
     return (
-        <div className="min-h-screen bg-brand-background text-brand-text-primary font-sans overflow-x-hidden">
-            {/* 極光背景 */}
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+        <div className="min-h-screen font-sans overflow-x-hidden">
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -122,7 +120,7 @@ export default function HomePage() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                             whileHover={{ y: -8 }}
-                            className="group relative glass-card p-8 rounded-[32px] hover:border-brand-primary/30 transition-all cursor-pointer bg-white"
+                            className="group relative glass-card p-10 rounded-2xl hover:border-brand-primary/30 transition-all cursor-pointer"
                         >
                             <div className={`w-14 h-14 ${tool.color} rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-100 group-hover:scale-110 transition-transform`}>
                                 {tool.icon}
@@ -148,7 +146,7 @@ export default function HomePage() {
                 </section>
 
                 {/* 優勢區塊 */}
-                <section className="glass-card rounded-[40px] p-8 md:p-16 border border-slate-200 relative overflow-hidden bg-white shadow-xl shadow-slate-100">
+                <section className="glass-card rounded-2xl p-10 md:p-20 border border-slate-200 relative overflow-hidden shadow-card">
                     <div className="grid lg:grid-cols-2 gap-16 items-center relative z-10">
                         <div>
                             <h2 className="text-3xl md:text-5xl font-black mb-8 leading-tight text-slate-900">
