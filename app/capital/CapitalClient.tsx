@@ -13,13 +13,18 @@ import {
     ChevronLeft,
     Info,
     RefreshCw,
-    Download
+    Download,
+    Flame,
+    Wallet,
+    Share2,
+    Trophy
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { calculateCapitalGrowth, analyzeFinancialFreedom } from '@/lib/financials';
 import AIInsightCard from '@/components/AI/AIInsightCard';
+import { calculateFIRE, calculatePassiveIncome, calculateMilestones, QUICK_SCENARIOS } from '@/lib/calculations/capital';
 
 export default function CapitalPage() {
     // --- 狀態管理 ---
@@ -51,6 +56,31 @@ export default function CapitalPage() {
         const profit = lastYear.totalAssets - totalInvested;
         return (profit / totalInvested) * 100;
     }, [simulationData]);
+
+    // FIRE 計算（假設月開銷 5 萬）
+    const [monthlyExpense, setMonthlyExpense] = useState(50000);
+    const fireResult = useMemo(() => {
+        return calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate);
+    }, [monthlyExpense, initialCapital, monthlyContribution, annualReturnRate]);
+
+    // 被動收入計算
+    const [targetPassiveIncome, setTargetPassiveIncome] = useState(30000);
+    const passiveIncomeResult = useMemo(() => {
+        return calculatePassiveIncome(targetPassiveIncome, 5);
+    }, [targetPassiveIncome]);
+
+    // 里程碑計算
+    const milestones = useMemo(() => {
+        return calculateMilestones(initialCapital, monthlyContribution, annualReturnRate);
+    }, [initialCapital, monthlyContribution, annualReturnRate]);
+
+    // 快速套用情境
+    const applyScenario = (scenario: typeof QUICK_SCENARIOS[0]) => {
+        setInitialCapital(scenario.initialCapital);
+        setMonthlyContribution(scenario.monthlyContribution);
+        setYears(scenario.years);
+        setAnnualReturnRate(scenario.expectedReturn);
+    };
 
     // 自定義 Tooltip
     const CustomTooltip = ({ active, payload, label }: any) => {
@@ -171,6 +201,24 @@ TaiCalc 數策 - 資本增長模擬報表
 
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
+                        {/* 快速情境按鈕 */}
+                        <section className="glass-card rounded-2xl p-6 bg-white border border-slate-200 shadow-md">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">⚡ 快速情境</h3>
+                            <div className="grid grid-cols-2 gap-2">
+                                {QUICK_SCENARIOS.map((scenario) => (
+                                    <button
+                                        key={scenario.name}
+                                        onClick={() => applyScenario(scenario)}
+                                        className="p-3 bg-slate-50 hover:bg-brand-primary/10 border border-slate-200 hover:border-brand-primary rounded-xl text-left transition-all group"
+                                    >
+                                        <div className="text-lg mb-1">{scenario.emoji}</div>
+                                        <div className="text-sm font-bold text-slate-700 group-hover:text-brand-primary">{scenario.name}</div>
+                                        <div className="text-xs text-slate-400">{scenario.description}</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+
                         <section className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md backdrop-blur-md">
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center space-x-2 text-brand-primary">
@@ -441,6 +489,116 @@ TaiCalc 數策 - 資本增長模擬報表
                                 </ResponsiveContainer>
                             </div>
                         </div>
+
+                        {/* FIRE 財務自由計算器 */}
+                        <div className="glass-card rounded-2xl p-6 bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200">
+                            <div className="flex items-center space-x-2 mb-4">
+                                <Flame className="w-5 h-5 text-orange-500" />
+                                <h3 className="text-sm font-black uppercase tracking-widest text-orange-600">🔥 FIRE 財務自由計算</h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="bg-white/80 rounded-xl p-4">
+                                    <label className="text-xs font-bold text-slate-500 block mb-2">每月開銷</label>
+                                    <div className="flex items-center space-x-2">
+                                        <span className="text-slate-400">$</span>
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="flex-1 bg-transparent text-2xl font-black text-orange-600 outline-none"
+                                            value={monthlyExpense === 0 ? '' : formatCurrency(monthlyExpense)}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setMonthlyExpense(val === '' ? 0 : parseInt(val, 10));
+                                            }}
+                                            aria-label="設定每月開銷"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="bg-white/80 rounded-xl p-4 text-center">
+                                    <div className="text-xs font-bold text-slate-500 mb-1">FIRE 目標金額</div>
+                                    <div className="text-2xl font-black text-orange-600">${formatCurrency(fireResult.fireNumber)}</div>
+                                    <div className="text-xs text-slate-400 mt-1">年開銷 × 25</div>
+                                </div>
+                                <div className="bg-white/80 rounded-xl p-4 text-center">
+                                    <div className="text-xs font-bold text-slate-500 mb-1">距離 FIRE 還需</div>
+                                    <div className="text-2xl font-black text-orange-600">
+                                        {fireResult.yearsToFIRE === Infinity ? '∞' : `${fireResult.yearsToFIRE} 年`}
+                                    </div>
+                                    <div className="text-xs text-slate-400 mt-1">進度 {fireResult.currentProgress.toFixed(1)}%</div>
+                                </div>
+                            </div>
+                            {/* 進度條 */}
+                            <div className="mt-4 bg-white/60 rounded-full h-3 overflow-hidden">
+                                <div
+                                    className="bg-gradient-to-r from-orange-400 to-amber-500 h-full rounded-full transition-all"
+                                    style={{ width: `${Math.min(100, fireResult.currentProgress)}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* 被動收入試算 */}
+                        <div className="glass-card rounded-2xl p-6 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200">
+                            <div className="flex items-center space-x-2 mb-4">
+                                <Wallet className="w-5 h-5 text-emerald-500" />
+                                <h3 className="text-sm font-black uppercase tracking-widest text-emerald-600">💰 被動收入試算</h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="bg-white/80 rounded-xl p-4">
+                                    <label className="text-xs font-bold text-slate-500 block mb-2">目標月被動收入</label>
+                                    <div className="flex items-center space-x-2">
+                                        <span className="text-slate-400">$</span>
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="flex-1 bg-transparent text-2xl font-black text-emerald-600 outline-none"
+                                            value={targetPassiveIncome === 0 ? '' : formatCurrency(targetPassiveIncome)}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setTargetPassiveIncome(val === '' ? 0 : parseInt(val, 10));
+                                            }}
+                                            aria-label="設定目標月被動收入"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="bg-white/80 rounded-xl p-4 text-center">
+                                    <div className="text-xs font-bold text-slate-500 mb-1">所需本金（5% 殖利率）</div>
+                                    <div className="text-2xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
+                                </div>
+                            </div>
+                            <div className="mt-4 grid grid-cols-5 gap-2">
+                                {passiveIncomeResult.scenarios.map(s => (
+                                    <div key={s.yieldRate} className={`text-center p-2 rounded-lg ${s.yieldRate === 5 ? 'bg-emerald-100 border border-emerald-300' : 'bg-white/60'}`}>
+                                        <div className="text-xs font-bold text-slate-500">{s.yieldRate}%</div>
+                                        <div className="text-sm font-black text-slate-700">${formatCurrency(s.requiredCapital)}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* 里程碑 */}
+                        {milestones.length > 0 && (
+                            <div className="glass-card rounded-2xl p-6 bg-white border border-slate-200">
+                                <div className="flex items-center space-x-2 mb-4">
+                                    <Trophy className="w-5 h-5 text-amber-500" />
+                                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">🏆 資產里程碑</h3>
+                                </div>
+                                <div className="flex flex-wrap gap-3">
+                                    {milestones.slice(0, 5).map((m, i) => (
+                                        <div
+                                            key={m.milestone}
+                                            className={`flex items-center space-x-2 px-4 py-2 rounded-full ${m.year === 0 ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                                                }`}
+                                        >
+                                            <span className="text-lg">{m.year === 0 ? '✅' : '🎯'}</span>
+                                            <span className="font-bold">{m.label}</span>
+                                            <span className="text-sm">
+                                                {m.year === 0 ? '已達成' : `第 ${m.year} 年`}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                     </div>
                 </div>
