@@ -598,8 +598,10 @@ TaiCalc 數策 - 資本增長模擬報表
                                     ))}
                                 </div>
                             </motion.div>
+                        </div>
 
-                            {/* 目標反推區塊 (New) */}
+                        {/* 目標反推區塊 (New) - Full Width */}
+                        <div className="w-full">
                             <motion.div
                                 whileHover={{ y: -5 }}
                                 className="glass-card rounded-3xl p-8 bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 shadow-xl relative overflow-hidden group"

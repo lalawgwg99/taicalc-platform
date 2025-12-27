@@ -573,43 +573,13 @@ TaiCalc 數策 - 薪資分析報表
                             </div>
                             <div className="text-[10px] text-red-400 flex items-center space-x-1">
                                 <TrendingDown className="w-3 h-3" />
-                                <span>對比不調薪，您少賺了累積 ${formatCurrency(Math.round(careerGrowth[9].annual * 4))} 總收益</span>
+                                <span>對比不調薪，累積少賺 ${formatCurrency(careerGrowth.reduce((acc, curr) => acc + (curr.annual - careerGrowth[0].annual), 0))}</span>
                             </div>
                         </div>
                     </section>
                 </div>
 
-                {/* 職涯成長預測：全台唯一功能 */}
-                <section className="mt-8 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md overflow-hidden relative">
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 className="text-xl font-black text-slate-900 flex items-center space-x-2">
-                                <TrendingUp className="w-6 h-6 text-brand-primary" />
-                                <span>職涯複利增長模擬</span>
-                            </h3>
-                            <p className="text-sm text-slate-500 mt-1">假設每年加薪 5%，十年後的財富曲線</p>
-                        </div>
-                        <div className="bg-brand-primary/10 text-brand-primary px-4 py-2 rounded-lg text-sm font-black">
-                            年增長 5% 模式
-                        </div>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <div className="flex space-x-4 min-w-[800px] py-4">
-                            {careerGrowth.map((year, idx) => (
-                                <div key={year.year} className="flex-1 flex flex-col items-center">
-                                    <div className="text-xs font-bold text-slate-400 mb-2">第 {year.year} 年</div>
-                                    <div
-                                        className="w-full bg-brand-primary/20 rounded-t-lg transition-all hover:bg-brand-primary/40 cursor-help"
-                                        style={{ height: `${20 + (idx * 15)}px` }}
-                                        title={`預估月薪: ${formatCurrency(year.salary)}`}
-                                    />
-                                    <div className="mt-3 text-sm font-black text-slate-800">${Math.round(year.salary / 1000)}K</div>
-                                    <div className="text-[10px] font-bold text-slate-400">年薪 {Math.round(year.annual / 10000)}萬</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+
 
                 <section className="mt-12 mb-12">
                     <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center space-x-2">
@@ -628,20 +598,7 @@ TaiCalc 數策 - 薪資分析報表
                     </div>
                 </section>
 
-                {/* 底部 FAQ */}
-                <section className="mt-20 glass-card rounded-2xl p-10 border border-slate-200 bg-white shadow-lg shadow-slate-100">
-                    <h2 className="text-2xl font-black text-slate-900 mb-8">常見問題</h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="space-y-3">
-                            <h4 className="text-brand-primary font-bold">Q. 為什麼跟薪資單不一樣？</h4>
-                            <p className="text-slate-500 text-sm leading-relaxed">我們已導入 2024 投保薪資分級表，但公司可能會有「伙食津貼」等免稅項目影響投保級距，造成微小差異。</p>
-                        </div>
-                        <div className="space-y-3">
-                            <h4 className="text-brand-primary font-bold">Q. 逆向推算是什麼？</h4>
-                            <p className="text-slate-500 text-sm leading-relaxed">這是為了面試設計的功能。當您心中有期望的「實領金額」時，幫您算回「應該開多少稅前薪資」以免吃虧。</p>
-                        </div>
-                    </div>
-                </section>
+
 
                 {/* 延伸閱讀區塊 */}
                 <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
