@@ -6,14 +6,16 @@ import {
     Sankey, Tooltip
 } from 'recharts';
 import {
-    Info, Calculator, TrendingUp, ShieldCheck,
-    Download, Share2, ChevronLeft, ArrowRight, Zap, RefreshCw, AlertTriangle
+    Info, Calculator, TrendingUp, TrendingDown, ShieldCheck,
+    Download, Share2, ChevronLeft, ArrowRight, Zap, RefreshCw, AlertTriangle,
+    Clock, Gift, Briefcase, Shield, Target
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import { analyzeSalary, calculateGrossFromNet } from '@/lib/calculations';
 import AIInsightCard from '@/components/AI/AIInsightCard';
+import { calculateOvertime, calculateBonusTax, checkLaborRights, predictCareerGrowth } from '@/lib/calculations/salary';
 
 // 使用自定義的 Sankey Nodes/Links 介面
 // 注意：recharts 的 sankey 需要特定格式
@@ -38,6 +40,30 @@ export default function SalaryCalculatorPage() {
             selfContributionRate,
         });
     }, [inputSalary, bonusMonths, activeTab, selfContributionRate]);
+
+    // 加班費計算
+    const overtimeResult = useMemo(() => {
+        const baseSalary = activeTab === 'reverse' ? calculateGrossFromNet(inputSalary) : inputSalary;
+        return calculateOvertime(baseSalary);
+    }, [inputSalary, activeTab]);
+
+    // 年終獎金稅務試算
+    const bonusTaxResult = useMemo(() => {
+        const baseSalary = activeTab === 'reverse' ? calculateGrossFromNet(inputSalary) : inputSalary;
+        return calculateBonusTax(baseSalary, bonusMonths);
+    }, [inputSalary, bonusMonths, activeTab]);
+
+    // 勞權檢查
+    const laborRightsCheck = useMemo(() => {
+        const baseSalary = activeTab === 'reverse' ? calculateGrossFromNet(inputSalary) : inputSalary;
+        return checkLaborRights(baseSalary);
+    }, [inputSalary, activeTab]);
+
+    // 職涯成長預測
+    const careerGrowth = useMemo(() => {
+        const baseSalary = activeTab === 'reverse' ? calculateGrossFromNet(inputSalary) : inputSalary;
+        return predictCareerGrowth(baseSalary, 5, 10);
+    }, [inputSalary, activeTab]);
 
     // 下載報表功能
     const handleDownload = () => {
@@ -406,6 +432,201 @@ TaiCalc 數策 - 薪資分析報表
 
                     </div>
                 </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                    {/* 加班/特休換算器：獨家功能 */}
+                    <section className="glass-card rounded-2xl p-6 bg-gradient-to-br from-indigo-50 to-blue-50 border border-blue-100 shadow-sm">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center space-x-2">
+                                <Clock className="w-5 h-5 text-indigo-600" />
+                                <h3 className="text-lg font-black text-indigo-900">⚡ 加班 vs 特休換算器</h3>
+                            </div>
+                            <div className="px-2 py-1 bg-white/50 rounded-lg text-[10px] font-black text-indigo-500 border border-indigo-100">
+                                勞基法標準
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <div className="p-4 bg-white/80 rounded-xl border border-indigo-50">
+                                <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-tighter">若選擇平日加班 4 小時</div>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <div className="text-2xl font-black text-indigo-600">${formatCurrency(overtimeResult.weekday2hrs * 2)}</div>
+                                        <div className="text-[10px] text-slate-500">領取加班費</div>
+                                    </div>
+                                    <div className="text-slate-300 text-xl font-thin">vs</div>
+                                    <div className="text-right">
+                                        <div className="text-2xl font-black text-slate-700">6 小時</div>
+                                        <div className="text-[10px] text-slate-500">換取補休 (1:1.5)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-4 bg-indigo-600 rounded-xl text-white shadow-lg shadow-indigo-100">
+                                <p className="text-xs font-bold opacity-80 mb-1">💡 戰略建議</p>
+                                <p className="text-sm font-medium">若您的時薪高於市場平均，領錢通常比補休更具「複利價值」。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 面試開價助手：面試利器 */}
+                    <section className="glass-card rounded-2xl p-6 bg-white border border-slate-200 shadow-sm relative overflow-hidden group">
+                        <div className="absolute -top-4 -right-4 opacity-5 group-hover:scale-110 transition-transform">
+                            <Target className="w-32 h-32" />
+                        </div>
+                        <div className="flex items-center space-x-2 mb-6">
+                            <Target className="w-5 h-5 text-brand-primary" />
+                            <h3 className="text-lg font-black text-slate-900">🎯 面試戰略：開價助手</h3>
+                        </div>
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="p-3 bg-brand-surface rounded-xl border border-brand-primary/10">
+                                    <div className="text-[10px] font-bold text-brand-primary uppercase mb-1">您的時薪價值</div>
+                                    <div className="text-xl font-black text-slate-900">${Math.round(results.monthly.gross / 22 / 8)}</div>
+                                </div>
+                                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">期望實領</div>
+                                    <div className="text-xl font-black text-slate-700">${formatCurrency(inputSalary)}</div>
+                                </div>
+                            </div>
+                            <div className="p-4 bg-slate-900 rounded-xl text-white">
+                                <div className="text-xs font-bold text-slate-400 mb-2">建議報給 HR 的數字：</div>
+                                <div className="flex items-baseline space-x-2">
+                                    <span className="text-2xl font-black text-brand-primary">${formatCurrency(results.monthly.gross)}</span>
+                                    <span className="text-xs text-slate-400">(稅前月薪)</span>
+                                </div>
+                                <div className="mt-2 pt-2 border-t border-white/10 text-[11px] text-slate-300">
+                                    這樣扣完勞健保與預扣稅後，才能確保領到約 ${formatCurrency(results.monthly.takeHome)} 元。
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    {/* 勞權診斷書：避坑指南 */}
+                    <section className="glass-card rounded-2xl p-6 bg-slate-50 border border-slate-200 shadow-sm">
+                        <div className="flex items-center space-x-2 mb-6">
+                            <Shield className="w-5 h-5 text-emerald-600" />
+                            <h3 className="text-lg font-black text-slate-900">🛡️ 勞權診斷：避坑指南</h3>
+                        </div>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-emerald-100">
+                                <div>
+                                    <div className="text-[10px] font-bold text-emerald-600 uppercase mb-1">法定投保級距</div>
+                                    <div className="text-xl font-black text-slate-900">${formatCurrency(laborRightsCheck.expectedLaborGrade)}</div>
+                                </div>
+                                <div className="text-right">
+                                    {laborRightsCheck.warnings.length > 0 ? (
+                                        <div className="flex items-center text-red-500 font-bold space-x-1 animate-pulse">
+                                            <AlertTriangle className="w-4 h-4" />
+                                            <span>高薪低報警示</span>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center text-emerald-500 font-bold space-x-1">
+                                            <ShieldCheck className="w-4 h-4" />
+                                            <span>合規建議</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <ul className="space-y-2">
+                                {laborRightsCheck.warnings.concat(laborRightsCheck.tips).slice(0, 3).map((note, idx) => (
+                                    <li key={idx} className="flex items-start space-x-2 text-sm text-slate-600">
+                                        <div className="w-1.5 h-1.5 bg-slate-300 rounded-full mt-1.5" />
+                                        <span>{note}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </section>
+
+                    {/* 職涯複利增長模擬 */}
+                    <section className="glass-card rounded-2xl p-6 bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-xl overflow-hidden relative group">
+                        <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center space-x-2">
+                                <TrendingUp className="w-5 h-5 text-brand-primary" />
+                                <h3 className="text-lg font-black text-white">📈 職涯複利增長模擬</h3>
+                            </div>
+                            <div className="px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold text-slate-300">
+                                年增 5% vs 原地踏步
+                            </div>
+                        </div>
+                        <div className="flex items-end justify-between space-x-2 h-24 mb-4">
+                            {careerGrowth.map((year, idx) => (
+                                <div key={year.year} className="flex-1 group/bar relative">
+                                    <div
+                                        className="w-full bg-brand-primary/20 rounded-t-sm transition-all group-hover/bar:bg-brand-primary/60"
+                                        style={{ height: `${20 + (idx * 15)}px` }}
+                                    >
+                                        <div
+                                            className="absolute bottom-0 w-full bg-slate-700 rounded-t-sm opacity-30"
+                                            style={{ height: `20px` }}
+                                        />
+                                    </div>
+                                    {idx % 3 === 0 && <div className="text-[8px] text-slate-500 mt-2 text-center">Y{year.year}</div>}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="p-4 bg-white/5 rounded-xl border border-white/10">
+                            <div className="flex justify-between items-center text-sm mb-1">
+                                <span className="text-slate-400">10 年後月薪預估</span>
+                                <span className="font-black text-brand-primary">${formatCurrency(careerGrowth[9].salary)}</span>
+                            </div>
+                            <div className="text-[10px] text-red-400 flex items-center space-x-1">
+                                <TrendingDown className="w-3 h-3" />
+                                <span>對比不調薪，您少賺了累積 ${formatCurrency(Math.round(careerGrowth[9].annual * 4))} 總收益</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                {/* 職涯成長預測：全台唯一功能 */}
+                <section className="mt-8 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md overflow-hidden relative">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 className="text-xl font-black text-slate-900 flex items-center space-x-2">
+                                <TrendingUp className="w-6 h-6 text-brand-primary" />
+                                <span>職涯複利增長模擬</span>
+                            </h3>
+                            <p className="text-sm text-slate-500 mt-1">假設每年加薪 5%，十年後的財富曲線</p>
+                        </div>
+                        <div className="bg-brand-primary/10 text-brand-primary px-4 py-2 rounded-lg text-sm font-black">
+                            年增長 5% 模式
+                        </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <div className="flex space-x-4 min-w-[800px] py-4">
+                            {careerGrowth.map((year, idx) => (
+                                <div key={year.year} className="flex-1 flex flex-col items-center">
+                                    <div className="text-xs font-bold text-slate-400 mb-2">第 {year.year} 年</div>
+                                    <div
+                                        className="w-full bg-brand-primary/20 rounded-t-lg transition-all hover:bg-brand-primary/40 cursor-help"
+                                        style={{ height: `${20 + (idx * 15)}px` }}
+                                        title={`預估月薪: ${formatCurrency(year.salary)}`}
+                                    />
+                                    <div className="mt-3 text-sm font-black text-slate-800">${Math.round(year.salary / 1000)}K</div>
+                                    <div className="text-[10px] font-bold text-slate-400">年薪 {Math.round(year.annual / 10000)}萬</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section className="mt-12 mb-12">
+                    <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center space-x-2">
+                        <Info className="w-6 h-6 text-brand-primary" />
+                        <span>智慧分析小幫手</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="p-6 bg-white rounded-2xl border border-slate-200">
+                            <h4 className="text-brand-primary font-bold">Q. 為什麼實領差這麼多？</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">勞健保是根據政府投保級距計算的，月薪越高，級距越高扣得越多。加上勞退自提後，每月現金流會變少，但未來退休金會更多。</p>
+                        </div>
+                        <div className="p-6 bg-white rounded-2xl border border-slate-200">
+                            <h4 className="text-brand-primary font-bold">Q. 逆向推算是什麼？</h4>
+                            <p className="text-slate-500 text-sm leading-relaxed">這是為了面試設計的功能。當您心中有期望的「實領金額」時，幫您算回「應該開多少稅前薪資」以免吃虧。</p>
+                        </div>
+                    </div>
+                </section>
 
                 {/* 底部 FAQ */}
                 <section className="mt-20 glass-card rounded-2xl p-10 border border-slate-200 bg-white shadow-lg shadow-slate-100">
