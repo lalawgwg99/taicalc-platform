@@ -159,10 +159,10 @@ TaiCalc 數策 - 資本增長模擬報表
                         <button
                             onClick={handleDownload}
                             className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95 print:hidden"
-                            aria-label="導出分析報告"
+                            aria-label="下載報表"
                         >
                             <Download className="w-4 h-4" />
-                            <span>導出分析報告</span>
+                            <span>下載報表</span>
                         </button>
                     </div>
                 </header>

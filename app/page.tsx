@@ -103,18 +103,18 @@ export default function HomePage() {
                         </p>
                         <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
                             <Link href="/salary" className="w-full md:w-auto bg-brand-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-600 transition-all shadow-lg shadow-blue-200 flex items-center justify-center group">
-                                啟動戰略
+                                開始試算
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <Link href="/tax" className="w-full md:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-sm">
-                                瞭解決策模型
-                            </Link>
+                            <a href="#tools" className="w-full md:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-sm">
+                                查看所有工具
+                            </a>
                         </div>
                     </motion.div>
                 </section>
 
                 {/* 核心功能網格 */}
-                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32">
+                <section id="tools" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 scroll-mt-24">
                     {tools.map((tool, index) => (
                         <motion.div
                             key={index}
