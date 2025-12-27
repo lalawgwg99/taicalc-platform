@@ -54,8 +54,8 @@ export default function CapitalPage() {
     // FIRE 計算
     const [monthlyExpense, setMonthlyExpense] = useState(50000);
     const fireResult = useMemo(() => {
-        return calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate);
-    }, [monthlyExpense, initialCapital, monthlyContribution, annualReturnRate]);
+        return calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate, 4, inflationRate);
+    }, [monthlyExpense, initialCapital, monthlyContribution, annualReturnRate, inflationRate]);
 
     // 被動收入計算
     const [targetPassiveIncome, setTargetPassiveIncome] = useState(30000);

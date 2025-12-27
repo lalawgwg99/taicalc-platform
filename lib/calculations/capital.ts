@@ -22,43 +22,70 @@ export function calculateFIRE(
     currentSavings: number = 0,
     monthlyInvestment: number = 0,
     expectedReturn: number = 7,
-    safeWithdrawalRate: number = 4
+    safeWithdrawalRate: number = 4,
+    inflationRate: number = 2.5 // 新增通膨參數
 ): FIREResult {
     const annualExpense = monthlyExpense * 12;
-    const fireNumber = annualExpense * (100 / safeWithdrawalRate); // Rule of 25 when rate = 4%
+    let baseFireNumber = annualExpense * (100 / safeWithdrawalRate); // 靜態基礎目標 (今日價值)
 
-    const currentProgress = (currentSavings / fireNumber) * 100;
-
-    // 計算距離 FIRE 還需幾年
+    // 1. 計算距離 FIRE 還需幾年 (動態通膨追趕模式)
     let yearsToFIRE = 0;
-    if (monthlyInvestment > 0) {
-        const monthlyRate = expectedReturn / 100 / 12;
-        let balance = currentSavings;
-        while (balance < fireNumber && yearsToFIRE < 100) {
+    const monthlyReturnRate = expectedReturn / 100 / 12;
+    // 雖然通膨是年計算，但為了精確模擬，我們攤提到月 (近似值) 或每年調整一次
+    // 這裡採用每年調整一次 FIRE Target 的方式比較符合一般理解 (每年生活費調漲)
+
+    let balance = currentSavings;
+    let currentFireTarget = baseFireNumber;
+
+    if (monthlyInvestment > 0 || balance > 0) {
+        // 安全閥：設定 100 年上限防止無窮迴圈
+        while (balance < currentFireTarget && yearsToFIRE < 100) {
+            // 經過一年
             for (let m = 0; m < 12; m++) {
-                balance = balance * (1 + monthlyRate) + monthlyInvestment;
+                balance = balance * (1 + monthlyReturnRate) + monthlyInvestment;
             }
             yearsToFIRE++;
+
+            // 目標隨通膨增長 (只有尚未達成時才需要墊高目標)
+            // 下一年的目標 = 今年的目標 * (1 + 通膨率)
+            currentFireTarget = currentFireTarget * (1 + inflationRate / 100);
         }
     } else {
-        yearsToFIRE = currentSavings >= fireNumber ? 0 : Infinity;
+        yearsToFIRE = balance >= baseFireNumber ? 0 : Infinity;
     }
 
-    // 計算要在 N 年內達成 FIRE 需要每月投入多少
-    const targetYears = 20; // 假設目標 20 年
-    const monthlyRate = expectedReturn / 100 / 12;
+    const currentProgress = (currentSavings / baseFireNumber) * 100; // 進度仍以 "目前本金 vs 目前門檻" 顯示較直觀，或者可改顯示 "目前本金 vs 動態目標"
+
+    // 2. 計算要在 N 年內達成 FIRE 需要每月投入多少 (目標反推)
+    // 這是一個「幾何級數支付增長」或「目標終值膨脹」的問題
+    // 簡易算法：FV_Target = PV_Target * (1+i)^n
+    // 我們要讓 PV_Assets * (1+r)^n + PMT * FV_Factor = Base_Fire * (1+i)^n
+
+    const targetYears = 20;
     const totalMonths = targetYears * 12;
-    const gap = fireNumber - currentSavings * Math.pow(1 + monthlyRate, totalMonths);
+
+    // N 年後的 FIRE 目標 (名目金額)
+    const futureFireTarget = baseFireNumber * Math.pow(1 + inflationRate / 100, targetYears);
+
+    // 現有本金 N 年後的終值
+    const pvFuture = currentSavings * Math.pow(1 + monthlyReturnRate, totalMonths);
+
+    // 缺口
+    const gap = futureFireTarget - pvFuture;
+
+    // PMT 計算 (年金終值公式反推)
+    const pmtFactor = (Math.pow(1 + monthlyReturnRate, totalMonths) - 1) / monthlyReturnRate;
+
     const monthlyInvestmentNeeded = gap > 0
-        ? Math.round(gap * monthlyRate / (Math.pow(1 + monthlyRate, totalMonths) - 1))
+        ? Math.round(gap / pmtFactor)
         : 0;
 
     return {
-        fireNumber: Math.round(fireNumber),
+        fireNumber: Math.round(baseFireNumber), // 回傳基礎目標供前端顯示 "目前" 門檻
         monthlyExpense,
         annualExpense,
         safeWithdrawalRate,
-        yearsToFIRE,
+        yearsToFIRE: balance >= currentFireTarget ? yearsToFIRE : (yearsToFIRE >= 100 ? Infinity : yearsToFIRE),
         monthlyInvestmentNeeded: Math.max(0, monthlyInvestmentNeeded),
         currentProgress: Math.min(100, currentProgress),
     };
