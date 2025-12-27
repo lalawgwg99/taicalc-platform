@@ -248,7 +248,7 @@ TaiCalc 數策 - 資本決策模擬報表
                                         value={param.value} onChange={(e) => param.setter(Number(e.target.value))}
                                         className="w-full h-1.5 bg-slate-100 rounded-full appearance-none accent-slate-900 group-hover:accent-brand-primary transition-all cursor-pointer"
                                     />
-                                    {param.label === '預期年化報酬' && (
+                                    {mounted && param.label === '預期年化報酬' && (
                                         <div className="grid grid-cols-3 gap-2 mt-4">
                                             {[
                                                 { label: '定存', rate: 1.5 },
