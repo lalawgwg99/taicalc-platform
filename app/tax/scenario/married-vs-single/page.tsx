@@ -1,18 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Users, Calculator, ArrowRight, TrendingDown } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
-import { calculateIncomeTax } from '@/lib/calculations';
+import { TAIWAN_PARAMS } from '@/lib/constants';
 
 export default function MarriedVsSingleScenario() {
     const [annualIncome, setAnnualIncome] = useState(1200000);
 
-    // 計算單身與已婚情境
-    const single = calculateIncomeTax(annualIncome, false, 0, 0, 0);
-    const married = calculateIncomeTax(annualIncome, true, 0, 0, 0);
+    // 簡化的稅額計算函數
+    const calculateTax = (income: number, isMarried: boolean) => {
+        const { EXEMPTION, STANDARD, SALARY_SPECIAL } = TAIWAN_PARAMS.DEDUCTIONS as any;
+        const exemptions = isMarried ? EXEMPTION * 2 : EXEMPTION;
+        const standardDeduction = isMarried ? STANDARD * 2 : STANDARD;
+        const salaryDeduction = Math.min(income, SALARY_SPECIAL);
+        const totalDeductions = exemptions + standardDeduction + salaryDeduction;
+        const netIncome = Math.max(0, income - totalDeductions);
+
+        // 簡化稅額計算（使用 12% 稅率）
+        let tax = 0;
+        if (netIncome <= 590000) {
+            tax = netIncome * 0.05;
+        } else if (netIncome <= 1330000) {
+            tax = netIncome * 0.12 - 41300;
+        } else {
+            tax = netIncome * 0.20 - 147700;
+        }
+        tax = Math.max(0, tax);
+
+        return {
+            exemptions,
+            standardDeduction,
+            tax: Math.round(tax),
+            effectiveRate: income > 0 ? (tax / income) * 100 : 0
+        };
+    };
+
+    const single = useMemo(() => calculateTax(annualIncome, false), [annualIncome]);
+    const married = useMemo(() => calculateTax(annualIncome, true), [annualIncome]);
     const savings = single.tax - married.tax;
 
     return (
@@ -67,6 +94,7 @@ export default function MarriedVsSingleScenario() {
                                     value={annualIncome}
                                     onChange={(e) => setAnnualIncome(Number(e.target.value))}
                                     className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                                    aria-label="調整年收入"
                                 />
                                 <span className="text-2xl font-black text-brand-primary w-32 text-right">{formatCurrency(annualIncome)}</span>
                             </div>

@@ -72,6 +72,7 @@ export default function ParentsOver70Scenario() {
                                         value={parentsUnder70}
                                         onChange={(e) => setParentsUnder70(Number(e.target.value))}
                                         className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-500"
+                                        aria-label="調整70歲以下扶養親屬人數"
                                     />
                                     <span className="text-2xl font-black text-slate-700 w-16 text-center">{parentsUnder70} 人</span>
                                 </div>
@@ -88,6 +89,7 @@ export default function ParentsOver70Scenario() {
                                         value={parentsOver70}
                                         onChange={(e) => setParentsOver70(Number(e.target.value))}
                                         className="flex-1 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-success"
+                                        aria-label="調整70歲以上扶養親屬人數"
                                     />
                                     <span className="text-2xl font-black text-brand-success w-16 text-center">{parentsOver70} 人</span>
                                 </div>
