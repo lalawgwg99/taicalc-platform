@@ -458,7 +458,7 @@ TaiCalc 數策 - 資本增長模擬報表
                                             axisLine={false}
                                             tickLine={false}
                                             tick={{ fontSize: 12, fill: '#94a3b8' }}
-                                            tickFormatter={(value) => `${value}y`}
+                                            tickFormatter={(value) => `${value}年`}
                                         />
                                         <YAxis
                                             axisLine={false}
