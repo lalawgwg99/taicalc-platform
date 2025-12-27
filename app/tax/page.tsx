@@ -510,6 +510,37 @@ TaiCalc 數策 - 所得稅分析報表
 
                     </div>
                 </div>
+
+                {/* 延伸閱讀區塊 */}
+                <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
+                    <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Link href="/tax/2025/brackets" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">2025 所得稅級距表</p>
+                            <p className="text-sm text-slate-500">五級累進稅率完整說明</p>
+                        </Link>
+                        <Link href="/tax/2025/deductions" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">2025 扣除額總整理</p>
+                            <p className="text-sm text-slate-500">免稅額、標準扣除額一次看</p>
+                        </Link>
+                        <Link href="/tax/scenario/married-vs-single" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">婚姻狀態比較</p>
+                            <p className="text-sm text-slate-500">結婚報稅划算嗎？</p>
+                        </Link>
+                        <Link href="/tax/scenario/parents-over-70" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">扶養長輩節稅</p>
+                            <p className="text-sm text-slate-500">70歲以上免稅額加成</p>
+                        </Link>
+                        <Link href="/salary" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>
+                            <p className="text-sm text-slate-500">計算實領與勞健保</p>
+                        </Link>
+                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
+                            <p className="text-sm text-slate-500">複利增長與通膨影響</p>
+                        </Link>
+                    </div>
+                </section>
             </div>
 
 
