@@ -506,7 +506,7 @@ TaiCalc 數策 - 資本增長模擬報表
                     {/* 右側：顯示結果 */}
                     <div className="lg:col-span-8 space-y-8">
                         {/* 主要亮點指標：FIRE 與 被動收入 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-8">
                             {/* FIRE 區塊 */}
                             <motion.div
                                 whileHover={{ y: -5 }}
@@ -528,28 +528,31 @@ TaiCalc 數策 - 資本增長模擬報表
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">每月開銷</div>
-                                        <div className="flex items-center space-x-1">
-                                            <span className="text-xs text-slate-400">$</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">每月開銷</div>
+                                        <div className="flex items-center space-x-2">
+                                            <span className="text-sm text-slate-400 font-bold">$</span>
                                             <input
                                                 type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
+                                                className="w-full bg-transparent text-2xl font-black text-slate-900 outline-none"
                                                 value={formatCurrency(monthlyExpense)}
                                                 onChange={(e) => setMonthlyExpense(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
                                             />
                                         </div>
                                     </div>
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">FIRE 目標金額</div>
-                                        <div className="text-xl font-black text-brand-warning">${formatCurrency(fireResult.fireNumber)}</div>
-                                        <div className="text-[9px] text-slate-400 mt-1">年開銷 × 25</div>
+                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">FIRE 目標金額</div>
+                                        <div className="text-3xl font-black text-brand-warning">${formatCurrency(fireResult.fireNumber)}</div>
+                                        <div className="text-xs text-slate-400 mt-1 font-medium">年開銷 × {Math.round(100 / fireResult.safeWithdrawalRate)}</div>
                                     </div>
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">距離 FIRE 還需</div>
-                                        <div className="text-xl font-black text-slate-900">{fireResult.yearsToFIRE === Infinity ? '∞' : fireResult.yearsToFIRE} 年</div>
-                                        <div className="text-[9px] text-brand-primary font-bold mt-1">進度 {fireResult.currentProgress.toFixed(1)}%</div>
+                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">距離 FIRE 還需</div>
+                                        <div className="flex items-baseline space-x-1">
+                                            <span className="text-3xl font-black text-slate-900">{fireResult.yearsToFIRE === Infinity ? '∞' : fireResult.yearsToFIRE}</span>
+                                            <span className="text-sm font-bold text-slate-500">年</span>
+                                        </div>
+                                        <div className="text-xs text-brand-primary font-black mt-1">進度 {fireResult.currentProgress.toFixed(1)}%</div>
                                     </div>
                                 </div>
                                 {/* 進度條 */}
@@ -583,48 +586,49 @@ TaiCalc 數策 - 資本增長模擬報表
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 mb-4">
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-emerald-50">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">目標月被動收入</div>
-                                        <div className="flex items-center space-x-1">
-                                            <span className="text-xs text-slate-400">$</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-emerald-50">
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">目標月被動收入</div>
+                                        <div className="flex items-center space-x-2">
+                                            <span className="text-sm text-slate-400 font-bold">$</span>
                                             <input
                                                 type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
+                                                className="w-full bg-transparent text-2xl font-black text-slate-900 outline-none"
                                                 value={formatCurrency(targetPassiveIncome)}
                                                 onChange={(e) => setTargetPassiveIncome(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
                                             />
                                         </div>
                                     </div>
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-emerald-50">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">所需本金 (5% 殖利率)</div>
-                                        <div className="text-xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
+                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-emerald-50">
+                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">所需本金 (5% 殖利率)</div>
+                                        <div className="text-3xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
                                     </div>
                                 </div>
-                                <div className="relative group/scroll">
+                                <div className="relative group/scroll px-1">
                                     <button
                                         onClick={() => scroll('left')}
-                                        className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-lg z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110"
+                                        title="向左捲動"
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 p-2 bg-white rounded-full shadow-xl z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110 border border-slate-100"
                                     >
-                                        <ChevronLeft className="w-4 h-4" />
+                                        <ChevronLeft className="w-5 h-5" />
                                     </button>
                                     <div
                                         ref={scrollContainerRef}
-                                        className="flex gap-2 pb-2 overflow-x-auto no-scrollbar scroll-smooth mask-linear-fade"
-                                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                                        className="flex gap-4 pb-4 overflow-x-auto no-scrollbar scroll-smooth"
                                     >
                                         {[3, 4, 5, 6, 7].map((rate) => (
-                                            <div key={rate} className={`flex-shrink-0 w-[80px] p-2 rounded-xl text-center border transition-all cursor-pointer ${rate === 5 ? 'bg-emerald-100 border-emerald-200 shadow-sm scale-105' : 'bg-white border-slate-100 hover:border-emerald-200 hover:shadow-sm'}`}>
-                                                <div className="text-[10px] font-black text-slate-400 mb-1">{rate}%</div>
-                                                <div className="text-[11px] font-black text-slate-700">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)))}</div>
+                                            <div key={rate} className={`flex-shrink-0 w-[110px] p-4 rounded-2xl text-center border-2 transition-all cursor-pointer ${rate === 5 ? 'bg-emerald-100 border-emerald-400 shadow-md scale-105' : 'bg-white border-slate-100 hover:border-emerald-200 hover:shadow-sm'}`}>
+                                                <div className="text-xs font-black text-slate-400 mb-2">{rate}%</div>
+                                                <div className="text-sm font-black text-slate-800">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)))}</div>
                                             </div>
                                         ))}
                                     </div>
                                     <button
                                         onClick={() => scroll('right')}
-                                        className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 p-1.5 bg-white/80 backdrop-blur-sm rounded-full shadow-lg z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110"
+                                        title="向右捲動"
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 p-2 bg-white rounded-full shadow-xl z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110 border border-slate-100"
                                     >
-                                        <ChevronRight className="w-4 h-4" />
+                                        <ChevronRight className="w-5 h-5" />
                                     </button>
                                 </div>
                             </motion.div>
