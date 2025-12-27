@@ -246,10 +246,15 @@ TaiCalc 數策 - 房貸試算報表
                                     <div className="relative group">
                                         <Building className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-primary transition-colors w-5 h-5" />
                                         <input
-                                            type="number"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                             className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 text-lg shadow-sm"
-                                            value={loanAmount}
-                                            onChange={(e) => setLoanAmount(Number(e.target.value))}
+                                            value={loanAmount === 0 ? '' : loanAmount}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setLoanAmount(val === '' ? 0 : parseInt(val, 10));
+                                            }}
                                             aria-label="輸入貸款總額"
                                         />
                                     </div>

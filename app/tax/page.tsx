@@ -33,7 +33,7 @@ export default function TaxPage() {
 
     // --- 核心計算引擎 (整合 lib/calculations 邏輯) ---
     const results = useMemo(() => {
-        const { EXEMPTION, STANDARD, SALARY_SPECIAL, BASIC_LIVING_EXPENSE = 202000 } = TAIWAN_PARAMS.DEDUCTIONS as any;
+        const { EXEMPTION, STANDARD_SINGLE, STANDARD_MARRIED, SALARY_SPECIAL, BASIC_LIVING_EXPENSE } = TAIWAN_PARAMS.DEDUCTIONS;
 
         // 總收入
         const totalGross = annualIncome + otherIncome;
@@ -46,7 +46,7 @@ export default function TaxPage() {
             (elderlyParentsCount * EXEMPTION * 1.5);
 
         // 2. 標準扣除額 (Standard Deduction)
-        const standardDeduction = isMarried ? STANDARD * 2 : STANDARD;
+        const standardDeduction = isMarried ? STANDARD_MARRIED : STANDARD_SINGLE;
 
         // 3. 薪資特別扣除額 (Special Deduction for Salary)
         // 不能超過薪資收入本身
@@ -256,10 +256,15 @@ TaiCalc 數策 - 所得稅分析報表
                                     <div className="relative group">
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 font-black text-lg">$</span>
                                         <input
-                                            type="number"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                             className="w-full pl-8 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 text-lg shadow-sm"
-                                            value={annualIncome}
-                                            onChange={(e) => setAnnualIncome(Number(e.target.value))}
+                                            value={annualIncome === 0 ? '' : annualIncome}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setAnnualIncome(val === '' ? 0 : parseInt(val, 10));
+                                            }}
                                             placeholder="請輸入年度薪資"
                                             aria-label="輸入年度薪資總額"
                                         />
@@ -274,10 +279,15 @@ TaiCalc 數策 - 所得稅分析報表
                                     <div className="relative group">
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 font-black text-lg">$</span>
                                         <input
-                                            type="number"
+                                            type="text"
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                             className="w-full pl-8 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 shadow-sm"
-                                            value={otherIncome}
-                                            onChange={(e) => setOtherIncome(Number(e.target.value))}
+                                            value={otherIncome === 0 ? '' : otherIncome}
+                                            onChange={(e) => {
+                                                const val = e.target.value.replace(/[^0-9]/g, '');
+                                                setOtherIncome(val === '' ? 0 : parseInt(val, 10));
+                                            }}
                                             placeholder="選填"
                                             aria-label="輸入其他所得"
                                         />

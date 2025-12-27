@@ -14,6 +14,10 @@ export function cn(...inputs: ClassValue[]) {
  * @returns 格式化後的字串 (e.g., "1,234,567")
  */
 export function formatCurrency(amount: number): string {
+    // 防護 NaN、undefined、null
+    if (amount === null || amount === undefined || isNaN(amount)) {
+        return '0';
+    }
     return new Intl.NumberFormat('zh-TW', {
         style: 'decimal',
         maximumFractionDigits: 0,

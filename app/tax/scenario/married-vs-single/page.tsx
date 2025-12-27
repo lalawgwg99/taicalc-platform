@@ -12,9 +12,9 @@ export default function MarriedVsSingleScenario() {
 
     // 簡化的稅額計算函數
     const calculateTax = (income: number, isMarried: boolean) => {
-        const { EXEMPTION, STANDARD, SALARY_SPECIAL } = TAIWAN_PARAMS.DEDUCTIONS as any;
+        const { EXEMPTION, STANDARD_SINGLE, STANDARD_MARRIED, SALARY_SPECIAL } = TAIWAN_PARAMS.DEDUCTIONS;
         const exemptions = isMarried ? EXEMPTION * 2 : EXEMPTION;
-        const standardDeduction = isMarried ? STANDARD * 2 : STANDARD;
+        const standardDeduction = isMarried ? STANDARD_MARRIED : STANDARD_SINGLE;
         const salaryDeduction = Math.min(income, SALARY_SPECIAL);
         const totalDeductions = exemptions + standardDeduction + salaryDeduction;
         const netIncome = Math.max(0, income - totalDeductions);

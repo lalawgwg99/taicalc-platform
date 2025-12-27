@@ -8,7 +8,7 @@ import { formatCurrency } from '@/lib/utils';
 import { TAIWAN_PARAMS } from '@/lib/constants';
 
 export default function TaxDeductions2025() {
-    const { EXEMPTION, STANDARD, SALARY_SPECIAL, BASIC_LIVING_EXPENSE } = TAIWAN_PARAMS.DEDUCTIONS as any;
+    const { EXEMPTION, STANDARD_SINGLE, STANDARD_MARRIED, SALARY_SPECIAL, BASIC_LIVING_EXPENSE } = TAIWAN_PARAMS.DEDUCTIONS;
 
     const deductions = [
         {
@@ -23,8 +23,8 @@ export default function TaxDeductions2025() {
             icon: <Receipt className="w-6 h-6" />,
             title: '標準扣除額',
             items: [
-                { label: '單身', amount: STANDARD },
-                { label: '已婚', amount: STANDARD * 2 },
+                { label: '單身', amount: STANDARD_SINGLE },
+                { label: '已婚', amount: STANDARD_MARRIED },
             ]
         },
         {

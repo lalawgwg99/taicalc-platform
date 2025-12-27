@@ -11,7 +11,7 @@ export default function ParentsOver70Scenario() {
     const [parentsUnder70, setParentsUnder70] = useState(0);
     const [parentsOver70, setParentsOver70] = useState(2);
 
-    const { EXEMPTION } = TAIWAN_PARAMS.DEDUCTIONS as any;
+    const { EXEMPTION } = TAIWAN_PARAMS.DEDUCTIONS;
 
     const exemptionUnder70 = parentsUnder70 * EXEMPTION;
     const exemptionOver70 = parentsOver70 * (EXEMPTION * 1.5);
