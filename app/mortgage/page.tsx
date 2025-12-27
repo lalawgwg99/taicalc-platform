@@ -181,6 +181,19 @@ TaiCalc 數策 - 房貸試算報表
                             精算新青安與寬限期影響，為您的置產佈局提供清晰視野。
                         </p>
                     </div>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => {
+                                const url = `${window.location.origin}/mortgage?loan=${loanAmount}&rate=${interestRate}&years=${years}&grace=${gracePeriod}`;
+                                navigator.clipboard.writeText(url);
+                                alert('連結已複製！可分享給朋友');
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-xl text-sm font-bold text-slate-600 transition-all"
+                        >
+                            <Share2 className="w-4 h-4" />
+                            <span className="hidden md:inline">分享</span>
+                        </button>
+                    </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
