@@ -14,6 +14,10 @@ export async function GET() {
   });
 }
 
+// 輸入大小限制
+const MAX_PROMPT_SIZE = 10000;
+const MAX_CONTEXT_SIZE = 50000;
+
 export async function POST(req: Request) {
   try {
     const { google } = await import('@ai-sdk/google');
@@ -21,11 +25,25 @@ export async function POST(req: Request) {
 
     const { prompt, context } = await req.json();
 
+    // 1. 安全性檢查：輸入驗證
+    if (!prompt || typeof prompt !== 'string') {
+      return new Response(JSON.stringify({ error: 'Invalid prompt format' }), { status: 400 });
+    }
+
+    if (prompt.length > MAX_PROMPT_SIZE) {
+      return new Response(JSON.stringify({ error: 'Prompt too long' }), { status: 400 });
+    }
+
+    if (context && JSON.stringify(context).length > MAX_CONTEXT_SIZE) {
+      return new Response(JSON.stringify({ error: 'Context too large' }), { status: 400 });
+    }
+
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
     if (!apiKey) {
+      console.error('API Key missing');
       return new Response(JSON.stringify({
-        error: '系統設定錯誤：找不到 API Key'
+        error: 'Service configuration error' // 不暴露具體是缺 Key
       }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' }
@@ -61,8 +79,8 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error('AI Analysis Error:', error);
     return new Response(JSON.stringify({
-      error: 'AI 服務發生錯誤',
-      details: error.message
+      error: 'AI 服務發生錯誤', // 模糊化錯誤訊息
+      // details: error.message // 移除詳細錯誤資訊以防洩漏
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }

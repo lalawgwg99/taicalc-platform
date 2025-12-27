@@ -2,6 +2,8 @@
  * 薪資計算器延伸功能 - 獨有特色
  */
 
+import { TAIWAN_PARAMS } from '@/lib/constants';
+
 /**
  * 加班費計算結果
  */
@@ -219,12 +221,14 @@ export function checkLaborRights(
     monthlySalary: number,
     reportedLaborGrade?: number
 ): LaborRightsCheck {
-    // 2024 基本工資
-    const minimumWage = 27470;
+    // 2025 基本工資 (Source of Truth)
+    const minimumWage = TAIWAN_PARAMS.MINIMUM_WAGE; // 28590
     const isAboveMinimumWage = monthlySalary >= minimumWage;
 
     // 計算應投保級距
-    const laborGrades = [27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
+    // const laborGrades = [27470, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
+    const laborGrades = TAIWAN_PARAMS.LABOR_INSURANCE_TABLE.map(l => l.amount);
+
     let expectedLaborGrade = laborGrades[laborGrades.length - 1];
     for (const grade of laborGrades) {
         if (monthlySalary <= grade) {
