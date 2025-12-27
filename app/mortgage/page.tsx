@@ -193,6 +193,37 @@ TaiCalc 數策 - 房貸試算報表
                                 <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">貸款條件設定</h2>
                             </div>
 
+                            {/* 快速情境按鈕 */}
+                            <div className="mb-6">
+                                <p className="text-xs font-bold text-slate-400 uppercase mb-3">快速套用情境</p>
+                                <div className="flex flex-wrap gap-2">
+                                    <button
+                                        onClick={() => { setLoanAmount(8000000); setInterestRate(2.06); setLoanTerm(30); setGracePeriod(5); }}
+                                        className="px-3 py-1.5 bg-blue-50 text-brand-primary rounded-full text-xs font-bold hover:bg-blue-100 transition-all"
+                                    >
+                                        🏠 新青安
+                                    </button>
+                                    <button
+                                        onClick={() => { setLoanAmount(10000000); setInterestRate(2.5); setLoanTerm(30); setGracePeriod(0); }}
+                                        className="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-full text-xs font-bold hover:bg-slate-200 transition-all"
+                                    >
+                                        🏢 一般房貸
+                                    </button>
+                                    <button
+                                        onClick={() => { setLoanAmount(15000000); setInterestRate(2.2); setLoanTerm(20); setGracePeriod(0); }}
+                                        className="px-3 py-1.5 bg-purple-50 text-purple-600 rounded-full text-xs font-bold hover:bg-purple-100 transition-all"
+                                    >
+                                        💎 高總價
+                                    </button>
+                                    <button
+                                        onClick={() => { setLoanAmount(5000000); setInterestRate(2.0); setLoanTerm(20); setGracePeriod(0); }}
+                                        className="px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-xs font-bold hover:bg-green-100 transition-all"
+                                    >
+                                        🚀 快速還清
+                                    </button>
+                                </div>
+                            </div>
+
                             <div className="space-y-6">
                                 {/* 貸款金額 */}
                                 <div>
