@@ -201,10 +201,12 @@ export function calculateNationalPension(options: {
 } {
     const { yearsContributed } = options;
 
-    // 國民年金基本保障：每月 3,772 元（2024）
-    // 每增加 1 年年資，增加 97 元（簡化計算）
-    const basePension = 3772;
-    const additionalPerYear = 97;
+    // 國民年金基本保障：每月 4,049 元（2024 調升）
+    // 公式 A：(月投保金額 × 保險年資 × 0.65%) + 4,049
+    // 目前月投保金額為 19,761
+    const basePension = 4049;
+    const insuredAmount = 19761;
+    const additionalPerYear = Math.round(insuredAmount * 0.0065); // 約 128 元
 
     const monthlyPension = basePension + (yearsContributed * additionalPerYear);
     const yearlyPension = monthlyPension * 12;
