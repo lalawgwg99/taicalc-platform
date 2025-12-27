@@ -103,12 +103,12 @@ export default function HomePage() {
                         </p>
                         <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
                             <Link href="/salary" className="w-full md:w-auto bg-brand-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-600 transition-all shadow-lg shadow-blue-200 flex items-center justify-center group">
-                                啟動薪資戰略
+                                啟動戰略
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <button className="w-full md:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-sm">
+                            <Link href="/tax" className="w-full md:w-auto bg-white text-slate-700 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-50 transition-all shadow-sm">
                                 瞭解決策模型
-                            </button>
+                            </Link>
                         </div>
                     </motion.div>
                 </section>
