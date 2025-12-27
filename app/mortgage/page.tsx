@@ -140,25 +140,25 @@ TaiCalc 數策 - 房貸試算報表
             <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="flex items-center space-x-3 group">
-                        <div className="w-10 h-10 bg-brand-surface rounded-xl flex items-center justify-center text-brand-primary shadow-lg border border-white/5 transition-transform group-hover:scale-110">
-                            <ChevronLeft className="w-5 h-5" />
+                <div className="max-w-7xl mx-auto px-4 md:px-6 h-14 md:h-20 flex items-center justify-between">
+                    <Link href="/" className="flex items-center space-x-2 group">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-brand-surface rounded-xl flex items-center justify-center text-brand-primary shadow-lg border border-white/5 transition-transform group-hover:scale-110">
+                            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                         </div>
-                        <span className="text-lg font-bold text-slate-600 group-hover:text-brand-primary transition-colors">返回首頁</span>
+                        <span className="hidden md:block text-lg font-bold text-slate-600 group-hover:text-brand-primary transition-colors">返回首頁</span>
                     </Link>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         <button
                             onClick={handleDownload}
-                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95"
+                            className="flex items-center space-x-1 md:space-x-2 px-3 md:px-6 py-2 md:py-3 bg-white border border-slate-200 rounded-xl md:rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95"
                             aria-label="下載報表"
                         >
                             <Download className="w-4 h-4" />
-                            <span>下載報表</span>
+                            <span className="hidden md:inline">下載報表</span>
                         </button>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1 md:space-x-2">
                             <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                            <span className="text-lg font-bold tracking-tight text-slate-900">TaiCalc <span className="text-brand-primary">數策</span></span>
+                            <span className="hidden md:inline text-lg font-bold tracking-tight text-slate-900">TaiCalc <span className="text-brand-primary">數策</span></span>
                         </div>
                     </div>
                 </div>

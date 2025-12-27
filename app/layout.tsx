@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import SchemaOrg from '@/components/SEO/SchemaOrg';
+import { GoogleAnalytics, GATracker } from '@/lib/ga4';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '700', '900'], variable: '--font-noto-sans' });
@@ -61,6 +62,7 @@ export default function RootLayout({
   return (
     <html lang="zh-TW" className={`${inter.variable} ${notoSansTC.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -71,6 +73,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-brand-background text-brand-text-primary overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
+        <GATracker />
         {children}
       </body>
     </html>

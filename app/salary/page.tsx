@@ -84,25 +84,25 @@ TaiCalc 數策 - 薪資分析報表
             <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-brand-background/80 backdrop-blur-xl border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="flex items-center space-x-3 group">
-                        <div className="w-10 h-10 bg-brand-surface rounded-xl flex items-center justify-center text-brand-primary shadow-lg border border-white/5 transition-transform group-hover:scale-110">
-                            <ChevronLeft className="w-5 h-5" />
+                <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
+                    <Link href="/" className="flex items-center space-x-2 group">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-brand-surface rounded-xl flex items-center justify-center text-brand-primary shadow-lg border border-white/5 transition-transform group-hover:scale-110">
+                            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                         </div>
-                        <span className="text-lg font-bold text-brand-text-secondary group-hover:text-brand-text-primary transition-colors">返回首頁</span>
+                        <span className="hidden md:block text-lg font-bold text-brand-text-secondary group-hover:text-brand-text-primary transition-colors">返回首頁</span>
                     </Link>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         <button
                             onClick={handleDownload}
-                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95"
+                            className="flex items-center space-x-1 md:space-x-2 px-3 md:px-6 py-2 md:py-3 bg-white border border-slate-200 rounded-xl md:rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95"
                             aria-label="下載報表"
                         >
                             <Download className="w-4 h-4" />
-                            <span>下載報表</span>
+                            <span className="hidden md:inline">下載報表</span>
                         </button>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1 md:space-x-2">
                             <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                            <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">數策</span></span>
+                            <span className="hidden md:inline text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">數策</span></span>
                         </div>
                     </div>
                 </div>
@@ -125,22 +125,22 @@ TaiCalc 數策 - 薪資分析報表
 
                 {/* 模式切換 Tabs */}
                 <div className="flex justify-center md:justify-start mb-8">
-                    <div className="bg-slate-100 p-1.5 rounded-2xl flex space-x-1 border border-slate-200">
+                    <div className="bg-slate-100 p-1 md:p-1.5 rounded-xl md:rounded-2xl flex space-x-1 border border-slate-200">
                         <button
                             onClick={() => setActiveTab('normal')}
-                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'normal' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
+                            className={`px-3 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-bold transition-all flex items-center space-x-1 md:space-x-2 whitespace-nowrap ${activeTab === 'normal' ? 'bg-brand-primary text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
                             aria-label="切換到正向推算模式"
                         >
-                            <Calculator className="w-4 h-4" />
-                            <span>正向推算 (已知月薪)</span>
+                            <Calculator className="w-3 h-3 md:w-4 md:h-4" />
+                            <span>正向推算</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('reverse')}
-                            className={`px-6 py-3 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${activeTab === 'reverse' ? 'bg-brand-accent text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
+                            className={`px-3 md:px-6 py-2 md:py-3 rounded-lg md:rounded-xl text-xs md:text-sm font-bold transition-all flex items-center space-x-1 md:space-x-2 whitespace-nowrap ${activeTab === 'reverse' ? 'bg-brand-accent text-white shadow-lg' : 'text-slate-500 hover:text-slate-900 hover:bg-white'}`}
                             aria-label="切換到逆向推算模式"
                         >
-                            <RefreshCw className="w-4 h-4" />
-                            <span>逆向推算 (已知實領)</span>
+                            <RefreshCw className="w-3 h-3 md:w-4 md:h-4" />
+                            <span>逆向推算</span>
                         </button>
                     </div>
                 </div>
@@ -377,6 +377,25 @@ TaiCalc 數策 - 薪資分析報表
                             <h4 className="text-brand-primary font-bold">Q. 逆向推算是什麼？</h4>
                             <p className="text-slate-500 text-sm leading-relaxed">這是為了面試設計的功能。當您心中有期望的「實領金額」時，幫您算回「應該開多少稅前薪資」以免吃虧。</p>
                         </div>
+                    </div>
+                </section>
+
+                {/* 延伸閱讀區塊 */}
+                <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
+                    <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Link href="/tax" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">稅務優化計算器</p>
+                            <p className="text-sm text-slate-500">計算年度所得稅負擔</p>
+                        </Link>
+                        <Link href="/mortgage" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">房貸佈局計算器</p>
+                            <p className="text-sm text-slate-500">評估購屋能力上限</p>
+                        </Link>
+                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
+                            <p className="text-sm text-slate-500">規劃存股與退休</p>
+                        </Link>
                     </div>
                 </section>
 

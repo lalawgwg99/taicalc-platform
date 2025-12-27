@@ -444,6 +444,25 @@ TaiCalc 數策 - 資本增長模擬報表
 
                     </div>
                 </div>
+
+                {/* 延伸閱讀區塊 */}
+                <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
+                    <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Link href="/mortgage" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">房貸佈局計算器</p>
+                            <p className="text-sm text-slate-500">先還房貸還是先投資？</p>
+                        </Link>
+                        <Link href="/tax" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">稅務優化計算器</p>
+                            <p className="text-sm text-slate-500">投資收益如何報稅</p>
+                        </Link>
+                        <Link href="/salary" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>
+                            <p className="text-sm text-slate-500">計算可投資餘額</p>
+                        </Link>
+                    </div>
+                </section>
             </div>
         </div>
     );

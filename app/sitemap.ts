@@ -12,12 +12,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
         { url: `${baseUrl}/capital`, priority: 0.9 },
     ];
 
-    // SEO 落地頁
-    const seoPages = [
+    // SEO 落地頁 - 稅務群集
+    const taxSeoPages = [
         { url: `${baseUrl}/tax/2025/brackets`, priority: 0.8 },
         { url: `${baseUrl}/tax/2025/deductions`, priority: 0.8 },
         { url: `${baseUrl}/tax/scenario/married-vs-single`, priority: 0.7 },
         { url: `${baseUrl}/tax/scenario/parents-over-70`, priority: 0.7 },
+    ];
+
+    // SEO 落地頁 - 房貸群集
+    const mortgageSeoPages = [
+        { url: `${baseUrl}/mortgage/scenario/grace-period`, priority: 0.8 },
+        { url: `${baseUrl}/mortgage/scenario/early-repayment`, priority: 0.8 },
+        { url: `${baseUrl}/mortgage/scenario/rate-sensitivity`, priority: 0.8 },
+        { url: `${baseUrl}/mortgage/scenario/term-comparison`, priority: 0.8 },
+        { url: `${baseUrl}/mortgage/scenario/budget-reverse`, priority: 0.8 },
+    ];
+
+    // SEO 落地頁 - 資本群集
+    const capitalSeoPages = [
+        { url: `${baseUrl}/capital/scenario/compound-interest`, priority: 0.8 },
+        { url: `${baseUrl}/capital/scenario/inflation-impact`, priority: 0.8 },
+        { url: `${baseUrl}/capital/scenario/retirement-reverse`, priority: 0.8 },
     ];
 
     return [
@@ -35,8 +51,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly' as const,
             priority: page.priority,
         })),
-        // SEO 落地頁
-        ...seoPages.map((page) => ({
+        // 稅務 SEO 落地頁
+        ...taxSeoPages.map((page) => ({
+            url: page.url,
+            lastModified: currentDate,
+            changeFrequency: 'monthly' as const,
+            priority: page.priority,
+        })),
+        // 房貸 SEO 落地頁
+        ...mortgageSeoPages.map((page) => ({
+            url: page.url,
+            lastModified: currentDate,
+            changeFrequency: 'monthly' as const,
+            priority: page.priority,
+        })),
+        // 資本 SEO 落地頁
+        ...capitalSeoPages.map((page) => ({
             url: page.url,
             lastModified: currentDate,
             changeFrequency: 'monthly' as const,
