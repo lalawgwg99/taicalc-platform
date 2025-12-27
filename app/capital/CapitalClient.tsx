@@ -2,13 +2,11 @@
 
 import React, { useState, useMemo, useRef } from 'react';
 import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
-    ReferenceLine
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer
 } from 'recharts';
 import {
-    Home, Calculator, Percent, Calendar, DollarSign,
-    TrendingUp, TrendingDown, AlertCircle, ChevronLeft, ChevronRight, Download, Share2, Building,
-    Target, RefreshCw, Flame, Wallet, Trophy, Info, ShieldCheck, PiggyBank
+    ChevronLeft, Download, RefreshCw, Flame, Wallet, Trophy, Info, PiggyBank, Target, TrendingUp, TrendingDown,
+    ShieldCheck
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -21,11 +19,11 @@ export default function CapitalPage() {
     // --- 狀態管理 ---
     const [initialCapital, setInitialCapital] = useState(1000000); // 初始本金 100萬
     const [monthlyContribution, setMonthlyContribution] = useState(20000); // 月投入 2萬
-    const [annualReturnRate, setAnnualReturnRate] = useState(7); // 年報酬 7% (S&P500 平均)
+    const [annualReturnRate, setAnnualReturnRate] = useState(7); // 年報酬 7%
     const [inflationRate, setInflationRate] = useState(2.5); // 通膨率 2.5%
     const [years, setYears] = useState(30); // 投資 30 年
 
-    // --- 核心運算 (整合 lib/financials) ---
+    // --- 核心運算 ---
     const simulationData = useMemo(() => {
         return calculateCapitalGrowth({
             initialCapital,
@@ -48,7 +46,7 @@ export default function CapitalPage() {
         return (profit / totalInvested) * 100;
     }, [simulationData]);
 
-    // FIRE 計算（假設月開銷 5 萬）
+    // FIRE 計算
     const [monthlyExpense, setMonthlyExpense] = useState(50000);
     const fireResult = useMemo(() => {
         return calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate);
@@ -65,26 +63,18 @@ export default function CapitalPage() {
         return calculateMilestones(initialCapital, monthlyContribution, annualReturnRate);
     }, [initialCapital, monthlyContribution, annualReturnRate]);
 
-    // 目標反推計算 (新增)
-    const [goalTarget, setGoalTarget] = useState(10000000); // 目標 1000 萬
-    const [goalYears, setGoalYears] = useState(10); // 預計 10 年
+    // 目標反推計算
+    const [goalTarget, setGoalTarget] = useState(10000000);
+    const [goalYears, setGoalYears] = useState(10);
     const goalReverseResult = useMemo(() => {
         return calculateGoalReverse(goalTarget, goalYears, annualReturnRate, initialCapital);
     }, [goalTarget, goalYears, annualReturnRate, initialCapital]);
-
-    // 快速套用情境
-    const applyScenario = (scenario: typeof QUICK_SCENARIOS[0]) => {
-        setInitialCapital(scenario.initialCapital);
-        setMonthlyContribution(scenario.monthlyContribution);
-        setYears(scenario.years);
-        setAnnualReturnRate(scenario.expectedReturn);
-    };
 
     // 捲動控制
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const scroll = (direction: 'left' | 'right') => {
         if (scrollContainerRef.current) {
-            const scrollAmount = 120;
+            const scrollAmount = 150;
             scrollContainerRef.current.scrollBy({
                 left: direction === 'right' ? scrollAmount : -scrollAmount,
                 behavior: 'smooth'
@@ -96,21 +86,21 @@ export default function CapitalPage() {
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
-                <div className="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 ring-1 ring-black/5">
-                    <p className="text-sm font-bold text-slate-500 mb-2">第 {label} 年</p>
+                <div className="bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-white/10 ring-1 ring-white/5 text-white">
+                    <p className="text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">第 {label} 年預估</p>
                     <div className="space-y-2">
-                        <p className="text-sm flex items-center justify-between min-w-[180px]">
-                            <span className="text-brand-primary font-bold">名目總資產</span>
-                            <span className="font-mono font-black text-slate-900">${formatCurrency(payload[0].value)}</span>
-                        </p>
-                        <p className="text-xs flex items-center justify-between text-emerald-600">
-                            <span className="font-bold">實質購買力</span>
-                            <span className="font-mono font-bold">${formatCurrency(payload[1].value)}</span>
-                        </p>
-                        <p className="text-xs flex items-center justify-between text-slate-400 border-t border-slate-100 pt-1 mt-1">
-                            <span>累計投入本金</span>
-                            <span className="font-mono">${formatCurrency(payload[2].value)}</span>
-                        </p>
+                        <div className="flex items-center justify-between gap-8">
+                            <span className="text-blue-400 font-bold text-sm">名目總資產</span>
+                            <span className="font-mono font-black text-lg">${formatCurrency(payload[0].value)}</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-8 border-t border-white/5 pt-1">
+                            <span className="text-emerald-400 font-bold text-xs">實質購買力</span>
+                            <span className="font-mono font-bold text-sm text-emerald-100">${formatCurrency(payload[1].value)}</span>
+                        </div>
+                        <div className="flex items-center justify-between gap-8 border-t border-white/5 pt-1">
+                            <span className="text-slate-500 font-bold text-[10px]">累計投入本金</span>
+                            <span className="font-mono text-[10px] text-slate-400">${formatCurrency(payload[2].value)}</span>
+                        </div>
                     </div>
                 </div>
             );
@@ -118,11 +108,10 @@ export default function CapitalPage() {
         return null;
     };
 
-    // 下載報表功能
     const handleDownload = () => {
         const lastYear = simulationData[simulationData.length - 1];
         const reportContent = `
-TaiCalc 數策 - 資本增長模擬報表
+TaiCalc 數策 - 資本決策模擬報表
 ==============================
 生成時間: ${new Date().toLocaleString('zh-TW')}
 
@@ -133,19 +122,13 @@ TaiCalc 數策 - 資本增長模擬報表
 通膨預估: ${inflationRate}%
 投資期間: ${years} 年
 
-【模擬結果 (第 ${years} 年)】
+【核心結果】
 名目總資產: ${formatCurrency(lastYear.totalAssets)}
 實質購買力: ${formatCurrency(lastYear.realAssets)}
-累計投入本金: ${formatCurrency(lastYear.principal)}
-投資報酬率: ${roi.toFixed(1)}%
-
-【關鍵洞察】
-通膨侵蝕: ${formatCurrency(lastYear.totalAssets - lastYear.realAssets)}
-實質報酬率 (扣除通膨): ${(annualReturnRate - inflationRate).toFixed(1)}%
+總投資報酬率: ${roi.toFixed(1)}% FIRE 完成度: ${fireResult.currentProgress.toFixed(1)}%
 
 ==============================
-由 TaiCalc 數策 提供 | https://taicalc.com
-        `.trim();
+由 TaiCalc 數策 提供 | 專業金融模擬系統`.trim();
 
         const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -159,587 +142,363 @@ TaiCalc 數策 - 資本增長模擬報表
     };
 
     return (
-        <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
-            {/* 極光背景 */}
-            <div className="fixed inset-0 pointer-events-none -z-10 " />
-
-            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    <Link href="/" className="flex items-center space-x-3 group">
-                        <div className="w-10 h-10 bg-brand-surface rounded-xl flex items-center justify-center text-brand-primary shadow-lg border border-white/5 transition-transform group-hover:scale-110">
+        <div className="min-h-screen bg-[#F8FAFC] font-sans pb-32 selection:bg-brand-primary/10">
+            {/* 導航欄 */}
+            <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-200/50">
+                <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
+                    <Link href="/" className="flex items-center space-x-3 group transition-all">
+                        <div className="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 shadow-sm group-hover:border-brand-primary group-hover:text-brand-primary transition-all">
                             <ChevronLeft className="w-5 h-5" />
                         </div>
-                        <span className="text-lg font-bold text-slate-600 group-hover:text-brand-primary transition-colors">返回首頁</span>
+                        <span className="text-sm font-black text-slate-600 group-hover:text-brand-primary">首頁</span>
                     </Link>
                     <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                        <span className="text-lg font-bold tracking-tight text-slate-900">TaiCalc <span className="text-brand-primary">數策</span></span>
+                        <div className="w-7 h-7 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black text-xs shadow-glow">T</div>
+                        <span className="font-black text-slate-900 tracking-tighter">TaiCalc <span className="text-brand-primary">數策</span></span>
                     </div>
                 </div>
             </nav>
 
-            <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
-
-                {/* Header */}
-                <header className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="flex items-center space-x-3 mb-3"
-                        >
-                            <div className="bg-brand-warning text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-amber-200">全新</div>
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">資本決策模擬 <span className="text-brand-warning">版本專業版</span></h1>
-                        </motion.div>
-                        <p className="text-slate-500 font-medium max-w-2xl text-lg">
-                            不僅看見複利的力量，更看清通膨的代價。為您的財務自由制定真實可行的時間表。
+            <main className="max-w-7xl mx-auto px-4 md:px-8 py-10">
+                {/* 標題與操作區 */}
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                    <div className="space-y-2">
+                        <div className="flex items-center space-x-3 text-[10px] font-black tracking-[0.2em] text-brand-primary uppercase">
+                            <span className="bg-brand-primary/10 px-2 py-0.5 rounded">Professional Edition</span>
+                            <span>v2.4.0 Stable</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                            資本決策模擬 <span className="text-brand-primary font-outline">CAPITAL</span>
+                        </h1>
+                        <p className="text-lg text-slate-500 font-medium max-w-xl">
+                            根據歷史數據與複利公式，為您的資產增長建立多維度的模擬體系。
                         </p>
                     </div>
-                    <div className="flex gap-3">
-                        <button
-                            onClick={handleDownload}
-                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95 print:hidden"
-                            aria-label="下載報表"
-                        >
-                            <Download className="w-4 h-4" />
-                            <span>下載報表</span>
-                        </button>
-                    </div>
+                    <button
+                        onClick={handleDownload}
+                        className="flex items-center justify-center space-x-2 px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-brand-primary transition-all shadow-xl shadow-slate-200 active:scale-95"
+                    >
+                        <Download className="w-4 h-4" />
+                        <span>導出專業分析報表</span>
+                    </button>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-                    {/* 左側：控制面板 */}
-                    <div className="lg:col-span-4 space-y-6">
-                        {/* 快速情境按鈕 */}
-                        <section className="glass-card rounded-2xl p-6 bg-white border border-slate-200 shadow-md">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-4">⚡ 快速情境</h3>
+                    {/* 左側：控制面板 (占 4 欄) */}
+                    <aside className="lg:col-span-4 space-y-6">
+                        {/* 快速切換預設值 */}
+                        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">⚡ 快速導航情境</h3>
                             <div className="grid grid-cols-2 gap-2">
                                 {QUICK_SCENARIOS.map((scenario) => (
                                     <button
                                         key={scenario.name}
-                                        onClick={() => applyScenario(scenario)}
-                                        className="p-3 bg-slate-50 hover:bg-brand-primary/10 border border-slate-200 hover:border-brand-primary rounded-xl text-left transition-all group"
+                                        onClick={() => {
+                                            setInitialCapital(scenario.initialCapital);
+                                            setMonthlyContribution(scenario.monthlyContribution);
+                                            setYears(scenario.years);
+                                            setAnnualReturnRate(scenario.expectedReturn);
+                                        }}
+                                        className="p-3 bg-slate-50 border border-slate-100 rounded-2xl text-left hover:border-brand-primary group transition-all"
                                     >
-                                        <div className="text-lg mb-1">{scenario.emoji}</div>
-                                        <div className="text-sm font-bold text-slate-700 group-hover:text-brand-primary">{scenario.name}</div>
-                                        <div className="text-xs text-slate-400">{scenario.description}</div>
+                                        <div className="text-xl mb-1">{scenario.emoji}</div>
+                                        <div className="text-xs font-black text-slate-700 group-hover:text-brand-primary">{scenario.name}</div>
+                                        <div className="text-[10px] text-slate-400 truncate">{scenario.description}</div>
                                     </button>
                                 ))}
                             </div>
-                        </section>
+                        </div>
 
-                        <section className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md backdrop-blur-md">
-                            <div className="flex items-center justify-between mb-8">
-                                <div className="flex items-center space-x-2 text-brand-primary">
-                                    <Target className="w-5 h-5" />
-                                    <h2 className="font-black uppercase tracking-widest text-sm text-slate-400">參數設定</h2>
-                                </div>
+                        {/* 參數滑塊區 */}
+                        <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm space-y-8">
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-xs font-black text-slate-400 uppercase tracking-widest">核心模型參數</span>
                                 <button
                                     onClick={() => {
                                         setInitialCapital(1000000); setMonthlyContribution(20000);
                                         setAnnualReturnRate(7); setInflationRate(2.5); setYears(30);
                                     }}
-                                    className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
+                                    className="p-2 hover:bg-slate-50 rounded-lg text-slate-300 hover:text-brand-primary transition-colors"
                                 >
                                     <RefreshCw className="w-4 h-4" />
-                                    <span className="sr-only">重置參數</span>
                                 </button>
                             </div>
 
-                            <div className="space-y-8">
-                                {/* 初始本金 */}
-                                <div>
-                                    <div className="flex justify-between mb-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase">初始本金</label>
-                                        <span className="text-brand-primary font-black font-mono">${formatCurrency(initialCapital)}</span>
+                            {[
+                                { label: '初始投入本金', value: initialCapital, min: 0, max: 10000000, step: 50000, setter: setInitialCapital, unit: '$' },
+                                { label: '月定期定額', value: monthlyContribution, min: 0, max: 300000, step: 1000, setter: setMonthlyContribution, unit: '$' },
+                                { label: '預期年化報酬', value: annualReturnRate, min: 1, max: 20, step: 0.5, setter: setAnnualReturnRate, unit: '%' },
+                                { label: '預估通膨率', value: inflationRate, min: 0, max: 10, step: 0.1, setter: setInflationRate, unit: '%' },
+                                { label: '預計計畫年期', value: years, min: 5, max: 50, step: 1, setter: setYears, unit: '年' },
+                            ].map((param) => (
+                                <div key={param.label} className="group">
+                                    <div className="flex justify-between items-end mb-3">
+                                        <label className="text-xs font-black text-slate-500 uppercase">{param.label}</label>
+                                        <span className="text-lg font-mono font-black text-slate-900">
+                                            {param.unit === '$' ? `$${formatCurrency(param.value)}` : `${param.value}${param.unit}`}
+                                        </span>
                                     </div>
                                     <input
-                                        type="range" min="0" max="10000000" step="50000"
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
-                                        value={initialCapital}
-                                        onChange={(e) => setInitialCapital(Number(e.target.value))}
-                                        aria-label="調整初始本金"
+                                        type="range" min={param.min} max={param.max} step={param.step}
+                                        value={param.value} onChange={(e) => param.setter(Number(e.target.value))}
+                                        className="w-full h-1.5 bg-slate-100 rounded-full appearance-none accent-slate-900 group-hover:accent-brand-primary transition-all cursor-pointer"
                                     />
                                 </div>
+                            ))}
+                        </div>
+                    </aside>
 
-                                {/* 月投入 */}
-                                <div>
-                                    <div className="flex justify-between mb-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase">每月定期定額</label>
-                                        <span className="text-brand-primary font-black font-mono">${formatCurrency(monthlyContribution)}</span>
-                                    </div>
-                                    <input
-                                        type="range" min="0" max="300000" step="1000"
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
-                                        value={monthlyContribution}
-                                        onChange={(e) => setMonthlyContribution(Number(e.target.value))}
-                                        aria-label="調整每月定期定額"
-                                    />
-                                </div>
-
-                                {/* 年報酬率 */}
-                                <div>
-                                    <div className="flex justify-between mb-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase">預期年化報酬率</label>
-                                        <span className={`text-lg font-black font-mono ${annualReturnRate >= 10 ? 'text-brand-accent' : 'text-slate-700'}`}>{annualReturnRate}%</span>
-                                    </div>
-                                    <input
-                                        type="range" min="1" max="20" step="0.5"
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-accent"
-                                        value={annualReturnRate}
-                                        onChange={(e) => setAnnualReturnRate(Number(e.target.value))}
-                                        aria-label="調整預期年化報酬率"
-                                    />
-                                    <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
-                                        <span>定存 (1.5%)</span>
-                                        <span>ETF (7%)</span>
-                                        <span>飆股 (15%+)</span>
-                                    </div>
-                                </div>
-
-                                {/* 通膨率 */}
-                                <div>
-                                    <div className="flex justify-between mb-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase">預估通膨率</label>
-                                        <span className="text-red-500 font-black font-mono">{inflationRate}%</span>
-                                    </div>
-                                    <input
-                                        type="range" min="0" max="10" step="0.1"
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-red-500"
-                                        value={inflationRate}
-                                        onChange={(e) => setInflationRate(Number(e.target.value))}
-                                        aria-label="調整預估通膨率"
-                                    />
-                                    <div className="text-[10px] text-slate-400 mt-1 text-right">
-                                        {inflationRate > 3 ? '😱 高通膨警報' : (inflationRate < 1 ? '🥶 緊縮風險' : '正常區間')}
-                                    </div>
-                                </div>
-
-                                {/* 投資年期 */}
-                                <div>
-                                    <div className="flex justify-between mb-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase">計畫年期</label>
-                                        <span className="text-slate-900 font-black font-mono">{years} 年</span>
-                                    </div>
-                                    <input
-                                        type="range" min="5" max="50" step="1"
-                                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-600"
-                                        value={years}
-                                        onChange={(e) => setYears(Number(e.target.value))}
-                                        aria-label="調整計畫年期"
-                                    />
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    {/* 右側：儀表板 */}
-                    <div className="lg:col-span-8 space-y-6">
-
-                        {/* 核心指標卡片 */}
+                    {/* 右側：主儀表板 (占 8 欄) */}
+                    <div className="lg:col-span-8 flex flex-col space-y-6">
+                        {/* 第一部分：資產核心數據 (2x1 Grid) */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-gradient-to-br from-brand-primary to-blue-600 rounded-2xl p-8 shadow-lg text-white flex flex-col justify-between h-[200px] relative overflow-hidden">
-                                <TrendingUp className="absolute right-4 top-4 text-white/10 w-32 h-32 -rotate-12" />
-                                <div>
-                                    <h3 className="text-xs font-black text-blue-100 uppercase tracking-widest mb-1">{years} 年後總資產 (名目)</h3>
-                                    <div className="text-5xl font-black tracking-tight">${formatCurrency(finalResult.totalAssets)}</div>
-                                </div>
-                                <div>
-                                    <div className="flex items-center space-x-2 text-sm font-bold bg-white/10 w-fit px-3 py-1.5 rounded-lg mb-2">
+                            <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden h-[240px] flex flex-col justify-between shadow-2xl">
+                                <TrendingUp className="absolute -right-8 -top-8 text-white/5 w-48 h-48 -rotate-12" />
+                                <div className="relative z-10">
+                                    <div className="flex items-center space-x-2 text-blue-400 mb-2">
                                         <PiggyBank className="w-4 h-4" />
-                                        <span>總投入本金 ${formatCurrency(simulationData[simulationData.length - 1].principal)}</span>
+                                        <span className="text-[10px] font-black uppercase tracking-widest">模擬終值資產</span>
                                     </div>
-                                    <div className="text-blue-100 text-xs font-bold">
-                                        總報酬率 <span className="text-white text-lg ml-1">+{roi.toFixed(0)}%</span>
-                                    </div>
+                                    <div className="text-5xl font-black tracking-tighter mb-2">${formatCurrency(finalResult.totalAssets)}</div>
+                                    <div className="text-xs font-bold text-slate-400">複利力量下，{years} 年後的資產估值</div>
+                                </div>
+                                <div className="relative z-10 bg-white/5 border border-white/5 rounded-2xl p-4 flex items-center justify-between">
+                                    <div className="text-xs font-bold">總獲利 <span className="text-emerald-400 ml-1">+{roi.toFixed(0)}%</span></div>
+                                    <div className="w-px h-4 bg-white/10" />
+                                    <div className="text-xs font-bold">投入 <span className="text-blue-400 ml-1">${formatCurrency(simulationData[simulationData.length - 1].principal)}</span></div>
                                 </div>
                             </div>
 
-                            <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
-                                <TrendingDown className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
-                                <div>
-                                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                        實質購買力
-                                        <Info className="w-3 h-3 ml-1 text-slate-300" />
-                                    </h3>
+                            <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 relative overflow-hidden h-[240px] flex flex-col justify-between group hover:border-emerald-100 transition-all">
+                                <div className="relative z-10">
+                                    <div className="flex items-center space-x-2 text-emerald-600 mb-2">
+                                        <ShieldCheck className="w-4 h-4" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">實質購買力</span>
+                                    </div>
                                     <div className="text-4xl font-black tracking-tight text-slate-900">${formatCurrency(finalResult.realAssets)}</div>
-                                </div>
-                                <div className="mt-4">
-                                    <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                                        經過 <span className="text-red-500 font-bold">{inflationRate}%</span> 通膨侵蝕後，您未來的 {formatCurrency(finalResult.totalAssets)} 元，
-                                        僅相當於今天的 <span className="text-emerald-600 font-black">{formatCurrency(finalResult.realAssets)}</span> 元購買力。
+                                    <p className="text-xs text-slate-500 font-medium leading-relaxed mt-4">
+                                        考慮預計 <span className="text-red-500 font-bold">{inflationRate}%</span> 的通膨後，相當於今天 <span className="text-emerald-600 font-black">${formatCurrency(finalResult.realAssets)}</span> 元的消費水準。
                                     </p>
+                                </div>
+                                <TrendingDown className="absolute -bottom-10 -right-10 text-slate-50 w-40 h-40 group-hover:text-emerald-50 transition-colors" />
+                            </div>
+                        </div>
+
+                        {/* 第二部分：FIRE 進度與被動收入 (2x1 Grid) */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* FIRE 分析 */}
+                            <div className="bg-gradient-to-br from-orange-600 to-orange-700 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-xl">
+                                <div className="flex items-center justify-between mb-8">
+                                    <div className="flex items-center space-x-2">
+                                        <Flame className="w-5 h-5" />
+                                        <h3 className="text-sm font-black uppercase tracking-widest">FIRE 財務自由指標</h3>
+                                    </div>
+                                    <div className="bg-white/20 px-3 py-1 rounded-full text-xs font-black">4% 法則</div>
+                                </div>
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-orange-200 text-[10px] font-black uppercase mb-1">每月所需</p>
+                                            <div className="flex items-center border-b border-white/20 pb-1">
+                                                <span className="text-xs text-orange-200/50 mr-1">$</span>
+                                                <input
+                                                    type="text" inputMode="numeric"
+                                                    className="w-full bg-transparent text-xl font-black outline-none"
+                                                    value={formatCurrency(monthlyExpense)}
+                                                    onChange={(e) => setMonthlyExpense(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p className="text-orange-200 text-[10px] font-black uppercase mb-1">FIRE 目標資產</p>
+                                            <div className="text-xl font-black">${formatCurrency(fireResult.fireNumber)}</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between items-end mb-2">
+                                            <span className="text-[10px] font-black text-orange-200 uppercase">目前達成度</span>
+                                            <span className="text-2xl font-black leading-none">{fireResult.currentProgress.toFixed(1)}%</span>
+                                        </div>
+                                        <div className="h-3 bg-black/10 rounded-full overflow-hidden">
+                                            <motion.div
+                                                initial={{ width: 0 }}
+                                                animate={{ width: `${fireResult.currentProgress}%` }}
+                                                className="h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                                            />
+                                        </div>
+                                        <p className="text-[10px] text-orange-100/70 mt-3 font-bold">預計還要 {fireResult.yearsToFIRE === Infinity ? '∞' : fireResult.yearsToFIRE} 年達成財務自由</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 被動收入 */}
+                            <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between">
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center space-x-2 text-emerald-600">
+                                        <Wallet className="w-5 h-5" />
+                                        <h3 className="text-sm font-black uppercase tracking-widest">被動收入模擬器</h3>
+                                    </div>
+                                    <Info className="w-4 h-4 text-slate-300" />
+                                </div>
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                                            <p className="text-slate-400 text-[10px] font-black uppercase mb-1">目標月領</p>
+                                            <div className="flex items-center">
+                                                <span className="text-xs text-slate-300 mr-1">$</span>
+                                                <input
+                                                    type="text" inputMode="numeric"
+                                                    className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
+                                                    value={formatCurrency(targetPassiveIncome)}
+                                                    onChange={(e) => setTargetPassiveIncome(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                                            <p className="text-emerald-600/60 text-[10px] font-black uppercase mb-1">所需本金 (5%)</p>
+                                            <div className="text-xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
+                                        </div>
+                                    </div>
+                                    <div className="relative">
+                                        <div ref={scrollContainerRef} className="flex gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+                                            {[3, 4, 5, 6, 7].map((rate) => (
+                                                <div key={rate} className={`flex-shrink-0 w-[90px] p-3 rounded-2xl text-center border transition-all ${rate === 5 ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg' : 'bg-white border-slate-100 text-slate-400'}`}>
+                                                    <div className="text-[10px] font-black mb-1">{rate}% 殖利率</div>
+                                                    <div className="text-[11px] font-black">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)) / 10000)}萬</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* 4% 法則 - 被動收入分析 */}
-                        <div className="bg-slate-900 rounded-2xl p-8 text-white relative overflow-hidden shadow-lg">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-
-                            <div className="grid md:grid-cols-2 gap-8 relative z-10">
-                                <div>
-                                    <h3 className="text-xs font-black text-brand-accent uppercase tracking-widest mb-4">FIRE 財務自由指標 (4% 法則)</h3>
-                                    <div className="space-y-6">
-                                        <div>
-                                            <p className="text-slate-400 text-xs font-bold uppercase mb-1">每月被動收入 (名目)</p>
-                                            <div className="text-3xl font-black text-white">${formatCurrency(finalResult.monthlyPassiveIncome)} <span className="text-sm text-slate-500">/月</span></div>
-                                        </div>
-                                        <div>
-                                            <p className="text-slate-400 text-xs font-bold uppercase mb-1">每月被動收入 (實質)</p>
-                                            <div className="text-2xl font-black text-emerald-400">${formatCurrency(finalResult.realMonthlyPassiveIncome)} <span className="text-sm text-emerald-600/70">/月</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col justify-center border-l border-white/10 pl-8">
-                                    <p className="text-sm text-slate-300 font-medium leading-relaxed italic">
-                                        &quot;如果您的月開銷低於 <span className="text-emerald-400 font-bold">${formatCurrency(finalResult.realMonthlyPassiveIncome)}</span>，恭喜您，這個計畫能讓您在 {years} 年後達成財務自由，本金理論上永遠花不完。&quot;
-                                    </p>
-                                    <div className="mt-4 flex gap-2">
-                                        <div className="px-3 py-1 rounded bg-white/10 text-[10px] font-bold text-slate-300">提領率 4%</div>
-                                        <div className="px-3 py-1 rounded bg-white/10 text-[10px] font-bold text-slate-300">本金永續</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* AI 智慧診斷區塊 */}
-                        <div className="mb-6">
-                            <AIInsightCard
-                                title="AI 資本戰略顧問"
-                                buttonText="點擊進行 AI 資產增長戰略分析"
-                                prompt="你是 TaiCalc 首席資本戰略官。請分析這份複利增長模擬數據，並提供 3 個精確的戰略洞察。重點包括：1.目前的報酬率與通膨率之間的博弈。2.達成財務自由（FIRE）的可能性與時間表建議。3.針對資產配置或投入金額的優化建議。請直接切入重點，字數控制在 250 字內。"
-                                context={{
-                                    initialCapital,
-                                    monthlyContribution,
-                                    annualReturnRate,
-                                    inflationRate,
-                                    years,
-                                    totalAssets: finalResult.totalAssets,
-                                    realAssets: finalResult.realAssets,
-                                    monthlyPassiveIncome: finalResult.monthlyPassiveIncome,
-                                    realMonthlyPassiveIncome: finalResult.realMonthlyPassiveIncome,
-                                    roi: roi
-                                }}
-                            />
-                        </div>
-
-                        {/* Chart */}
-                        <div className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
-                            <div className="flex items-center justify-between mb-8">
-                                <div className="flex items-center space-x-2">
+                        {/* 第三部分：圖表展示 (Full Width) */}
+                        <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm">
+                            <div className="flex items-center justify-between mb-10">
+                                <div className="flex items-center space-x-3">
                                     <TrendingUp className="w-5 h-5 text-brand-primary" />
-                                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">資產增長模擬圖</h3>
+                                    <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">資產增長決定方案模擬</h3>
                                 </div>
-                                <div className="flex items-center space-x-4 text-[10px] font-bold">
-                                    <div className="flex items-center"><div className="w-2 h-2 bg-brand-primary rounded-full mr-1.5" />名目資產</div>
-                                    <div className="flex items-center"><div className="w-2 h-2 bg-emerald-500 rounded-full mr-1.5" />實質資產</div>
-                                    <div className="flex items-center"><div className="w-2 h-2 bg-slate-300 rounded-full mr-1.5" />投入本金</div>
+                                <div className="flex space-x-6 text-[10px] font-black uppercase tracking-wide">
+                                    <div className="flex items-center"><div className="w-2.5 h-2.5 bg-brand-primary rounded-full mr-2 shadow-glow" />名目資產</div>
+                                    <div className="flex items-center"><div className="w-2.5 h-2.5 bg-emerald-500 rounded-full mr-2" />實質資產</div>
                                 </div>
                             </div>
-
-                            <div className="h-[300px] w-full">
+                            <div className="h-[320px] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={simulationData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                                         <defs>
-                                            <linearGradient id="colorAssets" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                                            </linearGradient>
-                                            <linearGradient id="colorReal" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                            </linearGradient>
+                                            <linearGradient id="chartAssets" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25} /><stop offset="95%" stopColor="#3b82f6" stopOpacity={0} /></linearGradient>
+                                            <linearGradient id="chartReal" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.2} /><stop offset="95%" stopColor="#10b981" stopOpacity={0} /></linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                                        <XAxis
-                                            dataKey="year"
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tick={{ fontSize: 12, fill: '#94a3b8' }}
-                                            tickFormatter={(value) => `${value}年`}
-                                        />
-                                        <YAxis
-                                            axisLine={false}
-                                            tickLine={false}
-                                            tick={{ fontSize: 12, fill: '#94a3b8' }}
-                                            tickFormatter={(value) => `$${value / 10000}萬`}
-                                            width={60}
-                                        />
-                                        <RechartsTooltip content={<CustomTooltip />} />
-
-                                        <Area
-                                            type="monotone"
-                                            dataKey="totalAssets"
-                                            stroke="#3b82f6"
-                                            strokeWidth={3}
-                                            fillOpacity={1}
-                                            fill="url(#colorAssets)"
-                                            activeDot={{ r: 6, strokeWidth: 0 }}
-                                        />
-                                        <Area
-                                            type="monotone"
-                                            dataKey="realAssets"
-                                            stroke="#10b981"
-                                            strokeWidth={2}
-                                            strokeDasharray="5 5"
-                                            fillOpacity={1}
-                                            fill="url(#colorReal)"
-                                            activeDot={{ r: 6, strokeWidth: 0 }}
-                                        />
-                                        <Area
-                                            type="monotone"
-                                            dataKey="principal"
-                                            stroke="#cbd5e1"
-                                            strokeWidth={2}
-                                            fill="transparent"
-                                        />
+                                        <CartesianGrid strokeDasharray="5 5" vertical={false} stroke="#E2E8F0" />
+                                        <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8', fontWeight: 700 }} tickFormatter={(v) => `${v}年`} dy={10} />
+                                        <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8', fontWeight: 700 }} tickFormatter={(v) => `$${v / 10000}萬`} width={60} />
+                                        <RechartsTooltip content={<CustomTooltip />} cursor={{ stroke: '#3b82f6', strokeWidth: 1 }} />
+                                        <Area type="monotone" dataKey="totalAssets" stroke="#3b82f6" strokeWidth={4} fill="url(#chartAssets)" />
+                                        <Area type="monotone" dataKey="realAssets" stroke="#10b981" strokeWidth={2} strokeDasharray="6 6" fill="url(#chartReal)" />
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
                         </div>
 
-                        {/* 控制面板結束 */}
-                    </div>
-
-                    {/* 右側：顯示結果 */}
-                    <div className="lg:col-span-8 space-y-8">
-                        {/* 主要亮點指標：FIRE 與 被動收入 */}
-                        <div className="grid grid-cols-1 gap-8">
-                            {/* FIRE 區塊 */}
-                            <motion.div
-                                whileHover={{ y: -5 }}
-                                className="glass-card rounded-3xl p-8 bg-gradient-to-br from-orange-50 to-white border border-orange-100 shadow-xl relative overflow-hidden group"
-                            >
-                                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                                    <Flame className="w-20 h-20 text-brand-warning" />
-                                </div>
-                                <div className="flex items-center space-x-2 mb-6">
-                                    <div className="w-8 h-8 bg-brand-warning/20 rounded-lg flex items-center justify-center">
-                                        <Flame className="w-5 h-5 text-brand-warning" />
-                                    </div>
-                                    <h3 className="text-lg font-black text-slate-800">🔥 FIRE 財務自由計算</h3>
-                                    <div className="group/info relative cursor-help">
-                                        <Info className="w-4 h-4 text-slate-400" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-[11px] rounded-xl opacity-0 group-hover/info:opacity-100 transition-opacity z-50 pointer-events-none shadow-2xl">
-                                            <p className="font-bold mb-1">什麼是 FIRE？</p>
-                                            根據「4% 法則」，只要存到年開銷的 25 倍，並將其投入平均年化 4% 的標的，您就能靠領出的本金與獲利過活一輩子。
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
-                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">每月開銷</div>
-                                        <div className="flex items-center space-x-2">
-                                            <span className="text-sm text-slate-400 font-bold">$</span>
-                                            <input
-                                                type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-2xl font-black text-slate-900 outline-none"
-                                                value={formatCurrency(monthlyExpense)}
-                                                onChange={(e) => setMonthlyExpense(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
-                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">FIRE 目標金額</div>
-                                        <div className="text-3xl font-black text-brand-warning">${formatCurrency(fireResult.fireNumber)}</div>
-                                        <div className="text-xs text-slate-400 mt-1 font-medium">年開銷 × {Math.round(100 / fireResult.safeWithdrawalRate)}</div>
-                                    </div>
-                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-orange-50/50">
-                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">距離 FIRE 還需</div>
-                                        <div className="flex items-baseline space-x-1">
-                                            <span className="text-3xl font-black text-slate-900">{fireResult.yearsToFIRE === Infinity ? '∞' : fireResult.yearsToFIRE}</span>
-                                            <span className="text-sm font-bold text-slate-500">年</span>
-                                        </div>
-                                        <div className="text-xs text-brand-primary font-black mt-1">進度 {fireResult.currentProgress.toFixed(1)}%</div>
-                                    </div>
-                                </div>
-                                {/* 進度條 */}
-                                <div className="mt-6 h-2 bg-slate-100 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${fireResult.currentProgress}%` }}
-                                        className="h-full bg-brand-warning shadow-glow"
-                                    />
-                                </div>
-                            </motion.div>
-
-                            {/* 被動收入區塊 */}
-                            <motion.div
-                                whileHover={{ y: -5 }}
-                                className="glass-card rounded-3xl p-8 bg-gradient-to-br from-emerald-50 to-white border border-emerald-100 shadow-xl relative overflow-hidden group"
-                            >
-                                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                                    <Wallet className="w-20 h-20 text-emerald-600" />
-                                </div>
-                                <div className="flex items-center space-x-2 mb-6">
-                                    <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                        <Wallet className="w-5 h-5 text-emerald-600" />
-                                    </div>
-                                    <h3 className="text-lg font-black text-slate-800">💰 被動收入試算</h3>
-                                    <div className="group/info relative cursor-help">
-                                        <Info className="w-4 h-4 text-slate-400" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-[11px] rounded-xl opacity-0 group-hover/info:opacity-100 transition-opacity z-50 pointer-events-none shadow-2xl">
-                                            <p className="font-bold mb-1">如何增加被動收入？</p>
-                                            輸入您理想的月領金額，系統會根據不同殖利率算出您需要的總本金。您可以將此視為「存股」或「房地產」的長期目標。
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-emerald-50">
-                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">目標月被動收入</div>
-                                        <div className="flex items-center space-x-2">
-                                            <span className="text-sm text-slate-400 font-bold">$</span>
-                                            <input
-                                                type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-2xl font-black text-slate-900 outline-none"
-                                                value={formatCurrency(targetPassiveIncome)}
-                                                onChange={(e) => setTargetPassiveIncome(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="bg-white/80 rounded-2xl p-6 shadow-sm border border-emerald-50">
-                                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">所需本金 (5% 殖利率)</div>
-                                        <div className="text-3xl font-black text-emerald-600">${formatCurrency(passiveIncomeResult.requiredCapital)}</div>
-                                    </div>
-                                </div>
-                                <div className="relative group/scroll px-1">
-                                    <button
-                                        onClick={() => scroll('left')}
-                                        title="向左捲動"
-                                        className="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 p-2 bg-white rounded-full shadow-xl z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110 border border-slate-100"
-                                    >
-                                        <ChevronLeft className="w-5 h-5" />
-                                    </button>
-                                    <div
-                                        ref={scrollContainerRef}
-                                        className="flex gap-4 pb-4 overflow-x-auto no-scrollbar scroll-smooth"
-                                    >
-                                        {[3, 4, 5, 6, 7].map((rate) => (
-                                            <div key={rate} className={`flex-shrink-0 w-[110px] p-4 rounded-2xl text-center border-2 transition-all cursor-pointer ${rate === 5 ? 'bg-emerald-100 border-emerald-400 shadow-md scale-105' : 'bg-white border-slate-100 hover:border-emerald-200 hover:shadow-sm'}`}>
-                                                <div className="text-xs font-black text-slate-400 mb-2">{rate}%</div>
-                                                <div className="text-sm font-black text-slate-800">${formatCurrency(Math.round(targetPassiveIncome * 12 / (rate / 100)))}</div>
+                        {/* 第四部分：目標反推與 AI 診斷 (Grid) */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* 目標反推 */}
+                            <div className="bg-indigo-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl flex flex-col justify-between">
+                                <Target className="absolute -right-6 -top-6 text-white/5 w-40 h-40" />
+                                <div className="relative z-10">
+                                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-200 mb-6 underline decoration-indigo-300 underline-offset-4">Dreams Achievement Plan</h3>
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                                                <p className="text-indigo-200 text-[10px] font-black mb-1 italic">目標年期</p>
+                                                <div className="flex items-center"><input type="number" className="bg-transparent text-2xl font-black outline-none w-full" value={goalYears} onChange={(e) => setGoalYears(Number(e.target.value) || 0)} /><span className="text-xs font-bold ml-1 text-indigo-100">Y</span></div>
                                             </div>
-                                        ))}
+                                            <div className="bg-white/10 rounded-2xl p-4 border border-white/10">
+                                                <p className="text-indigo-200 text-[10px] font-black mb-1 italic">終極目標</p>
+                                                <div className="flex items-center text-2xl font-black tracking-tighter overflow-hidden">
+                                                    <span className="text-xs mr-0.5 mt-1">$</span>
+                                                    <input type="text" className="bg-transparent outline-none w-full" value={formatCurrency(goalTarget)} onChange={(e) => setGoalTarget(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="bg-white/10 border-2 border-dashed border-white/20 rounded-2xl p-6 text-center transform hover:scale-[1.02] transition-transform">
+                                            <p className="text-indigo-100 text-[10px] font-black uppercase mb-1">每月需額外儲蓄</p>
+                                            <div className="text-4xl font-black tracking-tight text-white">${formatCurrency(goalReverseResult.monthlyInvestment)}</div>
+                                            <div className="text-[9px] text-indigo-300 mt-2 font-bold opacity-70">基於當前回報率 {annualReturnRate}% 計算</div>
+                                        </div>
                                     </div>
-                                    <button
-                                        onClick={() => scroll('right')}
-                                        title="向右捲動"
-                                        className="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 p-2 bg-white rounded-full shadow-xl z-10 text-slate-400 hover:text-emerald-600 opacity-0 group-hover/scroll:opacity-100 transition-all hover:scale-110 border border-slate-100"
-                                    >
-                                        <ChevronRight className="w-5 h-5" />
-                                    </button>
                                 </div>
-                            </motion.div>
+                            </div>
+
+                            {/* 里程碑 */}
+                            <div className="bg-white border-2 border-slate-100 rounded-[2.5rem] p-8 shadow-sm">
+                                <div className="flex items-center justify-between mb-6">
+                                    <div className="flex items-center space-x-2 text-slate-900">
+                                        <Trophy className="w-5 h-5 text-brand-warning" />
+                                        <h3 className="text-sm font-black uppercase tracking-widest">資產里程碑</h3>
+                                    </div>
+                                    <span className="text-[10px] font-bold text-slate-300">Milestones</span>
+                                </div>
+                                <div className="grid grid-cols-1 gap-2 overflow-y-auto max-h-[220px] pr-2 custom-scrollbar">
+                                    {milestones.map((ms) => {
+                                        const isReached = ms.year === 0;
+                                        return (
+                                            <div key={ms.milestone} className={`flex items-center justify-between p-4 rounded-2xl transition-all ${isReached ? 'bg-brand-primary/5 border border-brand-primary/10' : 'bg-slate-50 border border-slate-100 opacity-60'}`}>
+                                                <div className="flex items-center space-x-3">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-black ${isReached ? 'bg-brand-primary text-white shadow-glow' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                                                        {isReached ? <ShieldCheck className="w-4 h-4" /> : ms.label.charAt(0)}
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-xs font-black text-slate-800">{ms.label}</div>
+                                                        <div className="text-[10px] font-bold text-slate-400 tracking-tighter uppercase">Target: ${formatCurrency(ms.milestone)}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="text-right">
+                                                    <div className={`text-sm font-black ${isReached ? 'text-brand-primary' : 'text-slate-400'}`}>
+                                                        {isReached ? '已達成' : `第 ${ms.year} 年`}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         </div>
 
-
-
-                        {/* 目標反推區塊 (New) - Full Width */}
-                        <div className="w-full">
-                            <motion.div
-                                whileHover={{ y: -5 }}
-                                className="glass-card rounded-3xl p-8 bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 shadow-xl relative overflow-hidden group"
-                            >
-                                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                                    <Target className="w-20 h-20 text-indigo-600" />
-                                </div>
-                                <div className="flex items-center space-x-2 mb-6">
-                                    <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
-                                        <Target className="w-5 h-5 text-indigo-600" />
-                                    </div>
-                                    <h3 className="text-lg font-black text-slate-800">🎯 目標反推：圓夢計畫</h3>
-                                    <div className="group/info relative cursor-help">
-                                        <Info className="w-4 h-4 text-slate-400" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-900 text-white text-[11px] rounded-xl opacity-0 group-hover/info:opacity-100 transition-opacity z-50 pointer-events-none shadow-2xl">
-                                            <p className="font-bold mb-1">如何達成夢想？</p>
-                                            輸入您想在幾年後存到的目標金額（例如買房頭期款、創業基金），系統會根據您的連結本金與投資報酬率，算出每個月需要投入多少。
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-indigo-50">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">我想在 N 年後</div>
-                                        <div className="flex items-center space-x-1">
-                                            <input
-                                                type="number"
-                                                className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
-                                                value={goalYears}
-                                                onChange={(e) => setGoalYears(Number(e.target.value) || 0)}
-                                            />
-                                            <span className="text-xs text-slate-400">年</span>
-                                        </div>
-                                    </div>
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-indigo-50">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">存到目標金額</div>
-                                        <div className="flex items-center space-x-1">
-                                            <span className="text-xs text-slate-400">$</span>
-                                            <input
-                                                type="text" inputMode="numeric"
-                                                className="w-full bg-transparent text-xl font-black text-slate-900 outline-none"
-                                                value={formatCurrency(goalTarget)}
-                                                onChange={(e) => setGoalTarget(parseInt(e.target.value.replace(/[^0-9]/g, '')) || 0)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="bg-white/80 rounded-2xl p-4 shadow-sm border border-indigo-50">
-                                        <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">每月需存</div>
-                                        <div className="text-xl font-black text-indigo-600">${formatCurrency(goalReverseResult.monthlyInvestment)}</div>
-                                    </div>
-                                </div>
-                                <div className="text-[11px] text-slate-500 text-center bg-indigo-50/50 rounded-lg p-2">
-                                    * 以現有本金 <span className="font-bold">${formatCurrency(initialCapital)}</span> 與年報酬 <span className="font-bold">{annualReturnRate}%</span> 複利計算
-                                </div>
-                            </motion.div>
+                        {/* AI 診斷 */}
+                        <div className="mt-4">
+                            <AIInsightCard
+                                title="AI 資本戰略診斷"
+                                buttonText="激活 AI 戰略分析模式"
+                                prompt="你是 TaiCalc 首席資本戰略官。請分析這份複利增長模擬數據，提供 3 個精確洞察。字數 250 字內。"
+                                context={{ initialCapital, monthlyContribution, annualReturnRate, inflationRate, years, totalAssets: finalResult.totalAssets, realAssets: finalResult.realAssets, roi }}
+                            />
                         </div>
-
-                        {/* 資產里程碑 */}
-                        <section className="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-lg">
-                            <div className="flex items-center space-x-2 mb-8">
-                                <Trophy className="w-6 h-6 text-brand-warning" />
-                                <h3 className="text-xl font-black text-slate-900">🏆 資產里程碑</h3>
-                                <span className="text-xs text-slate-400">（根據您的儲蓄與投報率推算達成年份）</span>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                {milestones.map((ms) => {
-                                    const isReached = ms.year === 0;
-                                    return (
-                                        <div key={ms.milestone} className={`relative p-5 rounded-2xl border-2 transition-all ${isReached ? 'border-brand-primary bg-brand-surface' : 'border-slate-100 bg-slate-50 opacity-60'}`}>
-                                            {isReached && <div className="absolute -top-2 -right-2 bg-brand-primary text-white p-1 rounded-full shadow-lg"><ShieldCheck className="w-4 h-4" /></div>}
-                                            <div className="flex items-center space-x-2 mb-2">
-                                                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-lg">{ms.milestone >= 10000000 ? '🏰' : ms.milestone >= 1000000 ? '🏠' : '🎯'}</div>
-                                                <div className="text-sm font-black text-slate-900">{ms.label}</div>
-                                            </div>
-                                            <div className="text-2xl font-black text-slate-900">{isReached ? '已達成' : `第 ${ms.year} 年`}</div>
-                                            <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">達成目標資產</div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </section>
                     </div>
                 </div>
 
-                {/* 延伸閱讀區塊 */}
-                <section className="mt-12 glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
-                    <h3 className="text-xl font-bold text-slate-900 mb-6">📚 延伸閱讀</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <Link href="/mortgage" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">房貸佈局計算器</p>
-                            <p className="text-sm text-slate-500">先還房貸還是先投資？</p>
-                        </Link>
-                        <Link href="/tax" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">稅務優化計算器</p>
-                            <p className="text-sm text-slate-500">投資收益如何報稅</p>
-                        </Link>
-                        <Link href="/salary" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>
-                            <p className="text-sm text-slate-500">計算可投資餘額</p>
-                        </Link>
+                {/* 底部：延伸探索 */}
+                <footer className="mt-20 pt-10 border-t border-slate-200">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="flex items-center space-x-8">
+                            {[
+                                { label: '房貸佈局', path: '/mortgage', icon: <Target className="w-4 h-4" /> },
+                                { label: '稅務優化', path: '/tax', icon: <Info className="w-4 h-4" /> },
+                                { label: '薪資戰略', path: '/salary', icon: <Wallet className="w-4 h-4" /> }
+                            ].map((item) => (
+                                <Link key={item.label} href={item.path} className="flex items-center space-x-2 text-slate-400 hover:text-brand-primary transition-all font-black text-[10px] uppercase tracking-widest group">
+                                    <span className="p-1.5 bg-slate-50 border border-slate-100 rounded-lg group-hover:bg-brand-primary/5 group-hover:border-brand-primary transition-all">{item.icon}</span>
+                                    <span>{item.label}</span>
+                                </Link>
+                            ))}
+                        </div>
+                        <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">© 2025 TaiCalc Financial Engine. All rights reserved.</p>
                     </div>
-                </section>
-            </div >
-        </div >
+                </footer>
+            </main>
+        </div>
     );
 }
