@@ -23,6 +23,7 @@ export default function SalaryCalculatorPage() {
     const [activeTab, setActiveTab] = useState<'normal' | 'reverse'>('normal');
     const [inputSalary, setInputSalary] = useState(50000); // 正常模式：月薪，逆向模式：實領
     const [bonusMonths, setBonusMonths] = useState(2);
+    const [selfContributionRate, setSelfContributionRate] = useState(0); // 勞退自提比例 0-6%
 
     // 根據該模式計算結果
     const results = useMemo(() => {
@@ -33,8 +34,10 @@ export default function SalaryCalculatorPage() {
             calculatedSalary = calculateGrossFromNet(inputSalary);
         }
 
-        return analyzeSalary(calculatedSalary, bonusMonths);
-    }, [inputSalary, bonusMonths, activeTab]);
+        return analyzeSalary(calculatedSalary, bonusMonths, {
+            selfContributionRate,
+        });
+    }, [inputSalary, bonusMonths, activeTab, selfContributionRate]);
 
     // 下載報表功能
     const handleDownload = () => {
@@ -214,6 +217,40 @@ TaiCalc 數策 - 薪資分析報表
                                             aria-label="輸入年終月數"
                                         />
                                     </div>
+                                </div>
+
+                                {/* 勞退自提比例 */}
+                                <div>
+                                    <div className="flex justify-between mb-4 px-1">
+                                        <label className="text-sm font-bold text-slate-600">
+                                            勞退自提 💰
+                                            <span className="text-xs text-slate-400 ml-2">（每月額外存一點，退休多領很多）</span>
+                                        </label>
+                                        <span className="text-lg font-black text-brand-primary px-3 py-1 bg-blue-50 rounded-lg border border-blue-100">
+                                            {selfContributionRate}%
+                                        </span>
+                                    </div>
+                                    <div className="px-1 mb-2">
+                                        <input
+                                            type="range"
+                                            min="0" max="6" step="1"
+                                            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-primary"
+                                            value={selfContributionRate}
+                                            onChange={(e) => setSelfContributionRate(Number(e.target.value))}
+                                            aria-label="選擇勞退自提比例"
+                                        />
+                                    </div>
+                                    <div className="flex justify-between text-xs text-slate-400 px-1">
+                                        <span>不自提（0%）</span>
+                                        <span>最高（6%）</span>
+                                    </div>
+                                    {selfContributionRate > 0 && (
+                                        <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                                            <p className="text-xs text-green-700 font-bold">
+                                                💡 自提 {selfContributionRate}% 可以節稅，而且退休時多領錢！
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* 稅務偵測 Alert */}
