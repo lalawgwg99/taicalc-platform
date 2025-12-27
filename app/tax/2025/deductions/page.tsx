@@ -45,7 +45,7 @@ export default function TaxDeductions2025() {
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -85,7 +85,7 @@ export default function TaxDeductions2025() {
                 <section className="mb-12">
                     <div className="grid md:grid-cols-2 gap-6">
                         {deductions.map((category, index) => (
-                            <div key={index} className="glass-card rounded-3xl p-8 bg-white/60 border border-white/40 shadow-xl backdrop-blur-md hover:shadow-2xl transition-all">
+                            <div key={index} className="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-xl backdrop-blur-md hover:shadow-2xl transition-all">
                                 <div className="flex items-center space-x-3 mb-6">
                                     <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary">
                                         {category.icon}
@@ -138,7 +138,7 @@ export default function TaxDeductions2025() {
                             { title: '標準 vs 列舉', desc: '比較捐贈、醫藥費等，選擇較高者' },
                             { title: '基本生活費', desc: '多口之家特別留意「差額」空間' },
                         ].map((tip, i) => (
-                            <div key={i} className="bg-white/60 border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
+                            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
                                 <h4 className="font-bold text-slate-900 mb-2">{tip.title}</h4>
                                 <p className="text-slate-600 text-sm">{tip.desc}</p>
                             </div>
@@ -164,7 +164,7 @@ export default function TaxDeductions2025() {
                                 a: '免稅額維持 9.2 萬、標準扣除額 12.4 萬（單身）/24.8 萬（已婚）。基本生活費調升至 20.2 萬。'
                             }
                         ].map((faq, i) => (
-                            <div key={i} className="bg-white/60 border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
+                            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
                                 <h4 className="font-bold text-slate-900 mb-2">{faq.q}</h4>
                                 <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
                             </div>

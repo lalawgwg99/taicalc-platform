@@ -183,7 +183,7 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        <div className="glass-card bg-slate-50 p-8 rounded-[32px] border border-slate-200 relative">
+                        <div className="glass-card bg-slate-50 p-8 rounded-2xl border border-slate-200 relative">
                             <div className="relative z-10">
                                 <div className="h-64 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 font-bold bg-white/50">
                                     <span>[ 戰略圖表預覽 ]</span>

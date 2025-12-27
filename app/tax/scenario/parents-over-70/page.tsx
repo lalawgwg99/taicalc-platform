@@ -20,7 +20,7 @@ export default function ParentsOver70Scenario() {
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -57,7 +57,7 @@ export default function ParentsOver70Scenario() {
 
                 {/* 互動試算 */}
                 <section className="mb-12">
-                    <div className="glass-card rounded-3xl p-8 bg-white/60 border border-white/40 shadow-xl backdrop-blur-md">
+                    <div className="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-xl backdrop-blur-md">
                         <h2 className="text-xl font-black text-slate-900 mb-6">調整扶養人數，即時計算免稅額</h2>
 
                         <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -145,11 +145,11 @@ export default function ParentsOver70Scenario() {
                 <section className="mb-12">
                     <h3 className="text-2xl font-black text-slate-900 mb-6">🎯 重點提示</h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-white/60 border border-slate-200 rounded-2xl p-6">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
                             <h4 className="font-bold text-slate-900 mb-2">📅 年齡計算基準</h4>
                             <p className="text-slate-600 text-sm">以「所得年度次年 1 月 1 日」為準。例如 2025 年報稅，看的是 2025/1/1 是否滿 70 歲。</p>
                         </div>
-                        <div className="bg-white/60 border border-slate-200 rounded-2xl p-6">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
                             <h4 className="font-bold text-slate-900 mb-2">👨‍👩‍👧 扶養條件</h4>
                             <p className="text-slate-600 text-sm">須符合「無謀生能力」或「未滿 20 歲」等條件，且須檢附相關證明文件。</p>
                         </div>
@@ -174,7 +174,7 @@ export default function ParentsOver70Scenario() {
                                 a: '若所得超過免稅額（9.2萬）或有其他收入來源，可能不符合「無謀生能力」，需個案判定。'
                             }
                         ].map((faq, i) => (
-                            <div key={i} className="bg-white/60 border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
+                            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
                                 <h4 className="font-bold text-slate-900 mb-2">{faq.q}</h4>
                                 <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
                             </div>

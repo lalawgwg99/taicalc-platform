@@ -17,7 +17,7 @@ export default function TaxBrackets2025() {
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -55,7 +55,7 @@ export default function TaxBrackets2025() {
 
                 {/* 級距表 */}
                 <section className="mb-12">
-                    <div className="glass-card rounded-3xl p-8 bg-white/60 border border-white/40 shadow-xl backdrop-blur-md">
+                    <div className="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-xl backdrop-blur-md">
                         <h2 className="text-2xl font-black text-slate-900 mb-6">📊 2025 綜所稅級距一覽</h2>
                         <div className="overflow-x-auto">
                             <table className="w-full">
@@ -121,7 +121,7 @@ export default function TaxBrackets2025() {
                                 a: '2025 年級距維持五級不變（5%、12%、20%、30%、40%），累進差額也維持相同。'
                             }
                         ].map((faq, i) => (
-                            <div key={i} className="bg-white/60 border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
+                            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-all">
                                 <h4 className="font-bold text-slate-900 mb-2">{faq.q}</h4>
                                 <p className="text-slate-600 text-sm leading-relaxed">{faq.a}</p>
                             </div>

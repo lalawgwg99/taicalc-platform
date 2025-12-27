@@ -81,7 +81,7 @@ TaiCalc 數策 - 薪資分析報表
     return (
         <div className="min-h-screen font-sans pb-32 overflow-x-hidden">
             {/* 極光背景 */}
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-brand-background/80 backdrop-blur-xl border-b border-white/10">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -139,7 +139,7 @@ TaiCalc 數策 - 薪資分析報表
 
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
-                        <section className="glass-card rounded-[32px] p-8 relative overflow-hidden bg-white/70 border border-slate-200">
+                        <section className="glass-card rounded-2xl p-8 relative overflow-hidden bg-white/70 border border-slate-200">
                             <div className="relative z-10 space-y-8">                                {/* 快速填入情境 */}
                                 <div className="mb-6">
                                     <p className="text-xs text-slate-400 mb-2">快速套用：</p>
@@ -276,7 +276,7 @@ TaiCalc 數策 - 薪資分析報表
                         </div>
 
                         {/* 深度分析區 */}
-                        <div className="glass-card rounded-[32px] p-8 bg-white border border-slate-200 shadow-xl shadow-slate-100">
+                        <div className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
                             <div className="flex items-center justify-between mb-8">
                                 <h3 className="text-xl font-bold text-slate-900 flex items-center">
                                     <Info className="w-5 h-5 mr-3 text-brand-primary" />
@@ -356,7 +356,7 @@ TaiCalc 數策 - 薪資分析報表
                 </div>
 
                 {/* 底部 FAQ */}
-                <section className="mt-20 glass-card rounded-[32px] p-10 border border-slate-200 bg-white shadow-lg shadow-slate-100">
+                <section className="mt-20 glass-card rounded-2xl p-10 border border-slate-200 bg-white shadow-lg shadow-slate-100">
                     <h2 className="text-2xl font-black text-slate-900 mb-8">常見問題</h2>
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="space-y-3">

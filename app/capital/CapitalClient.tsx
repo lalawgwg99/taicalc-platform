@@ -121,7 +121,7 @@ TaiCalc 數策 - 資本增長模擬報表
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
             {/* 極光背景 */}
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -171,7 +171,7 @@ TaiCalc 數策 - 資本增長模擬報表
 
                     {/* 左側：控制面板 */}
                     <div className="lg:col-span-4 space-y-6">
-                        <section className="glass-card rounded-[32px] p-8 bg-white/60 border border-white/40 shadow-xl shadow-slate-100/50 backdrop-blur-md">
+                        <section className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md backdrop-blur-md">
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center space-x-2 text-brand-primary">
                                     <Target className="w-5 h-5" />
@@ -281,7 +281,7 @@ TaiCalc 數策 - 資本增長模擬報表
 
                         {/* 核心指標卡片 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="bg-gradient-to-br from-brand-primary to-blue-600 rounded-[32px] p-8 shadow-2xl shadow-blue-500/30 text-white flex flex-col justify-between h-[200px] relative overflow-hidden">
+                            <div className="bg-gradient-to-br from-brand-primary to-blue-600 rounded-2xl p-8 shadow-lg text-white flex flex-col justify-between h-[200px] relative overflow-hidden">
                                 <TrendingUp className="absolute right-4 top-4 text-white/10 w-32 h-32 -rotate-12" />
                                 <div>
                                     <h3 className="text-xs font-black text-blue-100 uppercase tracking-widest mb-1">{years} 年後總資產 (名目)</h3>
@@ -298,7 +298,7 @@ TaiCalc 數策 - 資本增長模擬報表
                                 </div>
                             </div>
 
-                            <div className="bg-white border border-slate-200 rounded-[32px] p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
+                            <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
                                 <TrendingDown className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
                                 <div>
                                     <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
@@ -317,7 +317,7 @@ TaiCalc 數策 - 資本增長模擬報表
                         </div>
 
                         {/* 4% 法則 - 被動收入分析 */}
-                        <div className="bg-slate-900 rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl shadow-slate-900/20">
+                        <div className="bg-slate-900 rounded-2xl p-8 text-white relative overflow-hidden shadow-lg">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                             <div className="grid md:grid-cols-2 gap-8 relative z-10">
@@ -368,7 +368,7 @@ TaiCalc 數策 - 資本增長模擬報表
                         </div>
 
                         {/* Chart */}
-                        <div className="glass-card rounded-[32px] p-8 bg-white border border-slate-200 shadow-xl shadow-slate-100">
+                        <div className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
                             <div className="flex items-center justify-between mb-8">
                                 <div className="flex items-center space-x-2">
                                     <TrendingUp className="w-5 h-5 text-brand-primary" />

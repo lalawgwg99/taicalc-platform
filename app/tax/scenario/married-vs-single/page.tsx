@@ -44,7 +44,7 @@ export default function MarriedVsSingleScenario() {
 
     return (
         <div className="min-h-screen bg-brand-background font-sans pb-32 overflow-x-hidden text-slate-900">
-            <div className="fixed inset-0 pointer-events-none -z-10 aurora-bg opacity-70" />
+            <div className="fixed inset-0 pointer-events-none -z-10 " />
 
             <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -81,7 +81,7 @@ export default function MarriedVsSingleScenario() {
 
                 {/* 互動試算 */}
                 <section className="mb-12">
-                    <div className="glass-card rounded-3xl p-8 bg-white/60 border border-white/40 shadow-xl backdrop-blur-md">
+                    <div className="glass-card rounded-3xl p-8 bg-white border border-slate-200 shadow-xl backdrop-blur-md">
                         <h2 className="text-xl font-black text-slate-900 mb-6">調整年收入，即時比較稅負</h2>
                         <div className="mb-8">
                             <label className="block text-sm font-bold text-slate-600 mb-3">年收入</label>
@@ -166,11 +166,11 @@ export default function MarriedVsSingleScenario() {
                 <section className="mb-12">
                     <h3 className="text-2xl font-black text-slate-900 mb-6">為什麼已婚比較省？</h3>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-white/60 border border-slate-200 rounded-2xl p-6">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
                             <h4 className="font-bold text-slate-900 mb-2">📋 標準扣除額加倍</h4>
                             <p className="text-slate-600 text-sm">單身 12.4萬 → 已婚 24.8萬，多了 12.4萬 的扣除空間。</p>
                         </div>
-                        <div className="bg-white/60 border border-slate-200 rounded-2xl p-6">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6">
                             <h4 className="font-bold text-slate-900 mb-2">👥 免稅額增加</h4>
                             <p className="text-slate-600 text-sm">配偶算一個扶養人口，多 9.2萬 免稅額。</p>
                         </div>
