@@ -248,6 +248,29 @@ TaiCalc 數策 - 資本決策模擬報表
                                         value={param.value} onChange={(e) => param.setter(Number(e.target.value))}
                                         className="w-full h-1.5 bg-slate-100 rounded-full appearance-none accent-slate-900 group-hover:accent-brand-primary transition-all cursor-pointer"
                                     />
+                                    {param.label === '預期年化報酬' && (
+                                        <div className="grid grid-cols-3 gap-2 mt-4">
+                                            {[
+                                                { label: '定存', rate: 1.5 },
+                                                { label: '黃金', rate: 4 },
+                                                { label: '基金', rate: 6 },
+                                                { label: '台股', rate: 8 },
+                                                { label: '美股', rate: 10 },
+                                                { label: '加密幣', rate: 15 },
+                                            ].map((item) => (
+                                                <button
+                                                    key={item.label}
+                                                    onClick={() => param.setter(item.rate)}
+                                                    className={`text-[11px] py-2 px-1 rounded-xl border transition-all font-black text-center ${param.value === item.rate
+                                                        ? 'bg-slate-800 text-white border-slate-800 shadow-lg scale-105'
+                                                        : 'bg-white text-slate-400 border-slate-100 hover:border-brand-primary hover:text-brand-primary'
+                                                        }`}
+                                                >
+                                                    {item.label} <span className="block text-[9px] opacity-80">{item.rate}%</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
