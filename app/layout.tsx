@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import SchemaOrg from '@/components/SEO/SchemaOrg';
 import { GoogleAnalytics, GATracker } from '@/lib/ga4';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '700', '900'], variable: '--font-noto-sans' });
@@ -75,6 +76,7 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-brand-background text-brand-text-primary overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
         <GATracker />
         {children}
+        <Footer />
       </body>
     </html>
   );
