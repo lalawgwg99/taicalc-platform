@@ -79,7 +79,7 @@ TaiCalc 數策 - 薪資分析報表
 
 
     return (
-        <div className="min-h-screen font-sans pb-32 overflow-x-hidden">
+        <div className="min-h-screen font-sans pb-8 overflow-x-hidden">
             {/* 極光背景 */}
             <div className="fixed inset-0 pointer-events-none -z-10 " />
 
@@ -91,9 +91,19 @@ TaiCalc 數策 - 薪資分析報表
                         </div>
                         <span className="text-lg font-bold text-brand-text-secondary group-hover:text-brand-text-primary transition-colors">返回首頁</span>
                     </Link>
-                    <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
-                        <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">數策</span></span>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={handleDownload}
+                            className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95"
+                            aria-label="下載報表"
+                        >
+                            <Download className="w-4 h-4" />
+                            <span>下載報表</span>
+                        </button>
+                        <div className="flex items-center space-x-2">
+                            <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white font-black shadow-glow">T</div>
+                            <span className="text-lg font-bold tracking-tight">TaiCalc <span className="text-brand-primary">數策</span></span>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -372,17 +382,7 @@ TaiCalc 數策 - 薪資分析報表
 
             </main>
 
-            <footer className="fixed bottom-0 left-0 right-0 bg-brand-surface/90 backdrop-blur-xl border-t border-white/10 p-4 z-40">
-                <div className="max-w-7xl mx-auto flex gap-4">
-                    <button onClick={handleDownload} className="flex items-center space-x-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-brand-primary transition-all shadow-sm active:scale-95" aria-label="下載分析報表">
-                        <Download className="w-4 h-4" />
-                        <span>下載報表</span>
-                    </button>
-                    <button className="px-6 bg-brand-surface border border-white/10 text-white h-14 rounded-xl font-bold hover:bg-white/5 transition-all" aria-label="分享分析結果">
-                        <Share2 className="w-5 h-5" />
-                    </button>
-                </div>
-            </footer>
+
         </div>
     );
 }
