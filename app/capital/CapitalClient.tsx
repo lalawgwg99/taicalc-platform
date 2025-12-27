@@ -54,7 +54,17 @@ export default function CapitalPage() {
     // FIRE 計算
     const [monthlyExpense, setMonthlyExpense] = useState(50000);
     const fireResult = useMemo(() => {
-        return calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate, 4, inflationRate);
+        const result = calculateFIRE(monthlyExpense, initialCapital, monthlyContribution, annualReturnRate, 4, inflationRate);
+        // UI 層安全過濾，確保不回傳 NaN 或 Infinity 導致 React Render Error
+        return {
+            ...result,
+            fireNumber: Number.isFinite(result.fireNumber) ? result.fireNumber : 0,
+            monthlyExpense: Number.isFinite(result.monthlyExpense) ? result.monthlyExpense : 0,
+            safeWithdrawalRate: Number.isFinite(result.safeWithdrawalRate) ? result.safeWithdrawalRate : 4,
+            yearsToFIRE: Number.isFinite(result.yearsToFIRE) ? result.yearsToFIRE : 999, // 顯示為極大值而非 Infinity
+            monthlyInvestmentNeeded: Number.isFinite(result.monthlyInvestmentNeeded) ? result.monthlyInvestmentNeeded : 0,
+            currentProgress: Number.isFinite(result.currentProgress) ? Math.min(100, Math.max(0, result.currentProgress)) : 0,
+        };
     }, [monthlyExpense, initialCapital, monthlyContribution, annualReturnRate, inflationRate]);
 
     // 被動收入計算
@@ -354,7 +364,7 @@ TaiCalc 數策 - 資本決策模擬報表
                                                 className="h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]"
                                             />
                                         </div>
-                                        <p className="text-[10px] text-orange-100/70 mt-3 font-bold">預計還要 {fireResult.yearsToFIRE === Infinity ? '∞' : fireResult.yearsToFIRE} 年達成財務自由</p>
+                                        <p className="text-[10px] text-orange-100/70 mt-3 font-bold">預計還要 {fireResult.yearsToFIRE >= 100 ? '99+' : fireResult.yearsToFIRE} 年達成財務自由</p>
                                     </div>
                                 </div>
                             </div>
