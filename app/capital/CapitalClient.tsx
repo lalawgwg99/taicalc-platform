@@ -97,14 +97,14 @@ export default function CapitalPage() {
         if (active && payload && payload.length) {
             return (
                 <div className="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-slate-100 ring-1 ring-black/5">
-                    <p className="text-sm font-bold text-slate-500 mb-2">第 {label} 年 (Year {label})</p>
+                    <p className="text-sm font-bold text-slate-500 mb-2">第 {label} 年</p>
                     <div className="space-y-2">
                         <p className="text-sm flex items-center justify-between min-w-[180px]">
                             <span className="text-brand-primary font-bold">名目總資產</span>
                             <span className="font-mono font-black text-slate-900">${formatCurrency(payload[0].value)}</span>
                         </p>
                         <p className="text-xs flex items-center justify-between text-emerald-600">
-                            <span className="font-bold">實質購買力 (Real)</span>
+                            <span className="font-bold">實質購買力</span>
                             <span className="font-mono font-bold">${formatCurrency(payload[1].value)}</span>
                         </p>
                         <p className="text-xs flex items-center justify-between text-slate-400 border-t border-slate-100 pt-1 mt-1">
@@ -188,8 +188,8 @@ TaiCalc 數策 - 資本增長模擬報表
                             animate={{ opacity: 1, y: 0 }}
                             className="flex items-center space-x-3 mb-3"
                         >
-                            <div className="bg-brand-warning text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-amber-200">New</div>
-                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">資本決策模擬 <span className="text-brand-warning">PRO</span></h1>
+                            <div className="bg-brand-warning text-white text-[11px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-amber-200">全新</div>
+                            <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">資本決策模擬 <span className="text-brand-warning">版本專業版</span></h1>
                         </motion.div>
                         <p className="text-slate-500 font-medium max-w-2xl text-lg">
                             不僅看見複利的力量，更看清通膨的代價。為您的財務自由制定真實可行的時間表。
@@ -360,7 +360,7 @@ TaiCalc 數策 - 資本增長模擬報表
                                 <TrendingDown className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
                                 <div>
                                     <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
-                                        實質購買力 (Real Purchasing Power)
+                                        實質購買力
                                         <Info className="w-3 h-3 ml-1 text-slate-300" />
                                     </h3>
                                     <div className="text-4xl font-black tracking-tight text-slate-900">${formatCurrency(finalResult.realAssets)}</div>
@@ -380,7 +380,7 @@ TaiCalc 數策 - 資本增長模擬報表
 
                             <div className="grid md:grid-cols-2 gap-8 relative z-10">
                                 <div>
-                                    <h3 className="text-xs font-black text-brand-accent uppercase tracking-widest mb-4">FIRE 財務自由指標 (4% Rule)</h3>
+                                    <h3 className="text-xs font-black text-brand-accent uppercase tracking-widest mb-4">FIRE 財務自由指標 (4% 法則)</h3>
                                     <div className="space-y-6">
                                         <div>
                                             <p className="text-slate-400 text-xs font-bold uppercase mb-1">每月被動收入 (名目)</p>
@@ -712,7 +712,7 @@ TaiCalc 數策 - 資本增長模擬報表
                                                 <div className="text-sm font-black text-slate-900">{ms.label}</div>
                                             </div>
                                             <div className="text-2xl font-black text-slate-900">{isReached ? '已達成' : `第 ${ms.year} 年`}</div>
-                                            <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">Achievement Target</div>
+                                            <div className="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tighter">達成目標資產</div>
                                         </div>
                                     );
                                 })}
