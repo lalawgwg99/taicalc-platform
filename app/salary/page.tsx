@@ -353,6 +353,61 @@ TaiCalc 數策 - 薪資分析報表
                             </div>
                         </div>
 
+                        {/* AI 判讀區：為什麼這個數字重要？ */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="glass-card rounded-2xl p-6 bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 shadow-sm"
+                        >
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0">
+                                    <Zap className="w-6 h-6 text-purple-600" />
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-black text-purple-900 mb-3 flex items-center gap-2">
+                                        🧠 AI 判讀：這個薪資結構告訴你什麼？
+                                    </h4>
+                                    <div className="space-y-3 text-sm">
+                                        {/* 實領率分析 */}
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2 flex-shrink-0" />
+                                            <p className="text-purple-900">
+                                                <span className="font-black">實領率 {Math.round((results.annual.net / results.annual.gross) * 100)}%</span>
+                                                {Math.round((results.annual.net / results.annual.gross) * 100) >= 75
+                                                    ? ' 屬於高實領等級，代表您的稅務負擔相對較輕。'
+                                                    : Math.round((results.annual.net / results.annual.gross) * 100) >= 70
+                                                        ? ' 屬於中等水準，這是台灣中產階級的常態。'
+                                                        : ' 偏低，代表扣除項目較多，建議檢查是否有節稅空間。'
+                                                }
+                                            </p>
+                                        </div>
+
+                                        {/* 隱藏價值提示 */}
+                                        {selfContributionRate > 0 && (
+                                            <div className="flex items-start gap-2">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                                                <p className="text-purple-900">
+                                                    <span className="font-black">勞退自提 {selfContributionRate}%</span> 雖然降低了實領，但 30 年後可多領約 {formatCurrency(Math.round(results.monthly.gross * selfContributionRate * 0.01 * 12 * 30 * 1.065))} 元退休金。
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {/* 行動建議 */}
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                                            <p className="text-purple-900">
+                                                {activeTab === 'normal'
+                                                    ? `若想提高實領金額，可考慮：(1) 將年終分散成月薪 (2) ${selfContributionRate === 0 ? '開始勞退自提來節稅' : '增加勞退自提比例'} (3) 使用列舉扣除額`
+                                                    : `若要實領 ${formatCurrency(inputSalary)} 元，您應該跟 HR 開 ${formatCurrency(results.monthly.gross)} 元的月薪（已含勞健保成本）`
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+
                         {/* 深度分析區 */}
                         <div className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
                             <div className="flex items-center justify-between mb-8">
