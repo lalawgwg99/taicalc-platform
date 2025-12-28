@@ -51,24 +51,30 @@ export default function CapitalPage() {
         return (profit / totalInvested) * 100;
     }, [simulationData]);
 
-    // 自定義 Tooltip
+    // 自定義 Tooltip (安全版本)
     const CustomTooltip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
+        if (active && payload && payload.length > 0) {
+            // 從 simulationData 取得完整資料，避免依賴 payload 順序
+            const yearData = simulationData.find((d) => d.year === label);
+            const totalAssets = payload[0]?.value ?? 0;
+            const realAssets = payload[1]?.value ?? yearData?.realAssets ?? 0;
+            const principal = yearData?.principal ?? 0;
+
             return (
                 <div className="bg-slate-900/95 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-white/10 ring-1 ring-white/5 text-white">
                     <p className="text-xs font-black text-slate-400 mb-2 uppercase tracking-widest">第 {label} 年預估</p>
                     <div className="space-y-2">
                         <div className="flex items-center justify-between gap-8">
                             <span className="text-blue-400 font-bold text-sm">名目總資產</span>
-                            <span className="font-mono font-black text-lg">${formatCurrency(payload[0].value)}</span>
+                            <span className="font-mono font-black text-lg">${formatCurrency(totalAssets)}</span>
                         </div>
                         <div className="flex items-center justify-between gap-8 border-t border-white/5 pt-1">
                             <span className="text-emerald-400 font-bold text-xs">實質購買力</span>
-                            <span className="font-mono font-bold text-sm text-emerald-100">${formatCurrency(payload[1].value)}</span>
+                            <span className="font-mono font-bold text-sm text-emerald-100">${formatCurrency(realAssets)}</span>
                         </div>
                         <div className="flex items-center justify-between gap-8 border-t border-white/5 pt-1">
                             <span className="text-slate-500 font-bold text-[10px]">累計投入本金</span>
-                            <span className="font-mono text-[10px] text-slate-400">${formatCurrency(payload[2].value)}</span>
+                            <span className="font-mono text-[10px] text-slate-400">${formatCurrency(principal)}</span>
                         </div>
                     </div>
                 </div>
