@@ -33,11 +33,13 @@
 ## 🛠️ 技術架構
 
 - **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+- **UI Architecture**: Schema-Driven Design (CalculatorPageShell + uiCatalog)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [Lucide React](https://lucide.dev/), Framer Motion
+- **Components**: [Lucide React](https://lucide.dev/), Framer Motion
 - **Visualization**: [Recharts](https://recharts.org/)
-- **Deployment**: Vercel / Cloudflare Pages Ready
-- **Accessibility**: WCAG Compliant (`aria-label`, `sr-only` support)
+- **Analytics**: Google Analytics 4 (Native Integration)
+- **Deployment**: Cloudflare Pages Compatible
+- **Security**: Public/Private API Layer Separation
 - **Privacy**: Local-First Computation (數據不離機)
 
 ## 📦 安裝與執行

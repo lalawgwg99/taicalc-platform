@@ -24,42 +24,68 @@ taicalc/
 ├── app/
 │   ├── api/
 │   │   ├── chat/route.ts         # AI Chat API (Gemini Tool Calling)
-│   │   ├── skills/route.ts       # 列出所有 Skill
-│   │   ├── skills/[skillId]/     # 執行單一 Skill
-│   │   ├── skills/chain/         # 鏈式執行 Skill（支援條件分支）
+│   │   ├── public/
+│   │   │   └── execute/route.ts  # Public Skill Execution API (No Key Required for Frontend)
+│   │   ├── skills/route.ts       # 列出所有 Skill (Admin/Debug)
+│   │   ├── skills/[skillId]/     # 執行單一 Skill (Admin/Debug)
 │   │   └── ai/
 │   │       ├── analyze/route.ts  # AI 分析 API
 │   │       └── fortune/route.ts  # 財運命盤 AI API
-│   ├── salary/                   # 薪資計算頁
-│   ├── tax/                      # 稅務計算頁
-│   ├── mortgage/                 # 房貸計算頁
+│   ├── calculators/
+│   │   └── [skillId]/page.tsx    # 通用計算機入口 (Dynamic Route)
+│   ├── salary/                   # 薪資計算頁 (Uses Shell)
+│   ├── tax/                      # 稅務計算頁 (Uses Shell)
+│   ├── mortgage/                 # 房貸計算頁 (Uses Shell)
 │   ├── retirement/               # 退休規劃頁
-│   ├── fortune/                  # 財運命盤頁
-│   ├── developers/               # 開發者文件頁
-│   └── home-assessment/          # 買房全能評估頁
+│   ├── fortune/                  # 財運命盤頁 (Uses Shell)
+│   └── developers/               # 開發者文件頁
 ├── components/
 │   ├── AI/
-│   │   ├── TaiCalcChat.tsx       # 浮動 AI 對話按鈕
-│   │   └── AIInsightCard.tsx     # AI 洞察卡片
+│   ├── calculators/
+│   │   └── CalculatorPageShell.tsx # 核心計算機外殼 (Unified Layout)
 │   └── skills/
-│       └── SkillForm.tsx         # 根據 Schema 自動生成表單
+│       └── SkillForm.tsx         # 通用表單 (Schema Driven)
 ├── lib/
 │   ├── skills/
 │   │   ├── registry.ts           # Skill 註冊中心
-│   │   ├── executor.ts           # Skill 執行器（含條件分支 DSL）
-│   │   ├── types.ts              # 類型定義 v2
+│   │   ├── uiCatalog.ts          # UI 元數據目錄 (Labels, Highlights, etc.)
+│   │   ├── uiTypes.ts            # UI 類型定義
+│   │   ├── getSkillUI.ts         # UI Helper
 │   │   └── implementations/      # Skill 實作
-│   │       ├── salary.skill.ts   # 3 個薪資 Skill
-│   │       ├── tax.skill.ts      # 2 個稅務 Skill
-│   │       ├── capital.skill.ts  # 5 個資本 Skill
-│   │       ├── mortgage.skill.ts # 3 個房貸 Skill
-│   │       └── fortune.skill.ts  # 1 個財運 Skill（娛樂類）
-│   ├── ga4.tsx                   # GA4 追蹤整合
-│   ├── db/
-│   │   └── logger.ts             # 執行日誌系統
-│   └── calculations.ts           # 核心計算邏輯
+│   ├── ga4.tsx                   # GA4 可以在這裡，但主要在 layout.tsx
+│   ├── publicExecute.ts          # 前端呼叫 Public API 的 Helper
+│   └── format.ts                 # 格式化工具
 └── middleware.ts                 # API 安全層
 ```
+
+---
+
+## 🎨 UI 架構 2.0 (Schema-Driven)
+
+為了解決頁面重複開發與風格不統一的問題，TaiCalc 2.0 採用 Schema-Driven UI 架構。
+
+### 核心組件
+
+1. **`CalculatorPageShell`**:
+    - 統一的頁面外殼，包含標題、說明、表單區域、結果區域、AI 分析卡片。
+    - 負責狀態管理 (Loading, Result, Error) 與 API 呼叫串接。
+    - 自動整合 `SkillForm` 與結果展示。
+
+2. **`SkillForm`**:
+    - 完全由 Zod Schema 與 `uiCatalog` 驅動。
+    - 支援文字、數字、下拉選單 (Select/Enum) 等輸入類型。
+    - 支援 `inputMode` 與驗證。
+
+3. **`uiCatalog.ts`**:
+    - 定義所有 Skill 的 UI 元數據 (Meta Data)。
+    - 包含：標題 (Title)、欄位標籤 (Label)、單位 (Unit)、佔位符 (Placeholder)、範例 (Examples)、結果亮點 (Highlights)。
+    - 新增 Skill 時，只需在此設定 UI，不需寫新頁面。
+
+### 開發流程
+
+1. 定義 `skill.ts` (Zod Schema)。
+2. 在 `uiCatalog.ts` 設定 UI Metadata。
+3. 頁面直接使用 `<CalculatorPageShell skillId="..." />`。
 
 ---
 
@@ -151,13 +177,32 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 ---
 
-## 🔒 API 安全 (middleware.ts)
+---
 
-- 攔截 `/api/skills/*` 請求
-- 驗證 `x-api-key` Header
-- 生產環境強制驗證
+## 🔒 API 安全 (middleware.ts & Public API)
+
+### Public API (`/api/public/execute`)
+
+- 用途：供前端直接呼叫 Skill，不需 API Key。
+- 安全機制：內建 `ALLOWLIST`，只允許特定的 Public Skill (如計算機類) 被執行。
+- 實現：`lib/publicExecute.ts` 封裝了呼叫邏輯。
+
+### Protected API (`/api/skills/*`)
+
+- 用途：後台管理、除錯或特殊權限操作。
+- 安全機制：
+  - 攔截 `/api/skills/*` 請求。
+  - 驗證 `x-api-key` Header。
+  - 生產環境強制驗證 `API_SECRET_KEY`。
 
 ---
+
+## 📊 GA4 追蹤整合
+
+- **ID**: `G-J6BM5DCBNN`
+- **實作方式**: 直接於 `app/layout.tsx` 注入 `gtag.js` 腳本 (方案 1)。
+- **環境變數**: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (用於 Local 開發控制或 GATracker 元件，核心腳本已硬寫 ID)。
+- **自定義事件**: 透過 `lib/ga4.tsx` 的 `GA_EVENTS` 發送。
 
 ## 📋 Cloudflare 部署注意事項
 
