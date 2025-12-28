@@ -64,6 +64,13 @@ class SkillRegistry implements ISkillRegistry {
             id, name, description, tags
         }));
     }
+
+    /**
+     * 取得所有 Skill 的 Map（供 AI Tool Calling 使用）
+     */
+    getAll(): Map<string, SkillDefinition> {
+        return this.skills;
+    }
 }
 
 // Singleton instance

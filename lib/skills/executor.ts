@@ -5,13 +5,15 @@
 
 import { SkillDefinition, SkillExecutionResult, SkillChainStep, SkillChainResult } from './types';
 import { skillRegistry } from './registry';
+import { SkillLogger } from '@/lib/db/logger';
 
 /**
  * 執行單一 Skill
  */
 export async function executeSkill<TInput, TOutput>(
     skillId: string,
-    input: TInput
+    input: TInput,
+    source: 'api' | 'chat' | 'chain' = 'api'
 ): Promise<SkillExecutionResult<TOutput>> {
     const startTime = Date.now();
     const timestamp = new Date().toISOString();
@@ -19,26 +21,47 @@ export async function executeSkill<TInput, TOutput>(
     // 取得 Skill
     const skill = skillRegistry.get(skillId) as SkillDefinition<TInput, TOutput> | undefined;
     if (!skill) {
-        return {
-            success: false,
+        const result = {
+            success: false as const,
             skillId,
             error: `找不到 Skill: ${skillId}`,
             executionTime: Date.now() - startTime,
             timestamp,
         };
+        // 記錄失敗日誌
+        await SkillLogger.logExecution({
+            skillId,
+            input,
+            durationMs: result.executionTime,
+            success: false,
+            error: result.error,
+            timestamp: new Date(),
+            source,
+        });
+        return result;
     }
 
     try {
         // 驗證輸入
         const validationResult = skill.inputSchema.safeParse(input);
         if (!validationResult.success) {
-            return {
-                success: false,
+            const result = {
+                success: false as const,
                 skillId,
                 error: `輸入驗證失敗: ${validationResult.error.message}`,
                 executionTime: Date.now() - startTime,
                 timestamp,
             };
+            await SkillLogger.logExecution({
+                skillId,
+                input,
+                durationMs: result.executionTime,
+                success: false,
+                error: result.error,
+                timestamp: new Date(),
+                source,
+            });
+            return result;
         }
 
         // 執行 Skill
@@ -50,21 +73,44 @@ export async function executeSkill<TInput, TOutput>(
             console.warn(`[Executor] Skill ${skillId} 輸出驗證失敗:`, outputValidation.error);
         }
 
-        return {
-            success: true,
+        const result = {
+            success: true as const,
             skillId,
             data: output,
             executionTime: Date.now() - startTime,
             timestamp,
         };
+
+        // 記錄成功日誌
+        await SkillLogger.logExecution({
+            skillId,
+            input,
+            output,
+            durationMs: result.executionTime,
+            success: true,
+            timestamp: new Date(),
+            source,
+        });
+
+        return result;
     } catch (error) {
-        return {
-            success: false,
+        const result = {
+            success: false as const,
             skillId,
             error: error instanceof Error ? error.message : '執行發生未知錯誤',
             executionTime: Date.now() - startTime,
             timestamp,
         };
+        await SkillLogger.logExecution({
+            skillId,
+            input,
+            durationMs: result.executionTime,
+            success: false,
+            error: result.error,
+            timestamp: new Date(),
+            source,
+        });
+        return result;
     }
 }
 

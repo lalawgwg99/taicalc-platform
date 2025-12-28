@@ -4,6 +4,7 @@ import './globals.css';
 import SchemaOrg from '@/components/SEO/SchemaOrg';
 import { GoogleAnalytics, GATracker } from '@/lib/ga4';
 import Footer from '@/components/Footer';
+import { TaiCalcChat } from '@/components/AI';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '700', '900'], variable: '--font-noto-sans' });
@@ -77,7 +78,9 @@ export default function RootLayout({
         <GATracker />
         {children}
         <Footer />
+        <TaiCalcChat />
       </body>
     </html>
   );
 }
+
