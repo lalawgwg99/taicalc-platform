@@ -35,24 +35,57 @@ export function extractSchemaFields(
 ): FieldMeta[] {
     const fields: FieldMeta[] = [];
 
-    // 嘗試解析 ZodObject
-    try {
-        const def = (schema as any)._def;
-        if (!def || def.typeName !== 'ZodObject') {
-            return fields;
+    // Helper to safely unwrap schema layers (ZodEffects, ZodOptional, ZodDefault, etc.)
+    let target: any = schema;
+    let depth = 0;
+    while (depth < 10) { // prevent infinite loops
+        if (target._def?.typeName === 'ZodOptional' && typeof target.unwrap === 'function') {
+            target = target.unwrap();
+        } else if (target._def?.typeName === 'ZodDefault' && typeof target.removeDefault === 'function') {
+            target = target.removeDefault();
+        } else if (target._def?.typeName === 'ZodEffects' && typeof target.innerType === 'function') {
+            target = target.innerType();
+        } else if (target._def?.typeName === 'ZodEffects' && target._def.schema) {
+            target = target._def.schema;
+        } else if (target._def?.typeName === 'ZodPipeline' && target._def.in) {
+            target = target._def.in;
+        } else {
+            break;
         }
-
-        const shape = def.shape?.() || {};
-
-        for (const [key, fieldSchema] of Object.entries(shape)) {
-            const field = extractFieldMeta(key, fieldSchema, paramDescriptions[key]);
-            if (field) {
-                fields.push(field);
-            }
-        }
-    } catch {
-        // 無法解析時返回空陣列
+        depth++;
     }
+
+    // Try to get shape from standard ZodObject
+    let shape: any = null;
+
+    // 1. Try public .shape property (Zod v3+)
+    if (target && typeof target === 'object' && 'shape' in target) {
+        shape = target.shape;
+    }
+    // 2. Try _def.shape() function (older Zod or internal)
+    else if (target?._def && typeof target._def.shape === 'function') {
+        shape = target._def.shape();
+    }
+    // 3. Try _def.shape property
+    else if (target?._def && target._def.shape) {
+        shape = target._def.shape;
+    }
+
+    if (!shape) {
+        // console.warn('Could not extract shape from schema', target?._def?.typeName);
+        return fields;
+    }
+
+    for (const [key, fieldSchema] of Object.entries(shape)) {
+        const field = extractFieldMeta(key, fieldSchema, paramDescriptions[key]);
+        if (field) {
+            fields.push(field);
+        }
+    }
+
+
+
+
 
     return fields;
 }
@@ -62,90 +95,106 @@ function extractFieldMeta(
     schema: unknown,
     description?: string
 ): FieldMeta | null {
-    try {
-        let innerSchema: any = schema;
-        let required = true;
-        let defaultValue: unknown = undefined;
+    // Remove global try/catch to identify errors
+    // try {
+    let innerSchema: any = schema;
+    let required = true;
+    let defaultValue: unknown = undefined;
 
-        // 解包 ZodDefault
-        if (innerSchema?._def?.typeName === 'ZodDefault') {
-            defaultValue = typeof innerSchema._def.defaultValue === 'function'
-                ? innerSchema._def.defaultValue()
-                : innerSchema._def.defaultValue;
-            innerSchema = innerSchema._def.innerType;
-        }
+    // Recursive unwrapping loop
+    let depth = 0;
+    while (depth < 10) {
+        const def = innerSchema?._def;
+        if (!def) break;
 
-        // 解包 ZodOptional
-        if (innerSchema?._def?.typeName === 'ZodOptional') {
+        if (def.typeName === 'ZodDefault') {
+            defaultValue = typeof def.defaultValue === 'function'
+                ? def.defaultValue()
+                : def.defaultValue;
+            innerSchema = def.innerType;
+        } else if (def.typeName === 'ZodOptional') {
             required = false;
-            innerSchema = innerSchema._def.innerType;
+            innerSchema = def.innerType;
+        } else if (def.typeName === 'ZodEffects') {
+            innerSchema = def.schema; // or innerType
+        } else if (def.typeName === 'ZodPipeline') {
+            innerSchema = def.in;
+        } else if (def.typeName === 'ZodNullable') {
+            required = false;
+            innerSchema = def.innerType;
+        } else {
+            break;
         }
-
-        const typeName = innerSchema?._def?.typeName;
-        const schemaDesc = innerSchema?._def?.description || innerSchema?.description;
-        const label = description || schemaDesc || name;
-
-        // 數字類型
-        if (typeName === 'ZodNumber') {
-            const checks = innerSchema._def.checks || [];
-            let min: number | undefined;
-            let max: number | undefined;
-
-            for (const check of checks) {
-                if (check?.kind === 'min') min = check.value;
-                if (check?.kind === 'max') max = check.value;
-            }
-
-            // 自動判斷單位
-            let unit = '';
-            const nameLower = name.toLowerCase();
-            if (nameLower.includes('salary') || nameLower.includes('amount') || nameLower.includes('income') || nameLower.includes('payment')) {
-                unit = '元';
-            } else if (nameLower.includes('rate')) {
-                unit = '%';
-            } else if (nameLower.includes('year')) {
-                unit = '年';
-            }
-
-            return {
-                name,
-                type: 'number',
-                label,
-                required,
-                default: defaultValue,
-                min,
-                max,
-                step: nameLower.includes('rate') ? 0.1 : 1000,
-                unit,
-            };
-        }
-
-        // 布林類型
-        if (typeName === 'ZodBoolean') {
-            return {
-                name,
-                type: 'boolean',
-                label,
-                required,
-                default: defaultValue ?? false,
-            };
-        }
-
-        // 字串類型
-        if (typeName === 'ZodString') {
-            return {
-                name,
-                type: 'string',
-                label,
-                required,
-                default: defaultValue,
-            };
-        }
-
-        return null;
-    } catch {
-        return null;
+        depth++;
     }
+
+
+    const typeName = innerSchema?._def?.typeName || innerSchema?.constructor?.name;
+
+    // Use description from schema if not provided via paramDescriptions
+    const schemaDesc = innerSchema?._def?.description || innerSchema?.description;
+    const label = description || schemaDesc || name;
+
+    // 數字類型
+    if (typeName === 'ZodNumber') {
+        const checks = innerSchema._def.checks || [];
+        let min: number | undefined;
+        let max: number | undefined;
+
+        for (const check of checks) {
+            if (check?.kind === 'min') min = check.value;
+            if (check?.kind === 'max') max = check.value;
+        }
+
+        // 自動判斷單位
+        let unit = '';
+        const nameLower = name.toLowerCase();
+        if (nameLower.includes('salary') || nameLower.includes('amount') || nameLower.includes('income') || nameLower.includes('payment')) {
+            unit = '元';
+        } else if (nameLower.includes('rate')) {
+            unit = '%';
+        } else if (nameLower.includes('year')) {
+            unit = '年';
+        }
+
+        return {
+            name,
+            type: 'number',
+            label,
+            required,
+            default: defaultValue,
+            min,
+            max,
+            step: nameLower.includes('rate') ? 0.1 : 1000,
+            unit,
+        };
+    }
+
+    // 布林類型
+    if (typeName === 'ZodBoolean') {
+        return {
+            name,
+            type: 'boolean',
+            label,
+            required,
+            default: defaultValue ?? false,
+        };
+    }
+
+    // 字串類型
+    if (typeName === 'ZodString') {
+        return {
+            name,
+            type: 'string',
+            label,
+            required,
+            default: defaultValue,
+        };
+    }
+
+
+
+    return null;
 }
 
 /**

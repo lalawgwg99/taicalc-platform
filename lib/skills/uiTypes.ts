@@ -3,87 +3,69 @@
  * 定義 Skill UI 呈現所需的元數據類型
  */
 
-export type SkillId =
-    | 'salary.analyze'
-    | 'salary.reverse'
-    | 'salary.structure'
-    | 'tax.calculate'
-    | 'tax.optimize'
-    | 'capital.growth'
-    | 'capital.fire'
-    | 'capital.goalReverse'
-    | 'capital.passiveIncome'
-    | 'capital.milestones'
-    | 'mortgage.calculate'
-    | 'mortgage.refinance'
-    | 'mortgage.earlyRepayment'
-    | 'fortune.analyze'
-    | 'articles.generate'
-    | 'articles.trending';
+export type SkillCategory = 'salary' | 'tax' | 'capital' | 'mortgage' | 'fortune' | 'articles';
 
+export type SkillKind = 'financial' | 'utility' | 'entertainment';
+
+export type SkillOutputMode = 'kpi+chart' | 'kpi+table' | 'text';
+
+export type ChartType =
+    | 'line_assets'
+    | 'line_fire'
+    | 'pie_salary_breakdown'
+    | 'amortization'
+    | 'bar_compare'
+    | 'stack_tax_breakdown'
+    | 'none';
+
+export type SkillUIConfig = {
+    id: string;
+
+    // 導覽/分類
+    category: SkillCategory;
+    kind: SkillKind;
+
+    // 列表呈現
+    title?: string; // 若要覆蓋預設名稱
+    oneLiner: string; // 卡片用一句話（<= 22 字建議）
+    tags?: string[]; // ["熱門","新手友善","AI"]
+    estMinutes?: number; // 1,2,3...
+
+    // 排序
+    isFeatured?: boolean;
+    priority?: number; // 越小越前面，例如 10,20,30
+
+    // 工具頁呈現
+    outputMode?: SkillOutputMode; // 預設 "kpi+chart"
+    primaryChart?: {
+        type: ChartType;
+        title: string;
+        description?: string;
+    };
+
+    // 預覽抽屜（/calculators 的 Preview）
+    preview?: {
+        inputHighlights: string[]; // 顯示「會問什麼」
+        outputHighlights: string[]; // 顯示「你會得到什麼」
+    };
+
+    // 一鍵範例（用於 wow）
+    exampleValues?: Record<string, unknown>;
+};
+
+// 保留既有的 Field Meta 定義，供 Form 使用
 export type UIFormat = 'currencyTWD' | 'percent' | 'number' | 'integer' | 'text';
-
-export type UISemanticUnit =
-    | '元'
-    | '萬元'
-    | '月'
-    | '年'
-    | '次'
-    | '%'
-    | '人'
-    | '天'
-    | '歲'
-    | '無';
+export type UISemanticUnit = '元' | '萬元' | '月' | '年' | '次' | '%' | '人' | '天' | '歲' | '無';
 
 export type UIFieldMeta = {
-    label: string;              // 欄位顯示名稱（繁中）
-    helpText?: string;          // 欄位說明（台灣用語）
-    placeholder?: string;       // placeholder
-    unit?: UISemanticUnit;      // 元 / % / 年...
-    format?: UIFormat;          // 顯示格式（不等於驗證）
+    label: string;
+    helpText?: string;
+    placeholder?: string;
+    unit?: UISemanticUnit;
+    format?: UIFormat;
     min?: number;
     max?: number;
     step?: number;
     inputMode?: 'decimal' | 'numeric' | 'text';
-    // 針對 Select/Enum 的選項標籤映射
     options?: Record<string, string>;
-};
-
-export type UIExample<TInput extends Record<string, any> = Record<string, any>> = {
-    label: string; // 例如：一般上班族 / 首購族
-    input: TInput;
-};
-
-export type UIResultHighlight = {
-    key: string;     // 唯一 key（例如 monthlyPayment）
-    label: string;   // 顯示名稱
-    valuePath: string; // 從 skill output 取值路徑，例如 "data.payment.monthly"
-    format?: UIFormat;
-    unit?: UISemanticUnit;
-};
-
-export type UIResultSection = {
-    title: string;
-    items: Array<{
-        label: string;
-        valuePath: string;
-        format?: UIFormat;
-        unit?: UISemanticUnit;
-    }>;
-};
-
-export type SkillUIContract = {
-    title: string;
-    description?: string;
-    disclaimer?: string;
-
-    // key 為 input 欄位名
-    inputMeta?: Record<string, UIFieldMeta>;
-
-    // 3~5 組一鍵帶入
-    examples?: Array<UIExample>;
-
-    // 結果呈現（通用 renderer 用）
-    highlights?: UIResultHighlight[];
-    sections?: UIResultSection[];
 };
