@@ -8,6 +8,7 @@ import { generateText, tool } from 'ai';
 import { skillRegistry } from '@/lib/skills/registry';
 import { z } from 'zod';
 
+export const runtime = 'edge';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {

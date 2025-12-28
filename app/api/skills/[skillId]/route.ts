@@ -10,6 +10,8 @@ import { executeSkill } from '@/lib/skills/executor';
 import { skillRegistry } from '@/lib/skills/registry';
 import { extractSchemaFields, generateDefaultValues } from '@/lib/skills/schema-parser';
 
+export const runtime = 'edge';
+
 export async function POST(
     request: NextRequest,
     { params }: { params: Promise<{ skillId: string }> }

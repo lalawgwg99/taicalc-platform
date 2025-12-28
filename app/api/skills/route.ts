@@ -8,6 +8,7 @@
 import { NextResponse } from 'next/server';
 import { skillRegistry } from '@/lib/skills/registry';
 
+export const runtime = 'edge';
 export async function GET() {
     const skills = skillRegistry.list().map(skill => ({
         id: skill.id,
