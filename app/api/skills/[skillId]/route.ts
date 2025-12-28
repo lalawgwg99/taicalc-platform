@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { executeSkill } from '@/lib/skills/executor';
 import { skillRegistry } from '@/lib/skills/registry';
 import { extractSchemaFields, generateDefaultValues } from '@/lib/skills/schema-parser';
+import '@/lib/skills'; // 確保執行 index.ts 中的 side-effect (註冊所有 Skills)
 
 export const runtime = 'edge';
 
