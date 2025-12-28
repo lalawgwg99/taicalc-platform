@@ -18,6 +18,7 @@ import { analyzeSalary, calculateGrossFromNet } from '@/lib/calculations';
 import AIInsightCard from '@/components/AI/AIInsightCard';
 import { useCalculatorStorage } from '@/hooks/useCalculatorStorage';
 import { calculateOvertime, calculateBonusTax, checkLaborRights, predictCareerGrowth } from '@/lib/calculations/salary';
+import ShareCard from '@/components/ShareCard';
 
 // 使用自定義的 Sankey Nodes/Links 介面
 // 注意：recharts 的 sankey 需要特定格式
