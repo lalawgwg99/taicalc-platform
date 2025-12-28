@@ -72,10 +72,15 @@ export default function HomePage() {
                             TaiCalc <span className="text-brand-primary">數策</span>
                         </span>
                     </div>
-                    <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
-                        <Link href="/articles" className="hover:text-brand-primary transition-colors">知識庫</Link>
-                        <Link href="/fortune" className="hover:text-purple-500 transition-colors">財運命盤</Link>
-                        <Link href="/salary" className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
+                    <div className="flex items-center space-x-2 md:space-x-8">
+                        {/* 手機也顯示的快速連結 */}
+                        <Link href="/articles" className="text-xs md:text-sm font-bold text-slate-600 hover:text-brand-primary transition-colors whitespace-nowrap">
+                            知識庫
+                        </Link>
+                        <Link href="/fortune" className="text-xs md:text-sm font-bold text-purple-600 hover:text-purple-700 transition-colors whitespace-nowrap">
+                            財運
+                        </Link>
+                        <Link href="/salary" className="bg-slate-900 text-white px-3 md:px-5 py-2 md:py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold text-xs md:text-sm active:scale-95 whitespace-nowrap">
                             開始試算
                         </Link>
                     </div>
@@ -209,28 +214,42 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        <div className="glass-card bg-slate-50 p-8 rounded-2xl border border-slate-200 relative">
-                            <div className="relative z-10">
-                                <div className="h-64 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 font-bold bg-white/50">
-                                    <span>[ 戰略圖表預覽 ]</span>
-                                    <div className="flex space-x-2 mt-4">
-                                        <div className="w-3 h-12 bg-brand-primary rounded-t-sm opacity-40"></div>
-                                        <div className="w-3 h-20 bg-brand-primary rounded-t-sm opacity-60"></div>
-                                        <div className="w-3 h-16 bg-brand-primary rounded-t-sm opacity-80"></div>
-                                        <div className="w-3 h-24 bg-brand-primary rounded-t-sm"></div>
+                        <div className="space-y-4">
+                            {/* 知識庫快速入口 */}
+                            <Link href="/articles" className="block glass-card bg-gradient-to-br from-emerald-50 to-teal-50 p-6 rounded-2xl border border-emerald-200 hover:shadow-lg transition-all group">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center text-white">
+                                        📚
                                     </div>
+                                    <ChevronRight className="w-5 h-5 text-emerald-600 group-hover:translate-x-1 transition-transform" />
                                 </div>
-                                <div className="mt-8 grid grid-cols-2 gap-4">
-                                    <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                                        <p className="text-xs text-slate-500 mb-1 font-bold uppercase">精算誤差</p>
-                                        <p className="text-2xl font-black tracking-tight text-slate-900">0.00%</p>
-                                    </div>
-                                    <div className="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                                        <p className="text-xs text-slate-500 mb-1 font-bold uppercase">決策參考</p>
-                                        <p className="text-2xl font-black tracking-tight text-slate-900">Top 1%</p>
-                                    </div>
+                                <h4 className="text-lg font-black text-emerald-900 mb-2">理財知識庫</h4>
+                                <p className="text-sm text-emerald-700 font-medium mb-4">
+                                    勞退自提、ETF 投資、保險規劃...專業文章讓你秒懂財務策略。
+                                </p>
+                                <div className="flex items-center text-xs font-bold text-emerald-600">
+                                    <span>立即閱讀</span>
+                                    <ArrowRight className="w-3 h-3 ml-1" />
                                 </div>
-                            </div>
+                            </Link>
+
+                            {/* 財運命盤快速入口 */}
+                            <Link href="/fortune" className="block glass-card bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-200 hover:shadow-lg transition-all group">
+                                <div className="flex items-start justify-between mb-3">
+                                    <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center text-white">
+                                        🔮
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-purple-600 group-hover:translate-x-1 transition-transform" />
+                                </div>
+                                <h4 className="text-lg font-black text-purple-900 mb-2">財運命盤</h4>
+                                <p className="text-sm text-purple-700 font-medium mb-4">
+                                    輸入生辰，AI 分析你的財富潛力與投資風格，找出最適合的理財路徑。
+                                </p>
+                                <div className="flex items-center text-xs font-bold text-purple-600">
+                                    <span>免費測算</span>
+                                    <ArrowRight className="w-3 h-3 ml-1" />
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </section>
