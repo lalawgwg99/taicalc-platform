@@ -226,34 +226,55 @@ export default function LaborPensionArticle() {
                         </div>
                     </section>
 
+
                     {/* AI 互動問答 */}
                     <section className="mb-12">
                         <h2 className="text-2xl font-black text-slate-900 flex items-center gap-2 mb-6">
                             <Sparkles className="w-6 h-6 text-purple-500" />
-                        </div>
-                    </div>
-                    <AIInsightCard
-                        title="勞退自提 AI 顧問"
-                        buttonText="請 AI 分析我的情況"
-                        prompt="你是TaiCalc的勞退專家顧問。用戶正在閱讀關於勞退自提6%的文章。請根據一般情況提供個人化建議。分析內容應包括：1.不同月薪級距的節稅效益 2.勞退基金歷年績效 3.自提vs自行投資的優缺點比較 4.給年輕人的具體建議。請用繁體中文回答，300字以內，給出具體數字和建議。"
-                        context={{
-                            articleTopic: '勞退自提6%',
-                            keyPoints: '節稅效益、保證收益、資金閉鎖期、適合族群'
-                        }}
-                    />
-                </div>
-            </section>
+                            💡 勞退自提個人化試算
+                        </h2>
 
-            {/* CTA */}
-            <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 text-center">
-                <h3 className="text-xl font-black text-slate-900 mb-3">想知道退休需要存多少錢？</h3>
-                <p className="text-slate-500 mb-6">使用 TaiCalc 退休規劃計算器，3 分鐘算出你的退休目標</p>
-                <Link href="/retirement" className="inline-flex items-center space-x-2 px-8 py-4 bg-brand-primary text-white rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-lg shadow-blue-200">
-                    <Calculator className="w-5 h-5" />
-                    <span>開始計算</span>
-                </Link>
-            </section>
-        </article>
+                        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6 mb-6">
+                            <p className="text-purple-700 mb-4">
+                                🤖 還有疑問嗎？問問 AI 顧問！常見問題包括：
+                            </p>
+                            <div className="grid md:grid-cols-2 gap-3 mb-6">
+                                <div className="p-3 bg-white/80 rounded-xl text-sm text-purple-600 font-medium">
+                                    💡 月薪 5 萬，自提能省多少稅？
+                                </div>
+                                <div className="p-3 bg-white/80 rounded-xl text-sm text-purple-600 font-medium">
+                                    📊 勞退基金 vs 0050 報酬率比較？
+                                </div>
+                                <div className="p-3 bg-white/80 rounded-xl text-sm text-purple-600 font-medium">
+                                    🎯 我 30 歲該自提嗎？
+                                </div>
+                                <div className="p-3 bg-white/80 rounded-xl text-sm text-purple-600 font-medium">
+                                    ⚠️ 自提的錢 60 歲前能領出來嗎？
+                                </div>
+                            </div>
+                            <AIInsightCard
+                                title="勞退自提 AI 顧問"
+                                buttonText="請 AI 分析我的情況"
+                                prompt="你是TaiCalc的勞退專家顧問。用戶正在閱讀關於勞退自提6%的文章。請根據一般情況提供個人化建議。分析內容應包括：1.不同月薪級距的節稅效益 2.勞退基金歷年績效 3.自提vs自行投資的優缺點比較 4.給年輕人的具體建議。請用繁體中文回答，300字以內，給出具體數字和建議。"
+                                context={{
+                                    articleTopic: '勞退自提6%',
+                                    keyPoints: '節稅效益、保證收益、資金閉鎖期、適合族群'
+                                }}
+                            />
+                        </div>
+                    </section>
+
+
+                    {/* CTA */}
+                    <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 text-center">
+                        <h3 className="text-xl font-black text-slate-900 mb-3">想知道退休需要存多少錢？</h3>
+                        <p className="text-slate-500 mb-6">使用 TaiCalc 退休規劃計算器，3 分鐘算出你的退休目標</p>
+                        <Link href="/retirement" className="inline-flex items-center space-x-2 px-8 py-4 bg-brand-primary text-white rounded-2xl font-bold hover:bg-blue-600 transition-all shadow-lg shadow-blue-200">
+                            <Calculator className="w-5 h-5" />
+                            <span>開始計算</span>
+                        </Link>
+                    </section>
+                </article>
             </main >
         </div >
     );
