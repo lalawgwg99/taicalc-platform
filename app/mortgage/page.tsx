@@ -435,6 +435,51 @@ TaiCalc 數策 - 房貸試算報表
                             </div>
                         </div>
 
+                        {/* AI 判讀：寬限期的真實影響 */}
+                        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-2xl p-6 shadow-sm">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                                    <Home className="w-6 h-6 text-indigo-600" />
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-black text-indigo-900 mb-3">
+                                        🧠 AI 判讀：這個房貸方案的隱藏成本
+                                    </h4>
+                                    <div className="space-y-3 text-sm text-indigo-900">
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">利息佔比 {Math.round((result.totalInterest / (loanAmount + result.totalInterest)) * 100)}%</span>
+                                                {Math.round((result.totalInterest / (loanAmount + result.totalInterest)) * 100) >= 50
+                                                    ? ' ，代表你付的錢一半以上都是利息！考慮縮短年限或提前還款。'
+                                                    : Math.round((result.totalInterest / (loanAmount + result.totalInterest)) * 100) >= 35
+                                                        ? ' ，屬於合理範圍，但仍有優化空間。'
+                                                        : ' ，利息負擔相對較輕，這是很好的貸款條件。'
+                                                }
+                                            </p>
+                                        </div>
+                                        {gracePeriod > 0 && (
+                                            <div className="flex items-start gap-2">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                                                <p>
+                                                    <span className="font-black">寬限期 {gracePeriod} 年</span>
+                                                    ：前 {gracePeriod} 年每月只付 {formatCurrency(result.gracePeriodPayment)} 元（僅利息），但之後月付會跳到 {formatCurrency(result.monthlyPayment)} 元。確認你能承受這個壓力。
+                                                </p>
+                                            </div>
+                                        )}
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">建議：</span>
+                                                每月只需額外還 50 萬本金，就能省下約 {formatCurrency(Math.round(loanAmount * (interestRate / 100) * 0.5))} 元利息。試試下方的「提前還款試算」。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         {/* AI 智慧診斷區塊 */}
                         <div className="mb-6">
                             <AIInsightCard

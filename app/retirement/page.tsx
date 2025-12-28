@@ -362,6 +362,52 @@ TaiCalc 數策 - 退休規劃報表
                             </div>
                         </div>
 
+                        {/* AI 判讀：這個數字代表什麼？ */}
+                        <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-[2.5rem] p-6 shadow-sm">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center flex-shrink-0">
+                                    <TrendingUp className="w-6 h-6 text-violet-600" />
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-black text-violet-900 mb-3">
+                                        🧠 AI 判讀：你的退休規劃是否足夠？
+                                    </h4>
+                                    <div className="space-y-3 text-sm text-violet-900">
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-violet-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">4% 法則每月領 {formatCurrency(results.monthlyWithdrawal)} 元</span>
+                                                {results.monthlyWithdrawal >= 40000
+                                                    ? ' ，已超過台灣中位數家庭支出，基本退休生活無虞。'
+                                                    : results.monthlyWithdrawal >= 30000
+                                                        ? ' ，符合大部分退休生活標準，但需考慮通膨。'
+                                                        : ' ，可能需要增加存款速度或提高報酬率來達成目標。'
+                                                }
+                                            </p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">勞退新制 {formatCurrency(results.laborPensionValue)} 元</span>
+                                                ，這是你的「隱藏退休金」！雇主每月幫你存 6%，{results.yearsToRetirement} 年後累積的複利效果。
+                                            </p>
+                                        </div>
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">建議：</span>
+                                                {results.requiredMonthly > monthlyContribution
+                                                    ? ` 若想達到 2000 萬目標，需每月多存 ${formatCurrency(results.requiredMonthly - monthlyContribution)} 元，或提高報酬率至 ${Math.min(expectedReturn + 2, 10)}%。`
+                                                    : ' 目前存款速度已足夠！保持紀律，定期檢視報酬率是否合理。'
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         {/* 投資回報分析 */}
                         <div className="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-sm">
                             <div className="flex items-center space-x-3 mb-6">
