@@ -1,5 +1,6 @@
 // app/calculators/[skillId]/page.tsx
 'use client';
+export const runtime = 'edge';
 
 import React from 'react';
 import { useParams, notFound } from 'next/navigation';
