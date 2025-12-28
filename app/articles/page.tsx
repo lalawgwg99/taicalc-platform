@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, TrendingUp, Shield, HelpCircle, PiggyBank, Heart, Landmark, Target, Sparkles, PhoneCall, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, BookOpen, TrendingUp, Shield, HelpCircle, PiggyBank, Heart, Landmark, Target, CheckCircle2 } from 'lucide-react';
 
 // ========== 文章資料 ==========
 const ARTICLES = [
@@ -163,8 +163,8 @@ export default function ArticlesPage() {
                         <button
                             key={tag}
                             className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${tag === '全部'
-                                    ? 'bg-brand-primary text-white'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:border-brand-primary hover:text-brand-primary'
+                                ? 'bg-brand-primary text-white'
+                                : 'bg-white border border-slate-200 text-slate-600 hover:border-brand-primary hover:text-brand-primary'
                                 }`}
                         >
                             {tag}
@@ -207,8 +207,8 @@ export default function ArticlesPage() {
                                 <div className="font-bold text-slate-800">{ins.name}</div>
                                 <div className="text-xs text-slate-500 mb-2">{ins.purpose}</div>
                                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${ins.priority === '必備' ? 'bg-rose-100 text-rose-600' :
-                                        ins.priority === '建議' ? 'bg-amber-100 text-amber-600' :
-                                            'bg-slate-100 text-slate-500'
+                                    ins.priority === '建議' ? 'bg-amber-100 text-amber-600' :
+                                        'bg-slate-100 text-slate-500'
                                     }`}>
                                     {ins.priority}
                                 </span>
@@ -265,36 +265,26 @@ export default function ArticlesPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="grid md:grid-cols-2 gap-6 mb-16">
-                    {/* 預約顧問 */}
-                    <div className="bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-48 h-48 bg-brand-primary/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+                <section className="mb-16">
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12 relative overflow-hidden text-center">
+                        <div className="absolute top-0 left-0 w-48 h-48 bg-blue-200/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+                        <div className="absolute bottom-0 right-0 w-48 h-48 bg-indigo-200/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
                         <div className="relative z-10">
-                            <Sparkles className="w-8 h-8 text-brand-primary mb-4" />
-                            <h3 className="text-2xl font-black mb-2">需要專業理財規劃？</h3>
-                            <p className="text-slate-400 mb-6">預約 TaiCalc 認證財務顧問，量身打造專屬方案。</p>
-                            <button className="inline-flex items-center space-x-2 px-6 py-3 bg-brand-primary text-white rounded-2xl font-bold hover:bg-brand-primary/90 transition-all">
-                                <PhoneCall className="w-4 h-4" />
-                                <span>預約諮詢</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* 計算器入口 */}
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 relative overflow-hidden">
-                        <div className="relative z-10">
-                            <Target className="w-8 h-8 text-blue-600 mb-4" />
-                            <h3 className="text-2xl font-black text-slate-900 mb-2">開始規劃你的未來</h3>
-                            <p className="text-slate-500 mb-6">使用 TaiCalc 計算器，3 分鐘算出你的退休目標。</p>
-                            <div className="flex flex-wrap gap-2">
-                                <Link href="/retirement" className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all text-sm">
-                                    <CheckCircle2 className="w-4 h-4" />
+                            <Target className="w-10 h-10 text-blue-600 mx-auto mb-4" />
+                            <h3 className="text-3xl font-black text-slate-900 mb-3">開始規劃你的未來</h3>
+                            <p className="text-slate-500 mb-8 max-w-xl mx-auto">使用 TaiCalc 計算器，3 分鐘算出你的退休目標、薪資配置與稅務優化方案。</p>
+                            <div className="flex flex-wrap justify-center gap-3">
+                                <Link href="/retirement" className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
+                                    <CheckCircle2 className="w-5 h-5" />
                                     <span>退休規劃</span>
                                 </Link>
-                                <Link href="/salary" className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all text-sm">
+                                <Link href="/salary" className="inline-flex items-center space-x-2 px-6 py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-2xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all">
                                     <span>薪資戰略</span>
                                 </Link>
-                                <Link href="/tax" className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all text-sm">
+                                <Link href="/mortgage" className="inline-flex items-center space-x-2 px-6 py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-2xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all">
+                                    <span>房貸佈局</span>
+                                </Link>
+                                <Link href="/tax" className="inline-flex items-center space-x-2 px-6 py-3 bg-white border-2 border-slate-200 text-slate-700 rounded-2xl font-bold hover:border-blue-600 hover:text-blue-600 transition-all">
                                     <span>稅務優化</span>
                                 </Link>
                             </div>
