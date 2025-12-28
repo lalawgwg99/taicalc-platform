@@ -1,156 +1,152 @@
-TaiCalc Project Context (Source of Truth)
+# TaiCalc 專案完整架構 (Source of Truth)
 
-1. 專案基本資訊
+> **給其他 AI 的指引：** 請先閱讀此文件了解專案全貌，再進行任何開發工作
 
-品牌名稱: TaiCalc (台算)
+---
 
-定位: 台灣在地化決策工具箱 (薪資、稅務、貸款、投資)
+## 📌 專案基本資訊
 
-核心語彙: 繁體中文 (台灣在地化用語)
+| 項目 | 說明 |
+|------|------|
+| 品牌名稱 | TaiCalc 數策 |
+| 定位 | 台灣在地化財務決策工具箱 |
+| 語言 | 繁體中文（台灣用語）|
+| 技術棧 | Next.js 15 (App Router), TypeScript, Tailwind CSS |
+| AI 模型 | **Gemini 2.5 Flash** (gemini-2.5-flash) |
+| 部署平台 | Cloudflare Pages (Edge Runtime) |
 
-技術棧: Next.js (App Router), Tailwind CSS, Lucide React, Recharts
+---
 
-1. 目錄結構與程式碼 (File Structure)
+## 🗂️ 目錄結構
 
-[Root] /package.json
+```
+taicalc/
+├── app/
+│   ├── api/
+│   │   ├── chat/route.ts         # AI Chat API (Gemini Tool Calling)
+│   │   ├── skills/route.ts       # 列出所有 Skill
+│   │   ├── skills/[skillId]/     # 執行單一 Skill
+│   │   ├── skills/chain/         # 鏈式執行 Skill
+│   │   └── ai/
+│   │       ├── analyze/route.ts  # AI 分析 API
+│   │       └── fortune/route.ts  # 財運命盤 API
+│   ├── salary/                   # 薪資計算頁
+│   ├── tax/                      # 稅務計算頁
+│   ├── mortgage/                 # 房貸計算頁
+│   ├── retirement/               # 退休規劃頁
+│   ├── fortune/                  # 財運命盤頁
+│   └── home-assessment/          # 買房全能評估頁
+├── components/
+│   ├── AI/
+│   │   ├── TaiCalcChat.tsx       # 浮動 AI 對話按鈕
+│   │   └── AIInsightCard.tsx     # AI 洞察卡片
+│   └── skills/
+│       └── SkillForm.tsx         # 根據 Schema 自動生成表單
+├── lib/
+│   ├── skills/
+│   │   ├── registry.ts           # Skill 註冊中心
+│   │   ├── executor.ts           # Skill 執行器
+│   │   ├── types.ts              # 類型定義
+│   │   └── definitions/          # 13 個 Skill 定義
+│   ├── db/
+│   │   └── logger.ts             # 執行日誌系統
+│   └── calculations.ts           # 核心計算邏輯
+└── middleware.ts                 # API 安全層
+```
 
+---
+
+## 🧠 Skill 系統
+
+### 概念
+
+Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、可被 AI 自動調用
+
+### 已註冊的 13 個 Skill
+
+| 分類 | Skill ID | 說明 |
+|------|----------|------|
+| 薪資 | salary.analyze | 薪資結構分析 |
+| 薪資 | salary.reverse | 逆向推算期望薪資 |
+| 薪資 | salary.structure | 年薪結構優化 |
+| 稅務 | tax.calculate | 綜所稅計算 |
+| 稅務 | tax.optimize | 節稅策略 |
+| 資本 | capital.growth | 複利成長試算 |
+| 資本 | capital.fire | FIRE 獨立計算 |
+| 資本 | capital.goalReverse | 目標逆推 |
+| 資本 | capital.passiveIncome | 被動收入規劃 |
+| 資本 | capital.milestones | 財富里程碑 |
+| 房貸 | mortgage.calculate | 房貸試算 |
+| 房貸 | mortgage.refinance | 轉貸評估 |
+| 房貸 | mortgage.earlyRepayment | 提前還款分析 |
+
+### API 端點
+
+```bash
+GET  /api/skills              # 列出所有 Skill
+GET  /api/skills/{skillId}    # 取得 Skill Schema
+POST /api/skills/{skillId}    # 執行 Skill
+POST /api/skills/chain        # 鏈式執行
+POST /api/chat                # AI 對話 (自動調用 Skill)
+```
+
+---
+
+## 🤖 AI 整合
+
+### 環境變數
+
+```env
+GOOGLE_GENERATIVE_AI_API_KEY=你的_Gemini_API_Key
+```
+
+### AI Chat 流程
+
+1. 用戶發送問題 → `/api/chat`
+2. 所有 Skill 動態轉為 AI Tool
+3. Gemini 判斷並自動調用工具
+4. 回傳計算結果 + AI 解釋
+
+### 前端組件
+
+- `TaiCalcChat.tsx` - 右下角浮動按鈕，點擊開啟對話視窗
+
+---
+
+## 🔒 API 安全 (middleware.ts)
+
+- 攔截 `/api/skills/*` 請求
+- 驗證 `x-api-key` Header
+- 生產環境強制驗證
+
+---
+
+## 📋 Cloudflare 部署注意事項
+
+**所有 API 路由必須包含：**
+
+```typescript
+export const runtime = 'edge';
+```
+
+---
+
+## 🎨 UI 開發規範
+
+- 圓角: `rounded-xl` (12px)
+- 品牌色: `brand-primary`, `brand-secondary`, `brand-accent`
+- 金額: 千分位格式 (1,234,567)
+
+---
+
+## 📦 關鍵依賴
+
+```json
 {
-  "name": "taicalc-platform",
-  "dependencies": {
-    "next": "15.1.0",
-    "react": "^19.0.0",
-    "lucide-react": "^0.468.0",
-    "recharts": "^2.15.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.5",
-    "framer-motion": "^11.15.0"
-  }
+  "next": "15.1.0",
+  "@ai-sdk/google": "latest",
+  "ai": "latest",
+  "zod": "^3.x",
+  "framer-motion": "^11.x"
 }
-
-[Root] /tailwind.config.ts
-
-// 品牌色定義：primary (#0F172A), secondary (#3B82F6), accent (#10B981)
-
-/lib/constants.ts
-
-// 內含：2024-2025 台灣所得稅級距、勞健保費率、二代健保門檻
-export const TAIWAN_PARAMS = {
-  INCOME_TAX_BRACKETS: [...],
-  INSURANCE: { LABOR_RATE: 0.12, HEALTH_RATE: 0.0517 }
-} as const;
-
-/lib/utils.ts
-
-// 工具函數：格式化金額、合併 className
-export function formatCurrency(amount: number): string;
-export function cn(...inputs: ClassValue[]): string;
-
-/lib/calculations.ts
-
-// 核心業務邏輯：薪資、稅務計算
-export function calculateInsurance(monthlySalary: number): number;
-export function calculateIncomeTax(annualIncome: number, options?): number;
-export function analyzeSalary(monthlySalary: number): SalaryAnalysis;
-
-/components/CalculatorWrapper.tsx
-
-// 通用佈局組件：左側輸入區，右側結果區 (Responsive Layout)
-interface CalculatorWrapperProps {
-  children: ReactNode;
-  title: string;
-  description: string;
-  category?: string;
-}
-
-/app/layout.tsx
-
-// 根佈局，設定全站字體與背景顏色 (Slate-50)
-
-1. 開發規範 (Dev Rules)
-
-必須符合台灣現行法規。
-
-計算結果需搭配圖表可視化。
-
-UI 圓角統一為 12px (rounded-taicalc)。
-
-所有的金額輸出需包含千分位符號 (e.g., 1,000,000)。
-
-1. 完整使用範例 (Usage Examples)
-
-範例 1: 創建新的計算器頁面
-
-'use client';
-import { useState } from 'react';
-import CalculatorWrapper from '@/components/CalculatorWrapper';
-import { formatCurrency } from '@/lib/utils';
-
-export default function MyCalculator() {
-  const [input, setInput] = useState(0);
-  
-  return (
-    <CalculatorWrapper
-      title="我的計算器"
-      description="計算說明"
-    >
-      {/*左側：輸入區 (lg:col-span-5)*/}
-      <div className="lg:col-span-5">
-        <input
-          type="number"
-          value={input}
-          onChange={(e) => setInput(Number(e.target.value))}
-          className="w-full px-4 py-3 border rounded-lg"
-        />
-      </div>
-
-      {/* 右側：結果區 (lg:col-span-7) */}
-      <div className="lg:col-span-7">
-        <div className="bg-brand-secondary text-white p-6 rounded-taicalc">
-          <p className="text-4xl font-bold">
-            NT$ {formatCurrency(input)}
-          </p>
-        </div>
-      </div>
-    </CalculatorWrapper>
-  );
-}
-
-範例 2: 使用計算函數
-
-import { analyzeSalary } from '@/lib/calculations';
-import { formatCurrency } from '@/lib/utils';
-
-const result = analyzeSalary(40000);
-// {
-//   monthly: { gross: 40000, insurance: 2068, takeHome: 37932 },
-//   annual: { gross: 480000, tax: 0, net: 455184 }
-// }
-
-console.log(formatCurrency(result.monthly.takeHome)); // "37,932"
-
-範例 3: 客製化品牌色
-
-// 在 JSX 中使用品牌色
-<div className="bg-brand-primary text-white">主色</div>
-<div className="bg-brand-secondary text-white">次要色</div>
-<div className="bg-brand-accent text-white">強調色</div>
-
-1. API 參考 (Quick Reference)
-
-計算函數:
-
-- calculateInsurance(monthlySalary) → 勞健保個人負擔
-- calculatePension(monthlySalary) → 雇主勞退提撥
-- calculateIncomeTax(annual, options) → 年度所得稅
-- analyzeSalary(monthlySalary) → 完整薪資分析
-
-工具函數:
-
-- formatCurrency(number) → "1,234,567"
-- cn(...classes) → 合併 Tailwind classes
-
-常數:
-
-- TAIWAN_PARAMS.INCOME_TAX_BRACKETS → 稅級距
-- TAIWAN_PARAMS.DEDUCTIONS → 扣除額
-- TAIWAN_PARAMS.INSURANCE → 保險費率
+```
