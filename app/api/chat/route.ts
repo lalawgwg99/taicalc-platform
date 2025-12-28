@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     try {
         // 使用 Gemini 模型
         const result = await generateText({
-            model: google('gemini-2.0-flash-exp'),
+            model: google('gemini-2.5-flash'),
             messages,
             system: `你是 TaiCalc 的首席財務顧問「數策」。
 
