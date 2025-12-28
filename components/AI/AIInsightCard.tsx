@@ -107,6 +107,17 @@ export default function AIInsightCard({
                                     </div>
                                 )}
                             </div>
+
+                            {/* Re-analyze Button */}
+                            {(completion || error) && !isLoading && (
+                                <button
+                                    onClick={handleAnalyze}
+                                    className="mt-4 w-full flex items-center justify-center space-x-2 py-3 bg-slate-100 hover:bg-brand-primary hover:text-white text-slate-600 rounded-xl font-bold text-sm transition-all active:scale-95"
+                                >
+                                    <Sparkles className="w-4 h-4" />
+                                    <span>重新分析（參數已更新）</span>
+                                </button>
+                            )}
                         </div>
                     </motion.div>
                 )}
