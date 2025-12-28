@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { executeSkill } from '@/lib/skills/executor';
 import { skillRegistry } from '@/lib/skills/registry';
+import { extractSchemaFields, generateDefaultValues } from '@/lib/skills/schema-parser';
 
 export async function POST(
     request: NextRequest,
@@ -47,7 +48,7 @@ export async function POST(
     }
 }
 
-// GET: 取得 Skill 資訊
+// GET: 取得 Skill 資訊（含 Schema 元資料）
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ skillId: string }> }
@@ -62,7 +63,11 @@ export async function GET(
         );
     }
 
-    // 返回 Skill 元資訊（不含執行函數）
+    // 解析 Schema 元資料
+    const fields = extractSchemaFields(skill.inputSchema, skill.parameterDescriptions);
+    const defaultValues = generateDefaultValues(fields);
+
+    // 返回 Skill 元資訊 + 表單結構
     return NextResponse.json({
         id: skill.id,
         name: skill.name,
@@ -70,5 +75,9 @@ export async function GET(
         version: skill.version,
         tags: skill.tags,
         parameterDescriptions: skill.parameterDescriptions,
+        // 表單生成用
+        fields,
+        defaultValues,
     });
 }
+
