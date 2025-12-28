@@ -10,6 +10,13 @@ export function middleware(request: NextRequest) {
     // 只攔截 /api/skills 開頭的請求
     if (request.nextUrl.pathname.startsWith('/api/skills')) {
 
+        // 公開 GET 請求 (取得 Schema) 不需驗證，方便前端 SkillForm 渲染
+        if (request.method === 'GET') {
+            const response = NextResponse.next();
+            response.headers.set('X-TaiCalc-Version', '1.0.0');
+            return response;
+        }
+
         // 1. 檢查 API Key
         const apiKey = request.headers.get('x-api-key');
         const validKey = process.env.TAICALC_API_KEY_SECRET;
