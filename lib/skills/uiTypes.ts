@@ -7,6 +7,14 @@ export type SkillCategory = 'salary' | 'tax' | 'capital' | 'mortgage' | 'fortune
 
 export type SkillKind = 'financial' | 'utility' | 'entertainment';
 
+export type SkillId =
+    | 'salary.analyze' | 'salary.reverse' | 'salary.structure'
+    | 'tax.calculate' | 'tax.optimize'
+    | 'capital.growth' | 'capital.fire' | 'capital.goalReverse' | 'capital.passiveIncome' | 'capital.milestones'
+    | 'mortgage.calculate' | 'mortgage.refinance' | 'mortgage.earlyRepayment'
+    | 'fortune.analyze'
+    | 'articles.generate' | 'articles.trending';
+
 export type SkillOutputMode = 'kpi+chart' | 'kpi+table' | 'text';
 
 export type ChartType =
@@ -69,3 +77,34 @@ export type UIFieldMeta = {
     inputMode?: 'decimal' | 'numeric' | 'text';
     options?: Record<string, string>;
 };
+
+// Legacy Type for backward compatibility
+export type SkillUIContract = {
+    title: string;
+    description?: string;
+    examples?: Array<{ label: string; input: Record<string, unknown> }>;
+    inputMeta?: Record<string, UIFieldMeta>;
+    highlights?: any[];
+    sections?: any[];
+    disclaimer?: string;
+};
+
+export interface UIResultHighlight {
+    key: string;
+    label: string;
+    valuePath: string;
+    format?: UIFormat;
+    unit?: UISemanticUnit | string;
+}
+
+export interface UIResultSectionItem {
+    label: string;
+    valuePath: string;
+    format?: UIFormat;
+    unit?: UISemanticUnit | string;
+}
+
+export interface UIResultSection {
+    title: string;
+    items: UIResultSectionItem[];
+}

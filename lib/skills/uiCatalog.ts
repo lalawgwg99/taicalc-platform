@@ -259,3 +259,9 @@ export const uiCatalog: SkillUIConfig[] = [
 export const getSkillUI = (id: string) => uiCatalog.find(item => item.id === id);
 export const getFeaturedSkills = () => uiCatalog.filter(item => item.isFeatured).sort((a, b) => (a.priority || 99) - (b.priority || 99));
 export const getSkillsByCategory = (cat: string) => uiCatalog.filter(item => item.category === cat).sort((a, b) => (a.priority || 99) - (b.priority || 99));
+
+// Legacy compatibility
+export const SKILL_UI_CATALOG: Record<string, SkillUIConfig> = uiCatalog.reduce((acc, item) => {
+    acc[item.id] = item;
+    return acc;
+}, {} as Record<string, SkillUIConfig>);
