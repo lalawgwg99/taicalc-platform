@@ -5,7 +5,7 @@
 
 import { google } from '@ai-sdk/google';
 import { generateText, tool } from 'ai';
-import { skillRegistry } from '@/lib/skills/registry';
+import { skillRegistry } from '@/lib/skills';
 import { z } from 'zod';
 
 export const runtime = 'edge';

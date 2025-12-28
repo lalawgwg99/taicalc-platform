@@ -2,9 +2,8 @@
 import { NextResponse } from 'next/server';
 export const runtime = 'edge';
 
-import { executeSkill } from '@/lib/skills/executor';
+import { executeSkill } from '@/lib/skills';
 import type { SkillId } from '@/lib/skills/uiTypes';
-import '@/lib/skills'; // 確保執行 index.ts 中的 side-effect (註冊所有 Skills)
 
 // 白名單：允許前端公開呼叫的 Skill
 const ALLOWLIST: SkillId[] = [

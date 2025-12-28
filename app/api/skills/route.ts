@@ -6,7 +6,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { skillRegistry } from '@/lib/skills/registry';
+import { skillRegistry } from '@/lib/skills';
 
 export const runtime = 'edge';
 export async function GET() {

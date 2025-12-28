@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { executeSkillChain } from '@/lib/skills/executor';
+import { executeSkillChain } from '@/lib/skills';
 import { SkillChainStep } from '@/lib/skills/types';
 
 export const runtime = 'edge';
