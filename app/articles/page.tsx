@@ -177,18 +177,20 @@ export default function ArticlesPage() {
                     <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">🔥 精選文章</h2>
                     <div className="grid md:grid-cols-3 gap-6">
                         {ARTICLES.filter(a => a.featured).map((article) => (
-                            <article key={article.id} className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl hover:border-brand-primary/30 transition-all group cursor-pointer relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-slate-50 to-transparent rounded-bl-full -z-10 group-hover:from-brand-primary/5 transition-all" />
-                                <div className={`inline-flex items-center space-x-1 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${article.categoryColor} mb-4`}>
-                                    {article.icon}
-                                    <span>{article.category}</span>
-                                </div>
-                                <h3 className="text-lg font-black text-slate-900 group-hover:text-brand-primary transition-colors leading-tight mb-2">
-                                    {article.title}
-                                </h3>
-                                <p className="text-sm text-slate-500 line-clamp-2">{article.excerpt}</p>
-                                <div className="mt-4 text-xs text-slate-400">{article.date} · {article.readTime}</div>
-                            </article>
+                            <Link href={article.slug} key={article.id}>
+                                <article className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl hover:border-brand-primary/30 transition-all group cursor-pointer relative overflow-hidden h-full">
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-slate-50 to-transparent rounded-bl-full -z-10 group-hover:from-brand-primary/5 transition-all" />
+                                    <div className={`inline-flex items-center space-x-1 text-white text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-md ${article.categoryColor} mb-4`}>
+                                        {article.icon}
+                                        <span>{article.category}</span>
+                                    </div>
+                                    <h3 className="text-lg font-black text-slate-900 group-hover:text-brand-primary transition-colors leading-tight mb-2">
+                                        {article.title}
+                                    </h3>
+                                    <p className="text-sm text-slate-500 line-clamp-2">{article.excerpt}</p>
+                                    <div className="mt-4 text-xs text-slate-400">{article.date} · {article.readTime}</div>
+                                </article>
+                            </Link>
                         ))}
                     </div>
                 </section>
@@ -216,10 +218,10 @@ export default function ArticlesPage() {
                         ))}
                     </div>
                     <div className="mt-6 text-center">
-                        <button className="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500 text-white rounded-2xl font-bold hover:bg-rose-600 transition-all">
+                        <Link href="/insurance-check" className="inline-flex items-center space-x-2 px-6 py-3 bg-rose-500 text-white rounded-2xl font-bold hover:bg-rose-600 transition-all shadow-lg shadow-rose-200">
                             <Shield className="w-4 h-4" />
-                            <span>免費保險健診</span>
-                        </button>
+                            <span>免費保險健檢</span>
+                        </Link>
                     </div>
                 </section>
 
