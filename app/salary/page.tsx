@@ -717,6 +717,30 @@ TaiCalc 數策 - 薪資分析報表
                     </div>
                 </section>
 
+                {/* 分享卡片 - Phase 3 */}
+                <section className="glass-card rounded-2xl p-8 bg-white border border-slate-200 shadow-md">
+                    <div className="flex items-center space-x-2 mb-6">
+                        <Share2 className="w-5 h-5 text-brand-primary" />
+                        <h3 className="text-xl font-bold text-slate-900">分享我的試算結果</h3>
+                    </div>
+                    <ShareCard
+                        title={activeTab === 'normal' ? '薪資結構分析' : '逆向談薪試算'}
+                        mainValue={`$${formatCurrency(results.monthly.takeHome)}`}
+                        mainLabel="實領月薪"
+                        subValues={[
+                            { label: '稅前月薪', value: `$${formatCurrency(results.monthly.gross)}` },
+                            { label: '實領率', value: `${((results.monthly.takeHome / results.monthly.gross) * 100).toFixed(1)}%` },
+                            { label: '年淨收', value: `$${formatCurrency(results.annual.net)}` },
+                            { label: '勞退自提', value: `${selfContributionRate}%` },
+                        ]}
+                        insight={
+                            activeTab === 'normal'
+                                ? `每月實領 ${formatCurrency(results.monthly.takeHome)} 元，實領率 ${((results.monthly.takeHome / results.monthly.gross) * 100).toFixed(1)}%`
+                                : `要實領 ${formatCurrency(inputSalary)} 元，需開價 ${formatCurrency(results.monthly.gross)} 元`
+                        }
+                    />
+                </section>
+
             </main>
 
 
