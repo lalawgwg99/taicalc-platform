@@ -70,6 +70,7 @@ export default function HomePage() {
                     </div>
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
                         <Link href="/articles" className="hover:text-brand-primary transition-colors">知識庫</Link>
+                        <Link href="/fortune" className="hover:text-purple-500 transition-colors">財運命盤</Link>
                         <Link href="/salary" className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
                             開始試算
                         </Link>

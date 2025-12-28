@@ -14,7 +14,7 @@ const ARTICLES = [
         readTime: '7 min read',
         icon: <Heart className="w-5 h-5" />,
         featured: true,
-        slug: '#'
+        slug: '/articles/labor-pension-2025' // 暫時導向勞退文章
     },
     {
         id: 'medical-insurance-2025',
@@ -25,7 +25,7 @@ const ARTICLES = [
         date: '2025.02.28',
         readTime: '6 min read',
         icon: <Shield className="w-5 h-5" />,
-        slug: '#'
+        slug: '/articles/labor-pension-2025' // 暫時導向勞退文章
     },
     // 理財商品
     {
@@ -49,7 +49,7 @@ const ARTICLES = [
         date: '2025.02.10',
         readTime: '10 min read',
         icon: <Target className="w-5 h-5" />,
-        slug: '#'
+        slug: '/articles/etf-comparison' // 暫時導向 ETF 文章
     },
     // 退休規劃
     {
@@ -73,7 +73,7 @@ const ARTICLES = [
         date: '2025.01.20',
         readTime: '8 min read',
         icon: <Landmark className="w-5 h-5" />,
-        slug: '#'
+        slug: '/articles/labor-pension-2025' // 暫時導向勞退文章
     },
     // 稅務
     {
@@ -85,7 +85,7 @@ const ARTICLES = [
         date: '2025.04.01',
         readTime: '6 min read',
         icon: <HelpCircle className="w-5 h-5" />,
-        slug: '#'
+        slug: '/tax' // 導向稅務計算器
     },
 ];
 
