@@ -149,7 +149,7 @@ TaiCalc 數策 - 退休規劃報表
                 <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div className="space-y-2">
                         <div className="flex items-center space-x-3 text-[10px] font-black tracking-[0.2em] text-brand-primary uppercase">
-                            <span className="bg-brand-primary/10 px-2 py-0.5 rounded">簡潔穩定版</span>
+                            <span className="bg-brand-primary/10 px-2 py-0.5 rounded">勞退新制</span>
                             <span>v1.0.0</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">

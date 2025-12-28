@@ -50,7 +50,7 @@ export default function HomePage() {
             icon: <TrendingUp className="w-6 h-6" />,
             link: '/retirement',
             color: 'bg-brand-warning',
-            tag: '簡潔穩定',
+            tag: 'AI 智慧型',
             status: 'hot'
         },
     ];
