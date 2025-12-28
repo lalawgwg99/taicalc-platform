@@ -3,7 +3,7 @@
  * 讓 AI 自動調用 Skill 系統
  */
 
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import { generateText, tool } from 'ai';
 import { skillRegistry } from '@/lib/skills/registry';
 import { z } from 'zod';
@@ -38,9 +38,9 @@ export async function POST(req: Request) {
     });
 
     try {
-        // 使用 generateText 而非 streamText
+        // 使用 Gemini 模型
         const result = await generateText({
-            model: openai('gpt-4o'),
+            model: google('gemini-2.0-flash-exp'),
             messages,
             system: `你是 TaiCalc 的首席財務顧問「數策」。
 
