@@ -8,13 +8,15 @@ import {
 import {
     Info, Calculator, TrendingUp, TrendingDown, ShieldCheck,
     Download, Share2, ChevronLeft, ArrowRight, Zap, RefreshCw, AlertTriangle,
-    Clock, Gift, Briefcase, Shield, Target
+    Clock, Gift, Briefcase, Shield, Target, CheckCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
+import { TAIWAN_PARAMS } from '@/lib/constants';
 import { analyzeSalary, calculateGrossFromNet } from '@/lib/calculations';
 import AIInsightCard from '@/components/AI/AIInsightCard';
+import { useCalculatorStorage } from '@/hooks/useCalculatorStorage';
 import { calculateOvertime, calculateBonusTax, checkLaborRights, predictCareerGrowth } from '@/lib/calculations/salary';
 
 // 使用自定義的 Sankey Nodes/Links 介面
@@ -22,10 +24,23 @@ import { calculateOvertime, calculateBonusTax, checkLaborRights, predictCareerGr
 const SANKEY_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
 export default function SalaryCalculatorPage() {
-    const [activeTab, setActiveTab] = useState<'normal' | 'reverse'>('normal');
-    const [inputSalary, setInputSalary] = useState(50000); // 正常模式：月薪，逆向模式：實領
-    const [bonusMonths, setBonusMonths] = useState(2);
-    const [selfContributionRate, setSelfContributionRate] = useState(0); // 勞退自提比例 0-6%
+    // 使用儲存功能
+    const { values, setValues, hasLoadedFromStorage, clearStorage } = useCalculatorStorage({
+        key: 'taicalc-salary-calculator',
+        initialValues: {
+            activeTab: 'normal' as 'normal' | 'reverse',
+            inputSalary: 50000,
+            bonusMonths: 2,
+            selfContributionRate: 0,
+        },
+    });
+
+    const { activeTab, inputSalary, bonusMonths, selfContributionRate } = values;
+
+    const setActiveTab = (tab: 'normal' | 'reverse') => setValues({ ...values, activeTab: tab });
+    const setInputSalary = (salary: number) => setValues({ ...values, inputSalary: salary });
+    const setBonusMonths = (months: number) => setValues({ ...values, bonusMonths: months });
+    const setSelfContributionRate = (rate: number) => setValues({ ...values, selfContributionRate: rate });
 
     // 根據該模式計算結果
     const results = useMemo(() => {
@@ -136,6 +151,33 @@ TaiCalc 數策 - 薪資分析報表
                     </div>
                 </div>
             </nav>
+
+            {/* 載入提示條 */}
+            <AnimatePresence>
+                {hasLoadedFromStorage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="bg-emerald-50 border-b border-emerald-200 py-2 md:py-3 px-4 md:px-6"
+                    >
+                        <div className="max-w-7xl mx-auto flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <CheckCircle className="w-4 h-4 text-emerald-600" />
+                                <span className="text-xs md:text-sm font-bold text-emerald-800">
+                                    已載入上次計算
+                                </span>
+                            </div>
+                            <button
+                                onClick={clearStorage}
+                                className="text-xs font-bold text-emerald-600 hover:text-emerald-800 transition-colors"
+                            >
+                                重置
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <main className="max-w-7xl mx-auto px-4 md:px-6 py-12">
                 <header className="mb-12 text-center md:text-left">
