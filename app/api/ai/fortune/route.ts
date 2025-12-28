@@ -121,14 +121,14 @@ ${profile.retirementAge ? `- 目標退休年齡：${profile.retirementAge} 歲` 
 
         if (stream) {
             const result = await streamText({
-                model: google('gemini-2.0-flash'),
+                model: google('gemini-2.5-flash'),
                 system: systemInstruction,
                 prompt: prompt,
             });
             return result.toTextStreamResponse();
         } else {
             const result = await generateText({
-                model: google('gemini-2.0-flash'),
+                model: google('gemini-2.5-flash'),
                 system: systemInstruction,
                 prompt: prompt,
             });
