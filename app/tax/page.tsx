@@ -545,9 +545,9 @@ TaiCalc 數策 - 所得稅分析報表
                             <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>
                             <p className="text-sm text-slate-500">計算實領與勞健保</p>
                         </Link>
-                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
-                            <p className="text-sm text-slate-500">複利增長與通膨影響</p>
+                        <Link href="/mortgage" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">房貸佈局計算器</p>
+                            <p className="text-sm text-slate-500">房貸寬限期與利息分析</p>
                         </Link>
                     </div>
                 </section>

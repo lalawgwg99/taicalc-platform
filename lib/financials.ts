@@ -17,6 +17,8 @@ export interface YearData {
     interest: number;           // 累計利息/收益
     totalAssets: number;        // 名目總資產 (Nominal)
     realAssets: number;         // 實質總資產 (Real, 經通膨調整)
+    optimisticAssets: number;   // 樂觀情境 (+2%)
+    pessimisticAssets: number;  // 悲觀情境 (-2%)
 }
 
 export interface FinancialFreedomMetrics {
@@ -28,18 +30,26 @@ export interface FinancialFreedomMetrics {
 }
 
 /**
- * 計算複利增長與通膨影響
- * 使用標準年金終值公式 (Future Value of Annuity) 的變體進行逐年迭代，以支援更靈活的圖表數據
+ * 計算複利增長與通膨影響 (含敏感度分析)
+ * 使用標準年金終值公式 (Future Value of Annuity) 的變體進行逐年迭代
  */
 export function calculateCapitalGrowth(params: SimulationParams): YearData[] {
     const { initialCapital, monthlyContribution, annualReturnRate, inflationRate, years } = params;
 
     const r = annualReturnRate / 100;
+    const r_opt = (annualReturnRate + 2) / 100; // 樂觀 +2%
+    const r_pest = (annualReturnRate - 2) / 100; // 悲觀 -2%
     const i = inflationRate / 100;
+
     const monthlyRate = r / 12;
+    const monthlyRateOpt = r_opt / 12;
+    const monthlyRatePest = r_pest / 12;
 
     let currentAssets = initialCapital;
+    let currentAssetsOpt = initialCapital;
+    let currentAssetsPest = initialCapital;
     let totalPrincipal = initialCapital;
+
     const data: YearData[] = [];
 
     // 第 0 年 (初始狀態)
@@ -48,18 +58,21 @@ export function calculateCapitalGrowth(params: SimulationParams): YearData[] {
         principal: initialCapital,
         interest: 0,
         totalAssets: initialCapital,
-        realAssets: initialCapital
+        realAssets: initialCapital,
+        optimisticAssets: initialCapital,
+        pessimisticAssets: initialCapital
     });
 
     for (let year = 1; year <= years; year++) {
         // 按月複利計算
         for (let month = 1; month <= 12; month++) {
             currentAssets = currentAssets * (1 + monthlyRate) + monthlyContribution;
+            currentAssetsOpt = currentAssetsOpt * (1 + monthlyRateOpt) + monthlyContribution;
+            currentAssetsPest = currentAssetsPest * (1 + monthlyRatePest) + monthlyContribution;
             totalPrincipal += monthlyContribution;
         }
 
         // 計算折現因子 (Discount Factor)
-        // PV = FV / (1 + i)^n
         const discountFactor = Math.pow(1 + i, year);
         const realAssets = Math.round(currentAssets / discountFactor);
 
@@ -68,7 +81,9 @@ export function calculateCapitalGrowth(params: SimulationParams): YearData[] {
             principal: Math.round(totalPrincipal),
             interest: Math.round(currentAssets - totalPrincipal),
             totalAssets: Math.round(currentAssets),
-            realAssets
+            realAssets,
+            optimisticAssets: Math.round(currentAssetsOpt),
+            pessimisticAssets: Math.round(currentAssetsPest)
         });
     }
 

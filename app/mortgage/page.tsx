@@ -695,9 +695,9 @@ TaiCalc 數策 - 房貸試算報表
                             <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">稅務優化計算器</p>
                             <p className="text-sm text-slate-500">房貸利息可以抵稅嗎？搭配試算</p>
                         </Link>
-                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
-                            <p className="text-sm text-slate-500">先還房貸還是先投資？</p>
+                        <Link href="/articles" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">理財知識庫</p>
+                            <p className="text-sm text-slate-500">探索更多理財策略</p>
                         </Link>
                         <Link href="/salary" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
                             <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">薪資戰略計算器</p>

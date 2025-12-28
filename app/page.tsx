@@ -45,12 +45,12 @@ export default function HomePage() {
             status: 'hot'
         },
         {
-            title: '資本決策',
-            description: '複利、通膨與現金流預測，AI 生成專屬財富自由藍圖。',
+            title: '退休規劃',
+            description: '複利計算 + 勞退新制試算，幫你算出退休需要多少錢。',
             icon: <TrendingUp className="w-6 h-6" />,
-            link: '/capital',
+            link: '/retirement',
             color: 'bg-brand-warning',
-            tag: 'AI 首席官',
+            tag: '簡潔穩定',
             status: 'hot'
         },
     ];
@@ -71,7 +71,7 @@ export default function HomePage() {
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
                         <Link href="/salary" className="hover:text-brand-primary transition-colors">薪資戰略</Link>
                         <Link href="/mortgage" className="hover:text-brand-primary transition-colors">房貸佈局</Link>
-                        <Link href="/capital" className="hover:text-brand-primary transition-colors">資本決策</Link>
+                        <Link href="/tax" className="hover:text-brand-primary transition-colors">稅務優化</Link>
                         <button className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
                             開始佈局
                         </button>

@@ -612,9 +612,9 @@ TaiCalc 數策 - 薪資分析報表
                             <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">房貸佈局計算器</p>
                             <p className="text-sm text-slate-500">評估購屋能力上限</p>
                         </Link>
-                        <Link href="/capital" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
-                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">資本決策計算器</p>
-                            <p className="text-sm text-slate-500">規劃存股與退休</p>
+                        <Link href="/articles" className="group p-4 bg-slate-50 rounded-xl hover:bg-blue-50 transition-all">
+                            <p className="font-bold text-slate-900 group-hover:text-brand-primary mb-1">理財知識庫</p>
+                            <p className="text-sm text-slate-500">探索更多理財策略</p>
                         </Link>
                     </div>
                 </section>
