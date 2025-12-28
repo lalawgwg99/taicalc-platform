@@ -40,7 +40,8 @@ export const MortgageCalculateSkill: SkillDefinition<MortgageCalculateInput, Mor
     version: '1.0.0',
     inputSchema: MortgageCalculateInputSchema,
     outputSchema: MortgageCalculateOutputSchema,
-    tags: ['房貸', '房屋', '貸款', '月付金'],
+    category: 'financial',
+    tags: ['mortgage', 'long-term', 'beginner'],
     parameterDescriptions: {
         loanAmount: '房貸總金額',
         annualRate: '年利率百分比',
@@ -116,7 +117,8 @@ export const RefinanceSkill: SkillDefinition<RefinanceInput, RefinanceOutput> = 
     version: '1.0.0',
     inputSchema: RefinanceInputSchema,
     outputSchema: RefinanceOutputSchema,
-    tags: ['房貸', '轉貸', '節省'],
+    category: 'financial',
+    tags: ['mortgage', 'advanced'],
     parameterDescriptions: {
         currentBalance: '目前貸款餘額',
         currentRate: '目前年利率',
@@ -173,7 +175,8 @@ export const EarlyRepaymentSkill: SkillDefinition<EarlyRepaymentInput, EarlyRepa
     version: '1.0.0',
     inputSchema: EarlyRepaymentInputSchema,
     outputSchema: EarlyRepaymentOutputSchema,
-    tags: ['房貸', '提前還款', '節省利息'],
+    category: 'financial',
+    tags: ['mortgage', 'advanced'],
     parameterDescriptions: {
         loanBalance: '目前貸款餘額',
         annualRate: '年利率',

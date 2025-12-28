@@ -103,7 +103,7 @@ export default function HomePage() {
                             同一份薪資，<br />
                             <span className="text-brand-primary">不同決策</span>
                         </h1>
-                        <p className="text-4xl md:text-5xl font-black text-slate-900 mb-8">
+                        <p className="text-2xl sm:text-4xl md:text-5xl font-black text-slate-900 mb-8 whitespace-nowrap">
                             5 年後差距超過 <span className="text-rose-500">100 萬</span>
                         </p>
                         <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 font-medium leading-relaxed mb-10">

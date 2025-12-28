@@ -55,7 +55,8 @@ export const CapitalGrowthSkill: SkillDefinition<CapitalGrowthInput, CapitalGrow
     version: '1.0.0',
     inputSchema: CapitalGrowthInputSchema,
     outputSchema: CapitalGrowthOutputSchema,
-    tags: ['資本', '複利', '投資', '被動收入'],
+    category: 'financial',
+    tags: ['capital', 'long-term', 'low-risk'],
     parameterDescriptions: {
         initialCapital: '目前已有的資產',
         monthlyContribution: '每月預計投入的金額',
@@ -127,7 +128,8 @@ export const FIRESkill: SkillDefinition<FIREInput, FIREOutput> = {
     version: '1.0.0',
     inputSchema: FIREInputSchema,
     outputSchema: FIREOutputSchema,
-    tags: ['FIRE', '財務自由', '退休', '被動收入'],
+    category: 'financial',
+    tags: ['capital', 'fire', 'retirement', 'long-term'],
     parameterDescriptions: {
         monthlyExpense: '每月基本生活開銷',
         currentSavings: '目前已累積的存款/投資',
@@ -176,7 +178,8 @@ export const GoalReverseSkill: SkillDefinition<GoalReverseInput, GoalReverseOutp
     version: '1.0.0',
     inputSchema: GoalReverseInputSchema,
     outputSchema: GoalReverseOutputSchema,
-    tags: ['投資', '目標', '理財'],
+    category: 'financial',
+    tags: ['capital', 'long-term', 'beginner'],
     execute: async (input) => {
         return calculateGoalReverse(
             input.targetAmount,
@@ -217,7 +220,8 @@ export const PassiveIncomeSkill: SkillDefinition<PassiveIncomeInput, PassiveInco
     version: '1.0.0',
     inputSchema: PassiveIncomeInputSchema,
     outputSchema: PassiveIncomeOutputSchema,
-    tags: ['被動收入', '股息', '殖利率'],
+    category: 'financial',
+    tags: ['capital', 'fire', 'long-term'],
     execute: async (input) => {
         return calculatePassiveIncome(input.targetMonthlyIncome, input.yieldRate);
     },
@@ -250,7 +254,8 @@ export const MilestonesSkill: SkillDefinition<MilestonesInput, MilestonesOutput>
     version: '1.0.0',
     inputSchema: MilestonesInputSchema,
     outputSchema: MilestonesOutputSchema,
-    tags: ['里程碑', '目標', '複利'],
+    category: 'financial',
+    tags: ['capital', 'long-term', 'beginner'],
     execute: async (input) => {
         return calculateMilestones(
             input.initialCapital,

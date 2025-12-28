@@ -222,20 +222,26 @@ TaiCalc 數策 - 退休規劃報表
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 mb-2">現在年齡</label>
                                     <input
-                                        type="number"
-                                        min={18} max={70}
-                                        value={currentAge}
-                                        onChange={(e) => setCurrentAge(Number(e.target.value))}
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={currentAge || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(/[^0-9]/g, '');
+                                            setCurrentAge(val === '' ? 0 : Math.min(70, parseInt(val, 10)));
+                                        }}
                                         className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-center font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-bold text-slate-500 mb-2">退休年齡</label>
                                     <input
-                                        type="number"
-                                        min={50} max={80}
-                                        value={retirementAge}
-                                        onChange={(e) => setRetirementAge(Number(e.target.value))}
+                                        type="text"
+                                        inputMode="numeric"
+                                        value={retirementAge || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(/[^0-9]/g, '');
+                                            setRetirementAge(val === '' ? 0 : Math.min(80, parseInt(val, 10)));
+                                        }}
                                         className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-center font-bold text-slate-900 outline-none focus:ring-2 focus:ring-brand-primary/20"
                                     />
                                 </div>
@@ -417,18 +423,18 @@ TaiCalc 數策 - 退休規劃報表
                                 <TrendingUp className="w-5 h-5 text-brand-primary" />
                                 <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">投資回報分析</h3>
                             </div>
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="p-4 bg-slate-50 rounded-2xl text-center">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div className="p-4 bg-slate-50 rounded-2xl">
                                     <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">累計投入</div>
-                                    <div className="text-xl font-black text-slate-700">${formatCurrency(results.totalContributed)}</div>
+                                    <div className="text-base sm:text-lg font-black text-slate-700 truncate">${formatCurrency(results.totalContributed)}</div>
                                 </div>
-                                <div className="p-4 bg-emerald-50 rounded-2xl text-center">
+                                <div className="p-4 bg-emerald-50 rounded-2xl">
                                     <div className="text-[10px] font-bold text-emerald-600 uppercase mb-1">投資獲利</div>
-                                    <div className="text-xl font-black text-emerald-600">+${formatCurrency(results.investmentGain)}</div>
+                                    <div className="text-base sm:text-lg font-black text-emerald-600 truncate">+${formatCurrency(results.investmentGain)}</div>
                                 </div>
-                                <div className="p-4 bg-blue-50 rounded-2xl text-center">
+                                <div className="p-4 bg-blue-50 rounded-2xl">
                                     <div className="text-[10px] font-bold text-blue-600 uppercase mb-1">報酬倍數</div>
-                                    <div className="text-xl font-black text-blue-600">
+                                    <div className="text-base sm:text-lg font-black text-blue-600">
                                         {results.totalContributed > 0
                                             ? (results.personalFutureValue / results.totalContributed).toFixed(1)
                                             : 0}x

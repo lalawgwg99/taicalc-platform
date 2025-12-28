@@ -1,9 +1,9 @@
 /**
- * TaiCalc Skill Registry - 技能註冊中心
- * 管理所有 Skill 的註冊、查詢、搜尋
+ * TaiCalc Skill Registry v2 - 技能註冊中心
+ * 管理所有 Skill 的註冊、查詢、搜尋、分類
  */
 
-import { SkillDefinition, ISkillRegistry } from './types';
+import { SkillDefinition, ISkillRegistry, SkillCategory, SkillTag } from './types';
 
 class SkillRegistry implements ISkillRegistry {
     private skills: Map<string, SkillDefinition> = new Map();
@@ -41,27 +41,39 @@ class SkillRegistry implements ISkillRegistry {
         const lowerTags = tags.map(t => t.toLowerCase());
 
         return this.list().filter(skill => {
-            // 比對標籤
             const hasMatchingTag = skill.tags.some(tag =>
-                lowerTags.some(q => tag.toLowerCase().includes(q))
+                lowerTags.some(q => String(tag).toLowerCase().includes(q))
             );
-
-            // 比對名稱或描述
             const matchesName = lowerTags.some(q =>
                 skill.name.toLowerCase().includes(q) ||
                 skill.description.toLowerCase().includes(q)
             );
-
             return hasMatchingTag || matchesName;
         });
     }
 
     /**
+     * 依類別取得 Skill
+     */
+    getByCategory(category: SkillCategory): SkillDefinition[] {
+        return this.list().filter(skill => skill.category === category);
+    }
+
+    /**
+     * 依標籤取得 Skill（符合任一標籤即可）
+     */
+    getByTags(tags: SkillTag[]): SkillDefinition[] {
+        return this.list().filter(skill =>
+            skill.tags.some(tag => tags.includes(tag as SkillTag))
+        );
+    }
+
+    /**
      * 取得所有 Skill 的摘要（供 AI 使用）
      */
-    getSummary(): { id: string; name: string; description: string; tags: string[] }[] {
-        return this.list().map(({ id, name, description, tags }) => ({
-            id, name, description, tags
+    getSummary(): { id: string; name: string; description: string; category: string; tags: string[] }[] {
+        return this.list().map(({ id, name, description, category, tags }) => ({
+            id, name, description, category: category || 'financial', tags: tags as string[]
         }));
     }
 
@@ -71,8 +83,25 @@ class SkillRegistry implements ISkillRegistry {
     getAll(): Map<string, SkillDefinition> {
         return this.skills;
     }
+
+    /**
+     * 取得 Financial Skill（排除 Entertainment）
+     */
+    getFinancialSkills(): SkillDefinition[] {
+        return this.list().filter(skill =>
+            skill.category === 'financial' || !skill.category
+        );
+    }
+
+    /**
+     * 取得 Entertainment Skill
+     */
+    getEntertainmentSkills(): SkillDefinition[] {
+        return this.list().filter(skill => skill.category === 'entertainment');
+    }
 }
 
 // Singleton instance
 export const skillRegistry = new SkillRegistry();
 export default skillRegistry;
+

@@ -417,8 +417,8 @@ TaiCalc 數策 - 房貸試算報表
                                 </div>
                             </div>
 
-                            <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-[200px] relative overflow-hidden">
-                                <DollarSign className="absolute right-4 top-4 text-slate-100 w-32 h-32 rotate-12" />
+                            <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-lg shadow-slate-100 flex flex-col justify-between h-auto sm:h-[200px] relative overflow-hidden">
+                                <DollarSign className="hidden sm:block absolute right-4 top-4 text-slate-100 w-24 h-24 md:w-32 md:h-32 rotate-12" />
                                 <div>
                                     <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center">
                                         總利息支出

@@ -45,7 +45,8 @@ export const TaxCalculateSkill: SkillDefinition<TaxCalculateInput, TaxCalculateO
     version: '1.0.0',
     inputSchema: TaxCalculateInputSchema,
     outputSchema: TaxCalculateOutputSchema,
-    tags: ['稅務', '所得稅', '年度申報'],
+    category: 'financial',
+    tags: ['tax', 'low-risk', 'beginner'],
     parameterDescriptions: {
         annualIncome: '全年總收入（新台幣）',
         exemptionCount: '可申報的免稅額人數',
@@ -131,7 +132,8 @@ export const TaxOptimizeSkill: SkillDefinition<TaxOptimizeInput, TaxOptimizeOutp
     version: '1.0.0',
     inputSchema: TaxOptimizeInputSchema,
     outputSchema: TaxOptimizeOutputSchema,
-    tags: ['稅務', '節稅', '優化'],
+    category: 'financial',
+    tags: ['tax', 'advanced'],
     parameterDescriptions: {
         annualIncome: '全年總收入',
         currentSelfContribution: '目前勞退自提比例',

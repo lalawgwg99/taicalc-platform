@@ -58,7 +58,8 @@ export const SalaryAnalyzeSkill: SkillDefinition<SalaryAnalyzeInput, SalaryAnaly
     version: '1.0.0',
     inputSchema: SalaryAnalyzeInputSchema,
     outputSchema: SalaryAnalyzeOutputSchema,
-    tags: ['薪資', '勞健保', '稅務', '所得稅'],
+    category: 'financial',
+    tags: ['salary', 'tax', 'low-risk', 'beginner'],
     parameterDescriptions: {
         monthlySalary: '每月稅前薪資（新台幣）',
         bonusMonths: '年終獎金月數，例如 1.5 表示 1.5 個月',
@@ -106,7 +107,8 @@ export const SalaryReverseSkill: SkillDefinition<SalaryReverseInput, SalaryRever
     version: '1.0.0',
     inputSchema: SalaryReverseInputSchema,
     outputSchema: SalaryReverseOutputSchema,
-    tags: ['薪資', '逆向計算'],
+    category: 'financial',
+    tags: ['salary', 'low-risk', 'beginner'],
     parameterDescriptions: {
         targetNetSalary: '期望每月實際領到的金額',
         dependents: '健保眷屬人數',
@@ -151,7 +153,8 @@ export const SalaryStructureSkill: SkillDefinition<SalaryStructureInput, SalaryS
     version: '1.0.0',
     inputSchema: SalaryStructureInputSchema,
     outputSchema: SalaryStructureOutputSchema,
-    tags: ['薪資', '投保', '級距'],
+    category: 'financial',
+    tags: ['salary', 'low-risk', 'beginner'],
     parameterDescriptions: {
         monthlySalary: '每月稅前薪資',
     },
