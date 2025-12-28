@@ -252,16 +252,18 @@ export default function ArticlesPage() {
                     <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-6">📚 所有文章</h2>
                     <div className="grid gap-4">
                         {ARTICLES.map((article) => (
-                            <article key={article.id} className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-brand-primary/20 transition-all flex items-center gap-4 cursor-pointer group">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${article.categoryColor}`}>
-                                    {article.icon}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <h3 className="font-bold text-slate-900 group-hover:text-brand-primary transition-colors truncate">{article.title}</h3>
-                                    <div className="text-xs text-slate-400">{article.category} · {article.date}</div>
-                                </div>
-                                <ArrowLeft className="w-5 h-5 text-slate-300 rotate-180 group-hover:text-brand-primary transition-colors flex-shrink-0" />
-                            </article>
+                            <Link href={article.slug} key={article.id}>
+                                <article className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-brand-primary/20 transition-all flex items-center gap-4 cursor-pointer group">
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${article.categoryColor}`}>
+                                        {article.icon}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-bold text-slate-900 group-hover:text-brand-primary transition-colors truncate">{article.title}</h3>
+                                        <div className="text-xs text-slate-400">{article.category} · {article.date}</div>
+                                    </div>
+                                    <ArrowLeft className="w-5 h-5 text-slate-300 rotate-180 group-hover:text-brand-primary transition-colors flex-shrink-0" />
+                                </article>
+                            </Link>
                         ))}
                     </div>
                 </section>
