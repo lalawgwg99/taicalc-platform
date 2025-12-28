@@ -69,12 +69,10 @@ export default function HomePage() {
                         </span>
                     </div>
                     <div className="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-600">
-                        <Link href="/salary" className="hover:text-brand-primary transition-colors">薪資戰略</Link>
-                        <Link href="/mortgage" className="hover:text-brand-primary transition-colors">房貸佈局</Link>
-                        <Link href="/tax" className="hover:text-brand-primary transition-colors">稅務優化</Link>
-                        <button className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
-                            開始佈局
-                        </button>
+                        <Link href="/articles" className="hover:text-brand-primary transition-colors">知識庫</Link>
+                        <Link href="/salary" className="bg-slate-900 text-white px-5 py-2.5 rounded-full hover:bg-slate-800 transition-all shadow-lg shadow-slate-200 font-bold active:scale-95">
+                            開始試算
+                        </Link>
                     </div>
                 </div>
             </nav>

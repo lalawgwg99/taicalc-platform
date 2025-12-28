@@ -38,7 +38,7 @@ const ARTICLES = [
         readTime: '8 min read',
         icon: <TrendingUp className="w-5 h-5" />,
         featured: true,
-        slug: '#'
+        slug: '/articles/etf-comparison'
     },
     {
         id: 'dollar-cost-averaging',
@@ -62,7 +62,7 @@ const ARTICLES = [
         readTime: '9 min read',
         icon: <PiggyBank className="w-5 h-5" />,
         featured: true,
-        slug: '#'
+        slug: '/articles/labor-pension-2025'
     },
     {
         id: 'fire-inflation-guide',
