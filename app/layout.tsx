@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import SchemaOrg from '@/components/SEO/SchemaOrg';
-import { GoogleAnalytics, GATracker } from '@/lib/ga4';
+// import { GoogleAnalytics, GATracker } from '@/lib/ga4';
+import Script from 'next/script';
 import Footer from '@/components/Footer';
 import { TaiCalcChat } from '@/components/AI';
 
@@ -64,7 +65,21 @@ export default function RootLayout({
   return (
     <html lang="zh-TW" className={`${inter.variable} ${notoSansTC.variable} ${jetbrainsMono.variable}`}>
       <head>
-        <GoogleAnalytics />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-J6BM5DCBNN"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-J6BM5DCBNN', { 
+              anonymize_ip: true,
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -75,7 +90,7 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning={true} className="font-sans antialiased bg-brand-background text-brand-text-primary overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
-        <GATracker />
+        {/* <GATracker /> */}
         {children}
         <Footer />
         <TaiCalcChat />

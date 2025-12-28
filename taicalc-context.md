@@ -69,7 +69,7 @@ taicalc/
 
 Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、可被 AI 自動調用
 
-### 已註冊的 14 個 Skill
+### 已註冊的 16 個 Skill
 
 | 分類 | Skill ID | 說明 | 類別 |
 | ------ | ---------- | ------ | ------ |
@@ -87,6 +87,8 @@ Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、�
 | 房貸 | mortgage.refinance | 轉貸評估 | financial |
 | 房貸 | mortgage.earlyRepayment | 提前還款分析 | financial |
 | 財運 | fortune.analyze | 財運命盤分析 | entertainment |
+| 文章 | articles.generate | AI 文章生成器 | utility |
+| 文章 | articles.trending | 趨勢話題分析 | utility |
 
 ### API 端點
 
@@ -96,6 +98,8 @@ GET  /api/skills/{skillId}    # 取得 Skill Schema
 POST /api/skills/{skillId}    # 執行 Skill
 POST /api/skills/chain        # 鏈式執行（支援條件分支 DSL）
 POST /api/chat                # AI 對話 (自動調用 Skill)
+GET  /api/articles/generate   # 取得理財趨勢話題
+POST /api/articles/generate   # 生成 SEO 優化文章
 ```
 
 ### Chain Decision DSL（v2 新功能）
