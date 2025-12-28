@@ -470,6 +470,55 @@ TaiCalc 數策 - 所得稅分析報表
 
                         </div>
 
+                        {/* AI 判讀：你的稅負合理嗎？ */}
+                        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6 shadow-sm">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center flex-shrink-0">
+                                    <Target className="w-6 h-6 text-amber-600" />
+                                </div>
+                                <div className="flex-1">
+                                    <h4 className="text-sm font-black text-amber-900 mb-3">
+                                        🧠 AI 判讀：你的稅務規劃有優化空間嗎？
+                                    </h4>
+                                    <div className="space-y-3 text-sm text-amber-900">
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">有效稅率 {results.effectiveRate.toFixed(2)}%</span>
+                                                {results.effectiveRate >= 15
+                                                    ? ' ，屬於高稅負族群。建議積極運用勞退自提、捐贈等方式降低稅負。'
+                                                    : results.effectiveRate >= 8
+                                                        ? ' ，處於中等水平。仍有節稅空間可以優化。'
+                                                        : ' ，稅負相對較輕。但仍可透過扣除額最大化來進一步降低。'
+                                                }
+                                            </p>
+                                        </div>
+                                        {results.basicLivingDifference > 0 && (
+                                            <div className="flex items-start gap-2">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                                                <p>
+                                                    <span className="font-black">基本生活費差額 {formatCurrency(results.basicLivingDifference)} 元</span>
+                                                    ：系統已自動幫你計算！這是多口之家的專屬福利，有效降低了 {Math.round(results.basicLivingDifference * (results.marginalRate / 100))} 元稅金。
+                                                </p>
+                                            </div>
+                                        )}
+                                        <div className="flex items-start gap-2">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-2 flex-shrink-0" />
+                                            <p>
+                                                <span className="font-black">邊際稅率 {results.marginalRate}%</span>
+                                                ：每多賺 100 元，就要繳 {results.marginalRate} 元稅。
+                                                {results.marginalRate >= 12
+                                                    ? ' 建議勞退自提 6%，每提繳 1 萬就能省稅 ' + Math.round(10000 * (results.marginalRate / 100)) + ' 元。'
+                                                    : ' 目前級距尚可，但接近臨界點時需注意。'
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         {/* AI 智慧診斷區塊 */}
                         <div className="mb-6">
                             <AIInsightCard
