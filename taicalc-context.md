@@ -7,7 +7,7 @@
 ## 📌 專案基本資訊
 
 | 項目 | 說明 |
-|------|------|
+| ------ | ------ |
 | 品牌名稱 | TaiCalc 數策 |
 | 定位 | 台灣在地化財務決策工具箱 |
 | 語言 | 繁體中文（台灣用語）|
@@ -19,22 +19,23 @@
 
 ## 🗂️ 目錄結構
 
-```
+```text
 taicalc/
 ├── app/
 │   ├── api/
 │   │   ├── chat/route.ts         # AI Chat API (Gemini Tool Calling)
 │   │   ├── skills/route.ts       # 列出所有 Skill
 │   │   ├── skills/[skillId]/     # 執行單一 Skill
-│   │   ├── skills/chain/         # 鏈式執行 Skill
+│   │   ├── skills/chain/         # 鏈式執行 Skill（支援條件分支）
 │   │   └── ai/
 │   │       ├── analyze/route.ts  # AI 分析 API
-│   │       └── fortune/route.ts  # 財運命盤 API
+│   │       └── fortune/route.ts  # 財運命盤 AI API
 │   ├── salary/                   # 薪資計算頁
 │   ├── tax/                      # 稅務計算頁
 │   ├── mortgage/                 # 房貸計算頁
 │   ├── retirement/               # 退休規劃頁
 │   ├── fortune/                  # 財運命盤頁
+│   ├── developers/               # 開發者文件頁
 │   └── home-assessment/          # 買房全能評估頁
 ├── components/
 │   ├── AI/
@@ -45,9 +46,15 @@ taicalc/
 ├── lib/
 │   ├── skills/
 │   │   ├── registry.ts           # Skill 註冊中心
-│   │   ├── executor.ts           # Skill 執行器
-│   │   ├── types.ts              # 類型定義
-│   │   └── definitions/          # 13 個 Skill 定義
+│   │   ├── executor.ts           # Skill 執行器（含條件分支 DSL）
+│   │   ├── types.ts              # 類型定義 v2
+│   │   └── implementations/      # Skill 實作
+│   │       ├── salary.skill.ts   # 3 個薪資 Skill
+│   │       ├── tax.skill.ts      # 2 個稅務 Skill
+│   │       ├── capital.skill.ts  # 5 個資本 Skill
+│   │       ├── mortgage.skill.ts # 3 個房貸 Skill
+│   │       └── fortune.skill.ts  # 1 個財運 Skill（娛樂類）
+│   ├── ga4.tsx                   # GA4 追蹤整合
 │   ├── db/
 │   │   └── logger.ts             # 執行日誌系統
 │   └── calculations.ts           # 核心計算邏輯
@@ -56,29 +63,30 @@ taicalc/
 
 ---
 
-## 🧠 Skill 系統
+## 🧠 Skill 系統 v2
 
 ### 概念
 
 Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、可被 AI 自動調用
 
-### 已註冊的 13 個 Skill
+### 已註冊的 14 個 Skill
 
-| 分類 | Skill ID | 說明 |
-|------|----------|------|
-| 薪資 | salary.analyze | 薪資結構分析 |
-| 薪資 | salary.reverse | 逆向推算期望薪資 |
-| 薪資 | salary.structure | 年薪結構優化 |
-| 稅務 | tax.calculate | 綜所稅計算 |
-| 稅務 | tax.optimize | 節稅策略 |
-| 資本 | capital.growth | 複利成長試算 |
-| 資本 | capital.fire | FIRE 獨立計算 |
-| 資本 | capital.goalReverse | 目標逆推 |
-| 資本 | capital.passiveIncome | 被動收入規劃 |
-| 資本 | capital.milestones | 財富里程碑 |
-| 房貸 | mortgage.calculate | 房貸試算 |
-| 房貸 | mortgage.refinance | 轉貸評估 |
-| 房貸 | mortgage.earlyRepayment | 提前還款分析 |
+| 分類 | Skill ID | 說明 | 類別 |
+| ------ | ---------- | ------ | ------ |
+| 薪資 | salary.analyze | 薪資結構分析 | financial |
+| 薪資 | salary.reverse | 逆向推算期望薪資 | financial |
+| 薪資 | salary.structure | 年薪結構優化 | financial |
+| 稅務 | tax.calculate | 綜所稅計算 | financial |
+| 稅務 | tax.optimize | 節稅策略 | financial |
+| 資本 | capital.growth | 複利成長試算 | financial |
+| 資本 | capital.fire | FIRE 獨立計算 | financial |
+| 資本 | capital.goalReverse | 目標逆推 | financial |
+| 資本 | capital.passiveIncome | 被動收入規劃 | financial |
+| 資本 | capital.milestones | 財富里程碑 | financial |
+| 房貸 | mortgage.calculate | 房貸試算 | financial |
+| 房貸 | mortgage.refinance | 轉貸評估 | financial |
+| 房貸 | mortgage.earlyRepayment | 提前還款分析 | financial |
+| 財運 | fortune.analyze | 財運命盤分析 | entertainment |
 
 ### API 端點
 
@@ -86,9 +94,38 @@ Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、�
 GET  /api/skills              # 列出所有 Skill
 GET  /api/skills/{skillId}    # 取得 Skill Schema
 POST /api/skills/{skillId}    # 執行 Skill
-POST /api/skills/chain        # 鏈式執行
+POST /api/skills/chain        # 鏈式執行（支援條件分支 DSL）
 POST /api/chat                # AI 對話 (自動調用 Skill)
 ```
+
+### Chain Decision DSL（v2 新功能）
+
+支援 `$previous`、`$stepId.field` 引用和條件分支：
+
+```json
+{
+  "steps": [
+    { "stepId": "salary", "skillId": "salary.analyze", "input": { "monthlySalary": 60000 } },
+    {
+      "stepId": "tax",
+      "skillId": "tax.calculate",
+      "input": { "income": "$salary.data.annual.gross" },
+      "condition": { "expression": "$salary.data.annual.gross > 500000", "skipIfFalse": true }
+    }
+  ]
+}
+```
+
+---
+
+## 📊 GA4 追蹤整合
+
+已整合 Google Analytics 4，位於 `lib/ga4.tsx`：
+
+- `GoogleAnalytics` - 載入 gtag.js
+- `GATracker` - 自動追蹤頁面瀏覽
+- `GA_EVENTS` - 預設事件追蹤
+- 需設定 `NEXT_PUBLIC_GA_MEASUREMENT_ID`
 
 ---
 
@@ -98,18 +135,15 @@ POST /api/chat                # AI 對話 (自動調用 Skill)
 
 ```env
 GOOGLE_GENERATIVE_AI_API_KEY=你的_Gemini_API_Key
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 ### AI Chat 流程
 
 1. 用戶發送問題 → `/api/chat`
-2. 所有 Skill 動態轉為 AI Tool
+2. 所有 Financial Skill 動態轉為 AI Tool
 3. Gemini 判斷並自動調用工具
 4. 回傳計算結果 + AI 解釋
-
-### 前端組件
-
-- `TaiCalcChat.tsx` - 右下角浮動按鈕，點擊開啟對話視窗
 
 ---
 
@@ -136,6 +170,7 @@ export const runtime = 'edge';
 - 圓角: `rounded-xl` (12px)
 - 品牌色: `brand-primary`, `brand-secondary`, `brand-accent`
 - 金額: 千分位格式 (1,234,567)
+- 手機版: 優先考慮響應式設計
 
 ---
 

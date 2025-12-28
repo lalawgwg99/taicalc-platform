@@ -14,6 +14,7 @@ import { salarySkills } from './implementations/salary.skill';
 import { taxSkills } from './implementations/tax.skill';
 import { capitalSkills } from './implementations/capital.skill';
 import { mortgageSkills } from './implementations/mortgage.skill';
+import { fortuneSkill } from './implementations/fortune.skill';
 
 // 註冊所有 Skill
 function registerAllSkills() {
@@ -22,6 +23,7 @@ function registerAllSkills() {
         ...taxSkills,
         ...capitalSkills,
         ...mortgageSkills,
+        fortuneSkill,
     ] as const;
 
     allSkills.forEach(skill => {
@@ -41,3 +43,4 @@ export { salarySkills } from './implementations/salary.skill';
 export { taxSkills } from './implementations/tax.skill';
 export { capitalSkills } from './implementations/capital.skill';
 export { mortgageSkills } from './implementations/mortgage.skill';
+export { fortuneSkill } from './implementations/fortune.skill';
