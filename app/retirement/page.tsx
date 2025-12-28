@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, Download, Target, Wallet, TrendingUp, Calendar, PiggyBank, RefreshCw } from 'lucide-react';
+import { ChevronLeft, Download, Target, Wallet, TrendingUp, Calendar, PiggyBank, RefreshCw, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { TAIWAN_PARAMS } from '@/lib/constants';
 import AIInsightCard from '@/components/AI/AIInsightCard';
+import { useCalculatorStorage } from '@/hooks/useCalculatorStorage';
 
 // 勞退新制參數 (2025)
 const LABOR_PENSION = {
