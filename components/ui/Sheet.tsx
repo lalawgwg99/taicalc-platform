@@ -44,6 +44,7 @@ export function Sheet({ isOpen, onClose, children, title, description }: SheetPr
                     <button
                         onClick={onClose}
                         className="rounded-full p-2 hover:bg-secondary transition-colors"
+                        aria-label="Close"
                     >
                         <X className="w-4 h-4" />
                     </button>

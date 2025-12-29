@@ -239,6 +239,8 @@ export default function SkillForm({
                                         value={values[field.name] as string || ''}
                                         onChange={e => updateValue(field.name, e.target.value)}
                                         className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all font-bold text-slate-900 appearance-none cursor-pointer"
+                                        aria-label={label}
+                                        title={label}
                                     >
                                         <option value="" disabled>請選擇</option>
                                         {(uiField?.options ? Object.entries(uiField.options) : (field.options || []).map(opt => [opt, opt])).map(([val, label]) => (

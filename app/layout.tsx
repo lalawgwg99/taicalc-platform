@@ -12,8 +12,8 @@ const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '70
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'TaiCalc 數策 — 2025 薪資戰略決策系統',
-  description: '全台最精準的薪資戰略工具。整合大數據分級查表、逆向談薪與資金流向視覺化分析，助您做出最佳財務決策。',
+  title: 'TaiCalc｜快速、免費的實用計算工具平台',
+  description: '提供簡單好用的線上計算工具，免下載免註冊。薪資、房貸、稅務、退休金試算，結果清楚一看就懂。',
   keywords: ['薪資計算', '所得稅計算', '房貸試算', '複利計算', '2025基本工資', '新青安房貸', '報稅試算', '勞健保試算'],
   authors: [{ name: 'TaiCalc 數策' }],
   creator: 'TaiCalc',
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
     locale: 'zh_TW',
     url: 'https://taicalc.com',
     siteName: 'TaiCalc 數策',
-    title: 'TaiCalc 數策 — 2025 財務決策系統',
-    description: '薪資計算、所得稅試算、房貸評估、複利增長，一站式財務決策工具。',
+    title: 'TaiCalc｜快速、免費的實用計算工具平台',
+    description: '提供簡單好用的線上計算工具，免下載免註冊。結果清楚一看就懂。',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TaiCalc 數策',
-    description: '把錢算清楚，再做決定。',
+    description: '快速、免費的實用計算工具平台。結果清楚一看就懂。',
   },
 };
 
@@ -41,7 +41,7 @@ const organizationSchema = {
   name: 'TaiCalc 數策',
   url: 'https://taicalc.com',
   logo: 'https://taicalc.com/logo.png',
-  description: '台灣領先的財務決策計算平台，提供薪資、稅務、房貸、投資等精準試算工具。',
+  description: '快速、免費的實用計算工具平台。幫你用最少時間，算清楚生活、工作與財務中的關鍵數字。',
   sameAs: [],
 };
 

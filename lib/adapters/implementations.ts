@@ -81,10 +81,13 @@ registerAdapter('tax.calculate', (input, output) => {
 // Salary Adapter
 registerAdapter('salary.analyze', (input, output) => {
     // Pie Chart: Take home vs Tax vs Insurance
+    // output structure matches SalaryAnalyzeOutputSchema in salary.skill.ts
+    const annual = output.annual || {};
+
     const chartData = [
-        { name: '實領薪資', value: output.takeHomeAnnual || 0 },
-        { name: '勞健保', value: output.insuranceAnnual || 0 },
-        { name: '所得稅', value: output.taxAnnual || 0 },
+        { name: '實領薪資', value: annual.net || 0 },
+        { name: '勞健保', value: (annual.insurance || 0) + (annual.pension || 0) },
+        { name: '所得稅', value: annual.tax || 0 },
     ];
 
     return {
