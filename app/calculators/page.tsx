@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description: 'TaiCalc 提供的所有財務試算工具總覽，包含薪資、稅務、資本、房貸與運勢分析。',
 };
 
+export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 // Client Component Wrapper for Search Params logic
