@@ -12,8 +12,8 @@ const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '70
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'TaiCalc｜快速、免費的實用計算工具平台',
-  description: '提供簡單好用的線上計算工具，免下載免註冊。薪資、房貸、稅務、退休金試算，結果清楚一看就懂。',
+  title: 'TaiCalc｜幫你算清楚，每個財務選擇的長期差距',
+  description: '同一份薪資、同一筆房貸，不同選擇，5 年後差距可能超過數十萬。TaiCalc 幫你快速試算，看清每個決定的真正影響。',
   keywords: ['薪資計算', '所得稅計算', '房貸試算', '複利計算', '2025基本工資', '新青安房貸', '報稅試算', '勞健保試算'],
   authors: [{ name: 'TaiCalc 數策' }],
   creator: 'TaiCalc',
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     locale: 'zh_TW',
     url: 'https://taicalc.com',
     siteName: 'TaiCalc 數策',
-    title: 'TaiCalc｜快速、免費的實用計算工具平台',
-    description: '提供簡單好用的線上計算工具，免下載免註冊。結果清楚一看就懂。',
+    title: 'TaiCalc｜幫你算清楚，每個財務選擇的長期差距',
+    description: '同一份薪資、同一筆房貸，不同選擇，5 年後差距可能超過數十萬。',
   },
   twitter: {
     card: 'summary_large_image',
