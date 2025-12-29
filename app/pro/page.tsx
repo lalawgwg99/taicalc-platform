@@ -68,7 +68,7 @@ export default function ProLandingPage() {
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>
-                        <p className="mt-4 text-xs text-slate-500">限時優惠：單次解鎖僅需 NT$ 99</p>
+                        <p className="mt-4 text-xs text-slate-500">限時優惠：單次解鎖僅需 NT$ 59</p>
                     </motion.div>
                 </section>
 
@@ -195,7 +195,7 @@ export default function ProLandingPage() {
                         </div>
                         <h3 className="text-xl font-bold text-slate-300 mb-2">單次解鎖</h3>
                         <div className="text-4xl font-black text-white mb-2">
-                            NT$ 99 <span className="text-lg text-slate-500 font-normal">/ 次</span>
+                            NT$ 59 <span className="text-lg text-slate-500 font-normal">/ 次</span>
                         </div>
                         <p className="text-slate-400 text-sm mb-8">
                             適合面對重大決策時 (買房、換工作)<br />一次算清楚
