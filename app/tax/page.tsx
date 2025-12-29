@@ -64,23 +64,61 @@ export default function TaxCalculatorPage() {
     const [loading, setLoading] = useState(false);
     const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
-    const handleCalculate = async () => {
-        setLoading(true);
-        try {
-            const res = await publicExecute('tax.calculate', {
-                annualIncome: income,
-                isMarried: status === 'married'
-            });
-            if (res && typeof res === 'object' && 'data' in res) {
-                setResult((res as any).data);
-            } else {
-                setResult(res);
+    // 純前端計算 - 2024 年度稅率
+    const calculateTax = () => {
+        const isMarried = status === 'married';
+
+        // 扣除額
+        const exemption = 92000;  // 免稅額
+        const standardDeduction = isMarried ? 248000 : 124000;  // 標準扣除額
+        const salaryDeduction = Math.min(income, 207000);  // 薪資扣除額
+
+        const totalDeductions = exemption + standardDeduction + salaryDeduction;
+        const taxableIncome = Math.max(0, income - totalDeductions);
+
+        // 累進稅率計算
+        let taxAmount = 0;
+        const brackets = [
+            { limit: 560000, rate: 0.05 },
+            { limit: 1260000, rate: 0.12 },
+            { limit: 2520000, rate: 0.20 },
+            { limit: 4720000, rate: 0.30 },
+            { limit: Infinity, rate: 0.40 }
+        ];
+
+        let remaining = taxableIncome;
+        let prevLimit = 0;
+
+        for (const bracket of brackets) {
+            const taxableInBracket = Math.min(remaining, bracket.limit - prevLimit);
+            if (taxableInBracket > 0) {
+                taxAmount += taxableInBracket * bracket.rate;
+                remaining -= taxableInBracket;
             }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setLoading(false);
+            prevLimit = bracket.limit;
+            if (remaining <= 0) break;
         }
+
+        const effectiveTaxRate = income > 0 ? (taxAmount / income) * 100 : 0;
+
+        return {
+            taxAmount: Math.round(taxAmount),
+            effectiveTaxRate: effectiveTaxRate,
+            deductionDetails: {
+                exemption,
+                standardDeduction,
+                salaryDeduction,
+                totalDeductions
+            },
+            taxableIncome
+        };
+    };
+
+    const handleCalculate = () => {
+        setLoading(true);
+        const calc = calculateTax();
+        setResult(calc);
+        setLoading(false);
     };
 
     const applyScenario = (s: typeof QUICK_SCENARIOS[0]) => {

@@ -56,24 +56,35 @@ export default function MortgageCalculatorPage() {
     const [loading, setLoading] = useState(false);
     const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
-    const handleCalculate = async () => {
-        setLoading(true);
-        try {
-            const res = await publicExecute('mortgage.calculate', {
-                loanAmount: principal,
-                years,
-                annualRate: rate
-            });
-            if (res && typeof res === 'object' && 'data' in res) {
-                setResult((res as any).data);
-            } else {
-                setResult(res);
-            }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setLoading(false);
+    // 純前端計算 - 不依賴 API
+    const calculateMortgage = () => {
+        const monthlyRate = rate / 100 / 12;
+        const totalMonths = years * 12;
+
+        let monthlyPayment: number;
+        if (monthlyRate === 0) {
+            monthlyPayment = principal / totalMonths;
+        } else {
+            monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, totalMonths)
+                / (Math.pow(1 + monthlyRate, totalMonths) - 1);
         }
+
+        const totalPayment = monthlyPayment * totalMonths;
+        const totalInterest = totalPayment - principal;
+
+        return {
+            monthlyPayment: Math.round(monthlyPayment),
+            totalPayment: Math.round(totalPayment),
+            totalInterest: Math.round(totalInterest)
+        };
+    };
+
+    const handleCalculate = () => {
+        setLoading(true);
+        // 使用前端計算
+        const calc = calculateMortgage();
+        setResult(calc);
+        setLoading(false);
     };
 
     const applyScenario = (s: typeof QUICK_SCENARIOS[0]) => {
@@ -83,6 +94,7 @@ export default function MortgageCalculatorPage() {
     };
 
     const fmt = (n: number) => n?.toLocaleString('zh-TW') || '0';
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">

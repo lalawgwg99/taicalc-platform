@@ -58,25 +58,47 @@ export default function SalaryCalculatorPage() {
     const [loading, setLoading] = useState(false);
     const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
-    // 計算
-    const handleCalculate = async () => {
-        setLoading(true);
-        try {
-            const res = await publicExecute('salary.analyze', {
-                monthlySalary: salary,
-                bonusMonths: includeBonus ? 2 : 0,
-                selfContributionRate: selfContribute ? 6 : 0
-            });
-            if (res && typeof res === 'object' && 'data' in res) {
-                setResult((res as any).data);
-            } else {
-                setResult(res);
+    // 純前端計算 - 不依賴 API
+    const calculateSalary = () => {
+        // 勞保費率 12% (勞工自付 20% = 2.4%)
+        const laborInsuranceRate = 0.024;
+        // 健保費率 5.17% (勞工自付 30% ≈ 1.55%)
+        const healthInsuranceRate = 0.0155;
+        // 勞退自提
+        const pensionRate = selfContribute ? 0.06 : 0;
+
+        const laborInsurance = Math.round(salary * laborInsuranceRate);
+        const healthInsurance = Math.round(salary * healthInsuranceRate);
+        const pension = Math.round(salary * pensionRate);
+
+        const monthlyDeductions = laborInsurance + healthInsurance + pension;
+        const takeHome = salary - monthlyDeductions;
+
+        const bonusMonths = includeBonus ? 2 : 0;
+        const annualGross = salary * (12 + bonusMonths);
+        const annualDeductions = monthlyDeductions * 12;
+        const annualNet = annualGross - annualDeductions;
+
+        return {
+            monthly: {
+                gross: salary,
+                labor: laborInsurance,
+                health: healthInsurance,
+                pension: pension,
+                takeHome: takeHome
+            },
+            annual: {
+                gross: annualGross,
+                net: annualNet
             }
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setLoading(false);
-        }
+        };
+    };
+
+    const handleCalculate = () => {
+        setLoading(true);
+        const calc = calculateSalary();
+        setResult(calc);
+        setLoading(false);
     };
 
     // 快速套用情境
