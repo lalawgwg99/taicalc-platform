@@ -104,6 +104,40 @@ export default function HomePage() {
                             👉 立即開始試算（免費）
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </Link>
+
+                        {/* 分類快速導航 */}
+                        <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+                            <Link
+                                href="/calculators"
+                                className="px-5 py-2.5 rounded-full bg-blue-500 text-white font-medium text-sm hover:bg-blue-600 transition-all shadow-sm"
+                            >
+                                全部
+                            </Link>
+                            <Link
+                                href="/calculators?cat=保險"
+                                className="px-5 py-2.5 rounded-full border border-slate-200 text-slate-700 font-medium text-sm hover:bg-slate-50 hover:border-blue-200 transition-all"
+                            >
+                                保險知識
+                            </Link>
+                            <Link
+                                href="/calculators?cat=理財"
+                                className="px-5 py-2.5 rounded-full border border-slate-200 text-slate-700 font-medium text-sm hover:bg-slate-50 hover:border-blue-200 transition-all"
+                            >
+                                理財商品
+                            </Link>
+                            <Link
+                                href="/calculators?cat=退休"
+                                className="px-5 py-2.5 rounded-full border border-slate-200 text-slate-700 font-medium text-sm hover:bg-slate-50 hover:border-blue-200 transition-all"
+                            >
+                                退休規劃
+                            </Link>
+                            <Link
+                                href="/calculators?cat=稅務"
+                                className="px-5 py-2.5 rounded-full border border-slate-200 text-slate-700 font-medium text-sm hover:bg-slate-50 hover:border-blue-200 transition-all"
+                            >
+                                稅務優化
+                            </Link>
+                        </div>
                     </motion.div>
                 </section>
 
