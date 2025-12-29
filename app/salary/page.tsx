@@ -246,16 +246,16 @@ export default function SalaryCalculatorPage() {
                                     </div>
                                     <div className="flex justify-between py-2 border-b border-slate-100">
                                         <span className="text-slate-600">勞保自付</span>
-                                        <span className="text-red-500">- NT$ {fmt(result?.monthly?.laborInsurance || 0)}</span>
+                                        <span className="text-red-500">- NT$ {fmt(result?.monthly?.labor || 0)}</span>
                                     </div>
                                     <div className="flex justify-between py-2 border-b border-slate-100">
                                         <span className="text-slate-600">健保自付</span>
-                                        <span className="text-red-500">- NT$ {fmt(result?.monthly?.healthInsurance || 0)}</span>
+                                        <span className="text-red-500">- NT$ {fmt(result?.monthly?.health || 0)}</span>
                                     </div>
                                     {selfContribute && (
                                         <div className="flex justify-between py-2 border-b border-slate-100">
                                             <span className="text-slate-600">勞退自提 6%</span>
-                                            <span className="text-red-500">- NT$ {fmt(result?.monthly?.selfContribution || 0)}</span>
+                                            <span className="text-red-500">- NT$ {fmt(result?.monthly?.pension || 0)}</span>
                                         </div>
                                     )}
                                 </div>

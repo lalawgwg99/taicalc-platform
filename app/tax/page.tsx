@@ -69,7 +69,7 @@ export default function TaxCalculatorPage() {
         try {
             const res = await publicExecute('tax.calculate', {
                 annualIncome: income,
-                filingStatus: status
+                isMarried: status === 'married'
             });
             if (res && typeof res === 'object' && 'data' in res) {
                 setResult((res as any).data);
@@ -219,7 +219,7 @@ export default function TaxCalculatorPage() {
                                 <div className="bg-purple-50 border border-purple-100 rounded-xl p-4 text-center">
                                     <p className="text-sm text-purple-600 mb-1">應繳稅額</p>
                                     <p className="text-3xl font-black text-purple-700">
-                                        NT$ {fmt(result?.taxPayable || result?.tax || 0)}
+                                        NT$ {fmt(result?.taxAmount || 0)}
                                     </p>
                                 </div>
 
@@ -230,15 +230,15 @@ export default function TaxCalculatorPage() {
                                     </div>
                                     <div className="flex justify-between py-2 border-b border-slate-100">
                                         <span className="text-slate-600">免稅額</span>
-                                        <span className="text-green-500">- NT$ {fmt(result?.exemption || 92000)}</span>
+                                        <span className="text-green-500">- NT$ {fmt(result?.deductionDetails?.exemption || 92000)}</span>
                                     </div>
                                     <div className="flex justify-between py-2 border-b border-slate-100">
                                         <span className="text-slate-600">標準扣除額</span>
-                                        <span className="text-green-500">- NT$ {fmt(result?.standardDeduction || 124000)}</span>
+                                        <span className="text-green-500">- NT$ {fmt(result?.deductionDetails?.standardDeduction || 124000)}</span>
                                     </div>
                                     <div className="flex justify-between py-2 border-b border-slate-100">
                                         <span className="text-slate-600">有效稅率</span>
-                                        <span className="font-bold">{result?.effectiveRate || ((result?.tax || 0) / income * 100).toFixed(1)}%</span>
+                                        <span className="font-bold">{result?.effectiveTaxRate?.toFixed(1) || '0'}%</span>
                                     </div>
                                 </div>
                             </motion.div>

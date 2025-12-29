@@ -60,7 +60,7 @@ export default function MortgageCalculatorPage() {
         setLoading(true);
         try {
             const res = await publicExecute('mortgage.calculate', {
-                principal,
+                loanAmount: principal,
                 years,
                 annualRate: rate
             });

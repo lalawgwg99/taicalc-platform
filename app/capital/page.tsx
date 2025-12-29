@@ -88,11 +88,17 @@ export default function CapitalPage() {
 
     const fmt = (n: number) => n?.toLocaleString('zh-TW') || '0';
 
-    // 簡單計算（若 API 尚未返回）
+    // 前端計算（始終使用，確保即時結果）
     const simpleCalc = () => {
         const r = rate / 100 / 12;
         const n = years * 12;
-        const futureValue = initial * Math.pow(1 + r, n) + monthly * ((Math.pow(1 + r, n) - 1) / r);
+        // 處理 rate 為 0 的情況
+        let futureValue: number;
+        if (r === 0) {
+            futureValue = initial + monthly * n;
+        } else {
+            futureValue = initial * Math.pow(1 + r, n) + monthly * ((Math.pow(1 + r, n) - 1) / r);
+        }
         const totalContributed = initial + monthly * n;
         return {
             futureValue: Math.round(futureValue),
@@ -101,7 +107,13 @@ export default function CapitalPage() {
         };
     };
 
-    const calc = result || simpleCalc();
+    // 優先使用 API 結果的 summary，否則用前端計算
+    const calc = result?.summary ? {
+        futureValue: result.summary.totalAssets,
+        totalContributed: result.summary.totalContribution,
+        totalEarnings: result.summary.totalInterest
+    } : simpleCalc();
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
