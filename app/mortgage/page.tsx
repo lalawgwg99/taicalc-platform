@@ -143,8 +143,8 @@ export default function MortgageCalculatorPage() {
                                 key={s.label}
                                 onClick={() => applyScenario(s)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${principal === s.principal && years === s.years
-                                        ? 'bg-green-500 text-white'
-                                        : 'bg-white border border-slate-200 text-slate-700 hover:border-green-300'
+                                    ? 'bg-green-500 text-white'
+                                    : 'bg-white border border-slate-200 text-slate-700 hover:border-green-300'
                                     }`}
                             >
                                 {s.label}
@@ -170,6 +170,7 @@ export default function MortgageCalculatorPage() {
                                     <input
                                         type="text"
                                         inputMode="numeric"
+                                        aria-label="貸款金額"
                                         value={principal.toLocaleString()}
                                         onChange={(e) => setPrincipal(Number(e.target.value.replace(/,/g, '')) || 0)}
                                         className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl text-lg font-semibold focus:ring-2 focus:ring-green-500 focus:border-green-500"
@@ -183,6 +184,7 @@ export default function MortgageCalculatorPage() {
                                     <select
                                         value={years}
                                         onChange={(e) => setYears(Number(e.target.value))}
+                                        aria-label="貸款年限"
                                         className="w-full py-3 px-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500"
                                     >
                                         <option value={20}>20 年</option>
@@ -195,6 +197,7 @@ export default function MortgageCalculatorPage() {
                                     <input
                                         type="text"
                                         inputMode="decimal"
+                                        aria-label="年利率"
                                         value={rate}
                                         onChange={(e) => setRate(Number(e.target.value) || 0)}
                                         className="w-full py-3 px-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500"

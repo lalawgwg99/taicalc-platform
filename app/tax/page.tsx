@@ -149,8 +149,8 @@ export default function TaxCalculatorPage() {
                                 key={s.label}
                                 onClick={() => applyScenario(s)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${income === s.income
-                                        ? 'bg-purple-500 text-white'
-                                        : 'bg-white border border-slate-200 text-slate-700 hover:border-purple-300'
+                                    ? 'bg-purple-500 text-white'
+                                    : 'bg-white border border-slate-200 text-slate-700 hover:border-purple-300'
                                     }`}
                             >
                                 {s.label}
@@ -176,6 +176,7 @@ export default function TaxCalculatorPage() {
                                     <input
                                         type="text"
                                         inputMode="numeric"
+                                        aria-label="年度綜合所得"
                                         value={income.toLocaleString()}
                                         onChange={(e) => setIncome(Number(e.target.value.replace(/,/g, '')) || 0)}
                                         className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl text-lg font-semibold focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
@@ -188,6 +189,7 @@ export default function TaxCalculatorPage() {
                                 <select
                                     value={status}
                                     onChange={(e) => setStatus(e.target.value)}
+                                    aria-label="申報身份"
                                     className="w-full py-3 px-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500"
                                 >
                                     <option value="single">單身</option>

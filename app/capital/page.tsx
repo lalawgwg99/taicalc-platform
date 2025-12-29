@@ -162,8 +162,8 @@ export default function CapitalPage() {
                                 key={s.label}
                                 onClick={() => applyScenario(s)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${monthly === s.monthly && years === s.years
-                                        ? 'bg-indigo-500 text-white'
-                                        : 'bg-white border border-slate-200 text-slate-700 hover:border-indigo-300'
+                                    ? 'bg-indigo-500 text-white'
+                                    : 'bg-white border border-slate-200 text-slate-700 hover:border-indigo-300'
                                     }`}
                             >
                                 {s.label}
@@ -189,6 +189,7 @@ export default function CapitalPage() {
                                     <input
                                         type="text"
                                         inputMode="numeric"
+                                        aria-label="初始本金"
                                         value={initial.toLocaleString()}
                                         onChange={(e) => setInitial(Number(e.target.value.replace(/,/g, '')) || 0)}
                                         className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500"
@@ -203,6 +204,7 @@ export default function CapitalPage() {
                                     <input
                                         type="text"
                                         inputMode="numeric"
+                                        aria-label="每月投入金額"
                                         value={monthly.toLocaleString()}
                                         onChange={(e) => setMonthly(Number(e.target.value.replace(/,/g, '')) || 0)}
                                         className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500"
@@ -215,6 +217,7 @@ export default function CapitalPage() {
                                     <label className="block text-sm font-medium text-slate-700 mb-2">年報酬率 %</label>
                                     <input
                                         type="number"
+                                        aria-label="年報酬率"
                                         value={rate}
                                         onChange={(e) => setRate(Number(e.target.value) || 0)}
                                         className="w-full py-3 px-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500"
@@ -224,6 +227,7 @@ export default function CapitalPage() {
                                     <label className="block text-sm font-medium text-slate-700 mb-2">投資年數</label>
                                     <input
                                         type="number"
+                                        aria-label="投資年數"
                                         value={years}
                                         onChange={(e) => setYears(Number(e.target.value) || 0)}
                                         className="w-full py-3 px-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500"

@@ -146,8 +146,8 @@ export default function SalaryCalculatorPage() {
                                 key={s.label}
                                 onClick={() => applyScenario(s.salary)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${salary === s.salary
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-white border border-slate-200 text-slate-700 hover:border-blue-300'
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-white border border-slate-200 text-slate-700 hover:border-blue-300'
                                     }`}
                             >
                                 {s.label}
@@ -176,6 +176,7 @@ export default function SalaryCalculatorPage() {
                                     <input
                                         type="text"
                                         inputMode="numeric"
+                                        aria-label="月薪金額"
                                         value={salary.toLocaleString()}
                                         onChange={(e) => setSalary(Number(e.target.value.replace(/,/g, '')) || 0)}
                                         className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl text-lg font-semibold focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
