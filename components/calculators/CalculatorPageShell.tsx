@@ -3,6 +3,9 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, RefreshCw, Sparkles, AlertCircle } from 'lucide-react';
 
+import ProUpgradePrompt from '@/components/ProUpgradePrompt';
+import { useProTrigger } from '@/hooks/useProTrigger';
+
 import type { SkillId, SkillUIContract, SkillUIConfig } from '@/lib/skills/uiTypes';
 import { uiCatalog } from '@/lib/skills/uiCatalog';
 
@@ -37,6 +40,17 @@ export default function CalculatorPageShell({ skillId, ui, uiConfig, onExecute }
     const [result, setResult] = React.useState<unknown>(null);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
+
+    // Pro Upgrade Trigger (T1: result_completed)
+    const { isVisible: showProPrompt, dismiss: dismissProPrompt } = useProTrigger({
+        triggerType: 'result_completed',
+        condition: !!result && !loading,  // Trigger when result exists and not loading
+        config: {
+            delayMs: 3000,  // Wait 3 seconds after result appears
+            showOnce: true,
+            storageKey: `pro_trigger_${skillId}_result`
+        }
+    });
 
     // Handlers
     async function handleSubmit(nextInput: InputValues) {
@@ -256,6 +270,13 @@ export default function CalculatorPageShell({ skillId, ui, uiConfig, onExecute }
                     )}
                 </div>
             </div>
+
+            {/* Pro Upgrade Prompt */}
+            <ProUpgradePrompt
+                triggerType="result_completed"
+                isVisible={showProPrompt}
+                onDismiss={dismissProPrompt}
+            />
         </div>
     );
 }
