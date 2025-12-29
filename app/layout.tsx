@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     locale: 'zh_TW',
     url: 'https://taicalc.com',
     siteName: 'TaiCalc 數策',
-    title: 'TaiCalc｜幫你算清楚，每個財務選擇的長期差距',
-    description: '同一份薪資、同一筆房貸，不同選擇，5 年後差距可能超過數十萬。',
+    title: 'TaiCalc｜3分鐘算清楚：薪資、房貸、稅務、投資複利',
+    description: '專為台灣人設計的財務計算工具。即時試算，結果清楚一看就懂。',
   },
   twitter: {
     card: 'summary_large_image',
