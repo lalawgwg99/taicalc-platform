@@ -40,5 +40,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'weekly',
             priority: 0.7,
         },
+        {
+            url: `${baseUrl}/capital`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        // SEO 長尾頁面
+        {
+            url: `${baseUrl}/salary/scenarios/fresh-graduate`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/mortgage/scenarios/new-youth-loan`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/tax/scenarios/year-end-bonus`,
+            lastModified: new Date(),
+            changeFrequency: 'yearly',
+            priority: 0.7,
+        },
     ];
 }
