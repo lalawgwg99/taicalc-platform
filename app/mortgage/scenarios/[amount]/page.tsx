@@ -44,12 +44,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     );
 
     return {
-        title: `房貸 ${loanDisplay} 月付多少？${years}年 ${rate}% 本息均攤約 ${monthlyPayment.toLocaleString()}｜TaiCalc`,
-        description: `房貸 ${loanDisplay}、${years} 年期、利率 ${rate}%（本息均攤）月付約 ${monthlyPayment.toLocaleString()} 元，含總利息與還款明細。可比較新青安與寬限期前後月付變化，支援分享至 LINE/FB。`,
-        keywords: [`房貸${loanLabel}月付`, `${loanLabel}房貸試算`, '房貸本息均攤', '新青安房貸比較', '房貸月付計算'],
+        title: `房貸 ${loanDisplay} 月付多少？30 年 2% 本息均攤約 ${monthlyPayment.toLocaleString()}｜TaiCalc`,
+        description: `房貸 ${loanDisplay}、30 年期、利率 2%（本息均攤）月付約 ${monthlyPayment.toLocaleString()} 元，含總利息與攤還明細。可在頁面比較新青安（1.775%/40 年）與寬限期影響，並支援分享結果。`,
+        keywords: [`房貸${loanDisplay}月付`, '房貸本息均攤', '房貸月付試算', '新青安房貸比較', '房貸計算器'],
         openGraph: {
             title: `房貸 ${loanDisplay} 月付試算（本息均攤）｜TaiCalc`,
-            description: `房貸 ${loanDisplay} 每月還款約 ${monthlyPayment.toLocaleString()} 元（${years}年 ${rate}%）`,
+            description: `30 年 2% 月付約 ${monthlyPayment.toLocaleString()} 元，可比較新青安與寬限期。`,
         }
     };
 }
