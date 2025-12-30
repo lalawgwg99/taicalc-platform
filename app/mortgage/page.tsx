@@ -15,6 +15,7 @@ import {
     AlertCircle
 } from 'lucide-react';
 import { publicExecute } from '@/lib/publicExecute';
+import { ShareButton } from '@/components/shared/ShareExport';
 
 // 快速情境
 const QUICK_SCENARIOS = [
@@ -264,6 +265,19 @@ export default function MortgageCalculatorPage() {
                                     <p className="text-sm text-amber-700">
                                         建議月付金額不超過月收入的 1/3，以確保生活品質與財務彈性。
                                     </p>
+                                </div>
+
+                                {/* 分享按鈕 */}
+                                <div className="flex justify-center pt-4 border-t border-slate-100 mt-4">
+                                    <ShareButton
+                                        type="mortgage"
+                                        params={{
+                                            principal,
+                                            years,
+                                            rate,
+                                            monthlyPayment: result?.monthlyPayment
+                                        }}
+                                    />
                                 </div>
                             </motion.div>
                         ) : (

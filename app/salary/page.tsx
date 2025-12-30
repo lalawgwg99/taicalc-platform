@@ -17,6 +17,7 @@ import {
     Users
 } from 'lucide-react';
 import { publicExecute } from '@/lib/publicExecute';
+import { ShareButton } from '@/components/shared/ShareExport';
 
 // 快速情境預設值
 const QUICK_SCENARIOS = [
@@ -291,6 +292,19 @@ export default function SalaryCalculatorPage() {
                                         </p>
                                     </div>
                                 )}
+
+                                {/* 分享按鈕 */}
+                                <div className="flex justify-center pt-4 border-t border-slate-100 mt-4">
+                                    <ShareButton
+                                        type="salary"
+                                        params={{
+                                            salary,
+                                            selfContribute,
+                                            includeBonus,
+                                            takeHome: result?.monthly?.takeHome
+                                        }}
+                                    />
+                                </div>
                             </motion.div>
                         ) : (
                             <div className="text-center py-12 text-slate-400">
