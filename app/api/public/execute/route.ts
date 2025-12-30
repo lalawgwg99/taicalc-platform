@@ -57,8 +57,8 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => null);
     if (!body) {
         return NextResponse.json(
-            { error: '無效的請求格式' },
-            { status: 400, headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt) }
+            { code: 'INVALID_REQUEST', error: 'Invalid request format' },
+            { status: 400, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
         );
     }
 
@@ -68,8 +68,8 @@ export async function POST(req: Request) {
     // 驗證 skillId
     if (!skillId) {
         return NextResponse.json(
-            { error: '缺少 skillId' },
-            { status: 400, headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt) }
+            { code: 'MISSING_SKILL_ID', error: 'Missing skillId parameter' },
+            { status: 400, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
         );
     }
 
@@ -79,17 +79,17 @@ export async function POST(req: Request) {
         if (LOCAL_SKILLS.includes(skillId)) {
             return NextResponse.json(
                 {
-                    error: '此計算應在前端執行',
-                    hint: '請使用純前端計算，不需要 API',
+                    code: 'SKILL_NOT_ALLOWED',
+                    error: 'This skill is local-only. Please execute on client.',
                     skillId
                 },
-                { status: 400, headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt) }
+                { status: 403, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
             );
         }
 
         return NextResponse.json(
-            { error: '不支援的 skillId' },
-            { status: 400, headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt) }
+            { code: 'SKILL_NOT_FOUND', error: 'Unknown skillId' },
+            { status: 404, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
         );
     }
 

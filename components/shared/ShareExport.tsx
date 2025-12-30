@@ -116,7 +116,7 @@ export function ShareExport({ type, params, summary }: ShareExportProps) {
                     </button>
 
                     {/* 原生分享（手機） */}
-                    {typeof navigator !== 'undefined' && navigator.share && (
+                    {'share' in navigator && (
                         <button
                             onClick={handleNativeShare}
                             className="w-full flex items-center gap-3 px-3 py-2 hover:bg-slate-50 rounded-lg text-left transition-colors"
