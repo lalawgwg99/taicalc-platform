@@ -11,9 +11,28 @@
 | 品牌名稱 | TaiCalc 數策 |
 | 定位 | 台灣在地化財務決策工具箱 |
 | 語言 | 繁體中文（台灣用語）|
-| 技術棧 | Next.js 15 (App Router), TypeScript, Tailwind CSS |
+| 技術棧 | Next.js 15.1.9 (App Router), TypeScript, Tailwind CSS |
 | AI 模型 | **Gemini 2.5 Flash** (gemini-2.5-flash) |
 | 部署平台 | Cloudflare Pages (Edge Runtime) |
+| 規則版本 | **2025-v1** |
+
+---
+
+## 🔐 安全與版本 (重要)
+
+### CVE 修復歷史
+
+| 日期 | CVE | 修復版本 | 說明 |
+|------|-----|----------|------|
+| 2024-12-30 | CVE-2025-66478 | Next.js 15.1.9 | RSC 協議遠端代碼執行漏洞 |
+
+### 環境變數
+
+```env
+GEMINI_API_KEY=你的_Gemini_API_Key          # AI 服務用
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-J6BM5DCBNN  # Google Analytics
+NEXT_PUBLIC_CF_ANALYTICS_TOKEN=xxx          # Cloudflare Analytics (可選)
+```
 
 ---
 
@@ -23,203 +42,217 @@
 taicalc/
 ├── app/
 │   ├── api/
-│   │   ├── chat/route.ts         # AI Chat API (Gemini Tool Calling)
-│   │   ├── public/
-│   │   │   └── execute/route.ts  # Public Skill Execution API (No Key Required for Frontend)
-│   │   ├── skills/route.ts       # 列出所有 Skill (Admin/Debug)
-│   │   ├── skills/[skillId]/     # 執行單一 Skill (Admin/Debug)
-│   │   └── ai/
-│   │       ├── analyze/route.ts  # AI 分析 API
-│   │       └── fortune/route.ts  # 財運命盤 AI API
-│   ├── calculators/
-│   │   └── [skillId]/page.tsx    # 通用計算機入口 (Dynamic Route)
-│   ├── salary/                   # 薪資計算頁 (Uses Shell)
-│   ├── tax/                      # 稅務計算頁 (Uses Shell)
-│   ├── mortgage/                 # 房貸計算頁 (Uses Shell)
-│   ├── retirement/               # 退休規劃頁
-│   ├── fortune/                  # 財運命盤頁 (Uses Shell)
-│   └── developers/               # 開發者文件頁
+│   │   ├── chat/route.ts           # AI Chat API (Gemini Tool Calling)
+│   │   └── public/
+│   │       └── execute/route.ts    # Public API (僅限 Remote Skills) ⚠️
+│   ├── salary/                     # 薪資計算器
+│   │   └── scenarios/[salary]/     # SEO 情境頁 (SSG, 10 頁)
+│   ├── mortgage/                   # 房貸計算器
+│   │   └── scenarios/[amount]/     # SEO 情境頁 (SSG, 6 頁)
+│   ├── tax/                        # 稅務計算器
+│   ├── capital/                    # 複利計算器
+│   ├── pro/                        # Pro 功能頁
+│   │   ├── calculator/page.tsx     # 財務比較器
+│   │   └── mortgage/page.tsx       # 房貸比較器
+│   └── layout.tsx                  # 根佈局 (含 GA4 + CF Analytics)
 ├── components/
-│   ├── AI/
-│   ├── calculators/
-│   │   └── CalculatorPageShell.tsx # 核心計算機外殼 (Unified Layout)
-│   └── skills/
-│       └── SkillForm.tsx         # 通用表單 (Schema Driven)
+│   ├── shared/
+│   │   ├── Disclaimer.tsx          # 免責聲明元件
+│   │   └── ShareExport.tsx         # 分享/匯出元件 (用 hash fragment)
+│   └── calculators/
+│       └── CalculatorPageShell.tsx # 計算器外殼
 ├── lib/
-│   ├── skills/
-│   │   ├── registry.ts           # Skill 註冊中心
-│   │   ├── uiCatalog.ts          # UI 元數據目錄 (Labels, Highlights, etc.)
-│   │   ├── uiTypes.ts            # UI 類型定義
-│   │   ├── getSkillUI.ts         # UI Helper
-│   │   └── implementations/      # Skill 實作
-│   ├── ga4.tsx                   # GA4 可以在這裡，但主要在 layout.tsx
-│   ├── publicExecute.ts          # 前端呼叫 Public API 的 Helper
-│   └── format.ts                 # 格式化工具
-└── middleware.ts                 # API 安全層
+│   ├── calculations/
+│   │   └── tax.ts                  # 稅務版本化計算 (2025-v1)
+│   ├── rateLimit.ts                # IP 速率限制 (AI 端點保護)
+│   ├── analytics.ts                # GA4 事件追蹤
+│   ├── skills/                     # Skill 系統
+│   └── publicExecute.ts            # 前端呼叫 API Helper
+└── middleware.ts                   # Edge Middleware
 ```
 
 ---
 
-## 🎨 UI 架構 2.0 (Schema-Driven)
+## 🔒 API 安全架構 (2024-12-30 更新)
 
-為了解決頁面重複開發與風格不統一的問題，TaiCalc 2.0 採用 Schema-Driven UI 架構。
+### `/api/public/execute` - Remote-Only Skills
 
-### 核心組件
+**重要：** 此 API 現在 **只允許 Remote Skills** (需後端/AI 的功能)
 
-1. **`CalculatorPageShell`**:
-    - 統一的頁面外殼，包含標題、說明、表單區域、結果區域、AI 分析卡片。
-    - 負責狀態管理 (Loading, Result, Error) 與 API 呼叫串接。
-    - 自動整合 `SkillForm` 與結果展示。
+| 類型 | Skills | 狀態 |
+|------|--------|------|
+| **Remote** (允許) | `fortune.analyze`, `articles.generate`, `articles.trending` | ✅ 通過 API 執行 |
+| **Local** (阻擋) | `salary.*`, `mortgage.*`, `tax.*`, `capital.*` | ❌ 返回 403 |
 
-2. **`SkillForm`**:
-    - 完全由 Zod Schema 與 `uiCatalog` 驅動。
-    - 支援文字、數字、下拉選單 (Select/Enum) 等輸入類型。
-    - 支援 `inputMode` 與驗證。
-
-3. **`uiCatalog.ts`**:
-    - 定義所有 Skill 的 UI 元數據 (Meta Data)。
-    - 包含：標題 (Title)、欄位標籤 (Label)、單位 (Unit)、佔位符 (Placeholder)、範例 (Examples)、結果亮點 (Highlights)。
-    - 新增 Skill 時，只需在此設定 UI，不需寫新頁面。
-
-### 開發流程
-
-1. 定義 `skill.ts` (Zod Schema)。
-2. 在 `uiCatalog.ts` 設定 UI Metadata。
-3. 頁面直接使用 `<CalculatorPageShell skillId="..." />`。
-
----
-
-## 🧠 Skill 系統 v2
-
-### 概念
-
-Skill = 可重用的計算單元，具有 Schema 定義、可被 API 調用、可被 AI 自動調用
-
-### 已註冊的 16 個 Skill
-
-| 分類 | Skill ID | 說明 | 類別 |
-| ------ | ---------- | ------ | ------ |
-| 薪資 | salary.analyze | 薪資結構分析 | financial |
-| 薪資 | salary.reverse | 逆向推算期望薪資 | financial |
-| 薪資 | salary.structure | 年薪結構優化 | financial |
-| 稅務 | tax.calculate | 綜所稅計算 | financial |
-| 稅務 | tax.optimize | 節稅策略 | financial |
-| 資本 | capital.growth | 複利成長試算 | financial |
-| 資本 | capital.fire | FIRE 獨立計算 | financial |
-| 資本 | capital.goalReverse | 目標逆推 | financial |
-| 資本 | capital.passiveIncome | 被動收入規劃 | financial |
-| 資本 | capital.milestones | 財富里程碑 | financial |
-| 房貸 | mortgage.calculate | 房貸試算 | financial |
-| 房貸 | mortgage.refinance | 轉貸評估 | financial |
-| 房貸 | mortgage.earlyRepayment | 提前還款分析 | financial |
-| 財運 | fortune.analyze | 財運命盤分析 | entertainment |
-| 文章 | articles.generate | AI 文章生成器 | utility |
-| 文章 | articles.trending | 趨勢話題分析 | utility |
-
-### API 端點
-
-```bash
-GET  /api/skills              # 列出所有 Skill
-GET  /api/skills/{skillId}    # 取得 Skill Schema
-POST /api/skills/{skillId}    # 執行 Skill
-POST /api/skills/chain        # 鏈式執行（支援條件分支 DSL）
-POST /api/chat                # AI 對話 (自動調用 Skill)
-GET  /api/articles/generate   # 取得理財趨勢話題
-POST /api/articles/generate   # 生成 SEO 優化文章
-```
-
-### Chain Decision DSL（v2 新功能）
-
-支援 `$previous`、`$stepId.field` 引用和條件分支：
+### API 錯誤格式 (標準化)
 
 ```json
 {
-  "steps": [
-    { "stepId": "salary", "skillId": "salary.analyze", "input": { "monthlySalary": 60000 } },
-    {
-      "stepId": "tax",
-      "skillId": "tax.calculate",
-      "input": { "income": "$salary.data.annual.gross" },
-      "condition": { "expression": "$salary.data.annual.gross > 500000", "skipIfFalse": true }
-    }
-  ]
+  "ok": false,
+  "error": {
+    "code": "SKILL_LOCAL_ONLY",
+    "message": "This skill must be executed on the client.",
+    "details": { "skillId": "salary.analyze", "hint": "..." }
+  }
+}
+```
+
+### 錯誤碼對照
+
+| Code | HTTP | 說明 |
+|------|------|------|
+| `VALIDATION_ERROR` | 400 | JSON 格式錯誤 / 缺少參數 |
+| `SKILL_LOCAL_ONLY` | 403 | 嘗試呼叫 Local Skill（生產環境不暴露 allowed 清單）|
+| `SKILL_NOT_FOUND` | 404 | 未知 skillId |
+| `RATE_LIMITED` | 429 | 超過速率限制 (5 次/分鐘) |
+| `INTERNAL_ERROR` | 500 | 執行失敗 |
+
+---
+
+## 🌐 SEO 情境頁 (Programmatic SEO)
+
+### 薪資頁 (10 頁)
+
+| URL | 輸入 | 實領 |
+|-----|------|------|
+| `/salary/scenarios/35000` | 35,000 | 33,623 |
+| `/salary/scenarios/40000` | 40,000 | 38,426 |
+| `/salary/scenarios/45000` | 45,000 | 43,229 |
+| `/salary/scenarios/50000` | 50,000 | 48,025 |
+| `/salary/scenarios/55000` | 55,000 | 52,830 |
+| `/salary/scenarios/60000` | 60,000 | 57,630 |
+| `/salary/scenarios/70000` | 70,000 | 67,235 |
+| `/salary/scenarios/80000` | 80,000 | 76,840 |
+| `/salary/scenarios/100000` | 100,000 | 96,050 |
+| `/salary/scenarios/120000` | 120,000 | 115,260 |
+
+### 房貸頁 (6 頁)
+
+| URL | 條件 | 月付 |
+|-----|------|------|
+| `/mortgage/scenarios/5000000` | 500萬/30年/2% 本息均攤 | 18,481 |
+| `/mortgage/scenarios/8000000` | 800萬/30年/2% 本息均攤 | 29,570 |
+| `/mortgage/scenarios/10000000` | 1000萬/30年/2% 本息均攤 | 36,962 |
+| `/mortgage/scenarios/12000000` | 1200萬/30年/2% 本息均攤 | 44,354 |
+| `/mortgage/scenarios/15000000` | 1500萬/30年/2% 本息均攤 | 55,443 |
+| `/mortgage/scenarios/20000000` | 2000萬/30年/2% 本息均攤 | 73,923 |
+
+### SEO Metadata 規則 (GPT 5.2 最終版)
+
+**薪資頁 Title 模板：**
+
+```
+月薪 {X} 實領多少？扣勞健保/勞退自提後約 {NET}（2025 試算）｜TaiCalc
+```
+
+**房貸頁 Title 模板：**
+
+```
+房貸 {P} 萬月付多少？30 年 2% 本息均攤約 {PMT}｜TaiCalc
+```
+
+**Description 規則：**
+
+- 薪資頁必含：`規則 2025-v1`、`未含所得稅/扣繳`、`可調眷屬與勞退自提 0-6%`
+- 房貸頁必含：`本息均攤`、`新青安（1.775%/40 年）比較`
+
+---
+
+## 📤 分享功能 (ShareExport)
+
+### URL 格式
+
+```
+https://taicalc.com/salary#share=base64(JSON)
+```
+
+### 特性
+
+- 使用 **hash fragment** 避免 SEO 重複內容
+- 支援原生分享 API (手機分享至 LINE/FB)
+- 不含個資，僅數字參數
+
+### 元件位置
+
+`components/shared/ShareExport.tsx`
+
+---
+
+## 📊 稅務版本化 (Tax Versioning)
+
+### 規則版本
+
+```typescript
+const CURRENT_TAX_YEAR = 2025;
+const RULE_VERSION = '2025-v1';
+```
+
+### 計算結果包含
+
+```typescript
+{
+  result: {...},
+  meta: { taxYear: 2025, ruleVersion: '2025-v1' },
+  assumptions: ['標準扣除額 124,000', '基本生活費 208,000', ...]
 }
 ```
 
 ---
 
-## 📊 GA4 追蹤整合
+## ⚡ 速率限制 (Rate Limiting)
 
-已整合 Google Analytics 4，位於 `lib/ga4.tsx`：
-
-- `GoogleAnalytics` - 載入 gtag.js
-- `GATracker` - 自動追蹤頁面瀏覽
-- `GA_EVENTS` - 預設事件追蹤
-- 需設定 `NEXT_PUBLIC_GA_MEASUREMENT_ID`
-
----
-
-## 🤖 AI 整合
-
-### 環境變數
-
-```env
-GOOGLE_GENERATIVE_AI_API_KEY=你的_Gemini_API_Key
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
-```
-
-### AI Chat 流程
-
-1. 用戶發送問題 → `/api/chat`
-2. 所有 Financial Skill 動態轉為 AI Tool
-3. Gemini 判斷並自動調用工具
-4. 回傳計算結果 + AI 解釋
-
----
-
----
-
-## 🔒 API 安全 (middleware.ts & Public API)
-
-### Public API (`/api/public/execute`)
-
-- 用途：供前端直接呼叫 Skill，不需 API Key。
-- 安全機制：內建 `ALLOWLIST`，只允許特定的 Public Skill (如計算機類) 被執行。
-- 實現：`lib/publicExecute.ts` 封裝了呼叫邏輯。
-
-### Protected API (`/api/skills/*`)
-
-- 用途：後台管理、除錯或特殊權限操作。
-- 安全機制：
-  - 攔截 `/api/skills/*` 請求。
-  - 驗證 `x-api-key` Header。
-  - 生產環境強制驗證 `API_SECRET_KEY`。
-
----
-
-## 📊 GA4 追蹤整合
-
-- **ID**: `G-J6BM5DCBNN`
-- **實作方式**: 直接於 `app/layout.tsx` 注入 `gtag.js` 腳本 (方案 1)。
-- **環境變數**: `NEXT_PUBLIC_GA_MEASUREMENT_ID` (用於 Local 開發控制或 GATracker 元件，核心腳本已硬寫 ID)。
-- **自定義事件**: 透過 `lib/ga4.tsx` 的 `GA_EVENTS` 發送。
-
-## 📋 Cloudflare 部署注意事項
-
-**所有 API 路由必須包含：**
+### 設定
 
 ```typescript
-export const runtime = 'edge';
+const AI_RATE_LIMIT = {
+  windowMs: 60 * 1000,  // 1 分鐘
+  maxRequests: 5,       // 每分鐘 5 次
+  keyPrefix: 'ai',
+};
 ```
+
+### 實作位置
+
+`lib/rateLimit.ts` - IP-based 限制器 (Edge Runtime 相容)
 
 ---
 
-## 🎨 UI 開發規範
+## 📈 Analytics 追蹤
 
-- 圓角: `rounded-xl` (12px)
-- 品牌色: `brand-primary`, `brand-secondary`, `brand-accent`
-- 金額: 千分位格式 (1,234,567)
-- 手機版: 優先考慮響應式設計
+### GA4 事件類型
+
+```typescript
+type AnalyticsEvent = 
+  | 'calculator_view'      // 計算器頁面瀏覽
+  | 'calculator_submit'    // 計算按鈕點擊
+  | 'scenario_view'        // SEO 情境頁瀏覽
+  | 'share_export_click'   // 分享按鈕點擊
+  | 'pro_compare_add'      // Pro 新增比較方案
+  | 'cta_click';           // CTA 點擊
+```
+
+### 實作位置
+
+`lib/analytics.ts`
+
+---
+
+## 🎨 UI 設計規範
+
+| 項目 | 規範 |
+|------|------|
+| 圓角 | `rounded-xl` (12px) |
+| 品牌主色 | `brand-primary` (#3B82F6) |
+| 金額格式 | 千分位 (1,234,567) |
+| 響應式 | Mobile First |
+
+---
+
+## 📋 待辦事項
+
+- [ ] 補稅務計算單元測試（3-5 個 case）
+- [ ] 簡易 License Key 解鎖（Email only）
+- [ ] 修復 Pro 頁面 linting 問題
 
 ---
 
@@ -227,10 +260,25 @@ export const runtime = 'edge';
 
 ```json
 {
-  "next": "15.1.0",
-  "@ai-sdk/google": "latest",
-  "ai": "latest",
-  "zod": "^3.x",
-  "framer-motion": "^11.x"
+  "next": "15.1.9",
+  "@ai-sdk/google": "^3.0.1",
+  "ai": "^6.0.3",
+  "zod": "^4.2.1",
+  "framer-motion": "^11.15.0",
+  "recharts": "^2.15.0"
 }
 ```
+
+---
+
+## 🚀 部署指令
+
+```bash
+npm run build              # 本地建構
+npm run pages:build        # Cloudflare Pages 建構
+git push                   # 推送後自動部署
+```
+
+---
+
+**最後更新：2024-12-30 14:37 (CVE 修復 + SEO 最終版 + API 安全更新)**
