@@ -94,15 +94,16 @@ export async function POST(req: Request) {
 
     // Local Skill → 403
     if (LOCAL_SKILLS.includes(skillId)) {
+        // 生產環境不暴露 allowed 清單
+        const details = process.env.NODE_ENV === 'development'
+            ? { skillId, allowed: REMOTE_SKILLS, hint: 'Use local calculator engine instead of /api/public/execute.' }
+            : { skillId, hint: 'This skill should be executed on the client.' };
+
         return errorResponse(
             'SKILL_LOCAL_ONLY',
             'This skill must be executed on the client.',
             403,
-            {
-                skillId,
-                allowed: REMOTE_SKILLS,
-                hint: 'Use local calculator engine instead of /api/public/execute.'
-            },
+            details,
             rlHeaders
         );
     }
