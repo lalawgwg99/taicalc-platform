@@ -114,7 +114,7 @@ export function rateLimitHeaders(
     remaining: number,
     resetAt: number,
     limit: number = DEFAULT_OPTIONS.maxRequests
-): HeadersInit {
+): Record<string, string> {
     return {
         'X-RateLimit-Limit': limit.toString(),
         'X-RateLimit-Remaining': remaining.toString(),

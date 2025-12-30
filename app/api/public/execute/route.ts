@@ -10,112 +10,125 @@ import type { SkillId } from '@/lib/skills/uiTypes';
 import {
     checkRateLimit,
     rateLimitHeaders,
-    rateLimitExceededResponse,
     AI_RATE_LIMIT
 } from '@/lib/rateLimit';
 
 /**
  * Remote-only Skills：需要後端執行的功能
- * - 需要 API Key（AI/LLM）
- * - 需要外部服務串接
- * - 有成本控制需求
  */
 const REMOTE_SKILLS: SkillId[] = [
-    'fortune.analyze',      // AI 財運分析（需要 Gemini API）
-    'articles.generate',    // AI 文章生成
-    'articles.trending',    // 熱門話題（需外部 API）
+    'fortune.analyze',
+    'articles.generate',
+    'articles.trending',
 ];
 
 /**
  * Local-only Skills：應在前端直接計算
- * 這些 skills 不再透過 API 暴露
  */
 const LOCAL_SKILLS: SkillId[] = [
-    'salary.analyze',
-    'salary.reverse',
-    'salary.structure',
-    'tax.calculate',
-    'tax.optimize',
-    'capital.growth',
-    'capital.fire',
-    'capital.goalReverse',
-    'capital.passiveIncome',
-    'capital.milestones',
-    'mortgage.calculate',
-    'mortgage.refinance',
-    'mortgage.earlyRepayment',
+    'salary.analyze', 'salary.reverse', 'salary.structure',
+    'tax.calculate', 'tax.optimize',
+    'capital.growth', 'capital.fire', 'capital.goalReverse', 'capital.passiveIncome', 'capital.milestones',
+    'mortgage.calculate', 'mortgage.refinance', 'mortgage.earlyRepayment',
 ];
 
+// 標準錯誤 Headers
+const ERROR_HEADERS = {
+    'Cache-Control': 'no-store',
+    'Content-Type': 'application/json; charset=utf-8',
+};
+
+// 標準化錯誤回應
+function errorResponse(
+    code: string,
+    message: string,
+    status: number,
+    details?: Record<string, any>,
+    extraHeaders?: Record<string, string>
+) {
+    return NextResponse.json(
+        {
+            ok: false,
+            error: { code, message, ...(details && { details }) }
+        },
+        { status, headers: { ...ERROR_HEADERS, ...extraHeaders } }
+    );
+}
+
+// 標準化成功回應
+function successResponse(data: any, extraHeaders?: Record<string, string>) {
+    return NextResponse.json(
+        { ok: true, data },
+        { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', ...extraHeaders } }
+    );
+}
+
 export async function POST(req: Request) {
-    // Rate Limiting（AI 端點較嚴格）
+    // Rate Limiting
     const rateCheck = checkRateLimit(req, AI_RATE_LIMIT);
+    const rlHeaders = rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt);
+
     if (!rateCheck.allowed) {
-        return rateLimitExceededResponse(rateCheck.resetAt);
+        const retryAfter = Math.ceil((rateCheck.resetAt - Date.now()) / 1000);
+        return errorResponse(
+            'RATE_LIMITED',
+            '請求過於頻繁，請稍後再試',
+            429,
+            { retryAfter },
+            { ...rlHeaders, 'Retry-After': retryAfter.toString() }
+        );
     }
 
     // 解析請求
     const body = await req.json().catch(() => null);
     if (!body) {
-        return NextResponse.json(
-            { code: 'INVALID_REQUEST', error: 'Invalid request format' },
-            { status: 400, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
-        );
+        return errorResponse('VALIDATION_ERROR', 'Invalid JSON request body', 400, undefined, rlHeaders);
     }
 
     const skillId = body?.skillId as SkillId | undefined;
     const input = body?.input as Record<string, any> | undefined;
 
-    // 驗證 skillId
     if (!skillId) {
-        return NextResponse.json(
-            { code: 'MISSING_SKILL_ID', error: 'Missing skillId parameter' },
-            { status: 400, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
+        return errorResponse('VALIDATION_ERROR', 'Missing skillId parameter', 400, undefined, rlHeaders);
+    }
+
+    // Local Skill → 403
+    if (LOCAL_SKILLS.includes(skillId)) {
+        return errorResponse(
+            'SKILL_LOCAL_ONLY',
+            'This skill must be executed on the client.',
+            403,
+            {
+                skillId,
+                allowed: REMOTE_SKILLS,
+                hint: 'Use local calculator engine instead of /api/public/execute.'
+            },
+            rlHeaders
         );
     }
 
-    // 檢查是否為 Remote Skill
+    // Unknown Skill → 404
     if (!REMOTE_SKILLS.includes(skillId)) {
-        // 如果是 Local Skill，提示應在前端計算
-        if (LOCAL_SKILLS.includes(skillId)) {
-            return NextResponse.json(
-                {
-                    code: 'SKILL_NOT_ALLOWED',
-                    error: 'This skill is local-only. Please execute on client.',
-                    skillId
-                },
-                { status: 403, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
-            );
-        }
-
-        return NextResponse.json(
-            { code: 'SKILL_NOT_FOUND', error: 'Unknown skillId' },
-            { status: 404, headers: { ...rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt), 'Cache-Control': 'no-store' } }
-        );
+        return errorResponse('SKILL_NOT_FOUND', 'Unknown skillId', 404, { skillId }, rlHeaders);
     }
 
+    // 執行 Remote Skill
     try {
-        // 呼叫內部 executor，source 標記為 api
         const result = await executeSkill(skillId, input ?? {}, 'api');
-        return NextResponse.json(result, {
-            status: 200,
-            headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt)
-        });
+        return successResponse(result, rlHeaders);
     } catch (e: any) {
-        // 錯誤處理：不洩漏堆疊追蹤
         console.error(`[PublicExecute] Error executing ${skillId}:`, e?.message);
-        return NextResponse.json(
-            { error: '執行失敗，請稍後再試' },
-            { status: 500, headers: rateLimitHeaders(rateCheck.remaining, rateCheck.resetAt) }
-        );
+        return errorResponse('INTERNAL_ERROR', 'Execution failed', 500, undefined, rlHeaders);
     }
 }
 
 // 健康檢查
 export async function GET() {
     return NextResponse.json({
-        status: 'ok',
+        ok: true,
         availableSkills: REMOTE_SKILLS,
-        note: 'Local skills (salary/mortgage/tax/capital) should be calculated in frontend'
+        note: 'Local skills should be calculated in frontend'
     });
 }
+
 
