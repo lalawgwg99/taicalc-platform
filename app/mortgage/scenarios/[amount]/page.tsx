@@ -24,11 +24,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { amount } = await params;
     const loanAmount = parseInt(amount);
-    const loanLabel = loanAmount >= 10000000
-        ? `${loanAmount / 10000000}千萬`
-        : `${loanAmount / 10000}萬`;
 
-    // 預設計算 (30年、2%)
+    // 格式化金額顯示
+    const loanLabel = loanAmount >= 10000000
+        ? `${(loanAmount / 10000000).toFixed(0).replace(/\.0$/, '')}千萬`
+        : `${loanAmount / 10000}萬`;
+    const loanDisplay = loanAmount >= 10000000
+        ? `${(loanAmount / 10000000).toFixed(0).replace(/\.0$/, '')},000 萬`
+        : `${(loanAmount / 10000).toLocaleString()} 萬`;
+
+    // 預設計算 (30年、2% 本息均攤)
     const years = 30;
     const rate = 2.0;
     const monthlyRate = rate / 100 / 12;
@@ -39,12 +44,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     );
 
     return {
-        title: `房貸 ${loanLabel} 月付多少？30年2%利率約 ${monthlyPayment.toLocaleString()} 元｜TaiCalc`,
-        description: `房貸 ${loanLabel}、30年期、2% 利率，每月還款約 ${monthlyPayment.toLocaleString()} 元。含新青安比較、寬限期影響試算。`,
-        keywords: [`房貸${loanLabel}月付`, `${loanLabel}房貸`, '房貸月付試算', '房貸計算器'],
+        title: `房貸 ${loanDisplay} 月付多少？${years}年 ${rate}% 本息均攤約 ${monthlyPayment.toLocaleString()}｜TaiCalc`,
+        description: `房貸 ${loanDisplay}、${years} 年期、利率 ${rate}%（本息均攤）月付約 ${monthlyPayment.toLocaleString()} 元，含總利息與還款明細。可比較新青安與寬限期前後月付變化，支援分享至 LINE/FB。`,
+        keywords: [`房貸${loanLabel}月付`, `${loanLabel}房貸試算`, '房貸本息均攤', '新青安房貸比較', '房貸月付計算'],
         openGraph: {
-            title: `房貸 ${loanLabel} 月付試算｜TaiCalc`,
-            description: `房貸 ${loanLabel} 每月還款約 ${monthlyPayment.toLocaleString()} 元`,
+            title: `房貸 ${loanDisplay} 月付試算（本息均攤）｜TaiCalc`,
+            description: `房貸 ${loanDisplay} 每月還款約 ${monthlyPayment.toLocaleString()} 元（${years}年 ${rate}%）`,
         }
     };
 }
