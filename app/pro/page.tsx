@@ -62,13 +62,17 @@ export default function ProLandingPage() {
                             無論是薪資談判、房貸選擇還是投資策略，不再靠直覺猜測。
                         </p>
 
-                        <div className="flex justify-center">
-                            <button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/30 transition-all shadow-lg shadow-indigo-500/20 flex items-center group">
-                                👉 解鎖 Pro 版（立即體驗）
+                        <div className="flex flex-col sm:flex-row justify-center gap-4">
+                            <Link href="/pro/calculator" className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/30 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center group">
+                                💎 財務方案比較器
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </Link>
+                            <Link href="/pro/mortgage" className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:shadow-emerald-500/30 transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center group">
+                                🏠 房貸方案比較
+                                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
                         </div>
-                        <p className="mt-4 text-xs text-slate-500">限時優惠：單次解鎖僅需 NT$ 59</p>
+                        <p className="mt-4 text-xs text-slate-500">🎉 現在免費開放體驗所有 Pro 功能！</p>
                     </motion.div>
                 </section>
 

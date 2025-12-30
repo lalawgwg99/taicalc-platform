@@ -65,5 +65,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'yearly',
             priority: 0.7,
         },
+        // Pro 功能頁面
+        {
+            url: `${baseUrl}/pro`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/pro/calculator`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/pro/mortgage`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
     ];
 }
