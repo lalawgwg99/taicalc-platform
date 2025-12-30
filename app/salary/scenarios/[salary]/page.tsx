@@ -28,21 +28,29 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { salary } = await params;
     const salaryNum = parseInt(salary);
+
+    // 口語化顯示（5萬 vs 50,000）
+    const salaryLabel = salaryNum >= 10000
+        ? `${salaryNum / 10000} 萬`
+        : salaryNum.toLocaleString();
     const salaryDisplay = salaryNum.toLocaleString();
 
-    // 計算實領（預估：勞保 2.4% + 健保 1.55%，勞退自提預設 0%）
+    // 計算實領（預設本人、自提 0%）
     const laborRate = 0.024;
     const healthRate = 0.0155;
     const deductions = Math.round(salaryNum * (laborRate + healthRate));
     const takeHome = salaryNum - deductions;
 
     return {
-        title: `月薪 ${salaryDisplay} 實領多少？扣勞健保/勞退自提後約 ${takeHome.toLocaleString()}（2025 試算）｜TaiCalc`,
-        description: `月薪 ${salaryDisplay} 元實領試算：扣勞保、健保與勞退自提後約 ${takeHome.toLocaleString()} 元（規則 2025-v1）。可調眷屬與勞退自提 0-6%；未含所得稅/扣繳，支援分享結果連結。`,
-        keywords: [`月薪${salaryDisplay}實領`, '實領薪水試算', '勞健保扣款計算', '2025勞保費率', '薪資計算器'],
+        title: `月薪 ${salaryLabel} 實領多少？扣完勞健保實拿 ${takeHome.toLocaleString()}（2025 最新）｜TaiCalc`,
+        description: `月薪 ${salaryDisplay} 元實領試算（僅扣勞保/健保/勞退，未含所得稅）：約 ${takeHome.toLocaleString()} 元（預設本人、自提 0%；規則 2025-v1）。立即調整眷屬與自提比例，一鍵分享結果。`,
+        keywords: [`月薪${salaryLabel}實領`, '實領薪水試算', '勞健保扣款計算', '2025勞保費率', '薪資計算器'],
         openGraph: {
-            title: `月薪 ${salaryDisplay} 實領試算（2025）｜TaiCalc`,
-            description: `扣勞健保/勞退自提後約 ${takeHome.toLocaleString()} 元，可調眷屬與勞退自提。`,
+            title: `月薪 ${salaryLabel} 實領試算（2025）｜TaiCalc`,
+            description: `扣完勞健保實拿 ${takeHome.toLocaleString()} 元（預設本人、自提 0%）`,
+        },
+        alternates: {
+            canonical: `https://taicalc.com/salary/scenarios/${salary}`
         }
     };
 }

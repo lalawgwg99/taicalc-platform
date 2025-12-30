@@ -45,11 +45,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     return {
         title: `房貸 ${loanDisplay} 月付多少？30 年 2% 本息均攤約 ${monthlyPayment.toLocaleString()}｜TaiCalc`,
-        description: `房貸 ${loanDisplay}、30 年期、利率 2%（本息均攤）月付約 ${monthlyPayment.toLocaleString()} 元，含總利息與攤還明細。可在頁面比較新青安（1.775%/40 年）與寬限期影響，並支援分享結果。`,
-        keywords: [`房貸${loanDisplay}月付`, '房貸本息均攤', '房貸月付試算', '新青安房貸比較', '房貸計算器'],
+        description: `房貸 ${loanDisplay} 月付約 ${monthlyPayment.toLocaleString()}（30 年 2% 本息均攤）。含總利息與攤還表，可比較新青安 1.775% 省多少、寬限期影響，並一鍵分享結果。`,
+        keywords: [`房貸${loanDisplay}月付`, '房貸本息均攤', '新青安房貸比較', '房貸月付試算', '房貸計算器'],
         openGraph: {
             title: `房貸 ${loanDisplay} 月付試算（本息均攤）｜TaiCalc`,
             description: `30 年 2% 月付約 ${monthlyPayment.toLocaleString()} 元，可比較新青安與寬限期。`,
+        },
+        alternates: {
+            canonical: `https://taicalc.com/mortgage/scenarios/${amount}`
         }
     };
 }
