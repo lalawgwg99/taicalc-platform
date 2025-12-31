@@ -76,9 +76,16 @@ export default function TaiCalcChat() {
                 }),
             });
 
-            if (!res.ok || !res.body) {
-                throw new Error('Network error');
+            if (!res.ok) {
+                try {
+                    const errData = await res.json();
+                    throw new Error(errData.details || errData.error || 'Server error');
+                } catch (e: any) {
+                    throw new Error(e.message || 'Network error');
+                }
             }
+
+            if (!res.body) throw new Error('No response body');
 
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
@@ -97,13 +104,14 @@ export default function TaiCalcChat() {
                 );
             }
         } catch (err: any) {
+            console.error('Chat Error:', err);
             if (err.name !== 'AbortError') {
                 setMessages(prev => [
                     ...prev,
                     {
                         id: Date.now().toString(),
                         role: 'assistant' as const,
-                        content: '⚠️ 發生錯誤，請稍後再試。',
+                        content: `⚠️ ${err.message || '發生錯誤，請稍後再試。'}`,
                     },
                 ]);
             }
@@ -221,8 +229,8 @@ export default function TaiCalcChat() {
                         >
                             <div
                                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm block ${m.role === 'user'
-                                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
-                                        : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none'
+                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
+                                    : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none'
                                     }`}
                             >
                                 {m.content}

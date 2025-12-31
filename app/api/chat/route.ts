@@ -13,13 +13,21 @@ import { fortuneTools } from '@/features/fortune/tools';
 import { articlesTools } from '@/features/articles/tools';
 import { retirementTools } from '@/features/retirement/tools';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
     const { messages } = await req.json();
 
-    // 1. 聚合所有工具 (直接定義，無黑盒子)
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+        console.error('❌ Missing GOOGLE_GENERATIVE_AI_API_KEY');
+        return new Response(JSON.stringify({ error: 'Server configuration error: Missing API Key' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    // 1. 聚合所有工具
     const tools = {
         ...salaryTools,
         ...taxTools,
@@ -31,9 +39,11 @@ export async function POST(req: Request) {
     };
 
     try {
+        console.log('🤖 Calling Gemini 2.0 Flash with tools...');
+
         // 2. 使用 Gemini 模型
         const result = streamText({
-            model: google('gemini-2.0-flash'), // 使用更快的 Flash 模型
+            model: google('gemini-2.0-flash'),
             messages,
             system: `你現在是 TaiCalc (台灣計算) 的首席財務AI顧問「數策」。你是一位精算專家，擅長用數據說話，但語氣溫和專業。
 
@@ -48,14 +58,26 @@ export async function POST(req: Request) {
 - 當用戶提供具體情境（如「月薪5萬能買多少錢的房子？」）→ **立即調用工具**計算並分析結果。
 - 當工具發生錯誤或無法計算時 → 誠實告知，並建議用戶檢查輸入數據。`,
             tools: tools,
-        });
+            maxSteps: 10, // 允許模型多步驟執行工具
+            onFinish: (event: any) => {
+                console.log('✅ AI generation finished.', event.finishReason);
+            },
+        } as any);
 
         // 3. Return raw text stream
-        return (result as any).toDataStreamResponse();
-    } catch (error) {
-        console.error('[Chat API Error]', error);
+        return (result as any).toDataStreamResponse({
+            getErrorMessage: (error: any) => {
+                console.error('Content Generation Error:', error);
+                return '生成內容時發生錯誤';
+            }
+        });
+    } catch (error: any) {
+        console.error('❌ [Chat API Critical Error]', error);
         return new Response(
-            JSON.stringify({ error: '處理失敗' }),
+            JSON.stringify({
+                error: '處理失敗',
+                details: error.message || String(error)
+            }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
