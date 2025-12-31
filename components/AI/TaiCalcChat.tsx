@@ -55,7 +55,7 @@ export default function TaiCalcChat() {
         '年薪 120 萬要繳多少稅？',
     ];
 
-    const hasUserMessage = messages.some(m => m.role === 'user');
+    const hasUserMessage = messages.some((m: any) => m.role === 'user');
 
     /* 關閉狀態（浮動按鈕） */
     if (!isOpen) {
@@ -145,7 +145,7 @@ export default function TaiCalcChat() {
                         </div>
                     )}
 
-                    {messages.map(m => (
+                    {messages.map((m: any) => (
                         <div
                             key={m.id}
                             className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
