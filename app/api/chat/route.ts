@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         console.log('🤖 Calling Gemini 2.0 Flash with tools...');
 
         // 2. 使用 Gemini 模型
-        const result = streamText({
+        const result = await streamText({
             model: google('gemini-2.0-flash'),
             messages,
             system: `你現在是 TaiCalc (台灣計算) 的首席財務AI顧問「數策」。你是一位精算專家，擅長用數據說話，但語氣溫和專業。
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         } as any);
 
         // 3. Return raw text stream
-        return (result as any).toDataStreamResponse({
+        return (result as any).toTextStreamResponse({
             getErrorMessage: (error: any) => {
                 console.error('Content Generation Error:', error);
                 return '生成內容時發生錯誤';
