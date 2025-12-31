@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
+import { useChat } from '@ai-sdk/react';
 import {
     Send,
     X,
@@ -12,118 +13,40 @@ import {
     Bot,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-interface Message {
-    id: string;
-    role: 'user' | 'assistant';
-    content: string;
-}
+import ReactMarkdown from 'react-markdown';
 
 export default function TaiCalcChat() {
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    // 使用 useChat hook 管理對話狀態，解決資料流協議解析問題
+    const { messages, input, handleInputChange, handleSubmit, setMessages, isLoading, reload, stop } = useChat({
+        api: '/api/chat',
+        onError: (error: any) => {
+            console.error('Chat error:', error);
+        },
+    } as any) as any;
 
+    const [isOpen, setIsOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const abortRef = useRef<AbortController | null>(null);
 
     /* 自動捲到底 */
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
-    }, [messages]);
+    }, [messages, isLoading]);
 
-    const handleSendMessage = async (content: string) => {
-        if (!content.trim() || isLoading) return;
-
-        abortRef.current?.abort();
-
-        const controller = new AbortController();
-        abortRef.current = controller;
-
-        const userMsg: Message = {
-            id: Date.now().toString(),
-            role: 'user',
-            content,
-        };
-
-        const aiMsgId = `${Date.now()}-ai`;
-
-        const nextMessages = [
-            ...messages,
-            userMsg,
-            { id: aiMsgId, role: 'assistant' as const, content: '' },
-        ];
-
-        setMessages(nextMessages);
-        setInput('');
-        setIsLoading(true);
-
-        try {
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                signal: controller.signal,
-                body: JSON.stringify({
-                    messages: nextMessages
-                        .filter(m => m.role !== 'assistant' || m.content)
-                        .map(m => ({
-                            role: m.role,
-                            content: m.content,
-                        })),
-                }),
-            });
-
-            if (!res.ok) {
-                try {
-                    const errData = await res.json();
-                    throw new Error(errData.details || errData.error || 'Server error');
-                } catch (e: any) {
-                    throw new Error(e.message || 'Network error');
-                }
-            }
-
-            if (!res.body) throw new Error('No response body');
-
-            const reader = res.body.getReader();
-            const decoder = new TextDecoder();
-            let aiContent = '';
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-
-                aiContent += decoder.decode(value, { stream: true });
-
-                setMessages(prev =>
-                    prev.map(m =>
-                        m.id === aiMsgId ? { ...m, content: aiContent } : m
-                    )
-                );
-            }
-        } catch (err: any) {
-            console.error('Chat Error:', err);
-            if (err.name !== 'AbortError') {
-                setMessages(prev => [
-                    ...prev,
-                    {
-                        id: Date.now().toString(),
-                        role: 'assistant' as const,
-                        content: `⚠️ ${err.message || '發生錯誤，請稍後再試。'}`,
-                    },
-                ]);
-            }
-        } finally {
-            setIsLoading(false);
-        }
+    const handleQuickQuestion = (q: string) => {
+        // 手動觸發 submit
+        const event = { preventDefault: () => { } } as any;
+        handleInputChange({ target: { value: q } } as any);
+        // 需要一點延遲讓 input update
+        setTimeout(() => {
+            handleSubmit(event, { body: {} });
+        }, 0);
     };
 
     const handleClearChat = () => {
-        abortRef.current?.abort();
+        stop();
         setMessages([]);
-        setInput('');
     };
 
     const quickQuestions = [
@@ -182,7 +105,7 @@ export default function TaiCalcChat() {
                         </div>
                     </div>
                     <div className="flex gap-1">
-                        <button onClick={handleClearChat} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+                        <button onClick={handleClearChat} className="p-2 hover:bg-white/20 rounded-full transition-colors" title="清除對話">
                             <RefreshCw className="w-4 h-4" />
                         </button>
                         <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/20 rounded-full transition-colors">
@@ -211,7 +134,7 @@ export default function TaiCalcChat() {
                                 {quickQuestions.map(q => (
                                     <button
                                         key={q}
-                                        onClick={() => handleSendMessage(q)}
+                                        onClick={() => handleQuickQuestion(q)}
                                         className="w-full px-4 py-3 bg-white border border-slate-100 rounded-xl text-left text-xs text-slate-600 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm transition-all text-ellipsis overflow-hidden whitespace-nowrap"
                                     >
                                         <Zap className="inline w-3 h-3 mr-2 text-amber-500" />
@@ -230,10 +153,10 @@ export default function TaiCalcChat() {
                             <div
                                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm block ${m.role === 'user'
                                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
-                                    : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none'
+                                    : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none prose prose-sm max-w-none'
                                     }`}
                             >
-                                {m.content}
+                                <ReactMarkdown>{m.content}</ReactMarkdown>
                             </div>
                         </div>
                     ))}
@@ -250,20 +173,18 @@ export default function TaiCalcChat() {
 
                 {/* Input Area */}
                 <form
-                    onSubmit={e => {
-                        e.preventDefault();
-                        handleSendMessage(input);
-                    }}
+                    onSubmit={handleSubmit}
                     className="p-4 bg-white/80 backdrop-blur-md border-t border-white/50"
                 >
                     <div className="flex gap-2">
                         <input
                             value={input}
-                            onChange={e => setInput(e.target.value)}
+                            onChange={handleInputChange}
                             placeholder="輸入您的問題..."
                             className="glass-input w-full px-4 py-3 rounded-xl text-sm placeholder:text-slate-400"
                         />
                         <button
+                            type="submit"
                             disabled={isLoading || !input.trim()}
                             className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 active:scale-95 transition-all disabled:opacity-50 disabled:shadow-none"
                         >

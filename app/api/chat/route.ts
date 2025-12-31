@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         } as any);
 
         // 3. Return raw text stream
-        return (result as any).toTextStreamResponse({
+        return (result as any).toDataStreamResponse({
             getErrorMessage: (error: any) => {
                 console.error('Content Generation Error:', error);
                 return '生成內容時發生錯誤';
