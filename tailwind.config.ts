@@ -10,17 +10,18 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          background: '#f8fafc', // 雲朵白 (回歸清新)
-          surface: '#ffffff',    // 純白卡片
-          primary: '#2563eb',    // 蘋果藍 (更亮一點)
-          accent: '#7c3aed',     // 皇室紫
-          success: '#059669',    // 森林綠
-          warning: '#d97706',    // 琥珀橘
-          error: '#dc2626',      // 警示紅
+          background: '#f8fafc',
+          surface: '#ffffff',
+          primary: '#6366f1',    // Indigo-500
+          accent: '#9333ea',     // Purple-600
+          secondary: '#ec4899',  // Pink-500
+          success: '#10b981',    // Emerald-500
+          warning: '#f59e0b',    // Amber-500
+          error: '#f43f5e',      // Rose-500
           text: {
-            primary: '#0f172a',  // 深藍黑文字 (高對比)
-            secondary: '#64748b', // 舒適灰
-            muted: '#94a3b8'     // 淺灰
+            primary: '#0f172a',  // Slate-900
+            secondary: '#475569', // Slate-600
+            muted: '#94a3b8'     // Slate-400
           }
         },
       },

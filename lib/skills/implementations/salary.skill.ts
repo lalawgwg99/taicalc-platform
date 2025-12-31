@@ -5,7 +5,7 @@
 
 import { z } from 'zod';
 import { SkillDefinition } from '../types';
-import { analyzeSalary, calculateGrossFromNet, analyzeSalaryStructure } from '../../calculations';
+import { analyzeSalary, calculateGrossFromNet, analyzeSalaryStructure } from '@/features/salary/logic';
 
 // ============================================
 // 薪資分析 Skill

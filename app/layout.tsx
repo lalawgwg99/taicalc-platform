@@ -101,7 +101,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body suppressHydrationWarning={true} className="font-sans antialiased bg-brand-background text-brand-text-primary overflow-x-hidden selection:bg-brand-primary/30 selection:text-white">
+      <body suppressHydrationWarning={true} className="font-sans antialiased aurora-bg min-h-screen text-slate-800 selection:bg-indigo-500/30 selection:text-indigo-900">
         {/* <GATracker /> */}
         {children}
         <Footer />

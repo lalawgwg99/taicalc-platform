@@ -5,7 +5,7 @@
 
 import { z } from 'zod';
 import { SkillDefinition } from '../types';
-import { calculateMonthlyPayment, calculateRefinance, calculateEarlyRepayment, RefinanceResult, EarlyRepaymentResult } from '../../calculations/mortgage';
+import { calculateMonthlyPayment, calculateRefinance, calculateEarlyRepayment, RefinanceResult, EarlyRepaymentResult } from '@/features/mortgage/logic';
 
 // ============================================
 // 房貸月付金計算 Skill

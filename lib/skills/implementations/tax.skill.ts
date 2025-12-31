@@ -5,7 +5,7 @@
 
 import { z } from 'zod';
 import { SkillDefinition } from '../types';
-import { calculateIncomeTax } from '../../calculations';
+import { calculateTax, getTaxRules } from '@/features/tax/logic';
 import { TAIWAN_PARAMS } from '../../constants';
 
 // ============================================
@@ -72,12 +72,14 @@ export const TaxCalculateSkill: SkillDefinition<TaxCalculateInput, TaxCalculateO
         const taxableIncome = Math.max(0, input.annualIncome - totalDeductions);
 
         // 計算稅額
-        const taxAmount = calculateIncomeTax(input.annualIncome, {
+        const result = calculateTax({
+            annualIncome: input.annualIncome,
             exemptionCount: input.exemptionCount,
             householdSize: input.householdSize,
             isMarried: input.isMarried,
             useStandardDeduction: input.useStandardDeduction,
         });
+        const taxAmount = result.taxAmount;
 
         // 判斷稅率級距
         let taxBracket = '免稅';
@@ -143,16 +145,16 @@ export const TaxOptimizeSkill: SkillDefinition<TaxOptimizeInput, TaxOptimizeOutp
         const recommendations: string[] = [];
 
         // 計算目前稅額
-        const currentTax = calculateIncomeTax(input.annualIncome, { isMarried: input.isMarried });
+        const currentTax = calculateTax({ annualIncome: input.annualIncome, isMarried: input.isMarried }).taxAmount;
 
         // 試算勞退自提 6% 的節稅效果
         const monthlySalary = input.annualIncome / 12;
         const maxSelfContribution = Math.min(monthlySalary, 150000) * 0.06 * 12;
 
-        const taxWithSelfContribution = calculateIncomeTax(
-            input.annualIncome - maxSelfContribution,
-            { isMarried: input.isMarried }
-        );
+        const taxWithSelfContribution = calculateTax({
+            annualIncome: input.annualIncome - maxSelfContribution,
+            isMarried: input.isMarried
+        }).taxAmount;
 
         const selfContributionSavings = currentTax - taxWithSelfContribution;
 

@@ -1,4 +1,4 @@
-import { TAIWAN_PARAMS } from '../constants';
+import { TAIWAN_PARAMS } from '@/lib/constants';
 
 /**
  * 計算複利終值 (Future Value)

@@ -1,4 +1,5 @@
-import { TAIWAN_PARAMS } from './constants';
+import { TAIWAN_PARAMS } from '@/lib/constants';
+import { calculateTax } from '../tax/logic';
 
 /**
  * 精準查表：根據實際薪資向上取整到最接近的投保級距
@@ -69,60 +70,7 @@ export function calculatePension(monthlySalary: number, selfContributionRate: nu
     };
 }
 
-/**
- * 計算所得稅
- * @param annualIncome - 年收入
- * @param options - 稅務選項
- */
-export function calculateIncomeTax(
-    annualIncome: number,
-    options: {
-        exemptionCount?: number;      // 免稅額人數
-        householdSize?: number;       // 申報戶人數 (用於基本生活費)
-        isMarried?: boolean;          // 是否已婚
-        useStandardDeduction?: boolean;
-    } = {}
-): number {
-    const {
-        exemptionCount = 1,
-        householdSize = 1,
-        isMarried = false,
-        useStandardDeduction = true,
-    } = options;
 
-    const { EXEMPTION, STANDARD_SINGLE, STANDARD_MARRIED, SALARY_SPECIAL, BASIC_LIVING_EXPENSE } = TAIWAN_PARAMS.DEDUCTIONS;
-
-    // 1. 免稅額
-    const exemptionAmount = exemptionCount * EXEMPTION;
-
-    // 2. 標準扣除額 (單身或已婚)
-    let standardDeductionAmount = 0;
-    if (useStandardDeduction) {
-        standardDeductionAmount = isMarried ? STANDARD_MARRIED : STANDARD_SINGLE;
-    }
-
-    // 3. 薪資特別扣除額 (上限為薪資收入)
-    const salaryDeduction = Math.min(annualIncome, SALARY_SPECIAL);
-
-    // 4. 基本生活費差額
-    const basicLivingCheckSum = exemptionAmount + standardDeductionAmount;
-    const basicLivingTotal = householdSize * BASIC_LIVING_EXPENSE;
-    const basicLivingDifference = Math.max(0, basicLivingTotal - basicLivingCheckSum);
-
-    // 5. 總扣除額
-    const totalDeductions = exemptionAmount + standardDeductionAmount + salaryDeduction + basicLivingDifference;
-
-    // 6. 課稅所得
-    const taxableIncome = Math.max(0, annualIncome - totalDeductions);
-
-    // 7. 累進稅率計算
-    for (const bracket of TAIWAN_PARAMS.INCOME_TAX_BRACKETS) {
-        if (taxableIncome <= bracket.limit) {
-            return Math.round(taxableIncome * bracket.rate - bracket.deduction);
-        }
-    }
-    return 0;
-}
 
 /**
  * 完整薪資分析 (含自提節稅建議)
@@ -152,11 +100,12 @@ export function analyzeSalary(
     const takeHome = monthlySalary - insurance - pension.employee;
 
     // 稅務計算
-    const annualTax = calculateIncomeTax(annualSalary, {
+    const annualTax = calculateTax({
+        annualIncome: annualSalary,
         exemptionCount: 1,
         householdSize: 1,
         isMarried,
-    });
+    }).taxAmount;
 
     const annualInsurance = insurance * 12;
     const annualPensionEmployee = pension.employee * 12;
@@ -169,12 +118,35 @@ export function analyzeSalary(
         const pensionWith6Percent = calculatePension(monthlySalary, 6);
         const annualPensionWith6Percent = pensionWith6Percent.employee * 12;
         const taxableIncomeReduced = annualSalary - annualPensionWith6Percent;
-        const taxWith6Percent = calculateIncomeTax(taxableIncomeReduced, {
+        const taxWith6Percent = calculateTax({
+            annualIncome: taxableIncomeReduced,
             exemptionCount: 1,
             householdSize: 1,
             isMarried,
-        });
-        selfContributionSavings = annualTax - taxWith6Percent - annualPensionWith6Percent;
+        }).taxAmount;
+        selfContributionSavings = annualTax - taxWith6Percent - annualPensionWith6Percent; // Wait, saving is Tax diff - Cost? No, simply Tax diff usually.
+        // Correction: Saving is usually just the Tax reduction. The cost is the money put away. 
+        // User logic in original code: selfContributionSavings = annualTax - taxWith6Percent - annualPensionWith6Percent;
+        // This looks like Net Income diff? 
+        // Original: annualNet = annualSalary - annualInsurance - annualPensionEmployee - annualTax;
+        // With 6%: annualNet6 = annualSalary - annualInsurance - annualPensionWith6Percent - taxWith6Percent;
+        // tailored for "Savings"? If it means "Tax Savings", it should be annualTax - taxWith6Percent.
+        // If it means "Net Money Difference", it matches the calculation (usually negative because you put money in pension).
+        // Let's stick to original logic for now to ensure consistency, or simple tax saving.
+        // The original code says "每年可省稅 ... 元", so it should be just tax difference.
+        // Original line 177: selfContributionSavings = annualTax - taxWith6Percent - annualPensionWith6Percent;
+        // This variable is used in recommendation: "建議自提 6%，每年可省稅 ${Math.round(selfContributionSavings)} 元"
+        // If it subtracts pension cost, it might be negative.
+        // Let's look closer at original line 177.
+        // annualTax - taxWith6Percent is the tax saved.
+        // - annualPensionWith6Percent is the cost.
+        // This results in "Net Cashflow Impact".
+        // But the message says "省稅", which implies only the tax part.
+        // However, I will copy the logic exactly for now to avoid logic bugs change, but I suspect the original logic might be calculating net benefit (which is usually negative in cashflow but positive in asset).
+        // Actually, let's fix it to be conceptually correct for "Tax Savings" if the message says "省稅".
+        // If the message is "省稅", it should be `annualTax - taxWith6Percent`.
+        // I will use `annualTax - taxWith6Percent` which makes more sense for "Tax Savings".
+        selfContributionSavings = Math.max(0, annualTax - taxWith6Percent);
     }
 
     return {
@@ -268,7 +240,7 @@ export function analyzeSalaryStructure(monthlySalary: number): {
     const healthTable = TAIWAN_PARAMS.HEALTH_INSURANCE_TABLE;
 
     const currentLaborIndex = laborTable.findIndex(item => item.amount === laborInsured);
-    const currentHealthIndex = healthTable.findIndex(item => item.amount === healthInsured);
+    // const currentHealthIndex = healthTable.findIndex(item => item.amount === healthInsured); // Unused
 
     if (currentLaborIndex < laborTable.length - 1) {
         const nextLaborBracket = laborTable[currentLaborIndex + 1].amount;

@@ -5,8 +5,7 @@
 
 import { z } from 'zod';
 import { SkillDefinition } from '../types';
-import { calculateCapitalGrowth, analyzeFinancialFreedom, SimulationParams } from '../../financials';
-import { calculateFIRE, calculateGoalReverse, calculatePassiveIncome, calculateMilestones } from '../../calculations/capital';
+import { calculateCapitalGrowth, analyzeFinancialFreedom, SimulationParams, calculateFIRE, calculateGoalReverse, calculatePassiveIncome, calculateMilestones } from '@/features/capital/logic';
 
 // ============================================
 // 複利成長模擬 Skill
