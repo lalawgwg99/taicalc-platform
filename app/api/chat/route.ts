@@ -13,7 +13,7 @@ import { fortuneTools } from '@/features/fortune/tools';
 import { articlesTools } from '@/features/articles/tools';
 import { retirementTools } from '@/features/retirement/tools';
 
-// export const runtime = 'edge';
+export const runtime = 'edge';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
