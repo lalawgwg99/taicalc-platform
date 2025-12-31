@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     try {
         // 2. 使用 Gemini 模型
         const result = streamText({
-            model: google('gemini-2.0-flash-exp'), // 使用更快的 Flash 模型
+            model: google('gemini-2.0-flash'), // 使用更快的 Flash 模型
             messages,
             system: `你現在是 TaiCalc (台灣計算) 的首席財務AI顧問「數策」。你是一位精算專家，擅長用數據說話，但語氣溫和專業。
 
