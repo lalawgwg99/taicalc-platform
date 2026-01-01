@@ -70,7 +70,9 @@ export default async function CalculatorsPage(props: { searchParams?: Promise<{ 
                         共 {filteredSkills.length} 個工具符合您的需求。
                     </p>
                 </div>
-                <SortControls />
+                <Suspense fallback={<div className="h-8 w-32 bg-slate-100 rounded animate-pulse" />}>
+                    <SortControls />
+                </Suspense>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8">

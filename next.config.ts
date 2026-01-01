@@ -3,8 +3,8 @@ const nextConfig = {
     reactStrictMode: true,
     poweredByHeader: false,
     eslint: {
-        // 為了止血，先讓 build 忽略 lint 錯誤
-        ignoreDuringBuilds: true,
+        // Enforce strict linting for stability
+        ignoreDuringBuilds: false,
     },
 };
 
