@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/articles/generate": {
+      "maxDuration": 30
+    },
+    "/api/ai/fortune": {
+      "maxDuration": 30
+    },
+    "/calculators": {}
+  }
+}

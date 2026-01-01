@@ -1,0 +1,6 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/articles/generate/route": "app/api/articles/generate/route.js",
+  "/api/ai/fortune/route": "app/api/ai/fortune/route.js",
+  "/calculators/page": "app/calculators/page.js"
+}

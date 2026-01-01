@@ -1,122 +1,65 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
-import { Search } from "lucide-react";
-import { NAV_CATEGORIES } from "@/lib/navConfig";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Search } from 'lucide-react';
+import { categories } from '@/lib/skills/uiCatalog';
 
-// Fallback Input if not existing in component library
-function DefaultInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-    return (
-        <div className="relative">
-            <input
-                {...props}
-                className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-9 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${props.className}`}
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-        </div>
-    )
-}
-
-interface FilterProps {
+interface Props {
     className?: string;
 }
 
-export function FilterSidebar({ className }: FilterProps) {
+export function FilterSidebar({ className = '' }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Local state for immediate feedback
-    const [query, setQuery] = useState(searchParams.get("q") || "");
-    const selectedCat = searchParams.get("cat") || "all";
+    const currentQuery = searchParams.get('q') || '';
+    const currentCategory = searchParams.get('cat') || 'all';
 
-    useEffect(() => {
-        setQuery(searchParams.get("q") || "");
-    }, [searchParams]);
-
-    const handleSearch = (term: string) => {
-        setQuery(term);
-        updateParams({ q: term });
-    };
-
-    const handleCategory = (catId: string) => {
-        const newCat = selectedCat === catId ? "all" : catId;
-        updateParams({ cat: newCat });
-    };
-
-    const updateParams = (changes: Record<string, string | null>) => {
+    const updateParams = (key: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        Object.entries(changes).forEach(([key, value]) => {
-            if (value === null || value === "") {
-                params.delete(key);
-            } else {
-                params.set(key, value);
-            }
-        });
-
-        // Debounce logic could be added here, but navigation is fast enough usually
-        router.replace(`/calculators?${params.toString()}`, { scroll: false });
+        if (value && value !== 'all') {
+            params.set(key, value);
+        } else {
+            params.delete(key);
+        }
+        router.push(`/calculators?${params.toString()}`);
     };
 
     return (
-        <div className={`space-y-6 ${className}`}>
+        <aside className={`space-y-6 ${className}`}>
             {/* Search */}
-            <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">搜尋工具</h3>
-                <DefaultInput
-                    placeholder="輸入關鍵字 (e.g. 房貸, 稅)"
-                    value={query}
-                    onChange={(e) => handleSearch(e.target.value)}
-                />
+            <div>
+                <label className="block text-xs font-medium text-slate-500 mb-2">搜尋</label>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                        type="text"
+                        value={currentQuery}
+                        onChange={(e) => updateParams('q', e.target.value)}
+                        placeholder="搜尋工具..."
+                        className="w-full pl-9 pr-4 py-2.5 glass-input rounded-xl text-sm"
+                    />
+                </div>
             </div>
 
             {/* Categories */}
-            <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground flex justify-between items-center">
-                    分類
-                    {selectedCat !== 'all' && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-0 text-xs text-muted-foreground hover:text-primary"
-                            onClick={() => updateParams({ cat: 'all' })}
-                        >
-                            重置
-                        </Button>
-                    )}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                    {NAV_CATEGORIES.map(cat => (
-                        <Badge
+            <div>
+                <label className="block text-xs font-medium text-slate-500 mb-2">分類</label>
+                <div className="space-y-1">
+                    {categories.map((cat) => (
+                        <button
                             key={cat.id}
-                            variant={selectedCat === cat.id ? "default" : "outline"}
-                            className="cursor-pointer hover:bg-secondary/80 px-3 py-1.5"
-                            onClick={() => handleCategory(cat.id)}
+                            onClick={() => updateParams('cat', cat.id)}
+                            className={`w-full px-3 py-2 rounded-lg text-left text-sm transition-colors ${currentCategory === cat.id
+                                    ? 'bg-indigo-50 text-indigo-600 font-medium'
+                                    : 'text-slate-600 hover:bg-slate-50'
+                                }`}
                         >
                             {cat.label}
-                        </Badge>
+                        </button>
                     ))}
                 </div>
             </div>
-
-            {/* Tags (Hardcoded for now, can be derived from catalog later) */}
-            <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">熱門標籤</h3>
-                <div className="flex flex-wrap gap-2">
-                    {['熱門', '新手友善', 'AI', '省稅', '買房'].map(tag => (
-                        <Badge
-                            key={tag}
-                            variant="secondary"
-                            className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 font-normal"
-                            onClick={() => handleSearch(tag)} // Simple tag search implementation
-                        >
-                            #{tag}
-                        </Badge>
-                    ))}
-                </div>
-            </div>
-        </div>
+        </aside>
     );
 }

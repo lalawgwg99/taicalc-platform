@@ -1,0 +1,6 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/articles/generate/route": "/api/articles/generate",
+  "/api/ai/fortune/route": "/api/ai/fortune",
+  "/calculators/page": "/calculators"
+}

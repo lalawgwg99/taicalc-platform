@@ -1,42 +1,30 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/Button";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ArrowUpDown } from 'lucide-react';
 
 export function SortControls() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const currentSort = searchParams.get("sort") || "featured";
+    const currentSort = searchParams.get('sort') || 'featured';
 
-    const handleSort = (sort: string) => {
+    const handleSortChange = (sort: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        params.set("sort", sort);
-        router.replace(`/calculators?${params.toString()}`, { scroll: false });
+        params.set('sort', sort);
+        router.push(`/calculators?${params.toString()}`);
     };
 
     return (
-        <div className="flex items-center space-x-2 text-sm">
-            <span className="text-muted-foreground">排序：</span>
-            <div className="flex bg-secondary p-1 rounded-md">
-                <button
-                    onClick={() => handleSort("featured")}
-                    className={`px-3 py-1 rounded-sm text-xs font-medium transition-colors ${currentSort === "featured"
-                            ? "bg-background shadow-sm text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                >
-                    推薦
-                </button>
-                <button
-                    onClick={() => handleSort("priority")}
-                    className={`px-3 py-1 rounded-sm text-xs font-medium transition-colors ${currentSort === "priority"
-                            ? "bg-background shadow-sm text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                >
-                    熱門
-                </button>
-            </div>
+        <div className="flex items-center gap-2">
+            <ArrowUpDown className="w-4 h-4 text-slate-400" />
+            <select
+                value={currentSort}
+                onChange={(e) => handleSortChange(e.target.value)}
+                className="text-sm border-none bg-transparent text-slate-600 focus:outline-none cursor-pointer"
+            >
+                <option value="featured">推薦排序</option>
+                <option value="priority">優先度</option>
+            </select>
         </div>
     );
 }

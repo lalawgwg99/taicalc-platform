@@ -1,10 +1,19 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
     reactStrictMode: true,
     poweredByHeader: false,
+    // Enforce strict builds - no hidden errors
     eslint: {
-        // Enforce strict linting for stability
         ignoreDuringBuilds: false,
+    },
+    typescript: {
+        ignoreBuildErrors: false,
+    },
+    // Optimize for Edge deployment
+    experimental: {
+        // Enable PPR for faster page loads
+        // ppr: true,
     },
 };
 
