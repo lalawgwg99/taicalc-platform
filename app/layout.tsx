@@ -3,7 +3,7 @@ import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
-import { TaiCalcChat } from '@/components/ai';
+import { TaiCalcChat } from '@/components/AI';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 // Font configuration
