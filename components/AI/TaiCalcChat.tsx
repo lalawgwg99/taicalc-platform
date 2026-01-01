@@ -33,12 +33,31 @@ export default function TaiCalcChat() {
     const scrollRef = useRef<HTMLDivElement>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
 
+    // Load history from localStorage on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('taicalc_chat_history');
+        if (saved) {
+            try {
+                setMessages(JSON.parse(saved));
+            } catch (e) {
+                console.error('Failed to load chat history', e);
+            }
+        }
+    }, []);
+
+    // Save history to localStorage on change
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem('taicalc_chat_history', JSON.stringify(messages));
+        }
+    }, [messages]);
+
     // Auto-scroll to bottom
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
-    }, [messages, isLoading]);
+    }, [messages, isLoading, isOpen]); // Added isOpen to scroll when opening
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
@@ -150,6 +169,7 @@ export default function TaiCalcChat() {
         }
         setMessages([]);
         setError(null);
+        localStorage.removeItem('taicalc_chat_history');
     };
 
     const handleRetry = () => {
@@ -276,8 +296,8 @@ export default function TaiCalcChat() {
                         >
                             <div
                                 className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${m.role === 'user'
-                                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
-                                        : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none prose prose-sm max-w-none'
+                                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-none'
+                                    : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none prose prose-sm max-w-none'
                                     }`}
                             >
                                 {m.role === 'assistant' ? (
@@ -294,7 +314,7 @@ export default function TaiCalcChat() {
                         <div className="flex justify-start">
                             <div className="bg-white/50 border border-slate-100 px-4 py-3 rounded-2xl rounded-bl-none flex items-center gap-2 text-xs text-slate-500">
                                 <Loader2 className="w-3 h-3 animate-spin text-indigo-500" />
-                                正在分析您的財務數據...
+                                數策正在思考與查詢資料中...
                             </div>
                         </div>
                     )}
