@@ -16,10 +16,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
 export default function TaiCalcChat() {
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const { messages, input, handleInputChange, handleSubmit, setMessages, isLoading, reload, stop } = useChat({
-        api: '/api/chat',
-        onError: (error: Error) => {
+        onError: (error) => {
             console.error('Chat error:', error);
+            setErrorMsg(error.message || '發生未知錯誤');
         },
     });
 
@@ -107,7 +108,7 @@ export default function TaiCalcChat() {
                         <button onClick={handleClearChat} className="p-2 hover:bg-white/20 rounded-full transition-colors" title="清除對話">
                             <RefreshCw className="w-4 h-4" />
                         </button>
-                        <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/20 rounded-full transition-colors">
+                        <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-white/20 rounded-full transition-colors" title="關閉視窗">
                             <X className="w-4 h-4" />
                         </button>
                     </div>
@@ -166,6 +167,14 @@ export default function TaiCalcChat() {
                                 <Loader2 className="w-3 h-3 animate-spin text-indigo-500" />
                                 正在分析您的財務數據...
                             </div>
+                        </div>
+                    )}
+                    {errorMsg && (
+                        <div className="mx-4 my-2 p-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600 flex items-center justify-between">
+                            <span>{errorMsg}</span>
+                            <button onClick={() => { setErrorMsg(null); reload(); }} className="text-red-400 hover:text-red-700">
+                                <RefreshCw className="w-3 h-3" />
+                            </button>
                         </div>
                     )}
                 </div>
