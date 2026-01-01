@@ -6,6 +6,7 @@ import SchemaOrg from '@/components/SEO/SchemaOrg';
 import Script from 'next/script';
 import Footer from '@/components/Footer';
 import { TaiCalcChat } from '@/components/AI';
+import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansTC = Noto_Sans_TC({ subsets: ['latin'], weight: ['400', '500', '700', '900'], variable: '--font-noto-sans' });
@@ -105,7 +106,9 @@ export default function RootLayout({
         {/* <GATracker /> */}
         {children}
         <Footer />
-        <TaiCalcChat />
+        <ErrorBoundary fallback={<div className="fixed bottom-6 right-6 z-50 p-2 bg-red-100 rounded-full text-xs text-red-500">Error</div>}>
+          <TaiCalcChat />
+        </ErrorBoundary>
       </body>
     </html>
   );

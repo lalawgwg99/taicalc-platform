@@ -16,13 +16,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
 export default function TaiCalcChat() {
-    // 使用 useChat hook 管理對話狀態，解決資料流協議解析問題
     const { messages, input, handleInputChange, handleSubmit, setMessages, isLoading, reload, stop } = useChat({
         api: '/api/chat',
-        onError: (error: any) => {
+        onError: (error: Error) => {
             console.error('Chat error:', error);
         },
-    } as any) as any;
+    });
 
     const [isOpen, setIsOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -145,7 +144,7 @@ export default function TaiCalcChat() {
                         </div>
                     )}
 
-                    {messages.map((m: any) => (
+                    {Array.isArray(messages) && messages.map((m: any) => (
                         <div
                             key={m.id}
                             className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
