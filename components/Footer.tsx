@@ -13,7 +13,7 @@ export default function Footer() {
         { href: '/tax', label: '所得稅' },
         { href: '/mortgage', label: '房貸試算' },
         { href: '/capital', label: '複利計算' },
-        { href: '/articles', label: '知識文章' },
+        { href: '/knowledge', label: '財務知識庫' },
     ];
 
     const legalLinks = [

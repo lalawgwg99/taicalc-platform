@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { ArticleRecommendations } from '@/components/knowledge';
 
 interface MortgageResult {
     monthlyPayment: number;
@@ -17,6 +18,13 @@ function calculateMortgage(totalLoan: number, rate: number, years: number): Mort
     return { monthlyPayment, totalInterest, totalPayment };
 }
 
+import { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/seo/seo-optimizer';
+import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
+
+// 生成頁面 metadata
+export const metadata: Metadata = generatePageMetadata('mortgage');
+
 export default function MortgageCalculatorPage() {
     const [totalLoan, setTotalLoan] = useState(10000000);
     const [rate, setRate] = useState(2.0);
@@ -27,8 +35,27 @@ export default function MortgageCalculatorPage() {
         setResult(calculateMortgage(totalLoan, rate, years));
     }, [totalLoan, rate, years]);
 
+    // 麵包屑導航數據
+    const breadcrumbItems = [
+        { label: '首頁', href: '/' },
+        { label: '計算工具', href: '/tools' },
+        { label: '房貸試算器' }
+    ];
+
+    // 分享數據
+    const shareData = {
+        url: typeof window !== 'undefined' ? window.location.href : 'https://taicalc.com/mortgage',
+        title: '房貸試算器 - 每月還款金額計算 | TaiCalc',
+        description: result 
+            ? `貸款 NT$ ${totalLoan.toLocaleString()}，每月還款 NT$ ${result.monthlyPayment.toLocaleString()}` 
+            : '快速計算房貸每月還款金額、總利息支出。支援新青安房貸試算。'
+    };
+
     return (
         <div className="container max-w-4xl mx-auto px-4 py-12">
+            {/* 麵包屑導航 */}
+            <Breadcrumb items={breadcrumbItems} className="mb-6" />
+            
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-2">房貸試算</h1>
                 <p className="text-slate-500 mb-8">計算每月還款金額與利息</p>
@@ -78,27 +105,57 @@ export default function MortgageCalculatorPage() {
                 </button>
 
                 {result && (
-                    <div className="mt-8 grid gap-4 md:grid-cols-3">
-                        <div className="glass-card rounded-2xl p-6 text-center">
-                            <p className="text-slate-500 mb-2">每月應繳</p>
-                            <p className="text-2xl font-bold font-mono text-gradient-primary">
-                                NT$ {result.monthlyPayment.toLocaleString()}
-                            </p>
+                    <>
+                        <div className="mt-8 grid gap-4 md:grid-cols-3">
+                            <div className="glass-card rounded-2xl p-6 text-center">
+                                <p className="text-slate-500 mb-2">每月應繳</p>
+                                <p className="text-2xl font-bold font-mono text-gradient-primary">
+                                    NT$ {result.monthlyPayment.toLocaleString()}
+                                </p>
+                            </div>
+                            <div className="glass-card rounded-2xl p-6 text-center">
+                                <p className="text-slate-500 mb-2">總利息</p>
+                                <p className="text-2xl font-bold font-mono text-red-500">
+                                    NT$ {result.totalInterest.toLocaleString()}
+                                </p>
+                            </div>
+                            <div className="glass-card rounded-2xl p-6 text-center">
+                                <p className="text-slate-500 mb-2">還款總額</p>
+                                <p className="text-2xl font-bold font-mono text-slate-700">
+                                    NT$ {result.totalPayment.toLocaleString()}
+                                </p>
+                            </div>
                         </div>
-                        <div className="glass-card rounded-2xl p-6 text-center">
-                            <p className="text-slate-500 mb-2">總利息</p>
-                            <p className="text-2xl font-bold font-mono text-red-500">
-                                NT$ {result.totalInterest.toLocaleString()}
-                            </p>
+
+                        {/* 相關知識文章推薦 */}
+                        <div className="mt-8">
+                            <ArticleRecommendations
+                                calculatorType="mortgage"
+                                title="房貸相關知識"
+                                maxItems={3}
+                                showReason={true}
+                            />
                         </div>
-                        <div className="glass-card rounded-2xl p-6 text-center">
-                            <p className="text-slate-500 mb-2">還款總額</p>
-                            <p className="text-2xl font-bold font-mono text-slate-700">
-                                NT$ {result.totalPayment.toLocaleString()}
-                            </p>
+
+                        {/* 社交媒體分享 */}
+                        <div className="mt-6 p-4 bg-slate-50 rounded-xl">
+                            <h4 className="font-medium text-slate-700 mb-3">分享計算結果</h4>
+                            <SocialShareButtons
+                                url={shareData.url}
+                                title={shareData.title}
+                                description={shareData.description}
+                            />
                         </div>
-                    </div>
+                    </>
                 )}
+
+                {/* 相關計算工具推薦 */}
+                <InternalLinkSystem
+                    currentCalculator="mortgage"
+                    className="mt-8"
+                    maxLinks={3}
+                    showDescription={true}
+                />
             </div>
         </div>
     );

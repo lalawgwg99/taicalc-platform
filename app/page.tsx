@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calculator, TrendingUp, Home, PiggyBank, Sparkles } from 'lucide-react';
+import { Calculator, TrendingUp, Home, PiggyBank, Sparkles, BookOpen } from 'lucide-react';
 
 const features = [
     {
@@ -73,12 +73,20 @@ export default function HomePage() {
                             >
                                 開始計算
                             </Link>
+                            <Link
+                                href="/knowledge"
+                                className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2"
+                            >
+                                <BookOpen className="w-5 h-5" />
+                                學習理財
+                            </Link>
                             <button
                                 onClick={() => {
-                                    const chatBtn = document.querySelector('[aria-label="開啟 AI 助手"]');
-                                    if (chatBtn) (chatBtn as HTMLButtonElement).click();
+                                    // 觸發 AI 聊天介面開啟
+                                    const event = new CustomEvent('openAIChat');
+                                    window.dispatchEvent(event);
                                 }}
-                                className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-2xl shadow-lg border border-slate-200 hover:shadow-xl transition-all hover:scale-105"
+                                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                             >
                                 詢問 AI 顧問
                             </button>

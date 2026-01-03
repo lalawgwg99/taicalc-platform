@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import { ResultActions } from '@/components/shared';
 
 interface CreditResult {
     totalPayment: number;
@@ -14,6 +15,7 @@ export default function CreditCardCalculatorPage() {
     const [installments, setInstallments] = useState(12);
     const [feePercent, setFeePercent] = useState(4.5);
     const [result, setResult] = useState<CreditResult | null>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
 
     const handleCalculate = useCallback(() => {
         // 分期手續費計算
@@ -99,7 +101,7 @@ export default function CreditCardCalculatorPage() {
                 </button>
 
                 {result && (
-                    <div className="mt-8 space-y-4">
+                    <div ref={resultRef} className="mt-8 space-y-4">
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="glass-card rounded-2xl p-6 text-center">
                                 <p className="text-slate-500 mb-2">每月應繳</p>
@@ -130,6 +132,15 @@ export default function CreditCardCalculatorPage() {
                                 </p>
                             </div>
                         )}
+
+                        {/* 結果操作按鈕 */}
+                        <ResultActions
+                            resultData={result}
+                            calculatorType="信用卡分期計算器"
+                            resultRef={resultRef}
+                            shareTitle="TaiCalc 信用卡分期計算結果"
+                            shareDescription={`月付 NT$ ${result.monthlyPayment.toLocaleString()}，利息 NT$ ${result.totalInterest.toLocaleString()}`}
+                        />
                     </div>
                 )}
 

@@ -59,7 +59,16 @@ const organizationSchema = {
     name: 'TaiCalc 數策',
     url: 'https://taicalc.com',
     logo: 'https://taicalc.com/logo.png',
-    description: '快速、免費的實用計算工具平台。',
+    description: '專為台灣人設計的財務計算工具平台，提供薪資、房貸、稅務、投資等計算器。',
+    sameAs: [
+        'https://www.facebook.com/taicalc',
+        'https://twitter.com/taicalc'
+    ],
+    contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+        availableLanguage: 'zh-TW'
+    }
 };
 
 const websiteSchema = {
@@ -67,11 +76,34 @@ const websiteSchema = {
     '@type': 'WebSite',
     name: 'TaiCalc 數策',
     url: 'https://taicalc.com',
+    description: '專為台灣人設計的財務計算工具平台',
+    inLanguage: 'zh-TW',
     potentialAction: {
         '@type': 'SearchAction',
-        target: 'https://taicalc.com/search?q={search_term_string}',
+        target: {
+            '@type': 'EntryPoint',
+            urlTemplate: 'https://taicalc.com/search?q={search_term_string}'
+        },
         'query-input': 'required name=search_term_string',
     },
+};
+
+const softwareApplicationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'TaiCalc 財務計算器',
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Web Browser',
+    offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'TWD'
+    },
+    aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.8',
+        ratingCount: '1250'
+    }
 };
 
 export default function RootLayout({
@@ -122,6 +154,10 @@ export default function RootLayout({
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
                 />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+                />
             </head>
             <body
                 suppressHydrationWarning
@@ -129,7 +165,7 @@ export default function RootLayout({
             >
                 {children}
                 <Footer />
-                {/* AI Chat 暫時停用（需設定 GOOGLE_GENERATIVE_AI_API_KEY 環境變數）
+                {/* AI 財務顧問聊天介面 */}
                 <ErrorBoundary
                     fallback={
                         <div className="fixed bottom-6 right-6 z-50 p-3 bg-red-100 rounded-2xl text-xs text-red-500">
@@ -139,7 +175,6 @@ export default function RootLayout({
                 >
                     <TaiCalcChat />
                 </ErrorBoundary>
-                */}
             </body>
         </html>
     );

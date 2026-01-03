@@ -1,0 +1,14 @@
+# AWS CDK 核心套件
+aws-cdk-lib>=2.100.0
+constructs>=10.0.0
+
+# 開發和測試工具
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
+
+# AWS 開發工具
+boto3>=1.26.0
+aws-lambda-powertools>=2.0.0

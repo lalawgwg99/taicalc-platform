@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import { ResultActions } from '@/components/shared';
 
 interface CostResult {
     totalCost: number;
@@ -16,6 +17,7 @@ export default function CostCalculatorPage() {
     const [quantity, setQuantity] = useState(10);
     const [sellingPrice, setSellingPrice] = useState(250);
     const [result, setResult] = useState<CostResult | null>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
 
     const handleCalculate = useCallback(() => {
         const totalCost = materialCost + laborCost + overheadCost;
@@ -120,7 +122,7 @@ export default function CostCalculatorPage() {
 
                 {/* 結果區 */}
                 {result && (
-                    <div className="mt-8 space-y-6">
+                    <div ref={resultRef} className="mt-8 space-y-6">
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="glass-card rounded-2xl p-6 text-center">
                                 <p className="text-slate-500 mb-2">總成本</p>
@@ -156,6 +158,15 @@ export default function CostCalculatorPage() {
                                     ? '⚠️ 利潤偏低，建議重新評估定價或成本'
                                     : '❌ 目前定價會虧損，請調整'}
                         </div>
+
+                        {/* 結果操作按鈕 */}
+                        <ResultActions
+                            resultData={result}
+                            calculatorType="成本計算器"
+                            resultRef={resultRef}
+                            shareTitle="TaiCalc 成本計算結果"
+                            shareDescription={`總成本 NT$ ${result.totalCost.toLocaleString()}，毛利率 ${result.margin}%`}
+                        />
                     </div>
                 )}
 

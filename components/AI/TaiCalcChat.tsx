@@ -43,6 +43,21 @@ export default function TaiCalcChat() {
                 console.error('Failed to load chat history', e);
             }
         }
+
+        // 監聽來自主頁面的開啟聊天事件
+        const handleOpenChat = (event?: CustomEvent) => {
+            setIsOpen(true);
+            // 如果有預填訊息，設定到輸入框
+            if (event?.detail?.prefilledMessage) {
+                setInput(event.detail.prefilledMessage);
+            }
+        };
+
+        window.addEventListener('openAIChat', handleOpenChat as EventListener);
+        
+        return () => {
+            window.removeEventListener('openAIChat', handleOpenChat as EventListener);
+        };
     }, []);
 
     // Save history to localStorage on change
@@ -186,6 +201,9 @@ export default function TaiCalcChat() {
         '月薪 5 萬，適合買多少錢的房？',
         '我該自提勞退嗎？',
         '年薪 120 萬要繳多少稅？',
+        '如何建立緊急預備金？',
+        '30 歲該如何開始投資理財？',
+        '買房和租房哪個比較划算？'
     ];
 
     const hasUserMessage = messages.some((m) => m.role === 'user');
@@ -268,9 +286,9 @@ export default function TaiCalcChat() {
                                 <Bot className="w-8 h-8 text-indigo-500" />
                             </div>
                             <div className="space-y-1">
-                                <h3 className="font-bold text-slate-800">您好，我是 TaiCalc AI</h3>
+                                <h3 className="font-bold text-slate-800">您好，我是 TaiCalc AI 財務顧問</h3>
                                 <p className="text-sm text-slate-500 max-w-[220px] mx-auto">
-                                    我可以幫您計算薪資結構、稅務規劃或房貸試算
+                                    我可以幫您進行財務分析、風險評估、投資建議和人生規劃
                                 </p>
                             </div>
                             <div className="w-full space-y-2 px-4">
