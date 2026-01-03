@@ -17,6 +17,18 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
     const { messages } = await req.json();
 
+    // 檢查是否有 Google AI API 金鑰
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+        console.warn('⚠️ Google AI API key not found, returning fallback response');
+        return new Response(JSON.stringify({ 
+            error: 'AI 服務需要設定 API 金鑰。請聯繫管理員或使用計算器功能。',
+            fallback: true 
+        }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
     // 1. 聚合所有工具
     const tools = {
         ...salaryTools,

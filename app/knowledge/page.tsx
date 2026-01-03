@@ -6,11 +6,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Search, BookOpen, TrendingUp, Clock, Star, Filter, Grid, List } from 'lucide-react';
 import { knowledgeEngine } from '@/features/knowledge-base/knowledge-engine';
 import { KnowledgeArticle, KnowledgeCategory, SearchResult, LearningPath } from '@/features/knowledge-base/types';
 
 export default function KnowledgePage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<KnowledgeCategory | ''>('');
@@ -188,7 +190,10 @@ export default function KnowledgePage() {
         )}
       </div>
       
-      <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200">
+      <button 
+        onClick={() => router.push(`/knowledge/${article.id}`)}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200"
+      >
         閱讀文章
       </button>
     </div>
@@ -232,7 +237,10 @@ export default function KnowledgePage() {
         </ul>
       </div>
       
-      <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200">
+      <button 
+        onClick={() => router.push(`/learning-path/${path.id}`)}
+        className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200"
+      >
         開始學習
       </button>
     </div>
@@ -360,7 +368,8 @@ export default function KnowledgePage() {
                           key={suggestion}
                           onClick={() => {
                             setSearchQuery(suggestion);
-                            handleSearch();
+                            // 立即執行搜尋
+                            setTimeout(() => handleSearch(), 100);
                           }}
                           className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full hover:bg-blue-200 transition-colors duration-200"
                         >
