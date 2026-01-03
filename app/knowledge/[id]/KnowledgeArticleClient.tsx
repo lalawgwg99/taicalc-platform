@@ -23,7 +23,7 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
         setIsLoading(true);
         
         // 獲取所有文章
-        const allArticles = await knowledgeEngine.getAllArticles();
+        const allArticles = knowledgeEngine.getPopularArticles(100); // 獲取所有文章
         const foundArticle = allArticles.find(a => a.id === articleId);
         
         if (foundArticle) {
