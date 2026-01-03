@@ -129,7 +129,7 @@ export default function RootLayout({
             >
                 {children}
                 <Footer />
-                {/* AI Chat with Error Isolation */}
+                {/* AI Chat 暫時停用（需設定 GOOGLE_GENERATIVE_AI_API_KEY 環境變數）
                 <ErrorBoundary
                     fallback={
                         <div className="fixed bottom-6 right-6 z-50 p-3 bg-red-100 rounded-2xl text-xs text-red-500">
@@ -139,6 +139,7 @@ export default function RootLayout({
                 >
                     <TaiCalcChat />
                 </ErrorBoundary>
+                */}
             </body>
         </html>
     );
