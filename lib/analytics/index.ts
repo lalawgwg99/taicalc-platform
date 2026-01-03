@@ -19,8 +19,5 @@ export type {
   CalculatorUsageEvent,
   UserBehaviorEvent,
   PerformanceEvent,
-  ErrorEvent,
-  UsageReport,
-  CalculatorReport,
-  PerformanceReport
+  ErrorEvent
 } from './analytics-manager';

@@ -166,7 +166,6 @@ export function generatePageMetadata(
     description: mergedConfig.description,
     keywords: mergedConfig.keywords,
     robots: mergedConfig.noIndex ? 'noindex, nofollow' : 'index, follow',
-    canonical: mergedConfig.canonicalUrl || `${baseUrl}/${calculatorType}`,
     openGraph: {
       title: mergedConfig.title,
       description: mergedConfig.description,
@@ -194,12 +193,7 @@ export function generatePageMetadata(
       // 增加更多 OG 標籤
       countryName: '台灣',
       determiner: 'the',
-      ttl: 604800, // 7 days
-      // 添加文章相關標籤（如果適用）
-      publishedTime: '2024-01-01T00:00:00.000Z',
-      modifiedTime: new Date().toISOString(),
-      section: getCalculatorCategoryName(calculatorType),
-      tags: mergedConfig.keywords
+      ttl: 604800 // 7 days
     },
     twitter: {
       card: 'summary_large_image',
@@ -433,7 +427,7 @@ export function generateStructuredData(
 
   const faqSchema = generateFAQSchema(calculatorType);
   
-  const schemas = [webPageSchema, breadcrumbSchema, serviceSchema];
+  const schemas: any[] = [webPageSchema, breadcrumbSchema, serviceSchema];
   
   if (howToSchema) {
     schemas.push(howToSchema);
@@ -482,7 +476,7 @@ function generateFAQSchema(calculatorType: CalculatorType): Record<string, any> 
  * 獲取計算器相關的常見問題
  */
 function getFAQsByCalculatorType(calculatorType: CalculatorType): Array<{question: string, answer: string}> | null {
-  const faqMap: Record<CalculatorType, Array<{question: string, answer: string}>> = {
+  const faqMap: Partial<Record<CalculatorType, Array<{question: string, answer: string}>>> = {
     salary: [
       {
         question: '2025年勞健保費率是多少？',
@@ -752,11 +746,11 @@ function getCalculatorFeatures(calculatorType: CalculatorType): string[] {
  * 生成 HowTo 結構化數據
  */
 function generateHowToSchema(calculatorType: CalculatorType): Record<string, any> | null {
-  const howToMap: Record<CalculatorType, {
+  const howToMap: Partial<Record<CalculatorType, {
     name: string;
     description: string;
     steps: Array<{ name: string; text: string; }>;
-  }> = {
+  }>> = {
     salary: {
       name: '如何使用薪資計算器',
       description: '學習如何使用薪資計算器計算實際到手薪資',

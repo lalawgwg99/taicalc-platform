@@ -137,7 +137,7 @@ export default function CreditCardCalculatorPage() {
                         <ResultActions
                             resultData={result}
                             calculatorType="信用卡分期計算器"
-                            resultRef={resultRef}
+                            resultRef={resultRef as React.RefObject<HTMLElement>}
                             shareTitle="TaiCalc 信用卡分期計算結果"
                             shareDescription={`月付 NT$ ${result.monthlyPayment.toLocaleString()}，利息 NT$ ${result.totalInterest.toLocaleString()}`}
                         />

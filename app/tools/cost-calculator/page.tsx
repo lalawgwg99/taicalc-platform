@@ -163,7 +163,7 @@ export default function CostCalculatorPage() {
                         <ResultActions
                             resultData={result}
                             calculatorType="成本計算器"
-                            resultRef={resultRef}
+                            resultRef={resultRef as React.RefObject<HTMLElement>}
                             shareTitle="TaiCalc 成本計算結果"
                             shareDescription={`總成本 NT$ ${result.totalCost.toLocaleString()}，毛利率 ${result.margin}%`}
                         />
