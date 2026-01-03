@@ -9,11 +9,12 @@ import { KnowledgeArticleClient } from './KnowledgeArticleClient';
 export const runtime = 'edge';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function KnowledgeArticlePage({ params }: PageProps) {
-  return <KnowledgeArticleClient articleId={params.id} />;
+export default async function KnowledgeArticlePage({ params }: PageProps) {
+  const { id } = await params;
+  return <KnowledgeArticleClient articleId={id} />;
 }
