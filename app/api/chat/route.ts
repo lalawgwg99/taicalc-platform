@@ -17,6 +17,19 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
     const { messages } = await req.json();
 
+    // 檢查 API 金鑰是否配置
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+        console.error('❌ Google API 金鑰未配置');
+        return new Response(JSON.stringify({ 
+            error: 'AI 服務尚未配置完成。請聯繫管理員設定 API 金鑰。',
+            code: 'API_KEY_MISSING',
+            timestamp: new Date().toISOString()
+        }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
     // 1. 聚合所有工具
     const tools = {
         ...salaryTools,
@@ -93,19 +106,36 @@ export async function POST(req: Request) {
     } catch (error) {
         console.error('❌ Chat Error:', error);
         
-        // 提供更詳細的錯誤信息
-        let errorMessage = 'AI 服務暫時無法使用';
+        // 根據錯誤類型提供不同的用戶友善訊息
+        let errorMessage = 'AI 服務暫時無法使用，請稍後再試';
+        let errorCode = 'UNKNOWN_ERROR';
+        
         if (error instanceof Error) {
             console.error('Error details:', error.message);
-            // 不要在生產環境中暴露詳細錯誤
+            
+            // 根據錯誤訊息判斷問題類型
+            if (error.message.includes('API key')) {
+                errorMessage = 'AI 服務配置有誤，請聯繫管理員';
+                errorCode = 'API_KEY_ERROR';
+            } else if (error.message.includes('quota') || error.message.includes('limit')) {
+                errorMessage = 'AI 服務使用量已達上限，請稍後再試';
+                errorCode = 'QUOTA_EXCEEDED';
+            } else if (error.message.includes('network') || error.message.includes('timeout')) {
+                errorMessage = '網路連線問題，請檢查網路後重試';
+                errorCode = 'NETWORK_ERROR';
+            }
+            
+            // 在開發環境中提供詳細錯誤
             if (process.env.NODE_ENV === 'development') {
-                errorMessage += `: ${error.message}`;
+                errorMessage += ` (詳細錯誤: ${error.message})`;
             }
         }
         
         return new Response(JSON.stringify({ 
             error: errorMessage,
-            timestamp: new Date().toISOString()
+            code: errorCode,
+            timestamp: new Date().toISOString(),
+            suggestion: '您可以嘗試重新整理頁面，或使用其他計算工具繼續操作'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },

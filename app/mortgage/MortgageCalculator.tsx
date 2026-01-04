@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { ArticleRecommendations } from '@/components/knowledge';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
+import TutorialTrigger from '@/components/tutorial/TutorialTrigger';
 
 interface MortgageResult {
     monthlyPayment: number;
@@ -46,76 +47,93 @@ export function MortgageCalculator() {
     };
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 py-12 clean-bg">
+            {/* 教學系統 */}
+            <TutorialTrigger 
+                calculatorType="mortgage"
+                autoStart={false}
+                showRecommendations={true}
+            />
+            
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
             
-            <div className="glass-panel rounded-3xl p-8">
-                <h1 className="text-3xl font-bold text-slate-900 mb-2">房貸試算</h1>
-                <p className="text-slate-500 mb-8">計算每月還款金額與利息</p>
+            <div className="panel p-8">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">房貸試算</h1>
+                <p className="text-gray-600 mb-8">計算每月還款金額與利息</p>
 
                 <div className="grid gap-6 md:grid-cols-3 mb-8">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             貸款總額 (NT$)
                         </label>
                         <input
+                            name="housePrice"
                             type="number"
                             value={totalLoan}
                             onChange={(e) => setTotalLoan(Number(e.target.value))}
-                            className="glass-input w-full px-4 py-3 rounded-xl text-lg"
+                            className="input w-full px-4 py-3 text-lg"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             年利率 (%)
                         </label>
                         <input
+                            name="interestRate"
                             type="number"
                             step="0.1"
                             value={rate}
                             onChange={(e) => setRate(Number(e.target.value))}
-                            className="glass-input w-full px-4 py-3 rounded-xl text-lg"
+                            className="input w-full px-4 py-3 text-lg"
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
                             貸款年限 (年)
                         </label>
-                        <input
-                            type="number"
+                        <select
+                            name="loanTerm"
                             value={years}
                             onChange={(e) => setYears(Number(e.target.value))}
-                            className="glass-input w-full px-4 py-3 rounded-xl text-lg"
-                        />
+                            className="input w-full px-4 py-3 text-lg"
+                        >
+                            <option value={10}>10年</option>
+                            <option value={15}>15年</option>
+                            <option value={20}>20年</option>
+                            <option value={25}>25年</option>
+                            <option value={30}>30年</option>
+                            <option value={40}>40年</option>
+                        </select>
                     </div>
                 </div>
 
                 <button
+                    type="submit"
                     onClick={handleCalculate}
-                    className="btn-primary w-full py-4 rounded-xl text-lg font-semibold"
+                    className="btn btn-primary w-full py-4 text-lg font-semibold"
                 >
                     計算
                 </button>
 
                 {result && (
                     <>
-                        <div className="mt-8 grid gap-4 md:grid-cols-3">
-                            <div className="glass-card rounded-2xl p-6 text-center">
-                                <p className="text-slate-500 mb-2">每月應繳</p>
-                                <p className="text-2xl font-bold font-mono text-gradient-primary">
+                        <div className="mt-8 grid gap-4 md:grid-cols-3 mortgage-results">
+                            <div className="card p-6 text-center">
+                                <p className="text-gray-600 mb-2">每月應繳</p>
+                                <p className="text-2xl font-bold font-mono text-primary">
                                     NT$ {result.monthlyPayment.toLocaleString()}
                                 </p>
                             </div>
-                            <div className="glass-card rounded-2xl p-6 text-center">
-                                <p className="text-slate-500 mb-2">總利息</p>
-                                <p className="text-2xl font-bold font-mono text-red-500">
+                            <div className="card p-6 text-center">
+                                <p className="text-gray-600 mb-2">總利息</p>
+                                <p className="text-2xl font-bold font-mono text-danger">
                                     NT$ {result.totalInterest.toLocaleString()}
                                 </p>
                             </div>
-                            <div className="glass-card rounded-2xl p-6 text-center">
-                                <p className="text-slate-500 mb-2">還款總額</p>
-                                <p className="text-2xl font-bold font-mono text-slate-700">
+                            <div className="card p-6 text-center">
+                                <p className="text-gray-600 mb-2">還款總額</p>
+                                <p className="text-2xl font-bold font-mono text-gray-700">
                                     NT$ {result.totalPayment.toLocaleString()}
                                 </p>
                             </div>
@@ -132,8 +150,8 @@ export function MortgageCalculator() {
                         </div>
 
                         {/* 社交媒體分享 */}
-                        <div className="mt-6 p-4 bg-slate-50 rounded-xl">
-                            <h4 className="font-medium text-slate-700 mb-3">分享計算結果</h4>
+                        <div className="mt-6 p-6 bg-gray-50 rounded-lg">
+                            <h4 className="font-medium text-gray-700 mb-3">分享計算結果</h4>
                             <SocialShareButtons
                                 url={shareData.url}
                                 title={shareData.title}

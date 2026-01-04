@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
+import Navigation from '@/components/shared/Navigation';
 import { TaiCalcChat } from '@/components/AI';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
@@ -163,6 +164,7 @@ export default function RootLayout({
                 suppressHydrationWarning
                 className="font-sans antialiased aurora-bg min-h-screen text-slate-800 selection:bg-indigo-500/30 selection:text-indigo-900"
             >
+                <Navigation />
                 {children}
                 <Footer />
                 {/* AI 財務顧問聊天介面 */}

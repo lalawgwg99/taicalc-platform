@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { calculateTax, TaxInput } from '@/features/tax/logic';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
+import TutorialTrigger from '@/components/tutorial/TutorialTrigger';
 
 export function TaxCalculator() {
     const [income, setIncome] = useState(1000000);
@@ -34,6 +35,13 @@ export function TaxCalculator() {
 
     return (
         <div className="container max-w-4xl mx-auto px-4 py-12">
+            {/* 教學系統 */}
+            <TutorialTrigger 
+                calculatorType="tax"
+                autoStart={false}
+                showRecommendations={true}
+            />
+            
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
             
@@ -47,6 +55,7 @@ export function TaxCalculator() {
                             年收入 (NT$)
                         </label>
                         <input
+                            name="annualIncome"
                             type="number"
                             value={income}
                             onChange={(e) => setIncome(Number(e.target.value))}
@@ -66,7 +75,7 @@ export function TaxCalculator() {
                     </div>
                 </div>
 
-                <div className="mb-8">
+                <div className="mb-8 deduction-options">
                     <label className="flex items-center gap-3 cursor-pointer">
                         <input
                             type="checkbox"
@@ -79,7 +88,7 @@ export function TaxCalculator() {
                 </div>
 
                 {isMarried && (
-                    <div className="mb-8">
+                    <div className="mb-8 family-status">
                         <label className="block text-sm font-medium text-slate-700 mb-2">
                             配偶年收入 (NT$)
                         </label>
@@ -93,6 +102,7 @@ export function TaxCalculator() {
                 )}
 
                 <button
+                    type="submit"
                     onClick={handleCalculate}
                     className="btn-primary w-full py-4 rounded-xl text-lg font-semibold"
                 >
@@ -101,7 +111,7 @@ export function TaxCalculator() {
 
                 {result !== null && (
                     <>
-                        <div className="mt-8">
+                        <div className="mt-8 tax-results">
                             <div className="glass-card rounded-2xl p-6 text-center">
                                 <p className="text-slate-500 mb-2">預估應繳稅額</p>
                                 <p className="text-4xl font-bold font-mono text-gradient-primary">
