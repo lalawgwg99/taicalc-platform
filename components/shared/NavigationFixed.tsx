@@ -37,11 +37,10 @@ export default function NavigationFixed() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50' 
+      <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
           : 'bg-white/80 backdrop-blur-sm'
-      }`}>
+        }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -67,21 +66,20 @@ export default function NavigationFixed() {
               {navigationItems.map((item) => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;
-                
+
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group ${
-                      isActive
+                    className={`relative flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group ${isActive
                         ? 'bg-blue-100 text-blue-700 shadow-sm'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                    }`}
+                      }`}
                     onClick={() => console.log(`導航點擊: ${item.label}`)}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
-                    
+
                     {/* 熱門標籤 */}
                     {item.popular && (
                       <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
@@ -123,7 +121,7 @@ export default function NavigationFixed() {
               {navigationItems.map((item) => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;
-                
+
                 return (
                   <Link
                     key={item.href}
@@ -132,17 +130,15 @@ export default function NavigationFixed() {
                       console.log(`手機導航點擊: ${item.label}`);
                       closeMenu();
                     }}
-                    className={`relative flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-                      isActive
+                    className={`relative flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${isActive
                         ? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-700 border border-blue-200'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
-                    <div className={`p-2 rounded-lg ${
-                      isActive 
-                        ? 'bg-blue-100 text-blue-600' 
+                    <div className={`p-2 rounded-lg ${isActive
+                        ? 'bg-blue-100 text-blue-600'
                         : 'bg-gray-100 text-gray-500'
-                    }`}>
+                      }`}>
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="flex-1">
@@ -155,14 +151,14 @@ export default function NavigationFixed() {
                         )}
                       </div>
                     </div>
-                    
+
                     {isActive && (
                       <div className="w-2 h-2 bg-blue-500 rounded-full" />
                     )}
                   </Link>
                 );
               })}
-              
+
               {/* 手機版額外信息 */}
               <div className="pt-4 mt-4 border-t border-gray-200">
                 <div className="flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-xl text-sm font-medium text-emerald-700">

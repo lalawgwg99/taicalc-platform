@@ -139,7 +139,7 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative pt-12 pb-16 px-4 overflow-hidden">
+      <section className="relative pt-24 pb-16 px-4 overflow-hidden">
         {/* 背景裝飾 */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-32 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-cyan-200/20 rounded-full blur-3xl" />
@@ -306,8 +306,8 @@ export default function HomePage() {
                   <div className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{stat.value}</div>
                   <div className="text-xs text-gray-500 mb-2">{stat.unit}</div>
                   <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${stat.change.includes('+')
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-600'
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-gray-100 text-gray-600'
                     }`}>
                     {stat.change}
                   </div>
