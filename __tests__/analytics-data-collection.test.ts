@@ -38,7 +38,10 @@ Object.defineProperty(window, 'performance', {
 global.PerformanceObserver = jest.fn().mockImplementation((callback) => ({
   observe: jest.fn(),
   disconnect: jest.fn()
-}));
+})) as any;
+
+// 添加 supportedEntryTypes 靜態屬性
+(global.PerformanceObserver as any).supportedEntryTypes = ['navigation', 'resource', 'measure'];
 
 describe('分析數據收集測試', () => {
   beforeEach(() => {

@@ -39,8 +39,8 @@ describe('SEO 優化完整性測試', () => {
             expect(metadata.title).toBeDefined();
             expect(metadata.title).toContain('TaiCalc');
             expect(metadata.description).toBeDefined();
-            expect(metadata.description.length).toBeGreaterThan(35);
-            expect(metadata.description.length).toBeLessThan(160);
+            expect(metadata.description!.length).toBeGreaterThan(35);
+            expect(metadata.description!.length).toBeLessThan(160);
             
             // 驗證 OpenGraph 數據
             expect(metadata.openGraph).toBeDefined();
@@ -52,7 +52,7 @@ describe('SEO 優化完整性測試', () => {
             
             // 驗證 Twitter 卡片
             expect(metadata.twitter).toBeDefined();
-            expect(metadata.twitter?.card).toBe('summary_large_image');
+            expect((metadata.twitter as any)?.card).toBe('summary_large_image');
             expect(metadata.twitter?.title).toBeDefined();
             expect(metadata.twitter?.description).toBeDefined();
             

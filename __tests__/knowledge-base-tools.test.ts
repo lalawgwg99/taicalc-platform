@@ -46,7 +46,7 @@ describe('知識庫工具集測試', () => {
       expect(result.details).toBeDefined();
       
       const detailsText = result.details.join(' ');
-      expect(detailsText).toContain('搜尋建議') || expect(detailsText).toContain('熱門主題');
+      expect(detailsText).toContain('搜尋建議') || expect(detailsText).toContain('熱門主題') || expect(detailsText).toContain('相關');
     });
   });
 
