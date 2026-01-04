@@ -52,7 +52,7 @@ export default function ArticleRecommendations({
   const loadRecommendations = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       let recs: ArticleRecommendation[] = [];
 
@@ -121,6 +121,7 @@ export default function ArticleRecommendations({
 
   useEffect(() => {
     loadRecommendations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculatorType, currentArticleId, userInterests, maxItems]);
 
   if (isLoading) {
@@ -154,6 +155,7 @@ export default function ArticleRecommendations({
           <button
             onClick={handleRefresh}
             className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            aria-label="重新載入推薦"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -211,13 +213,13 @@ export default function ArticleRecommendations({
                 <h4 className={`font-medium text-gray-900 line-clamp-2 mb-1 ${compact ? 'text-sm' : 'text-base'}`}>
                   {rec.article.title}
                 </h4>
-                
+
                 {!compact && (
                   <p className="text-sm text-gray-600 line-clamp-2 mb-2">
                     {rec.article.summary}
                   </p>
                 )}
-                
+
                 <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
                   <span className="px-2 py-1 bg-gray-100 rounded">
                     {categoryLabels[rec.article.category]}
@@ -231,7 +233,7 @@ export default function ArticleRecommendations({
                     <span>{rec.article.rating}</span>
                   </div>
                 </div>
-                
+
                 {showReason && (
                   <div className="text-xs text-blue-600">
                     {rec.reason}

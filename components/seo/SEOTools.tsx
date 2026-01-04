@@ -62,11 +62,10 @@ export function SEOTools({
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-slate-800">SEO 分析</h3>
             <div className="flex items-center space-x-2">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${
-                seoScore >= 90 ? 'bg-green-500' :
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${seoScore >= 90 ? 'bg-green-500' :
                 seoScore >= 70 ? 'bg-yellow-500' :
-                'bg-red-500'
-              }`}>
+                  'bg-red-500'
+                }`}>
                 {seoScore}
               </div>
               <div className="text-sm text-slate-600">
@@ -128,12 +127,12 @@ export function SEOTools({
               <div className="bg-slate-50 p-3 rounded-lg">
                 <div className="text-slate-600 mb-1">Open Graph:</div>
                 <div className="text-slate-900 space-y-1">
-                  <div>og:title = "{metadata.openGraph.title}"</div>
-                  <div>og:description = "{metadata.openGraph.description}"</div>
-                  <div>og:url = "{metadata.openGraph.url}"</div>
-                  <div>og:site_name = "{metadata.openGraph.siteName}"</div>
+                  <div>og:title = &quot;{metadata.openGraph.title}&quot;</div>
+                  <div>og:description = &quot;{metadata.openGraph.description}&quot;</div>
+                  <div>og:url = &quot;{metadata.openGraph.url}&quot;</div>
+                  <div>og:site_name = &quot;{metadata.openGraph.siteName}&quot;</div>
                   {metadata.openGraph.images && metadata.openGraph.images[0] && (
-                    <div>og:image = "{metadata.openGraph.images[0].url}"</div>
+                    <div>og:image = &quot;{metadata.openGraph.images[0].url}&quot;</div>
                   )}
                 </div>
               </div>
@@ -290,7 +289,7 @@ function analyzeSEO(calculatorType: CalculatorType, metadata: any, schemas: Reco
     const hasWebPage = schemas.some(s => s['@type'] === 'WebPage');
     const hasBreadcrumb = schemas.some(s => s['@type'] === 'BreadcrumbList');
     const hasFAQ = schemas.some(s => s['@type'] === 'FAQPage');
-    
+
     if (!hasWebPage) {
       analysis.structuredData.score -= 15;
       analysis.structuredData.issues.push('缺少 WebPage 結構化數據');
@@ -335,7 +334,7 @@ function calculateOverallSEOScore(analysis: any): number {
     analysis.structuredData.score,
     analysis.images.score
   ];
-  
+
   return Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
 }
 
@@ -440,9 +439,8 @@ export function SEOChecklist({ calculatorType, className = '' }: SEOChecklistPro
                     onChange={() => toggleItem(item.id)}
                     className="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
                   />
-                  <span className={`text-sm ${
-                    checkedItems[item.id] ? 'text-slate-500 line-through' : 'text-slate-700'
-                  }`}>
+                  <span className={`text-sm ${checkedItems[item.id] ? 'text-slate-500 line-through' : 'text-slate-700'
+                    }`}>
                     {item.label}
                   </span>
                 </label>

@@ -23,9 +23,9 @@ interface SavedResultsManagerProps {
  * 保存結果管理組件
  * 顯示用戶保存的所有計算結果，支持查看、刪除和匯出
  */
-export default function SavedResultsManager({ 
-  isModal = false, 
-  onClose 
+export default function SavedResultsManager({
+  isModal = false,
+  onClose
 }: SavedResultsManagerProps) {
   const [savedResults, setSavedResults] = useState<SavedResult[]>([]);
   const [selectedResult, setSelectedResult] = useState<SavedResult | null>(null);
@@ -33,6 +33,7 @@ export default function SavedResultsManager({
 
   useEffect(() => {
     loadSavedResults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadSavedResults = () => {
@@ -87,7 +88,7 @@ export default function SavedResultsManager({
 
   const renderDetailedResult = (result: SavedResult) => {
     const { data, calculatorType } = result;
-    
+
     switch (calculatorType) {
       case '薪資計算器':
         return (
@@ -114,7 +115,7 @@ export default function SavedResultsManager({
                 </div>
               </div>
             </div>
-            
+
             <div className="glass-card rounded-xl p-4">
               <h4 className="font-semibold text-slate-800 mb-3">年度概算</h4>
               <div className="space-y-2 text-sm">
@@ -130,7 +131,7 @@ export default function SavedResultsManager({
             </div>
           </div>
         );
-        
+
       case '成本計算器':
         return (
           <div className="glass-card rounded-xl p-4">
@@ -159,7 +160,7 @@ export default function SavedResultsManager({
             </div>
           </div>
         );
-        
+
       case '信用卡分期計算器':
         return (
           <div className="glass-card rounded-xl p-4">
@@ -184,7 +185,7 @@ export default function SavedResultsManager({
             </div>
           </div>
         );
-        
+
       default:
         return (
           <div className="glass-card rounded-xl p-4">
@@ -196,7 +197,7 @@ export default function SavedResultsManager({
     }
   };
 
-  const containerClass = isModal 
+  const containerClass = isModal
     ? "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
     : "container max-w-6xl mx-auto px-4 py-8";
 
@@ -250,11 +251,10 @@ export default function SavedResultsManager({
                 {savedResults.map((result) => (
                   <div
                     key={result.id}
-                    className={`glass-card rounded-xl p-4 cursor-pointer transition-all ${
-                      selectedResult?.id === result.id 
-                        ? 'ring-2 ring-blue-500 bg-blue-50/50' 
-                        : 'hover:shadow-lg'
-                    }`}
+                    className={`glass-card rounded-xl p-4 cursor-pointer transition-all ${selectedResult?.id === result.id
+                      ? 'ring-2 ring-blue-500 bg-blue-50/50'
+                      : 'hover:shadow-lg'
+                      }`}
                     onClick={() => setSelectedResult(result)}
                   >
                     <div className="flex items-start justify-between mb-2">
@@ -267,15 +267,16 @@ export default function SavedResultsManager({
                           handleDelete(result.id);
                         }}
                         className="text-red-400 hover:text-red-600 transition-colors"
+                        aria-label="刪除"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                    
+
                     <p className="text-xs text-slate-500 mb-2">
                       {formatResultPreview(result.data, result.calculatorType)}
                     </p>
-                    
+
                     <div className="flex items-center gap-2 text-xs text-slate-400">
                       <Calendar className="w-3 h-3" />
                       {formatDate(result.timestamp)}
