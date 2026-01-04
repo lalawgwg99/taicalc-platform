@@ -361,13 +361,6 @@ export class ErrorRecoveryManager {
    * 初始化預設降級功能
    */
   private initializeDefaultFallbacks() {
-    // AI 功能降級
-    this.fallbackFeatures.set('ai-advisor', {
-      name: '基礎財務建議',
-      description: 'AI 服務暫時無法使用，提供基礎的財務計算和建議',
-      limitations: ['無法提供個人化建議', '無法進行複雜分析', '建議內容有限']
-    });
-
     // 圖表功能降級
     this.fallbackFeatures.set('charts', {
       name: '簡化圖表',

@@ -318,18 +318,18 @@ const AnimatedComponent = dynamic(() => import('./AnimatedComponent'), {
       suggestions.push({
         type: 'code-splitting',
         severity: 'medium',
-        title: 'AI SDK 按需載入',
-        description: `AI 功能佔用 ${this.formatSize(aiChunk.size)}，建議僅在需要時載入`,
-        impact: '避免在不使用 AI 功能的頁面載入相關程式碼',
+        title: '動態載入優化',
+        description: `大型功能模組佔用 ${this.formatSize(aiChunk.size)}，建議僅在需要時載入`,
+        impact: '避免在不使用特定功能的頁面載入相關程式碼',
         implementation: `
-// 使用動態載入 AI 組件
-const AIAnalysisPanel = dynamic(() => import('@/components/AI/AIAnalysisPanel'), {
-  loading: () => <div className="animate-pulse">AI 分析載入中...</div>,
+// 使用動態載入大型組件
+const LargeComponent = dynamic(() => import('@/components/LargeComponent'), {
+  loading: () => <div className="animate-pulse">載入中...</div>,
   ssr: false
 });
 
 // 在路由層級進行程式碼分割
-// 僅在 /ai-advisor 路由載入 AI 相關功能`,
+// 僅在特定路由載入相關功能`,
         estimatedSavings: aiChunk.size * 0.5 / 1024
       });
     }

@@ -23,7 +23,7 @@ import {
     HistoricalComparison,
     TrendAnalysis
 } from '@/features/salary/logic';
-import { ResultActions, SalaryVisualization, AIAdvisorSuggestions } from '@/components/shared';
+import { ResultActions, SalaryVisualization } from '@/components/shared';
 import { ArticleRecommendations } from '@/components/knowledge';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
 import { useCalculatorAnalytics, usePerformanceTracking } from '@/hooks/useAnalytics';
@@ -493,13 +493,6 @@ export function SalaryCalculator() {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-
-                                    {/* AI 智能建議 */}
-                                    <AIAdvisorSuggestions
-                                        calculatorType="salary"
-                                        resultData={result}
-                                        className="mt-6"
-                                    />
 
                                     {/* 數據視覺化 */}
                                     <SalaryVisualization

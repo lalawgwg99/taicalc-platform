@@ -9,7 +9,6 @@ export { DataVisualization, generateInsights, generateFinancialReport } from './
 export { SalaryVisualization } from './SalaryVisualization';
 export { FinancialReportGenerator } from './FinancialReportGenerator';
 export { DataCorrelationAnalyzer } from './DataCorrelationAnalyzer';
-export { default as AIAdvisorSuggestions } from './AIAdvisorSuggestions';
 
 export type { 
     ChartData, 

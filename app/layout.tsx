@@ -4,7 +4,6 @@ import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
 import Navigation from '@/components/shared/Navigation';
-import { TaiCalcChat } from '@/components/AI';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
 // Font configuration
@@ -167,16 +166,6 @@ export default function RootLayout({
                 <Navigation />
                 {children}
                 <Footer />
-                {/* AI 財務顧問聊天介面 */}
-                <ErrorBoundary
-                    fallback={
-                        <div className="fixed bottom-6 right-6 z-50 p-3 bg-red-100 rounded-2xl text-xs text-red-500">
-                            AI 載入失敗
-                        </div>
-                    }
-                >
-                    <TaiCalcChat />
-                </ErrorBoundary>
             </body>
         </html>
     );

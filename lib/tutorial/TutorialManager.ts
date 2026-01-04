@@ -318,13 +318,13 @@ export class TutorialManager {
           duration: 3000
         },
         {
-          id: 'ai-advisor',
-          title: 'AI 財務顧問',
-          content: '點擊 AI 顧問按鈕可以獲得個人化的財務建議。',
-          target: '.ai-advisor-button',
+          id: 'knowledge-base',
+          title: '知識庫',
+          content: '瀏覽我們的財務知識庫，學習更多理財知識。',
+          target: '.knowledge-button',
           position: 'bottom',
           action: 'click',
-          actionTarget: '.ai-advisor-button'
+          actionTarget: '.knowledge-button'
         },
         {
           id: 'save-results',

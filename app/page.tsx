@@ -19,7 +19,6 @@ import {
   Star,
   Zap
 } from 'lucide-react';
-import AIServiceStatus from '@/components/shared/AIServiceStatus';
 
 const calculators = [
   {
@@ -301,11 +300,7 @@ export default function HomePage() {
       </section>
 
       {/* AI 服務狀態 */}
-      <section className="py-12 px-4 bg-gradient-to-r from-blue-50 to-cyan-50">
-        <div className="max-w-4xl mx-auto">
-          <AIServiceStatus />
-        </div>
-      </section>
+      {/* 服務狀態區塊已移除 */}
 
       {/* CTA 區域 */}
       <section className="py-16 px-4 bg-gradient-to-r from-gray-900 to-blue-900 text-white">
