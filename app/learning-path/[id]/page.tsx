@@ -5,6 +5,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+
+// Cloudflare Pages 需要 Edge Runtime
+export const runtime = 'edge';
 import { useRouter, useParams } from 'next/navigation';
 import { BookOpen, Clock, CheckCircle, ArrowRight, Star, User } from 'lucide-react';
 import { knowledgeEngine } from '@/features/knowledge-base/knowledge-engine';
