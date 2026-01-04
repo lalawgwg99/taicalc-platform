@@ -41,23 +41,23 @@ export function MortgageCalculator() {
     const shareData = {
         url: typeof window !== 'undefined' ? window.location.href : 'https://taicalc.com/mortgage',
         title: '房貸試算器 - 每月還款金額計算 | TaiCalc',
-        description: result 
-            ? `貸款 NT$ ${totalLoan.toLocaleString()}，每月還款 NT$ ${result.monthlyPayment.toLocaleString()}` 
+        description: result
+            ? `貸款 NT$ ${totalLoan.toLocaleString()}，每月還款 NT$ ${result.monthlyPayment.toLocaleString()}`
             : '快速計算房貸每月還款金額、總利息支出。支援新青安房貸試算。'
     };
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12 clean-bg">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12 clean-bg">
             {/* 教學系統 */}
-            <TutorialTrigger 
+            <TutorialTrigger
                 calculatorType="mortgage"
                 autoStart={false}
                 showRecommendations={true}
             />
-            
+
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
-            
+
             <div className="panel p-8">
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">房貸試算</h1>
                 <p className="text-gray-600 mb-8">計算每月還款金額與利息</p>

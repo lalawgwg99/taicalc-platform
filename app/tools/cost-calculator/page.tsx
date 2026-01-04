@@ -36,7 +36,7 @@ export default function CostCalculatorPage() {
     }, [materialCost, laborCost, overheadCost, quantity, sellingPrice]);
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             <div className="glass-panel rounded-3xl p-8">
                 {/* H1 + 用途說明 */}
                 <h1 className="text-3xl font-bold text-slate-900 mb-3">成本計算器</h1>

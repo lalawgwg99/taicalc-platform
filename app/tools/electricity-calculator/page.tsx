@@ -66,7 +66,7 @@ export default function ElectricityCalculatorPage() {
     }, [kwh, isSummer]);
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-3">電費試算計算器</h1>
                 <p className="text-slate-600 mb-8 text-lg">
@@ -88,8 +88,8 @@ export default function ElectricityCalculatorPage() {
                         <button
                             onClick={() => setIsSummer(true)}
                             className={`flex-1 py-3 rounded-xl font-medium transition-all ${isSummer
-                                    ? 'bg-orange-500 text-white'
-                                    : 'bg-white/50 text-slate-600 hover:bg-white'
+                                ? 'bg-orange-500 text-white'
+                                : 'bg-white/50 text-slate-600 hover:bg-white'
                                 }`}
                         >
                             🌞 夏月 (6-9月)
@@ -97,8 +97,8 @@ export default function ElectricityCalculatorPage() {
                         <button
                             onClick={() => setIsSummer(false)}
                             className={`flex-1 py-3 rounded-xl font-medium transition-all ${!isSummer
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-white/50 text-slate-600 hover:bg-white'
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-white/50 text-slate-600 hover:bg-white'
                                 }`}
                         >
                             ❄️ 非夏月

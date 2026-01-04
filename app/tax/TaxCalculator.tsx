@@ -28,23 +28,23 @@ export function TaxCalculator() {
     const shareData = {
         url: typeof window !== 'undefined' ? window.location.href : 'https://taicalc.com/tax',
         title: '所得稅計算器 - 2025年稅率級距 | TaiCalc',
-        description: result !== null 
-            ? `年收入 NT$ ${income.toLocaleString()}，預估應繳稅額 NT$ ${result.toLocaleString()}` 
+        description: result !== null
+            ? `年收入 NT$ ${income.toLocaleString()}，預估應繳稅額 NT$ ${result.toLocaleString()}`
             : '2025年所得稅試算，支援單身、已婚、扶養親屬等不同情況。'
     };
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             {/* 教學系統 */}
-            <TutorialTrigger 
+            <TutorialTrigger
                 calculatorType="tax"
                 autoStart={false}
                 showRecommendations={true}
             />
-            
+
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
-            
+
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-2">所得稅計算</h1>
                 <p className="text-slate-500 mb-8">2025 年所得稅試算</p>

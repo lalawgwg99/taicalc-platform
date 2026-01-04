@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, Clock, Star, BookOpen, Share2, Bookmark, Eye, Calendar, User, Tag } from 'lucide-react';
 import { knowledgeEngine } from '@/features/knowledge-base/knowledge-engine';
 import { ArticleRecommendations } from '@/components/knowledge';
@@ -21,14 +22,14 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
     const loadArticle = async () => {
       try {
         setIsLoading(true);
-        
+
         // 獲取所有文章
         const allArticles = knowledgeEngine.getPopularArticles(100); // 獲取所有文章
         const foundArticle = allArticles.find(a => a.id === articleId);
-        
+
         if (foundArticle) {
           setArticle(foundArticle);
-          
+
           // 獲取推薦文章
           const recs = knowledgeEngine.getArticleRecommendations(articleId);
           setRecommendations(recs);
@@ -71,7 +72,7 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="container max-w-4xl mx-auto px-4 py-8">
+        <div className="container max-w-4xl mx-auto px-4 pt-28 pb-8">
           <div className="animate-pulse">
             <div className="h-8 bg-slate-200 rounded w-1/4 mb-6"></div>
             <div className="h-12 bg-slate-200 rounded w-3/4 mb-4"></div>
@@ -90,7 +91,7 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
   if (!article) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="container max-w-4xl mx-auto px-4 py-8">
+        <div className="container max-w-4xl mx-auto px-4 pt-28 pb-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-slate-900 mb-4">文章不存在</h1>
             <p className="text-slate-600 mb-8">抱歉，找不到您要查看的文章。</p>
@@ -108,7 +109,7 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="container max-w-4xl mx-auto px-4 py-8">
+      <div className="container max-w-4xl mx-auto px-4 pt-28 pb-8">
         {/* 返回按鈕 */}
         <button
           onClick={() => router.back()}
@@ -132,11 +133,11 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
                 </span>
               ))}
             </div>
-            
+
             <h1 className="text-3xl font-bold text-slate-900 mb-4">
               {article.title}
             </h1>
-            
+
             <div className="flex items-center justify-between text-sm text-slate-500 mb-6">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
@@ -156,15 +157,14 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
                   <span>{article.views || 0} 次瀏覽</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleBookmark}
-                  className={`p-2 rounded-lg transition-colors ${
-                    isBookmarked 
-                      ? 'bg-yellow-100 text-yellow-600' 
+                  className={`p-2 rounded-lg transition-colors ${isBookmarked
+                      ? 'bg-yellow-100 text-yellow-600'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                    }`}
                 >
                   <Bookmark className="w-4 h-4" />
                 </button>
@@ -189,10 +189,9 @@ export function KnowledgeArticleClient({ articleId }: KnowledgeArticleClientProp
 
           {/* 文章內容 */}
           <div className="prose prose-slate max-w-none">
-            <div 
-              className="text-slate-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
+            <div className="text-slate-700 leading-relaxed">
+              <ReactMarkdown>{article.content}</ReactMarkdown>
+            </div>
           </div>
 
           {/* 文章評分 */}

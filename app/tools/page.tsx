@@ -48,7 +48,7 @@ const tools = [
 
 export default function ToolsPage() {
     return (
-        <div className="container max-w-5xl mx-auto px-4 py-12">
+        <div className="container max-w-5xl mx-auto px-4 pt-24 pb-12">
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold text-slate-900 mb-4">
                     所有計算器

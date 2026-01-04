@@ -40,7 +40,7 @@ export default function PercentageCalculatorPage() {
     };
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-3">百分比計算器</h1>
                 <p className="text-slate-600 mb-8 text-lg">
@@ -70,8 +70,8 @@ export default function PercentageCalculatorPage() {
                                 key={opt.value}
                                 onClick={() => setMode(opt.value as CalcMode)}
                                 className={`py-2 px-3 rounded-xl text-sm font-medium transition-all ${mode === opt.value
-                                        ? 'bg-indigo-500 text-white'
-                                        : 'bg-white/50 text-slate-600 hover:bg-white'
+                                    ? 'bg-indigo-500 text-white'
+                                    : 'bg-white/50 text-slate-600 hover:bg-white'
                                     }`}
                             >
                                 {opt.label}

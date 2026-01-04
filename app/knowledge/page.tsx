@@ -52,7 +52,7 @@ export default function KnowledgePage() {
         const popular = knowledgeEngine.getPopularArticles(6);
         const latest = knowledgeEngine.getLatestArticles(6);
         const paths = knowledgeEngine.getLearningPaths();
-        
+
         setPopularArticles(popular);
         setLatestArticles(latest);
         setLearningPaths(paths);
@@ -70,7 +70,7 @@ export default function KnowledgePage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const queryParam = urlParams.get('q');
-    
+
     if (queryParam) {
       setSearchQuery(queryParam);
       // 自動執行搜尋
@@ -158,11 +158,11 @@ export default function KnowledgePage() {
           <span className="text-sm text-gray-600">{article.rating}</span>
         </div>
       </div>
-      
+
       <p className="text-gray-600 text-sm mb-4 line-clamp-3">
         {article.summary}
       </p>
-      
+
       <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
@@ -176,7 +176,7 @@ export default function KnowledgePage() {
         </div>
         <span>{article.publishDate}</span>
       </div>
-      
+
       <div className="flex flex-wrap gap-1 mb-4">
         {article.tags.slice(0, 3).map(tag => (
           <span key={tag} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
@@ -189,8 +189,8 @@ export default function KnowledgePage() {
           </span>
         )}
       </div>
-      
-      <button 
+
+      <button
         onClick={() => router.push(`/knowledge/${article.id}`)}
         className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors duration-200"
       >
@@ -208,9 +208,9 @@ export default function KnowledgePage() {
           {difficulties.find(d => d.value === path.difficulty)?.label}
         </span>
       </div>
-      
+
       <p className="text-gray-600 text-sm mb-4">{path.description}</p>
-      
+
       <div className="flex items-center gap-4 text-xs text-gray-500 mb-4">
         <div className="flex items-center gap-1">
           <BookOpen className="w-3 h-3" />
@@ -221,7 +221,7 @@ export default function KnowledgePage() {
           <span>{path.estimatedTime} 小時</span>
         </div>
       </div>
-      
+
       <div className="mb-4">
         <h4 className="text-sm font-medium text-gray-900 mb-2">學習目標：</h4>
         <ul className="text-xs text-gray-600 space-y-1">
@@ -236,8 +236,8 @@ export default function KnowledgePage() {
           )}
         </ul>
       </div>
-      
-      <button 
+
+      <button
         onClick={() => router.push(`/learning-path/${path.id}`)}
         className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors duration-200"
       >
@@ -249,7 +249,7 @@ export default function KnowledgePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 頁面標題 */}
-      <div className="bg-white shadow-sm">
+      <div className="bg-white shadow-sm pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">財務知識庫</h1>
@@ -275,7 +275,7 @@ export default function KnowledgePage() {
                 />
               </div>
             </div>
-            
+
             <div className="flex gap-4">
               <select
                 value={selectedCategory}
@@ -289,7 +289,7 @@ export default function KnowledgePage() {
                   </option>
                 ))}
               </select>
-              
+
               <select
                 value={selectedDifficulty}
                 onChange={(e) => setSelectedDifficulty(e.target.value as any)}
@@ -304,7 +304,7 @@ export default function KnowledgePage() {
               </select>
             </div>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <div className="flex gap-2">
               <button
@@ -321,7 +321,7 @@ export default function KnowledgePage() {
                 清除
               </button>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setViewMode('grid')}
@@ -347,7 +347,7 @@ export default function KnowledgePage() {
                 搜尋結果 ({searchResults.totalCount})
               </h2>
             </div>
-            
+
             {searchResults.articles.length > 0 ? (
               <div className={`grid gap-6 ${viewMode === 'grid' ? 'md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                 {searchResults.articles.map(article => (
@@ -395,7 +395,7 @@ export default function KnowledgePage() {
                   查看全部
                 </button>
               </div>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {learningPaths.map(path => (
                   <LearningPathCard key={path.id} path={path} />
@@ -411,7 +411,7 @@ export default function KnowledgePage() {
                   查看更多
                 </button>
               </div>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {popularArticles.map(article => (
                   <ArticleCard key={article.id} article={article} />
@@ -427,7 +427,7 @@ export default function KnowledgePage() {
                   查看更多
                 </button>
               </div>
-              
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {latestArticles.map(article => (
                   <ArticleCard key={article.id} article={article} />

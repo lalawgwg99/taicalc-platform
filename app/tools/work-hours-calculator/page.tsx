@@ -38,7 +38,7 @@ export default function WorkHoursCalculatorPage() {
     }, [startHour, startMinute, endHour, endMinute, breakMinutes, hourlyWage]);
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-3">工時計算器</h1>
                 <p className="text-slate-600 mb-8 text-lg">

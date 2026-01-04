@@ -2,23 +2,23 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-    Calculator, 
-    TrendingUp, 
-    Eye, 
-    EyeOff, 
-    Sparkles, 
+import {
+    Calculator,
+    TrendingUp,
+    Eye,
+    EyeOff,
+    Sparkles,
     ArrowRight,
     BarChart3,
     PieChart,
     Info,
     CheckCircle
 } from 'lucide-react';
-import { 
-    calculateSalary, 
-    calculateHistoricalComparison, 
+import {
+    calculateSalary,
+    calculateHistoricalComparison,
     calculateTrendAnalysis,
-    SalaryInput, 
+    SalaryInput,
     SalaryResult,
     HistoricalComparison,
     TrendAnalysis
@@ -41,48 +41,48 @@ export function SalaryCalculator() {
     const resultRef = useRef<HTMLDivElement>(null);
 
     // 分析追蹤
-    const { 
-        startCalculation, 
-        completeCalculation, 
-        failCalculation, 
-        shareResult, 
-        saveResult 
+    const {
+        startCalculation,
+        completeCalculation,
+        failCalculation,
+        shareResult,
+        saveResult
     } = useCalculatorAnalytics('salary');
     const { trackCustomMetric } = usePerformanceTracking();
 
     const handleCalculate = useCallback(async () => {
         const input: SalaryInput = { monthlySalary, bonusMonths };
-        
+
         try {
             setIsCalculating(true);
             startCalculation(input);
             const calculationStart = performance.now();
-            
+
             // 模擬計算延遲以顯示載入動畫
             await new Promise(resolve => setTimeout(resolve, 800));
-            
+
             // 基本計算
             const salaryResult = calculateSalary(input);
             setResult(salaryResult);
-            
+
             // 歷史比較
             const historicalResult = calculateHistoricalComparison(input);
             setHistoricalComparison(historicalResult);
-            
+
             // 趨勢分析
             const trendResult = calculateTrendAnalysis(input);
             setTrendAnalysis(trendResult);
-            
+
             // 計算完成追蹤
             const calculationTime = performance.now() - calculationStart;
             trackCustomMetric('salary_calculation_time', calculationTime);
-            
+
             completeCalculation(input, {
                 monthly_net: salaryResult.monthly.net,
                 yearly_net: salaryResult.yearly.net,
                 total_deductions: salaryResult.monthly.laborInsurance + salaryResult.monthly.healthInsurance + salaryResult.monthly.laborPension
             });
-            
+
         } catch (error) {
             console.error('計算錯誤:', error);
             failCalculation(input, error instanceof Error ? error.message : '未知錯誤');
@@ -102,24 +102,24 @@ export function SalaryCalculator() {
     const shareData = {
         url: typeof window !== 'undefined' ? window.location.href : 'https://taicalc.com/salary',
         title: '薪資計算器 - 2025年最新勞健保費率 | TaiCalc',
-        description: result 
-            ? `月薪 NT$ ${result.monthly.gross.toLocaleString()}，實領 NT$ ${result.monthly.net.toLocaleString()}` 
+        description: result
+            ? `月薪 NT$ ${result.monthly.gross.toLocaleString()}，實領 NT$ ${result.monthly.net.toLocaleString()}`
             : '精準計算實際到手薪資、勞保、健保、勞退提撥。使用2025年最新費率。'
     };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-            <div className="container max-w-6xl mx-auto px-4 py-8">
+            <div className="container max-w-6xl mx-auto px-4 pt-24 pb-8">
                 {/* 教學系統 */}
-                <TutorialTrigger 
+                <TutorialTrigger
                     calculatorType="salary"
                     autoStart={false}
                     showRecommendations={true}
                 />
-                
+
                 {/* 麵包屑導航 */}
                 <Breadcrumb items={breadcrumbItems} className="mb-6" />
-                
+
                 {/* 主標題區域 */}
                 <div className="text-center mb-8">
                     <motion.div
@@ -131,7 +131,7 @@ export function SalaryCalculator() {
                             <Sparkles className="w-4 h-4" />
                             2025年最新費率
                         </div>
-                        
+
                         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
                             薪資計算器
                         </h1>
@@ -329,11 +329,10 @@ export function SalaryCalculator() {
                                             <button
                                                 key={tab.id}
                                                 onClick={() => setActiveTab(tab.id as any)}
-                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                                                    activeTab === tab.id
+                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
                                                         ? 'bg-white text-blue-600 shadow-sm'
                                                         : 'text-gray-600 hover:text-gray-900'
-                                                }`}
+                                                    }`}
                                             >
                                                 <tab.icon className="w-4 h-4" />
                                                 {tab.label}
@@ -424,13 +423,12 @@ export function SalaryCalculator() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     {historicalComparison.yearOverYearChange && (
                                                         <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg">
                                                             <div className="text-sm text-gray-600">實領變化</div>
-                                                            <div className={`text-2xl font-bold ${
-                                                                historicalComparison.yearOverYearChange.netIncome >= 0 ? 'text-green-600' : 'text-red-600'
-                                                            }`}>
+                                                            <div className={`text-2xl font-bold ${historicalComparison.yearOverYearChange.netIncome >= 0 ? 'text-green-600' : 'text-red-600'
+                                                                }`}>
                                                                 {historicalComparison.yearOverYearChange.netIncome >= 0 ? '+' : ''}
                                                                 NT$ {historicalComparison.yearOverYearChange.netIncome.toLocaleString()}
                                                             </div>
@@ -452,9 +450,8 @@ export function SalaryCalculator() {
                                                 <div className="grid md:grid-cols-3 gap-4 mb-6">
                                                     <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg">
                                                         <div className="text-sm text-gray-600">薪資成長率</div>
-                                                        <div className={`text-xl font-bold ${
-                                                            trendAnalysis.salaryGrowth >= 0 ? 'text-green-600' : 'text-red-600'
-                                                        }`}>
+                                                        <div className={`text-xl font-bold ${trendAnalysis.salaryGrowth >= 0 ? 'text-green-600' : 'text-red-600'
+                                                            }`}>
                                                             {trendAnalysis.salaryGrowth.toFixed(2)}%
                                                         </div>
                                                     </div>
@@ -466,14 +463,13 @@ export function SalaryCalculator() {
                                                     </div>
                                                     <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg">
                                                         <div className="text-sm text-gray-600">實質收入變化</div>
-                                                        <div className={`text-xl font-bold ${
-                                                            trendAnalysis.realIncomeChange >= 0 ? 'text-green-600' : 'text-red-600'
-                                                        }`}>
+                                                        <div className={`text-xl font-bold ${trendAnalysis.realIncomeChange >= 0 ? 'text-green-600' : 'text-red-600'
+                                                            }`}>
                                                             {trendAnalysis.realIncomeChange.toFixed(2)}%
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 {trendAnalysis.recommendations.length > 0 && (
                                                     <div className="bg-blue-50 rounded-lg p-4">
                                                         <h5 className="font-medium text-gray-900 mb-2 flex items-center gap-2">

@@ -61,7 +61,7 @@ export default function OvertimeCalculatorPage() {
     }, [salaryType, salary, overtimeType, hours]);
 
     return (
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+        <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
             <div className="glass-panel rounded-3xl p-8">
                 <h1 className="text-3xl font-bold text-slate-900 mb-3">加班費計算器</h1>
                 <p className="text-slate-600 mb-8 text-lg">
@@ -84,8 +84,8 @@ export default function OvertimeCalculatorPage() {
                         <button
                             onClick={() => setSalaryType('monthly')}
                             className={`flex-1 py-3 rounded-xl font-medium transition-all ${salaryType === 'monthly'
-                                    ? 'bg-indigo-500 text-white'
-                                    : 'bg-white/50 text-slate-600 hover:bg-white'
+                                ? 'bg-indigo-500 text-white'
+                                : 'bg-white/50 text-slate-600 hover:bg-white'
                                 }`}
                         >
                             月薪制
@@ -93,8 +93,8 @@ export default function OvertimeCalculatorPage() {
                         <button
                             onClick={() => setSalaryType('hourly')}
                             className={`flex-1 py-3 rounded-xl font-medium transition-all ${salaryType === 'hourly'
-                                    ? 'bg-indigo-500 text-white'
-                                    : 'bg-white/50 text-slate-600 hover:bg-white'
+                                ? 'bg-indigo-500 text-white'
+                                : 'bg-white/50 text-slate-600 hover:bg-white'
                                 }`}
                         >
                             時薪制
@@ -140,8 +140,8 @@ export default function OvertimeCalculatorPage() {
                                 key={opt.value}
                                 onClick={() => setOvertimeType(opt.value as OvertimeType)}
                                 className={`py-3 rounded-xl font-medium transition-all ${overtimeType === opt.value
-                                        ? 'bg-indigo-500 text-white'
-                                        : 'bg-white/50 text-slate-600 hover:bg-white'
+                                    ? 'bg-indigo-500 text-white'
+                                    : 'bg-white/50 text-slate-600 hover:bg-white'
                                     }`}
                             >
                                 {opt.label}
