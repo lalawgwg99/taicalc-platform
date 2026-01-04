@@ -282,7 +282,7 @@ export class ErrorRecoveryManager {
    * 生成錯誤 ID
    */
   private generateErrorId(): string {
-    return `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `error_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   /**
@@ -396,7 +396,11 @@ export class ErrorRecoveryManager {
   async autoRecover(error: SystemError): Promise<RecoveryResult> {
     try {
       // 記錄錯誤
-      this.recordError(error, false);
+      this.recordError(error, {
+        type: this.classifyError(error),
+        severity: error.severity || 'medium',
+        recoverable: error.recoverable || false
+      });
 
       // 根據錯誤類型選擇恢復策略
       const errorType = this.classifyError(error);
@@ -406,7 +410,7 @@ export class ErrorRecoveryManager {
         const result = await strategy(error);
         
         if (result.success) {
-          this.recordError(error, true);
+          this.recordErrorToHistory(error, true);
         }
         
         return result;
@@ -541,7 +545,11 @@ export class ErrorRecoveryManager {
    */
   reportAndLearn(error: Error): void {
     // 記錄錯誤模式
-    this.recordError(error, false);
+    this.recordError(error, {
+      type: this.classifyError(error),
+      severity: 'medium',
+      recoverable: false
+    });
     
     // 分析錯誤趨勢
     const recentErrors = this.errorHistory
@@ -624,9 +632,9 @@ export class ErrorRecoveryManager {
   }
 
   /**
-   * 記錄錯誤（舊版本兼容）
+   * 記錄錯誤到歷史記錄（舊版本兼容）
    */
-  private recordError(error: Error, recovered: boolean): void {
+  private recordErrorToHistory(error: Error, recovered: boolean): void {
     this.errorHistory.push({
       error,
       timestamp: new Date(),
