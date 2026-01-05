@@ -3,7 +3,6 @@
 import { useState, useCallback } from 'react';
 import { calculateTax, TaxInput } from '@/features/tax/logic';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
-import TutorialTrigger from '@/components/tutorial/TutorialTrigger';
 
 export function TaxCalculator() {
     const [income, setIncome] = useState(1000000);
@@ -35,13 +34,6 @@ export function TaxCalculator() {
 
     return (
         <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12">
-            {/* 教學系統 */}
-            <TutorialTrigger
-                calculatorType="tax"
-                autoStart={false}
-                showRecommendations={true}
-            />
-
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
 

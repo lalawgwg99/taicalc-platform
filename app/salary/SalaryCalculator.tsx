@@ -27,7 +27,6 @@ import { ResultActions, SalaryVisualization } from '@/components/shared';
 import { ArticleRecommendations } from '@/components/knowledge';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
 import { useCalculatorAnalytics, usePerformanceTracking } from '@/hooks/useAnalytics';
-import TutorialTrigger from '@/components/tutorial/TutorialTrigger';
 
 export function SalaryCalculator() {
     const [monthlySalary, setMonthlySalary] = useState(50000);
@@ -110,13 +109,6 @@ export function SalaryCalculator() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
             <div className="container max-w-6xl mx-auto px-4 pt-24 pb-8">
-                {/* 教學系統 */}
-                <TutorialTrigger
-                    calculatorType="salary"
-                    autoStart={false}
-                    showRecommendations={true}
-                />
-
                 {/* 麵包屑導航 */}
                 <Breadcrumb items={breadcrumbItems} className="mb-6" />
 
@@ -330,8 +322,8 @@ export function SalaryCalculator() {
                                                 key={tab.id}
                                                 onClick={() => setActiveTab(tab.id as any)}
                                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
-                                                        ? 'bg-white text-blue-600 shadow-sm'
-                                                        : 'text-gray-600 hover:text-gray-900'
+                                                    ? 'bg-white text-blue-600 shadow-sm'
+                                                    : 'text-gray-600 hover:text-gray-900'
                                                     }`}
                                             >
                                                 <tab.icon className="w-4 h-4" />

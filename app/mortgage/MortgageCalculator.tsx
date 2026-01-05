@@ -3,7 +3,6 @@
 import { useState, useCallback } from 'react';
 import { ArticleRecommendations } from '@/components/knowledge';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
-import TutorialTrigger from '@/components/tutorial/TutorialTrigger';
 
 interface MortgageResult {
     monthlyPayment: number;
@@ -48,13 +47,6 @@ export function MortgageCalculator() {
 
     return (
         <div className="container max-w-4xl mx-auto px-4 pt-24 pb-12 clean-bg">
-            {/* 教學系統 */}
-            <TutorialTrigger
-                calculatorType="mortgage"
-                autoStart={false}
-                showRecommendations={true}
-            />
-
             {/* 麵包屑導航 */}
             <Breadcrumb items={breadcrumbItems} className="mb-6" />
 
