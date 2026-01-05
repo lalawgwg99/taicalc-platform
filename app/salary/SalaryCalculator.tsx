@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calculator,
@@ -10,9 +10,10 @@ import {
     Sparkles,
     ArrowRight,
     BarChart3,
-    PieChart,
+    PieChart as PieChartIcon,
     Info,
-    CheckCircle
+    CheckCircle,
+    Wallet
 } from 'lucide-react';
 import {
     calculateSalary,
@@ -23,10 +24,12 @@ import {
     HistoricalComparison,
     TrendAnalysis
 } from '@/features/salary/logic';
-import { ResultActions, SalaryVisualization } from '@/components/shared';
+import { ResultActions } from '@/components/shared';
 import { ArticleRecommendations } from '@/components/knowledge';
 import { InternalLinkSystem, Breadcrumb, SocialShareButtons } from '@/components/seo';
 import { useCalculatorAnalytics, usePerformanceTracking } from '@/hooks/useAnalytics';
+
+// 圖表暫時移除以排查問題
 
 export function SalaryCalculator() {
     const [monthlySalary, setMonthlySalary] = useState(50000);
@@ -38,6 +41,14 @@ export function SalaryCalculator() {
     const [isCalculating, setIsCalculating] = useState(false);
     const [activeTab, setActiveTab] = useState<'basic' | 'comparison' | 'trend'>('basic');
     const resultRef = useRef<HTMLDivElement>(null);
+
+    // 即時預覽計算
+    const previewResult = useMemo(() => {
+        if (monthlySalary > 0) {
+            return calculateSalary({ monthlySalary, bonusMonths });
+        }
+        return null;
+    }, [monthlySalary, bonusMonths]);
 
     // 分析追蹤
     const {
@@ -245,6 +256,38 @@ export function SalaryCalculator() {
                                         ))}
                                     </div>
                                 </div>
+
+                                {/* 即時預覽卡片 */}
+                                {previewResult && (
+                                    <div className="mt-6 pt-6 border-t border-gray-100">
+                                        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <Wallet className="w-4 h-4 text-blue-600" />
+                                                <span className="text-sm font-medium text-blue-800">即時預估</span>
+                                            </div>
+                                            <p className="text-2xl font-bold text-blue-600">
+                                                NT$ {previewResult.monthly.net.toLocaleString()}
+                                            </p>
+                                            <p className="text-xs text-blue-600/70 mt-1">
+                                                月薪 {monthlySalary.toLocaleString()} 實際到手
+                                            </p>
+                                            <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                                                <div className="text-center">
+                                                    <span className="text-gray-500">勞保</span>
+                                                    <p className="text-red-500 font-medium">-{previewResult.monthly.laborInsurance.toLocaleString()}</p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <span className="text-gray-500">健保</span>
+                                                    <p className="text-red-500 font-medium">-{previewResult.monthly.healthInsurance.toLocaleString()}</p>
+                                                </div>
+                                                <div className="text-center">
+                                                    <span className="text-gray-500">勞退</span>
+                                                    <p className="text-red-500 font-medium">-{previewResult.monthly.laborPension.toLocaleString()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     </div>
@@ -391,6 +434,7 @@ export function SalaryCalculator() {
                                             </motion.div>
                                         )}
 
+
                                         {activeTab === 'comparison' && historicalComparison && (
                                             <motion.div
                                                 key="comparison"
@@ -481,14 +525,6 @@ export function SalaryCalculator() {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-
-                                    {/* 數據視覺化 */}
-                                    <SalaryVisualization
-                                        result={result}
-                                        historicalComparison={historicalComparison || undefined}
-                                        trendAnalysis={trendAnalysis || undefined}
-                                        className="mt-6"
-                                    />
 
                                     {/* 結果操作按鈕 */}
                                     <ResultActions
