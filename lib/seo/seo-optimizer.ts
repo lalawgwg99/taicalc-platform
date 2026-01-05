@@ -17,11 +17,11 @@ export interface SEOConfig {
 }
 
 // 計算器類型定義
-export type CalculatorType = 
-  | 'salary' 
-  | 'mortgage' 
-  | 'tax' 
-  | 'investment' 
+export type CalculatorType =
+  | 'salary'
+  | 'mortgage'
+  | 'tax'
+  | 'investment'
   | 'retirement'
   | 'capital'
   | 'cost'
@@ -150,17 +150,17 @@ export function generatePageMetadata(
   customConfig?: Partial<SEOConfig>
 ): Metadata {
   const config = calculatorSEOConfigs[calculatorType];
-  
+
   if (!config) {
     throw new Error(`未找到計算器類型 "${calculatorType}" 的 SEO 配置`);
   }
-  
+
   const mergedConfig = { ...config, ...customConfig };
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://taicalc.com';
-  
+
   // 動態生成 OG 圖片 URL
   const ogImageUrl = generateDynamicOGImage(calculatorType, mergedConfig);
-  
+
   return {
     title: mergedConfig.title,
     description: mergedConfig.description,
@@ -250,12 +250,12 @@ export function generatePageMetadata(
  */
 function generateDynamicOGImage(calculatorType: CalculatorType, config: SEOConfig): string {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://taicalc.com';
-  
+
   // 如果有自定義圖片，使用自定義圖片
   if (config.ogImage && !config.ogImage.includes('og/')) {
     return config.ogImage;
   }
-  
+
   // 生成動態 OG 圖片 URL（可以是 API 端點或預生成的圖片）
   const params = new URLSearchParams({
     type: calculatorType,
@@ -263,12 +263,12 @@ function generateDynamicOGImage(calculatorType: CalculatorType, config: SEOConfi
     category: encodeURIComponent(getCalculatorCategoryName(calculatorType)),
     size: '1200x630'
   });
-  
+
   // 如果有 OG 圖片生成 API，使用 API
   if (process.env.NEXT_PUBLIC_OG_IMAGE_API) {
     return `${process.env.NEXT_PUBLIC_OG_IMAGE_API}/calculator?${params.toString()}`;
   }
-  
+
   // 否則使用預設圖片
   return config.ogImage || `${baseUrl}/images/og/${calculatorType}-calculator.png`;
 }
@@ -282,7 +282,7 @@ export function generateStructuredData(
 ): Record<string, any>[] {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://taicalc.com';
   const config = calculatorSEOConfigs[calculatorType];
-  
+
   // 增強的 WebPage Schema
   const webPageSchema = {
     '@context': 'https://schema.org',
@@ -426,25 +426,25 @@ export function generateStructuredData(
   };
 
   const faqSchema = generateFAQSchema(calculatorType);
-  
+
   const schemas: any[] = [webPageSchema, breadcrumbSchema, serviceSchema];
-  
+
   if (howToSchema) {
     schemas.push(howToSchema);
   }
-  
+
   if (faqSchema) {
     schemas.push(faqSchema);
   }
-  
+
   if (config.structuredData) {
     schemas.push(...config.structuredData);
   }
-  
+
   if (customData) {
     schemas.push(customData);
   }
-  
+
   return schemas;
 }
 
@@ -453,11 +453,11 @@ export function generateStructuredData(
  */
 function generateFAQSchema(calculatorType: CalculatorType): Record<string, any> | null {
   const faqs = getFAQsByCalculatorType(calculatorType);
-  
+
   if (!faqs || faqs.length === 0) {
     return null;
   }
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -475,8 +475,8 @@ function generateFAQSchema(calculatorType: CalculatorType): Record<string, any> 
 /**
  * 獲取計算器相關的常見問題
  */
-function getFAQsByCalculatorType(calculatorType: CalculatorType): Array<{question: string, answer: string}> | null {
-  const faqMap: Partial<Record<CalculatorType, Array<{question: string, answer: string}>>> = {
+function getFAQsByCalculatorType(calculatorType: CalculatorType): Array<{ question: string, answer: string }> | null {
+  const faqMap: Partial<Record<CalculatorType, Array<{ question: string, answer: string }>>> = {
     salary: [
       {
         question: '2025年勞健保費率是多少？',
@@ -592,7 +592,7 @@ function getFAQsByCalculatorType(calculatorType: CalculatorType): Array<{questio
       }
     ]
   };
-  
+
   return faqMap[calculatorType] || null;
 }
 
@@ -738,7 +738,7 @@ function getCalculatorFeatures(calculatorType: CalculatorType): string[] {
       '效率分析'
     ]
   };
-  
+
   return featureMap[calculatorType] || ['財務計算', '數據分析', '結果匯出'];
 }
 
@@ -813,10 +813,10 @@ function generateHowToSchema(calculatorType: CalculatorType): Record<string, any
       ]
     }
   };
-  
+
   const howToData = howToMap[calculatorType];
   if (!howToData) return null;
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
@@ -874,7 +874,7 @@ function getCalculatorCategoryName(calculatorType: CalculatorType): string {
     split: '生活費用',
     'work-hours': '工時管理'
   };
-  
+
   return categoryMap[calculatorType] || '財務計算';
 }
 
@@ -901,7 +901,7 @@ function getCalculatorDisplayName(calculatorType: CalculatorType): string {
     split: '分帳計算器',
     'work-hours': '工時計算器'
   };
-  
+
   return displayNameMap[calculatorType] || '計算器';
 }
 
@@ -915,7 +915,7 @@ export function generateInternalLinks(calculatorType: CalculatorType): Array<{
   relevanceScore?: number;
   category?: string;
 }> {
-  const linkMap: Record<CalculatorType, Array<{title: string, url: string, description: string, relevanceScore: number, category: string}>> = {
+  const linkMap: Record<CalculatorType, Array<{ title: string, url: string, description: string, relevanceScore: number, category: string }>> = {
     salary: [
       { title: '所得稅計算器', url: '/tax', description: '計算薪資所得稅', relevanceScore: 0.9, category: '稅務計算' },
       { title: '勞退自提計算器', url: '/tools/labor-pension-calculator', description: '評估勞退自提效益', relevanceScore: 0.85, category: '退休規劃' },
@@ -1028,9 +1028,9 @@ export function generateInternalLinks(calculatorType: CalculatorType): Array<{
       { title: '百分比計算器', url: '/tools/percentage-calculator', description: '分析工時效率', relevanceScore: 0.7, category: '效率分析' }
     ]
   };
-  
+
   const links = linkMap[calculatorType] || [];
-  
+
   // 按相關性分數排序
   return links.sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
@@ -1044,22 +1044,44 @@ export function getRelatedCalculatorsByCategory(calculatorType: CalculatorType, 
   description: string;
   category: string;
 }> {
+  // 正確的 URL 映射
+  const calculatorUrlMap: Record<CalculatorType, string> = {
+    salary: '/salary',
+    mortgage: '/mortgage',
+    tax: '/tax',
+    investment: '/capital',
+    retirement: '/capital',
+    capital: '/capital',
+    cost: '/tools/cost-calculator',
+    'credit-card': '/tools/credit-card-calculator',
+    'delivery-income': '/tools/delivery-income-calculator',
+    electricity: '/tools/electricity-calculator',
+    'labor-pension': '/tools/labor-pension-calculator',
+    overtime: '/tools/overtime-calculator',
+    percentage: '/tools/percentage-calculator',
+    profit: '/tools/profit-calculator',
+    'rent-cost': '/tools/rent-cost-calculator',
+    split: '/tools/split-calculator',
+    'work-hours': '/tools/work-hours-calculator'
+  };
+
   const currentCategory = getCalculatorCategoryName(calculatorType);
   const allCalculators = Object.keys(calculatorSEOConfigs) as CalculatorType[];
-  
+
   const relatedCalculators = allCalculators
     .filter(type => type !== calculatorType)
     .filter(type => getCalculatorCategoryName(type) === currentCategory)
     .map(type => ({
       title: getCalculatorDisplayName(type),
-      url: `/${type}`,
+      url: calculatorUrlMap[type],
       description: calculatorSEOConfigs[type].description.substring(0, 100) + '...',
       category: getCalculatorCategoryName(type)
     }))
     .slice(0, maxResults);
-  
+
   return relatedCalculators;
 }
+
 
 /**
  * 生成智能內部連結建議
@@ -1080,7 +1102,7 @@ export function generateSmartInternalLinks(
   reason: string;
 }> {
   const baseLinks = generateInternalLinks(calculatorType);
-  
+
   // 如果沒有用戶上下文，返回基本連結
   if (!userContext) {
     return baseLinks.map(link => ({
@@ -1090,12 +1112,12 @@ export function generateSmartInternalLinks(
       reason: '基於計算器類型的相關推薦'
     }));
   }
-  
+
   // 基於用戶歷史調整相關性分數
   const adjustedLinks = baseLinks.map(link => {
     let adjustedScore = link.relevanceScore || 0.5;
     let reason = '基於計算器類型的相關推薦';
-    
+
     // 如果用戶之前使用過相關計算器，提高分數
     if (userContext.previousCalculators) {
       const linkCalculatorType = link.url.replace('/', '').replace('/tools/', '') as CalculatorType;
@@ -1104,7 +1126,7 @@ export function generateSmartInternalLinks(
         reason = '基於您的使用歷史推薦';
       }
     }
-    
+
     // 基於用戶目標調整分數
     if (userContext.userGoals) {
       const goalKeywords = userContext.userGoals.join(' ').toLowerCase();
@@ -1121,7 +1143,7 @@ export function generateSmartInternalLinks(
         reason = '符合您的節稅規劃目標';
       }
     }
-    
+
     return {
       ...link,
       relevanceScore: Math.min(adjustedScore, 1.0), // 限制最高分數為 1.0
@@ -1129,7 +1151,7 @@ export function generateSmartInternalLinks(
       reason
     };
   });
-  
+
   // 按調整後的相關性分數排序
   return adjustedLinks.sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
