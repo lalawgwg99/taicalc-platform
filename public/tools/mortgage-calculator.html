@@ -74,7 +74,8 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="col-span-2">
                             <label class="block text-xs font-semibold text-stone-500 mb-1">貸款總額 (萬)</label>
-                            <input type="number" v-model.number="amountWan" aria-label="貸款總額"
+                            <input type="number" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+                                title="貸款總額"
                                 class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all">
                         </div>
                         <div>
@@ -120,9 +121,44 @@
                         <div v-if="twoStageMode">
                             <label class="block text-xs font-semibold text-stone-500 mb-1">第一段期間 (月)</label>
                             <div class="flex gap-2 items-center">
-                                <input type="number" v-model.number="stage1Months"
+                                <input type="number" v-model.number="stage1Months" title="第一段期間 (月)" placeholder="7"
                                     class="w-20 bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-green-500">
                                 <span class="text-xs text-stone-400">個月後變更 (如: 2026/8 退場剩 7 個月)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prepayment Settings -->
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-stone-700">提前還款 (Prepayment)</h3>
+                            <button @click="prepaymentMode = !prepaymentMode"
+                                class="text-xs text-blue-600 hover:underline">
+                                {{ prepaymentMode ? '關閉試算' : '開啟試算' }}
+                            </button>
+                        </div>
+
+                        <div v-if="prepaymentMode" class="grid grid-cols-2 gap-4 animate-fade-in-up">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-500 mb-1">每月多還 (元)</label>
+                                <input type="number" v-model.number="extraMonthly" placeholder="0"
+                                    class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-500 mb-1">單筆大額還款 (萬)</label>
+                                <div class="flex gap-2">
+                                    <input type="number" v-model.number="extraLump" placeholder="0"
+                                        class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-green-500">
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs font-semibold text-stone-500 mb-1">大額還款時間 (第幾年)</label>
+                                <div class="flex gap-2 items-center">
+                                    <input type="range" v-model.number="lumpYear" min="1" :max="years-1"
+                                        class="flex-grow h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-green-600">
+                                    <span class="text-sm font-bold text-stone-700 w-16 text-right">第 {{lumpYear}}
+                                        年</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -174,6 +210,32 @@
                             </div>
                         </div>
 
+                        <!-- Prepayment Comparison -->
+                        <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
+                            class="mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
+                            <h4 class="text-amber-800 font-bold mb-2 flex items-center gap-2">
+                                <span>🎉 提前還款效益</span>
+                            </h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span class="block text-amber-600/80 text-xs mb-1">節省利息</span>
+                                    <span class="block text-xl font-bold text-amber-700 font-mono">${{
+                                        fmt(results.interestSaved) }}</span>
+                                </div>
+                                <div>
+                                    <span class="block text-amber-600/80 text-xs mb-1">縮短時間</span>
+                                    <span class="block text-xl font-bold text-amber-700 font-mono">{{
+                                        Math.floor(results.monthsSaved / 12) }}年 {{ results.monthsSaved % 12 }}月</span>
+                                </div>
+                                <div
+                                    class="col-span-2 pt-2 border-t border-amber-200/50 flex justify-between items-center">
+                                    <span class="text-amber-600/80 text-xs">預計還清時間</span>
+                                    <span class="text-sm font-bold text-amber-800 font-mono">第 {{
+                                        Math.floor(results.finalMonths / 12) + 1 }} 年</span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -182,6 +244,7 @@
             <div class="text-xs text-stone-400 space-y-1 opacity-80 px-2">
                 <p>註：計算採用本息平均攤還法。</p>
                 <p>新青安試算預設：前7個月 (至2026/7) 有補貼，之後回復一般利率。</p>
+                <p v-if="prepaymentMode">提前還款計算：假設每月增加還款金額優先沖銷本金，且維持原設定的每月應繳本息金額 (縮短年限法)。</p>
             </div>
         </main>
 
@@ -204,7 +267,13 @@
                 const rate1 = ref(1.775)
                 const rate2 = ref(2.15)
                 const twoStageMode = ref(true)
-                const stage1Months = ref(7) // Default to July 2026 (7 months from Jan 2026?) Jan, Feb.. July = 7 months.
+                const stage1Months = ref(7)
+
+                // Prepayment State
+                const prepaymentMode = ref(false)
+                const extraMonthly = ref(0)
+                const extraLump = ref(0)
+                const lumpYear = ref(3) // Default 3rd year
 
                 const applyPreset = (type) => {
                     if (type === 'newYouth') {
@@ -226,7 +295,6 @@
 
                 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'
 
-                // Amortization (PMT)
                 const PMT = (rateYear, nMonths, pv) => {
                     if (rateYear === 0) return pv / nMonths
                     const r = rateYear / 100 / 12
@@ -237,136 +305,137 @@
                     const loan = (amountWan.value || 0) * 10000
                     const totalMonths = (years.value || 0) * 12
                     const graceMonths = (graceYears.value || 0) * 12
+                    const changeMonth = twoStageMode.value ? stage1Months.value : 99999
 
                     if (totalMonths <= 0) return {}
 
-                    // Logic for Two Stage Rate + Grace Period
-                    // This is complex because Rate Change can happen during or after Grace Period.
-                    // New Youth: Grace 5 yr (60 mo). Rate Change at Month 7.
-                    // So Rate Change happens DURING Grace Period.
+                    // Rate Helper
+                    const getRate = (m) => ((m <= changeMonth) ? rate1.value : (rate2.value || rate1.value)) / 100 / 12
 
-                    let balance = loan
-                    let totalInt = 0
+                    // Pass 1: Original Schedule
+                    let bal1 = loan
+                    let totInt1 = 0
+                    let pmts = []
                     let payGrace = 0
-                    let payBase = 0 // Payment immediately after grace (or month 1)
+                    let payStart = 0
                     let payStage2 = 0
-
-                    const changeMonth = twoStageMode.value ? stage1Months.value : 99999
-
-                    // Need to iterate? Or can we chunk? 
-                    // To be robust, let's just iterate monthly. It's fast client side.
-                    // Max 40 years = 480 months. Loop is cheap.
-
-                    let r1 = rate1.value
-                    let r2 = rate2.value || r1
-
-                    let firstNonGracePay = 0
-                    let firstPay = 0
+                    let currentStdPMT = 0
 
                     for (let m = 1; m <= totalMonths; m++) {
-                        // Determine Rate
-                        const currentRateYear = (m <= changeMonth) ? r1 : r2
-                        const r = currentRateYear / 100 / 12
+                        const r = getRate(m)
+                        const int = bal1 * r
+                        totInt1 += int
 
-                        // Interest for this month
-                        const interest = balance * r
-                        totalInt += interest
-
-                        let principal = 0
-                        let payment = 0
-
+                        let pmt = 0
                         if (m <= graceMonths) {
-                            // Grace Period: Pay Interest Only
-                            payment = interest
-                            if (m === 1) payGrace = payment // Capture initial grace pay
-                            // If rate changes during grace, payGrace changes.
-                            // We should probably display "Initial Grace Pay" and "Second Grace Pay" if applicable?
-                            // For simplicity, just display Initial.
+                            pmt = int
+                            if (m === 1) payGrace = pmt
                         } else {
-                            // Amortization Period
-                            // Re-calculate PMT based on current balance, remaining months, current rate
-                            const remaining = totalMonths - m + 1
-                            payment = PMT(currentRateYear, remaining, balance)
-                            principal = payment - interest
-                            balance -= principal
-
-                            if (firstNonGracePay === 0) firstNonGracePay = payment
+                            if (m === graceMonths + 1 || m === changeMonth + 1) {
+                                const rem = totalMonths - m + 1
+                                currentStdPMT = PMT(getRate(m) * 12 * 100, rem, bal1)
+                            }
+                            pmt = currentStdPMT
+                            if (m === graceMonths + 1) payStart = pmt
+                            if (m === changeMonth + 1) payStage2 = pmt
                         }
 
-                        if (m === 1) firstPay = payment
-                        if (m === changeMonth + 1 && m > graceMonths) {
-                            // Captured payment right after rate change (if in amortization)
-                            payStage2 = payment
-                        }
-                        if (m > changeMonth && m <= graceMonths) {
-                            // Rate changed during grace
-                        }
+                        pmts.push(pmt)
+                        const prin = pmt - int
+                        bal1 -= prin
                     }
 
-                    // Refined Display Logic
-                    // 1. Grace Pay: usually interest on full loan.
-                    // If rate changes during grace, it changes. 
-                    // The UI logic calculates `gracePay` using current rate1. 
-                    const initialGrace = loan * (rate1.value / 100 / 12)
+                    // Pass 2: Prepayment
+                    let totInt2 = totInt1
+                    let realMonths = totalMonths
 
-                    // 2. Pay Base (Amortization Start):
-                    // If Grace >= ChangeMonth: Then amortization starts with Rate 2.
-                    // If Grace < ChangeMonth: Amortization starts with Rate 1, then switches.
+                    if (prepaymentMode.value && (extraMonthly.value > 0 || extraLump.value > 0)) {
+                        let bal2 = loan
+                        totInt2 = 0
+                        realMonths = 0
+                        const lumpM = (lumpYear.value * 12)
 
-                    // Let's use the iterated values?
-                    // Actually, let's just re-calculate specific snapshots for the UI.
+                        let balPrepay = loan
 
-                    // Snapshot 1: Initial Grace (if existing)
-                    const snapGrace = initialGrace
+                        for (let m = 1; m <= totalMonths; m++) {
+                            if (balPrepay <= 10) {
+                                if (realMonths === 0) realMonths = m - 1
+                                break
+                            }
+                            realMonths = m // actively paying
 
-                    // Snapshot 2: Initial Amortization (After Grace)
-                    // what is the rate at (Grace + 1)?
-                    const mStart = graceMonths + 1
-                    const rStart = (mStart <= changeMonth) ? rate1.value : rate2.value
-                    const payStart = PMT(rStart, totalMonths - graceMonths, loan)
+                            const r = getRate(m)
+                            const int = balPrepay * r
+                            totInt2 += int
 
-                    // Snapshot 3: Stage 2 Amortization (if applicable)
-                    // If ChangeMonth > GraceMonths, then payment changes at ChangeMonth + 1.
-                    // We need balance at ChangeMonth.
-                    // This requires iteration or formula. 
-                    // Let's rely on the loop's `payStage2` if captured, or re-calc.
-                    // If we didn't capture it (because change happened during grace), 
-                    // then `payStart` is essentially the Stage 2 pay.
+                            let basePmt = pmts[m - 1] || 0
+                            let actualPay = 0
 
-                    const finalPay = (changeMonth < graceMonths) ? payStart : payStage2 || payStart
+                            if (m <= graceMonths) {
+                                actualPay = int
+                            } else {
+                                actualPay = basePmt
+                            }
 
-                    // Correct `payStage2` for display:
-                    // If rate changes AFTER Amortization starts, show it.
-                    // If rate changes BEFORE Amortization starts (during grace), then `payStart` IS the new rate pay.
+                            let extra = (extraMonthly.value || 0)
+                            if (m === lumpM) extra += (extraLump.value || 0) * 10000
 
-                    let displayStage2 = 0
-                    if (twoStageMode.value && changeMonth > graceMonths) {
-                        // Need to calculate balance at changeMonth to find new PMT
-                        // Let's use a simpler heuristic for display or just use the loop result?
-                        // The loop calculates total interest correctly.
-                        // Let's assume loop is accurate enough if implemented right.
-                        // But for `payStage2` display, we need to be careful.
+                            let totalPay = actualPay + extra
 
-                        // Re-run loop briefly to find PMT at changeMonth+1?
-                        // actually `payStage2` variable in loop covers this? 
-                        // Check loop: `if (m === changeMonth + 1 && m > graceMonths) payStage2 = payment`
-                        // Yes.
-                        displayStage2 = payStage2
+                            if (totalPay > balPrepay + int) totalPay = balPrepay + int
+
+                            const prin = totalPay - int
+                            balPrepay -= prin
+                        }
                     }
 
                     return {
-                        gracePay: snapGrace,
+                        gracePay: payGrace,
                         afterGracePay: payStart,
-                        stage2Pay: displayStage2 || payStart, // fallback
-                        basePay: payStart, // for non-grace scenario
-                        totalInterest: totalInt,
-                        totalPayment: loan + totalInt
+                        stage2Pay: payStage2 || payStart,
+                        basePay: payStart,
+                        totalInterest: totInt1,
+                        totalPayment: loan + totInt1,
+
+                        // New Results
+                        newTotalInterest: totInt2,
+                        newTotalPayment: loan + totInt2,
+                        monthsSaved: totalMonths - realMonths,
+                        interestSaved: totInt1 - totInt2,
+                        finalMonths: realMonths
                     }
                 })
+
+                // Auto-save for Dashboard
+                watch(results, (newVal) => {
+                    // Use standard monthly payment (basePay or afterGracePay)
+                    // If user is in grace period, maybe we should store the 'after grace' pay for conservative estimate?
+                    // Or let's store the MAX of current pay vs future pay to be safe?
+                    // Let's store the current actual payment for now (basePay).
+                    // Actually, for "Monthly Expense" planning, usually we want the current burden.
+                    // But if it's grace period, it might be misleadingly low.
+                    // Let's stick to 'basePay' (which is the payment *after* grace period in my logic above? wait.)
+
+                    // Logic review:
+                    // if m <= graceMonths: pmt = int (gracePay)
+                    // else: pmt = standard (afterGracePay)
+
+                    // Let's save the current payment based on logic: if graceYears > 0, save gracePay (current reality).
+                    // But also maybe save the future pay? The dashboard is "Current Finance".
+                    // Let's save the calculated 'totalPayment / totalMonths' ? No, cashflow is monthly.
+
+                    // Decision: Save the HIGHER of gracePay or afterGracePay to be conservative for "Financial Health".
+                    // OR just save the one that represents "Monthly Mortgage".
+                    // Let's save "afterGracePay" (Full P+I) as it reflects true liability.
+                    if (newVal.afterGracePay > 0) {
+                        localStorage.setItem('taicalc_mortgage_monthly', Math.floor(newVal.afterGracePay))
+                    }
+                }, { deep: true, immediate: true })
 
                 return {
                     amountWan, years, graceYears,
                     rate1, rate2, twoStageMode, stage1Months,
+                    prepaymentMode, extraMonthly, extraLump, lumpYear,
                     results, applyPreset, fmt
                 }
             }

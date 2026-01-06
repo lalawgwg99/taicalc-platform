@@ -151,12 +151,16 @@
                         :class="mode === 'breakeven' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'">
                         成本/損益平衡
                     </button>
+                    <button @click="mode = 'avg'" class="flex-1 py-3 text-sm font-bold text-center tab-btn"
+                        :class="mode === 'avg' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'">
+                        定期定額/均價
+                    </button>
                 </div>
 
                 <div class="p-6 space-y-6">
 
-                    <!-- Common Inputs -->
-                    <div class="space-y-4">
+                    <!-- Common Inputs (Single Trade) -->
+                    <div class="space-y-4" v-show="mode !== 'avg'">
                         <!-- Type Selection -->
                         <div class="flex gap-2">
                             <button v-for="type in stockTypes" :key="type.id" @click="stockType = type.id"
@@ -179,15 +183,15 @@
                             </div>
                         </div>
 
-                        <div v-if="mode === 'profit'">
+                        <div v-show="mode === 'profit'">
                             <label class="block text-xs font-semibold text-stone-500 mb-1">賣出價格</label>
                             <input type="number" v-model.number="sellPrice" step="0.1" aria-label="賣出價格"
                                 class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
                         </div>
                     </div>
 
-                    <!-- Results -->
-                    <div v-if="mode === 'profit'" class="pt-4 border-t border-stone-100">
+                    <!-- Single Trade Results -->
+                    <div v-if="mode === 'profit'" class="pt-4 border-t border-stone-100 animate-fade-in-up">
                         <div class="bg-stone-50 rounded-xl p-6 text-center border overflow-hidden relative"
                             :class="result.profit >= 0 ? 'border-red-200 bg-red-50/30' : 'border-green-200 bg-green-50/30'">
                             <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">預估淨損益</p>
@@ -225,7 +229,7 @@
                         </div>
                     </div>
 
-                    <div v-else class="pt-4 border-t border-stone-100">
+                    <div v-else-if="mode === 'breakeven'" class="pt-4 border-t border-stone-100 animate-fade-in-up">
                         <div class="bg-stone-50 rounded-xl p-6 text-center border border-indigo-100 bg-indigo-50/30">
                             <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">損益平衡價</p>
                             <p class="text-3xl font-bold font-mono tracking-tight text-indigo-900">
@@ -238,15 +242,92 @@
                         </div>
                     </div>
 
+                    <!-- DCA / Avg Cost Mode -->
+                    <div v-else-if="mode === 'avg'" class="animate-fade-in-up space-y-4">
+                        <!-- Instruction -->
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex gap-3 text-sm text-blue-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="flex-shrink-0 mt-0.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" x2="12" y1="16" y2="12" />
+                                <line x1="12" x2="12.01" y1="8" y2="8" />
+                            </svg>
+                            <p>輸入多次買進紀錄，自動計算加權平均成本與損益平衡點。</p>
+                        </div>
+
+                        <!-- Input List -->
+                        <div class="space-y-3">
+                            <div v-for="(rec, idx) in dcaRecords" :key="idx" class="flex gap-2 items-end">
+                                <div class="flex-1">
+                                    <label class="block text-xs font-semibold text-stone-500 mb-1">買進價格</label>
+                                    <input type="number" v-model.number="rec.price" placeholder="價格"
+                                        class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block text-xs font-semibold text-stone-500 mb-1">股數</label>
+                                    <input type="number" v-model.number="rec.qty" placeholder="股數"
+                                        class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+                                <button @click="removeRecord(idx)" class="mb-1 p-2 text-stone-400 hover:text-red-500"
+                                    title="刪除">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="18" x2="6" y1="6" y2="18" />
+                                        <line x1="6" x2="18" y1="6" y2="18" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <button @click="addRecord"
+                                class="w-full py-2 border border-dashed border-stone-300 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-700 font-medium text-sm transition-colors">
+                                + 新增買入紀錄
+                            </button>
+                        </div>
+
+                        <!-- DCA Results -->
+                        <div class="pt-4 border-t border-stone-100 grid grid-cols-2 gap-4">
+                            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                                <span class="block text-stone-500 text-xs mb-1">加權平均價</span>
+                                <span class="block text-2xl font-bold text-blue-800 font-mono">{{
+                                    fmt(dcaResult.avgPrice)
+                                    }}</span>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                                <span class="block text-stone-500 text-xs mb-1">累積總股數</span>
+                                <span class="block text-2xl font-bold text-stone-700 font-mono">{{
+                                    fmt(dcaResult.totalQty)
+                                    }}</span>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                                <span class="block text-stone-500 text-xs mb-1">總投入成本</span>
+                                <span class="block text-lg font-bold text-stone-700 font-mono">{{
+                                    fmt(dcaResult.totalCost)
+                                    }}</span>
+                            </div>
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                                <span class="block text-indigo-600/80 text-xs mb-1">損益平衡價</span>
+                                <span class="block text-lg font-bold text-indigo-800 font-mono">{{
+                                    fmt(dcaResult.breakeven)
+                                    }}</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </main>
 
-        <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
-            <p class="mb-2">© 2026 TaiCalc</p>
-            <a href="mailto:service@taicalc.com"
-                class="text-xs text-stone-300 hover:text-stone-500 transition-colors">回報問題 (Report Issue)</a>
-        </footer>
+            <!-- Existing Logic Integration -->
+            <!-- We need to update the entire Vue app setup or main html structure carefully -->
+    </div>
+    </div>
+    </main>
+
+    <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
+        <p class="mb-2">© 2026 TaiCalc</p>
+        <a href="mailto:service@taicalc.com" class="text-xs text-stone-300 hover:text-stone-500 transition-colors">回報問題
+            (Report Issue)</a>
+    </footer>
     </div>
 
     <script>
@@ -254,7 +335,7 @@
 
         createApp({
             setup() {
-                const mode = ref('profit')
+                const mode = ref('profit') // profit, breakeven, avg
                 const showSettings = ref(false)
 
                 // Settings
@@ -274,17 +355,19 @@
                 const sellPrice = ref(105)
                 const qty = ref(1000)
 
+                // DCA State
+                const dcaRecords = ref([
+                    { price: 100, qty: 1000 },
+                    { price: 95, qty: 1000 }
+                ])
+
+                const addRecord = () => dcaRecords.value.push({ price: '', qty: '' })
+                const removeRecord = (i) => dcaRecords.value.splice(i, 1)
+
                 const fmt = (n) => n ? n.toLocaleString('zh-TW', { maximumFractionDigits: 2 }) : '0'
 
                 const userSettings = computed(() => {
-                    // Safe parsing
                     const d = parseFloat(settings.value.discount)
-                    // If d is e.g. 2.8, it means 28% of fee, or 0.28 multiplier? 
-                    // No, Taiwan "2.8折" usually means 28% of the original fee. "6折" means 60%.
-                    // Check logic: discount input '6' -> 0.6 multiplier. '2.8' -> 0.28 multiplier.
-                    // If input > 10, maybe user meant percentage? Let's assume input is "X折" where X <= 10.
-                    // If user enters 28, they might mean 2.8折. But 6 usually means 6折. 
-                    // Let's standardise: Input is "X折". Factor = X / 10.
                     return {
                         discountFactor: (d || 10) / 10,
                         minFee: parseInt(settings.value.minFee) || 0
@@ -331,38 +414,53 @@
                     const q = qty.value || 0
                     if (q === 0) return 0
                     const taxRate = stockTypes.find(t => t.id === stockType.value).tax
-
-                    // Cost structure: 
-                    // BuyCost = P*Q + BuyFee
-                    // Revenue = X*Q - SellFee - SellTax
-                    // Breakeven when Revenue = BuyCost
-                    // X*Q - Max(MinFee, X*Q*0.001425*Disc) - X*Q*TaxRate = BuyCost
-
-                    // Simplifying estimation (ignoring Min Fee nonlinearity for a moment):
-                    // X*Q * (1 - 0.001425*Disc - TaxRate) = BuyCost
-                    // X = BuyCost / (Q * (1 - 0.001425*Disc - TaxRate))
-
                     const buyAmt = bp * q
                     const buyFee = calculateFee(buyAmt)
                     const totalBuyCost = buyAmt + buyFee
-
                     const factor = 0.001425 * userSettings.value.discountFactor + taxRate
                     let estimatedPrice = totalBuyCost / (q * (1 - factor))
+                    return Math.ceil(estimatedPrice * 100) / 100
+                })
 
-                    // Refine for min fee edge cases if needed, but this is usually accurate enough for > min fee
-                    // Let's do a quick iterative check? No, formula is usually fine unless amount is very small.
+                // DCA Logic
+                const dcaResult = computed(() => {
+                    let totalQ = 0
+                    let totalC = 0
 
-                    return Math.ceil(estimatedPrice * 100) / 100 // Ceiling to 2 decimals or closest tick? 
-                    // Stocks have specific ticks (0.1, 0.5, 1.0, 5.0). Let's just return raw price for now. 
-                    // Actually, strictly speaking, you need to sell at a price tick. 
-                    // Let's just return 2 decimals.
+                    dcaRecords.value.forEach(r => {
+                        const p = Number(r.price) || 0
+                        const q = Number(r.qty) || 0
+                        if (q > 0) {
+                            const amt = p * q
+                            const fee = calculateFee(amt)
+                            totalQ += q
+                            totalC += (amt + fee)
+                        }
+                    })
+
+                    const avg = totalQ > 0 ? (totalC / totalQ) : 0
+
+                    // Breakeven for DCA bundle
+                    // TotalRevenue needed = TotalCost
+                    // P_be * Q_total * (1 - cost_factor) = TotalCost
+                    const taxRate = stockTypes.find(t => t.id === stockType.value).tax
+                    const factor = 0.001425 * userSettings.value.discountFactor + taxRate
+                    const be = totalQ > 0 ? totalC / (totalQ * (1 - factor)) : 0
+
+                    return {
+                        totalQty: totalQ,
+                        totalCost: totalC,
+                        avgPrice: avg,
+                        breakeven: Math.ceil(be * 100) / 100
+                    }
                 })
 
                 return {
                     mode, showSettings, settings,
-                    stockTypes, stockType,
-                    buyPrice, sellPrice, qty,
-                    result, breakevenPrice, fmt
+                    stockTypes, stockType, buyPrice, sellPrice, qty,
+                    userSettings, calculateFee,
+                    result, breakevenPrice, fmt,
+                    dcaRecords, addRecord, removeRecord, dcaResult
                 }
             }
         }).mount('#app')

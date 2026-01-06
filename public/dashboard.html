@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生活儀表板 Life Dashboard｜TaiCalc</title>
+    <meta name="description" content="您的財務生命徵象儀表板。自動整合薪資、支出與投資數據，一目了然您的財務健康狀況。">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Chart.js for visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body class="antialiased bg-stone-50 text-stone-900 font-sans">
+    <div id="app" class="max-w-4xl mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <header class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="../index.html"
+                    class="inline-flex items-center gap-2 text-stone-500 hover:text-emerald-600 mb-2 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg>
+                    回首頁
+                </a>
+                <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-stone-900">生活儀表板</h1>
+                <p class="text-stone-500 mt-1">您的財務生命徵象一覽表</p>
+            </div>
+
+            <button @click="reloadData"
+                class="p-2 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-emerald-600 hover:border-emerald-200 transition-all shadow-sm"
+                title="重新整理數據">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    :class="{ 'animate-spin': loading }">
+                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                    <path d="M16 21h5v-5" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <!-- Net Income -->
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                </div>
+                <h3 class="text-sm font-semibold text-stone-500 mb-1">每月總收入 (預估)</h3>
+                <div class="text-3xl font-bold text-stone-800 font-mono">{{ fmt(totalIncome) }}</div>
+                <div class="mt-2 text-xs text-stone-400 flex items-center gap-1">
+                    來源：薪資、副業
+                </div>
+            </div>
+
+            <!-- Total Expenses -->
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-rose-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                </div>
+                <h3 class="text-sm font-semibold text-stone-500 mb-1">每月總支出 (預估)</h3>
+                <div class="text-3xl font-bold text-stone-800 font-mono">{{ fmt(totalExpense) }}</div>
+                <div class="mt-2 text-xs text-stone-400 flex items-center gap-1">
+                    來源：房貸、房租、生活費
+                </div>
+            </div>
+
+            <!-- Net Cashflow -->
+            <div class="bg-white rounded-2xl p-6 border border-stone-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" x2="12" y1="20" y2="10" />
+                        <path d="m18 20 4-4" />
+                        <path d="m6 20-4-4" />
+                        <path d="M2.5 9a3.5 3.5 0 1 1 5 0 3.5 3.5 0 0 1-5 0Z" />
+                        <path d="M16 9a4 4 0 1 1 6 0 4 4 0 0 1-6 0Z" />
+                    </svg>
+                </div>
+                <h3 class="text-sm font-semibold text-stone-500 mb-1">每月淨現金流</h3>
+                <div class="text-3xl font-bold font-mono"
+                    :class="netCashflow >= 0 ? 'text-emerald-600' : 'text-rose-600'">
+                    {{ netCashflow > 0 ? '+' : '' }}{{ fmt(netCashflow) }}
+                </div>
+                <div class="mt-2 text-xs text-stone-400">
+                    可支配餘額
+                </div>
+            </div>
+
+            <!-- Freedom Score (Savings Rate) -->
+            <div
+                class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 shadow-lg relative overflow-hidden text-white">
+                <div class="absolute top-0 right-0 p-4 opacity-20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                </div>
+                <h3 class="text-sm font-semibold text-indigo-100 mb-1">財務自由度 (儲蓄率)</h3>
+                <div class="text-3xl font-bold font-mono">{{ freedomScore }}%</div>
+                <div class="mt-2 text-xs text-indigo-200">
+                    目標 > 30% (目前: {{ savingsStatus }})
+                </div>
+            </div>
+        </div>
+
+        <!-- Cashflow Flow Chart (Sankey-ish via CSS Grid/Flex) -->
+        <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 mb-8 hidden md:block">
+            <h3 class="text-lg font-bold text-stone-800 mb-6 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="text-stone-400">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                資金流向視圖
+            </h3>
+
+            <div class="card-visual-flow flex justify-between items-center relative min-h-[160px]">
+                <!-- Income Node -->
+                <div class="w-1/4">
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 text-center relative z-10">
+                        <div class="text-xs text-emerald-600 font-bold mb-1">總收入</div>
+                        <div class="text-xl font-bold text-emerald-800 font-mono">{{ fmt(totalIncome) }}</div>
+                        <!-- Connectors -->
+                        <div
+                            class="absolute right-0 top-1/2 -mt-0.5 w-full h-[2px] bg-gradient-to-r from-emerald-200 to-stone-200 -z-10 translate-x-1/2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expense Node -->
+                <div class="w-1/4">
+                    <div class="bg-rose-50 border border-rose-100 rounded-xl p-4 text-center relative z-10">
+                        <!-- Input visual -->
+                        <div class="text-xs text-rose-600 font-bold mb-1">總支出</div>
+                        <div class="text-xl font-bold text-rose-800 font-mono">{{ fmt(totalExpense) }}</div>
+                    </div>
+                </div>
+
+                <!-- Savings Node -->
+                <div class="w-1/4">
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center relative z-10">
+                        <!-- Input visual connector from Income actually -->
+                        <div class="text-xs text-blue-600 font-bold mb-1">剩餘儲蓄</div>
+                        <div class="text-xl font-bold text-blue-800 font-mono">{{ fmt(netCashflow) }}</div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-xs text-stone-300 mt-4 italic">此圖表為簡易資金流向示意，更詳細的 Sankey 圖表開發中。</p>
+        </div>
+
+        <!-- Detail Sections -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Income Sources -->
+            <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center justify-between">
+                    收入來源
+                    <span class="text-xs font-normal bg-stone-100 text-stone-500 px-2 py-1 rounded-full">每月</span>
+                </h3>
+
+                <div class="space-y-4">
+                    <!-- Salary -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect width="20" height="12" x="2" y="6" rx="2" />
+                                    <circle cx="12" cy="12" r="2" />
+                                    <path d="M6 12h.01M18 12h.01" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">薪資收入</div>
+                                <a href="tools/salary-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">
+                                    前往設定
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                        <polyline points="15 3 21 3 21 9" />
+                                        <line x1="10" x2="21" y1="14" y2="3" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600"
+                            :class="{'text-stone-300': !salaryData.defined}">
+                            {{ salaryData.defined ? fmt(salaryData.amount) : '未設定' }}
+                        </div>
+                    </div>
+
+                    <!-- Side Gig -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-red-500 shadow-sm border border-red-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="18.5" cy="17.5" r="3.5" />
+                                    <circle cx="5.5" cy="17.5" r="3.5" />
+                                    <circle cx="15" cy="5" r="1" />
+                                    <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">兼職/外送</div>
+                                <a href="tools/delivery-income-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">前往設定</a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600"
+                            :class="{'text-stone-300': !deliveryData.defined}">
+                            {{ deliveryData.defined ? fmt(deliveryData.amount) : '未設定' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses Breakdown -->
+            <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center justify-between">
+                    支出明細
+                    <span class="text-xs font-normal bg-stone-100 text-stone-500 px-2 py-1 rounded-full">每月</span>
+                </h3>
+
+                <div class="space-y-4">
+                    <!-- Mortgage -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">房貸</div>
+                                <a href="tools/mortgage-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">前往設定</a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600"
+                            :class="{'text-stone-300': !mortgageData.defined}">
+                            {{ mortgageData.defined ? fmt(mortgageData.amount) : '未設定' }}
+                        </div>
+                    </div>
+
+                    <!-- Rent -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-indigo-500 shadow-sm border border-indigo-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">房租</div>
+                                <a href="tools/rent-cost-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">前往設定</a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600" :class="{'text-stone-300': !rentData.defined}">
+                            {{ rentData.defined ? fmt(rentData.amount) : '未設定' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assets & Investments -->
+            <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 md:col-span-2">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center justify-between">
+                    資產與投資
+                    <span class="text-xs font-normal bg-stone-100 text-stone-500 px-2 py-1 rounded-full">總值</span>
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Stock -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-rose-500 shadow-sm border border-rose-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="12" x2="12" y1="20" y2="10" />
+                                    <path d="m18 20 4-4" />
+                                    <path d="m6 20-4-4" />
+                                    <path d="M2.5 9a3.5 3.5 0 1 1 5 0 3.5 3.5 0 0 1-5 0Z" />
+                                    <path d="M16 9a4 4 0 1 1 6 0 4 4 0 0 1-6 0Z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">股票現值</div>
+                                <a href="tools/stock-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">前往設定</a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600" :class="{'text-stone-300': !stockData.defined}">
+                            {{ stockData.defined ? fmt(stockData.amount) : '未設定' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Living Cost (Manual) -->
+            <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 md:col-span-2">
+                <h3 class="text-lg font-bold text-stone-800 mb-4">其他生活開銷 (手動預估)</h3>
+                <div class="flex flex-col md:flex-row gap-4 items-center">
+                    <div class="w-full md:w-2/3">
+                        <label class="block text-xs font-semibold text-stone-500 mb-2">每月預估 (吃喝玩樂、交通、雜費)</label>
+                        <input type="range" min="0" max="100000" step="1000" v-model.number="manualLivingCost"
+                            class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer" title="每月生活費預估">
+                        <div class="flex justify-between text-xs text-stone-400 mt-1">
+                            <span>$0</span>
+                            <span>$50,000</span>
+                            <span>$100,000</span>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 text-center">
+                            <div class="text-2xl font-bold text-stone-700 font-mono">{{ fmt(manualLivingCost) }}</div>
+                            <div class="text-xs text-stone-400">目前設定</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
+            <p class="mb-2">© 2026 TaiCalc</p>
+            <p class="text-xs text-stone-300">數據僅儲存於您的瀏覽器 (LocalStorage)，我們無法存取您的財務隱私。</p>
+            <a href="mailto:service@taicalc.com"
+                class="block mt-4 text-xs text-stone-300 hover:text-stone-500 transition-colors">回報問題 (Report Issue)</a>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, onMounted } = Vue
+
+        createApp({
+            setup() {
+                const loading = ref(false)
+
+                // Data States
+                const salaryData = ref({ defined: false, amount: 0 })
+                const deliveryData = ref({ defined: false, amount: 0 })
+                const mortgageData = ref({ defined: false, amount: 0 })
+                const rentData = ref({ defined: false, amount: 0 })
+                const electricData = ref({ defined: false, amount: 0 })
+                const stockData = ref({ defined: false, amount: 0 })
+
+                // Manual States (persist to local storage independently)
+                const manualLivingCost = ref(15000)
+
+                const fmt = (n) => n ? '$' + n.toLocaleString('zh-TW') : '$0'
+
+                const reloadData = () => {
+                    loading.value = true
+                    setTimeout(() => {
+                        // 1. Try read Salary
+                        // Assumption: User might have visited salary-calculator.html and inputs are saved.
+                        // However, purely static HTML files don't share state unless we implemented localStorage saving in them.
+                        // Since I am implementing the Dashboard now, I need to check if previous tools save to localStorage.
+                        // If not, I'll need to update them. For now, I will simulate reading specific keys 
+                        // that *should* be there if we updated the tools, or I will update the tools next.
+
+                        // Let's assume standard keys for now and I will go update the tools to write to them.
+                        // Keys: 'taicalc_salary_net', 'taicalc_delivery_net', 'taicalc_mortgage_monthly', 'taicalc_rent_monthly'
+
+                        const salary = localStorage.getItem('taicalc_salary_net')
+                        if (salary) salaryData.value = { defined: true, amount: parseInt(salary) }
+
+                        const delivery = localStorage.getItem('taicalc_delivery_net')
+                        if (delivery) deliveryData.value = { defined: true, amount: parseInt(delivery) }
+
+                        const mortgage = localStorage.getItem('taicalc_mortgage_monthly')
+                        if (mortgage) mortgageData.value = { defined: true, amount: parseInt(mortgage) }
+
+                        const rent = localStorage.getItem('taicalc_rent_monthly')
+                        if (rent) rentData.value = { defined: true, amount: parseInt(rent) }
+
+                        const elec = localStorage.getItem('taicalc_electricity_monthly')
+                        if (elec) electricData.value = { defined: true, amount: parseInt(elec) }
+
+                        const stock = localStorage.getItem('taicalc_stock_value')
+                        if (stock) stockData.value = { defined: true, amount: parseInt(stock) }
+
+                        loading.value = false
+                    }, 500)
+                }
+
+                // Persist manual living cost
+                onMounted(() => {
+                    const savedLiving = localStorage.getItem('taicalc_living_manual')
+                    if (savedLiving) manualLivingCost.value = parseInt(savedLiving)
+
+                    reloadData()
+                })
+
+                // Watch manual cost to save
+                Vue.watch(manualLivingCost, (newVal) => {
+                    localStorage.setItem('taicalc_living_manual', newVal)
+                })
+
+                // Computed Totals
+                const totalIncome = computed(() => {
+                    return (salaryData.value.amount || 0) + (deliveryData.value.amount || 0)
+                })
+
+                const totalExpense = computed(() => {
+                    return (mortgageData.value.amount || 0) + (rentData.value.amount || 0) + (electricData.value.amount || 0) + (manualLivingCost.value || 0)
+                })
+
+                const netCashflow = computed(() => {
+                    return totalIncome.value - totalExpense.value
+                })
+
+                const freedomScore = computed(() => {
+                    if (totalIncome.value <= 0) return 0
+                    const score = Math.round((netCashflow.value / totalIncome.value) * 100)
+                    return Math.max(0, score) // No negative score display
+                })
+
+                const savingsStatus = computed(() => {
+                    const s = freedomScore.value
+                    if (s >= 50) return '優秀 🌟'
+                    if (s >= 30) return '良好 👍'
+                    if (s >= 10) return '普通 🙂'
+                    return '加油 💪'
+                })
+
+                return {
+                    loading,
+                    salaryData,
+                    deliveryData,
+                    mortgageData,
+                    rentData,
+                    electricData,
+                    stockData,
+                    manualLivingCost,
+                    totalIncome,
+                    totalExpense,
+                    netCashflow,
+                    freedomScore,
+                    savingsStatus,
+                    fmt,
+                    reloadData
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

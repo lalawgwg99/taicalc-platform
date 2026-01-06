@@ -170,6 +170,14 @@
                     return (monthly * (leaseMonths.value || 0)).toLocaleString()
                 })
 
+                // Auto-save for Dashboard
+                Vue.watch(actualMonthly, (newVal) => {
+                    const val = parseInt(newVal.replace(/,/g, ''))
+                    if (val > 0) {
+                        localStorage.setItem('taicalc_rent_monthly', val)
+                    }
+                })
+
                 return { monthlyRent, depositMonths, leaseMonths, managementFee, electricityFee, actualMonthly, depositTotal, depositCost, totalCost }
             }
         }).mount('#app')

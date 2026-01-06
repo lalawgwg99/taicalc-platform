@@ -286,6 +286,17 @@
                 watch([grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost], updateChart)
                 onMounted(() => setTimeout(updateChart, 100))
 
+                watch([grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost], updateChart)
+                onMounted(() => setTimeout(updateChart, 100))
+
+                // Auto-save for Dashboard
+                watch(netIncome, (newVal) => {
+                    const val = parseInt(newVal.replace(/,/g, ''))
+                    if (val > 0) {
+                        localStorage.setItem('taicalc_delivery_net', val)
+                    }
+                })
+
                 return {
                     grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost,
                     gasCost, maintenanceTotal, totalCost, netIncome, hourlyRate, perKm, costRatio, profitMargin,

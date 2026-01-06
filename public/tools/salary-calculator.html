@@ -588,6 +588,13 @@
                     }
                 }
 
+                // Auto-save for Dashboard
+                watch(monthlyNet, (newVal) => {
+                    if (newVal > 0) {
+                        localStorage.setItem('taicalc_salary_net', newVal)
+                    }
+                })
+
                 watch([salary, bonus, pension, raiseRate, inflationRate], updateCharts, { deep: true })
                 watch(mode, () => {
                     if (mode.value === 'single') setTimeout(updateCharts, 100)
