@@ -4,102 +4,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>電費計算｜TaiCalc</title>
-    <meta name="description" content="依台電累進電價計算每月電費，了解級距如何影響帳單。">
-    <link rel="canonical" href="https://taicalc.com/tools/electricity">
+    <title>電費計算機｜台電累進電價試算｜TaiCalc</title>
+    <meta name="description" content="2024台電累進電價計算，夏月/非夏月費率。含級距分析、省電模擬、冷氣耗電試算。">
+    <meta name="keywords" content="電費計算,台電電價,累進電價,夏月電價,省電">
+    <link rel="canonical" href="https://taicalc.com/tools/electricity-calculator">
+
+    <meta property="og:title" content="電費計算機｜台電累進電價試算">
+    <meta property="og:description" content="精算每月電費，含省電模擬與冷氣耗電分析。">
+    <meta property="og:type" content="website">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "電費計算機",
+        "url": "https://taicalc.com/tools/electricity-calculator",
+        "applicationCategory": "UtilityApplication"
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+        rel="stylesheet">
 
     <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-card: rgba(17, 17, 19, 0.8);
+            --border: rgba(255, 255, 255, 0.06);
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.1);
+        }
+
         * {
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
         }
 
         body {
-            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            background: var(--bg-primary);
+            background-image: radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow), transparent);
             min-height: 100vh;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+        }
+
+        .stat-value {
+            font-variant-numeric: tabular-nums;
         }
     </style>
 </head>
 
-<body class="text-zinc-100">
-    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+<body class="text-zinc-100 antialiased">
+    <div id="app" class="max-w-2xl mx-auto px-4 py-8 sm:py-12">
 
-        <header class="text-center mb-8">
-            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
-            <h1 class="text-3xl font-bold mt-4 text-white">電費計算</h1>
-            <p class="text-zinc-400 mt-2">台電累進電價試算</p>
+        <header class="mb-8">
+            <nav class="flex items-center justify-between mb-6">
+                <a href="../index.html"
+                    class="text-zinc-500 text-sm hover:text-white transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    TaiCalc
+                </a>
+                <span
+                    :class="['text-xs px-2 py-1 rounded-full border', isSummer ? 'bg-orange-950/50 text-orange-400 border-orange-900/50' : 'bg-blue-950/50 text-blue-400 border-blue-900/50']">
+                    {{ isSummer ? '🌞 夏月' : '❄️ 非夏月' }}
+                </span>
+            </nav>
+            <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">電費計算</h1>
+            <p class="text-zinc-500 mt-1 text-sm">台電累進電價 · 省電模擬 · 級距分析</p>
         </header>
 
-        <main class="card rounded-3xl p-6 space-y-6">
+        <main class="space-y-6">
 
-            <!-- 季節選擇 -->
-            <div class="grid grid-cols-2 gap-3">
-                <button @click="isSummer = true"
-                    :class="['py-3 rounded-xl font-medium transition-all', isSummer ? 'bg-orange-600 text-white' : 'bg-zinc-800 text-zinc-400']">
-                    🌞 夏月 (6-9月)
-                </button>
-                <button @click="isSummer = false"
-                    :class="['py-3 rounded-xl font-medium transition-all', !isSummer ? 'bg-blue-600 text-white' : 'bg-zinc-800 text-zinc-400']">
-                    ❄️ 非夏月
-                </button>
-            </div>
+            <!-- 輸入區 -->
+            <section class="glass rounded-2xl p-6">
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button @click="isSummer = true"
+                        :class="['py-3 rounded-xl font-medium transition-all', isSummer ? 'bg-orange-600 text-white shadow-lg shadow-orange-900/30' : 'bg-zinc-800/50 text-zinc-400']">
+                        🌞 夏月 (6-9月)
+                    </button>
+                    <button @click="isSummer = false"
+                        :class="['py-3 rounded-xl font-medium transition-all', !isSummer ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/30' : 'bg-zinc-800/50 text-zinc-400']">
+                        ❄️ 非夏月
+                    </button>
+                </div>
 
-            <div>
-                <label class="block text-sm text-zinc-400 mb-2">用電度數 (度/月)</label>
-                <input type="number" v-model.number="kwh"
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
-            </div>
-
-            <!-- 結果 -->
-            <div
-                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50 text-center">
-                <p class="text-zinc-400 text-sm mb-2">預估電費</p>
-                <p class="text-4xl font-bold text-emerald-400 font-mono">NT$ {{ totalCost }}</p>
-                <p class="text-zinc-500 text-sm mt-2">平均每度 NT$ {{ avgRate }}</p>
-            </div>
-
-            <!-- 級距明細 -->
-            <div class="bg-zinc-900/30 rounded-xl p-4">
-                <p class="text-sm text-zinc-500 mb-3">級距明細</p>
-                <div class="space-y-2 text-sm">
-                    <div v-for="(tier, i) in breakdown" :key="i" class="flex justify-between">
-                        <span class="text-zinc-400">{{ tier.tier }}</span>
-                        <span class="font-mono">
-                            {{ tier.kwh }}度 × ${{ tier.rate }} =
-                            <span
-                                :class="i === breakdown.length - 1 && breakdown.length > 1 ? 'text-red-400 font-semibold' : 'text-white'">
-                                ${{ tier.cost }}
-                            </span>
-                        </span>
+                <div>
+                    <label class="block text-xs font-medium text-zinc-400 mb-2">用電度數 (度/月)</label>
+                    <input type="number" v-model.number="kwh"
+                        class="input-field w-full rounded-xl py-3.5 px-4 text-white text-2xl font-semibold stat-value focus:outline-none">
+                    <input type="range" v-model.number="kwh" min="0" max="2000" step="10"
+                        class="w-full mt-3 accent-amber-500">
+                    <div class="flex justify-between text-xs text-zinc-500 mt-1">
+                        <span>0</span><span>500</span><span>1000</span><span>1500</span><span>2000</span>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div v-if="breakdown.length > 2" class="bg-amber-950/30 border border-amber-900/50 rounded-xl p-4">
-                <p class="text-amber-400 text-sm">
-                    ⚠️ 高級距用電貴很多！最後一級每度 ${{ breakdown[breakdown.length-1]?.rate }}
-                </p>
-            </div>
+            <!-- 主要結果 -->
+            <section class="glass rounded-2xl p-6">
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">預估電費</p>
+                        <p class="text-4xl sm:text-5xl font-bold stat-value"
+                            :class="isSummer ? 'text-orange-400' : 'text-blue-400'">
+                            <span class="text-zinc-400">$</span>{{ totalCost.toLocaleString() }}
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-zinc-500 mb-1">平均每度</p>
+                        <p class="text-xl font-semibold text-zinc-300 stat-value">${{ avgRate }}</p>
+                    </div>
+                </div>
+
+                <!-- 級距條形圖 -->
+                <div class="space-y-2 mb-6">
+                    <div v-for="(tier, i) in breakdown" :key="i" class="relative">
+                        <div class="flex justify-between text-xs text-zinc-400 mb-1">
+                            <span>{{ tier.label }}</span>
+                            <span class="font-mono">{{ tier.kwh }}度 × ${{ tier.rate }} = <span
+                                    :class="i === breakdown.length-1 && breakdown.length > 1 ? 'text-red-400 font-semibold' : 'text-white'">${{
+                                    tier.cost }}</span></span>
+                        </div>
+                        <div class="h-3 bg-zinc-800 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full transition-all duration-500"
+                                :class="i === breakdown.length-1 && breakdown.length > 1 ? 'bg-red-500' : (isSummer ? 'bg-orange-500' : 'bg-blue-500')"
+                                :style="{width: (tier.cost / totalCost * 100) + '%'}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="breakdown.length > 2"
+                    class="bg-red-950/30 border border-red-900/30 rounded-xl p-3 text-sm text-red-400">
+                    ⚠️ 高級距電費佔比 {{ highTierPercent }}%！最後一級每度 ${{ breakdown[breakdown.length-1].rate }}，是第一級的 {{
+                    highTierMultiple }}x
+                </div>
+            </section>
+
+            <!-- 省電模擬 -->
+            <section class="glass rounded-2xl p-6">
+                <h2 class="text-sm font-semibold text-white mb-4">💡 省電模擬</h2>
+                <p class="text-xs text-zinc-500 mb-4">如果每月用電減少...</p>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <button v-for="n in [30, 50, 100]" :key="n" @click="simulateSave(n)"
+                        class="bg-zinc-800/50 hover:bg-zinc-700/50 rounded-xl p-4 text-center transition-all group">
+                        <p class="text-lg font-semibold text-white group-hover:text-emerald-400">-{{ n }} 度</p>
+                        <p class="text-xs text-zinc-500 mt-1">省 ${{ getSaving(n) }}/月</p>
+                    </button>
+                </div>
+
+                <div v-if="simulatedSave > 0"
+                    class="mt-4 p-4 bg-emerald-950/30 border border-emerald-900/30 rounded-xl text-center">
+                    <p class="text-emerald-400 text-sm">省下 {{ simulatedSave }} 度，每月可省 <span
+                            class="text-xl font-bold">${{ simulatedSaving }}</span></p>
+                    <p class="text-xs text-zinc-500 mt-1">年省約 ${{ (simulatedSaving * 12).toLocaleString() }}</p>
+                </div>
+            </section>
+
+            <!-- 冷氣耗電估算 -->
+            <section class="glass rounded-2xl p-6">
+                <h2 class="text-sm font-semibold text-white mb-4">🌡️ 冷氣耗電估算</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-zinc-500 mb-1">冷氣功率 (kW)</label>
+                        <select v-model.number="acPower"
+                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg py-2 px-3 text-white">
+                            <option :value="0.8">小型 (0.8kW)</option>
+                            <option :value="1.2">中型 (1.2kW)</option>
+                            <option :value="1.8">大型 (1.8kW)</option>
+                            <option :value="2.5">超大 (2.5kW)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-500 mb-1">每日使用 (小時)</label>
+                        <input type="number" v-model.number="acHours" min="0" max="24"
+                            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg py-2 px-3 text-white">
+                    </div>
+                </div>
+                <div class="mt-4 p-3 bg-zinc-800/50 rounded-xl text-center">
+                    <p class="text-zinc-400 text-sm">冷氣每月預估用電</p>
+                    <p class="text-2xl font-bold text-white stat-value">{{ acMonthlyKwh }} 度</p>
+                    <p class="text-xs text-zinc-500 mt-1">約 ${{ acMonthlyCost }}/月</p>
+                </div>
+            </section>
+
+            <!-- 費率說明 -->
+            <footer class="glass rounded-xl p-4 text-xs text-zinc-500">
+                <p class="font-medium text-zinc-400 mb-2">📌 台電 2024 年住宅電價</p>
+                <div class="grid grid-cols-2 gap-1">
+                    <span>夏月：6~9月</span>
+                    <span>非夏月：其他月份</span>
+                    <span>共 6 個級距</span>
+                    <span>累進計算</span>
+                </div>
+            </footer>
 
         </main>
-
-        <footer class="text-center mt-8 text-zinc-600 text-sm">
-            依台電 2024 年電價表 · © 2026 TaiCalc
-        </footer>
     </div>
 
     <script>
         const { createApp, ref, computed } = Vue
 
-        const SUMMER_RATES = [
+        const SUMMER = [
             { limit: 120, rate: 1.68 },
             { limit: 330, rate: 2.45 },
             { limit: 500, rate: 3.70 },
@@ -107,8 +232,7 @@
             { limit: 1000, rate: 6.03 },
             { limit: Infinity, rate: 7.69 }
         ]
-
-        const NON_SUMMER_RATES = [
+        const NON_SUMMER = [
             { limit: 120, rate: 1.68 },
             { limit: 330, rate: 2.16 },
             { limit: 500, rate: 3.03 },
@@ -117,43 +241,67 @@
             { limit: Infinity, rate: 6.63 }
         ]
 
+        const calcBreakdown = (kwh, rates) => {
+            let remain = kwh, prev = 0, result = []
+            for (const t of rates) {
+                if (remain <= 0) break
+                const use = Math.min(remain, t.limit - prev)
+                if (use > 0) {
+                    result.push({
+                        label: `${prev + 1}~${t.limit === Infinity ? '以上' : t.limit}度`,
+                        kwh: use,
+                        rate: t.rate,
+                        cost: Math.round(use * t.rate)
+                    })
+                }
+                remain -= use
+                prev = t.limit
+            }
+            return result
+        }
+
         createApp({
             setup() {
                 const kwh = ref(400)
                 const isSummer = ref(true)
+                const simulatedSave = ref(0)
+                const acPower = ref(1.2)
+                const acHours = ref(8)
 
-                const breakdown = computed(() => {
-                    const rates = isSummer.value ? SUMMER_RATES : NON_SUMMER_RATES
-                    let remaining = kwh.value || 0
-                    let prevLimit = 0
-                    const result = []
+                const rates = computed(() => isSummer.value ? SUMMER : NON_SUMMER)
+                const breakdown = computed(() => calcBreakdown(kwh.value || 0, rates.value))
+                const totalCost = computed(() => breakdown.value.reduce((s, t) => s + t.cost, 0))
+                const avgRate = computed(() => kwh.value > 0 ? (totalCost.value / kwh.value).toFixed(2) : '0.00')
 
-                    for (const tier of rates) {
-                        if (remaining <= 0) break
-                        const tierKwh = Math.min(remaining, tier.limit - prevLimit)
-                        const tierCost = Math.round(tierKwh * tier.rate * 10) / 10
-
-                        if (tierKwh > 0) {
-                            result.push({
-                                tier: `${prevLimit + 1}~${tier.limit === Infinity ? '以上' : tier.limit}度`,
-                                kwh: tierKwh,
-                                rate: tier.rate,
-                                cost: tierCost
-                            })
-                        }
-                        remaining -= tierKwh
-                        prevLimit = tier.limit
-                    }
-                    return result
+                const highTierPercent = computed(() => {
+                    if (breakdown.value.length < 2) return 0
+                    const last = breakdown.value[breakdown.value.length - 1]
+                    return Math.round(last.cost / totalCost.value * 100)
+                })
+                const highTierMultiple = computed(() => {
+                    if (breakdown.value.length < 2) return 1
+                    return (breakdown.value[breakdown.value.length - 1].rate / breakdown.value[0].rate).toFixed(1)
                 })
 
-                const totalCost = computed(() => Math.round(breakdown.value.reduce((sum, t) => sum + t.cost, 0)).toLocaleString())
-                const avgRate = computed(() => {
-                    const total = breakdown.value.reduce((sum, t) => sum + t.cost, 0)
-                    return kwh.value > 0 ? Math.round((total / kwh.value) * 100) / 100 : 0
-                })
+                const getSaving = (n) => {
+                    const newKwh = Math.max(0, (kwh.value || 0) - n)
+                    const newCost = calcBreakdown(newKwh, rates.value).reduce((s, t) => s + t.cost, 0)
+                    return totalCost.value - newCost
+                }
 
-                return { kwh, isSummer, breakdown, totalCost, avgRate }
+                const simulatedSaving = computed(() => getSaving(simulatedSave.value))
+
+                const simulateSave = (n) => { simulatedSave.value = n }
+
+                const acMonthlyKwh = computed(() => Math.round(acPower.value * acHours.value * 30))
+                const acMonthlyCost = computed(() => calcBreakdown(acMonthlyKwh.value, rates.value).reduce((s, t) => s + t.cost, 0))
+
+                return {
+                    kwh, isSummer, breakdown, totalCost, avgRate,
+                    highTierPercent, highTierMultiple,
+                    simulatedSave, simulatedSaving, simulateSave, getSaving,
+                    acPower, acHours, acMonthlyKwh, acMonthlyCost
+                }
             }
         }).mount('#app')
     </script>
