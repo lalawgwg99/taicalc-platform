@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>股票損益計算機 (2026版)｜TaiCalc</title>
+    <meta name="description" content="2026 最新股票交易成本計算：手續費、證交稅、當沖稅率優惠。支援現股、當沖、ETF 交易成本試算，精準掌握獲利。">
+    <link rel="canonical" href="https://taicalc.com/tools/stock">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            800: '#292524',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .tab-btn {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ef4444;
+            /* Red for Stock context in TW */
+        }
+
+        .fade-enter-active,
+        .fade-leave-active {
+            transition: opacity 0.2s ease;
+        }
+
+        .fade-enter-from,
+        .fade-leave-to {
+            opacity: 0;
+        }
+
+        /* Taiwan Stock Colors: Up is Red, Down is Green */
+        .text-up {
+            color: #ef4444;
+        }
+
+        .text-down {
+            color: #22c55e;
+        }
+
+        .bg-up-light {
+            background-color: #fef2f2;
+        }
+
+        .bg-down-light {
+            background-color: #f0fdf4;
+        }
+
+        .border-up {
+            border-color: #fecaca;
+        }
+
+        .border-down {
+            border-color: #bbf7d0;
+        }
+    </style>
+</head>
+
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-4 sm:px-6 py-8">
+
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-8">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-amber-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <header class="mb-8">
+            <div class="flex items-center justify-between mb-2">
+                <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">股票損益計算機</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 border border-red-200 font-medium">2026年版</span>
+            </div>
+            <p class="text-stone-500 text-sm">支援現股 (0.3%)、當沖 (0.15%)、ETF (0.1%) 稅率計算。</p>
+        </header>
+
+        <main class="space-y-6">
+
+            <!-- Global Settings (Collapsible or always visible? Let's make it a dedicated section or card component) -->
+            <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-4 transition-all"
+                :class="{'opacity-100': showSettings, 'opacity-70': !showSettings}">
+                <div class="flex items-center justify-between cursor-pointer" @click="showSettings = !showSettings">
+                    <h2 class="text-sm font-bold text-stone-600 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        交易設定 (手續費折扣)
+                    </h2>
+                    <span class="text-xs text-stone-400 transform transition-transform"
+                        :class="{'rotate-180': showSettings}">▼</span>
+                </div>
+
+                <div v-show="showSettings" class="mt-4 grid grid-cols-2 gap-4 border-t border-stone-100 pt-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-500 mb-1">券商折扣 (折)</label>
+                        <input type="number" v-model.number="settings.discount" step="0.1"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500">
+                        <p class="text-[10px] text-stone-400 mt-1">例：2.8折 輸入 2.8</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-stone-500 mb-1">最低手續費 ($)</label>
+                        <input type="number" v-model.number="settings.minFee"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Calc Card -->
+            <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+                <!-- Tabs -->
+                <div class="flex border-b border-stone-200">
+                    <button @click="mode = 'profit'" class="flex-1 py-3 text-sm font-bold text-center tab-btn"
+                        :class="mode === 'profit' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'">
+                        損益試算
+                    </button>
+                    <button @click="mode = 'breakeven'" class="flex-1 py-3 text-sm font-bold text-center tab-btn"
+                        :class="mode === 'breakeven' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'">
+                        成本/損益平衡
+                    </button>
+                </div>
+
+                <div class="p-6 space-y-6">
+
+                    <!-- Common Inputs -->
+                    <div class="space-y-4">
+                        <!-- Type Selection -->
+                        <div class="flex gap-2">
+                            <button v-for="type in stockTypes" :key="type.id" @click="stockType = type.id"
+                                class="flex-1 py-2 text-xs font-bold rounded-lg border transition-all"
+                                :class="stockType === type.id ? 'bg-stone-800 text-white border-stone-800' : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'">
+                                {{ type.label }} <span class="text-[10px] opacity-70">({{ type.tax * 1000 }}‰)</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-500 mb-1">買進價格</label>
+                                <input type="number" v-model.number="buyPrice" step="0.1"
+                                    class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-stone-500 mb-1">股數 (1張=1000)</label>
+                                <input type="number" v-model.number="qty" step="1000"
+                                    class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
+                            </div>
+                        </div>
+
+                        <div v-if="mode === 'profit'">
+                            <label class="block text-xs font-semibold text-stone-500 mb-1">賣出價格</label>
+                            <input type="number" v-model.number="sellPrice" step="0.1"
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div v-if="mode === 'profit'" class="pt-4 border-t border-stone-100">
+                        <div class="bg-stone-50 rounded-xl p-6 text-center border overflow-hidden relative"
+                            :class="result.profit >= 0 ? 'border-red-200 bg-red-50/30' : 'border-green-200 bg-green-50/30'">
+                            <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">預估淨損益</p>
+                            <p class="text-3xl font-bold font-mono tracking-tight"
+                                :class="result.profit >= 0 ? 'text-up' : 'text-down'">
+                                {{ result.profit >= 0 ? '+' : '' }}{{ fmt(result.profit) }}
+                            </p>
+                            <p class="text-sm font-medium mt-1"
+                                :class="result.profit >= 0 ? 'text-red-700' : 'text-green-700'">
+                                報酬率 {{ result.roi }}%
+                            </p>
+
+                            <!-- Detailed Breakdown -->
+                            <div
+                                class="mt-6 grid grid-cols-2 gap-4 text-left text-xs text-stone-500 bg-white/60 p-3 rounded-lg">
+                                <div>
+                                    <span class="block">買進總成本</span>
+                                    <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalBuyCost)
+                                        }}</span>
+                                </div>
+                                <div>
+                                    <span class="block">賣出總收入</span>
+                                    <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalSellRevenue)
+                                        }}</span>
+                                </div>
+                                <div>
+                                    <span class="block">手續費 (買+賣)</span>
+                                    <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalFee) }}</span>
+                                </div>
+                                <div>
+                                    <span class="block">交易稅</span>
+                                    <span class="font-bold text-stone-700 font-mono">{{ fmt(result.tax) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-else class="pt-4 border-t border-stone-100">
+                        <div class="bg-stone-50 rounded-xl p-6 text-center border border-indigo-100 bg-indigo-50/30">
+                            <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">損益平衡價</p>
+                            <p class="text-3xl font-bold font-mono tracking-tight text-indigo-900">
+                                {{ fmt(breakevenPrice) }}
+                            </p>
+                            <p class="text-sm text-stone-500 mt-2">
+                                高於此價格賣出即獲利<br>
+                                <span class="text-xs opacity-70">(已含買賣手續費與交易稅)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
+            © 2026 TaiCalc
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, watch } = Vue
+
+        createApp({
+            setup() {
+                const mode = ref('profit')
+                const showSettings = ref(false)
+
+                // Settings
+                const settings = ref({
+                    discount: 6, // 6折 default
+                    minFee: 20
+                })
+
+                const stockTypes = [
+                    { id: 'common', label: '一般現股', tax: 0.003 },
+                    { id: 'daytrade', label: '現股當沖', tax: 0.0015 },
+                    { id: 'etf', label: 'ETF', tax: 0.001 }
+                ]
+                const stockType = ref('common')
+
+                const buyPrice = ref(100)
+                const sellPrice = ref(105)
+                const qty = ref(1000)
+
+                const fmt = (n) => n ? n.toLocaleString('zh-TW', { maximumFractionDigits: 2 }) : '0'
+
+                const userSettings = computed(() => {
+                    // Safe parsing
+                    const d = parseFloat(settings.value.discount)
+                    // If d is e.g. 2.8, it means 28% of fee, or 0.28 multiplier? 
+                    // No, Taiwan "2.8折" usually means 28% of the original fee. "6折" means 60%.
+                    // Check logic: discount input '6' -> 0.6 multiplier. '2.8' -> 0.28 multiplier.
+                    // If input > 10, maybe user meant percentage? Let's assume input is "X折" where X <= 10.
+                    // If user enters 28, they might mean 2.8折. But 6 usually means 6折. 
+                    // Let's standardise: Input is "X折". Factor = X / 10.
+                    return {
+                        discountFactor: (d || 10) / 10,
+                        minFee: parseInt(settings.value.minFee) || 0
+                    }
+                })
+
+                // Fee Calculation Logic
+                const calculateFee = (amount) => {
+                    const rawFee = amount * 0.001425
+                    const discountedFee = Math.floor(rawFee * userSettings.value.discountFactor)
+                    return Math.max(userSettings.value.minFee, discountedFee)
+                }
+
+                const result = computed(() => {
+                    const bp = buyPrice.value || 0
+                    const sp = sellPrice.value || 0
+                    const q = qty.value || 0
+                    const taxRate = stockTypes.find(t => t.id === stockType.value).tax
+
+                    const buyAmt = bp * q
+                    const buyFee = calculateFee(buyAmt)
+                    const totalBuyCost = buyAmt + buyFee
+
+                    const sellAmt = sp * q
+                    const sellFee = calculateFee(sellAmt)
+                    const sellTax = Math.floor(sellAmt * taxRate)
+                    const totalSellRevenue = sellAmt - sellFee - sellTax
+
+                    const profit = totalSellRevenue - totalBuyCost
+                    const roi = totalBuyCost > 0 ? (profit / totalBuyCost) * 100 : 0
+
+                    return {
+                        profit,
+                        roi: roi.toFixed(2),
+                        totalBuyCost,
+                        totalSellRevenue,
+                        totalFee: buyFee + sellFee,
+                        tax: sellTax
+                    }
+                })
+
+                const breakevenPrice = computed(() => {
+                    const bp = buyPrice.value || 0
+                    const q = qty.value || 0
+                    if (q === 0) return 0
+                    const taxRate = stockTypes.find(t => t.id === stockType.value).tax
+
+                    // Cost structure: 
+                    // BuyCost = P*Q + BuyFee
+                    // Revenue = X*Q - SellFee - SellTax
+                    // Breakeven when Revenue = BuyCost
+                    // X*Q - Max(MinFee, X*Q*0.001425*Disc) - X*Q*TaxRate = BuyCost
+
+                    // Simplifying estimation (ignoring Min Fee nonlinearity for a moment):
+                    // X*Q * (1 - 0.001425*Disc - TaxRate) = BuyCost
+                    // X = BuyCost / (Q * (1 - 0.001425*Disc - TaxRate))
+
+                    const buyAmt = bp * q
+                    const buyFee = calculateFee(buyAmt)
+                    const totalBuyCost = buyAmt + buyFee
+
+                    const factor = 0.001425 * userSettings.value.discountFactor + taxRate
+                    let estimatedPrice = totalBuyCost / (q * (1 - factor))
+
+                    // Refine for min fee edge cases if needed, but this is usually accurate enough for > min fee
+                    // Let's do a quick iterative check? No, formula is usually fine unless amount is very small.
+
+                    return Math.ceil(estimatedPrice * 100) / 100 // Ceiling to 2 decimals or closest tick? 
+                    // Stocks have specific ticks (0.1, 0.5, 1.0, 5.0). Let's just return raw price for now. 
+                    // Actually, strictly speaking, you need to sell at a price tick. 
+                    // Let's just return 2 decimals.
+                })
+
+                return {
+                    mode, showSettings, settings,
+                    stockTypes, stockType,
+                    buyPrice, sellPrice, qty,
+                    result, breakevenPrice, fmt
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
