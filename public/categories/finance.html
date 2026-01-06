@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>退休理財工具 | TaiCalc</title>
+    <meta name="description" content="退休金試算、存錢計畫、投資獲利計算，協助您提早規劃財富自由。">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #FAFAF9;
+            /* stone-50 */
+            color: #44403C;
+            /* stone-700 */
+        }
+
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #E7E5E4;
+            /* stone-200 */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            border-color: var(--hover-color, #10B981);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1);
+        }
+
+        .nav-link {
+            color: #78716C;
+            /* stone-500 */
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1C1917;
+            /* stone-900 */
+        }
+
+        .nav-link.active {
+            color: #059669;
+            /* emerald-600 */
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <div class="flex-grow max-w-6xl mx-auto w-full px-6 py-8">
+
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="./finance.html" class="nav-link active">退休理財</a>
+                <a href="./life.html" class="nav-link">生活計算</a>
+                <a href="./tools.html" class="nav-link">實用工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">退休理財</span>
+        </div>
+
+        <!-- Page Header -->
+        <header class="mb-12">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">退休理財</h1>
+            </div>
+            <p class="text-stone-500 max-w-2xl leading-relaxed">
+                提早規劃，享受自由。無論是勞退試算、FIRE 運動模擬，或是投資效益分析，這裡都有您需要的工具。
+            </p>
+        </header>
+
+        <!-- Tools Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 勞退試算 -->
+            <a href="../tools/labor-pension-calculator.html" class="card rounded-2xl p-6 group"
+                style="--hover-color: #F59E0B">
+                <div class="icon-box bg-amber-50 text-amber-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8" cy="8" r="6" />
+                        <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+                        <path d="M7 6h1v4" />
+                        <path d="m16.71 13.88.7.71-2.82 2.82" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-amber-600 transition-colors">勞退試算</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">勞退新制退休金試算。了解自提 6% 的複利與節稅效益，預估退休每月可領金額。</p>
+            </a>
+
+            <!-- 退休規劃 -->
+            <a href="../tools/retirement-calculator.html" class="card rounded-2xl p-6 group"
+                style="--hover-color: #14B8A6">
+                <div class="icon-box bg-teal-50 text-teal-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4" />
+                        <path d="m13 7.14-.54-1L12 7.14" />
+                        <path d="M16 8c0-2.76-2.46-5-5.5-5S5 5.24 5 8h2l1-1 1 1h4" />
+                        <path d="m16 7.14-.54-1L15 7.14" />
+                        <rect width="2" height="14" x="9" y="8" rx="1" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-teal-600 transition-colors">退休規劃</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">全方位退休規劃計算機。基於 FIRE 4% 法則，模擬資產累積與提領，檢視財務自由進度。</p>
+            </a>
+
+            <!-- 利潤計算 -->
+            <a href="../tools/profit-calculator.html" class="card rounded-2xl p-6 group" style="--hover-color: #10B981">
+                <div class="icon-box bg-emerald-50 text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18" />
+                        <path d="m19 9-5 5-4-4-3 3" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-emerald-600 transition-colors">利潤計算</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">營收、毛利、淨利計算。協助各種商業模式快速評估獲利能力與損益平衡點。</p>
+            </a>
+
+            <!-- 成本分析 -->
+            <a href="../tools/cost-calculator.html" class="card rounded-2xl p-6 group" style="--hover-color: #F97316">
+                <div class="icon-box bg-orange-50 text-orange-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="16" height="20" x="4" y="2" rx="2" />
+                        <line x1="8" x2="16" y1="6" y2="6" />
+                        <line x1="16" x2="16" y1="14" y2="18" />
+                        <path d="M16 10h.01" />
+                        <path d="M12 10h.01" />
+                        <path d="M8 10h.01" />
+                        <path d="M12 14h.01" />
+                        <path d="M8 14h.01" />
+                        <path d="M12 18h.01" />
+                        <path d="M8 18h.01" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-orange-600 transition-colors">成本分析</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">固定成本與變動成本分析。精確掌握每一分支出，為投資決策提供數據支持。</p>
+            </a>
+
+        </div>
+
+    </div>
+
+    <footer class="mt-auto py-8 text-center text-stone-400 text-xs tracking-wider border-t border-stone-200">
+        © 2026 TaiCalc
+    </footer>
+
+</body>
+
+</html>

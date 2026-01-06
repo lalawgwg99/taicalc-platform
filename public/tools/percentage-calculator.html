@@ -27,14 +27,42 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="text-zinc-100">
-    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+<body class="antialiased min-h-screen flex flex-col">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-6 py-8">
 
-        <header class="text-center mb-8">
-            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
-            <h1 class="text-3xl font-bold mt-4 text-white">百分比計算</h1>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/tools.html" class="hover:text-stone-600 transition-colors">實用工具</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">百分比計算</span>
+        </div>
+
+        <header class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">百分比計算</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200 font-medium">多模式</span>
+            </div>
+            <p class="text-stone-500 text-sm">折扣換算 · 變化率 · 求原值 · 求佔比</p>
         </header>
 
         <main class="card rounded-3xl p-6 space-y-6">

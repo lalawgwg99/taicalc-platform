@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+* {
+    font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #FAFAF9;
+    /* stone-50 */
+    color: #44403C;
+    /* stone-700 */
+}
+
+/* Card Styles */
+.card {
+    background: #FFFFFF;
+    border: 1px solid #E7E5E4;
+    /* stone-200 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Navbar Styles */
+.nav-glass {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(231, 229, 228, 0.5);
+    /* stone-200 */
+}
+
+.nav-link {
+    color: #78716C;
+    /* stone-500 */
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: #1C1917;
+    /* stone-900 */
+}
+
+.nav-link.active {
+    color: #059669;
+    /* emerald-600 */
+    font-weight: 500;
+}
+
+/* Input Styles */
+.input-label {
+    display: block;
+    color: #57534E;
+    /* stone-600 */
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.input-field {
+    width: 100%;
+    background-color: #F5F5F4;
+    /* stone-100 */
+    border: 1px solid transparent;
+    color: #1C1917;
+    /* stone-900 */
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.input-field:focus {
+    background-color: #FFFFFF;
+    border-color: #10B981;
+    /* emerald-500 */
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #059669;
+    /* emerald-600 */
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #047857;
+    /* emerald-700 */
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Results Section */
+.result-card {
+    background-color: #FDFBF7;
+    /* Warm Rice Paper */
+    border: 1px solid #E7E5E4;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+[v-cloak] {
+    display: none;
+}

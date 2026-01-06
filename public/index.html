@@ -9,190 +9,465 @@
     <link rel="canonical" href="https://taicalc.com">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
 
     <style>
         * {
-            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
-            min-height: 100vh;
+            background-color: #FAFAF9;
+            /* stone-50 */
+            color: #44403C;
+            /* stone-700 */
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
+            background: #FFFFFF;
+            border: 1px solid #E7E5E4;
+            /* stone-200 */
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(16, 185, 129, 0.4);
-            transform: translateY(-2px);
+            border-color: var(--hover-color, #10B981);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1);
         }
 
         .hero-gradient {
-            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        .nav-link {
+            position: relative;
+            color: #78716C;
+            /* stone-500 */
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1C1917;
+            /* stone-900 */
+        }
+
+        .nav-link.active {
+            color: #059669;
+            /* emerald-600 */
+            font-weight: 500;
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #mobile-menu.hidden {
+            display: none;
+        }
     </style>
 </head>
 
-<body class="antialiased text-zinc-100">
-    <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+<body class="antialiased">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+
+        <!-- Header / Global Nav -->
+        <nav
+            class="flex items-center justify-between mb-16 py-4 bg-white/50 backdrop-blur-md sticky top-0 z-50 rounded-2xl border border-stone-200/50 px-6 shadow-sm">
+            <a href="./index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-2xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex gap-8 text-sm">
+                <a href="./index.html" class="nav-link active">首頁</a>
+                <a href="./categories/finance.html" class="nav-link">退休理財</a>
+                <a href="./categories/life.html" class="nav-link">生活計算</a>
+                <a href="./categories/tools.html" class="nav-link">實用工具</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden text-stone-500 hover:text-stone-800 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-xl pt-24 px-6">
+            <div class="flex flex-col gap-6 text-xl font-medium text-stone-800 items-center">
+                <a href="./index.html" class="hover:text-emerald-600">首頁</a>
+                <a href="./categories/finance.html" class="hover:text-emerald-600">退休理財</a>
+                <a href="./categories/life.html" class="hover:text-emerald-600">生活計算</a>
+                <a href="./categories/tools.html" class="hover:text-emerald-600">實用工具</a>
+                <button id="close-menu-btn" class="mt-8 text-stone-400 text-sm">關閉選單</button>
+            </div>
+        </div>
 
         <!-- Hero -->
-        <header class="text-center mb-16">
+        <header class="text-center mb-20 px-4">
             <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-900/50 mb-6">
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-stone-100 border border-stone-200 mb-6 shadow-sm">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                <span class="text-sm text-emerald-400 font-medium">2026 最新費率</span>
+                <span class="text-xs text-stone-600 font-medium tracking-wide">2026 最新費率與法規</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
-                <span class="hero-gradient">Tai</span><span class="text-white">Calc</span>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 text-stone-900">
+                <span class="hero-gradient">精算生活</span>，<span class="text-stone-800">輕鬆規劃</span>
             </h1>
-            <p class="text-lg text-zinc-400 font-light">
-                專為台灣設計的財務計算工具
+            <p class="text-lg text-stone-500 font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
+                專為台灣設計的財務計算工具。沒有複雜的術語，只有清晰的數字，<br class="hidden md:block">協助您在生活的每個階段做出最好的決定。
             </p>
         </header>
 
         <!-- 熱門工具 -->
-        <section class="mb-12">
-            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 熱門計算
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <section class="mb-20">
+            <div class="flex items-center gap-3 mb-8 px-2">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">熱門計算</h2>
+            </div>
 
-                <a href="./tools/salary-calculator.html" class="card rounded-2xl p-5 group">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-2xl">💰</span>
-                        <span class="text-xs text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded-full">TOP</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- 薪資實拿 -->
+                <a href="./tools/salary-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #10B981">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="icon-box bg-emerald-50 text-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="20" height="12" x="2" y="6" rx="2" />
+                                <circle cx="12" cy="12" r="2" />
+                                <path d="M6 12h.01M18 12h.01" />
+                            </svg>
+                        </div>
+                        <span
+                            class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">TOP</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">薪資實拿
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-emerald-600 transition-colors">薪資實拿
                     </h3>
-                    <p class="text-sm text-zinc-500 mt-1">勞健保、勞退、年終獎金</p>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">扣除勞健保後實際領多少？包含勞退自提與年終獎金試算。</p>
                 </a>
 
-                <a href="./tools/electricity-calculator.html" class="card rounded-2xl p-5 group">
-                    <span class="text-2xl">⚡</span>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
-                        電費試算</h3>
-                    <p class="text-sm text-zinc-500 mt-1">台電累進電價、夏/非夏月</p>
+                <!-- 電費試算 -->
+                <a href="./tools/electricity-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #F59E0B">
+                    <div class="icon-box bg-amber-50 text-amber-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-amber-600 transition-colors">電費試算</h3>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">輸入度數立即算。支援台電最新累進費率，夏月/非夏月自動切換。</p>
                 </a>
 
-                <a href="./tools/overtime-calculator.html" class="card rounded-2xl p-5 group">
-                    <span class="text-2xl">⏰</span>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">加班費
+                <!-- 加班費 -->
+                <a href="./tools/overtime-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #F43F5E">
+                    <div class="icon-box bg-rose-50 text-rose-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 2h4" />
+                            <path d="M12 14v-4" />
+                            <path d="M4 13a8 8 0 0 1 8-7 6 6 0 0 1 3.6 11.6" />
+                            <path d="M21 17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4Z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-rose-600 transition-colors">加班費</h3>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">平日、休息日、國定假日加班費計算。搞懂勞基法，權益不吃虧。</p>
+                </a>
+
+                <!-- 信用卡分期 -->
+                <a href="./tools/credit-card-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #3B82F6">
+                    <div class="icon-box bg-blue-50 text-blue-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="14" x="2" y="5" rx="2" />
+                            <line x1="2" x2="22" y1="10" y2="10" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-blue-600 transition-colors">信用卡分期</h3>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">分期零利率是真的嗎？計算真實年利率 (IRR) 與總利息支出。</p>
+                </a>
+
+                <!-- 百分比計算 -->
+                <a href="./tools/percentage-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #A855F7">
+                    <div class="icon-box bg-purple-50 text-purple-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" x2="5" y1="5" y2="19" />
+                            <circle cx="6.5" cy="6.5" r="2.5" />
+                            <circle cx="17.5" cy="17.5" r="2.5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-purple-600 transition-colors">百分比計算
                     </h3>
-                    <p class="text-sm text-zinc-500 mt-1">平日/休息日/例假日</p>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">打折後是多少？漲幅怎麼算？四種模式解決所有百分比問題。</p>
                 </a>
 
-                <a href="./tools/credit-card-calculator.html" class="card rounded-2xl p-5 group">
-                    <span class="text-2xl">💳</span>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
-                        信用卡分期</h3>
-                    <p class="text-sm text-zinc-500 mt-1">真實利息、年利率換算</p>
-                </a>
-
-                <a href="./tools/percentage-calculator.html" class="card rounded-2xl p-5 group">
-                    <span class="text-2xl">📐</span>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
-                        百分比計算</h3>
-                    <p class="text-sm text-zinc-500 mt-1">折扣、變化率、求原值</p>
-                </a>
-
-                <a href="./tools/split-calculator.html" class="card rounded-2xl p-5 group">
-                    <span class="text-2xl">👥</span>
-                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
-                        分帳計算</h3>
-                    <p class="text-sm text-zinc-500 mt-1">聚餐、合租、團購</p>
+                <!-- 分帳計算 -->
+                <a href="./tools/split-calculator.html" class="card rounded-2xl p-6 group"
+                    style="--hover-color: #6366F1">
+                    <div class="icon-box bg-indigo-50 text-indigo-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 group-hover:text-indigo-600 transition-colors">分帳計算</h3>
+                    <p class="text-sm text-stone-500 mt-2 leading-relaxed">聚餐、旅遊、合租必備。支援各別調整項目，AA 制不再頭痛。</p>
                 </a>
 
             </div>
         </section>
 
-        <!-- 進階工具 -->
-        <section class="mb-12">
-            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> 退休理財
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <!-- 退休理財 -->
+        <section class="mb-20">
+            <div class="flex items-center gap-3 mb-8 px-2">
+                <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">退休理財</h2>
+            </div>
 
-                <a href="./tools/labor-pension-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🏦</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">勞退試算
-                    </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+                <a href="./tools/labor-pension-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #F59E0B">
+                    <div class="icon-box bg-amber-50 text-amber-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="8" cy="8" r="6" />
+                            <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+                            <path d="M7 6h1v4" />
+                            <path d="m16.71 13.88.7.71-2.82 2.82" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-amber-600 transition-colors">勞退試算
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">自提節稅效益與月領預估</p>
+                    </div>
                 </a>
 
-                <a href="./tools/retirement-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🌴</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">退休規劃
-                    </h3>
+                <a href="./tools/retirement-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #14B8A6">
+                    <div class="icon-box bg-teal-50 text-teal-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h2l1-1 1 1h4" />
+                            <path d="m13 7.14-.54-1L12 7.14" />
+                            <path d="M16 8c0-2.76-2.46-5-5.5-5S5 5.24 5 8h2l1-1 1 1h4" />
+                            <path d="m16 7.14-.54-1L15 7.14" />
+                            <rect width="2" height="14" x="9" y="8" rx="1" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-teal-600 transition-colors">退休規劃
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">FIRE 4% 法則與資產模擬</p>
+                    </div>
                 </a>
 
-                <a href="./tools/profit-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">📊</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">利潤計算
-                    </h3>
+                <a href="./tools/profit-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #10B981">
+                    <div class="icon-box bg-emerald-50 text-emerald-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3v18h18" />
+                            <path d="m19 9-5 5-4-4-3 3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-emerald-600 transition-colors">利潤計算
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">毛利率、淨利與損益平衡</p>
+                    </div>
                 </a>
 
-                <a href="./tools/cost-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🧮</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">成本分析
-                    </h3>
+                <a href="./tools/cost-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #F97316">
+                    <div class="icon-box bg-orange-50 text-orange-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="16" height="20" x="4" y="2" rx="2" />
+                            <line x1="8" x2="16" y1="6" y2="6" />
+                            <line x1="16" x2="16" y1="14" y2="18" />
+                            <path d="M16 10h.01" />
+                            <path d="M12 10h.01" />
+                            <path d="M8 10h.01" />
+                            <path d="M12 14h.01" />
+                            <path d="M8 14h.01" />
+                            <path d="M12 18h.01" />
+                            <path d="M8 18h.01" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-orange-600 transition-colors">成本分析
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">固定成本與變動成本分析</p>
+                    </div>
                 </a>
 
             </div>
         </section>
 
         <!-- 生活工具 -->
-        <section class="mb-16">
-            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
-                <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> 生活計算
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <section class="mb-20">
+            <div class="flex items-center gap-3 mb-8 px-2">
+                <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 7v-3c0-.6.4-1 1-1h6c.6 0 1 .4 1 1v3" />
+                        <circle cx="12" cy="13" r="9" />
+                        <path d="M12 9v4l3 3" />
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">生活計算</h2>
+            </div>
 
-                <a href="./tools/work-hours-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🕐</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">工時計算
-                    </h3>
-                </a>
-
-                <a href="./tools/delivery-income-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🛵</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">外送收入
-                    </h3>
-                </a>
-
-                <a href="./tools/rent-cost-calculator.html" class="card rounded-xl p-4 group text-center">
-                    <span class="text-xl">🏠</span>
-                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">租金成本
-                    </h3>
-                </a>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 
                 <a href="./tools/work-hours-calculator.html"
-                    class="card rounded-xl p-4 group text-center opacity-40 pointer-events-none">
-                    <span class="text-xl">🏗️</span>
-                    <h3 class="text-sm font-medium text-zinc-400 mt-2">更多開發中</h3>
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #0EA5E9">
+                    <div class="icon-box bg-sky-50 text-sky-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-sky-600 transition-colors">工時計算
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">時薪制工時與薪資</p>
+                    </div>
                 </a>
+
+                <a href="./tools/delivery-income-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #EF4444">
+                    <div class="icon-box bg-red-50 text-red-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="18.5" cy="17.5" r="3.5" />
+                            <circle cx="5.5" cy="17.5" r="3.5" />
+                            <circle cx="15" cy="5" r="1" />
+                            <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-red-600 transition-colors">外送收入
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">跑單淨收入與油錢</p>
+                    </div>
+                </a>
+
+                <a href="./tools/rent-cost-calculator.html"
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
+                    style="--hover-color: #6366F1">
+                    <div class="icon-box bg-indigo-50 text-indigo-600 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-800 group-hover:text-indigo-600 transition-colors">租金成本
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-2">租屋押金與真實月支出</p>
+                    </div>
+                </a>
+
+                <div
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full opacity-60 pointer-events-none bg-stone-100 border-dashed border-stone-300 shadow-none">
+                    <div class="icon-box bg-stone-200 text-stone-400 mb-2 w-12 h-12">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" x2="12" y1="8" y2="16" />
+                            <line x1="8" x2="16" y1="12" y2="12" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-stone-400">更多開發中</h3>
+                        <p class="text-xs text-stone-400 mt-2">Coming Soon</p>
+                    </div>
+                </div>
 
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="text-center border-t border-zinc-800/50 pt-8">
-            <p class="text-zinc-600 text-sm">
-                © 2026 TaiCalc · <span class="text-zinc-500">DESIGNED~德</span>
+        <footer class="text-center border-t border-stone-200 pt-8 pb-8">
+            <p class="text-stone-400 text-xs tracking-wider">
+                © 2026 TaiCalc
             </p>
         </footer>
 
     </div>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    </script>
 </body>
 
 </html>

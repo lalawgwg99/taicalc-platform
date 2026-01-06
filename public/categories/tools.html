@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>實用工具 | TaiCalc</title>
+    <meta name="description" content="薪資計算、加班費、分帳、百分比換算，各種生活與工作中的實用小工具。">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #FAFAF9;
+            /* stone-50 */
+            color: #44403C;
+            /* stone-700 */
+        }
+
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #E7E5E4;
+            /* stone-200 */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            border-color: var(--hover-color, #10B981);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1);
+        }
+
+        .nav-link {
+            color: #78716C;
+            /* stone-500 */
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1C1917;
+            /* stone-900 */
+        }
+
+        .nav-link.active {
+            color: #059669;
+            /* emerald-600 */
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <div class="flex-grow max-w-6xl mx-auto w-full px-6 py-8">
+
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm">
+                <a href="../index.html" class="nav-link">首頁</a>
+                <a href="./finance.html" class="nav-link">退休理財</a>
+                <a href="./life.html" class="nav-link">生活計算</a>
+                <a href="./tools.html" class="nav-link active">實用工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">實用工具</span>
+        </div>
+
+        <!-- Page Header -->
+        <header class="mb-12">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">實用工具</h1>
+            </div>
+            <p class="text-stone-500 max-w-2xl leading-relaxed">
+                工作與生活的好幫手。從薪資結構到信用卡優惠，快速算出您需要的每一個答案。
+            </p>
+        </header>
+
+        <!-- Tools Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 薪資實拿 -->
+            <a href="../tools/salary-calculator.html" class="card rounded-2xl p-6 group" style="--hover-color: #10B981">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="icon-box bg-emerald-50 text-emerald-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="12" x="2" y="6" rx="2" />
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M6 12h.01M18 12h.01" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">TOP</span>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-emerald-600 transition-colors">薪資實拿</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">扣除勞健保後實際領多少？包含勞退自提與年終獎金試算。</p>
+            </a>
+
+            <!-- 加班費 -->
+            <a href="../tools/overtime-calculator.html" class="card rounded-2xl p-6 group"
+                style="--hover-color: #F43F5E">
+                <div class="icon-box bg-rose-50 text-rose-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 2h4" />
+                        <path d="M12 14v-4" />
+                        <path d="M4 13a8 8 0 0 1 8-7 6 6 0 0 1 3.6 11.6" />
+                        <path d="M21 17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4Z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-rose-600 transition-colors">加班費</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">平日、休息日、國定假日加班費計算。搞懂勞基法，權益不吃虧。</p>
+            </a>
+
+            <!-- 信用卡分期 -->
+            <a href="../tools/credit-card-calculator.html" class="card rounded-2xl p-6 group"
+                style="--hover-color: #3B82F6">
+                <div class="icon-box bg-blue-50 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="14" x="2" y="5" rx="2" />
+                        <line x1="2" x2="22" y1="10" y2="10" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-blue-600 transition-colors">信用卡分期</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">分期零利率是真的嗎？計算真實年利率 (IRR) 與總利息支出。</p>
+            </a>
+
+            <!-- 百分比計算 -->
+            <a href="../tools/percentage-calculator.html" class="card rounded-2xl p-6 group"
+                style="--hover-color: #A855F7">
+                <div class="icon-box bg-purple-50 text-purple-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" x2="5" y1="5" y2="19" />
+                        <circle cx="6.5" cy="6.5" r="2.5" />
+                        <circle cx="17.5" cy="17.5" r="2.5" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-purple-600 transition-colors">百分比計算</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">打折後是多少？漲幅怎麼算？四種模式解決所有百分比問題。</p>
+            </a>
+
+            <!-- 分帳計算 -->
+            <a href="../tools/split-calculator.html" class="card rounded-2xl p-6 group" style="--hover-color: #6366F1">
+                <div class="icon-box bg-indigo-50 text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-stone-800 group-hover:text-indigo-600 transition-colors">分帳計算</h3>
+                <p class="text-sm text-stone-500 mt-2 leading-relaxed">聚餐、旅遊、合租必備。支援各別調整項目，AA 制不再頭痛。</p>
+            </a>
+
+        </div>
+
+    </div>
+
+    <footer class="mt-auto py-8 text-center text-stone-400 text-xs tracking-wider border-t border-stone-200">
+        © 2026 TaiCalc
+    </footer>
+
+</body>
+
+</html>

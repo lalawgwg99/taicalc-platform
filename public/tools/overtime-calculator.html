@@ -69,26 +69,42 @@
             font-variant-numeric: tabular-nums;
         }
     </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="text-zinc-100 antialiased">
-    <div id="app" class="max-w-2xl mx-auto px-4 py-8 sm:py-12">
+<body class="antialiased min-h-screen flex flex-col">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-6 py-8">
 
-        <header class="mb-8">
-            <nav class="flex items-center justify-between mb-6">
-                <a href="../index.html"
-                    class="text-zinc-500 text-sm hover:text-white transition-colors flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    TaiCalc
-                </a>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
                 <span
-                    class="text-xs px-2 py-1 rounded-full bg-violet-950/50 text-violet-400 border border-violet-900/50">2026
-                    勞基法</span>
-            </nav>
-            <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">加班費計算</h1>
-            <p class="text-zinc-500 mt-1 text-sm">平日 · 休息日 · 例假日 · 週累計</p>
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/tools.html" class="hover:text-stone-600 transition-colors">實用工具</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">加班費計算</span>
+        </div>
+
+        <header class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">加班費計算機</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 border border-rose-200 font-medium">勞基法</span>
+            </div>
+            <p class="text-stone-500 text-sm">平日 · 休息日 · 國定假日</p>
         </header>
 
         <main class="space-y-6">

@@ -4,153 +4,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>勞退試算｜TaiCalc</title>
-    <meta name="description" content="計算勞工退休金自提與雇主提撥，試算退休金累積。">
-    <link rel="canonical" href="https://taicalc.com/tools/labor-pension">
+    <title>2026 勞退試算極致版｜舊制/新制退休金｜TaiCalc</title>
+    <meta name="description" content="2026最新勞工退休金試算。視覺化複利成長曲線，精算自提6%節稅效益，並預估退休後每月可領金額。">
+    <meta name="keywords" content="勞退試算,勞工退休金,自提6%,節稅,退休金計算,勞退新制">
+    <link rel="canonical" href="https://taicalc.com/tools/labor-pension-calculator">
+
+    <meta property="og:title" content="2026 勞退試算極致版｜TaiCalc">
+    <meta property="og:description" content="視覺化複利成長，精算自提節稅與月領金額。">
+    <meta property="og:type" content="website">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "2026 勞退試算極致版",
+        "url": "https://taicalc.com/tools/labor-pension-calculator",
+        "applicationCategory": "FinanceApplication"
+    }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+        rel="stylesheet">
 
     <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-card: rgba(17, 17, 19, 0.8);
+            --border: rgba(255, 255, 255, 0.06);
+            --accent: #d97706;
+            /* Amber-600 */
+            --accent-glow: rgba(217, 119, 6, 0.15);
+        }
+
         * {
-            font-family: 'Noto Sans TC', sans-serif;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
         }
 
         body {
-            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            background: var(--bg-primary);
+            background-image: radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-glow), transparent);
             min-height: 100vh;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .glass {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+
+        .stat-value {
+            font-variant-numeric: tabular-nums;
         }
     </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="text-zinc-100">
-    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+<body class="antialiased min-h-screen flex flex-col">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-6 py-8">
 
-        <header class="text-center mb-8">
-            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
-            <h1 class="text-3xl font-bold mt-4 text-white">勞退試算</h1>
-            <p class="text-zinc-400 mt-2">勞工退休金累積試算</p>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/finance.html" class="hover:text-stone-600 transition-colors">退休理財</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">勞退試算</span>
+        </div>
+
+        <header class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">勞退試算</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 font-medium">自提效益</span>
+            </div>
+            <p class="text-stone-500 text-sm">自提節稅效益與退休月領預估</p>
         </header>
 
-        <main class="card rounded-3xl p-6 space-y-6">
+        <main class="space-y-6">
 
-            <div>
-                <label class="block text-sm text-zinc-400 mb-2">月薪 (NT$)</label>
-                <input type="number" v-model.number="monthlySalary"
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
-            </div>
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- 左側：輸入 -->
+                <div class="space-y-6 lg:col-span-1">
+                    <section class="glass rounded-2xl p-5 space-y-4">
+                        <h2 class="text-sm font-semibold text-zinc-400 mb-2">🐢 基礎設定</h2>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-1">月薪 (NT$)</label>
+                            <input type="number" v-model.number="salary"
+                                class="input-field w-full rounded-xl py-2.5 px-3 text-white text-lg font-semibold focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-1">目前年齡</label>
+                            <input type="number" v-model.number="currentAge"
+                                class="input-field w-full rounded-xl py-2.5 px-3 text-white focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-1">預計退休年齡</label>
+                            <input type="number" v-model.number="retireAge"
+                                class="input-field w-full rounded-xl py-2.5 px-3 text-white focus:outline-none">
+                        </div>
+                    </section>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">自提比例 (%)</label>
-                    <div class="grid grid-cols-4 gap-1">
-                        <button v-for="n in [0,3,4,6]" :key="n" @click="selfContribution = n"
-                            :class="['py-2 rounded-lg text-sm font-medium transition-all', selfContribution === n ? 'bg-emerald-600 text-white' : 'bg-zinc-800 text-zinc-400']">
-                            {{ n }}%
-                        </button>
-                    </div>
+                    <section class="glass rounded-2xl p-5 space-y-4">
+                        <h2 class="text-sm font-semibold text-zinc-400 mb-2">📈 投資與節稅</h2>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-2">自提比例 (0-6%)</label>
+                            <div class="flex gap-1">
+                                <button v-for="n in [0, 6]" :key="n" @click="selfRate = n"
+                                    :class="['flex-1 py-1.5 rounded-lg text-xs font-medium transition-all', selfRate === n ? 'bg-amber-600 text-white' : 'bg-zinc-800 text-zinc-400']">
+                                    {{ n }}%
+                                </button>
+                                <input type="number" v-model.number="selfRate" min="0" max="6"
+                                    class="w-12 bg-zinc-900 border border-zinc-800 rounded-lg text-center text-white text-sm focus:outline-none focus:border-amber-600">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-2">預估年報酬率</label>
+                            <div class="flex gap-1 mb-2">
+                                <button @click="roi = 3"
+                                    class="flex-1 py-1 rounded bg-zinc-800 text-zinc-400 text-xs hover:text-white">保守
+                                    3%</button>
+                                <button @click="roi = 5"
+                                    class="flex-1 py-1 rounded bg-zinc-800 text-zinc-400 text-xs hover:text-white">穩健
+                                    5%</button>
+                                <button @click="roi = 8"
+                                    class="flex-1 py-1 rounded bg-zinc-800 text-zinc-400 text-xs hover:text-white">積極
+                                    8%</button>
+                            </div>
+                            <input type="number" v-model.number="roi" step="0.5"
+                                class="input-field w-full rounded-xl py-2 px-3 text-white text-sm focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-500 mb-2">所得稅率 (計算節稅)</label>
+                            <select v-model.number="taxRate"
+                                class="input-field w-full rounded-xl py-2 px-3 text-white text-sm focus:outline-none appearance-none">
+                                <option :value="5">5% (年收 0-59萬)</option>
+                                <option :value="12">12% (59-133萬)</option>
+                                <option :value="20">20% (133-266萬)</option>
+                                <option :value="30">30% (266-498萬)</option>
+                                <option :value="40">40% (498萬以上)</option>
+                            </select>
+                        </div>
+                    </section>
                 </div>
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">預估年數</label>
-                    <input type="number" v-model.number="years"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
-                </div>
-            </div>
 
-            <div>
-                <label class="block text-sm text-zinc-400 mb-2">預估年報酬率 (%)</label>
-                <input type="number" v-model.number="annualReturn" step="0.1"
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
-            </div>
+                <!-- 右側：結果與圖表 -->
+                <div class="lg:col-span-2 space-y-6">
 
-            <!-- 結果 -->
-            <div
-                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
-                <div class="grid grid-cols-2 gap-4 text-center mb-4">
-                    <div>
-                        <p class="text-zinc-400 text-xs mb-1">雇主提撥 (6%)</p>
-                        <p class="text-lg font-bold text-white font-mono">{{ employerMonthly }}/月</p>
-                    </div>
-                    <div>
-                        <p class="text-zinc-400 text-xs mb-1">自提 ({{ selfContribution }}%)</p>
-                        <p class="text-lg font-bold text-emerald-400 font-mono">{{ selfMonthly }}/月</p>
-                    </div>
-                </div>
-                <div class="text-center pt-4 border-t border-zinc-800">
-                    <p class="text-zinc-400 text-sm mb-1">{{ years }} 年後預估累積</p>
-                    <p class="text-3xl font-bold text-emerald-400 font-mono">NT$ {{ totalAccumulated }}</p>
-                </div>
-                <div class="grid grid-cols-2 gap-4 text-center mt-4 pt-4 border-t border-zinc-800">
-                    <div>
-                        <p class="text-zinc-500 text-xs">本金投入</p>
-                        <p class="text-lg font-bold text-zinc-300 font-mono">{{ principal }}</p>
-                    </div>
-                    <div>
-                        <p class="text-zinc-500 text-xs">投資收益</p>
-                        <p class="text-lg font-bold text-blue-400 font-mono">{{ earnings }}</p>
-                    </div>
-                </div>
-            </div>
+                    <!-- 核心數字 -->
+                    <section class="glass rounded-2xl p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
+                            <div>
+                                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">預估累積總額 ({{ retireAge -
+                                    currentAge }} 年)</p>
+                                <p class="text-4xl font-bold stat-value text-amber-500">
+                                    <span class="text-2xl text-zinc-500 mr-1">$</span>{{ totalAmount.toLocaleString() }}
+                                </p>
+                            </div>
+                            <div class="text-left sm:text-right">
+                                <p class="text-xs text-zinc-500 mb-1">預估月領 (20年年金)</p>
+                                <p class="text-xl font-semibold text-white stat-value">${{
+                                    monthlyPension.toLocaleString() }}</p>
+                            </div>
+                        </div>
 
-            <div class="text-center text-sm text-zinc-500">
-                💡 自提可節稅，從薪資所得中扣除
+                        <!-- 複利圖表 -->
+                        <div class="chart-container relative h-64 w-full">
+                            <canvas ref="growthChart"></canvas>
+                        </div>
+                    </section>
+
+                    <!-- 分析卡片 -->
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <!-- 資金結構 -->
+                        <section class="glass rounded-2xl p-5">
+                            <h3 class="text-sm font-semibold text-white mb-4">💰 資金結構</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-zinc-400">本金投入 ({{ principalPercent }}%)</span>
+                                    <span class="text-white font-mono">${{ totalPrincipal.toLocaleString() }}</span>
+                                </div>
+                                <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-zinc-500 h-full" :style="{width: principalPercent + '%'}"></div>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-zinc-400">投資收益 ({{ interestPercent }}%)</span>
+                                    <span class="text-amber-500 font-mono">+${{ totalInterest.toLocaleString() }}</span>
+                                </div>
+                                <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                                    <div class="bg-amber-500 h-full" :style="{width: interestPercent + '%'}"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 節稅 & 月提 -->
+                        <section class="glass rounded-2xl p-5">
+                            <h3 class="text-sm font-semibold text-white mb-4">🎁 節稅 & 提撥</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-zinc-800/30 rounded-xl">
+                                    <div>
+                                        <p class="text-xs text-zinc-500 mb-0.5">自提 6% 節稅</p>
+                                        <p class="text-lg font-bold text-emerald-400 font-mono">+${{ taxSavingYearly
+                                            }}/年</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-zinc-500 mb-0.5">每月自提金額</p>
+                                        <p class="text-white font-mono">${{ selfMonthlyContribution }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-xs text-zinc-500 px-1">
+                                    <span>雇主提撥 (6%)</span>
+                                    <span class="text-zinc-300 font-mono">${{ employerMonthlyContribution }}/月</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- 說明 -->
+                    <div class="p-4 rounded-xl border border-zinc-800 bg-zinc-900/30 text-xs text-zinc-500 space-y-2">
+                        <p>ℹ️ <strong>計算說明：</strong></p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li>2026年勞退提撥分級表上限為 $150,000。</li>
+                            <li>月領金額採「年金法」計算，假設退休後資金繼續以 2% 報酬率滾存，並攤提 20 年 (至約 85 歲)。</li>
+                            <li>未包含勞保老年給付 (勞保年金)，此僅為勞退 (個人帳戶) 部分。</li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
 
         </main>
-
-        <footer class="text-center mt-8 text-zinc-600 text-sm">
-            © 2026 TaiCalc
-        </footer>
     </div>
 
     <script>
-        const { createApp, ref, computed } = Vue
+        const { createApp, ref, computed, watch, onMounted } = Vue
+
+        // 勞退分級表 (簡化關鍵級距, 上限150000)
+        const PENSION_GRADES = [
+            1500, 3000, 4500, 6000, 7500, 8700, 9900, 11100, 12540, 13500, 15840, 16500, 17280, 17880, 19047, 20008, 21009, 22000, 23100, 24000, 25200, 26400, 27600, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000
+        ]
+
+        const getGrade = (s) => {
+            const val = Math.max(s || 0, 1500)
+            for (let g of PENSION_GRADES) if (val <= g) return g
+            return 150000 // Max cap
+        }
 
         createApp({
             setup() {
-                const monthlySalary = ref(45000)
-                const selfContribution = ref(6)
-                const years = ref(30)
-                const annualReturn = ref(3)
+                const salary = ref(45000)
+                const currentAge = ref(30)
+                const retireAge = ref(65)
+                const selfRate = ref(6)
+                const roi = ref(5) // 年化報酬率
+                const taxRate = ref(12) // 所得稅率
 
-                const employerMonthly = computed(() => Math.round((monthlySalary.value || 0) * 0.06).toLocaleString())
-                const selfMonthly = computed(() => Math.round((monthlySalary.value || 0) * (selfContribution.value / 100)).toLocaleString())
+                const growthChart = ref(null)
+                let chartInstance = null
 
-                const totalAccumulated = computed(() => {
-                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
-                    const months = (years.value || 0) * 12
-                    const r = (annualReturn.value || 0) / 100 / 12
+                const years = computed(() => Math.max(1, retireAge.value - currentAge.value))
+                const monthlyWageGrade = computed(() => getGrade(salary.value))
 
-                    if (r === 0) return (monthlyTotal * months).toLocaleString()
+                const employerMonthlyContribution = computed(() => Math.round(monthlyWageGrade.value * 0.06))
+                const selfMonthlyContribution = computed(() => Math.round(monthlyWageGrade.value * (selfRate.value / 100)))
+                const totalMonthlyContribution = computed(() => employerMonthlyContribution.value + selfMonthlyContribution.value)
 
-                    const fv = monthlyTotal * ((Math.pow(1 + r, months) - 1) / r)
-                    return Math.round(fv).toLocaleString()
+                // 節稅計算
+                const taxSavingYearly = computed(() => Math.round(selfMonthlyContribution.value * 12 * (taxRate.value / 100)))
+
+                // 複利計算
+                const calculateProjection = () => {
+                    const months = years.value * 12
+                    const monthlyRate = roi.value / 100 / 12
+                    const monthlyContrib = totalMonthlyContribution.value
+
+                    let data = []
+                    let balance = 0
+                    let totalPrincipal = 0
+
+                    for (let i = 1; i <= years.value; i++) {
+                        // 年底結算
+                        for (let m = 0; m < 12; m++) {
+                            balance = balance * (1 + monthlyRate) + monthlyContrib
+                            totalPrincipal += monthlyContrib
+                        }
+                        data.push({
+                            year: currentAge.value + i,
+                            balance: Math.round(balance),
+                            principal: Math.round(totalPrincipal),
+                            interest: Math.round(balance - totalPrincipal)
+                        })
+                    }
+                    return data
+                }
+
+                const projection = computed(() => calculateProjection())
+                const totalAmount = computed(() => projection.value[projection.value.length - 1]?.balance || 0)
+                const totalPrincipal = computed(() => projection.value[projection.value.length - 1]?.principal || 0)
+                const totalInterest = computed(() => projection.value[projection.value.length - 1]?.interest || 0)
+
+                const principalPercent = computed(() => totalAmount.value > 0 ? Math.round(totalPrincipal.value / totalAmount.value * 100) : 0)
+                const interestPercent = computed(() => 100 - principalPercent.value)
+
+                // 月領預估 (年金現值公式 PV = PMT * [...]) -> PMT = PV / [...]
+                // 假設退休後繼續投資保守 2%, 領 20 年 (240期)
+                const monthlyPension = computed(() => {
+                    const r = 0.02 / 12
+                    const n = 20 * 12
+                    // PV = PMT * ((1 - (1+r)^-n) / r)
+                    // PMT = PV * r / (1 - (1+r)^-n)
+                    if (totalAmount.value === 0) return 0
+                    const factor = (1 - Math.pow(1 + r, -n)) / r
+                    return Math.round(totalAmount.value / factor)
                 })
 
-                const principal = computed(() => {
-                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
-                    return (monthlyTotal * (years.value || 0) * 12).toLocaleString()
-                })
+                // 圖表更新
+                const updateChart = () => {
+                    if (!growthChart.value) return
+                    if (chartInstance) chartInstance.destroy()
 
-                const earnings = computed(() => {
-                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
-                    const months = (years.value || 0) * 12
-                    const r = (annualReturn.value || 0) / 100 / 12
-                    const principalVal = monthlyTotal * months
+                    const labels = projection.value.map(d => `${d.year}歲`)
+                    const principalData = projection.value.map(d => d.principal)
+                    const interestData = projection.value.map(d => d.interest)
 
-                    if (r === 0) return '0'
+                    chartInstance = new Chart(growthChart.value, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: '投資收益',
+                                    data: projection.value.map(d => d.balance),
+                                    borderColor: '#d97706', // amber-600
+                                    backgroundColor: (context) => {
+                                        const ctx = context.chart.ctx;
+                                        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+                                        gradient.addColorStop(0, 'rgba(217, 119, 6, 0.4)');
+                                        gradient.addColorStop(1, 'rgba(217, 119, 6, 0.0)');
+                                        return gradient;
+                                    },
+                                    fill: true,
+                                    tension: 0.4,
+                                    pointRadius: 0,
+                                    pointHoverRadius: 6
+                                },
+                                {
+                                    label: '本金投入',
+                                    data: principalData,
+                                    borderColor: '#52525b', // zinc-600
+                                    borderDash: [5, 5],
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { labels: { color: '#a1a1aa' } },
+                                tooltip: {
+                                    backgroundColor: 'rgba(24, 24, 27, 0.9)',
+                                    borderColor: 'rgba(255,255,255,0.1)',
+                                    borderWidth: 1,
+                                    padding: 12,
+                                    callbacks: {
+                                        label: (context) => {
+                                            let label = context.dataset.label || '';
+                                            if (label) label += ': ';
+                                            if (context.parsed.y !== null) label += '$' + context.parsed.y.toLocaleString();
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: { grid: { display: false }, ticks: { color: '#71717a', maxTicksLimit: 8 } },
+                                y: {
+                                    grid: { color: 'rgba(255,255,255,0.05)' },
+                                    ticks: { color: '#71717a', callback: (v) => '$' + (v / 10000).toFixed(0) + '萬' }
+                                }
+                            }
+                        }
+                    })
+                }
 
-                    const fv = monthlyTotal * ((Math.pow(1 + r, months) - 1) / r)
-                    return Math.round(fv - principalVal).toLocaleString()
-                })
+                watch([salary, currentAge, retireAge, selfRate, roi, taxRate], updateChart, { deep: true })
+                onMounted(() => setTimeout(updateChart, 200))
 
-                return { monthlySalary, selfContribution, years, annualReturn, employerMonthly, selfMonthly, totalAccumulated, principal, earnings }
+                return {
+                    salary, currentAge, retireAge, selfRate, roi, taxRate,
+                    totalAmount, monthlyPension,
+                    totalPrincipal, totalInterest, principalPercent, interestPercent,
+                    selfMonthlyContribution, employerMonthlyContribution, taxSavingYearly,
+                    growthChart
+                }
             }
         }).mount('#app')
     </script>

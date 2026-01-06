@@ -49,17 +49,43 @@
             -webkit-appearance: none;
         }
     </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+<body class="antialiased min-h-screen flex flex-col">
 
-    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-6 py-8">
 
-        <header class="text-center space-y-2">
-            <h1 class="text-2xl font-bold tracking-tight text-white">
-                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| 分帳計算</span>
-            </h1>
-            <p class="text-xs text-zinc-500">秒開・即算・隱私不留痕</p>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/tools.html" class="hover:text-stone-600 transition-colors">實用工具</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">分帳計算</span>
+        </div>
+
+        <header class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">分帳計算機</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 font-medium">多人/AA制</span>
+            </div>
+            <p class="text-stone-500 text-sm">聚餐 · 旅遊 · 團購 · 輕鬆拆帳</p>
         </header>
 
         <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">

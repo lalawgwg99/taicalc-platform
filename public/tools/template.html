@@ -1,148 +1,183 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TaiCalc 工具模板</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具名稱 | TaiCalc</title>
+    <meta name="description" content="工具描述">
 
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#09090b',
-                        surface: '#18181b',
-                        border: '#27272a',
-                        primary: '#10b981',
-                        primary_hover: '#059669',
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
 
     <style>
-        [v-cloak] {
-            display: none;
+        * {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #09090b;
-            color: #e4e4e7;
+            background-color: #FAFAF9;
+            /* stone-50 */
+            color: #44403C;
+            /* stone-700 */
         }
 
-        input {
-            -webkit-appearance: none;
-            margin: 0;
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #E7E5E4;
+            /* stone-200 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .input-group label {
+            color: #57534E;
+            /* stone-600 */
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        input[type=number] {
-            -moz-appearance: textfield;
+        .input-field {
+            width: 100%;
+            background-color: #F5F5F4;
+            /* stone-100 */
+            border: 1px solid transparent;
+            color: #1C1917;
+            /* stone-900 */
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            background-color: #FFFFFF;
+            border-color: #10B981;
+            /* emerald-500 */
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #059669;
+            /* emerald-600 */
+            color: white;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #047857;
+            /* emerald-700 */
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .nav-link {
+            color: #78716C;
+            /* stone-500 */
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1C1917;
+            /* stone-900 */
+        }
+
+        [v-cloak] {
+            display: none;
         }
     </style>
 </head>
 
-<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+<body class="antialiased min-h-screen flex flex-col">
 
-    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-6 py-8">
 
-        <header class="text-center space-y-2">
-            <h1 class="text-2xl font-bold tracking-tight text-white">
-                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| {{toolName}}</span>
-            </h1>
-            <p class="text-xs text-zinc-500">秒開・即算・隱私不留痕</p>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-12">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-400 mb-8 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-600 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/tools.html" class="hover:text-stone-600 transition-colors">分類</a>
+            <span>/</span>
+            <span class="text-stone-800 font-medium">工具名稱</span>
+        </div>
+
+        <header class="mb-10">
+            <div class="flex items-center justify-between mb-4">
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">工具標題</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 border border-stone-200 font-medium">標籤</span>
+            </div>
+            <p class="text-stone-500">工具副標與說明文字</p>
         </header>
 
-        <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">
-            <!-- 動態輸入區 -->
-            <slot name="inputs"></slot>
+        <main class="card rounded-3xl p-6 sm:p-8 space-y-8">
+            <!-- 輸入區塊 -->
+            <section class="space-y-6">
+                <div class="input-group">
+                    <label>輸入欄位</label>
+                    <input type="number" class="input-field" placeholder="0">
+                </div>
+            </section>
 
-            <!-- 結果區 -->
-            <div class="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800/50 mt-6">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-sm text-zinc-400">{{resultLabel}}</span>
-                    <span class="text-xs text-zinc-600 font-mono">LIVE</span>
+            <!-- 結果區塊 -->
+            <section class="bg-stone-50 rounded-2xl p-6 border border-stone-100">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-stone-500 font-medium">計算結果</span>
                 </div>
-                <div class="text-3xl font-bold text-primary font-mono tracking-tight">
-                    {{ formattedResult }}
+                <div class="text-4xl font-bold text-stone-900">
+                    0 <span class="text-lg font-medium text-stone-400">元</span>
                 </div>
+            </section>
+
+            <!-- 操作按鈕 -->
+            <div class="flex gap-4 pt-4 border-t border-stone-100">
+                <button class="flex-1 btn-primary">計算</button>
             </div>
-
-            <button @click="copyResult"
-                class="mt-6 w-full bg-primary hover:bg-primary_hover text-zinc-900 font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                </svg>
-                {{ copied ? '已複製 ✓' : '複製結果' }}
-            </button>
         </main>
 
-        <footer class="text-center">
-            <a href="https://taicalc.com" class="text-zinc-600 text-sm hover:text-white transition-colors">← 返回
-                TaiCalc</a>
-        </footer>
     </div>
 
-    <script>
-        // 工具變數（每個工具需自行客製）
-        const TOOL_CONFIG = {
-            name: '工具名稱',
-            resultLabel: '計算結果'
-        }
+    <footer class="mt-auto py-8 text-center text-stone-400 text-xs tracking-wider border-t border-stone-200">
+        © 2026 TaiCalc
+    </footer>
 
-        const { createApp, ref, computed } = Vue
+    <script>
+        const { createApp, ref, computed } = Vue;
 
         createApp({
             setup() {
-                const toolName = ref(TOOL_CONFIG.name)
-                const resultLabel = ref(TOOL_CONFIG.resultLabel)
-                const inputVal = ref('')
-                const copied = ref(false)
-
-                const result = computed(() => {
-                    if (!inputVal.value) return 0
-                    return inputVal.value * 1
-                })
-
-                const formattedResult = computed(() => {
-                    return new Intl.NumberFormat('zh-TW').format(result.value)
-                })
-
-                const copyResult = async () => {
-                    await navigator.clipboard.writeText(formattedResult.value)
-                    copied.value = true
-                    setTimeout(() => copied.value = false, 1500)
-                }
-
-                return {
-                    toolName,
-                    resultLabel,
-                    inputVal,
-                    formattedResult,
-                    copied,
-                    copyResult
-                }
+                // Logic Here
+                return {};
             }
-        }).mount('#app')
+        }).mount('#app');
     </script>
 </body>
 

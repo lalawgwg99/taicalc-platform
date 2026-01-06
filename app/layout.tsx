@@ -1,21 +1,16 @@
 import type { Metadata } from 'next';
-import { Inter, Noto_Sans_TC, JetBrains_Mono } from 'next/font/google';
+import { Noto_Sans_TC } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import Footer from '@/components/Footer';
 import NavigationFixed from '@/components/shared/NavigationFixed';
-import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 
-// Font configuration
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+// Font configuration - 精簡為單一字體降低 bundle 大小
 const notoSansTC = Noto_Sans_TC({
     subsets: ['latin'],
-    weight: ['400', '500', '700', '900'],
+    weight: ['400', '500', '700'],
     variable: '--font-noto-sans',
-});
-const jetbrainsMono = JetBrains_Mono({
-    subsets: ['latin'],
-    variable: '--font-mono',
+    display: 'swap', // 優化 LCP
 });
 
 // SEO Metadata
@@ -117,7 +112,7 @@ export default function RootLayout({
     return (
         <html
             lang="zh-TW"
-            className={`${inter.variable} ${notoSansTC.variable} ${jetbrainsMono.variable}`}
+            className={notoSansTC.variable}
         >
             <head>
                 {/* Google Analytics */}

@@ -5,16 +5,3 @@
 
 export { default as ResultActions, useSavedResults } from './ResultActions';
 export { default as SavedResultsManager } from './SavedResultsManager';
-export { DataVisualization, generateInsights, generateFinancialReport } from './DataVisualization';
-export { SalaryVisualization } from './SalaryVisualization';
-export { FinancialReportGenerator } from './FinancialReportGenerator';
-export { DataCorrelationAnalyzer } from './DataCorrelationAnalyzer';
-
-export type { 
-    ChartData, 
-    Insight, 
-    ChartType, 
-    ExportFormat, 
-    FinancialReport,
-    ChartExportData 
-} from './DataVisualization';
