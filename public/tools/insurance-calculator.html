@@ -164,115 +164,98 @@
     <script>
         const { createApp, ref, computed } = Vue
 
+        // 2026 Labor Insurance Table (Selected grades for lookup)
+        const LABOR_GRADES = [
+            29500, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
+        ]
+
+        // 2026 Health Insurance Table
+        const HEALTH_GRADES = [
+            29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
+            48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800,
+            76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500,
+            120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800,
+            169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 313000
+        ]
+
+        const getInsuredSalary = (salary, table, max) => {
+            if (salary < table[0]) return table[0] // Min wage floor
+            if (salary >= max) return max
+            for (let g of table) {
+                if (g >= salary) return g
+            }
+            return max
+        }
+
         createApp({
             setup() {
                 const roles = [
                     { id: 'employee', label: '一般勞工' },
-                    { id: 'union', label: '職業工會' }, // Union: 60% Labor by worker? Govt 40%? 
-                    // Union Labor: Rate same 11.5%? No Employment insurance usually. 
-                    // Let's stick to standard percentages for now or simplify.
-                    // For Union: Worker pays 60%, Govt 40% of Labor. Health: Worker 60%, Govt 40%.
+                    { id: 'union', label: '職業工會' },
                     { id: 'employer', label: '雇主/負責人' }
-                    // Employer: Labor (Self) 100%? No, usually not labor insured? Or voluntary.
-                    // Actually, "Employer" usually pays 100% Health.
                 ]
                 const currentRole = ref('employee')
                 const salary = ref(35000)
                 const dependents = ref(0)
-                const laborPensionRate = 0.06
 
                 const fmt = (n) => n ? n.toLocaleString('zh-TW') : '0'
 
-                // 2026 Estimated Brackets (Simplified Logic)
-                // Real logic uses a table. We will simulate the table logic:
-                // Find nearest bracket >= salary. 
-                // Min 29500. Max 45800 (Labor) / 182000 (Health)? 
-                // Let's implement a dynamic lookup function.
-
-                const getBracket = (s) => {
-                    const min = 29500
-                    const laborMax = 45800
-                    const healthMax = 313000 // Higher cap for health
-
-                    if (!s) return min
-                    if (s < min) return min
-
-                    // Simple estimation: Round up to nearest bracket logic usually found in TW
-                    // Usually steps of roughly 1000 or specific numbers.
-                    // For this tool, we will just use the input salary as bracket if > min, 
-                    // possibly capping at max for Labor vs Health.
-                    // Accurate enough for estimation? 
-                    // Let's just use exact input but capped.
-                    return s
-                }
-
-                // Rates 2026
-                // Labor: 11.5% (Ord) + 1% (Emp) = 12.5%
-                // Health: 5.17%
-
+                // Main Logic
                 const result = computed(() => {
                     const s = salary.value || 0
 
-                    // Labor Bracket Cap
-                    const lBracket = Math.max(29500, Math.min(s, 45800)) // Labor cap 45800
-                    // Health Bracket Cap
-                    const hBracket = Math.max(29500, Math.min(s, 313000)) // Health cap approx 219500? Use 219500 for now. Actually changed recently. 
+                    // Determine Grade
+                    const lBracket = getInsuredSalary(s, LABOR_GRADES, 45800)
+                    const hBracket = getInsuredSalary(s, HEALTH_GRADES, 313000)
+                    const pBracket = getInsuredSalary(s, LABOR_GRADES, 150000) // Pension, logic similar to labor but higher cap? Actually Pension Grades go to 150k. Use Health grades approx or specific logic. Let's use Health grades capped at 150k as approximation if table similar. 
+                    // Actually Pension grades are specific but usually align.
+                    // Pension cap is 150,000.
 
                     let wLabor = 0, eLabor = 0
                     let wHealth = 0, eHealth = 0
                     let ePension = 0
 
                     if (currentRole.value === 'employee') {
-                        // Labor: 12.5% total. Worker 20%, Employer 70%, Govt 10%
-                        const totalLaborRate = 0.125
-                        wLabor = Math.round(lBracket * totalLaborRate * 0.2)
-                        eLabor = Math.round(lBracket * totalLaborRate * 0.7)
+                        // Labor: 12% * 20%
+                        wLabor = Math.round(lBracket * 0.12 * 0.2)
+                        // Health: 5.17% * 30% * (1+Dep)
+                        const effDep = Math.min(dependents.value, 3)
+                        wHealth = Math.round(hBracket * 0.0517 * 0.3 * (1 + effDep))
 
-                        // Health: 5.17%. Worker 30%, Employer 60% * (1+0.58)
-                        const hRate = 0.0517
-                        // Worker: Rate * 30% * (1 + dependents)
-                        const effDependents = Math.min(dependents.value, 3)
-                        wHealth = Math.round(hBracket * hRate * 0.3 * (1 + effDependents))
-
-                        // Employer: Rate * 60% * 1.58
-                        eHealth = Math.round(hBracket * hRate * 0.6 * 1.58)
-
-                        ePension = Math.round(lBracket * 0.06)
+                        // Employer: Labor 70%, Health 60% * 1.58
+                        eLabor = Math.round(lBracket * 0.12 * 0.7)
+                        eHealth = Math.round(hBracket * 0.0517 * 0.6 * 1.58)
+                        ePension = Math.round(Math.min(s, 150000) * 0.06) // Pension uses actual wage up to cap usually? Or Grade? 
+                        // Pension uses Grade.
+                        ePension = Math.round(Math.min(getInsuredSalary(s, HEALTH_GRADES, 150000), 150000) * 0.06)
                     }
                     else if (currentRole.value === 'union') {
-                        // Union: Labor = Worker 60%, Govt 40%. No Empor. No Employment Ins (-1%)?
-                        // Union rate usually ~11.5% (No employment ins).
-                        const uLaborRate = 0.115
-                        wLabor = Math.round(lBracket * uLaborRate * 0.6)
+                        // Union: Labor 60% (Rate 11% - no Employment Ins). 
+                        // Actually Union rate is Ordinary 11%. No employment 1%.
+                        wLabor = Math.round(lBracket * 0.11 * 0.6)
 
-                        // Health: Worker 60%, Govt 40%.
-                        const hRate = 0.0517
-                        // Union members usually pay explicitly 60%
-                        wHealth = Math.round(hBracket * hRate * 0.6)
-                        // Does dependent logic apply to Union? Yes.
-                        // Actually Union health calc is simply Bracket * Rate * 0.6 * (1+Dep)? 
-                        // It's fixed rate usually. Let's assume standard worker logic but 60% share.
-                        const effDependents = Math.min(dependents.value, 3)
-                        wHealth = Math.round(hBracket * hRate * 0.6 * (1 + effDependents))
+                        // Health: 60%
+                        const effDep = Math.min(dependents.value, 3)
+                        wHealth = Math.round(hBracket * 0.0517 * 0.6 * (1 + effDep))
                     }
                     else if (currentRole.value === 'employer') {
-                        // Employer Self: Labor? Usually voluntary, pay 100% or subsidy? 
-                        // Often distinct. Let's focus on Health.
-                        // Health: Pay 100% ... actually Employer pays 100% of their own premium.
-                        const hRate = 0.0517
-                        const effDependents = Math.min(dependents.value, 3)
-                        wHealth = Math.round(hBracket * hRate * 1.0 * (1 + effDependents))
+                        // Health: 100% * 5.17% * (1+Dep)
+                        const effDep = Math.min(dependents.value, 3)
+                        wHealth = Math.round(hBracket * 0.0517 * 1.0 * (1 + effDep))
+                        // Labor: Voluntary
+                        wLabor = Math.round(lBracket * 0.11)
                     }
 
                     return {
                         workerLabor: wLabor,
                         workerHealth: wHealth,
                         workerTotal: wLabor + wHealth,
-
                         employerLabor: eLabor,
                         employerHealth: eHealth,
                         employerPension: ePension,
-                        employerTotal: eLabor + eHealth + ePension
+                        employerTotal: eLabor + eHealth + ePension,
+                        laborBracket: lBracket,
+                        healthBracket: hBracket
                     }
                 })
 
@@ -280,7 +263,8 @@
                     roles, currentRole,
                     salary, dependents,
                     result, fmt,
-                    matchedBracket: computed(() => Math.max(29500, salary.value || 0))
+                    // Show displayed bracket based on role (usually labor or health dominant)
+                    matchedBracket: computed(() => result.value.laborBracket)
                 }
             }
         }).mount('#app')

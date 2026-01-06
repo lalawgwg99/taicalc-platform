@@ -385,16 +385,34 @@
     <script>
         const { createApp, ref, computed, watch, onMounted } = Vue
 
-        // 2026 費率常數
-        const LABOR_RATE = 0.12, LABOR_SHARE = 0.2
-        const HEALTH_RATE = 0.0517, HEALTH_SHARE = 0.3
-        const LABOR_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200]
-        const HEALTH_GRADES = [29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500]
+        // 2026 費率常數 & 級距表
+        const LABOR_RATE = 0.12     // 11% Ordinary + 1% Employment
+        const LABOR_SHARE = 0.2     // Worker 20%
+        const HEALTH_RATE = 0.0517
+        const HEALTH_SHARE = 0.3    // Worker 30%
 
-        const getGrade = (s, grades, max) => {
-            const val = Math.min(Math.max(s || 0, grades[0]), max)
-            for (let g of grades) if (val <= g) return g
-            return grades[grades.length - 1]
+        // 2026 Labor (Min 29500, Max 45800)
+        const LABOR_GRADES = [
+            29500, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
+        ]
+
+        // 2026 Health (Min 29500, Max 313000)
+        const HEALTH_GRADES = [
+            29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
+            48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800,
+            76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500,
+            120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800,
+            169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 313000
+        ]
+
+        // Helper: Find Insured Salary
+        const getGrade = (salary, table, max) => {
+            if (salary < table[0]) return table[0] // Min floor
+            if (salary >= max) return max
+            for (let g of table) {
+                if (g >= salary) return g
+            }
+            return max
         }
 
         createApp({
@@ -419,24 +437,44 @@
                 let donutInstance = null
                 let lineInstance = null
 
-                // 計算
                 // 計算邏輯函式
                 const calc = (s, b, p) => {
                     const sal = s || 0
-                    const labor = Math.round(getGrade(sal, LABOR_GRADES, 45800) * LABOR_RATE * LABOR_SHARE)
-                    const health = Math.round(getGrade(sal, HEALTH_GRADES, 219500) * HEALTH_RATE * HEALTH_SHARE)
-                    const penS = Math.round(sal * p / 100)
-                    const mNet = sal - labor - health - penS
-                    const tSave = Math.round(penS * 12 * 0.12) // 假設 12% 稅率
+
+                    // 1. Get Brackets
+                    const laborGrade = getGrade(sal, LABOR_GRADES, 45800)
+                    const healthGrade = getGrade(sal, HEALTH_GRADES, 313000)
+
+                    // 2. Calc Costs
+                    // Worker Labor: Grade * 12% * 20%
+                    const labor = Math.round(laborGrade * LABOR_RATE * LABOR_SHARE)
+
+                    // Worker Health: Grade * 5.17% * 30% * (1+0 dependents assumed for basic calc)
+                    const health = Math.round(healthGrade * HEALTH_RATE * HEALTH_SHARE)
+
+                    // Pension
+                    // Pension Table is capped at 150000. Closely aligned with Health grades up to 150k.
+                    const pensionBasis = getGrade(sal, HEALTH_GRADES, 150000)
+                    const penS_Real = Math.round(pensionBasis * p / 100)
+
+                    const mNet = sal - labor - health - penS_Real
+                    const tSave = Math.round(penS_Real * 12 * 0.12) // Assuming 12% tax bracket
                     const yNet = mNet * 12 + sal * b - (labor + health) * b + tSave
 
-                    // 雇主成本
-                    const lg = getGrade(sal, LABOR_GRADES, 45800)
-                    const hg = getGrade(sal, HEALTH_GRADES, 219500)
-                    const empCost = Math.round(lg * LABOR_RATE * 0.7 + hg * HEALTH_RATE * 0.6 + sal * 0.06)
+                    // Employer Cost
+                    const lg = laborGrade
+                    const hg = healthGrade
+                    // Employer Labor: Grade * 12% * 70%
+                    const empLabor = Math.round(lg * LABOR_RATE * 0.7)
+                    // Employer Health: Grade * 5.17% * 60% * 1.58
+                    const empHealth = Math.round(hg * HEALTH_RATE * 0.6 * 1.58)
+                    // Employer Pension: Grade * 6%
+                    const empPension = Math.round(pensionBasis * 0.06)
+
+                    const empCost = empLabor + empHealth + empPension
                     const tCost = sal + empCost
 
-                    return { labor, health, penS, mNet, tSave, yNet, empCost, tCost }
+                    return { labor, health, penS: penS_Real, mNet, tSave, yNet, empCost, tCost }
                 }
 
                 // A 方案計算
