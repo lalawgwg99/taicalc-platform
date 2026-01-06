@@ -4,18 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaiCalc｜秒開財務計算工具</title>
+    <title>TaiCalc｜零等待計算工具</title>
     <meta name="description" content="零等待財務計算工具。薪資實拿、成本計算、分帳、加班費。秒開即算，隱私不留痕。">
-    <meta name="keywords" content="薪資計算,成本計算,分帳,加班費,財務工具,TaiCalc">
+    <meta name="keywords" content="薪資計算,成本計算,分帳,加班費,財務工具,秒開財務">
     <link rel="canonical" href="https://taicalc.com">
 
-    <meta property="og:title" content="TaiCalc｜秒開財務計算工具">
+    <meta property="og:title" content="TaiCalc｜零等待計算工具">
     <meta property="og:description" content="零等待財務計算。秒開即算，隱私不留痕。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://taicalc.com">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 
     <script>
         tailwind.config = {
@@ -52,10 +51,6 @@
     </script>
 
     <style>
-        [v-cloak] {
-            display: none;
-        }
-
         body {
             background-color: #09090b;
             color: #e4e4e7;
@@ -65,7 +60,7 @@
 
 <body class="antialiased min-h-screen">
 
-    <div id="app" v-cloak class="max-w-4xl mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto px-4 py-12">
 
         <!-- Header -->
         <header class="text-center mb-12">
@@ -94,65 +89,45 @@
                 <a href="./tools/salary-calculator.html"
                     class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-blue-950/50 rounded-xl flex items-center justify-center text-2xl">
-                            💰
+                        <div class="w-12 h-12 bg-blue-950/50 rounded-xl flex items-center justify-center text-2xl">💰
                         </div>
                         <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full">HOT</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                        薪資實拿計算
-                    </h3>
-                    <p class="text-sm text-zinc-500">
-                        2026 勞健保費率・勞退自提・年度實領試算
-                    </p>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">薪資實拿計算</h3>
+                    <p class="text-sm text-zinc-500">2026 勞健保費率・勞退自提・年度實領試算</p>
                 </a>
 
                 <!-- 成本計算機 -->
                 <a href="./tools/cost-calculator.html"
                     class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-green-950/50 rounded-xl flex items-center justify-center text-2xl">
-                            📊
+                        <div class="w-12 h-12 bg-green-950/50 rounded-xl flex items-center justify-center text-2xl">📊
                         </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                        成本計算
-                    </h3>
-                    <p class="text-sm text-zinc-500">
-                        毛利率・損益兩平點・定價建議
-                    </p>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">成本計算</h3>
+                    <p class="text-sm text-zinc-500">毛利率・損益兩平點・定價建議</p>
                 </a>
 
                 <!-- 分帳計算 -->
                 <a href="./tools/split-calculator.html"
                     class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-purple-950/50 rounded-xl flex items-center justify-center text-2xl">
-                            👥
+                        <div class="w-12 h-12 bg-purple-950/50 rounded-xl flex items-center justify-center text-2xl">👥
                         </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                        分帳計算
-                    </h3>
-                    <p class="text-sm text-zinc-500">
-                        聚餐・合租・團購分帳
-                    </p>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">分帳計算</h3>
+                    <p class="text-sm text-zinc-500">聚餐・合租・團購分帳</p>
                 </a>
 
                 <!-- 加班費計算 -->
                 <a href="./tools/overtime-calculator.html"
                     class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-amber-950/50 rounded-xl flex items-center justify-center text-2xl">
-                            ⏰
+                        <div class="w-12 h-12 bg-amber-950/50 rounded-xl flex items-center justify-center text-2xl">⏰
                         </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                        加班費計算
-                    </h3>
-                    <p class="text-sm text-zinc-500">
-                        平日・休息日・例假日加班費試算
-                    </p>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">加班費計算</h3>
+                    <p class="text-sm text-zinc-500">平日・休息日・例假日加班費試算</p>
                 </a>
 
             </div>
