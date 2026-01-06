@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
@@ -11,179 +11,142 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#09090b',
-                        surface: '#18181b',
-                        border: '#27272a',
-                        primary: '#10b981',
-                        primary_hover: '#059669',
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
-        rel="stylesheet">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "成本計算機",
-        "applicationCategory": "FinanceApplication",
-        "operatingSystem": "Web Browser",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
-    }
-    </script>
-
-    <style>
-        [v-cloak] {
-            display: none;
-        }
-
-        body {
-            background-color: #09090b;
-            color: #e4e4e7;
-        }
-
-        input {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-4 sm:px-6 py-8">
 
-    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-8">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-amber-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
 
-        <header class="text-center space-y-2">
-            <h1 class="text-2xl font-bold tracking-tight text-white">
-                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| 成本計算</span>
-            </h1>
-            <p class="text-xs text-zinc-500">秒開・即算・隱私不留痕</p>
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-800 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/tools.html" class="hover:text-stone-800 transition-colors">實用工具</a>
+            <span>/</span>
+            <span class="text-stone-900 font-medium">成本計算</span>
+        </div>
+
+        <header class="mb-8">
+            <div class="flex items-center justify-between mb-2">
+                <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">成本計算機</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">毛利試算</span>
+            </div>
+            <p class="text-stone-500 text-sm">快速計算產品成本、毛利率、損益兩平點</p>
         </header>
 
-        <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">
+        <main class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 space-y-6">
 
             <!-- 輸入區 -->
-            <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="material" class="block text-xs font-medium text-zinc-400 mb-1.5">材料成本</label>
+                        <label for="material" class="block text-xs font-semibold text-stone-500 mb-2">材料成本</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
-                            <input type="number" id="material" v-model.number="material"
-                                class="w-full bg-zinc-950 border border-border rounded-lg py-2.5 pl-7 pr-3 text-white font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                                placeholder="1000">
+                            <input id="material" type="number" v-model.number="material"
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-8 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+                            <span class="absolute left-3 top-2.5 text-stone-400">$</span>
                         </div>
                     </div>
                     <div>
-                        <label for="labor" class="block text-xs font-medium text-zinc-400 mb-1.5">人工成本</label>
+                        <label for="labor" class="block text-xs font-semibold text-stone-500 mb-2">人工成本</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
-                            <input type="number" id="labor" v-model.number="labor"
-                                class="w-full bg-zinc-950 border border-border rounded-lg py-2.5 pl-7 pr-3 text-white font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                                placeholder="500">
+                            <input id="labor" type="number" v-model.number="labor"
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-8 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+                            <span class="absolute left-3 top-2.5 text-stone-400">$</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="overhead" class="block text-xs font-medium text-zinc-400 mb-1.5">其他費用</label>
+                        <label for="overhead" class="block text-xs font-semibold text-stone-500 mb-2">其他費用</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
-                            <input type="number" id="overhead" v-model.number="overhead"
-                                class="w-full bg-zinc-950 border border-border rounded-lg py-2.5 pl-7 pr-3 text-white font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                                placeholder="200">
+                            <input id="overhead" type="number" v-model.number="overhead"
+                                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-8 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+                            <span class="absolute left-3 top-2.5 text-stone-400">$</span>
                         </div>
                     </div>
                     <div>
-                        <label for="quantity" class="block text-xs font-medium text-zinc-400 mb-1.5">預計數量</label>
-                        <input type="number" id="quantity" v-model.number="quantity" min="1"
-                            class="w-full bg-zinc-950 border border-border rounded-lg py-2.5 px-3 text-white font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                            placeholder="10">
+                        <label for="quantity" class="block text-xs font-semibold text-stone-500 mb-2">預計數量</label>
+                        <input id="quantity" type="number" v-model.number="quantity" min="1"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
                     </div>
                 </div>
 
                 <div>
-                    <label for="price" class="block text-xs font-medium text-zinc-400 mb-1.5">預計售價</label>
+                    <label for="price"
+                        class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">預計售價</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">$</span>
-                        <input type="number" id="price" v-model.number="price"
-                            class="w-full bg-zinc-950 border border-border rounded-lg py-3 pl-7 pr-3 text-white text-lg font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                            placeholder="250">
+                        <input id="price" type="number" v-model.number="price"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 pl-9 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all">
+                        <span class="absolute left-4 top-3.5 text-stone-400 font-bold">$</span>
                     </div>
                 </div>
             </div>
 
             <!-- 結果區 -->
-            <div class="mt-6 grid grid-cols-2 gap-3">
-                <div class="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800/50 text-center">
-                    <p class="text-xs text-zinc-500 mb-1">總成本</p>
-                    <p class="text-xl font-bold font-mono text-white">{{ fmt(totalCost) }}</p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 text-center">
+                    <p class="text-xs text-stone-500 mb-1">總成本</p>
+                    <p class="text-xl font-bold font-mono text-stone-700">${{ fmt(totalCost) }}</p>
                 </div>
-                <div
-                    class="bg-gradient-to-br from-primary/20 to-emerald-900/20 rounded-xl p-4 border border-primary/30 text-center">
-                    <p class="text-xs text-zinc-400 mb-1">單位成本</p>
-                    <p class="text-xl font-bold font-mono text-primary">{{ fmt(unitCost) }}</p>
+                <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-100 text-center">
+                    <p class="text-xs text-emerald-600 mb-1">單位成本</p>
+                    <p class="text-xl font-bold font-mono text-emerald-600">${{ fmt(unitCost) }}</p>
                 </div>
-                <div class="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800/50 text-center">
-                    <p class="text-xs text-zinc-500 mb-1">毛利率</p>
-                    <p class="text-xl font-bold font-mono" :class="margin >= 0 ? 'text-green-400' : 'text-red-400'">
+                <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 text-center">
+                    <p class="text-xs text-stone-500 mb-1">毛利率</p>
+                    <p class="text-xl font-bold font-mono" :class="margin >= 0 ? 'text-emerald-600' : 'text-rose-500'">
                         {{ margin.toFixed(1) }}%
                     </p>
                 </div>
-                <div class="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800/50 text-center">
-                    <p class="text-xs text-zinc-500 mb-1">損益兩平</p>
-                    <p class="text-xl font-bold font-mono text-blue-400">
+                <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 text-center">
+                    <p class="text-xs text-stone-500 mb-1">損益兩平</p>
+                    <p class="text-xl font-bold font-mono text-blue-600">
                         {{ breakeven > 0 ? breakeven + ' 件' : '—' }}
                     </p>
                 </div>
             </div>
 
             <!-- 判斷提示 -->
-            <div class="mt-4 text-sm text-center py-3 rounded-lg" :class="verdictClass">
+            <div class="text-sm text-center py-3 rounded-lg border" :class="verdictClass">
                 {{ verdict }}
             </div>
 
             <!-- 複製按鈕 -->
             <button @click="copyResult"
-                class="mt-4 w-full bg-primary hover:bg-primary_hover text-zinc-900 font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+                <svg v-if="!copied" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
                     <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
                 </svg>
-                {{ copied ? '已複製 ✓' : '複製結果' }}
+                <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                {{ copied ? '已複製結果！' : '複製結果' }}
             </button>
         </main>
 
-        <footer class="text-center">
-            <a href="https://taicalc.com" class="text-zinc-600 text-sm hover:text-white transition-colors">← 返回
-                TaiCalc</a>
+        <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
+            © 2026 TaiCalc
         </footer>
     </div>
 
@@ -227,9 +190,9 @@
                 })
 
                 const verdictClass = computed(() => {
-                    if (margin.value >= 20) return 'bg-green-950/50 text-green-400 border border-green-800/50'
-                    if (margin.value >= 0) return 'bg-amber-950/50 text-amber-400 border border-amber-800/50'
-                    return 'bg-red-950/50 text-red-400 border border-red-800/50'
+                    if (margin.value >= 20) return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    if (margin.value >= 0) return 'bg-amber-50 text-amber-700 border-amber-200'
+                    return 'bg-rose-50 text-rose-700 border-rose-200'
                 })
 
                 const copyResult = async () => {

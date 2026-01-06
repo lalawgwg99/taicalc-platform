@@ -12,21 +12,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            font-family: 'Noto Sans TC', sans-serif;
-        }
 
-        body {
-            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
-            min-height: 100vh;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-    </style>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -58,70 +44,105 @@
 
         <header class="mb-10">
             <div class="flex items-center justify-between mb-4">
-                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">工時計算</h1>
+                <h1 class="text-3xl font-bold text-stone-900 tracking-tight">工時排班計算</h1>
                 <span
-                    class="text-xs px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 font-medium">時薪制</span>
+                    class="text-xs px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 font-medium">週排班</span>
             </div>
-            <p class="text-stone-500 text-sm">工時紀錄 · 薪資預估 · 加班費試算</p>
+            <p class="text-stone-500 text-sm">一週工時統計 · 薪資預估 · 視覺化班表</p>
         </header>
 
-        <main class="card rounded-3xl p-6 space-y-6">
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">上班時間</label>
-                    <div class="flex gap-1 items-center">
-                        <input type="number" v-model.number="startHour" min="0" max="23"
-                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-2 px-2 text-white text-center focus:outline-none focus:border-emerald-500">
-                        <span class="text-zinc-500">:</span>
-                        <input type="number" v-model.number="startMinute" min="0" max="59"
-                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-2 px-2 text-white text-center focus:outline-none focus:border-emerald-500">
+        <main class="space-y-6">
+            <!-- 設定卡片 -->
+            <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold text-stone-800">基本與時薪</h2>
+                    <div class="flex items-center gap-2">
+                        <label for="hourlyWage" class="text-sm text-stone-500">時薪 NT$</label>
+                        <input id="hourlyWage" type="number" v-model.number="hourlyWage"
+                            class="w-24 bg-stone-50 border border-stone-200 rounded-lg py-1.5 px-3 text-stone-800 font-semibold text-right focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500">
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">下班時間</label>
-                    <div class="flex gap-1 items-center">
-                        <input type="number" v-model.number="endHour" min="0" max="23"
-                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-2 px-2 text-white text-center focus:outline-none focus:border-emerald-500">
-                        <span class="text-zinc-500">:</span>
-                        <input type="number" v-model.number="endMinute" min="0" max="59"
-                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg py-2 px-2 text-white text-center focus:outline-none focus:border-emerald-500">
+
+                <!-- 排班表 (Desktop: Table, Mobile: Stacked) -->
+                <div class="space-y-3">
+                    <div v-for="(day, index) in weekSchedule" :key="index"
+                        class="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl transition-colors"
+                        :class="day.active ? 'bg-stone-50 border border-stone-200' : 'bg-transparent border border-transparent opacity-60'">
+
+                        <!-- 啟用與星期 -->
+                        <div class="flex items-center gap-3 w-full sm:w-32">
+                            <input type="checkbox" v-model="day.active" :aria-label="'啟用' + day.name" title="啟用此工作日"
+                                class="w-5 h-5 rounded text-sky-600 focus:ring-offset-0 focus:ring-0 cursor-pointer">
+                            <span class="font-bold" :class="day.active ? 'text-stone-800' : 'text-stone-400'">{{
+                                day.name }}</span>
+                        </div>
+
+                        <!-- 時間輸入 -->
+                        <div class="grid grid-cols-2 gap-2 flex-grow w-full sm:w-auto" v-if="day.active">
+                            <div
+                                class="flex items-center gap-2 bg-white border border-stone-200 rounded-lg px-2 py-1.5">
+                                <span class="text-xs text-stone-400">起</span>
+                                <input type="time" v-model="day.start" :aria-label="day.name + '上班時間'" title="上班時間"
+                                    class="w-full text-stone-700 font-mono text-sm focus:outline-none">
+                            </div>
+                            <div
+                                class="flex items-center gap-2 bg-white border border-stone-200 rounded-lg px-2 py-1.5">
+                                <span class="text-xs text-stone-400">迄</span>
+                                <input type="time" v-model="day.end" :aria-label="day.name + '下班時間'" title="下班時間"
+                                    class="w-full text-stone-700 font-mono text-sm focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- 休息時間 & 小計 -->
+                        <div class="flex items-center justify-between w-full sm:w-auto gap-4" v-if="day.active">
+                            <div class="flex items-center gap-1">
+                                <span class="text-xs text-stone-400">休</span>
+                                <input type="number" v-model.number="day.break" :aria-label="day.name + '休息分鐘數'"
+                                    title="休息時間(分鐘)"
+                                    class="w-12 text-center border-b border-stone-200 focus:border-sky-500 focus:outline-none text-sm py-1 bg-transparent">
+                                <span class="text-xs text-stone-400">分</span>
+                            </div>
+                            <div class="text-right w-20">
+                                <span class="block text-sm font-bold text-sky-600">{{ getDayHours(day) }}h</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">休息時間 (分鐘)</label>
-                    <input type="number" v-model.number="breakMinutes"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-sm text-zinc-400 mb-2">時薪 (NT$)</label>
-                    <input type="number" v-model.number="hourlyWage"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
-                </div>
-            </div>
-
-            <!-- 結果 -->
-            <div
-                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
-                <div class="grid grid-cols-2 gap-4 text-center">
-                    <div>
-                        <p class="text-zinc-400 text-sm mb-1">實際工時</p>
-                        <p class="text-2xl font-bold text-white font-mono">{{ totalHours }}h {{ totalMinutes }}m</p>
+            <!-- 統計結果 -->
+            <section class="grid sm:grid-cols-2 gap-6">
+                <!-- 數據卡片 -->
+                <div
+                    class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col justify-center">
+                    <div class="text-center mb-6">
+                        <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">一週預估薪資</p>
+                        <p class="text-4xl font-bold text-stone-800 stat-value">
+                            <span class="text-2xl text-stone-400 mr-1">$</span>{{ totalPay.toLocaleString() }}
+                        </p>
                     </div>
-                    <div>
-                        <p class="text-zinc-400 text-sm mb-1">應得薪資</p>
-                        <p class="text-2xl font-bold text-emerald-400 font-mono">NT$ {{ totalPay }}</p>
+                    <div class="grid grid-cols-2 gap-4 text-center border-t border-stone-100 pt-4">
+                        <div>
+                            <p class="text-xs text-stone-500 mb-1">總工時</p>
+                            <p class="text-lg font-bold text-stone-700">{{ totalHours }} <span
+                                    class="text-xs font-normal text-stone-400">小時</span></p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-stone-500 mb-1">工作天數</p>
+                            <p class="text-lg font-bold text-stone-700">{{ activeDays }} <span
+                                    class="text-xs font-normal text-stone-400">天</span></p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="text-center text-sm text-zinc-500">
-                💡 2026 年基本時薪 NT$ 196
-            </div>
-
+                <!-- 圖表卡片 -->
+                <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                    <h3 class="text-sm font-bold text-stone-700 mb-4">每日工時分佈</h3>
+                    <div class="relative h-60">
+                        <canvas ref="chartCanvas"></canvas>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer class="text-center mt-8 text-zinc-600 text-sm">
@@ -129,29 +150,110 @@
         </footer>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const { createApp, ref, computed } = Vue
+        const { createApp, ref, computed, watch, onMounted } = Vue
 
         createApp({
             setup() {
-                const startHour = ref(9)
-                const startMinute = ref(0)
-                const endHour = ref(18)
-                const endMinute = ref(0)
-                const breakMinutes = ref(60)
                 const hourlyWage = ref(196)
 
-                const workMinutes = computed(() => {
-                    const start = (startHour.value || 0) * 60 + (startMinute.value || 0)
-                    const end = (endHour.value || 0) * 60 + (endMinute.value || 0)
-                    return Math.max(0, end - start - (breakMinutes.value || 0))
+                // 週排班資料
+                const weekSchedule = ref([
+                    { name: '週一', active: true, start: '09:00', end: '18:00', break: 60 },
+                    { name: '週二', active: true, start: '09:00', end: '18:00', break: 60 },
+                    { name: '週三', active: true, start: '09:00', end: '18:00', break: 60 },
+                    { name: '週四', active: true, start: '09:00', end: '18:00', break: 60 },
+                    { name: '週五', active: true, start: '09:00', end: '18:00', break: 60 },
+                    { name: '週六', active: false, start: '10:00', end: '16:00', break: 30 },
+                    { name: '週日', active: false, start: '10:00', end: '16:00', break: 30 },
+                ])
+
+                const chartCanvas = ref(null)
+                let chartInstance = null
+
+                // 計算單日工時
+                const getDayHours = (day) => {
+                    if (!day.active || !day.start || !day.end) return 0
+                    const [sh, sm] = day.start.split(':').map(Number)
+                    const [eh, em] = day.end.split(':').map(Number)
+                    let minutes = (eh * 60 + em) - (sh * 60 + sm) - (day.break || 0)
+                    if (minutes < 0) minutes = 0 // 避免負數 (跨日暫不支援)
+                    return Math.round(minutes / 60 * 10) / 10
+                }
+
+                // 總計
+                const totalHours = computed(() => {
+                    return weekSchedule.value.reduce((sum, day) => sum + getDayHours(day), 0)
                 })
 
-                const totalHours = computed(() => Math.floor(workMinutes.value / 60))
-                const totalMinutes = computed(() => workMinutes.value % 60)
-                const totalPay = computed(() => Math.round((workMinutes.value / 60) * (hourlyWage.value || 0)).toLocaleString())
+                const totalPay = computed(() => {
+                    return Math.round(totalHours.value * hourlyWage.value)
+                })
 
-                return { startHour, startMinute, endHour, endMinute, breakMinutes, hourlyWage, totalHours, totalMinutes, totalPay }
+                const activeDays = computed(() => weekSchedule.value.filter(d => d.active).length)
+
+                // 圖表
+                const updateChart = () => {
+                    if (!chartCanvas.value) return
+                    if (chartInstance) chartInstance.destroy()
+
+                    const labels = weekSchedule.value.map(d => d.name)
+                    const data = weekSchedule.value.map(d => getDayHours(d))
+                    const colors = weekSchedule.value.map(d => d.active ? '#0ea5e9' : '#e7e5e4') // Sky-500 or Stone-200
+
+                    chartInstance = new Chart(chartCanvas.value, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: '工時 (小時)',
+                                data: data,
+                                backgroundColor: colors,
+                                borderRadius: 4,
+                                barThickness: 20
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                    titleColor: '#1c1917',
+                                    bodyColor: '#44403c',
+                                    borderColor: '#e7e5e4',
+                                    borderWidth: 1,
+                                    padding: 10,
+                                    displayColors: false,
+                                    callbacks: {
+                                        label: (ctx) => `${ctx.formattedValue} 小時`
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(0,0,0,0.05)' },
+                                    ticks: { color: '#78716c' }
+                                },
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: '#57534e' }
+                                }
+                            }
+                        }
+                    })
+                }
+
+                watch([weekSchedule, hourlyWage], updateChart, { deep: true })
+                onMounted(() => setTimeout(updateChart, 100))
+
+                return {
+                    hourlyWage, weekSchedule, chartCanvas,
+                    getDayHours, totalHours, totalPay, activeDays
+                }
             }
         }).mount('#app')
     </script>

@@ -12,82 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
-
-    <style>
-        * {
-            font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        body {
-            background-color: #FAFAF9;
-            /* stone-50 */
-            color: #44403C;
-            /* stone-700 */
-        }
-
-        .card {
-            background: #FFFFFF;
-            border: 1px solid #E7E5E4;
-            /* stone-200 */
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        .card:hover {
-            border-color: var(--hover-color, #10B981);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .icon-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .icon-box {
-            transform: scale(1.1);
-        }
-
-        .hero-gradient {
-            background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-link {
-            position: relative;
-            color: #78716C;
-            /* stone-500 */
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #1C1917;
-            /* stone-900 */
-        }
-
-        .nav-link.active {
-            color: #059669;
-            /* emerald-600 */
-            font-weight: 500;
-        }
-
-        /* Mobile Menu */
-        #mobile-menu {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        #mobile-menu.hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body class="antialiased">
@@ -110,7 +35,7 @@
             </div>
 
             <!-- Mobile Menu Button -->
-            <button id="menu-btn" class="md:hidden text-stone-500 hover:text-stone-800 p-2">
+            <button id="menu-btn" class="md:hidden text-stone-500 hover:text-stone-800 p-2" aria-label="開啟選單">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="4" x2="20" y1="12" y2="12" />
@@ -162,8 +87,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 <!-- 薪資實拿 -->
-                <a href="./tools/salary-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #10B981">
+                <a href="./tools/salary-calculator.html" class="card rounded-2xl p-6 group hover:border-emerald-500">
                     <div class="flex justify-between items-start mb-4">
                         <div class="icon-box bg-emerald-50 text-emerald-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -183,8 +107,7 @@
                 </a>
 
                 <!-- 電費試算 -->
-                <a href="./tools/electricity-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #F59E0B">
+                <a href="./tools/electricity-calculator.html" class="card rounded-2xl p-6 group hover:border-amber-500">
                     <div class="icon-box bg-amber-50 text-amber-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -196,8 +119,7 @@
                 </a>
 
                 <!-- 加班費 -->
-                <a href="./tools/overtime-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #F43F5E">
+                <a href="./tools/overtime-calculator.html" class="card rounded-2xl p-6 group hover:border-rose-500">
                     <div class="icon-box bg-rose-50 text-rose-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -212,8 +134,7 @@
                 </a>
 
                 <!-- 信用卡分期 -->
-                <a href="./tools/credit-card-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #3B82F6">
+                <a href="./tools/credit-card-calculator.html" class="card rounded-2xl p-6 group hover:border-blue-500">
                     <div class="icon-box bg-blue-50 text-blue-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -226,8 +147,7 @@
                 </a>
 
                 <!-- 百分比計算 -->
-                <a href="./tools/percentage-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #A855F7">
+                <a href="./tools/percentage-calculator.html" class="card rounded-2xl p-6 group hover:border-purple-500">
                     <div class="icon-box bg-purple-50 text-purple-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -242,8 +162,7 @@
                 </a>
 
                 <!-- 分帳計算 -->
-                <a href="./tools/split-calculator.html" class="card rounded-2xl p-6 group"
-                    style="--hover-color: #6366F1">
+                <a href="./tools/split-calculator.html" class="card rounded-2xl p-6 group hover:border-indigo-500">
                     <div class="icon-box bg-indigo-50 text-indigo-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -275,8 +194,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 
                 <a href="./tools/labor-pension-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #F59E0B">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-amber-500">
                     <div class="icon-box bg-amber-50 text-amber-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -294,8 +212,7 @@
                 </a>
 
                 <a href="./tools/retirement-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #14B8A6">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-teal-500">
                     <div class="icon-box bg-teal-50 text-teal-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -314,8 +231,7 @@
                 </a>
 
                 <a href="./tools/profit-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #10B981">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-emerald-500">
                     <div class="icon-box bg-emerald-50 text-emerald-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -331,8 +247,7 @@
                 </a>
 
                 <a href="./tools/cost-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #F97316">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-orange-500">
                     <div class="icon-box bg-orange-50 text-orange-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -375,8 +290,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 
                 <a href="./tools/work-hours-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #0EA5E9">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-sky-500">
                     <div class="icon-box bg-sky-50 text-sky-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -392,8 +306,7 @@
                 </a>
 
                 <a href="./tools/delivery-income-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #EF4444">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-red-500">
                     <div class="icon-box bg-red-50 text-red-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -411,8 +324,7 @@
                 </a>
 
                 <a href="./tools/rent-cost-calculator.html"
-                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full"
-                    style="--hover-color: #6366F1">
+                    class="card rounded-2xl p-6 group flex flex-col justify-between h-full hover:border-indigo-500">
                     <div class="icon-box bg-indigo-50 text-indigo-600 mb-2 w-12 h-12">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

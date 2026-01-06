@@ -11,65 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
-
-    <style>
-        * {
-            font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        body {
-            background-color: #FAFAF9;
-            /* stone-50 */
-            color: #44403C;
-            /* stone-700 */
-        }
-
-        .card {
-            background: #FFFFFF;
-            border: 1px solid #E7E5E4;
-            /* stone-200 */
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        .card:hover {
-            border-color: var(--hover-color, #10B981);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        .icon-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .icon-box {
-            transform: scale(1.1);
-        }
-
-        .nav-link {
-            color: #78716C;
-            /* stone-500 */
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #1C1917;
-            /* stone-900 */
-        }
-
-        .nav-link.active {
-            color: #059669;
-            /* emerald-600 */
-            font-weight: 500;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="antialiased min-h-screen flex flex-col">
@@ -119,8 +61,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <!-- 電費試算 -->
-            <a href="../tools/electricity-calculator.html" class="card rounded-2xl p-6 group"
-                style="--hover-color: #F59E0B">
+            <a href="../tools/electricity-calculator.html" class="card rounded-2xl p-6 group hover:border-amber-500">
                 <div class="icon-box bg-amber-50 text-amber-600">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -132,8 +73,7 @@
             </a>
 
             <!-- 工時計算 -->
-            <a href="../tools/work-hours-calculator.html" class="card rounded-2xl p-6 group"
-                style="--hover-color: #0EA5E9">
+            <a href="../tools/work-hours-calculator.html" class="card rounded-2xl p-6 group hover:border-sky-500">
                 <div class="icon-box bg-sky-50 text-sky-600">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -146,8 +86,7 @@
             </a>
 
             <!-- 外送收入 -->
-            <a href="../tools/delivery-income-calculator.html" class="card rounded-2xl p-6 group"
-                style="--hover-color: #EF4444">
+            <a href="../tools/delivery-income-calculator.html" class="card rounded-2xl p-6 group hover:border-red-500">
                 <div class="icon-box bg-red-50 text-red-600">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -162,8 +101,7 @@
             </a>
 
             <!-- 租金成本 -->
-            <a href="../tools/rent-cost-calculator.html" class="card rounded-2xl p-6 group"
-                style="--hover-color: #6366F1">
+            <a href="../tools/rent-cost-calculator.html" class="card rounded-2xl p-6 group hover:border-indigo-500">
                 <div class="icon-box bg-indigo-50 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

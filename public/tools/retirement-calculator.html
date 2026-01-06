@@ -12,102 +12,128 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            font-family: 'Noto Sans TC', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
-            min-height: 100vh;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="text-zinc-100">
-    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-4 sm:px-6 py-8">
 
-        <header class="text-center mb-8">
-            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
-            <h1 class="text-3xl font-bold mt-4 text-white">退休規劃計算</h1>
-            <p class="text-zinc-400 mt-2">財務自由目標試算</p>
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-8">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-amber-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-800 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/finance.html" class="hover:text-stone-800 transition-colors">退休理財</a>
+            <span>/</span>
+            <span class="text-stone-900 font-medium">退休規劃</span>
+        </div>
+
+        <header class="mb-8">
+            <div class="flex items-center justify-between mb-2">
+                <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">退休規劃計算</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200 font-medium">財務自由</span>
+            </div>
+            <p class="text-stone-500 text-sm">計算退休金缺口與每月儲蓄目標</p>
         </header>
 
-        <main class="card rounded-3xl p-6 space-y-6">
+        <main class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 space-y-6">
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-zinc-400 mb-2">現在年齡</label>
-                    <input type="number" v-model.number="currentAge"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="currentAge" class="block text-xs font-semibold text-stone-500 mb-2">現在年齡</label>
+                    <input id="currentAge" type="number" v-model.number="currentAge"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm text-zinc-400 mb-2">預計退休年齡</label>
-                    <input type="number" v-model.number="retireAge"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="retireAge" class="block text-xs font-semibold text-stone-500 mb-2">預計退休年齡</label>
+                    <input id="retireAge" type="number" v-model.number="retireAge"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm text-zinc-400 mb-2">退休後每月生活費 (NT$)</label>
-                <input type="number" v-model.number="monthlyExpense"
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
+                <label for="monthlyExpense"
+                    class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">退休後每月生活費
+                    (NT$)</label>
+                <div class="relative">
+                    <input id="monthlyExpense" type="number" v-model.number="monthlyExpense"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 pl-9 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                    <span class="absolute left-4 top-4 text-stone-400 font-bold">$</span>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-zinc-400 mb-2">預期壽命</label>
-                    <input type="number" v-model.number="lifeExpectancy"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="lifeExpectancy" class="block text-xs font-semibold text-stone-500 mb-2">預期壽命</label>
+                    <input id="lifeExpectancy" type="number" v-model.number="lifeExpectancy"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm text-zinc-400 mb-2">年報酬率 (%)</label>
-                    <input type="number" v-model.number="annualReturn" step="0.1"
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                    <label for="annualReturn" class="block text-xs font-semibold text-stone-500 mb-2">預期年報酬率 (%)</label>
+                    <input id="annualReturn" type="number" v-model.number="annualReturn" step="0.1"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm text-zinc-400 mb-2">目前已有資產 (NT$)</label>
-                <input type="number" v-model.number="currentSavings"
-                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                <label for="currentSavings" class="block text-xs font-semibold text-stone-500 mb-2">目前已有資產 (NT$)</label>
+                <div class="relative">
+                    <input id="currentSavings" type="number" v-model.number="currentSavings"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-9 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                    <span class="absolute left-4 top-2.5 text-stone-400 font-bold">$</span>
+                </div>
             </div>
 
             <!-- 結果 -->
-            <div
-                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
-                <div class="text-center mb-4">
-                    <p class="text-zinc-400 text-sm mb-1">退休所需總金額</p>
-                    <p class="text-3xl font-bold text-emerald-400 font-mono">NT$ {{ needTotal }}</p>
+            <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+                <div class="text-center mb-6">
+                    <p class="text-xs text-stone-500 font-bold uppercase tracking-wider mb-2">退休所需總金額</p>
+                    <p class="text-3xl sm:text-4xl font-bold text-stone-800 font-mono tracking-tight">
+                        <span class="text-2xl text-stone-400 align-top mr-1">$</span>{{ needTotal }}
+                    </p>
                 </div>
-                <div class="grid grid-cols-2 gap-4 text-center pt-4 border-t border-zinc-800">
+
+                <div class="grid grid-cols-2 gap-4 text-center pt-6 border-t border-stone-200">
                     <div>
-                        <p class="text-zinc-500 text-xs mb-1">距離退休</p>
-                        <p class="text-xl font-bold text-white">{{ yearsToRetire }} 年</p>
+                        <p class="text-xs text-stone-500 mb-1">距離退休</p>
+                        <p class="text-xl font-bold text-stone-700">{{ yearsToRetire }} <span
+                                class="text-sm font-normal text-stone-400">年</span></p>
                     </div>
                     <div>
-                        <p class="text-zinc-500 text-xs mb-1">還需準備</p>
-                        <p class="text-xl font-bold text-amber-400 font-mono">{{ needMore }}</p>
+                        <p class="text-xs text-stone-500 mb-1">還需準備</p>
+                        <p class="text-xl font-bold text-amber-600 font-mono">{{ needMore }}</p>
                     </div>
                 </div>
-                <div class="text-center pt-4 mt-4 border-t border-zinc-800">
-                    <p class="text-zinc-400 text-sm mb-1">每月需儲蓄</p>
-                    <p class="text-2xl font-bold text-blue-400 font-mono">NT$ {{ monthlySaving }}</p>
+
+                <div
+                    class="text-center pt-6 mt-6 border-t border-stone-200 bg-blue-50/50 -mx-6 -mb-6 p-6 rounded-b-2xl">
+                    <p class="text-blue-800/70 text-sm font-medium mb-2">為達成目標，每月需儲蓄</p>
+                    <p class="text-3xl font-bold text-blue-600 font-mono">NT$ {{ monthlySaving }}</p>
                 </div>
             </div>
 
-            <div class="text-center text-sm text-zinc-500">
-                💡 4% 法則：年支出 × 25 = 財務自由門檻
+            <div class="text-center text-sm text-stone-500 flex items-center justify-center gap-2">
+                <span>💡</span>
+                <span>4% 法則：年支出 × 25 = 財務自由門檻</span>
             </div>
 
         </main>
 
-        <footer class="text-center mt-8 text-zinc-600 text-sm">
+        <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
             © 2026 TaiCalc
         </footer>
     </div>

@@ -21,11 +21,16 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
 /* Navbar Styles */
 .nav-glass {
     background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(231, 229, 228, 0.5);
     /* stone-200 */
 }
@@ -111,5 +116,37 @@ body {
 }
 
 [v-cloak] {
+    display: none;
+}
+
+/* Additional Styles from Index */
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+}
+
+.card:hover .icon-box {
+    transform: scale(1.1);
+}
+
+.hero-gradient {
+    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Mobile Menu */
+#mobile-menu {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#mobile-menu.hidden {
     display: none;
 }
