@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加班費計算機｜TaiCalc</title>
+    <meta name="description" content="計算平日、休息日、例假日加班費。依據勞基法 2026 最新規定。">
+    <link rel="canonical" href="https://taicalc.com/tools/overtime">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#09090b',
+                        surface: '#18181b',
+                        border: '#27272a',
+                        primary: '#10b981',
+                        primary_hover: '#059669',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #09090b;
+            color: #e4e4e7;
+        }
+
+        input {
+            -webkit-appearance: none;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+
+    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+
+        <header class="text-center space-y-2">
+            <h1 class="text-2xl font-bold tracking-tight text-white">
+                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| 加班費</span>
+            </h1>
+            <p class="text-xs text-zinc-500">勞基法 2026・即時試算</p>
+        </header>
+
+        <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">
+
+            <!-- 月薪 -->
+            <div class="mb-4">
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">月薪</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">$</span>
+                    <input type="number" v-model.number="salary"
+                        class="w-full bg-zinc-950 border border-border rounded-lg py-3 pl-8 pr-3 text-white text-xl font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                        placeholder="45000">
+                </div>
+                <div class="mt-1 text-xs text-zinc-600">
+                    時薪 = 月薪 ÷ 30 ÷ 8 = NT$ {{ hourlyRate }}
+                </div>
+            </div>
+
+            <!-- 加班類型 -->
+            <div class="mb-4">
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">加班類型</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button v-for="t in dayTypes" :key="t.id" @click="dayType = t.id" :class="[
+                                'py-2.5 rounded-lg border text-sm font-medium transition-all',
+                                dayType === t.id 
+                                    ? 'bg-primary/20 border-primary text-primary' 
+                                    : 'bg-zinc-950 border-border text-zinc-400 hover:border-zinc-600'
+                            ]">
+                        {{ t.label }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- 加班時數 -->
+            <div class="mb-6">
+                <label class="block text-xs font-medium text-zinc-400 mb-1.5">加班時數</label>
+                <div class="grid grid-cols-4 gap-2">
+                    <button v-for="h in [1,2,3,4]" :key="h" @click="hours = h" :class="[
+                                'py-2.5 rounded-lg border font-mono transition-all',
+                                hours === h 
+                                    ? 'bg-primary/20 border-primary text-primary' 
+                                    : 'bg-zinc-950 border-border text-zinc-400 hover:border-zinc-600'
+                            ]">
+                        {{ h }}h
+                    </button>
+                </div>
+                <input type="range" v-model.number="hours" min="0.5" max="12" step="0.5"
+                    class="w-full mt-3 accent-primary">
+                <div class="text-center text-lg font-mono text-white mt-1">{{ hours }} 小時</div>
+            </div>
+
+            <!-- 結果 -->
+            <div class="bg-gradient-to-br from-primary/20 to-emerald-900/20 rounded-xl p-5 border border-primary/30">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-sm text-zinc-400">加班費</span>
+                    <span class="text-xs text-zinc-600 font-mono">LIVE</span>
+                </div>
+                <div class="text-4xl font-bold text-primary font-mono tracking-tight">
+                    NT$ {{ overtimePay }}
+                </div>
+            </div>
+
+            <!-- 計算明細 -->
+            <div class="mt-4 bg-zinc-950/50 rounded-lg p-4 border border-zinc-800/50 text-sm">
+                <div class="text-zinc-500 mb-2">計算明細</div>
+                <div v-for="(item, i) in breakdown" :key="i" class="flex justify-between text-zinc-400">
+                    <span>{{ item.label }}</span>
+                    <span class="font-mono">{{ item.value }}</span>
+                </div>
+            </div>
+
+            <!-- 複製按鈕 -->
+            <button @click="copyResult"
+                class="mt-6 w-full bg-primary hover:bg-primary_hover text-zinc-900 font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                {{ copied ? '已複製 ✓' : '複製結果' }}
+            </button>
+        </main>
+
+        <!-- 法規說明 -->
+        <div class="text-xs text-zinc-600 bg-zinc-900/50 rounded-lg p-3 border border-zinc-800/50">
+            <strong class="text-zinc-400">⚖️ 勞基法加班費倍率</strong><br>
+            平日：前2小時 ×1.34，後2小時 ×1.67<br>
+            休息日：前2小時 ×1.34，3-8小時 ×1.67，8小時以上 ×2.67<br>
+            例假日：全日 ×2 + 補休1日
+        </div>
+
+        <footer class="text-center">
+            <a href="../index.html" class="text-zinc-600 text-sm hover:text-white transition-colors">← 返回 TaiCalc</a>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>var vConsole = new VConsole({ theme: 'dark' });</script>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const salary = ref(45000)
+                const dayType = ref('weekday')
+                const hours = ref(2)
+                const copied = ref(false)
+
+                const dayTypes = [
+                    { id: 'weekday', label: '平日' },
+                    { id: 'restday', label: '休息日' },
+                    { id: 'holiday', label: '例假日' }
+                ]
+
+                const hourlyRate = computed(() => {
+                    return Math.round((salary.value || 0) / 30 / 8)
+                })
+
+                const breakdown = computed(() => {
+                    const rate = hourlyRate.value
+                    const h = hours.value || 0
+                    const items = []
+
+                    if (dayType.value === 'weekday') {
+                        // 平日加班
+                        const h1 = Math.min(h, 2)
+                        const h2 = Math.max(0, h - 2)
+                        if (h1 > 0) items.push({ label: `前${h1}小時 ×1.34`, value: `$${Math.round(rate * 1.34 * h1)}` })
+                        if (h2 > 0) items.push({ label: `後${h2}小時 ×1.67`, value: `$${Math.round(rate * 1.67 * h2)}` })
+                    } else if (dayType.value === 'restday') {
+                        // 休息日加班
+                        const h1 = Math.min(h, 2)
+                        const h2 = Math.min(Math.max(0, h - 2), 6)
+                        const h3 = Math.max(0, h - 8)
+                        if (h1 > 0) items.push({ label: `前${h1}小時 ×1.34`, value: `$${Math.round(rate * 1.34 * h1)}` })
+                        if (h2 > 0) items.push({ label: `3-8小時 ${h2}h ×1.67`, value: `$${Math.round(rate * 1.67 * h2)}` })
+                        if (h3 > 0) items.push({ label: `超過8小時 ${h3}h ×2.67`, value: `$${Math.round(rate * 2.67 * h3)}` })
+                    } else {
+                        // 例假日加班
+                        items.push({ label: `${h}小時 ×2`, value: `$${Math.round(rate * 2 * h)}` })
+                        items.push({ label: '+ 補休 1 日', value: '—' })
+                    }
+
+                    return items
+                })
+
+                const overtimePay = computed(() => {
+                    const rate = hourlyRate.value
+                    const h = hours.value || 0
+                    let total = 0
+
+                    if (dayType.value === 'weekday') {
+                        const h1 = Math.min(h, 2)
+                        const h2 = Math.max(0, h - 2)
+                        total = (rate * 1.34 * h1) + (rate * 1.67 * h2)
+                    } else if (dayType.value === 'restday') {
+                        const h1 = Math.min(h, 2)
+                        const h2 = Math.min(Math.max(0, h - 2), 6)
+                        const h3 = Math.max(0, h - 8)
+                        total = (rate * 1.34 * h1) + (rate * 1.67 * h2) + (rate * 2.67 * h3)
+                    } else {
+                        total = rate * 2 * h
+                    }
+
+                    return Math.round(total).toLocaleString()
+                })
+
+                const copyResult = async () => {
+                    const typeLabel = dayTypes.find(t => t.id === dayType.value)?.label
+                    const text = `加班費計算：${typeLabel} ${hours.value} 小時 = NT$ ${overtimePay.value} (月薪 $${salary.value}，時薪 $${hourlyRate.value})`
+                    await navigator.clipboard.writeText(text)
+                    copied.value = true
+                    setTimeout(() => copied.value = false, 1500)
+                }
+
+                return {
+                    salary, dayType, hours, copied, dayTypes,
+                    hourlyRate, breakdown, overtimePay, copyResult
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

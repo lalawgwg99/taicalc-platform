@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 薪資實拿計算機｜TaiCalc</title>
+    <meta name="description" content="秒算 2026 年實領薪資，自動扣除勞健保與勞退。免費、即時、隱私不留痕。">
+    <meta name="keywords" content="薪資計算,勞健保,勞退,2026,實領薪資">
+    <link rel="canonical" href="https://taicalc.com/tools/salary">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#09090b',
+                        surface: '#18181b',
+                        border: '#27272a',
+                        primary: '#10b981',
+                        primary_hover: '#059669',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "2026薪資實拿計算機",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web Browser",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" }
+    }
+    </script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #09090b;
+            color: #e4e4e7;
+        }
+
+        input {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+
+    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+
+        <header class="text-center space-y-2">
+            <h1 class="text-2xl font-bold tracking-tight text-white">
+                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| 薪資實拿</span>
+            </h1>
+            <p class="text-xs text-zinc-500">2026 最新費率・秒開・即算</p>
+        </header>
+
+        <!-- 費率標籤 -->
+        <div class="flex flex-wrap justify-center gap-2 text-xs">
+            <span class="px-2.5 py-1 bg-blue-950/50 text-blue-400 rounded-full border border-blue-800/50">勞保
+                11.5%</span>
+            <span class="px-2.5 py-1 bg-green-950/50 text-green-400 rounded-full border border-green-800/50">健保
+                5.17%</span>
+            <span class="px-2.5 py-1 bg-purple-950/50 text-purple-400 rounded-full border border-purple-800/50">勞退
+                6%</span>
+        </div>
+
+        <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">
+
+            <!-- 輸入區 -->
+            <div class="space-y-4">
+                <div>
+                    <label for="salary" class="block text-xs font-medium text-zinc-400 mb-1.5">月薪</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">$</span>
+                        <input type="number" id="salary" v-model.number="salary"
+                            class="w-full bg-zinc-950 border border-border rounded-lg py-3 pl-8 pr-3 text-white text-xl font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                            placeholder="45000">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="bonus" class="block text-xs font-medium text-zinc-400 mb-1.5">年終月數</label>
+                        <input type="number" id="bonus" v-model.number="bonus" step="0.5" min="0" max="12"
+                            class="w-full bg-zinc-950 border border-border rounded-lg py-2.5 px-3 text-white font-mono focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                            placeholder="1">
+                    </div>
+                    <div class="flex items-end">
+                        <label
+                            class="flex items-center gap-2 cursor-pointer px-3 py-2.5 border border-border rounded-lg bg-zinc-950 w-full justify-center hover:border-primary/50 transition-all"
+                            :class="{ 'border-primary bg-primary/10': selfPension }">
+                            <input type="checkbox" v-model="selfPension" class="w-4 h-4 accent-primary">
+                            <span class="text-sm text-zinc-300">自提 6%</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主結果 -->
+            <div
+                class="mt-6 bg-gradient-to-br from-primary/20 to-emerald-900/20 rounded-xl p-5 border border-primary/30">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-sm text-zinc-400">每月實領</span>
+                    <span class="text-xs text-zinc-600 font-mono">LIVE</span>
+                </div>
+                <div class="text-4xl font-bold text-primary font-mono tracking-tight">
+                    NT$ {{ fmt(netMonthly) }}
+                </div>
+            </div>
+
+            <!-- 扣除明細 -->
+            <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div class="bg-zinc-950/50 rounded-lg p-3 border border-zinc-800/50">
+                    <p class="text-xs text-zinc-500 mb-0.5">勞保</p>
+                    <p class="text-sm font-mono text-red-400">-{{ fmt(laborFee) }}</p>
+                </div>
+                <div class="bg-zinc-950/50 rounded-lg p-3 border border-zinc-800/50">
+                    <p class="text-xs text-zinc-500 mb-0.5">健保</p>
+                    <p class="text-sm font-mono text-red-400">-{{ fmt(healthFee) }}</p>
+                </div>
+                <div class="bg-zinc-950/50 rounded-lg p-3 border border-zinc-800/50">
+                    <p class="text-xs text-zinc-500 mb-0.5">勞退自提</p>
+                    <p class="text-sm font-mono" :class="pensionFee ? 'text-purple-400' : 'text-zinc-600'">
+                        {{ pensionFee ? '-' + fmt(pensionFee) : '—' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- 年度統計 -->
+            <div class="mt-4 bg-zinc-950/50 rounded-lg p-4 border border-zinc-800/50">
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <p class="text-xs text-zinc-500 mb-1">年薪總額</p>
+                        <p class="text-lg font-bold font-mono text-white">{{ fmt(yearlyGross) }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-zinc-500 mb-1">年度實領</p>
+                        <p class="text-lg font-bold font-mono text-primary">{{ fmt(yearlyNet) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示 -->
+            <div v-if="tip" class="mt-4 text-xs text-zinc-500 bg-zinc-950/50 rounded-lg p-3 border border-zinc-800/50">
+                💡 {{ tip }}
+            </div>
+
+            <!-- 複製按鈕 -->
+            <button @click="copyResult"
+                class="mt-6 w-full bg-primary hover:bg-primary_hover text-zinc-900 font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                </svg>
+                {{ copied ? '已複製 ✓' : '複製結果' }}
+            </button>
+        </main>
+
+        <!-- 資料來源 -->
+        <div class="text-center text-xs text-zinc-600">
+            資料來源：勞動部、衛福部 ｜ 2026年1月起適用
+        </div>
+
+        <footer class="text-center">
+            <a href="https://taicalc.com" class="text-zinc-600 text-sm hover:text-white transition-colors">← 返回
+                TaiCalc</a>
+        </footer>
+    </div>
+
+    <script>
+        // 2026 年費率
+        const RATES = {
+            labor: { rate: 0.115, share: 0.2, max: 45800, min: 28590 },
+            health: { rate: 0.0517, share: 0.3, max: 182000, min: 28590 },
+            pension: { rate: 0.06, max: 150000, min: 28590 }
+        }
+
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const salary = ref(45000)
+                const bonus = ref(1)
+                const selfPension = ref(false)
+                const copied = ref(false)
+
+                const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
+                const fmt = (n) => n.toLocaleString('zh-TW')
+
+                const laborFee = computed(() => {
+                    const base = clamp(salary.value || 0, RATES.labor.min, RATES.labor.max)
+                    return Math.round(base * RATES.labor.rate * RATES.labor.share)
+                })
+
+                const healthFee = computed(() => {
+                    const base = clamp(salary.value || 0, RATES.health.min, RATES.health.max)
+                    return Math.round(base * RATES.health.rate * RATES.health.share)
+                })
+
+                const pensionFee = computed(() => {
+                    if (!selfPension.value) return 0
+                    const base = clamp(salary.value || 0, RATES.pension.min, RATES.pension.max)
+                    return Math.round(base * RATES.pension.rate)
+                })
+
+                const netMonthly = computed(() => {
+                    return Math.max(0, (salary.value || 0) - laborFee.value - healthFee.value - pensionFee.value)
+                })
+
+                const yearlyGross = computed(() => {
+                    return (salary.value || 0) * (12 + (bonus.value || 0))
+                })
+
+                const yearlyNet = computed(() => {
+                    return netMonthly.value * 12 + (salary.value || 0) * (bonus.value || 0)
+                })
+
+                const tip = computed(() => {
+                    const s = salary.value || 0
+                    if (s >= RATES.labor.max) return '薪資已達勞保投保上限 (NT$ 45,800)，超過部分不再增加勞保費'
+                    if (s >= 150000) return '建議考慮自提勞退 6%，可享稅務優惠並增加退休保障'
+                    if (selfPension.value) return '自提勞退可從薪資所得中扣除，報稅時可節省所得稅'
+                    return ''
+                })
+
+                const copyResult = async () => {
+                    const text = `月薪 ${fmt(salary.value)} → 實領 ${fmt(netMonthly.value)} (勞保 -${fmt(laborFee.value)}, 健保 -${fmt(healthFee.value)}${selfPension.value ? ', 勞退自提 -' + fmt(pensionFee.value) : ''})`
+                    await navigator.clipboard.writeText(text)
+                    copied.value = true
+                    setTimeout(() => copied.value = false, 1500)
+                }
+
+                return {
+                    salary, bonus, selfPension, copied,
+                    laborFee, healthFee, pensionFee,
+                    netMonthly, yearlyGross, yearlyNet, tip,
+                    fmt, copyResult
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

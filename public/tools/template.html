@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TaiCalc 工具模板</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#09090b',
+                        surface: '#18181b',
+                        border: '#27272a',
+                        primary: '#10b981',
+                        primary_hover: '#059669',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        body {
+            background-color: #09090b;
+            color: #e4e4e7;
+        }
+
+        input {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col items-center pt-8 px-4 pb-12">
+
+    <div id="app" v-cloak class="w-full max-w-md mx-auto space-y-6">
+
+        <header class="text-center space-y-2">
+            <h1 class="text-2xl font-bold tracking-tight text-white">
+                <span class="text-primary">Tai</span>Calc <span class="text-zinc-500 text-lg">| {{toolName}}</span>
+            </h1>
+            <p class="text-xs text-zinc-500">秒開・即算・隱私不留痕</p>
+        </header>
+
+        <main class="bg-surface border border-border rounded-2xl p-6 shadow-2xl shadow-black/50">
+            <!-- 動態輸入區 -->
+            <slot name="inputs"></slot>
+
+            <!-- 結果區 -->
+            <div class="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800/50 mt-6">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-sm text-zinc-400">{{resultLabel}}</span>
+                    <span class="text-xs text-zinc-600 font-mono">LIVE</span>
+                </div>
+                <div class="text-3xl font-bold text-primary font-mono tracking-tight">
+                    {{ formattedResult }}
+                </div>
+            </div>
+
+            <button @click="copyResult"
+                class="mt-6 w-full bg-primary hover:bg-primary_hover text-zinc-900 font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                </svg>
+                {{ copied ? '已複製 ✓' : '複製結果' }}
+            </button>
+        </main>
+
+        <footer class="text-center">
+            <a href="https://taicalc.com" class="text-zinc-600 text-sm hover:text-white transition-colors">← 返回
+                TaiCalc</a>
+        </footer>
+    </div>
+
+    <script>
+        // 工具變數（每個工具需自行客製）
+        const TOOL_CONFIG = {
+            name: '工具名稱',
+            resultLabel: '計算結果'
+        }
+
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const toolName = ref(TOOL_CONFIG.name)
+                const resultLabel = ref(TOOL_CONFIG.resultLabel)
+                const inputVal = ref('')
+                const copied = ref(false)
+
+                const result = computed(() => {
+                    if (!inputVal.value) return 0
+                    return inputVal.value * 1
+                })
+
+                const formattedResult = computed(() => {
+                    return new Intl.NumberFormat('zh-TW').format(result.value)
+                })
+
+                const copyResult = async () => {
+                    await navigator.clipboard.writeText(formattedResult.value)
+                    copied.value = true
+                    setTimeout(() => copied.value = false, 1500)
+                }
+
+                return {
+                    toolName,
+                    resultLabel,
+                    inputVal,
+                    formattedResult,
+                    copied,
+                    copyResult
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
