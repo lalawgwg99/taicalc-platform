@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>外送收入計算｜TaiCalc</title>
+    <meta name="description" content="計算外送平台實際收入，扣除油錢、機車折舊後的淨所得。">
+    <link rel="canonical" href="https://taicalc.com/tools/delivery-income">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="text-zinc-100">
+    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+
+        <header class="text-center mb-8">
+            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
+            <h1 class="text-3xl font-bold mt-4 text-white">外送收入計算</h1>
+            <p class="text-zinc-400 mt-2">扣除成本後的實際淨收入</p>
+        </header>
+
+        <main class="card rounded-3xl p-6 space-y-6">
+
+            <div>
+                <label class="block text-sm text-zinc-400 mb-2">每月接單收入 (NT$)</label>
+                <input type="number" v-model.number="grossIncome"
+                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">每月行駛公里</label>
+                    <input type="number" v-model.number="kilometers"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">油價 ($/公升)</label>
+                    <input type="number" v-model.number="gasPrice" step="0.1"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">油耗 (公里/公升)</label>
+                    <input type="number" v-model.number="kmPerLiter"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">每月工時</label>
+                    <input type="number" v-model.number="workHours"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- 結果 -->
+            <div
+                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
+                <div class="grid grid-cols-2 gap-4 text-center mb-4">
+                    <div>
+                        <p class="text-zinc-400 text-xs mb-1">毛收入</p>
+                        <p class="text-lg font-bold text-white font-mono">{{ grossIncome?.toLocaleString() }}</p>
+                    </div>
+                    <div>
+                        <p class="text-zinc-400 text-xs mb-1">油錢成本</p>
+                        <p class="text-lg font-bold text-red-400 font-mono">-{{ gasCost }}</p>
+                    </div>
+                </div>
+                <div class="border-t border-zinc-800 pt-4 text-center">
+                    <p class="text-zinc-400 text-sm mb-1">淨收入</p>
+                    <p class="text-3xl font-bold text-emerald-400 font-mono">NT$ {{ netIncome }}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center mt-4 pt-4 border-t border-zinc-800">
+                    <div>
+                        <p class="text-zinc-500 text-xs">時薪換算</p>
+                        <p class="text-xl font-bold text-blue-400 font-mono">{{ hourlyRate }}</p>
+                    </div>
+                    <div>
+                        <p class="text-zinc-500 text-xs">每公里收入</p>
+                        <p class="text-xl font-bold text-purple-400 font-mono">{{ perKm }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-sm text-zinc-500">
+                💡 還需考慮機車折舊、維修、保險等隱藏成本
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-8 text-zinc-600 text-sm">
+            © 2026 TaiCalc
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const grossIncome = ref(35000)
+                const kilometers = ref(1500)
+                const gasPrice = ref(32)
+                const kmPerLiter = ref(40)
+                const workHours = ref(160)
+
+                const gasCost = computed(() => {
+                    const liters = (kilometers.value || 0) / (kmPerLiter.value || 1)
+                    return Math.round(liters * (gasPrice.value || 0)).toLocaleString()
+                })
+
+                const netIncome = computed(() => {
+                    const liters = (kilometers.value || 0) / (kmPerLiter.value || 1)
+                    const gas = liters * (gasPrice.value || 0)
+                    return Math.round((grossIncome.value || 0) - gas).toLocaleString()
+                })
+
+                const hourlyRate = computed(() => {
+                    const liters = (kilometers.value || 0) / (kmPerLiter.value || 1)
+                    const gas = liters * (gasPrice.value || 0)
+                    const net = (grossIncome.value || 0) - gas
+                    return workHours.value > 0 ? `$${Math.round(net / workHours.value)}` : '$0'
+                })
+
+                const perKm = computed(() => {
+                    const liters = (kilometers.value || 0) / (kmPerLiter.value || 1)
+                    const gas = liters * (gasPrice.value || 0)
+                    const net = (grossIncome.value || 0) - gas
+                    return kilometers.value > 0 ? `$${Math.round((net / kilometers.value) * 10) / 10}` : '$0'
+                })
+
+                return { grossIncome, kilometers, gasPrice, kmPerLiter, workHours, gasCost, netIncome, hourlyRate, perKm }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

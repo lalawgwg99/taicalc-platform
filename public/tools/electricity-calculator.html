@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電費計算｜TaiCalc</title>
+    <meta name="description" content="依台電累進電價計算每月電費，了解級距如何影響帳單。">
+    <link rel="canonical" href="https://taicalc.com/tools/electricity">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="text-zinc-100">
+    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+
+        <header class="text-center mb-8">
+            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
+            <h1 class="text-3xl font-bold mt-4 text-white">電費計算</h1>
+            <p class="text-zinc-400 mt-2">台電累進電價試算</p>
+        </header>
+
+        <main class="card rounded-3xl p-6 space-y-6">
+
+            <!-- 季節選擇 -->
+            <div class="grid grid-cols-2 gap-3">
+                <button @click="isSummer = true"
+                    :class="['py-3 rounded-xl font-medium transition-all', isSummer ? 'bg-orange-600 text-white' : 'bg-zinc-800 text-zinc-400']">
+                    🌞 夏月 (6-9月)
+                </button>
+                <button @click="isSummer = false"
+                    :class="['py-3 rounded-xl font-medium transition-all', !isSummer ? 'bg-blue-600 text-white' : 'bg-zinc-800 text-zinc-400']">
+                    ❄️ 非夏月
+                </button>
+            </div>
+
+            <div>
+                <label class="block text-sm text-zinc-400 mb-2">用電度數 (度/月)</label>
+                <input type="number" v-model.number="kwh"
+                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <!-- 結果 -->
+            <div
+                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50 text-center">
+                <p class="text-zinc-400 text-sm mb-2">預估電費</p>
+                <p class="text-4xl font-bold text-emerald-400 font-mono">NT$ {{ totalCost }}</p>
+                <p class="text-zinc-500 text-sm mt-2">平均每度 NT$ {{ avgRate }}</p>
+            </div>
+
+            <!-- 級距明細 -->
+            <div class="bg-zinc-900/30 rounded-xl p-4">
+                <p class="text-sm text-zinc-500 mb-3">級距明細</p>
+                <div class="space-y-2 text-sm">
+                    <div v-for="(tier, i) in breakdown" :key="i" class="flex justify-between">
+                        <span class="text-zinc-400">{{ tier.tier }}</span>
+                        <span class="font-mono">
+                            {{ tier.kwh }}度 × ${{ tier.rate }} =
+                            <span
+                                :class="i === breakdown.length - 1 && breakdown.length > 1 ? 'text-red-400 font-semibold' : 'text-white'">
+                                ${{ tier.cost }}
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="breakdown.length > 2" class="bg-amber-950/30 border border-amber-900/50 rounded-xl p-4">
+                <p class="text-amber-400 text-sm">
+                    ⚠️ 高級距用電貴很多！最後一級每度 ${{ breakdown[breakdown.length-1]?.rate }}
+                </p>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-8 text-zinc-600 text-sm">
+            依台電 2024 年電價表 · © 2026 TaiCalc
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        const SUMMER_RATES = [
+            { limit: 120, rate: 1.68 },
+            { limit: 330, rate: 2.45 },
+            { limit: 500, rate: 3.70 },
+            { limit: 700, rate: 5.04 },
+            { limit: 1000, rate: 6.03 },
+            { limit: Infinity, rate: 7.69 }
+        ]
+
+        const NON_SUMMER_RATES = [
+            { limit: 120, rate: 1.68 },
+            { limit: 330, rate: 2.16 },
+            { limit: 500, rate: 3.03 },
+            { limit: 700, rate: 4.14 },
+            { limit: 1000, rate: 5.07 },
+            { limit: Infinity, rate: 6.63 }
+        ]
+
+        createApp({
+            setup() {
+                const kwh = ref(400)
+                const isSummer = ref(true)
+
+                const breakdown = computed(() => {
+                    const rates = isSummer.value ? SUMMER_RATES : NON_SUMMER_RATES
+                    let remaining = kwh.value || 0
+                    let prevLimit = 0
+                    const result = []
+
+                    for (const tier of rates) {
+                        if (remaining <= 0) break
+                        const tierKwh = Math.min(remaining, tier.limit - prevLimit)
+                        const tierCost = Math.round(tierKwh * tier.rate * 10) / 10
+
+                        if (tierKwh > 0) {
+                            result.push({
+                                tier: `${prevLimit + 1}~${tier.limit === Infinity ? '以上' : tier.limit}度`,
+                                kwh: tierKwh,
+                                rate: tier.rate,
+                                cost: tierCost
+                            })
+                        }
+                        remaining -= tierKwh
+                        prevLimit = tier.limit
+                    }
+                    return result
+                })
+
+                const totalCost = computed(() => Math.round(breakdown.value.reduce((sum, t) => sum + t.cost, 0)).toLocaleString())
+                const avgRate = computed(() => {
+                    const total = breakdown.value.reduce((sum, t) => sum + t.cost, 0)
+                    return kwh.value > 0 ? Math.round((total / kwh.value) * 100) / 100 : 0
+                })
+
+                return { kwh, isSummer, breakdown, totalCost, avgRate }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

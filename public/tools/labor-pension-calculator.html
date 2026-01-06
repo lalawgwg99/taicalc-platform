@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勞退試算｜TaiCalc</title>
+    <meta name="description" content="計算勞工退休金自提與雇主提撥，試算退休金累積。">
+    <link rel="canonical" href="https://taicalc.com/tools/labor-pension">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="text-zinc-100">
+    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+
+        <header class="text-center mb-8">
+            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
+            <h1 class="text-3xl font-bold mt-4 text-white">勞退試算</h1>
+            <p class="text-zinc-400 mt-2">勞工退休金累積試算</p>
+        </header>
+
+        <main class="card rounded-3xl p-6 space-y-6">
+
+            <div>
+                <label class="block text-sm text-zinc-400 mb-2">月薪 (NT$)</label>
+                <input type="number" v-model.number="monthlySalary"
+                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">自提比例 (%)</label>
+                    <div class="grid grid-cols-4 gap-1">
+                        <button v-for="n in [0,3,4,6]" :key="n" @click="selfContribution = n"
+                            :class="['py-2 rounded-lg text-sm font-medium transition-all', selfContribution === n ? 'bg-emerald-600 text-white' : 'bg-zinc-800 text-zinc-400']">
+                            {{ n }}%
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">預估年數</label>
+                    <input type="number" v-model.number="years"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm text-zinc-400 mb-2">預估年報酬率 (%)</label>
+                <input type="number" v-model.number="annualReturn" step="0.1"
+                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <!-- 結果 -->
+            <div
+                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
+                <div class="grid grid-cols-2 gap-4 text-center mb-4">
+                    <div>
+                        <p class="text-zinc-400 text-xs mb-1">雇主提撥 (6%)</p>
+                        <p class="text-lg font-bold text-white font-mono">{{ employerMonthly }}/月</p>
+                    </div>
+                    <div>
+                        <p class="text-zinc-400 text-xs mb-1">自提 ({{ selfContribution }}%)</p>
+                        <p class="text-lg font-bold text-emerald-400 font-mono">{{ selfMonthly }}/月</p>
+                    </div>
+                </div>
+                <div class="text-center pt-4 border-t border-zinc-800">
+                    <p class="text-zinc-400 text-sm mb-1">{{ years }} 年後預估累積</p>
+                    <p class="text-3xl font-bold text-emerald-400 font-mono">NT$ {{ totalAccumulated }}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center mt-4 pt-4 border-t border-zinc-800">
+                    <div>
+                        <p class="text-zinc-500 text-xs">本金投入</p>
+                        <p class="text-lg font-bold text-zinc-300 font-mono">{{ principal }}</p>
+                    </div>
+                    <div>
+                        <p class="text-zinc-500 text-xs">投資收益</p>
+                        <p class="text-lg font-bold text-blue-400 font-mono">{{ earnings }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-sm text-zinc-500">
+                💡 自提可節稅，從薪資所得中扣除
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-8 text-zinc-600 text-sm">
+            © 2026 TaiCalc
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const monthlySalary = ref(45000)
+                const selfContribution = ref(6)
+                const years = ref(30)
+                const annualReturn = ref(3)
+
+                const employerMonthly = computed(() => Math.round((monthlySalary.value || 0) * 0.06).toLocaleString())
+                const selfMonthly = computed(() => Math.round((monthlySalary.value || 0) * (selfContribution.value / 100)).toLocaleString())
+
+                const totalAccumulated = computed(() => {
+                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
+                    const months = (years.value || 0) * 12
+                    const r = (annualReturn.value || 0) / 100 / 12
+
+                    if (r === 0) return (monthlyTotal * months).toLocaleString()
+
+                    const fv = monthlyTotal * ((Math.pow(1 + r, months) - 1) / r)
+                    return Math.round(fv).toLocaleString()
+                })
+
+                const principal = computed(() => {
+                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
+                    return (monthlyTotal * (years.value || 0) * 12).toLocaleString()
+                })
+
+                const earnings = computed(() => {
+                    const monthlyTotal = (monthlySalary.value || 0) * (0.06 + selfContribution.value / 100)
+                    const months = (years.value || 0) * 12
+                    const r = (annualReturn.value || 0) / 100 / 12
+                    const principalVal = monthlyTotal * months
+
+                    if (r === 0) return '0'
+
+                    const fv = monthlyTotal * ((Math.pow(1 + r, months) - 1) / r)
+                    return Math.round(fv - principalVal).toLocaleString()
+                })
+
+                return { monthlySalary, selfContribution, years, annualReturn, employerMonthly, selfMonthly, totalAccumulated, principal, earnings }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

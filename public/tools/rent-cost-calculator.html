@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>租金成本計算｜TaiCalc</title>
+    <meta name="description" content="計算租屋真實成本，包含押金機會成本與隱藏費用。">
+    <link rel="canonical" href="https://taicalc.com/tools/rent-cost">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="text-zinc-100">
+    <div id="app" class="max-w-lg mx-auto px-4 py-12">
+
+        <header class="text-center mb-8">
+            <a href="../index.html" class="text-zinc-500 text-sm hover:text-white">← TaiCalc</a>
+            <h1 class="text-3xl font-bold mt-4 text-white">租金成本計算</h1>
+            <p class="text-zinc-400 mt-2">含押金機會成本與隱藏費用</p>
+        </header>
+
+        <main class="card rounded-3xl p-6 space-y-6">
+
+            <div>
+                <label class="block text-sm text-zinc-400 mb-2">月租金 (NT$)</label>
+                <input type="number" v-model.number="monthlyRent"
+                    class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white text-xl focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">押金 (月)</label>
+                    <input type="number" v-model.number="depositMonths"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">租期 (月)</label>
+                    <input type="number" v-model.number="leaseMonths"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">管理費 (月)</label>
+                    <input type="number" v-model.number="managementFee"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-zinc-400 mb-2">預估電費 (月)</label>
+                    <input type="number" v-model.number="electricityFee"
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+            </div>
+
+            <!-- 結果 -->
+            <div
+                class="bg-gradient-to-br from-emerald-950/50 to-emerald-900/30 rounded-2xl p-6 border border-emerald-900/50">
+                <div class="text-center mb-4">
+                    <p class="text-zinc-400 text-sm mb-1">實際月支出</p>
+                    <p class="text-3xl font-bold text-emerald-400 font-mono">NT$ {{ actualMonthly }}</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-center pt-4 border-t border-zinc-800">
+                    <div>
+                        <p class="text-zinc-500 text-xs mb-1">押金總額</p>
+                        <p class="text-lg font-bold text-white font-mono">{{ depositTotal }}</p>
+                    </div>
+                    <div>
+                        <p class="text-zinc-500 text-xs mb-1">押金機會成本</p>
+                        <p class="text-lg font-bold text-amber-400 font-mono">{{ depositCost }}/年</p>
+                    </div>
+                </div>
+                <div class="text-center pt-4 mt-4 border-t border-zinc-800">
+                    <p class="text-zinc-500 text-xs mb-1">租期總支出</p>
+                    <p class="text-xl font-bold text-white font-mono">NT$ {{ totalCost }}</p>
+                </div>
+            </div>
+
+            <div class="text-center text-sm text-zinc-500">
+                💡 押金機會成本以年化 2% 計算
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-8 text-zinc-600 text-sm">
+            © 2026 TaiCalc
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const monthlyRent = ref(15000)
+                const depositMonths = ref(2)
+                const leaseMonths = ref(12)
+                const managementFee = ref(0)
+                const electricityFee = ref(800)
+
+                const actualMonthly = computed(() => ((monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0)).toLocaleString())
+                const depositTotal = computed(() => ((monthlyRent.value || 0) * (depositMonths.value || 0)).toLocaleString())
+                const depositCost = computed(() => {
+                    const deposit = (monthlyRent.value || 0) * (depositMonths.value || 0)
+                    return Math.round(deposit * 0.02).toLocaleString()
+                })
+                const totalCost = computed(() => {
+                    const monthly = (monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0)
+                    return (monthly * (leaseMonths.value || 0)).toLocaleString()
+                })
+
+                return { monthlyRent, depositMonths, leaseMonths, managementFee, electricityFee, actualMonthly, depositTotal, depositCost, totalCost }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

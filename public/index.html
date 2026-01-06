@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaiCalc｜台灣財務計算</title>
-    <meta name="description" content="專業財務計算工具。薪資實拿、成本分析、分帳、加班費。">
+    <title>TaiCalc｜台灣財務計算工具</title>
+    <meta name="description" content="專為台灣設計的財務計算工具。薪資實拿、電費試算、加班費、房貸、分帳。">
     <link rel="canonical" href="https://taicalc.com">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,8 +32,7 @@
         .card:hover {
             background: rgba(255, 255, 255, 0.06);
             border-color: rgba(16, 185, 129, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
         }
 
         .hero-gradient {
@@ -42,107 +41,158 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .glow {
-            box-shadow: 0 0 60px rgba(16, 185, 129, 0.15);
-        }
     </style>
 </head>
 
 <body class="antialiased text-zinc-100">
-
-    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
+    <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
 
         <!-- Hero -->
-        <header class="text-center mb-20">
+        <header class="text-center mb-16">
             <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-900/50 mb-8">
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-900/50 mb-6">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                 <span class="text-sm text-emerald-400 font-medium">2026 最新費率</span>
             </div>
-
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4">
                 <span class="hero-gradient">Tai</span><span class="text-white">Calc</span>
             </h1>
-
-            <p class="text-xl md:text-2xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg text-zinc-400 font-light">
                 專為台灣設計的財務計算工具
             </p>
         </header>
 
-        <!-- Tools Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+        <!-- 熱門工具 -->
+        <section class="mb-12">
+            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> 熱門計算
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-            <a href="./tools/salary-calculator.html" class="card rounded-3xl p-8 group">
-                <div class="flex items-center justify-between mb-6">
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
-                        <span class="text-3xl">💰</span>
+                <a href="./tools/salary-calculator.html" class="card rounded-2xl p-5 group">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl">💰</span>
+                        <span class="text-xs text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded-full">TOP</span>
                     </div>
-                    <span
-                        class="px-3 py-1.5 text-xs font-medium text-emerald-400 bg-emerald-950/50 rounded-full border border-emerald-900/50">
-                        熱門
-                    </span>
-                </div>
-                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                    薪資實拿計算
-                </h2>
-                <p class="text-zinc-500 leading-relaxed">
-                    2026 勞保、健保、勞退精算。含年終獎金、年度實領試算。
-                </p>
-            </a>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors">薪資實拿
+                    </h3>
+                    <p class="text-sm text-zinc-500 mt-1">勞健保、勞退、年終獎金</p>
+                </a>
 
-            <a href="./tools/cost-calculator.html" class="card rounded-3xl p-8 group">
-                <div
-                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mb-6">
-                    <span class="text-3xl">📊</span>
-                </div>
-                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                    成本分析
-                </h2>
-                <p class="text-zinc-500 leading-relaxed">
-                    毛利率計算、損益兩平分析、最佳定價建議。
-                </p>
-            </a>
+                <a href="./tools/electricity-calculator.html" class="card rounded-2xl p-5 group">
+                    <span class="text-2xl">⚡</span>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
+                        電費試算</h3>
+                    <p class="text-sm text-zinc-500 mt-1">台電累進電價、夏/非夏月</p>
+                </a>
 
-            <a href="./tools/split-calculator.html" class="card rounded-3xl p-8 group">
-                <div
-                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center mb-6">
-                    <span class="text-3xl">👥</span>
-                </div>
-                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                    分帳計算
-                </h2>
-                <p class="text-zinc-500 leading-relaxed">
-                    聚餐、合租、團購費用分攤。支援指定多付功能。
-                </p>
-            </a>
+                <a href="./tools/overtime-calculator.html" class="card rounded-2xl p-5 group">
+                    <span class="text-2xl">⏰</span>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">加班費
+                    </h3>
+                    <p class="text-sm text-zinc-500 mt-1">平日/休息日/例假日</p>
+                </a>
 
-            <a href="./tools/overtime-calculator.html" class="card rounded-3xl p-8 group">
-                <div
-                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6">
-                    <span class="text-3xl">⏰</span>
-                </div>
-                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                    加班費計算
-                </h2>
-                <p class="text-zinc-500 leading-relaxed">
-                    依勞基法計算平日、休息日、例假日加班費。
-                </p>
-            </a>
+                <a href="./tools/credit-card-calculator.html" class="card rounded-2xl p-5 group">
+                    <span class="text-2xl">💳</span>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
+                        信用卡分期</h3>
+                    <p class="text-sm text-zinc-500 mt-1">真實利息、年利率換算</p>
+                </a>
 
+                <a href="./tools/percentage-calculator.html" class="card rounded-2xl p-5 group">
+                    <span class="text-2xl">📐</span>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
+                        百分比計算</h3>
+                    <p class="text-sm text-zinc-500 mt-1">折扣、變化率、求原值</p>
+                </a>
+
+                <a href="./tools/split-calculator.html" class="card rounded-2xl p-5 group">
+                    <span class="text-2xl">👥</span>
+                    <h3 class="text-lg font-semibold text-white group-hover:text-emerald-400 transition-colors mt-3">
+                        分帳計算</h3>
+                    <p class="text-sm text-zinc-500 mt-1">聚餐、合租、團購</p>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- 進階工具 -->
+        <section class="mb-12">
+            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> 退休理財
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                <a href="./tools/labor-pension-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🏦</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">勞退試算
+                    </h3>
+                </a>
+
+                <a href="./tools/retirement-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🌴</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">退休規劃
+                    </h3>
+                </a>
+
+                <a href="./tools/profit-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">📊</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">利潤計算
+                    </h3>
+                </a>
+
+                <a href="./tools/cost-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🧮</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">成本分析
+                    </h3>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- 生活工具 -->
+        <section class="mb-16">
+            <h2 class="text-sm font-medium text-zinc-500 mb-4 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> 生活計算
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                <a href="./tools/work-hours-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🕐</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">工時計算
+                    </h3>
+                </a>
+
+                <a href="./tools/delivery-income-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🛵</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">外送收入
+                    </h3>
+                </a>
+
+                <a href="./tools/rent-cost-calculator.html" class="card rounded-xl p-4 group text-center">
+                    <span class="text-xl">🏠</span>
+                    <h3 class="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors mt-2">租金成本
+                    </h3>
+                </a>
+
+                <a href="./tools/work-hours-calculator.html"
+                    class="card rounded-xl p-4 group text-center opacity-40 pointer-events-none">
+                    <span class="text-xl">🏗️</span>
+                    <h3 class="text-sm font-medium text-zinc-400 mt-2">更多開發中</h3>
+                </a>
+
+            </div>
         </section>
 
         <!-- Footer -->
-        <footer class="text-center">
+        <footer class="text-center border-t border-zinc-800/50 pt-8">
             <p class="text-zinc-600 text-sm">
-                © 2026 TaiCalc ·
-                <span class="text-zinc-500">DESIGNED~德</span>
+                © 2026 TaiCalc · <span class="text-zinc-500">DESIGNED~德</span>
             </p>
         </footer>
 
     </div>
-
 </body>
 
 </html>
