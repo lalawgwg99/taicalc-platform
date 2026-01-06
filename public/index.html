@@ -1,170 +1,147 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaiCalc｜零等待計算工具</title>
-    <meta name="description" content="零等待財務計算工具。薪資實拿、成本計算、分帳、加班費。秒開即算，隱私不留痕。">
-    <meta name="keywords" content="薪資計算,成本計算,分帳,加班費,財務工具,秒開財務">
+    <title>TaiCalc｜台灣財務計算</title>
+    <meta name="description" content="專業財務計算工具。薪資實拿、成本分析、分帳、加班費。">
     <link rel="canonical" href="https://taicalc.com">
 
-    <meta property="og:title" content="TaiCalc｜零等待計算工具">
-    <meta property="og:description" content="零等待財務計算。秒開即算，隱私不留痕。">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://taicalc.com">
-
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#09090b',
-                        surface: '#18181b',
-                        border: '#27272a',
-                        primary: '#10b981',
-                        primary_hover: '#059669',
-                    },
-                    fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "TaiCalc",
-        "url": "https://taicalc.com",
-        "description": "零等待財務計算工具"
-    }
-    </script>
-
     <style>
+        * {
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
-            background-color: #09090b;
-            color: #e4e4e7;
+            background: linear-gradient(180deg, #0a0a0a 0%, #171717 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(16, 185, 129, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 0.15);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glow {
+            box-shadow: 0 0 60px rgba(16, 185, 129, 0.15);
         }
     </style>
 </head>
 
-<body class="antialiased min-h-screen">
+<body class="antialiased text-zinc-100">
 
-    <div class="max-w-4xl mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
 
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
-                <span class="text-primary">Tai</span>Calc
-            </h1>
-            <p class="text-lg text-zinc-400 max-w-md mx-auto">
-                秒開・即算・隱私不留痕
-            </p>
-            <div class="mt-4 flex justify-center gap-2 text-xs">
-                <span class="px-3 py-1 bg-primary/20 text-primary rounded-full border border-primary/30">零框架載入</span>
-                <span class="px-3 py-1 bg-zinc-800 text-zinc-400 rounded-full border border-zinc-700">2026 最新費率</span>
+        <!-- Hero -->
+        <header class="text-center mb-20">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-950/30 border border-emerald-900/50 mb-8">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span class="text-sm text-emerald-400 font-medium">2026 最新費率</span>
             </div>
+
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+                <span class="hero-gradient">Tai</span><span class="text-white">Calc</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
+                專為台灣設計的財務計算工具
+            </p>
         </header>
 
-        <!-- 工具矩陣 -->
-        <section class="mb-12">
-            <h2 class="text-lg font-semibold text-zinc-300 mb-6 flex items-center gap-2">
-                <span class="w-2 h-2 bg-primary rounded-full"></span>
-                計算工具
-            </h2>
+        <!-- Tools Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <!-- 薪資計算機 -->
-                <a href="./tools/salary-calculator.html"
-                    class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-blue-950/50 rounded-xl flex items-center justify-center text-2xl">💰
-                        </div>
-                        <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full">HOT</span>
+            <a href="./tools/salary-calculator.html" class="card rounded-3xl p-8 group">
+                <div class="flex items-center justify-between mb-6">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center">
+                        <span class="text-3xl">💰</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">薪資實拿計算</h3>
-                    <p class="text-sm text-zinc-500">2026 勞健保費率・勞退自提・年度實領試算</p>
-                </a>
-
-                <!-- 成本計算機 -->
-                <a href="./tools/cost-calculator.html"
-                    class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-green-950/50 rounded-xl flex items-center justify-center text-2xl">📊
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">成本計算</h3>
-                    <p class="text-sm text-zinc-500">毛利率・損益兩平點・定價建議</p>
-                </a>
-
-                <!-- 分帳計算 -->
-                <a href="./tools/split-calculator.html"
-                    class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-purple-950/50 rounded-xl flex items-center justify-center text-2xl">👥
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">分帳計算</h3>
-                    <p class="text-sm text-zinc-500">聚餐・合租・團購分帳</p>
-                </a>
-
-                <!-- 加班費計算 -->
-                <a href="./tools/overtime-calculator.html"
-                    class="group bg-surface border border-border rounded-2xl p-6 hover:border-primary/50 hover:bg-surface/80 transition-all">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-amber-950/50 rounded-xl flex items-center justify-center text-2xl">⏰
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">加班費計算</h3>
-                    <p class="text-sm text-zinc-500">平日・休息日・例假日加班費試算</p>
-                </a>
-
-            </div>
-        </section>
-
-        <!-- 特色 -->
-        <section class="mb-12">
-            <div class="grid grid-cols-3 gap-4 text-center">
-                <div class="p-4">
-                    <div class="text-3xl mb-2">⚡</div>
-                    <div class="text-sm font-medium text-white">秒開</div>
-                    <div class="text-xs text-zinc-500">0 Build Time</div>
+                    <span
+                        class="px-3 py-1.5 text-xs font-medium text-emerald-400 bg-emerald-950/50 rounded-full border border-emerald-900/50">
+                        熱門
+                    </span>
                 </div>
-                <div class="p-4">
-                    <div class="text-3xl mb-2">🔒</div>
-                    <div class="text-sm font-medium text-white">隱私</div>
-                    <div class="text-xs text-zinc-500">純前端計算</div>
+                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                    薪資實拿計算
+                </h2>
+                <p class="text-zinc-500 leading-relaxed">
+                    2026 勞保、健保、勞退精算。含年終獎金、年度實領試算。
+                </p>
+            </a>
+
+            <a href="./tools/cost-calculator.html" class="card rounded-3xl p-8 group">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mb-6">
+                    <span class="text-3xl">📊</span>
                 </div>
-                <div class="p-4">
-                    <div class="text-3xl mb-2">📱</div>
-                    <div class="text-sm font-medium text-white">行動優先</div>
-                    <div class="text-xs text-zinc-500">iPhone 最佳化</div>
+                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                    成本分析
+                </h2>
+                <p class="text-zinc-500 leading-relaxed">
+                    毛利率計算、損益兩平分析、最佳定價建議。
+                </p>
+            </a>
+
+            <a href="./tools/split-calculator.html" class="card rounded-3xl p-8 group">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center mb-6">
+                    <span class="text-3xl">👥</span>
                 </div>
-            </div>
+                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                    分帳計算
+                </h2>
+                <p class="text-zinc-500 leading-relaxed">
+                    聚餐、合租、團購費用分攤。支援指定多付功能。
+                </p>
+            </a>
+
+            <a href="./tools/overtime-calculator.html" class="card rounded-3xl p-8 group">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 flex items-center justify-center mb-6">
+                    <span class="text-3xl">⏰</span>
+                </div>
+                <h2 class="text-2xl font-semibold text-white mb-3 group-hover:text-emerald-400 transition-colors">
+                    加班費計算
+                </h2>
+                <p class="text-zinc-500 leading-relaxed">
+                    依勞基法計算平日、休息日、例假日加班費。
+                </p>
+            </a>
+
         </section>
 
         <!-- Footer -->
-        <footer class="text-center text-xs text-zinc-600 border-t border-zinc-800 pt-8">
-            <p>TaiCalc by DESIGNED~德 ｜ 2026</p>
-            <p class="mt-2">零框架・零追蹤・零廢話</p>
+        <footer class="text-center">
+            <p class="text-zinc-600 text-sm">
+                © 2026 TaiCalc ·
+                <span class="text-zinc-500">DESIGNED~德</span>
+            </p>
         </footer>
 
     </div>
-
-    <!-- vConsole for iPhone debugging -->
-    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-    <script>var vConsole = new VConsole({ theme: 'dark' });</script>
 
 </body>
 
