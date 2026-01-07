@@ -594,6 +594,8 @@
                 watch(monthlyNet, (newVal) => {
                     if (newVal > 0) {
                         localStorage.setItem('taicalc_salary_net', newVal)
+                    } else {
+                        localStorage.removeItem('taicalc_salary_net')
                     }
                 })
 

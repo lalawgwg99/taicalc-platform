@@ -527,6 +527,8 @@
                     const val = parseInt(newVal)
                     if (val > 0) {
                         localStorage.setItem('taicalc_electricity_monthly', val)
+                    } else {
+                        localStorage.removeItem('taicalc_electricity_monthly')
                     }
                 })
 

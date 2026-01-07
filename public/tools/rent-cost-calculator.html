@@ -177,6 +177,8 @@
                     const val = parseInt(newVal.replace(/,/g, ''))
                     if (val > 0) {
                         localStorage.setItem('taicalc_rent_monthly', val)
+                    } else {
+                        localStorage.removeItem('taicalc_rent_monthly')
                     }
                 })
 

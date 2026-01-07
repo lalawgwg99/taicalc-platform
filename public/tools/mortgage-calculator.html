@@ -431,6 +431,8 @@
                     // Let's save "afterGracePay" (Full P+I) as it reflects true liability.
                     if (newVal.afterGracePay > 0) {
                         localStorage.setItem('taicalc_mortgage_monthly', Math.floor(newVal.afterGracePay))
+                    } else {
+                        localStorage.removeItem('taicalc_mortgage_monthly')
                     }
                 }, { deep: true, immediate: true })
 

@@ -469,7 +469,11 @@
                 watch(dcaRecords, (newVal) => { localStorage.setItem('taicalc_stock_dca_records', JSON.stringify(newVal)) }, { deep: true })
 
                 watch(dcaResult, (newVal) => {
-                    if (newVal.totalCost > 0) localStorage.setItem('taicalc_stock_value', Math.round(newVal.totalCost))
+                    if (newVal.totalCost > 0) {
+                        localStorage.setItem('taicalc_stock_value', Math.round(newVal.totalCost))
+                    } else {
+                        localStorage.removeItem('taicalc_stock_value')
+                    }
                 })
 
                 return {
