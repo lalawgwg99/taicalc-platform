@@ -81,6 +81,17 @@
                             <path d="M16 21h5v-5" />
                         </svg>
                     </button>
+                    <!-- Reset Button -->
+                    <button @click="resetData"
+                        class="p-2 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm"
+                        title="清除所有數據 (Reset)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18" />
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -504,6 +515,20 @@
                     }, 500)
                 }
 
+                const resetData = () => {
+                    if (confirm('確定要清除所有紀錄並重置儀表板嗎？此動作無法復原。')) {
+                        // Clear specific keys or all? let's clear taicalc_ specific keys to avoid nuking other usage
+                        // Actually, cleaning all localStorage is safer for a "Reset" feature in this context if we own the domain
+                        // But let's be safe and clear keys starting with 'taicalc_'
+                        Object.keys(localStorage).forEach(key => {
+                            if (key.startsWith('taicalc_')) {
+                                localStorage.removeItem(key)
+                            }
+                        })
+                        reloadData()
+                    }
+                }
+
                 // Persist manual living cost
                 onMounted(() => {
                     const savedLiving = localStorage.getItem('taicalc_living_manual')
@@ -564,7 +589,8 @@
                     freedomScore,
                     savingsStatus,
                     fmt,
-                    reloadData
+                    reloadData,
+                    resetData
                 }
             }
         }).mount('#app')
