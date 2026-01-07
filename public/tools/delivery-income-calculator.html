@@ -223,13 +223,13 @@
 
         createApp({
             setup() {
-                const grossIncome = ref(45000)
-                const kilometers = ref(1500)
-                const gasPrice = ref(31.5)
-                const kmPerLiter = ref(38)
-                const workHours = ref(180)
+                const grossIncome = ref(0)
+                const kilometers = ref(0)
+                const gasPrice = ref(30) // Reasonable default
+                const kmPerLiter = ref(35) // Reasonable default
+                const workHours = ref(0)
                 const maintenancePerKm = ref(0.8) // 每公里保養費(輪胎機油)
-                const otherMonthlyCost = ref(800) // 強制險+任意險攤提+稅
+                const otherMonthlyCost = ref(0) // 強制險+任意險攤提+稅
 
                 const chartCanvas = ref(null)
                 let chartInstance = null

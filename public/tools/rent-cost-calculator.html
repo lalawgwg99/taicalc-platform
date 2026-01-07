@@ -155,11 +155,11 @@
 
         createApp({
             setup() {
-                const monthlyRent = ref(15000)
-                const depositMonths = ref(2)
-                const leaseMonths = ref(12)
+                const monthlyRent = ref(0)
+                const depositMonths = ref(2) // Default 2 months is standard
+                const leaseMonths = ref(12) // Default 1 year
                 const managementFee = ref(0)
-                const electricityFee = ref(800)
+                const electricityFee = ref(0)
 
                 const actualMonthly = computed(() => ((monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0)).toLocaleString())
                 const depositTotal = computed(() => ((monthlyRent.value || 0) * (depositMonths.value || 0)).toLocaleString())

@@ -466,7 +466,7 @@
                 const stockData = ref({ defined: false, amount: 0 })
 
                 // Manual States (persist to local storage independently)
-                const manualLivingCost = ref(15000)
+                const manualLivingCost = ref(0)
 
                 const fmt = (n) => n ? '$' + n.toLocaleString('zh-TW') : '$0'
 
@@ -511,6 +511,51 @@
                         })
                         reloadData()
                     }
+                }
+
+                const exportData = () => {
+                    const data = {}
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith('taicalc_')) {
+                            data[key] = localStorage.getItem(key)
+                        }
+                    })
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = `taicalc_backup_${new Date().toISOString().slice(0, 10)}.json`
+                    a.click()
+                    URL.revokeObjectURL(url)
+                }
+
+                const fileInput = ref(null)
+
+                const importData = (event) => {
+                    const file = event.target.files[0]
+                    if (!file) return
+
+                    const reader = new FileReader()
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result)
+                            let count = 0
+                            Object.entries(data).forEach(([key, value]) => {
+                                if (key.startsWith('taicalc_')) {
+                                    localStorage.setItem(key, value)
+                                    count++
+                                }
+                            })
+                            alert(`成功還原 ${count} 筆設定！`)
+                            reloadData()
+                        } catch (err) {
+                            alert('檔案格式錯誤，無法還原。')
+                            console.error(err)
+                        }
+                    }
+                    reader.readAsText(file)
+                    // Reset input
+                    event.target.value = ''
                 }
 
                 // Persist manual living cost
@@ -574,7 +619,10 @@
                     savingsStatus,
                     fmt,
                     reloadData,
-                    resetData
+                    resetData,
+                    exportData,
+                    importData,
+                    fileInput
                 }
             }
         }).mount('#app')
