@@ -45,11 +45,15 @@
         .animate-float {
             animation: float 4s ease-in-out infinite;
         }
+
+        [v-cloak] {
+            display: none;
+        }
     </style>
 </head>
 
 <body class="antialiased bg-stone-50 text-stone-900 font-sans">
-    <div id="app" class="max-w-4xl mx-auto px-4 py-8">
+    <div id="app" class="max-w-4xl mx-auto px-4 py-8" v-cloak>
 
         <!-- Header -->
         <header class="mb-8">
@@ -87,8 +91,8 @@
                 class="bg-gradient-to-r from-emerald-50 to-white p-4 rounded-2xl border border-emerald-100 flex items-center gap-4 shadow-sm relative overflow-hidden">
                 <div class="relative shrink-0">
                     <div class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                        <img src="assets/images/mascot-bot.png" alt="Calc-Bot"
-                            class="w-full h-full object-contain animate-float drop-shadow-md">
+                        <img :src="mascotImage" alt="Calc-Bot"
+                            class="w-full h-full object-contain animate-float drop-shadow-md mix-blend-multiply">
                     </div>
                 </div>
                 <div class="relative z-10">
@@ -558,6 +562,12 @@
                     return '加油 💪'
                 })
 
+                const mascotImage = computed(() => {
+                    // Score >= 30 is considered 'Good' or 'Excellent' enough for a happy pose
+                    if (freedomScore.value >= 30) return 'assets/images/mascot-happy.png'
+                    return 'assets/images/mascot-thinking.png'
+                })
+
                 return {
                     loading,
                     salaryData,
@@ -572,6 +582,7 @@
                     netCashflow,
                     freedomScore,
                     savingsStatus,
+                    mascotImage,
                     fmt,
                     reloadData
                 }
