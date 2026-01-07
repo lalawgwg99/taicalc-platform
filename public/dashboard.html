@@ -44,10 +44,6 @@
             }
         }
 
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
-        }
-
         [v-cloak] {
             display: none;
         }
@@ -88,32 +84,21 @@
                 </div>
             </div>
 
-            <!-- Mascot Welcome Card -->
-            <div
-                class="bg-gradient-to-r from-emerald-50 to-white p-4 rounded-2xl border border-emerald-100 flex items-center gap-4 shadow-sm relative overflow-hidden">
-                <div class="relative shrink-0">
-                    <div class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
-                        <img :src="mascotImage" alt="Calc-Bot"
-                            class="w-full h-full object-contain animate-float drop-shadow-md mix-blend-multiply">
-                    </div>
-                </div>
-                <div class="relative z-10">
-                    <h2 class="text-sm font-bold text-stone-800 flex items-center gap-1">
-                        Calc-Bot 財務助理
-                        <span
-                            class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-600">ONLINE</span>
-                    </h2>
-                    <p class="text-xs md:text-sm text-stone-600 mt-0.5 leading-relaxed">
-                        嗨！我是您的 AI 財務副駕駛。
+            <!-- Welcome Status Board (Mascot Removed) -->
+            <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-sm flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-stone-800">Hi, 歡迎回來 👋</h2>
+                    <p class="text-sm text-stone-500 mt-1">
                         <span v-if="freedomScore > 0">目前您的財務自由度為 <b class="text-emerald-600">{{ freedomScore }}%</b> ({{
                             savingsStatus }})，繼續保持！</span>
-                        <span v-else>開始輸入您的 <b>薪資</b> 與 <b>支出</b>，讓我幫您計算財務健康度吧！</span>
+                        <span v-else>開始輸入您的 <b>薪資</b> 與 <b>支出</b>，計算您的財務健康度。</span>
                     </p>
                 </div>
-
-                <!-- Decorative BG circle -->
-                <div
-                    class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-100/30 rounded-full blur-xl pointer-events-none">
+                <div class="hidden md:block">
+                    <span
+                        class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-600">
+                        System Online
+                    </span>
                 </div>
             </div>
         </header>
@@ -564,12 +549,6 @@
                     return '加油 💪'
                 })
 
-                const mascotImage = computed(() => {
-                    // Score >= 30 is considered 'Good' or 'Excellent' enough for a happy pose
-                    if (freedomScore.value >= 30) return 'assets/images/mascot-happy.png'
-                    return 'assets/images/mascot-thinking.png'
-                })
-
                 return {
                     loading,
                     salaryData,
@@ -584,7 +563,6 @@
                     netCashflow,
                     freedomScore,
                     savingsStatus,
-                    mascotImage,
                     fmt,
                     reloadData
                 }
