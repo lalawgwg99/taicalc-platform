@@ -473,115 +473,111 @@
                 const reloadData = () => {
                     loading.value = true
                     setTimeout(() => {
-                        setTimeout(() => {
-                            // 1. Try read Salary
-                            const salary = localStorage.getItem('taicalc_salary_net')
-                            if (salary) salaryData.value = { defined: true, amount: parseInt(salary) }
-                            else salaryData.value = { defined: false, amount: 0 }
+                        // 1. Try read Salary
+                        const salary = localStorage.getItem('taicalc_salary_net')
+                        if (salary) salaryData.value = { defined: true, amount: parseInt(salary) }
+                        else salaryData.value = { defined: false, amount: 0 }
 
-                            const delivery = localStorage.getItem('taicalc_delivery_net')
-                            if (delivery) deliveryData.value = { defined: true, amount: parseInt(delivery) }
-                            else deliveryData.value = { defined: false, amount: 0 }
+                        const delivery = localStorage.getItem('taicalc_delivery_net')
+                        if (delivery) deliveryData.value = { defined: true, amount: parseInt(delivery) }
+                        else deliveryData.value = { defined: false, amount: 0 }
 
-                            const mortgage = localStorage.getItem('taicalc_mortgage_monthly')
-                            if (mortgage) mortgageData.value = { defined: true, amount: parseInt(mortgage) }
-                            else mortgageData.value = { defined: false, amount: 0 }
+                        const mortgage = localStorage.getItem('taicalc_mortgage_monthly')
+                        if (mortgage) mortgageData.value = { defined: true, amount: parseInt(mortgage) }
+                        else mortgageData.value = { defined: false, amount: 0 }
 
-                            const rent = localStorage.getItem('taicalc_rent_monthly')
-                            if (rent) rentData.value = { defined: true, amount: parseInt(rent) }
-                            else rentData.value = { defined: false, amount: 0 }
+                        const rent = localStorage.getItem('taicalc_rent_monthly')
+                        if (rent) rentData.value = { defined: true, amount: parseInt(rent) }
+                        else rentData.value = { defined: false, amount: 0 }
 
-                            const elec = localStorage.getItem('taicalc_electricity_monthly')
-                            if (elec) electricData.value = { defined: true, amount: parseInt(elec) }
-                            else electricData.value = { defined: false, amount: 0 }
+                        const elec = localStorage.getItem('taicalc_electricity_monthly')
+                        if (elec) electricData.value = { defined: true, amount: parseInt(elec) }
+                        else electricData.value = { defined: false, amount: 0 }
 
-                            const stock = localStorage.getItem('taicalc_stock_value')
-                            if (stock) stockData.value = { defined: true, amount: parseInt(stock) }
-                            else stockData.value = { defined: false, amount: 0 }
+                        const stock = localStorage.getItem('taicalc_stock_value')
+                        if (stock) stockData.value = { defined: true, amount: parseInt(stock) }
+                        else stockData.value = { defined: false, amount: 0 }
 
-                            loading.value = false
-                        }, 500)
-                    }
+                        loading.value = false
+                    }, 500)
+                }
 
                 const resetData = () => {
-                        if (confirm('確定要清除所有紀錄並重置儀表板嗎？此動作無法復原。')) {
-                            // Clear specific keys or all? let's clear taicalc_ specific keys to avoid nuking other usage
-                            // Actually, cleaning all localStorage is safer for a "Reset" feature in this context if we own the domain
-                            // But let's be safe and clear keys starting with 'taicalc_'
-                            Object.keys(localStorage).forEach(key => {
-                                if (key.startsWith('taicalc_')) {
-                                    localStorage.removeItem(key)
-                                }
-                            })
-                            reloadData()
-                        }
-                    }
-
-                    // Persist manual living cost
-                    onMounted(() => {
-                        const savedLiving = localStorage.getItem('taicalc_living_manual')
-                        if (savedLiving) manualLivingCost.value = parseInt(savedLiving)
-
+                    if (confirm('確定要清除所有紀錄並重置儀表板嗎？此動作無法復原。')) {
+                        Object.keys(localStorage).forEach(key => {
+                            if (key.startsWith('taicalc_')) {
+                                localStorage.removeItem(key)
+                            }
+                        })
                         reloadData()
-                        window.addEventListener('storage', reloadData)
-                    })
-
-                    onUnmounted(() => {
-                        window.removeEventListener('storage', reloadData)
-                    })
-
-                    // Watch manual cost to save
-                    Vue.watch(manualLivingCost, (newVal) => {
-                        localStorage.setItem('taicalc_living_manual', newVal)
-                    })
-
-                    // Computed Totals
-                    const totalIncome = computed(() => {
-                        return (salaryData.value.amount || 0) + (deliveryData.value.amount || 0)
-                    })
-
-                    const totalExpense = computed(() => {
-                        return (mortgageData.value.amount || 0) + (rentData.value.amount || 0) + (electricData.value.amount || 0) + (manualLivingCost.value || 0)
-                    })
-
-                    const netCashflow = computed(() => {
-                        return totalIncome.value - totalExpense.value
-                    })
-
-                    const freedomScore = computed(() => {
-                        if (totalIncome.value <= 0) return 0
-                        const score = Math.round((netCashflow.value / totalIncome.value) * 100)
-                        return Math.max(0, score) // No negative score display
-                    })
-
-                    const savingsStatus = computed(() => {
-                        const s = freedomScore.value
-                        if (s >= 50) return '優秀 🌟'
-                        if (s >= 30) return '良好 👍'
-                        if (s >= 10) return '普通 🙂'
-                        return '加油 💪'
-                    })
-
-                    return {
-                        loading,
-                        salaryData,
-                        deliveryData,
-                        mortgageData,
-                        rentData,
-                        electricData,
-                        stockData,
-                        manualLivingCost,
-                        totalIncome,
-                        totalExpense,
-                        netCashflow,
-                        freedomScore,
-                        savingsStatus,
-                        fmt,
-                        reloadData,
-                        resetData
                     }
                 }
-            }).mount('#app')
+
+                // Persist manual living cost
+                onMounted(() => {
+                    const savedLiving = localStorage.getItem('taicalc_living_manual')
+                    if (savedLiving) manualLivingCost.value = parseInt(savedLiving)
+
+                    reloadData()
+                    window.addEventListener('storage', reloadData)
+                })
+
+                onUnmounted(() => {
+                    window.removeEventListener('storage', reloadData)
+                })
+
+                // Watch manual cost to save
+                Vue.watch(manualLivingCost, (newVal) => {
+                    localStorage.setItem('taicalc_living_manual', newVal)
+                })
+
+                // Computed Totals
+                const totalIncome = computed(() => {
+                    return (salaryData.value.amount || 0) + (deliveryData.value.amount || 0)
+                })
+
+                const totalExpense = computed(() => {
+                    return (mortgageData.value.amount || 0) + (rentData.value.amount || 0) + (electricData.value.amount || 0) + (manualLivingCost.value || 0)
+                })
+
+                const netCashflow = computed(() => {
+                    return totalIncome.value - totalExpense.value
+                })
+
+                const freedomScore = computed(() => {
+                    if (totalIncome.value <= 0) return 0
+                    const score = Math.round((netCashflow.value / totalIncome.value) * 100)
+                    return Math.max(0, score) // No negative score display
+                })
+
+                const savingsStatus = computed(() => {
+                    const s = freedomScore.value
+                    if (s >= 50) return '優秀 🌟'
+                    if (s >= 30) return '良好 👍'
+                    if (s >= 10) return '普通 🙂'
+                    return '加油 💪'
+                })
+
+                return {
+                    loading,
+                    salaryData,
+                    deliveryData,
+                    mortgageData,
+                    rentData,
+                    electricData,
+                    stockData,
+                    manualLivingCost,
+                    totalIncome,
+                    totalExpense,
+                    netCashflow,
+                    freedomScore,
+                    savingsStatus,
+                    fmt,
+                    reloadData,
+                    resetData
+                }
+            }
+        }).mount('#app')
     </script>
 </body>
 
