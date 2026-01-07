@@ -256,7 +256,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed, watch } = Vue
+        const { createApp, ref, computed, watch, onMounted } = Vue
 
         createApp({
             setup() {
@@ -431,6 +431,29 @@
                         localStorage.setItem('taicalc_mortgage_monthly', Math.floor(newVal.afterGracePay))
                     }
                 }, { deep: true, immediate: true })
+
+                // Persistence
+                onMounted(() => {
+                    const saved = localStorage.getItem('taicalc_mortgage_inputs')
+                    if (saved) {
+                        try {
+                            const data = JSON.parse(saved)
+                            if (data.amountWan) amountWan.value = data.amountWan
+                            if (data.years) years.value = data.years
+                            if (data.graceYears !== undefined) graceYears.value = data.graceYears
+                            if (data.rate1) rate1.value = data.rate1
+                            if (data.rate2) rate2.value = data.rate2
+                            if (data.twoStageMode !== undefined) twoStageMode.value = data.twoStageMode
+                        } catch (e) { }
+                    }
+                })
+
+                watch([amountWan, years, graceYears, rate1, rate2, twoStageMode], (vals) => {
+                    localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
+                        amountWan: vals[0], years: vals[1], graceYears: vals[2],
+                        rate1: vals[3], rate2: vals[4], twoStageMode: vals[5]
+                    }))
+                })
 
                 return {
                     amountWan, years, graceYears,

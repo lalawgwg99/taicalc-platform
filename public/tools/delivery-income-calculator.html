@@ -283,11 +283,32 @@
                     })
                 }
 
-                watch([grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost], updateChart)
-                onMounted(() => setTimeout(updateChart, 100))
+                // Persistence
+                onMounted(() => {
+                    const saved = localStorage.getItem('taicalc_delivery_inputs')
+                    if (saved) {
+                        try {
+                            const data = JSON.parse(saved)
+                            if (data.grossIncome) grossIncome.value = data.grossIncome
+                            if (data.kilometers) kilometers.value = data.kilometers
+                            if (data.gasPrice) gasPrice.value = data.gasPrice
+                            if (data.kmPerLiter) kmPerLiter.value = data.kmPerLiter
+                            if (data.workHours) workHours.value = data.workHours
+                            if (data.maintenancePerKm) maintenancePerKm.value = data.maintenancePerKm
+                            if (data.otherMonthlyCost) otherMonthlyCost.value = data.otherMonthlyCost
+                        } catch (e) { }
+                    }
+                    setTimeout(updateChart, 100)
+                })
 
-                watch([grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost], updateChart)
-                onMounted(() => setTimeout(updateChart, 100))
+                watch([grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost], (vals) => {
+                    updateChart()
+                    localStorage.setItem('taicalc_delivery_inputs', JSON.stringify({
+                        grossIncome: vals[0], kilometers: vals[1], gasPrice: vals[2],
+                        kmPerLiter: vals[3], workHours: vals[4], maintenancePerKm: vals[5],
+                        otherMonthlyCost: vals[6]
+                    }))
+                })
 
                 // Auto-save for Dashboard
                 watch(netIncome, (newVal) => {

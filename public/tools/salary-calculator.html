@@ -599,7 +599,23 @@
                 watch(mode, () => {
                     if (mode.value === 'single') setTimeout(updateCharts, 100)
                 })
-                onMounted(() => setTimeout(updateCharts, 100))
+                // Persistence
+                onMounted(() => {
+                    const saved = localStorage.getItem('taicalc_salary_inputs')
+                    if (saved) {
+                        try {
+                            const data = JSON.parse(saved)
+                            if (data.salary) salary.value = data.salary
+                            if (data.bonus !== undefined) bonus.value = data.bonus
+                            if (data.pension !== undefined) pension.value = data.pension
+                        } catch (e) { }
+                    }
+                    setTimeout(updateCharts, 100)
+                })
+
+                watch([salary, bonus, pension], ([s, b, p]) => {
+                    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p }))
+                })
 
                 return {
                     mode,

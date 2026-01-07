@@ -317,7 +317,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed } = Vue
+        const { createApp, ref, computed, onMounted, watch } = Vue
 
         const SUMMER = [
             { limit: 120, rate: 1.68 },
@@ -527,6 +527,32 @@
                         localStorage.setItem('taicalc_electricity_monthly', val)
                     }
                 })
+
+                // Persistence
+                onMounted(() => {
+                    const saved = localStorage.getItem('taicalc_electricity_inputs')
+                    if (saved) {
+                        try {
+                            const data = JSON.parse(saved)
+                            if (data.kwh) kwh.value = data.kwh
+                            if (data.isSummer !== undefined) isSummer.value = data.isSummer
+                            if (data.acPower) acPower.value = data.acPower
+                            if (data.acHours) acHours.value = data.acHours
+                            if (data.userAppliances) userAppliances.value = data.userAppliances
+                        } catch (e) { }
+                    }
+                    setTimeout(updateChart, 100)
+                })
+
+                watch([kwh, isSummer, acPower, acHours, userAppliances], () => {
+                    localStorage.setItem('taicalc_electricity_inputs', JSON.stringify({
+                        kwh: kwh.value,
+                        isSummer: isSummer.value,
+                        acPower: acPower.value,
+                        acHours: acHours.value,
+                        userAppliances: userAppliances.value
+                    }))
+                }, { deep: true })
 
                 return {
                     kwh, isSummer, breakdown, totalCost, avgRate,

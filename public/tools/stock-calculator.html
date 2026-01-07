@@ -331,7 +331,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed, watch } = Vue
+        const { createApp, ref, computed, watch, onMounted } = Vue
 
         createApp({
             setup() {
@@ -453,6 +453,21 @@
                         avgPrice: avg,
                         breakeven: Math.ceil(be * 100) / 100
                     }
+                })
+
+                // Persistence Logic
+                onMounted(() => {
+                    const savedSettings = localStorage.getItem('taicalc_stock_settings')
+                    if (savedSettings) { try { settings.value = JSON.parse(savedSettings) } catch (e) { } }
+                    const savedRecords = localStorage.getItem('taicalc_stock_dca_records')
+                    if (savedRecords) { try { dcaRecords.value = JSON.parse(savedRecords) } catch (e) { } }
+                })
+
+                watch(settings, (newVal) => { localStorage.setItem('taicalc_stock_settings', JSON.stringify(newVal)) }, { deep: true })
+                watch(dcaRecords, (newVal) => { localStorage.setItem('taicalc_stock_dca_records', JSON.stringify(newVal)) }, { deep: true })
+
+                watch(dcaResult, (newVal) => {
+                    if (newVal.totalCost > 0) localStorage.setItem('taicalc_stock_value', Math.round(newVal.totalCost))
                 })
 
                 return {

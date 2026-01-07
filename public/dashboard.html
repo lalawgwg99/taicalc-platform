@@ -27,45 +27,89 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
 
-    <!-- Chart.js for visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            50% {
+                transform: translateY(-10px);
+            }
 
-    <!-- Vue 3 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
 </head>
 
 <body class="antialiased bg-stone-50 text-stone-900 font-sans">
     <div id="app" class="max-w-4xl mx-auto px-4 py-8">
 
         <!-- Header -->
-        <header class="mb-8 flex items-center justify-between">
-            <div>
-                <a href="../index.html"
-                    class="inline-flex items-center gap-2 text-stone-500 hover:text-emerald-600 mb-2 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m15 18-6-6 6-6" />
-                    </svg>
-                    回首頁
-                </a>
-                <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-stone-900">生活儀表板</h1>
-                <p class="text-stone-500 mt-1">您的財務生命徵象一覽表</p>
+        <header class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <a href="../index.html"
+                        class="inline-flex items-center gap-2 text-stone-500 hover:text-emerald-600 mb-2 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                        回首頁
+                    </a>
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-stone-900">生活儀表板</h1>
+                </div>
+
+                <div class="flex gap-2">
+                    <button @click="reloadData"
+                        class="p-2 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-emerald-600 hover:border-emerald-200 transition-all shadow-sm"
+                        title="重新整理數據">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            :class="{ 'animate-spin': loading }">
+                            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                            <path d="M3 3v5h5" />
+                            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                            <path d="M16 21h5v-5" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <button @click="reloadData"
-                class="p-2 bg-white border border-stone-200 rounded-lg text-stone-500 hover:text-emerald-600 hover:border-emerald-200 transition-all shadow-sm"
-                title="重新整理數據">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    :class="{ 'animate-spin': loading }">
-                    <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                    <path d="M3 3v5h5" />
-                    <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-                    <path d="M16 21h5v-5" />
-                </svg>
-            </button>
+            <!-- Mascot Welcome Card -->
+            <div
+                class="bg-gradient-to-r from-emerald-50 to-white p-4 rounded-2xl border border-emerald-100 flex items-center gap-4 shadow-sm relative overflow-hidden">
+                <div class="relative shrink-0">
+                    <div class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+                        <img src="assets/images/mascot-bot.png" alt="Calc-Bot"
+                            class="w-full h-full object-contain animate-float drop-shadow-md">
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-sm font-bold text-stone-800 flex items-center gap-1">
+                        Calc-Bot 財務助理
+                        <span
+                            class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-600">ONLINE</span>
+                    </h2>
+                    <p class="text-xs md:text-sm text-stone-600 mt-0.5 leading-relaxed">
+                        嗨！我是您的 AI 財務副駕駛。
+                        <span v-if="freedomScore > 0">目前您的財務自由度為 <b class="text-emerald-600">{{ freedomScore }}%</b> ({{
+                            savingsStatus }})，繼續保持！</span>
+                        <span v-else>開始輸入您的 <b>薪資</b> 與 <b>支出</b>，讓我幫您計算財務健康度吧！</span>
+                    </p>
+                </div>
+
+                <!-- Decorative BG circle -->
+                <div
+                    class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-100/30 rounded-full blur-xl pointer-events-none">
+                </div>
+            </div>
         </header>
 
         <!-- Main Stats Cards -->
@@ -314,17 +358,45 @@
                             {{ rentData.defined ? fmt(rentData.amount) : '未設定' }}
                         </div>
                     </div>
+
+                    <!-- Electricity -->
+                    <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-amber-500 shadow-sm border border-amber-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-stone-700">電費</div>
+                                <a href="tools/electricity-calculator.html"
+                                    class="text-[10px] text-blue-500 hover:underline flex items-center gap-0.5">前往設定</a>
+                            </div>
+                        </div>
+                        <div class="font-mono font-bold text-stone-600"
+                            :class="{'text-stone-300': !electricData.defined}">
+                            {{ electricData.defined ? fmt(electricData.amount) : '未設定' }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Assets & Investments -->
-            <div class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 md:col-span-2">
-                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center justify-between">
+            <div
+                class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6 md:col-span-2 relative overflow-hidden">
+                <!-- Decorative 3D Icons -->
+                <img src="assets/images/finance-icons.png" alt=""
+                    class="absolute -right-6 -bottom-6 w-32 h-32 opacity-10 rotate-12 pointer-events-none object-contain">
+
+                <h3 class="text-lg font-bold text-stone-800 mb-4 flex items-center justify-between relative z-10">
                     資產與投資
                     <span class="text-xs font-normal bg-stone-100 text-stone-500 px-2 py-1 rounded-full">總值</span>
                 </h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
                     <!-- Stock -->
                     <div class="flex items-center justify-between p-3 bg-stone-50 rounded-lg">
                         <div class="flex items-center gap-3">
@@ -387,7 +459,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed, onMounted } = Vue
+        const { createApp, ref, computed, onMounted, onUnmounted } = Vue
 
         createApp({
             setup() {
@@ -447,6 +519,11 @@
                     if (savedLiving) manualLivingCost.value = parseInt(savedLiving)
 
                     reloadData()
+                    window.addEventListener('storage', reloadData)
+                })
+
+                onUnmounted(() => {
+                    window.removeEventListener('storage', reloadData)
                 })
 
                 // Watch manual cost to save

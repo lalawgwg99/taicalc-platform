@@ -149,7 +149,7 @@
     </div>
 
     <script>
-        const { createApp, ref, computed } = Vue
+        const { createApp, ref, computed, watch, onMounted } = Vue
 
         createApp({
             setup() {
@@ -176,6 +176,28 @@
                     if (val > 0) {
                         localStorage.setItem('taicalc_rent_monthly', val)
                     }
+                })
+
+                // Persistence
+                onMounted(() => {
+                    const saved = localStorage.getItem('taicalc_rent_inputs')
+                    if (saved) {
+                        try {
+                            const data = JSON.parse(saved)
+                            if (data.monthlyRent) monthlyRent.value = data.monthlyRent
+                            if (data.depositMonths) depositMonths.value = data.depositMonths
+                            if (data.leaseMonths) leaseMonths.value = data.leaseMonths
+                            if (data.managementFee) managementFee.value = data.managementFee
+                            if (data.electricityFee) electricityFee.value = data.electricityFee
+                        } catch (e) { }
+                    }
+                })
+
+                watch([monthlyRent, depositMonths, leaseMonths, managementFee, electricityFee], (vals) => {
+                    localStorage.setItem('taicalc_rent_inputs', JSON.stringify({
+                        monthlyRent: vals[0], depositMonths: vals[1], leaseMonths: vals[2],
+                        managementFee: vals[3], electricityFee: vals[4]
+                    }))
                 })
 
                 return { monthlyRent, depositMonths, leaseMonths, managementFee, electricityFee, actualMonthly, depositTotal, depositCost, totalCost }
