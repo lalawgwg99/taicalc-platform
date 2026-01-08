@@ -1,0 +1,1006 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Activity,
+  ArrowRight,
+  Cpu,
+  Disc,
+  History,
+  RefreshCw,
+  ShieldCheck,
+  Terminal,
+  Trash2,
+  Zap,
+  ChevronDown,
+  ChevronUp,
+  BookOpen,
+  Info,
+} from "lucide-react";
+
+// ------------------ TYPES ------------------
+
+type LineValue = 6 | 7 | 8 | 9;
+type LogType = "info" | "success" | "warn" | "error" | "system";
+
+interface HexagramResult {
+  lines: LineValue[]; // index 0 = bottom line (初爻)
+  originalBinary: string; // bottom->top, '0' Yin, '1' Yang
+  futureBinary: string; // bottom->top
+  hasChange: boolean;
+  changingLines: number[]; // indices 0..5 (bottom->top)
+}
+
+interface LogEntry {
+  id: string;
+  text: string;
+  type: LogType;
+  timestamp: number;
+  speed?: number;
+}
+
+interface HistoryRecord {
+  id: string;
+  query: string;
+  result: HexagramResult;
+  timestamp: number;
+  hexagramName: string;
+}
+
+interface HexagramData {
+  name: string;
+  nature: string;
+  desc: string;
+}
+
+// ------------------ 64/64 DB ------------------
+const HEXAGRAM_DB: Record<string, HexagramData> = {
+  "111111": { name: "乾為天", nature: "剛健中正", desc: "大吉。能量充沛，適合啟動新計畫；但忌驕矜，守正則亨。" },
+  "000000": { name: "坤為地", nature: "厚德載物", desc: "以柔克剛。順勢承載、配合大局；先穩後進，利於長線累積。" },
+  "100010": { name: "水雷屯", nature: "創始維艱", desc: "萬事起頭難。條件未齊，先立基礎、找盟友；耐心推進則可成。" },
+  "010001": { name: "山水蒙", nature: "啟蒙求教", desc: "資訊不明、經驗不足。宜請教與學習，先把方法弄清楚再動手。" },
+  "111010": { name: "水天需", nature: "等待蓄勢", desc: "前有險阻。先養精蓄銳、備資源；時機到再行動，則能越險。" },
+  "010111": { name: "天水訟", nature: "爭端辨明", desc: "易起口舌與衝突。宜求公正調解，退一步求全；不利硬碰硬。" },
+  "010000": { name: "地水師", nature: "用師有紀", desc: "動員資源需要統帥與紀律。定規則、明權責，方可成事。" },
+  "000010": { name: "水地比", nature: "親比合作", desc: "人心可聚。利於結盟、合作、建立信任；慎選同道，勿濫交。" },
+  "111011": { name: "風天小畜", nature: "小積蓄", desc: "密雲不雨。力量尚小，宜小步快跑、累積籌碼，勿急求大成。" },
+  "110111": { name: "天澤履", nature: "如履薄冰", desc: "步步為營、守禮守分。能避險過關；越矩則招惹強敵。" },
+  "111000": { name: "地天泰", nature: "通達亨泰", desc: "上下相交、氣運暢通。適合推進合作與擴張，把握窗口期。" },
+  "000111": { name: "天地否", nature: "閉塞不通", desc: "上下隔絕、資源卡住。宜收斂、修內功；強求合作多徒勞。" },
+  "101111": { name: "天火同人", nature: "志同道合", desc: "同心則利。利公開合作與整合資源；以共同目標凝聚群體。" },
+  "111101": { name: "火天大有", nature: "富有成果", desc: "資源充足、收穫可期。宜正道用財用權，惠及團隊則更吉。" },
+  "001000": { name: "地山謙", nature: "謙虛受益", desc: "低調內強。謙而不卑、實而不張，反得人助與長期福報。" },
+  "000100": { name: "雷地豫", nature: "順勢而動", desc: "士氣上揚、氣氛活絡。適合啟動，但須節制，勿樂極生亂。" },
+  "100110": { name: "澤雷隨", nature: "隨時應變", desc: "順勢調整策略。跟對人、跟對潮流則吉；固執己見則失機。" },
+  "011001": { name: "山風蠱", nature: "整頓革新", desc: "舊弊浮現。宜修補制度、清理腐敗；先除病灶再談成長。" },
+  "110000": { name: "地澤臨", nature: "臨事而進", desc: "好運臨門但短暫。宜趁勢推進，同時預留退路，居安思危。" },
+  "000011": { name: "風地觀", nature: "觀察示範", desc: "先看後做。適合視察、定位、建立形象；以身作則勝過命令。" },
+  "100101": { name: "火雷噬嗑", nature: "剛決除障", desc: "障礙卡喉。需用規則與決斷清除阻礙；但手段要正、要明。" },
+  "101001": { name: "山火賁", nature: "文飾有度", desc: "重形象與包裝能加分，但本質更重要。外飾不宜掩蓋問題。" },
+  "000001": { name: "山地剝", nature: "剝落衰退", desc: "基礎受損。宜止損、避鋒芒、減少擴張；保存實力待時。" },
+  "100000": { name: "地雷復", nature: "復興再起", desc: "一陽來復。低谷後見轉機；宜從小處重建，切忌躁進。" },
+  "100111": { name: "天雷無妄", nature: "真誠自然", desc: "動機要純。順其自然、守正不妄作；投機取巧易招災。" },
+  "111001": { name: "山天大畜", nature: "厚積薄發", desc: "實力雄厚可涉大川。宜蓄勢、練兵、把控節奏，等待爆發點。" },
+  "100001": { name: "山雷頤", nature: "養與節口", desc: "慎言慎食。以養正心、以節自律；口舌是非與消耗要控管。" },
+  "011110": { name: "澤風大過", nature: "非常承載", desc: "壓力過載、棟樑將曲。宜用非常手段解套，但要防斷裂風險。" },
+  "010010": { name: "坎為水", nature: "重險重關", desc: "險中行。以信心與方法度關；重點是「習坎」：熟悉風險。" },
+  "101101": { name: "離為火", nature: "附麗而明", desc: "要有所依附才發光。選對平台/夥伴，保持清明，不可迷失。" },
+  "001110": { name: "澤山咸", nature: "感應相通", desc: "真誠互感，直覺敏銳。利於感情與合作；但要分清衝動與感應。" },
+  "011100": { name: "雷風恆", nature: "恆久不變", desc: "長期主義得利。堅持初衷與節奏，穩定累積勝過短期爆衝。" },
+  "001111": { name: "天山遯", nature: "退避保全", desc: "時局不利，宜退守。遠離消耗與小人，保存實力是智慧。" },
+  "111100": { name: "雷天大壯", nature: "強而能正", desc: "勢大力強，但易傷己。要守正與節制，勿以力欺人。" },
+  "000101": { name: "火地晉", nature: "晉升明進", desc: "旭日東昇。利升遷、曝光、推進；把握舞台，但避免招妒。" },
+  "101000": { name: "地火明夷", nature: "韜光養晦", desc: "光受傷而不顯。宜低調保身、蓄力修整；逞強易再受挫。" },
+  "101011": { name: "風火家人", nature: "內治為先", desc: "家/團隊內部規範重要。先整內、後整外，秩序立則萬事順。" },
+  "110101": { name: "火澤睽", nature: "分歧相背", desc: "立場不一。宜求同存異，只宜小事；大事硬推多敗。" },
+  "001010": { name: "水山蹇", nature: "行止有難", desc: "寸步難行。宜止而反省、改道求助；繞路比硬闖更快。" },
+  "010100": { name: "雷水解", nature: "解結釋壓", desc: "雷雨解困。宜主動化解問題、清理舊帳；越早處理越吉。" },
+  "110001": { name: "山澤損", nature: "減以成事", desc: "短期犧牲換長期利益。砍掉耗損、聚焦要務，反而更有利。" },
+  "100011": { name: "風雷益", nature: "增益得助", desc: "資源下行、得到支持。利於擴張與冒險，但要把助力用在正道。" },
+  "111110": { name: "澤天夬", nature: "決斷去邪", desc: "必須果斷公開決策。清除阻礙與小人；但忌暴烈，以正制之。" },
+  "011111": { name: "天風姤", nature: "不期而遇", desc: "突發相遇與干擾。機會與風險同來；保持界線，勿被牽著走。" },
+  "000110": { name: "澤地萃", nature: "會聚成勢", desc: "人潮與資源聚集。利組織、社群與募資；同時要防意外與內耗。" },
+  "011000": { name: "地風升", nature: "上升成長", desc: "循勢而上，步步登階。利求援見大人；重視流程與耐心。" },
+  "010110": { name: "澤水困", nature: "困而守志", desc: "資源枯竭、信任不足。少說多做，守志自持；熬過即轉機。" },
+  "011010": { name: "水風井", nature: "制度長養", desc: "井不改而水常新。架構可留，內容要更新；重點在維護與供養。" },
+  "101110": { name: "澤火革", nature: "變革更新", desc: "改革到點才成。時機成熟就改制；先獲信任再動刀。" },
+  "011101": { name: "火風鼎", nature: "鼎新立制", desc: "建立新秩序、引入新人才。利整合資源、定規格，做長久之器。" },
+  "100100": { name: "震為雷", nature: "驚而不亂", desc: "突發震動。能鎮定者得主導；先穩住、再處置。" },
+  "001001": { name: "艮為山", nature: "止而後定", desc: "該停就停。休息、反省、斷捨離；把握節奏勝過硬撐。" },
+  "001011": { name: "風山漸", nature: "漸進有序", desc: "循序漸進，水到渠成。忌急躁；按階段推進最吉。" },
+  "110100": { name: "雷澤歸妹", nature: "位置不當", desc: "衝動結合易後悔。適合短期安排，不利長遠承諾；先校正位置。" },
+  "101100": { name: "雷火豐", nature: "盛極需醒", desc: "盛大盈滿。越高峰越要清醒；及時收束與分配，防由盛轉衰。" },
+  "001101": { name: "火山旅", nature: "羈旅在外", desc: "變動奔波、環境不穩。宜低調自保、輕裝前行；小事可成。" },
+  "011011": { name: "巽為風", nature: "柔入滲透", desc: "以柔克剛，循縫而入。利談判、滲透式推進；但要有底線。" },
+  "110110": { name: "兌為澤", nature: "和悅相通", desc: "靠溝通與分享得利。言語是力量也是風險；誠信則吉。" },
+  "010011": { name: "風水渙", nature: "渙散再聚", desc: "人心渙散或組織需重整。利用工具重建連結；也可能是解散舊局。" },
+  "110010": { name: "水澤節", nature: "節制有度", desc: "有規矩才長久。適度限制能保護成果；過度緊縮則反噬。" },
+  "110011": { name: "風澤中孚", nature: "誠信為本", desc: "以誠感人，建立信任。利合作與跨越困難；言行一致最關鍵。" },
+  "001100": { name: "雷山小過", nature: "小事可成", desc: "可小事，不可大事。低調、精準、快修正；小幅超越有利。" },
+  "101010": { name: "水火既濟", nature: "功成守成", desc: "事已成但易亂。重點轉為維持、檢查、收尾；防後續下滑。" },
+  "010101": { name: "火水未濟", nature: "未竟之功", desc: "臨門一腳最關鍵。別急、別鬆；補齊最後缺口，循序完成。" },
+};
+
+// ------------------ HELPERS ------------------
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+const getHexagramInfo = (binary: string): HexagramData => {
+  const found = HEXAGRAM_DB[binary];
+  if (found) return found;
+  return { name: "未知卦象", nature: "資料缺失", desc: `未找到卦象鍵值：${binary}` };
+};
+
+const castLine = (): LineValue => {
+  const coins = [0, 0, 0].map(() => (Math.random() > 0.5 ? 3 : 2));
+  return coins.reduce((a, b) => a + b, 0) as LineValue;
+};
+
+const generateHexagramData = (): HexagramResult => {
+  const lines: LineValue[] = [];
+  for (let i = 0; i < 6; i++) lines.push(castLine());
+
+  const originalBits = lines.map((l) => (l === 7 || l === 9 ? "1" : "0"));
+  const futureBits = lines.map((l) => {
+    if (l === 6) return "1";
+    if (l === 9) return "0";
+    return l === 7 ? "1" : "0";
+  });
+
+  const changingLines = lines
+    .map((l, i) => ((l === 6 || l === 9) ? i : -1))
+    .filter((i) => i !== -1);
+
+  const originalBinary = originalBits.join("");
+  const futureBinary = futureBits.join("");
+
+  return {
+    lines,
+    originalBinary,
+    futureBinary,
+    hasChange: originalBinary !== futureBinary,
+    changingLines,
+  };
+};
+
+const countBits = (binary: string) => {
+  let yang = 0;
+  for (const ch of binary) if (ch === "1") yang++;
+  return { yang, yin: 6 - yang };
+};
+
+const bandForLineIndex = (i: number) => {
+  if (i <= 1) return "內在/起步";
+  if (i <= 3) return "執行/中段";
+  return "外部/收束";
+};
+
+const buildStructuredAnalysis = (q: string, r: HexagramResult, now: HexagramData, future?: HexagramData) => {
+  const { yang, yin } = countBits(r.originalBinary);
+  const intensity =
+    yang >= 5 ? "極陽：推進力強、但容易過衝"
+    : yang === 4 ? "偏陽：行動窗口明顯"
+    : yang === 3 ? "陰陽均衡：可攻可守、重策略"
+    : yang === 2 ? "偏陰：先整備、再出手"
+    : "極陰：先止損/修復、避免硬推";
+
+  const changeTone = r.hasChange
+    ? (r.changingLines.length >= 3 ? "變化幅度大：需要預留轉向空間" : "出現轉折：小幅調整就能改善走向")
+    : "結構穩定：重點在落地執行與風險控管";
+
+  const changingBands = r.changingLines.map((i) => bandForLineIndex(i));
+  const bandHint = r.hasChange
+    ? `變爻主要落在：${Array.from(new Set(changingBands)).join("、")}（轉折發生的區域）`
+    : "無變爻：此局勢較穩，改變多來自你持續投入的方向與節奏";
+
+  const themes: string[] = [];
+  if (yang >= 4) themes.push("推進、決策、主動權");
+  if (yin >= 4) themes.push("修復、整備、耐心");
+  if (r.hasChange) themes.push("轉折、替代方案、節奏切換");
+  if (!themes.length) themes.push("平衡、校準、穩定輸出");
+
+  const risks: string[] = [];
+  if (yang >= 5) risks.push("過快承諾、忽略回饋、過度自信");
+  if (yin >= 5) risks.push("拖延、錯過窗口、被動挨打");
+  if (r.hasChange && r.changingLines.some((i) => i >= 4)) risks.push("外部變數/他人決策牽動結果");
+  if (r.hasChange && r.changingLines.some((i) => i <= 1)) risks.push("起步條件不穩、基本面需先補齊");
+  if (!risks.length) risks.push("溝通不足導致誤判、細節漏掉造成返工");
+
+  const actions: string[] = [];
+  actions.push("把問題拆成 1~3 個可驗證假設，先做最小測試");
+  actions.push("寫下『我真正要的結果』與『我願意付出的代價』，避免走偏");
+  if (r.hasChange) actions.push("準備 Plan B：一條替代路線（資源/時間/人選）");
+  if (!r.hasChange) actions.push("設定 7 天/14 天檢查點：只優化關鍵變數，不推翻架構");
+  if (yang >= 4) actions.push("放慢 10%：多做一次風險清單與回饋回路");
+  if (yin >= 4) actions.push("加快 10%：把第一步縮小到『今天就能做』的尺寸");
+
+  const timing = r.hasChange
+    ? (r.changingLines.some((i) => i <= 1) ? "先處理起步條件（資源/認知/承諾），再談加速。"
+      : r.changingLines.some((i) => i >= 4) ? "外部條件將變，優先建立彈性與談判籌碼。"
+      : "中段可調：先把流程跑通，邊做邊調整。")
+    : "穩定期：按節奏推進，靠持續輸出累積結果。";
+
+  const questions: string[] = [
+    "我現在最害怕失去的是什麼？那會不會正在左右我的判斷？",
+    "如果只能做一件事讓結果改善 20%，那件事是什麼？",
+    "我是否把『想要』誤認成『需要』？",
+  ];
+  if (r.hasChange) questions.push("若走向翻轉，我希望自己保留什麼選擇權？");
+  if (yin >= 4) questions.push("我是否用準備當成拖延？今天能否做一個最小行動？");
+  if (yang >= 4) questions.push("我是否用衝刺掩蓋不確定？有沒有數據可以先驗證？");
+
+  const narrative = `「${q}」對應的本卦為「${now.name}」。${intensity}；${changeTone}。${bandHint}`;
+
+  const trend = r.hasChange && future
+    ? `趨勢卦為「${future.name}」：${future.desc}`
+    : "趨勢未翻轉：你現在的選擇會以『強化現況』的方式累積影響。";
+
+  return { narrative, themes, risks, actions, timing, questions, trend };
+};
+
+// ------------------ UI PARTS ------------------
+
+const TypewriterLine: React.FC<{
+  text: string;
+  speed?: number;
+  className?: string;
+  showCursor?: boolean;
+}> = ({ text, speed = 10, className, showCursor = true }) => {
+  const [shown, setShown] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    setShown("");
+    setDone(false);
+    let i = 0;
+
+    const tick = () => {
+      if (!alive) return;
+      i++;
+      setShown(text.slice(0, i));
+      if (i >= text.length) {
+        setDone(true);
+        return;
+      }
+      const ch = text[i - 1] ?? "";
+      const jitter = ch === "." || ch === "。" || ch === "," || ch === "，" ? 80 : 0;
+      setTimeout(tick, speed + jitter);
+    };
+
+    setTimeout(tick, 20);
+    return () => { alive = false; };
+  }, [text, speed]);
+
+  return (
+    <span className={className}>
+      {shown}
+      {showCursor ? (
+        <span className={`inline-block w-2 ${done ? "opacity-0" : "opacity-100"} animate-caret`} aria-hidden="true">
+          ▋
+        </span>
+      ) : null}
+    </span>
+  );
+};
+
+const YinLine: React.FC<{ changing: boolean; label?: string }> = ({ changing, label }) => (
+  <div className="relative w-full h-4 sm:h-5 flex items-center my-1">
+    <div className={`h-full basis-5/12 rounded-sm transition-colors ${changing ? "bg-amber-600 animate-pulse" : "bg-neutral-200"}`} />
+    <div className="h-full basis-2/12 flex items-center justify-center">
+      {changing ? <span className="text-xs text-amber-300 font-mono animate-bounce">✕</span> : null}
+    </div>
+    <div className={`h-full basis-5/12 rounded-sm transition-colors ${changing ? "bg-amber-600 animate-pulse" : "bg-neutral-200"}`} />
+    {label ? (
+      <span className="absolute -left-6 text-xs text-neutral-500 font-mono hidden sm:block w-4 text-right">
+        {label}
+      </span>
+    ) : null}
+  </div>
+);
+
+const YangLine: React.FC<{ changing: boolean; label?: string }> = ({ changing, label }) => (
+  <div className="relative w-full h-4 sm:h-5 flex items-center justify-center my-1">
+    <div className={`h-full w-full rounded-sm transition-colors ${changing ? "bg-amber-600 animate-pulse" : "bg-neutral-200"}`} />
+    {changing ? (
+      <span className="absolute text-xs text-amber-200 font-mono bg-neutral-900 px-1 rounded animate-pulse">
+        ○
+      </span>
+    ) : null}
+    {label ? (
+      <span className="absolute -left-6 text-xs text-neutral-500 font-mono hidden sm:block w-4 text-right">
+        {label}
+      </span>
+    ) : null}
+  </div>
+);
+
+const OriginalHexagramVisual: React.FC<{ lines: LineValue[] }> = ({ lines }) => {
+  const topDown = [...lines].reverse();
+  return (
+    <div className="flex flex-col w-28 sm:w-32 mx-auto py-2 bg-neutral-900/50 p-3 rounded border border-neutral-800/60">
+      {topDown.map((val, idx) => {
+        const realIdx = 5 - idx;
+        const isYang = val === 7 || val === 9;
+        const isChanging = val === 6 || val === 9;
+        return (
+          <div key={realIdx} className="oracle-pop" style={{ animationDelay: `${idx * 90}ms` }}>
+            {isYang ? (
+              <YangLine changing={isChanging} label={`${realIdx + 1}`} />
+            ) : (
+              <YinLine changing={isChanging} label={`${realIdx + 1}`} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const HexagramVisual: React.FC<{ bits: string[] }> = ({ bits }) => {
+  const topDown = [...bits].reverse();
+  return (
+    <div className="flex flex-col w-28 sm:w-32 mx-auto py-2 bg-neutral-900/50 p-3 rounded border border-neutral-800/60">
+      {topDown.map((b, idx) => {
+        const realIdx = 5 - idx;
+        return (
+          <div key={realIdx} className="oracle-pop" style={{ animationDelay: `${idx * 90}ms` }}>
+            {b === "1" ? <YangLine changing={false} /> : <YinLine changing={false} />}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const HistoryPanel: React.FC<{
+  records: HistoryRecord[];
+  isOpen: boolean;
+  onToggle: () => void;
+  onSelect: (r: HistoryRecord) => void;
+  onClear: () => void;
+}> = ({ records, isOpen, onToggle, onSelect, onClear }) => {
+  return (
+    <div className="bg-neutral-900/30 border border-neutral-800 rounded-sm overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="w-full px-4 py-3 flex items-center justify-between text-neutral-400 hover:text-white transition-colors"
+        aria-expanded={isOpen}
+        aria-controls="history-panel"
+      >
+        <div className="flex items-center gap-2">
+          <History className="w-4 h-4" />
+          <span className="text-xs font-mono uppercase tracking-widest">歷史記錄</span>
+          <span className="text-xs text-neutral-600">({records.length})</span>
+        </div>
+        {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+      </button>
+
+      <div
+        id="history-panel"
+        className={`transition-all duration-300 ease-out ${isOpen ? "max-h-56 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}
+      >
+        <div className="border-t border-neutral-800 p-3 max-h-56 overflow-y-auto">
+          {records.length === 0 ? (
+            <p className="text-neutral-600 text-xs text-center py-4">尚無歷史記錄</p>
+          ) : (
+            <div className="space-y-2">
+              {records.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => onSelect(r)}
+                  className="w-full text-left p-2 bg-neutral-800/50 hover:bg-neutral-700/50 rounded transition-colors"
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <span className="text-sm text-neutral-300 truncate flex-1">{r.query}</span>
+                    <span className="text-xs text-cyan-400 whitespace-nowrap">{r.hexagramName}</span>
+                  </div>
+                  <div className="text-xs text-neutral-600 mt-1">
+                    {new Date(r.timestamp).toLocaleString("zh-TW")}
+                  </div>
+                </button>
+              ))}
+
+              <button
+                onClick={onClear}
+                className="w-full mt-2 py-2 text-xs text-red-500 hover:text-red-400 flex items-center justify-center gap-1 transition-colors"
+              >
+                <Trash2 className="w-3 h-3" />
+                清除所有記錄
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AboutPanel: React.FC<{ open: boolean; onToggle: () => void }> = ({ open, onToggle }) => {
+  return (
+    <div className="bg-neutral-900/30 border border-neutral-800 rounded-sm overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="w-full px-4 py-3 flex items-center justify-between text-neutral-400 hover:text-white transition-colors"
+        aria-expanded={open}
+        aria-controls="about-panel"
+      >
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-4 h-4" />
+          <span className="text-xs font-mono uppercase tracking-widest">系統原理</span>
+        </div>
+        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+      </button>
+
+      <div
+        id="about-panel"
+        className={`transition-all duration-300 ease-out ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}
+      >
+        <div className="border-t border-neutral-800 p-4 space-y-3 text-xs leading-relaxed text-neutral-400">
+          <p className="text-neutral-300">
+            SOCRATES 將易經視為「64 種狀態原型」：六爻可用 0/1（二進位）表達，形成 64 種組合。
+            系統以三錢法產生六爻，把不確定性轉換成可閱讀的決策框架。
+          </p>
+          <div className="space-y-1">
+            <div className="text-neutral-500 font-mono">3-COIN PROTOCOL</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="bg-black/40 border border-neutral-800 rounded p-2">
+                <div className="text-neutral-200">6 老陰（變爻）</div>
+                <div>機率 1/8：陰極轉陽</div>
+              </div>
+              <div className="bg-black/40 border border-neutral-800 rounded p-2">
+                <div className="text-neutral-200">9 老陽（變爻）</div>
+                <div>機率 1/8：陽極轉陰</div>
+              </div>
+              <div className="bg-black/40 border border-neutral-800 rounded p-2">
+                <div className="text-neutral-200">7 少陽（不變）</div>
+                <div>機率 3/8：穩定陽</div>
+              </div>
+              <div className="bg-black/40 border border-neutral-800 rounded p-2">
+                <div className="text-neutral-200">8 少陰（不變）</div>
+                <div>機率 3/8：穩定陰</div>
+              </div>
+            </div>
+          </div>
+          <p>
+            讀法：<span className="text-neutral-200">本卦</span>代表當下結構；若有變爻，<span className="text-neutral-200">變卦</span>代表趨勢方向。
+            變爻落在下（1–2）偏起步與內在；中（3–4）偏執行流程；上（5–6）偏外部/收束。
+          </p>
+          <p className="text-neutral-500">
+            提示：此系統提供「理解與選擇」的結構化輸出，不替代專業建議。重大財務/醫療/法律請以專業意見為主。
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ✅ 新增：把你那段長說明整合成「使用說明 / 說明」面板（更易讀）
+const ExplanationPanel: React.FC<{ open: boolean; onToggle: () => void }> = ({ open, onToggle }) => {
+  return (
+    <div className="bg-neutral-900/30 border border-neutral-800 rounded-sm overflow-hidden">
+      <button
+        onClick={onToggle}
+        className="w-full px-4 py-3 flex items-center justify-between text-neutral-400 hover:text-white transition-colors"
+        aria-expanded={open}
+        aria-controls="explain-panel"
+      >
+        <div className="flex items-center gap-2">
+          <Info className="w-4 h-4" />
+          <span className="text-xs font-mono uppercase tracking-widest">說明 / 使用方式</span>
+        </div>
+        {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+      </button>
+
+      <div
+        id="explain-panel"
+        className={`transition-all duration-300 ease-out ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"} overflow-hidden`}
+      >
+        <div className="border-t border-neutral-800 p-4 space-y-4 text-xs leading-relaxed text-neutral-400">
+          <div className="space-y-1">
+            <div className="text-neutral-200 font-mono tracking-widest">SOCRATES 易經決策支援系統</div>
+            <div className="text-neutral-500">
+              「宇宙是用數學語言寫成的。」—— 伽利略　｜　「至誠之道，可以前知。」——《中庸》
+            </div>
+          </div>
+
+          <div>
+            <div className="text-cyan-400 font-mono uppercase tracking-widest mb-2">它是什麼？</div>
+            <p className="text-neutral-300">
+              這不是「保證預測」的工具，而是一套把複雜情境壓縮成 64 種原型的<strong>思考框架</strong>。
+              你輸入問題 → 系統生成卦象 → 以「本卦（當下）」與「變卦（走向）」提供結構化理解與行動建議。
+            </p>
+          </div>
+
+          <div>
+            <div className="text-cyan-400 font-mono uppercase tracking-widest mb-2">為什麼看起來會準？</div>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><span className="text-neutral-200">原型映射</span>：六爻二進位形成 64 種狀態，像「模式庫」協助你辨識局勢類型。</li>
+              <li><span className="text-neutral-200">聚焦注意力</span>：把問題說清楚，等於把腦中的雜訊降到最低，決策品質會上升。</li>
+              <li><span className="text-neutral-200">自我覺察</span>：你在閱讀卦象時，其實在替自己的情境做「重新詮釋」與「取捨排序」。</li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="text-amber-400 font-mono uppercase tracking-widest mb-2">怎麼問最有效？</div>
+            <ul className="list-disc pl-5 space-y-1">
+              <li>問題越具體越好：把時間、對象、選項寫出來。</li>
+              <li>避免是非題：改問「我該注意什麼 / 什麼會是最大風險 / 先做哪一步？」</li>
+              <li>同一件事不要連續重問：先照建議做一個小行動，再回來看是否需要第二次校準。</li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="text-emerald-400 font-mono uppercase tracking-widest mb-2">讀法（你在右側看到的）</div>
+            <ul className="list-disc pl-5 space-y-1">
+              <li><span className="text-neutral-200">System Analysis</span>：描述「當下結構」與你最可能忽略的盲點。</li>
+              <li><span className="text-neutral-200">Trend Projection</span>：若有變爻，顯示「走向」與節奏建議。</li>
+              <li><span className="text-neutral-200">Reflection Prompts</span>：用問題幫你把真正的取捨講清楚。</li>
+            </ul>
+          </div>
+
+          <div className="text-neutral-500">
+            提醒：SOCRATES 是一面鏡子，不是水晶球；它提供的是「更好的理解與選擇」，而不是替你決定命運。
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ChipList: React.FC<{ title: string; items: string[]; tone?: "cyan" | "amber" | "emerald" }> = ({ title, items, tone = "cyan" }) => {
+  const toneCls =
+    tone === "amber" ? "text-amber-400 border-amber-900/60 bg-amber-500/10"
+    : tone === "emerald" ? "text-emerald-400 border-emerald-900/60 bg-emerald-500/10"
+    : "text-cyan-400 border-cyan-900/60 bg-cyan-500/10";
+
+  return (
+    <div className="mt-4">
+      <div className="text-xs font-mono uppercase tracking-widest text-neutral-500 mb-2">{title}</div>
+      <div className="flex flex-wrap gap-2">
+        {items.map((t, i) => (
+          <span
+            key={`${title}-${i}`}
+            className={`text-xs px-2 py-1 rounded border ${toneCls}`}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ------------------ MAIN ------------------
+
+export default function SocratesOracleV3() {
+  const [query, setQuery] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [result, setResult] = useState<HexagramResult | null>(null);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [history, setHistory] = useState<HistoryRecord[]>([]);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const [explainOpen, setExplainOpen] = useState(false);
+
+  const logsEndRef = useRef<HTMLDivElement>(null);
+  const dbCount = useMemo(() => Object.keys(HEXAGRAM_DB).length, []);
+
+  const addLog = useCallback((text: string, type: LogType = "info", speed?: number) => {
+    setLogs((prev) => [...prev, { id: uid(), text, type, timestamp: Date.now(), speed }]);
+  }, []);
+
+  useEffect(() => {
+    logsEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [logs]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("socrates-history");
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as HistoryRecord[];
+      if (!Array.isArray(parsed)) return;
+      setHistory(parsed);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("socrates-history", JSON.stringify(history));
+    } catch {
+      // ignore
+    }
+  }, [history]);
+
+  const handleDivination = useCallback(async () => {
+    const q = query.trim();
+    if (!q) {
+      addLog("錯誤：檢測到空的輸入緩衝區。請輸入查詢參數。", "error", 8);
+      return;
+    }
+
+    setIsProcessing(true);
+    setResult(null);
+    setLogs([]);
+
+    addLog("BOOT > Socrates Kernel v3.2", "system", 8);
+    addLog(`INPUT > "${q}"`, "info", 10);
+    await sleep(240);
+    addLog("ENTROPY > syncing noise floor ...", "system", 10);
+    await sleep(320);
+    addLog("PROTOCOL > 3-coin sampler armed", "system", 10);
+    await sleep(200);
+
+    const calculation = generateHexagramData();
+    addLog("CAST > generating 6 lines", "system", 10);
+
+    for (let i = 0; i < 6; i++) {
+      await sleep(120);
+      const val = calculation.lines[i];
+      let desc = "";
+      let type: LogType = "info";
+      if (val === 6) { desc = "--X-- 老陰 (變爻 → 陽)"; type = "warn"; }
+      if (val === 7) { desc = "───── 少陽 (穩定)"; }
+      if (val === 8) { desc = "── ── 少陰 (穩定)"; }
+      if (val === 9) { desc = "--O-- 老陽 (變爻 → 陰)"; type = "warn"; }
+      addLog(`LINE ${i + 1} > [${val}] ${desc}`, type, 9);
+    }
+
+    await sleep(220);
+
+    const originalInfo = getHexagramInfo(calculation.originalBinary);
+    addLog(`LOCK > HEXAGRAM "${originalInfo.name}"`, "success", 9);
+    addLog(`KEY  > ${calculation.originalBinary} (bottom→top)`, "system", 9);
+
+    if (calculation.hasChange) {
+      const futureInfo = getHexagramInfo(calculation.futureBinary);
+      addLog(`MUTATION > ${calculation.changingLines.length} changing line(s) detected`, "warn", 9);
+      addLog(`TREND    > "${futureInfo.name}"  ${calculation.futureBinary}`, "warn", 9);
+    } else {
+      addLog("MUTATION > none (stable topology)", "success", 9);
+    }
+
+    const record: HistoryRecord = {
+      id: uid(),
+      query: q,
+      result: calculation,
+      timestamp: Date.now(),
+      hexagramName: originalInfo.name,
+    };
+
+    setHistory((prev) => [record, ...prev].slice(0, 24));
+    setResult(calculation);
+    setIsProcessing(false);
+  }, [addLog, query]);
+
+  const handleReset = useCallback(() => {
+    setResult(null);
+    setQuery("");
+    setLogs([]);
+  }, []);
+
+  const handleSelectHistory = useCallback((r: HistoryRecord) => {
+    setResult(r.result);
+    setQuery(r.query);
+    const info = getHexagramInfo(r.result.originalBinary);
+    setLogs([{ id: uid(), text: `LOAD > ${info.name} (${r.result.originalBinary})`, type: "system", timestamp: Date.now(), speed: 9 }]);
+    setHistoryOpen(false);
+  }, []);
+
+  const handleClearHistory = useCallback(() => {
+    setHistory([]);
+  }, []);
+
+  const originalInfo = result ? getHexagramInfo(result.originalBinary) : null;
+  const futureInfo = result ? getHexagramInfo(result.futureBinary) : null;
+
+  const structured = useMemo(() => {
+    if (!result || !originalInfo) return null;
+    return buildStructuredAnalysis(query.trim() || "（未命名問題）", result, originalInfo, futureInfo || undefined);
+  }, [futureInfo, originalInfo, query, result]);
+
+  return (
+    <div className="min-h-screen bg-neutral-950 text-neutral-200 font-sans selection:bg-cyan-900 selection:text-cyan-100 flex flex-col">
+      <style>{`
+        @keyframes oraclePop {
+          from { opacity: 0; transform: translateY(6px) scale(0.98); filter: blur(0.4px); }
+          to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        .oracle-pop { opacity: 0; animation: oraclePop 420ms ease-out forwards; }
+
+        @keyframes scanline {
+          0% { transform: translateY(-25%); opacity: 0.18; }
+          100% { transform: translateY(140%); opacity: 0.18; }
+        }
+        @keyframes caretBlink {
+          0%, 49% { opacity: 0; }
+          50%, 100% { opacity: 1; }
+        }
+        .animate-caret { animation: caretBlink 800ms steps(1) infinite; }
+
+        .crt::before{
+          content:"";
+          position:absolute; inset:0;
+          background: repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.02),
+            rgba(255,255,255,0.02) 2px,
+            rgba(0,0,0,0) 2px,
+            rgba(0,0,0,0) 4px
+          );
+          pointer-events:none;
+          opacity:0.18;
+        }
+        .crt::after{
+          content:"";
+          position:absolute; left:0; right:0; height:22%;
+          background: linear-gradient(to bottom, rgba(34,211,238,0.10), rgba(0,0,0,0));
+          pointer-events:none;
+          animation: scanline 2.4s linear infinite;
+          opacity:0.20;
+        }
+        @keyframes noiseMove {
+          0% { transform: translateY(0); opacity: 0.10; }
+          50% { transform: translateY(-6%); opacity: 0.14; }
+          100% { transform: translateY(0); opacity: 0.10; }
+        }
+        .noise{
+          position:absolute; inset:0;
+          background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+          background-size: 3px 3px;
+          mix-blend-mode: overlay;
+          opacity:0.10;
+          pointer-events:none;
+          animation: noiseMove 2.2s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+          0%,100% { box-shadow: 0 0 0 rgba(34,211,238,0.0); }
+          50% { box-shadow: 0 0 24px rgba(34,211,238,0.10); }
+        }
+        .terminal-glow { animation: glowPulse 3.2s ease-in-out infinite; }
+      `}</style>
+
+      <header className="border-b border-neutral-900 p-3 sm:p-4 flex justify-between items-center bg-neutral-950/80 backdrop-blur-md sticky top-0 z-20">
+        <div className="flex items-center gap-2">
+          <Cpu className="w-5 h-5 text-cyan-500 animate-pulse" />
+          <div className="flex flex-col">
+            <span className="font-mono text-sm tracking-widest text-cyan-400 font-bold leading-none">SOCRATES</span>
+            <span className="text-xs text-neutral-600 tracking-wider leading-none">DECISION SUPPORT SYSTEM v3.2</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 text-xs font-mono text-neutral-600">
+          <span className="hidden sm:inline">SYS_STATUS: ONLINE</span>
+          <span className="flex items-center gap-1"><Disc className="w-3 h-3" /> DB: {dbCount}/64</span>
+        </div>
+      </header>
+
+      <main className="flex-1 max-w-6xl mx-auto w-full p-4 flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 flex flex-col gap-4">
+          <div className="bg-neutral-900/30 border border-neutral-800 p-4 sm:p-6 rounded-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-1 h-full bg-cyan-600/50" />
+            <label className="block text-xs font-mono text-neutral-500 mb-2 uppercase tracking-widest">
+              Input Query Vector
+            </label>
+            <div className="flex gap-2">
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="輸入你要問的事（越具體越準）..."
+                disabled={isProcessing}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !isProcessing) handleDivination();
+                }}
+                className="w-full bg-transparent border-b border-neutral-700 focus:border-cyan-500 outline-none text-base sm:text-lg py-2 transition-colors placeholder:text-neutral-700 font-light"
+                aria-label="query"
+              />
+              {!result ? (
+                <button
+                  onClick={handleDivination}
+                  disabled={isProcessing || !query.trim()}
+                  className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-cyan-400 rounded-sm transition-all flex items-center justify-center min-w-16"
+                  aria-label="run"
+                >
+                  {isProcessing ? <Activity className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5" />}
+                </button>
+              ) : (
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 rounded-sm transition-all flex items-center justify-center min-w-16"
+                  aria-label="reset"
+                >
+                  <RefreshCw className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <HistoryPanel
+            records={history}
+            isOpen={historyOpen}
+            onToggle={() => setHistoryOpen((v) => !v)}
+            onSelect={handleSelectHistory}
+            onClear={handleClearHistory}
+          />
+
+          {/* ✅ 新增在介面：說明/使用方式 */}
+          <ExplanationPanel open={explainOpen} onToggle={() => setExplainOpen((v) => !v)} />
+
+          <AboutPanel open={aboutOpen} onToggle={() => setAboutOpen((v) => !v)} />
+
+          <div className="flex-1 min-h-64 bg-black border border-neutral-800 rounded-sm p-4 font-mono text-xs overflow-hidden flex flex-col shadow-inner relative crt terminal-glow">
+            <div className="noise" />
+
+            <div className="flex items-center gap-2 text-neutral-600 mb-2 border-b border-neutral-900 pb-2 relative z-10">
+              <Terminal className="w-3 h-3" />
+              <span>KERNEL_LOGS</span>
+              <span className="ml-auto text-neutral-700">TTY0</span>
+            </div>
+
+            <div className="flex-1 overflow-y-auto space-y-1 pr-2 relative z-10">
+              {logs.length === 0 ? (
+                <div className="text-neutral-700 mt-2 space-y-1">
+                  <div>{">"} 系統就緒...</div>
+                  <div>{">"} 請輸入參數以啟動因果運算。</div>
+                  <div className="text-neutral-800">{">"} tip: Enter 可直接執行</div>
+                </div>
+              ) : null}
+
+              {logs.map((log, idx) => {
+                const color =
+                  log.type === "error" ? "text-red-500" :
+                  log.type === "success" ? "text-emerald-500" :
+                  log.type === "system" ? "text-cyan-600" :
+                  log.type === "warn" ? "text-amber-500" :
+                  "text-neutral-400";
+
+                const isLast = idx === logs.length - 1;
+
+                return (
+                  <div key={log.id} className={color}>
+                    <span className="opacity-30 mr-2">
+                      [{new Date(log.timestamp).toLocaleTimeString("en-GB", { hour12: false })}]
+                    </span>
+                    {">"}{" "}
+                    {isLast ? (
+                      <TypewriterLine text={log.text} speed={log.speed ?? 10} />
+                    ) : (
+                      <span>{log.text}</span>
+                    )}
+                  </div>
+                );
+              })}
+              <div ref={logsEndRef} />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 lg:max-w-xl bg-neutral-900/20 border border-neutral-800 rounded-sm p-1 flex flex-col">
+          {!result ? (
+            <div className="h-full flex flex-col items-center justify-center text-neutral-700 space-y-4 p-8 min-h-80">
+              <Cpu className="w-16 h-16 opacity-20" />
+              <p className="text-center font-mono text-xs tracking-widest uppercase">Awaiting Input</p>
+            </div>
+          ) : (
+            <div className="h-full flex flex-col p-4 sm:p-6">
+              <div className="flex justify-between items-start mb-6 border-b border-neutral-800 pb-4">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-light text-white tracking-tight">
+                    {originalInfo?.name}
+                  </h2>
+                  <p className="text-cyan-400 text-xs sm:text-sm mt-1 font-mono tracking-widest uppercase">
+                    {originalInfo?.nature}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-neutral-500 font-mono">BINARY_KEY</div>
+                  <div className="font-mono text-xs text-neutral-300 tracking-widest">
+                    {result.originalBinary}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-8">
+                <div className="flex flex-col items-center">
+                  <span className="text-xs uppercase text-neutral-500 mb-2 font-mono">Current State</span>
+                  <OriginalHexagramVisual lines={result.lines} />
+                </div>
+
+                {result.hasChange ? (
+                  <div className="text-neutral-700 animate-pulse hidden sm:block">
+                    <ArrowRight className="w-6 h-6" />
+                  </div>
+                ) : (
+                  <div className="hidden sm:flex flex-col items-center text-neutral-700 px-4">
+                    <ShieldCheck className="w-8 h-8 mb-2" />
+                    <span className="text-xs font-mono tracking-widest">NO MUTATION</span>
+                  </div>
+                )}
+
+                {result.hasChange ? (
+                  <div className="flex flex-col items-center mt-4 sm:mt-0">
+                    <div className="text-center mb-2">
+                      <span className="text-xs uppercase text-amber-500 font-mono block">Future State</span>
+                      <span className="text-sm text-neutral-200">{futureInfo?.name}</span>
+                      <div className="font-mono text-xs text-neutral-400 mt-1 tracking-widest">
+                        {result.futureBinary}
+                      </div>
+                    </div>
+                    <HexagramVisual bits={result.futureBinary.split("")} />
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="mt-auto bg-black border border-neutral-800 p-5 rounded relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-3 opacity-30">
+                  <Zap className="w-5 h-5 text-cyan-400" />
+                </div>
+
+                <div className="relative z-10">
+                  <h3 className="text-xs text-cyan-400 font-bold mb-3 uppercase tracking-widest">
+                    System Analysis
+                  </h3>
+                  <p className="text-neutral-200 text-sm leading-relaxed">
+                    {structured?.narrative ?? originalInfo?.desc}
+                  </p>
+
+                  <ChipList title="Key Themes" items={structured?.themes ?? []} tone="cyan" />
+                  <ChipList title="Risks / Blind Spots" items={structured?.risks ?? []} tone="amber" />
+
+                  <div className="mt-4 pt-4 border-t border-neutral-900">
+                    <h4 className="text-xs text-emerald-400 font-bold mb-2 uppercase tracking-widest">
+                      Recommended Actions
+                    </h4>
+                    <ul className="text-neutral-300 text-xs leading-relaxed space-y-2 list-disc pl-5">
+                      {(structured?.actions ?? []).slice(0, 6).map((a, i) => (
+                        <li key={`a-${i}`}>{a}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-neutral-900">
+                    <h4 className="text-xs text-neutral-400 font-bold mb-2 uppercase tracking-widest">
+                      Timing / Rhythm
+                    </h4>
+                    <p className="text-neutral-400 text-xs leading-relaxed">
+                      {structured?.timing}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-neutral-900">
+                    <h4 className={`text-xs font-bold mb-2 uppercase tracking-widest ${result.hasChange ? "text-amber-400" : "text-cyan-400"}`}>
+                      Trend Projection
+                    </h4>
+                    <p className="text-neutral-400 text-xs leading-relaxed">
+                      {structured?.trend}
+                    </p>
+                    {result.hasChange ? (
+                      <p className="text-neutral-500 text-xs leading-relaxed mt-2">
+                        變爻位置：{result.changingLines.map((i) => i + 1).join("、")}（1=初爻，6=上爻）
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <div className="mt-4 pt-4 border-t border-neutral-900">
+                    <h4 className="text-xs text-neutral-400 font-bold mb-2 uppercase tracking-widest">
+                      Reflection Prompts
+                    </h4>
+                    <ul className="text-neutral-400 text-xs leading-relaxed space-y-2 list-disc pl-5">
+                      {(structured?.questions ?? []).slice(0, 5).map((qq, i) => (
+                        <li key={`q-${i}`}>{qq}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <footer className="p-4 text-center text-xs text-neutral-700 font-mono border-t border-neutral-900 bg-neutral-950">
+        SOCRATES ENGINE v3.2 // UI EXPLANATION PANEL ADDED
+      </footer>
+    </div>
+  );
+}
