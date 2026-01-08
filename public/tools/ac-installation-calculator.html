@@ -262,7 +262,7 @@
                     class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-100 flex items-center justify-between animate-fade-in-down">
                     <div class="text-xs text-amber-800 font-bold">
                         ⚠️ 超長 {{ (pathM - gasLimit).toFixed(1) }}m
-                        <div class="font-normal opacity-80 mt-0.5">需補冷媒 {{ gasExtraG }}g</div>
+                        <div class="font-normal opacity-80 mt-0.5">需補冷媒 {{ gasExtraG }}g * ${{ gasPrice }}/g</div>
                     </div>
                     <div class="text-lg font-bold text-amber-600 font-mono">+ ${{ gasCost.toLocaleString() }}</div>
                 </div>
@@ -307,8 +307,37 @@
             </section>
 
             <!-- Market Data Placeholder (Optional) -->
-            <div class="card bg-stone-50 rounded-2xl p-4 border border-stone-200 text-center">
-                <p class="text-xs text-stone-400">參考：銅期貨價格與匯率請參照各大財經網站。</p>
+            <!-- Market Data Widget (TradingView) -->
+            <div class="card bg-white rounded-2xl p-0 overflow-hidden shadow-sm border border-stone-200 mb-6 relative"
+                style="height: 78px;">
+                <div class="absolute inset-0 flex items-center justify-center text-xs text-stone-400 z-0 bg-stone-50">
+                    載入即時行情中...<br>(若無顯示，請確認網路或關閉擋廣告軟體)
+                </div>
+                <!-- TradingView Widget BEGIN -->
+                <div class="tradingview-widget-container" style="position:relative; z-index:1;">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <component is="script" type="text/javascript"
+                        src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                        {
+                        "symbols": [
+                        {
+                        "proName": "COMEX:HG1!",
+                        "title": "銅期貨 (美元/磅)"
+                        },
+                        {
+                        "description": "美元/台幣",
+                        "proName": "FX_IDC:USDTWD"
+                        }
+                        ],
+                        "showSymbolLogo": true,
+                        "colorTheme": "light",
+                        "isTransparent": true,
+                        "displayMode": "adaptive",
+                        "locale": "zh_TW"
+                        }
+                    </component>
+                </div>
+                <!-- TradingView Widget END -->
             </div>
 
         </main>
