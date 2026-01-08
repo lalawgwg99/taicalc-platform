@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <title>冷氣安裝成本計算｜TaiCalc</title>
+    <meta name="description" content="專業冷氣配管成本試算工具。整合銅管損耗、彎頭、冷媒追加費用，協助師傅與業主精準估價。">
+    <link rel="canonical" href="https://taicalc.com/tools/ac-installation">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            800: '#292524',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-stone-50 text-stone-800 min-h-screen flex flex-col font-sans">
+    <div id="app" v-cloak class="flex-grow max-w-2xl mx-auto w-full px-4 sm:px-6 py-8">
+
+        <!-- Header / Global Nav -->
+        <nav class="flex items-center justify-between mb-8">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <span
+                    class="text-xl font-bold tracking-tight text-stone-800 group-hover:text-sky-600 transition-colors">TaiCalc</span>
+            </a>
+            <div class="flex gap-4 sm:gap-6 text-sm font-medium text-stone-500">
+                <a href="../index.html" class="hover:text-stone-900 transition-colors">首頁</a>
+                <a href="../categories/finance.html" class="hover:text-stone-900 transition-colors">退休理財</a>
+                <a href="../categories/life.html" class="hover:text-stone-900 transition-colors">生活</a>
+                <a href="../categories/tools.html" class="hover:text-stone-900 transition-colors">工具</a>
+            </div>
+        </nav>
+
+        <!-- Breadcrumb -->
+        <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
+            <a href="../index.html" class="hover:text-stone-800 transition-colors">首頁</a>
+            <span>/</span>
+            <a href="../categories/life.html" class="hover:text-stone-800 transition-colors">生活計算</a>
+            <span>/</span>
+            <span class="text-stone-900 font-medium">冷氣安裝成本</span>
+        </div>
+
+        <header class="mb-8">
+            <div class="flex items-center justify-between mb-2">
+                <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">冷氣安裝成本計算</h1>
+                <span
+                    class="text-xs px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 font-medium">PRO
+                    v3.2</span>
+            </div>
+            <p class="text-stone-500 text-sm">專業配管估價 · 銅管損耗精算 · 冷媒追加費用</p>
+        </header>
+
+        <main class="space-y-6">
+
+            <!-- Result Card (Sticky Top-ish or just prominent) -->
+            <div
+                class="card bg-stone-800 text-white rounded-2xl p-6 shadow-lg border border-stone-700 relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl">
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center justify-center text-center space-y-2">
+                    <p class="text-stone-400 text-xs font-semibold uppercase tracking-wider">預估總成本 (含冷媒)</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl text-stone-400 font-medium">$</span>
+                        <span class="text-5xl font-bold tracking-tight text-white font-mono">{{
+                            totalCost.toLocaleString() }}</span>
+                    </div>
+                    <div class="mt-4 flex gap-3 text-sm font-medium">
+                        <button @click="copyBreakdown"
+                            class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg transition-colors flex items-center gap-2">
+                            <span v-if="copyStatus === 'idle'">複製報價單</span>
+                            <span v-else>已複製!</span>
+                            <svg v-if="copyStatus === 'idle'" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                        </button>
+                        <button @click="resetDefaults"
+                            class="px-4 py-2 bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-lg transition-colors">重置</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. 現場規格 -->
+            <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                    <span class="w-1 h-5 bg-sky-500 rounded-full"></span>
+                    1. 現場量測與規格
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">銅管規格</label>
+                        <div class="relative">
+                            <select v-model="specPair" class="input-base w-full appearance-none">
+                                <option value="2-3">2分 / 3分</option>
+                                <option value="2-4">2分 / 4分</option>
+                                <option value="3-5">3分 / 5分</option>
+                                <option value="4-6">4分 / 6分</option>
+                            </select>
+                            <svg class="absolute right-3 top-3.5 w-4 h-4 text-stone-400 pointer-events-none" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">走線長度
+                            (L)</label>
+                        <div class="relative">
+                            <input type="number" v-model.number="pathM" class="input-base w-full" step="0.5"
+                                placeholder="0">
+                            <span class="absolute right-3 top-3 text-stone-400 text-sm font-medium">m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">彎頭數
+                            (個)</label>
+                        <input type="number" v-model.number="bends" class="input-base w-full text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">每彎加值
+                            (CM)</label>
+                        <input type="number" v-model.number="perBendCm" class="input-base w-full text-center">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">預留端
+                            (個)</label>
+                        <div class="relative">
+                            <select v-model.number="ends" class="input-base w-full appearance-none text-center">
+                                <option :value="1">1 端</option>
+                                <option :value="2">2 端</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">每端預留
+                            (CM)</label>
+                        <input type="number" v-model.number="endLenCm" class="input-base w-full text-center">
+                    </div>
+                </div>
+
+                <!-- Calculated Length Info -->
+                <div class="mt-4 p-3 bg-sky-50 rounded-xl border border-sky-100 flex items-center justify-between">
+                    <div class="text-xs text-sky-800">
+                        <span class="font-bold">預估裁切總長</span>
+                        <div class="text-[10px] opacity-70 mt-0.5">公式：走線×1.1(損耗) + (彎頭+預留換算)</div>
+                    </div>
+                    <div class="text-xl font-bold text-sky-700 font-mono">{{ displayTotalLen }} <span
+                            class="text-sm">m</span></div>
+                </div>
+            </section>
+
+            <!-- 2. 材料成本 -->
+            <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
+                    <span class="w-1 h-5 bg-sky-500 rounded-full"></span>
+                    2. 線材庫存成本
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">整箱長度
+                            (m)</label>
+                        <input type="number" v-model.number="boxLen" class="input-base w-full text-center"
+                            placeholder="30">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">銅管整箱價
+                            (元)</label>
+                        <input type="number" v-model.number="priceKit" class="input-base w-full text-center"
+                            placeholder="輸入金額">
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-stone-100">
+                    <p class="text-xs font-bold text-stone-400 mb-3">其他耗材箱價 (選填)</p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-stone-400 mb-1 text-center">訊號線</label>
+                            <input type="number" v-model.number="priceSig"
+                                class="input-base w-full text-center p-2 text-sm" placeholder="$">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-stone-400 mb-1 text-center">電源線</label>
+                            <input type="number" v-model.number="pricePwr"
+                                class="input-base w-full text-center p-2 text-sm" placeholder="$">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-stone-400 mb-1 text-center">保溫材</label>
+                            <input type="number" v-model.number="priceInsu"
+                                class="input-base w-full text-center p-2 text-sm" placeholder="$">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 冷媒追加 -->
+            <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-stone-800 flex items-center gap-2">
+                        <span class="w-1 h-5 bg-sky-500 rounded-full"></span>
+                        3. 冷媒追加
+                    </h2>
+                    <span
+                        :class="['text-xs font-bold px-2 py-1 rounded-full', gasAdded ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700']">
+                        {{ gasAdded ? '需追加' : '標準內' }}
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">免填標準</label>
+                        <div class="relative">
+                            <input type="number" v-model.number="gasLimit" class="input-base w-full text-center p-2">
+                            <span class="absolute right-1 top-2.5 text-stone-400 text-[10px]">m</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">每米追加</label>
+                        <div class="relative">
+                            <input type="number" v-model.number="gasRate" class="input-base w-full text-center p-2">
+                            <span class="absolute right-1 top-2.5 text-stone-400 text-[10px]">g</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">冷媒單價</label>
+                        <div class="relative">
+                            <input type="number" v-model.number="gasPrice" class="input-base w-full text-center p-2"
+                                step="0.5">
+                            <span class="absolute right-1 top-2.5 text-stone-400 text-[10px]">$/g</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="gasAdded"
+                    class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-100 flex items-center justify-between animate-fade-in-down">
+                    <div class="text-xs text-amber-800 font-bold">
+                        ⚠️ 超長 {{ (pathM - gasLimit).toFixed(1) }}m
+                        <div class="font-normal opacity-80 mt-0.5">需補冷媒 {{ gasExtraG }}g</div>
+                    </div>
+                    <div class="text-lg font-bold text-amber-600 font-mono">+ ${{ gasCost.toLocaleString() }}</div>
+                </div>
+            </section>
+
+            <!-- 明細 -->
+            <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+                <h2 class="text-lg font-bold text-stone-800 mb-4">費用明細</h2>
+                <div class="space-y-2 text-sm text-stone-600">
+                    <div class="flex justify-between items-center py-1 border-b border-stone-100">
+                        <span>規格</span>
+                        <span class="font-bold text-stone-800">{{ specPair }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-1 border-b border-stone-100">
+                        <span>裁切總長</span>
+                        <span class="font-mono">{{ displayTotalLen }}m</span>
+                    </div>
+
+                    <div v-if="boxLen && priceKit" class="flex justify-between items-center py-1">
+                        <span>銅管分攤</span>
+                        <span class="font-mono">${{ Math.round(breakdown.kit).toLocaleString() }}</span>
+                    </div>
+                    <div v-if="priceSig" class="flex justify-between items-center py-1">
+                        <span>訊號線</span>
+                        <span class="font-mono">${{ Math.round(breakdown.sig).toLocaleString() }}</span>
+                    </div>
+                    <div v-if="pricePwr" class="flex justify-between items-center py-1">
+                        <span>電源線</span>
+                        <span class="font-mono">${{ Math.round(breakdown.pwr).toLocaleString() }}</span>
+                    </div>
+                    <div v-if="priceInsu" class="flex justify-between items-center py-1">
+                        <span>保溫材</span>
+                        <span class="font-mono">${{ Math.round(breakdown.insu).toLocaleString() }}</span>
+                    </div>
+
+                    <div v-if="gasAdded"
+                        class="flex justify-between items-center py-1 text-amber-600 font-bold mt-2 pt-2 border-t border-dashed border-stone-200">
+                        <span>冷媒追加</span>
+                        <span class="font-mono">${{ gasCost.toLocaleString() }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Data Placeholder (Optional) -->
+            <div class="card bg-stone-50 rounded-2xl p-4 border border-stone-200 text-center">
+                <p class="text-xs text-stone-400">參考：銅期貨價格與匯率請參照各大財經網站。</p>
+            </div>
+
+        </main>
+
+        <footer class="mt-12 py-8 text-center text-stone-400 text-xs tracking-wider border-t border-stone-200">
+            <p class="mb-2">© 2026 TaiCalc</p>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, watch, onMounted } = Vue
+
+        createApp({
+            setup() {
+                // Inputs
+                const specPair = ref('2-4')
+                const pathM = ref(0)
+                const bends = ref(2)
+                const perBendCm = ref(15)
+                const ends = ref(2)
+                const endLenCm = ref(50)
+
+                const boxLen = ref(30)
+                const priceKit = ref(null)
+                const priceSig = ref(null)
+                const pricePwr = ref(null)
+                const priceInsu = ref(null)
+
+                const gasLimit = ref(7)
+                const gasRate = ref(20)
+                const gasPrice = ref(2)
+
+                const copyStatus = ref('idle')
+
+                // Constants
+                const WASTE_RATE = 0.10
+
+                // Computed
+                const displayTotalLen = computed(() => {
+                    const bendsM = (bends.value * perBendCm.value) / 100
+                    const endsM = (ends.value * endLenCm.value) / 100
+                    const wasteM = pathM.value * (1 + WASTE_RATE)
+                    return (wasteM + bendsM + endsM).toFixed(2)
+                })
+
+                const factor = computed(() => {
+                    const total = parseFloat(displayTotalLen.value)
+                    if (!boxLen.value) return 0
+                    return total / boxLen.value
+                })
+
+                const breakdown = computed(() => {
+                    const f = factor.value
+                    return {
+                        kit: f * (priceKit.value || 0),
+                        sig: f * (priceSig.value || 0),
+                        pwr: f * (pricePwr.value || 0),
+                        insu: f * (priceInsu.value || 0)
+                    }
+                })
+
+                const gasAdded = computed(() => pathM.value > gasLimit.value)
+                const gasExtraG = computed(() => {
+                    if (!gasAdded.value) return 0
+                    const over = pathM.value - gasLimit.value
+                    return Math.ceil(over * gasRate.value)
+                })
+                const gasCost = computed(() => {
+                    return gasExtraG.value * gasPrice.value
+                })
+
+                const totalCost = computed(() => {
+                    const mat = breakdown.value.kit + breakdown.value.sig + breakdown.value.pwr + breakdown.value.insu
+                    return Math.round(mat + gasCost.value)
+                })
+
+                // Actions
+                const resetDefaults = () => {
+                    if (!confirm('確定重置所有設定？')) return
+                    specPair.value = '2-4'
+                    pathM.value = 0
+                    bends.value = 2
+                    perBendCm.value = 15
+                    ends.value = 2
+                    endLenCm.value = 50
+                    boxLen.value = 30
+                    priceKit.value = null
+                    priceSig.value = null
+                    pricePwr.value = null
+                    priceInsu.value = null
+                    gasLimit.value = 7
+                    gasRate.value = 20
+                    gasPrice.value = 2
+                }
+
+                const copyBreakdown = async () => {
+                    if (totalCost.value === 0) return
+
+                    const text = `【配管估價單】
+規格: ${specPair.value}
+走線: ${pathM.value}m (裁切約 ${displayTotalLen.value}m)
+------------
+材料成本:
+${priceKit.value ? `- 銅管: $${Math.round(breakdown.value.kit)}` : ''}
+${priceSig.value ? `- 訊號線: $${Math.round(breakdown.value.sig)}` : ''}
+${pricePwr.value ? `- 電源線: $${Math.round(breakdown.value.pwr)}` : ''}
+${priceInsu.value ? `- 保溫: $${Math.round(breakdown.value.insu)}` : ''}
+${gasAdded.value ? `- 冷媒追加 (${gasExtraG.value}g): $${gasCost.value}` : ''}
+------------
+預估總成本: $${totalCost.value.toLocaleString()}`.trim().replace(/^\s*[\r\n]/gm, '')
+
+                    try {
+                        await navigator.clipboard.writeText(text)
+                        copyStatus.value = 'copied'
+                        setTimeout(() => copyStatus.value = 'idle', 2000)
+                    } catch (e) {
+                        alert('複製失敗')
+                    }
+                }
+
+                // Persistence
+                const STORAGE_KEY = 'taicalc_ac_cost_v1'
+
+                watch([specPair, pathM, bends, perBendCm, ends, endLenCm, boxLen, priceKit, priceSig, pricePwr, priceInsu, gasLimit, gasRate, gasPrice], () => {
+                    const state = {
+                        specPair: specPair.value,
+                        pathM: pathM.value,
+                        bends: bends.value,
+                        perBendCm: perBendCm.value,
+                        ends: ends.value,
+                        endLenCm: endLenCm.value,
+                        boxLen: boxLen.value,
+                        priceKit: priceKit.value,
+                        priceSig: priceSig.value,
+                        pricePwr: pricePwr.value,
+                        priceInsu: priceInsu.value,
+                        gasLimit: gasLimit.value,
+                        gasRate: gasRate.value,
+                        gasPrice: gasPrice.value
+                    }
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+                }, { deep: true })
+
+                onMounted(() => {
+                    const saved = localStorage.getItem(STORAGE_KEY)
+                    if (saved) {
+                        try {
+                            const s = JSON.parse(saved)
+                            if (s.specPair) specPair.value = s.specPair
+                            if (s.pathM) pathM.value = s.pathM
+                            if (s.bends) bends.value = s.bends
+                            if (s.perBendCm) perBendCm.value = s.perBendCm
+                            if (s.ends) ends.value = s.ends
+                            if (s.endLenCm) endLenCm.value = s.endLenCm
+                            if (s.boxLen) boxLen.value = s.boxLen
+                            if (s.priceKit) priceKit.value = s.priceKit
+                            if (s.priceSig) priceSig.value = s.priceSig
+                            if (s.pricePwr) pricePwr.value = s.pricePwr
+                            if (s.priceInsu) priceInsu.value = s.priceInsu
+                            if (s.gasLimit) gasLimit.value = s.gasLimit
+                            if (s.gasRate) gasRate.value = s.gasRate
+                            if (s.gasPrice) gasPrice.value = s.gasPrice
+                        } catch (e) { }
+                    }
+                })
+
+                return {
+                    specPair, pathM, bends, perBendCm, ends, endLenCm,
+                    boxLen, priceKit, priceSig, pricePwr, priceInsu,
+                    gasLimit, gasRate, gasPrice,
+                    displayTotalLen, breakdown, gasAdded, gasExtraG, gasCost, totalCost,
+                    resetDefaults, copyBreakdown, copyStatus
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

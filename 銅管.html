@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>AC 配管成本精算師 | Pro Integration v3.2</title>
+  <style>
+    :root {
+      /* Tesla/Industrial Clean Palette */
+      --bg-body: #f4f5f7;
+      --bg-card: #ffffff;
+      --text-main: #172b4d;
+      --text-sub: #5e6c84;
+      --primary: #0052cc;      /* Tech Blue */
+      --primary-soft: #deebff;
+      --success: #00875a;      /* Green */
+      --warning-bg: #fff7d6;
+      --warning-text: #8f6e00;
+      --danger: #de350b;
+      --border: #dfe1e6;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      padding: 20px 16px 100px; /* Space for sticky footer */
+      line-height: 1.5;
+    }
+
+    .wrap { max-width: 600px; margin: 0 auto; }
+
+    /* Header */
+    header { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: start; }
+    h1 { font-size: 20px; font-weight: 700; margin: 0; color: var(--text-main); }
+    .sub { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+    .reset-btn { background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer; padding:0; }
+
+    /* Market Widget Container */
+    .market-widget {
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      background: #fff;
+      height: 78px; 
+      position: relative;
+    }
+    /* Fallback Text if widget fails */
+    .market-loading-text {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #999; z-index: 0;
+      background: #f9f9f9; text-align: center; padding: 0 20px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 15px; font-weight: 700; margin-bottom: 12px;
+      display: flex; align-items: center; color: var(--text-main);
+    }
+    .card-title::before {
+      content: ''; display: block; width: 4px; height: 16px;
+      background: var(--primary); margin-right: 8px; border-radius: 2px;
+    }
+
+    /* Grid & Inputs */
+    .grid { display: grid; gap: 12px; }
+    .cols-2 { grid-template-columns: 1fr 1fr; }
+    .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .input-group label {
+      display: block; font-size: 12px; font-weight: 500; color: var(--text-sub); margin-bottom: 6px;
+    }
+    
+    .input-wrapper { position: relative; }
+    
+    input, select {
+      width: 100%; padding: 10px 12px;
+      font-size: 16px; border: 1px solid var(--border);
+      border-radius: 8px; background: #fff; color: var(--text-main);
+      appearance: none; transition: border-color 0.2s;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+    
+    .suffix {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 13px; color: #97a0af; pointer-events: none;
+    }
+    input.has-suffix { padding-right: 40px; }
+    .text-center { text-align: center; }
+
+    /* Results */
+    .highlight-box {
+      background: var(--primary-soft);
+      border-radius: 8px; padding: 12px; margin-top: 12px;
+      border: 1px solid #b3d4ff;
+    }
+    .highlight-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .highlight-val { font-size: 20px; font-weight: 700; color: var(--primary); font-family: 'Roboto Mono', monospace; }
+    .highlight-label { font-size: 13px; color: var(--text-sub); }
+
+    /* Tags */
+    .tag {
+      display: inline-flex; align-items: center; padding: 2px 8px;
+      border-radius: 99px; font-size: 11px; font-weight: 600; margin-left: auto;
+    }
+    .tag-ok { background: #e3fcef; color: #006644; }
+    .tag-warn { background: #fffae6; color: #bf2600; }
+
+    /* Cost Breakdown */
+    .breakdown {
+      font-size: 13px; color: var(--text-sub);
+      background: #f9fafb; padding: 12px; border-radius: 8px;
+      margin-top: 12px; line-height: 1.6;
+    }
+    .bd-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .bd-divider { border-bottom: 1px dashed var(--border); margin: 6px 0; }
+
+    /* Sticky Footer */
+    .sticky-footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff; border-top: 1px solid var(--border);
+      padding: 12px 16px; box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+      display: flex; gap: 12px; align-items: center; z-index: 100;
+    }
+    .total-area { flex: 1; }
+    .total-label { font-size: 11px; color: var(--text-sub); }
+    .total-price { font-size: 24px; font-weight: 800; color: var(--text-main); line-height: 1; }
+    
+    .btn {
+      background: var(--primary); color: white; border: none;
+      padding: 0 24px; height: 48px; border-radius: 8px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .btn:active { transform: scale(0.96); }
+
+    /* Print */
+    @media print {
+      .sticky-footer, .no-print, .market-widget { display: none; }
+      body { padding: 0; background: white; }
+      .card { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>配管成本精算師 <span style="font-size:12px; color:#999; font-weight:400;">v3.2</span></h1>
+      <div class="sub">整合版：損耗10% / 彎頭CM / 冷媒追加</div>
+    </div>
+    <button class="reset-btn" id="resetBtn">重置設定</button>
+  </header>
+
+  <!-- Market Data Widget (TradingView) -->
+  <div class="market-widget">
+    <div class="market-loading-text">
+      載入即時行情中...<br>(若無顯示，請確認網路或關閉擋廣告軟體)
+    </div>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="position:relative; z-index:1;">
+      <div class="tradingview-widget-container__widget"></div>
+      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {
+      "symbols": [
+        {
+          "proName": "COMEX:HG1!",
+          "title": "銅期貨 (美元/磅)"
+        },
+        {
+          "description": "美元/台幣",
+          "proName": "FX_IDC:USDTWD"
+        }
+      ],
+      "showSymbolLogo": true,
+      "colorTheme": "light",
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "locale": "zh_TW"
+      }
+      </script>
+    </div>
+    <!-- TradingView Widget END -->
+  </div>
+
+  <!-- 1. 現場規格 (Field Specs) -->
+  <div class="card">
+    <div class="card-title">1. 現場量測與規格</div>
+    
+    <div class="grid cols-2">
+      <div class="input-group">
+        <label>銅管規格</label>
+        <select id="pair">
+          <option value="2-3">2分 / 3分</option>
+          <option value="2-4" selected>2分 / 4分</option>
+          <option value="3-5">3分 / 5分</option>
+          <option value="4-6">4分 / 6分</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>走線長度 (L)</label>
+        <div class="input-wrapper">
+          <input type="number" id="pathM" class="has-suffix" placeholder="0" inputmode="decimal" step="0.5">
+          <span class="suffix">m</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CM Inputs Grid -->
+    <div class="grid cols-2" style="margin-top:12px;">
+      <div class="input-group">
+        <label>彎頭數 (個)</label>
+        <input type="number" id="bends" value="2" inputmode="numeric" class="text-center">
+      </div>
+      <div class="input-group">
+        <label>每彎加值 (CM)</label>
+        <input type="number" id="perBendCm" value="15" inputmode="numeric" class="text-center">
+      </div>
+      
+      <div class="input-group">
+        <label>預留端 (端)</label>
+        <select id="ends" class="text-center">
+          <option value="1">1 端</option>
+          <option value="2" selected>2 端</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>每端預留 (CM)</label>
+        <input type="number" id="endLenCm" value="50" inputmode="numeric" class="text-center">
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div class="highlight-row">
+        <span class="highlight-label">預估裁切總長</span>
+        <span class="highlight-val" id="dispTotalLen">0.00 m</span>
+      </div>
+      <div style="font-size:11px; color:#7c8ba6; margin-top:6px;">
+        公式：走線×1.1 (損耗) + [彎頭+預留]÷100 (換算m)
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 材料成本 (Materials) -->
+  <div class="card">
+    <div class="card-title">2. 線材庫存成本</div>
+    <div class="grid cols-2">
+      <div class="input-group">
+        <label>整箱長度</label>
+        <div class="input-wrapper">
+          <input type="number" id="boxLen" value="30" class="has-suffix text-center" inputmode="numeric">
+          <span class="suffix">m</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>銅管整箱價</label>
+        <div class="input-wrapper">
+          <input type="number" id="priceKit" placeholder="0" class="has-suffix" inputmode="numeric">
+          <span class="suffix">元</span>
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top:12px; padding-top:12px; border-top:1px dashed var(--border);">
+      <label style="font-size:11px; color:var(--text-sub); margin-bottom:8px; display:block;">其他耗材箱價 (選填)</label>
+      <div class="grid cols-3">
+        <input type="number" id="priceSig" placeholder="訊號線" class="text-center">
+        <input type="number" id="pricePwr" placeholder="電源線" class="text-center">
+        <input type="number" id="priceInsu" placeholder="保溫" class="text-center">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 冷媒追加 (Refrigerant) -->
+  <div class="card" id="gasCard">
+    <div class="card-title">
+      3. 冷媒追加 (R32/410A)
+      <span class="tag tag-ok" id="gasTag">標準內</span>
+    </div>
+    
+    <div class="grid cols-3">
+      <div class="input-group">
+        <label>免填標準</label>
+        <div class="input-wrapper">
+          <input type="number" id="gasLimit" value="7" class="has-suffix text-center">
+          <span class="suffix">m</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>每米追加</label>
+        <div class="input-wrapper">
+          <input type="number" id="gasRate" value="20" class="has-suffix text-center">
+          <span class="suffix">g</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>冷媒單價</label>
+        <div class="input-wrapper">
+          <input type="number" id="gasPrice" value="2" class="has-suffix text-center" step="0.5">
+          <span class="suffix">$/g</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Box for Gas -->
+    <div id="gasAlert" style="display:none; margin-top:12px; background:var(--warning-bg); color:var(--warning-text); padding:10px; border-radius:8px; font-size:13px;">
+      <div style="display:flex; justify-content:space-between; font-weight:600;">
+        <span>⚠️ 超長 <span id="gasOverM">0</span>m</span>
+        <span>+ $<span id="gasCostDisp">0</span></span>
+      </div>
+      <div style="font-size:11px; margin-top:2px; opacity:0.8;">需補冷媒: <span id="gasNeedG">0</span>g</div>
+    </div>
+  </div>
+
+  <!-- 4. 明細 (Breakdown) -->
+  <div class="card">
+    <div class="card-title">費用明細</div>
+    <div class="breakdown" id="breakdownList">
+      請輸入數據...
+    </div>
+    <textarea id="copyTarget" style="position:absolute; left:-9999px;"></textarea>
+  </div>
+</div>
+
+<!-- Sticky Footer -->
+<div class="sticky-footer">
+  <div class="total-area">
+    <div class="total-label">預估總成本 (含冷媒)</div>
+    <div class="total-price" id="footerTotal">$0</div>
+  </div>
+  <button class="btn" id="copyBtn">複製</button>
+</div>
+
+<script>
+  // --- Config & Utils ---
+  const STORAGE_KEY = 'ac_calc_full_v3';
+  const WASTE_RATE = 0.10; // 10%
+
+  const $ = (id) => document.getElementById(id);
+  const val = (id) => parseFloat($(id).value) || 0;
+  const fmt = (n) => n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+  // --- Environment Check ---
+  function checkEnv() {
+    if (window.location.protocol === 'file:') {
+        console.warn('Running from local file system. Some widgets may be blocked.');
+        // Optional: Alert user once if needed, but the fallback text handles it visually.
+        const loadingText = document.querySelector('.market-loading-text');
+        if(loadingText) {
+            loadingText.innerHTML += '<br><span style="color:#d9534f; font-weight:600;">⚠️ 偵測到本機開啟，行情可能會被瀏覽器攔截</span>';
+        }
+    }
+  }
+
+  // --- State ---
+  function saveState() {
+    const inputs = document.querySelectorAll('input, select');
+    const state = {};
+    inputs.forEach(el => state[el.id] = el.value);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function loadState() {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved) {
+      Object.keys(saved).forEach(k => {
+        if ($(k)) $(k).value = saved[k];
+      });
+    }
+  }
+
+  // --- Main Calculation ---
+  function calc() {
+    saveState();
+
+    // 1. Get Base Data
+    const pathM = val('pathM');
+    
+    // CM Conversion Logic
+    const bends = val('bends');
+    const perBendCm = val('perBendCm');
+    const ends = val('ends');
+    const endLenCm = val('endLenCm'); // Dynamic CM input
+
+    const bendsM = (bends * perBendCm) / 100;
+    const endsM  = (ends * endLenCm) / 100;
+    const wasteM = pathM * (1 + WASTE_RATE);
+
+    // Total Cutting Length
+    const totalLen = wasteM + bendsM + endsM;
+    $('dispTotalLen').textContent = totalLen.toFixed(2) + " m";
+
+    // 2. Material Costs
+    const boxLen = val('boxLen') || 30; // avoid div by zero
+    const factor = totalLen / boxLen;   // Usage factor
+    
+    const costKit  = factor * val('priceKit');
+    const costSig  = factor * val('priceSig');
+    const costPwr  = factor * val('pricePwr');
+    const costInsu = factor * val('priceInsu');
+
+    // 3. Refrigerant Logic (Based on PATH LENGTH only, not cutting length)
+    const gasLimit = val('gasLimit');
+    const gasRate  = val('gasRate');
+    const gasPrice = val('gasPrice');
+    
+    let gasCost = 0;
+    let gasExtraG = 0;
+    let gasOverM = 0;
+
+    if (pathM > gasLimit) {
+      gasOverM = pathM - gasLimit;
+      gasExtraG = Math.ceil(gasOverM * gasRate);
+      gasCost = gasExtraG * gasPrice;
+      
+      // Update UI for Warning
+      $('gasTag').className = 'tag tag-warn';
+      $('gasTag').textContent = '需追加';
+      $('gasAlert').style.display = 'block';
+      $('gasOverM').textContent = gasOverM.toFixed(1);
+      $('gasNeedG').textContent = gasExtraG;
+      $('gasCostDisp').textContent = fmt(gasCost);
+    } else {
+      // Standard UI
+      $('gasTag').className = 'tag tag-ok';
+      $('gasTag').textContent = '標準內';
+      $('gasAlert').style.display = 'none';
+    }
+
+    // 4. Totals
+    const totalCost = Math.round(costKit + costSig + costPwr + costInsu + gasCost);
+    $('footerTotal').textContent = '$' + fmt(totalCost);
+
+    // 5. Render Breakdown
+    const pairTxt = $('pair').options[$('pair').selectedIndex].text;
+    
+    let html = `
+      <div class="bd-item"><span>規格</span> <span style="font-weight:600">${pairTxt}</span></div>
+      <div class="bd-item"><span>裁切長</span> <span>${totalLen.toFixed(2)}m</span></div>
+      <div class="bd-divider"></div>
+    `;
+
+    if (val('priceKit')) {
+      html += `<div class="bd-item"><span>銅管分攤</span> <span>$${fmt(costKit)}</span></div>`;
+    } else {
+      html += `<div class="bd-item" style="color:#de350b">未輸入銅管價</div>`;
+    }
+    
+    if (val('priceSig')) html += `<div class="bd-item"><span>訊號線</span> <span>$${fmt(costSig)}</span></div>`;
+    if (val('pricePwr')) html += `<div class="bd-item"><span>電源線</span> <span>$${fmt(costPwr)}</span></div>`;
+    if (val('priceInsu')) html += `<div class="bd-item"><span>保溫材</span> <span>$${fmt(costInsu)}</span></div>`;
+    
+    if (gasCost > 0) {
+      html += `<div class="bd-divider"></div>`;
+      html += `<div class="bd-item" style="color:#bf2600; font-weight:600;">
+                 <span>冷媒追加 (${gasExtraG}g)</span> <span>$${fmt(gasCost)}</span>
+               </div>`;
+    }
+
+    $('breakdownList').innerHTML = html;
+  }
+
+  // --- Actions ---
+  function copyText() {
+    const total = $('footerTotal').textContent;
+    const pair = $('pair').options[$('pair').selectedIndex].text;
+    const path = $('pathM').value;
+    const len = $('dispTotalLen').textContent;
+    const gasTag = $('gasTag').textContent;
+    const gasG = $('gasNeedG').textContent;
+    
+    let text = `【配管估價單】\n規格: ${pair}\n走線: ${path}m (用量${len})\n`;
+    
+    if (gasTag === '需追加') {
+      text += `⚠️ 冷媒追加: ${gasG}g\n`;
+    }
+    
+    text += `------------\n總成本: ${total}`;
+
+    const ta = $('copyTarget');
+    ta.value = text;
+    ta.select();
+    try {
+      document.execCommand('copy');
+      const btn = $('copyBtn');
+      const oldTxt = btn.textContent;
+      btn.textContent = '已複製!';
+      btn.style.background = '#00875a';
+      setTimeout(() => {
+        btn.textContent = oldTxt;
+        btn.style.background = '';
+      }, 1500);
+    } catch(e) { alert('複製失敗'); }
+  }
+
+  function reset() {
+    if(confirm('清空所有設定？')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  }
+
+  // --- Init ---
+  window.addEventListener('DOMContentLoaded', () => {
+    checkEnv();
+    loadState();
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', calc);
+    });
+    $('copyBtn').addEventListener('click', copyText);
+    $('resetBtn').addEventListener('click', reset);
+    calc();
+  });
+
+</script>
+</body>
+</html>
