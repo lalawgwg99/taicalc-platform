@@ -154,16 +154,16 @@
             <!-- Inputs -->
             <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                    <div class="min-w-0">
                         <label
                             class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">消費日期</label>
-                        <input type="date" v-model="uniData.txDate" class="input-base w-full">
+                        <input type="date" v-model="uniData.txDate" class="input-base w-full max-w-full">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">金額
                             (NT$)</label>
                         <input type="number" v-model.number="uniData.txAmount"
-                            class="input-base w-full bg-stone-50 font-mono font-bold" placeholder="3000">
+                            class="input-base w-full bg-stone-50 font-mono font-bold" placeholder="5000">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">通路</label>
