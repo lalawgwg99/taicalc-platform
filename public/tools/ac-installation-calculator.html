@@ -69,37 +69,7 @@
 
         <main class="space-y-6">
 
-            <!-- Result Card (Sticky Top-ish or just prominent) -->
-            <div
-                class="card bg-stone-800 text-white rounded-2xl p-6 shadow-lg border border-stone-700 relative overflow-hidden">
-                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl">
-                </div>
-
-                <div class="relative z-10 flex flex-col items-center justify-center text-center space-y-2">
-                    <p class="text-stone-400 text-xs font-semibold uppercase tracking-wider">預估總成本 (含冷媒)</p>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl text-stone-400 font-medium">$</span>
-                        <span class="text-5xl font-bold tracking-tight text-white font-mono">{{
-                            totalCost.toLocaleString() }}</span>
-                    </div>
-                    <div class="mt-4 flex gap-3 text-sm font-medium">
-                        <button @click="copyBreakdown"
-                            class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg transition-colors flex items-center gap-2">
-                            <span v-if="copyStatus === 'idle'">複製報價單</span>
-                            <span v-else>已複製!</span>
-                            <svg v-if="copyStatus === 'idle'" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                            </svg>
-                        </button>
-                        <button @click="resetDefaults"
-                            class="px-4 py-2 bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-lg transition-colors">重置</button>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Result Card Removed (Moved to Bottom) -->
             <!-- 1. 規格與路徑 -->
             <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
                 <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">
@@ -447,17 +417,17 @@
         createApp({
             setup() {
                 // Inputs
-                const specPair = ref('2-4')
-                const pathM = ref(0)
+                const specPair = ref('2-3')
+                const pathM = ref(5)
                 const bends = ref(2)
-                const perBendCm = ref(15)
+                const perBendCm = ref(10)
                 const ends = ref(2)
-                const endLenCm = ref(50)
+                const endLenCm = ref(20)
 
                 const boxLen = ref(30)
-                const priceKit = ref(null)
-                const priceSig = ref(null)
-                const pricePwr = ref(null)
+                const priceKit = ref(5500)
+                const priceSig = ref(500)
+                const pricePwr = ref(1000)
                 const priceInsu = ref(null)
 
                 const gasLimit = ref(7)
@@ -516,16 +486,16 @@
                 // Actions
                 const resetDefaults = () => {
                     if (!confirm('確定重置所有設定？')) return
-                    specPair.value = '2-4'
-                    pathM.value = 0
+                    specPair.value = '2-3'
+                    pathM.value = 5
                     bends.value = 2
-                    perBendCm.value = 15
+                    perBendCm.value = 10
                     ends.value = 2
-                    endLenCm.value = 50
+                    endLenCm.value = 20
                     boxLen.value = 30
-                    priceKit.value = null
-                    priceSig.value = null
-                    pricePwr.value = null
+                    priceKit.value = 5500
+                    priceSig.value = 500
+                    pricePwr.value = 1000
                     priceInsu.value = null
                     gasLimit.value = 7
                     gasRate.value = 20
