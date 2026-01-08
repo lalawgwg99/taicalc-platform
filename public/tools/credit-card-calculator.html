@@ -207,9 +207,9 @@
                     </div>
                 </div>
 
-                <!-- Advanced / 2% Cap Section -->
+                <!-- Advanced / Bonus Section -->
                 <div class="border border-stone-100 rounded-xl overflow-hidden bg-white p-4 mt-4 space-y-4">
-                    <h3 class="text-xs font-bold text-stone-600 border-b border-stone-100 pb-2">2% 上限</h3>
+                    <h3 class="text-xs font-bold text-stone-600 border-b border-stone-100 pb-2">進階設定 (2% 上限 / 踩點加碼)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs text-stone-500 mb-1">統一集團品牌消費確認</label>
@@ -224,6 +224,25 @@
                             <input type="number" v-model.number="uniData.optUni2Used"
                                 class="input-base w-full text-sm py-2" placeholder="0-500">
                             <p class="text-[10px] text-stone-400 mt-1">每月上限 500 點，填寫已獲得點數以精算剩餘額度。</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-500 mb-1">uniopen 會員連結 (踩點加碼)</label>
+                            <select v-model="uniData.optLinked" class="input-base w-full text-sm py-2">
+                                <option value="yes">已連結</option>
+                                <option value="no">未連結</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-500 mb-1">本月踩點家數 (0-5+)</label>
+                            <select v-model.number="uniData.optSteps" class="input-base w-full text-sm py-2">
+                                <option :value="0">0 家</option>
+                                <option :value="1">1 家 (無加碼)</option>
+                                <option :value="2">2 家 (+1%)</option>
+                                <option :value="3">3 家 (+2%)</option>
+                                <option :value="4">4 家 (+3%)</option>
+                                <option :value="5">5 家以上 (+4%)</option>
+                            </select>
+                            <p class="text-[10px] text-stone-400 mt-1">需含本次消費之不同品牌數，每月上限 500 點。</p>
                         </div>
                     </div>
 
@@ -320,7 +339,7 @@
 
                 // 簡單估算年化利率：(總手續費率 / 期數) * 12 * 2 (約略值，IRR會更精確但這裡用簡單公式逼近)
                 // 精確公式：總利息 / 貸款本金 / (期數+1) * 24 * 100? 
-                // 這裡用簡易平攤法：(手續費率 / 期數 * 12) * constant factor?
+                // 這裡用簡易平攤法：(費率/期數)*12 * 1.9 (約略係數)?
                 // 實際上銀行公會公式較複雜。這裡維持原有邏輯：(費率/期數)*12 * 1.9 (約略係數)?
                 // 原代碼：(feePercent / installments) * 12 * 2
                 const annualRate = computed(() => {
@@ -361,6 +380,7 @@
                     promos: [
                         { id: "base_1pct", title: "一般消費 1% OPENPOINT", rewardType: "OPENPOINT", startDate: "2026-01-01", endDate: "2026-12-31", applies: { requiresUniopenCard: true }, calc: { kind: "rate_points", rate: 0.01 } },
                         { id: "uni_group_2pct_cap500", title: "統一企業集團品牌加碼 2% (月上限 500 點)", rewardType: "OPENPOINT", startDate: "2026-01-01", endDate: "2026-06-30", applies: { requiresUniopenCard: true, requiresUniBrandTx: true }, calc: { kind: "rate_points", rate: 0.02, capMonthlyPoints: 500, capMonthlyKey: "uni2" } },
+                        { id: "step_bonus_tiered", title: "統一集團踩點任務加碼 (最高 4%)", rewardType: "OPENPOINT", startDate: "2026-01-01", endDate: "2026-06-30", applies: { requiresUniopenCard: true, requiresUniBrandTx: true, requiresLinked: true, minSteps: 2 }, calc: { kind: "step_tiered", rates: { 2: 0.01, 3: 0.02, 4: 0.03, 5: 0.04 }, capMonthlyPoints: 500, capMonthlyKey: "steps" } },
                         { id: "cny_appliance_wave1_mass_4pct", title: "家電尾牙 第一波 (量販/家電) 4% 折價券", rewardType: "VOUCHER", startDate: "2025-12-26", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_mass"], productTypes: ["appliance"], minSpend: 3000, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } },
                         { id: "cny_wave2_mass_4pct", title: "家電尾牙 第二波 (量販) 4% 折價券", rewardType: "VOUCHER", startDate: "2026-01-21", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_mass"], minSpend: 2500, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } },
                         { id: "cny_wave2_super_4pct", title: "家電尾牙 第二波 (超市) 4% 折價券", rewardType: "VOUCHER", startDate: "2026-01-21", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_super"], minSpend: 1000, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } }
@@ -465,6 +485,8 @@
                         else if (typeof a.minSpend === "number" && tx.amount < a.minSpend) { applyOk = false; whyNot = `未達門檻 $${a.minSpend}` }
                         else if (a.voucherDailyOnce && p.rewardType === "VOUCHER" && tx.voucherDailyOk === "no") { applyOk = false; whyNot = "今日已領過" }
                         else if (a.requiresUniBrandTx && !tx.uniBrandTx) { applyOk = false; whyNot = "非統一集團品牌" }
+                        else if (a.requiresLinked && tx.linked !== "yes") { applyOk = false; whyNot = "未連結會員" }
+                        else if (typeof a.minSteps === "number" && tx.steps < a.minSteps) { applyOk = false; whyNot = `踩點不足 (${tx.steps}<${a.minSteps})` }
 
                         if (!applyOk) {
                             // Optionally log whyNot for debug? user usually doesn't see unless strictly needed.
@@ -480,16 +502,30 @@
                         let rewardVal = 0
                         let logLine = ""
 
-                        if (p.rewardType === "OPENPOINT" && c.kind === "rate_points") {
-                            const raw = Math.floor(tx.amount * c.rate)
+                        if (p.rewardType === "OPENPOINT") {
+                            let rate = c.rate || 0
+                            if (c.kind === "step_tiered" && c.rates) {
+                                // Determine rate based on steps (max 5)
+                                const s = Math.min(5, Math.max(0, tx.steps))
+                                rate = c.rates[s] || 0
+                                if (rate === 0) { // Should not happen if filtered by minSteps, but safe guard
+                                    uniResult.breakdown.push(`[跳過] ${p.title}: 踩點數 ${s} 無對應加碼`)
+                                    continue
+                                }
+                            }
+
+                            const raw = Math.floor(tx.amount * rate)
                             if (typeof c.capMonthlyPoints === "number") {
                                 const used = (c.capMonthlyKey === "uni2") ? tx.uni2UsedPoints : 0
+                                // Note: we don't have an input for "steps used points", assuming 0 for now as UI space is limited and simple is better. 
+                                // Ideally share logic or add input. But user didn't ask for "Used Step Points" input specifically, just "Steps".
+                                // Assuming 0 used for steps logic for now.
                                 const remaining = Math.max(0, c.capMonthlyPoints - used)
                                 rewardVal = Math.min(raw, remaining)
-                                logLine = `[點數] ${p.title}: 原 ${raw} 點，上限剩 ${remaining}，得 ${rewardVal} 點`
+                                logLine = `[點數] ${p.title} (${(rate * 100).toFixed(0)}%): 原 ${raw} 點，上限剩 ${remaining}，得 ${rewardVal} 點`
                             } else {
                                 rewardVal = raw
-                                logLine = `[點數] ${p.title}: ${rewardVal} 點`
+                                logLine = `[點數] ${p.title} (${(rate * 100).toFixed(0)}%): ${rewardVal} 點`
                             }
                             points += rewardVal
                             activeTitles.push(p.title)
