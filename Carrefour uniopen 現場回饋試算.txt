@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>家樂福 uniopen 回饋試算</title>
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e2e8f0;
+      --shadow: 0 12px 30px rgba(2, 6, 23, .08);
+      --r:16px;
+      --brand:#2563eb;
+      --brand2:#1d4ed8;
+      --good:#16a34a;
+      --warn:#b45309;
+      --danger:#ef4444;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", Arial;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(900px 360px at 20% 0%, rgba(37,99,235,.10), transparent 60%),
+        radial-gradient(900px 360px at 80% 0%, rgba(37,99,235,.08), transparent 60%),
+        var(--bg);
+    }
+    .wrap{ max-width: 1100px; margin: 26px auto; padding: 0 14px 44px; }
+    .topbar{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    h1{ margin:0; font-size:20px; letter-spacing:.2px; }
+    .sub{ margin-top:6px; color:var(--muted); font-size:12px; line-height:1.55; max-width: 880px; }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    .btn{
+      appearance:none; border:1px solid var(--line); background:#fff;
+      padding:10px 12px; border-radius: 12px; cursor:pointer; font-weight: 800;
+    }
+    .btn.primary{
+      border-color: transparent; color:#fff;
+      background: linear-gradient(180deg, var(--brand), var(--brand2));
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 980px){ .grid{ grid-template-columns: 1fr 1fr; } }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hd{
+      padding: 12px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+    }
+    .hd h2{ margin:0; font-size:13px; letter-spacing:.2px; }
+    .mini{ font-size:12px; color:var(--muted); }
+    .bd{ padding: 14px; }
+
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width: 640px){ .row{ grid-template-columns: 1fr; } }
+
+    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+    input, select, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding:10px 10px;
+      background:#fff;
+      font-size:14px;
+      outline:none;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(37,99,235,.9);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    .kpi{ display:grid; grid-template-columns: 1fr; gap:10px; }
+    @media (min-width: 720px){ .kpi{ grid-template-columns: 1fr 1fr; } }
+    .pill{
+      border-radius: 16px;
+      padding: 12px 12px;
+      border: 1px solid rgba(37,99,235,.18);
+      background: rgba(37,99,235,.05);
+    }
+    .pill .t{ color:var(--muted); font-size:12px; }
+    .pill .v{ font-size:22px; font-weight: 950; margin-top:2px; letter-spacing:.2px; }
+    .pill .s{ color:var(--muted); font-size:12px; margin-top:6px; line-height:1.4; }
+
+    .tag{
+      display:inline-block;
+      padding: 2px 8px;
+      border-radius:999px;
+      font-size: 11px;
+      border:1px solid var(--line);
+      background:#fff;
+      color: var(--muted);
+    }
+
+    details{ border:1px solid var(--line); border-radius: 14px; overflow:hidden; background:#fff; }
+    details > summary{
+      list-style:none; cursor:pointer;
+      padding: 10px 12px; font-weight: 900; color: var(--text);
+    }
+    details > summary::-webkit-details-marker{ display:none; }
+
+    .warn{
+      border:1px dashed rgba(180,83,9,.45);
+      background: rgba(180,83,9,.08);
+      color:#7c2d12;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .danger{
+      border:1px dashed rgba(239,68,68,.45);
+      background: rgba(239,68,68,.06);
+      color:#7f1d1d;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .info{
+      border:1px solid rgba(22,163,74,.22);
+      background: rgba(22,163,74,.06);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .info b{ font-weight: 950; }
+    .hr{ height:1px; background:var(--line); margin: 10px 0; }
+    .list{ margin: 8px 0 0; padding-left: 18px; color: var(--text); font-size: 13px; line-height: 1.55; }
+
+    textarea{
+      min-height: 230px;
+      resize: vertical;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    code{ font-family: var(--mono); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <h1>家樂福 uniopen 回饋試算</h1>
+        <div class="sub">
+          <b>防誤解（海報「最高 11%」）</b>：常見是「<b>4% 現金折價券</b>」+「點數（<b>一般 1%</b> + <b>統一集團加碼 2%</b> + <b>踩點加碼最高 4%</b>）」的合併口徑。<br/>
+          <b>分期規則（依你指定）</b>：<b>OPENPOINT（1%/2%/踩點）分期不適用</b>；<b>4% 折價券分期適用</b>。<br/>
+          <b>統一集團加碼 2%</b>：本工具已精準化為「<b>僅統一集團品牌消費才算</b>」且「<b>每月上限 500 點</b>」（需填本月已拿到的 2% 點數，才能精準算剩餘上限）。
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnReset">清空</button>
+        <button class="btn primary" id="btnCalc">立即試算</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="hd">
+          <h2>輸入</h2>
+          <div class="mini">日期 / 金額 / 通路 / 分期 / 商品 / 折價券每日一次</div>
+        </div>
+        <div class="bd">
+          <div class="row">
+            <div>
+              <label>消費日期（未填則以今天計算）</label>
+              <input id="txDate" type="date" />
+            </div>
+            <div>
+              <label>本筆金額（NT$）</label>
+              <input id="txAmount" type="number" inputmode="decimal" min="0" step="1" placeholder="例如 3888" />
+            </div>
+
+            <div>
+              <label>通路（家樂福）</label>
+              <select id="txChannel">
+                <option value="store_mass">家樂福量販店（實體）</option>
+                <option value="store_super">家樂福超市店（實體）</option>
+                <option value="online_ec">家樂福線上購物（含到店取貨）</option>
+                <option value="online_hsd">家速配</option>
+                <option value="uni_group_other">統一集團品牌商店（非家樂福）</option>
+              </select>
+            </div>
+
+            <div>
+              <label>付款方式（是否為 uniopen 聯名卡支付）</label>
+              <select id="txPay">
+                <option value="uniopen_card_ok">使用中信 uniopen 聯名卡（含實體卡/Apple Pay/Google Pay/家樂福錢包綁卡）</option>
+                <option value="not_eligible">非 uniopen 聯名卡（或第三方支付/電子支付）</option>
+              </select>
+            </div>
+
+            <div>
+              <label>本筆是否為分期？（點數不適用／4%券適用）</label>
+              <select id="txInstallment">
+                <option value="no">否（非分期）</option>
+                <option value="yes">是（分期）</option>
+              </select>
+            </div>
+
+            <div>
+              <label>商品類型（用來套用「家電/生鮮/自有品牌」活動）</label>
+              <select id="txProductType">
+                <option value="other">其他</option>
+                <option value="appliance">家電</option>
+                <option value="fresh">生鮮</option>
+                <option value="private_label">自有品牌</option>
+              </select>
+            </div>
+
+            <div>
+              <label>【折價券】今天是否仍可回饋？（每日一次）</label>
+              <select id="optVoucherDailyOk">
+                <option value="unknown">不確定（先試算，但會提示需確認）</option>
+                <option value="yes">是（今天尚未拿過折價券回饋）</option>
+                <option value="no">否（今天已拿過折價券回饋）</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <details>
+              <summary>進階（統一 2% 月上限 / 踩點 / 統一品牌判斷）</summary>
+              <div class="bd" style="padding-top:0;">
+                <div class="row">
+                  <div>
+                    <label>本筆是否為「統一集團品牌商店」消費？（2% 加碼只在此成立）</label>
+                    <select id="optUniBrandTx">
+                      <option value="auto">自動（僅選「統一集團品牌商店」才算）</option>
+                      <option value="yes">是</option>
+                      <option value="no">否</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>本月已獲得「統一 2% 加碼」點數（0~500）</label>
+                    <input id="optUni2Used" type="number" inputmode="numeric" min="0" max="500" step="1" placeholder="例如 120" />
+                  </div>
+
+                  <div>
+                    <label>是否已完成 uniopen 會員連結（踩點加碼需要）</label>
+                    <select id="optLinked">
+                      <option value="yes">是</option>
+                      <option value="no">否</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>本月踩點（不同統一集團品牌消費家數，0~5+）</label>
+                    <select id="optSteps">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5（含以上）</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="hr"></div>
+                <div class="info">
+                  <b>月上限怎麼算（2%）</b>：本工具用「本月已拿到的 2% 點數」推算剩餘上限：剩餘 \[500 - 已獲得\] 點，然後把本筆 2% 點數做上限裁切。<br/>
+                  若你不填「本月已獲得」，就會以 0 估算（可能高估）。
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="hd">
+          <h2>結果（點數 / 折價券 分開）</h2>
+          <div class="mini"><span class="tag" id="activePromoTag">—</span></div>
+        </div>
+        <div class="bd">
+          <div class="kpi">
+            <div class="pill">
+              <div class="t">OPENPOINT 點數</div>
+              <div class="v" id="outPoints">—</div>
+              <div class="s" id="outPointsNote">—</div>
+            </div>
+            <div class="pill">
+              <div class="t">家樂福現金折價券（元）</div>
+              <div class="v" id="outVoucher">—</div>
+              <div class="s" id="outVoucherNote">—</div>
+            </div>
+          </div>
+
+          <details style="margin-top:10px;">
+            <summary>為什麼會看到「最高 11%」？（防誤解）</summary>
+            <div class="bd" style="padding-top:0;">
+              <div class="info">
+                海報常把「點數」與「折價券」合併成一個「最高%」口徑。<br/>
+                常見：<b>4% 現金折價券</b> +（點數：<b>一般 1%</b> + <b>統一 2%（月上限 500 點）</b> + <b>踩點最高 4%</b>）。<br/>
+                <b>分期</b>：點數（1%/2%/踩點）不適用；4% 折價券適用（依你指定）。
+              </div>
+            </div>
+          </details>
+
+          <div class="hr"></div>
+          <div id="outWarnings" class="warn" style="display:none;"></div>
+          <div id="outErrors" class="danger" style="display:none;"></div>
+
+          <details style="margin-top:10px;">
+            <summary>明細（為什麼會這樣算）</summary>
+            <div class="bd" style="padding-top:0;">
+              <ul class="list" id="outBreakdown"></ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px;">
+      <div class="hd">
+        <h2>活動設定（你要更新加碼只改這裡）</h2>
+        <div class="mini">已內建：自動排除過期活動</div>
+      </div>
+      <div class="bd">
+        <div class="mini" style="margin-bottom:8px;">
+          提醒：每條活動用 <code>channels</code> 指定 <code>store_mass</code>/<code>store_super</code>（分開判斷）。
+        </div>
+        <textarea id="promoEditor"></textarea>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+          <button class="btn" id="btnLoadDefault">載入預設設定</button>
+          <button class="btn primary" id="btnApplyPromo">套用設定並試算</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function pad2(n){ return String(n).padStart(2,'0'); }
+    function todayStr(){
+      const d = new Date();
+      return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate());
+    }
+    function parseDateYMD(ymd){
+      const [y,m,d] = (ymd || "").split("-").map(Number);
+      if(!y || !m || !d) return null;
+      return new Date(y, m-1, d, 0, 0, 0, 0);
+    }
+    function inDateRange(txYmd, startYmd, endYmd){
+      const tx = parseDateYMD(txYmd);
+      const st = parseDateYMD(startYmd);
+      const en = parseDateYMD(endYmd);
+      if(!tx || !st || !en) return false;
+      const txT = tx.getTime();
+      return txT >= st.getTime() && txT <= en.getTime();
+    }
+    function roundTwd(x){ return Math.round(x); }
+    function fmtInt(n){
+      if(n === null || n === undefined || Number.isNaN(n)) return "—";
+      return String(Math.trunc(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#39;");
+    }
+
+    const DEFAULT_PROMOS = {
+      version: "2026-01-08-uni2-cap-500-style-taicalc",
+      promos: [
+        /* 一般 1%（點數） */
+        { id:"base_1pct", title:"一般消費 1% OPENPOINT（示意）", rewardType:"OPENPOINT",
+          startDate:"2026-01-01", endDate:"2026-12-31",
+          applies:{ requiresUniopenCard:true },
+          calc:{ kind:"rate_points", rate:0.01 }
+        },
+
+        /* 統一集團品牌加碼 2%：僅統一品牌消費成立、每月上限 500 點 */
+        { id:"uni_group_2pct_cap500", title:"統一企業集團品牌加碼 2%（每月上限 500 點）", rewardType:"OPENPOINT",
+          startDate:"2026-01-01", endDate:"2026-06-30",
+          applies:{ requiresUniopenCard:true, requiresUniBrandTx:true },
+          calc:{ kind:"rate_points", rate:0.02, capMonthlyPoints: 500, capMonthlyKey: "uni2" }
+        },
+
+        /* 家電尾牙 / 滿額折價券（4%） */
+        { id:"cny_appliance_wave1_mass_4pct", title:"家電尾牙 第一波（量販/家電）4% 折價券", rewardType:"VOUCHER",
+          startDate:"2025-12-26", endDate:"2026-02-28",
+          applies:{
+            requiresUniopenCard:true,
+            channels:["store_mass"],
+            productTypes:["appliance"],
+            minSpend:3000,
+            voucherDailyOnce:true
+          },
+          calc:{ kind:"rate_twd", rate:0.04, capPerHitTwd:2000 }
+        },
+        { id:"cny_wave2_mass_4pct", title:"家電尾牙 第二波（量販）4% 折價券", rewardType:"VOUCHER",
+          startDate:"2026-01-21", endDate:"2026-02-28",
+          applies:{
+            requiresUniopenCard:true,
+            channels:["store_mass"],
+            minSpend:2500,
+            voucherDailyOnce:true
+          },
+          calc:{ kind:"rate_twd", rate:0.04, capPerHitTwd:2000 }
+        },
+        { id:"cny_wave2_super_4pct", title:"家電尾牙 第二波（超市）4% 折價券", rewardType:"VOUCHER",
+          startDate:"2026-01-21", endDate:"2026-02-28",
+          applies:{
+            requiresUniopenCard:true,
+            channels:["store_super"],
+            minSpend:1000,
+            voucherDailyOnce:true
+          },
+          calc:{ kind:"rate_twd", rate:0.04, capPerHitTwd:2000 }
+        }
+      ]
+    };
+
+    function safeParsePromos(text){
+      try{
+        const obj = JSON.parse(text);
+        if(!obj || !Array.isArray(obj.promos)) throw new Error("promos 格式錯誤");
+        return { ok:true, obj };
+      }catch(e){
+        return { ok:false, err: String(e && e.message ? e.message : e) };
+      }
+    }
+
+    function promoActive(p, txDate){
+      return inDateRange(txDate, p.startDate, p.endDate);
+    }
+
+    function appliesToTx(p, tx){
+      const a = p.applies || {};
+
+      // 你指定：OPENPOINT（1%/2%/踩點）分期不適用；4%券分期適用
+      if(tx.installment && p.rewardType === "OPENPOINT"){
+        return { ok:false, why:"分期不適用（點數）" };
+      }
+
+      if(a.requiresUniopenCard && !tx.uniopenCard) return { ok:false, why:"非 uniopen 聯名卡" };
+      if(a.channels && Array.isArray(a.channels)){
+        if(!a.channels.includes(tx.channel)) return { ok:false, why:"通路不符合" };
+      }
+      if(a.productTypes && Array.isArray(a.productTypes)){
+        if(!a.productTypes.includes(tx.productType)) return { ok:false, why:"商品類型不符合" };
+      }
+      if(typeof a.minSpend === "number"){
+        if(!(tx.amount >= a.minSpend)) return { ok:false, why:`未達門檻 ${a.minSpend}` };
+      }
+      if(a.voucherDailyOnce && p.rewardType === "VOUCHER"){
+        if(tx.voucherDailyOk === "no") return { ok:false, why:"今天已回饋過折價券（每日一次）" };
+      }
+
+      // 統一品牌消費才成立（2% 加碼）
+      if(a.requiresUniBrandTx){
+        if(!tx.uniBrandTx) return { ok:false, why:"非統一集團品牌消費（2%不適用）" };
+      }
+
+      return { ok:true };
+    }
+
+    function calcReward(p, tx){
+      const c = p.calc || {};
+
+      if(p.rewardType === "OPENPOINT" && c.kind === "rate_points"){
+        const raw = Math.floor(tx.amount * c.rate);
+
+        // 月上限：以「本月已獲得」推算剩餘，做裁切
+        if(typeof c.capMonthlyPoints === "number"){
+          const used = (c.capMonthlyKey === "uni2") ? tx.uni2UsedPoints : 0;
+          const remaining = Math.max(0, c.capMonthlyPoints - used);
+          const clipped = Math.min(raw, remaining);
+          return { amount: clipped, unit:"points", meta:{ raw, remaining, cap: c.capMonthlyPoints, used } };
+        }
+
+        return { amount: raw, unit:"points", meta:{ raw } };
+      }
+
+      if(p.rewardType === "VOUCHER" && c.kind === "rate_twd"){
+        let v = roundTwd(tx.amount * c.rate);
+        if(typeof c.capPerHitTwd === "number") v = Math.min(v, c.capPerHitTwd);
+        return { amount: v, unit:"twd" };
+      }
+
+      return { amount: 0, unit: p.rewardType === "VOUCHER" ? "twd" : "points" };
+    }
+
+    function chooseBestVoucher(candidates){
+      let best = null;
+      for(const x of candidates){
+        if(!best) best = x;
+        else if(x.reward.amount > best.reward.amount) best = x;
+      }
+      return best;
+    }
+
+    function run(){
+      const txDate = (document.getElementById("txDate").value || todayStr());
+      const amount = Number(document.getElementById("txAmount").value || 0);
+      const channel = document.getElementById("txChannel").value;
+      const pay = document.getElementById("txPay").value;
+      const installment = (document.getElementById("txInstallment").value === "yes");
+      const productType = document.getElementById("txProductType").value;
+      const voucherDailyOk = document.getElementById("optVoucherDailyOk").value;
+
+      const optUniBrandTx = document.getElementById("optUniBrandTx").value;
+      const uni2UsedRaw = document.getElementById("optUni2Used").value;
+      const uni2UsedPoints = Math.max(0, Math.min(500, Number(uni2UsedRaw === "" ? 0 : uni2UsedRaw)));
+
+      const linked = document.getElementById("optLinked").value;
+      const steps = Number(document.getElementById("optSteps").value || 0);
+
+      const errors = [];
+      const warns = [];
+      const breakdown = [];
+
+      if(!(amount > 0)) errors.push("請輸入本筆金額（需大於 0）。");
+      const uniopenCard = (pay === "uniopen_card_ok");
+      if(voucherDailyOk === "unknown") warns.push("你選了「折價券每日一次：不確定」。若今天已領過折價券回饋，則本筆折價券應為 0。");
+      if(installment) warns.push("本筆為分期：依規則 OPENPOINT（1%/2%/踩點）不適用；4% 折價券仍可試算。");
+
+      let uniBrandTx = false;
+      if(optUniBrandTx === "yes") uniBrandTx = true;
+      else if(optUniBrandTx === "no") uniBrandTx = false;
+      else uniBrandTx = (channel === "uni_group_other");
+
+      if(uni2UsedRaw !== "" && (Number.isNaN(Number(uni2UsedRaw)) || Number(uni2UsedRaw) < 0)){
+        warns.push("「本月已獲得統一 2% 點數」輸入不合法，已以 0 計算。");
+      }else if(Number(uni2UsedRaw) > 500){
+        warns.push("「本月已獲得統一 2% 點數」超過 500，已自動以 500 計算（上限）。");
+      }
+
+      const parsed = safeParsePromos(document.getElementById("promoEditor").value);
+      if(!parsed.ok){
+        errors.push("活動設定 JSON 解析失敗：" + parsed.err);
+      }
+
+      const tx = {
+        txDate, amount, channel, productType,
+        uniopenCard, installment,
+        linked, steps,
+        uniBrandTx,
+        voucherDailyOk,
+        uni2UsedPoints
+      };
+
+      let points = 0;
+      const voucherCandidates = [];
+      const activeTitles = [];
+
+      if(parsed.ok){
+        const promos = parsed.obj.promos;
+        for(const p of promos){
+          if(!promoActive(p, txDate)) continue;
+
+          const ap = appliesToTx(p, tx);
+          if(!ap.ok){
+            if(installment && p.rewardType === "OPENPOINT" && ap.why){
+              breakdown.push(`點數排除：本筆為分期，故不適用「${p.title}」。`);
+            }
+            continue;
+          }
+
+          const reward = calcReward(p, tx);
+
+          if(p.rewardType === "OPENPOINT"){
+            points += reward.amount;
+            activeTitles.push(p.title);
+
+            if(reward.meta && typeof reward.meta.cap === "number"){
+              breakdown.push(
+                `點數：符合「${p.title}」，原本可得 ${fmtInt(reward.meta.raw)} 點；本月剩餘上限 ${fmtInt(reward.meta.remaining)} 點（上限 ${fmtInt(reward.meta.cap)}，已得 ${fmtInt(reward.meta.used)}）→ 本筆回饋 ${fmtInt(reward.amount)} 點。`
+              );
+            }else{
+              breakdown.push(`點數：符合「${p.title}」，回饋 ${fmtInt(reward.amount)} 點。`);
+            }
+
+          }else if(p.rewardType === "VOUCHER"){
+            voucherCandidates.push({ promo:p, reward });
+            breakdown.push(`折價券候選：符合「${p.title}」，試算 ${fmtInt(reward.amount)} 元。`);
+          }
+        }
+      }
+
+      let voucher = 0;
+      let voucherNote = "—";
+      if(voucherDailyOk === "no"){
+        voucher = 0;
+        voucherNote = "今日已回饋過折價券（每日一次），本筆不計。";
+      }else{
+        const best = chooseBestVoucher(voucherCandidates);
+        if(best){
+          voucher = best.reward.amount;
+          activeTitles.push(best.promo.title);
+          voucherNote = `擇優採用：${best.promo.title}`;
+          breakdown.push(`折價券擇優：採用「${best.promo.title}」→ ${fmtInt(voucher)} 元。`);
+        }else{
+          voucher = 0;
+          voucherNote = "未符合任何折價券活動或未達門檻。";
+        }
+      }
+
+      document.getElementById("outPoints").textContent = fmtInt(points);
+      document.getElementById("outPointsNote").textContent =
+        installment
+          ? "本筆為分期：點數不適用（依規則）。"
+          : (points > 0 ? "已加總所有符合的點數活動（含 2% 月上限裁切）。" : "未符合點數活動或設定中未包含。");
+
+      document.getElementById("outVoucher").textContent = fmtInt(voucher);
+      document.getElementById("outVoucherNote").textContent = installment
+        ? (voucherNote + "（分期可適用）")
+        : voucherNote;
+
+      const tag = activeTitles.length
+        ? activeTitles.slice(0,2).join(" / ") + (activeTitles.length>2 ? `…等 ${activeTitles.length} 個` : "")
+        : "無符合活動";
+      document.getElementById("activePromoTag").textContent = tag;
+
+      const warnEl = document.getElementById("outWarnings");
+      warnEl.style.display = warns.length ? "block" : "none";
+      warnEl.innerHTML = warns.map(x => "• " + escapeHtml(x)).join("<br/>");
+
+      const errEl = document.getElementById("outErrors");
+      errEl.style.display = errors.length ? "block" : "none";
+      errEl.innerHTML = errors.map(x => "• " + escapeHtml(x)).join("<br/>");
+
+      const ul = document.getElementById("outBreakdown");
+      ul.innerHTML = breakdown.length ? breakdown.map(x => `<li>${escapeHtml(x)}</li>`).join("") : "<li>—</li>";
+    }
+
+    function loadDefault(){
+      document.getElementById("promoEditor").value = JSON.stringify(DEFAULT_PROMOS, null, 2);
+    }
+
+    function resetForm(){
+      document.getElementById("txDate").value = "";
+      document.getElementById("txAmount").value = "";
+      document.getElementById("txChannel").value = "store_mass";
+      document.getElementById("txPay").value = "uniopen_card_ok";
+      document.getElementById("txInstallment").value = "no";
+      document.getElementById("txProductType").value = "other";
+      document.getElementById("optVoucherDailyOk").value = "unknown";
+
+      document.getElementById("optUniBrandTx").value = "auto";
+      document.getElementById("optUni2Used").value = "";
+      document.getElementById("optLinked").value = "yes";
+      document.getElementById("optSteps").value = "0";
+
+      document.getElementById("outPoints").textContent = "—";
+      document.getElementById("outPointsNote").textContent = "—";
+      document.getElementById("outVoucher").textContent = "—";
+      document.getElementById("outVoucherNote").textContent = "—";
+      document.getElementById("activePromoTag").textContent = "—";
+
+      const warnEl = document.getElementById("outWarnings");
+      warnEl.style.display = "none";
+      warnEl.innerHTML = "";
+
+      const errEl = document.getElementById("outErrors");
+      errEl.style.display = "none";
+      errEl.innerHTML = "";
+
+      document.getElementById("outBreakdown").innerHTML = "<li>—</li>";
+    }
+
+    function bindUI(){
+      document.getElementById("btnCalc").addEventListener("click", run);
+
+      document.getElementById("btnReset").addEventListener("click", () => {
+        resetForm();
+        loadDefault();
+        run();
+      });
+
+      document.getElementById("btnLoadDefault").addEventListener("click", loadDefault);
+      document.getElementById("btnApplyPromo").addEventListener("click", run);
+
+      // 可選：輸入就即時重算（你不想要可刪）
+      const liveIds = [
+        "txDate","txAmount","txChannel","txPay","txInstallment","txProductType","optVoucherDailyOk",
+        "optUniBrandTx","optUni2Used","optLinked","optSteps"
+      ];
+      for(const id of liveIds){
+        const el = document.getElementById(id);
+        if(!el) continue;
+        el.addEventListener("change", run);
+        if(id === "txAmount" || id === "optUni2Used"){
+          el.addEventListener("input", run);
+        }
+      }
+    }
+
+    (function init(){
+      loadDefault();
+      bindUI();
+      run();
+    })();
+  </script>
+</body>
+</html>

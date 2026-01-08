@@ -138,6 +138,202 @@
 
         </main>
 
+        <!-- Carrefour Uniopen Calculator Section -->
+        <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 mt-8 space-y-6">
+            <header class="flex items-center justify-between mb-4 border-b border-stone-100 pb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-stone-800 flex items-center gap-2">
+                        家樂福 uniopen 回饋試算
+                        <span
+                            class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 font-bold border border-blue-200">Beta</span>
+                    </h2>
+                    <p class="text-xs text-stone-400 mt-1">最高 11% 回饋攻略 · 點數 / 折價券試算</p>
+                </div>
+            </header>
+
+            <!-- Inputs -->
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">消費日期</label>
+                        <input type="date" v-model="uniData.txDate" class="input-base w-full">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">金額
+                            (NT$)</label>
+                        <input type="number" v-model.number="uniData.txAmount"
+                            class="input-base w-full bg-stone-50 font-mono font-bold" placeholder="3000">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">通路</label>
+                        <select v-model="uniData.txChannel" class="input-base w-full">
+                            <option value="store_mass">家樂福量販店（實體）</option>
+                            <option value="store_super">家樂福超市店（實體）</option>
+                            <option value="online_ec">家樂福線上購物</option>
+                            <option value="online_hsd">家速配</option>
+                            <option value="uni_group_other">統一集團品牌商店（非家樂福）</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">支付方式</label>
+                        <select v-model="uniData.txPay" class="input-base w-full">
+                            <option value="uniopen_card_ok">uniopen 聯名卡 (含綁定支付)</option>
+                            <option value="not_eligible">其他支付方式</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">是否分期</label>
+                        <select v-model="uniData.txInstallment" class="input-base w-full">
+                            <option value="no">否 (全額付清)</option>
+                            <option value="yes">是 (點數不適用/折價券適用)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">商品類型</label>
+                        <select v-model="uniData.txProductType" class="input-base w-full">
+                            <option value="other">其他一般商品</option>
+                            <option value="appliance">家電</option>
+                            <option value="fresh">生鮮</option>
+                            <option value="private_label">自有品牌</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">折價券當日領取狀況</label>
+                        <select v-model="uniData.voucherDailyOk" class="input-base w-full">
+                            <option value="unknown">不確定 (預設試算)</option>
+                            <option value="yes">尚未領取 (今日第一筆)</option>
+                            <option value="no">已領取過 (不重複回饋)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Advanced Toggle -->
+                <div class="border border-stone-100 rounded-xl overflow-hidden">
+                    <button @click="uniShowAdvanced = !uniShowAdvanced"
+                        class="w-full flex items-center justify-between p-3 bg-stone-50 hover:bg-stone-100 transition-colors text-xs font-bold text-stone-600">
+                        <span>進階設定 (2% 上限 / 踩點 / 規則調整)</span>
+                        <span :class="uniShowAdvanced ? 'rotate-180' : ''" class="transition-transform">▼</span>
+                    </button>
+                    <div v-show="uniShowAdvanced"
+                        class="p-4 bg-white border-t border-stone-100 space-y-4 animate-fade-in-down">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">統一集團品牌消費確認</label>
+                                <select v-model="uniData.optUniBrandTx" class="input-base w-full text-sm py-2">
+                                    <option value="auto">自動判斷</option>
+                                    <option value="yes">強制設為是</option>
+                                    <option value="no">強制設為否</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">本月已獲得統一集團 2% 點數</label>
+                                <input type="number" v-model.number="uniData.optUni2Used"
+                                    class="input-base w-full text-sm py-2" placeholder="0-500">
+                                <p class="text-[10px] text-stone-400 mt-1">每月上限 500 點，填寫已獲得點數以精算剩餘額度。</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">uniopen 會員連結 (踩點加碼)</label>
+                                <select v-model="uniData.optLinked" class="input-base w-full text-sm py-2">
+                                    <option value="yes">已連結</option>
+                                    <option value="no">未連結</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-stone-500 mb-1">本月踩點家數 (0-5+)</label>
+                                <select v-model.number="uniData.optSteps" class="input-base w-full text-sm py-2">
+                                    <option :value="0">0 家</option>
+                                    <option :value="1">1 家</option>
+                                    <option :value="2">2 家</option>
+                                    <option :value="3">3 家</option>
+                                    <option :value="4">4 家</option>
+                                    <option :value="5">5 家以上</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Promo Editor -->
+                        <div class="mt-4 pt-4 border-t border-stone-100">
+                            <button @click="uniShowEditor = !uniShowEditor"
+                                class="text-xs text-stone-400 underline hover:text-blue-600">
+                                {{ uniShowEditor ? '隱藏活動規則編輯器' : '顯示活動規則編輯器 (進階玩家)' }}
+                            </button>
+                            <div v-if="uniShowEditor" class="mt-2">
+                                <textarea v-model="uniPromoJson"
+                                    class="w-full h-48 font-mono text-xs bg-stone-900 text-green-400 p-4 rounded-xl focus:outline-none"
+                                    spellcheck="false"></textarea>
+                                <div class="flex gap-2 mt-2">
+                                    <button @click="resetUniPromos"
+                                        class="px-3 py-1 bg-stone-200 text-stone-600 rounded text-xs hover:bg-stone-300">恢復預設</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <!-- Points -->
+                    <div class="bg-white/80 rounded-lg p-3 shadow-sm">
+                        <p class="text-xs text-stone-500 uppercase font-bold mb-1">OPENPOINT 點數</p>
+                        <p class="text-2xl font-black text-blue-600 font-mono">{{ fmt(uniResult.points) }}</p>
+                        <p class="text-[10px] text-stone-400 mt-1 leading-tight">{{ uniResult.pointsNote }}</p>
+                    </div>
+                    <!-- Voucher -->
+                    <div class="bg-white/80 rounded-lg p-3 shadow-sm">
+                        <p class="text-xs text-stone-500 uppercase font-bold mb-1">家樂福折價券 (元)</p>
+                        <p class="text-2xl font-black text-emerald-600 font-mono">{{ fmt(uniResult.voucher) }}</p>
+                        <p class="text-[10px] text-stone-400 mt-1 leading-tight">{{ uniResult.voucherNote }}</p>
+                    </div>
+                </div>
+
+                <!-- Tag -->
+                <div class="flex items-start gap-2 mb-4">
+                    <span
+                        class="text-[10px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded flex-shrink-0 mt-0.5">適用</span>
+                    <p class="text-xs text-stone-600">{{ uniResult.activePromoTag }}</p>
+                </div>
+
+                <!-- Breakdown / Warnings -->
+                <div class="space-y-3 pt-3 border-t border-blue-200/50">
+                    <!-- Warnings -->
+                    <div v-if="uniResult.warns.length > 0"
+                        class="bg-orange-50 text-orange-800 text-xs p-3 rounded-lg border border-orange-100">
+                        <p v-for="(w, i) in uniResult.warns" :key="i" class="flex gap-1.5 mb-1 last:mb-0">
+                            <span>⚠️</span> <span>{{ w }}</span>
+                        </p>
+                    </div>
+                    <!-- Errors -->
+                    <div v-if="uniResult.errors.length > 0"
+                        class="bg-red-50 text-red-800 text-xs p-3 rounded-lg border border-red-100">
+                        <p v-for="(e, i) in uniResult.errors" :key="i" class="flex gap-1.5 mb-1 last:mb-0">
+                            <span>🚫</span> <span>{{ e }}</span>
+                        </p>
+                    </div>
+
+                    <!-- Details -->
+                    <details class="group">
+                        <summary
+                            class="flex items-center gap-2 cursor-pointer text-xs text-stone-500 hover:text-blue-600 font-bold select-none list-none">
+                            <span class="transition-transform group-open:rotate-90">▶</span>
+                            查看詳細計算過程
+                        </summary>
+                        <ul class="mt-2 space-y-1 pl-4 border-l-2 border-stone-200 text-[11px] text-stone-500">
+                            <li v-for="(line, i) in uniResult.breakdown" :key="i">{{ line }}</li>
+                            <li v-if="uniResult.breakdown.length === 0">無資料</li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+
+        </section>
+
         <footer class="text-center mt-12 text-stone-400 text-sm pb-8">
             © 2026 TaiCalc
         </footer>
@@ -168,7 +364,215 @@
                     return Math.round((feePercent.value / installments.value) * 12 * 1.9 * 10) / 10
                 })
 
-                return { amount, installments, feePercent, totalInterest, totalPayment, monthlyPayment, annualRate }
+                // Carrefour Uniopen Logic
+                // ==========================================
+
+                // Utils
+                const pad2 = (n) => String(n).padStart(2, '0')
+                const todayStr = () => {
+                    const d = new Date()
+                    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate())
+                }
+                const parseDateYMD = (ymd) => {
+                    const [y, m, d] = (ymd || "").split("-").map(Number)
+                    if (!y || !m || !d) return null
+                    return new Date(y, m - 1, d, 0, 0, 0, 0)
+                }
+                const inDateRange = (txYmd, startYmd, endYmd) => {
+                    const tx = parseDateYMD(txYmd)
+                    const st = parseDateYMD(startYmd)
+                    const en = parseDateYMD(endYmd)
+                    if (!tx || !st || !en) return false
+                    const txT = tx.getTime()
+                    return txT >= st.getTime() && txT <= en.getTime()
+                }
+                const inputClasses = "bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-stone-300 text-sm"
+                const fmt = (n) => n ? n.toLocaleString() : '0'
+
+                // Default Promos (Source of Truth)
+                const DEFAULT_PROMOS = {
+                    version: "2026-01-08-uni2-cap-500-style-taicalc",
+                    promos: [
+                        { id: "base_1pct", title: "一般消費 1% OPENPOINT", rewardType: "OPENPOINT", startDate: "2026-01-01", endDate: "2026-12-31", applies: { requiresUniopenCard: true }, calc: { kind: "rate_points", rate: 0.01 } },
+                        { id: "uni_group_2pct_cap500", title: "統一企業集團品牌加碼 2% (月上限 500 點)", rewardType: "OPENPOINT", startDate: "2026-01-01", endDate: "2026-06-30", applies: { requiresUniopenCard: true, requiresUniBrandTx: true }, calc: { kind: "rate_points", rate: 0.02, capMonthlyPoints: 500, capMonthlyKey: "uni2" } },
+                        { id: "cny_appliance_wave1_mass_4pct", title: "家電尾牙 第一波 (量販/家電) 4% 折價券", rewardType: "VOUCHER", startDate: "2025-12-26", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_mass"], productTypes: ["appliance"], minSpend: 3000, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } },
+                        { id: "cny_wave2_mass_4pct", title: "家電尾牙 第二波 (量販) 4% 折價券", rewardType: "VOUCHER", startDate: "2026-01-21", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_mass"], minSpend: 2500, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } },
+                        { id: "cny_wave2_super_4pct", title: "家電尾牙 第二波 (超市) 4% 折價券", rewardType: "VOUCHER", startDate: "2026-01-21", endDate: "2026-02-28", applies: { requiresUniopenCard: true, channels: ["store_super"], minSpend: 1000, voucherDailyOnce: true }, calc: { kind: "rate_twd", rate: 0.04, capPerHitTwd: 2000 } }
+                    ]
+                }
+
+                // State
+                const uniData = Vue.reactive({
+                    txDate: todayStr(),
+                    txAmount: 3000,
+                    txChannel: 'store_mass',
+                    txPay: 'uniopen_card_ok',
+                    txInstallment: 'no',
+                    txProductType: 'other',
+                    voucherDailyOk: 'unknown',
+                    optUniBrandTx: 'auto',
+                    optUni2Used: '',
+                    optLinked: 'yes',
+                    optSteps: 0
+                })
+                const uniShowAdvanced = ref(false)
+                const uniShowEditor = ref(false)
+                const uniPromoJson = ref(JSON.stringify(DEFAULT_PROMOS, null, 2))
+
+                const uniResult = Vue.reactive({
+                    points: 0,
+                    pointsNote: '—',
+                    voucher: 0,
+                    voucherNote: '—',
+                    activePromoTag: '—',
+                    warns: [],
+                    errors: [],
+                    breakdown: []
+                })
+
+                const resetUniPromos = () => { uniPromoJson.value = JSON.stringify(DEFAULT_PROMOS, null, 2) }
+
+                // Engine
+                const calculateUniRewards = () => {
+                    // Reset
+                    uniResult.points = 0
+                    uniResult.voucher = 0
+                    uniResult.warns = []
+                    uniResult.errors = []
+                    uniResult.breakdown = []
+                    const activeTitles = []
+
+                    // Parse Inputs
+                    const txDate = uniData.txDate || todayStr()
+                    const amount = Number(uniData.txAmount || 0)
+                    if (amount <= 0) uniResult.errors.push("請輸入大於 0 的金額")
+
+                    const uniopenCard = (uniData.txPay === "uniopen_card_ok")
+                    const installment = (uniData.txInstallment === "yes")
+
+                    if (uniData.voucherDailyOk === "unknown") uniResult.warns.push("注意：若今日已領過折價券，請記得將「當日領取狀況」改為已領取")
+                    if (installment) uniResult.warns.push("分期提醒：OPENPOINT 點數不適用分期，但折價券可能適用。")
+
+                    let uniBrandTx = false
+                    if (uniData.optUniBrandTx === "yes") uniBrandTx = true
+                    else if (uniData.optUniBrandTx === "no") uniBrandTx = false
+                    else uniBrandTx = (uniData.txChannel === "uni_group_other")
+
+                    let uni2UsedPoints = 0
+                    if (uniData.optUni2Used !== "" && !isNaN(Number(uniData.optUni2Used))) {
+                        uni2UsedPoints = Math.min(500, Math.max(0, Number(uniData.optUni2Used)))
+                    }
+
+                    // Parse Promos
+                    let promos = []
+                    try {
+                        const obj = JSON.parse(uniPromoJson.value)
+                        if (obj && Array.isArray(obj.promos)) promos = obj.promos
+                        else throw new Error("無效的 promos 陣列")
+                    } catch (e) {
+                        uniResult.errors.push("活動規則 JSON 格式錯誤: " + e.message)
+                        return
+                    }
+
+                    const tx = {
+                        txDate, amount, channel: uniData.txChannel, productType: uniData.txProductType,
+                        uniopenCard, installment, linked: uniData.optLinked, steps: uniData.optSteps,
+                        uniBrandTx, voucherDailyOk: uniData.voucherDailyOk, uni2UsedPoints
+                    }
+
+                    let points = 0
+                    const voucherCandidates = []
+
+                    // Scan Promos
+                    for (const p of promos) {
+                        if (!inDateRange(txDate, p.startDate, p.endDate)) continue
+
+                        // Check rules
+                        let applyOk = true
+                        let whyNot = ""
+
+                        const a = p.applies || {}
+                        if (tx.installment && p.rewardType === "OPENPOINT") { applyOk = false; whyNot = "分期不適用 (點數)" }
+                        else if (a.requiresUniopenCard && !tx.uniopenCard) { applyOk = false; whyNot = "非聯名卡" }
+                        else if (a.channels && !a.channels.includes(tx.channel)) { applyOk = false; whyNot = "通路不符" }
+                        else if (a.productTypes && !a.productTypes.includes(tx.productType)) { applyOk = false; whyNot = "商品類型不符" }
+                        else if (typeof a.minSpend === "number" && tx.amount < a.minSpend) { applyOk = false; whyNot = `未達門檻 $${a.minSpend}` }
+                        else if (a.voucherDailyOnce && p.rewardType === "VOUCHER" && tx.voucherDailyOk === "no") { applyOk = false; whyNot = "今日已領過" }
+                        else if (a.requiresUniBrandTx && !tx.uniBrandTx) { applyOk = false; whyNot = "非統一集團品牌" }
+
+                        if (!applyOk) {
+                            // Optionally log whyNot for debug? user usually doesn't see unless strictly needed.
+                            // Source code pushed breakdown log for installment exclusion
+                            if (tx.installment && p.rewardType === "OPENPOINT") {
+                                uniResult.breakdown.push(`[排除] ${p.title}: ${whyNot}`)
+                            }
+                            continue
+                        }
+
+                        // Rules Passed. Calculate.
+                        const c = p.calc || {}
+                        let rewardVal = 0
+                        let logLine = ""
+
+                        if (p.rewardType === "OPENPOINT" && c.kind === "rate_points") {
+                            const raw = Math.floor(tx.amount * c.rate)
+                            if (typeof c.capMonthlyPoints === "number") {
+                                const used = (c.capMonthlyKey === "uni2") ? tx.uni2UsedPoints : 0
+                                const remaining = Math.max(0, c.capMonthlyPoints - used)
+                                rewardVal = Math.min(raw, remaining)
+                                logLine = `[點數] ${p.title}: 原 ${raw} 點，上限剩 ${remaining}，得 ${rewardVal} 點`
+                            } else {
+                                rewardVal = raw
+                                logLine = `[點數] ${p.title}: ${rewardVal} 點`
+                            }
+                            points += rewardVal
+                            activeTitles.push(p.title)
+                            uniResult.breakdown.push(logLine)
+
+                        } else if (p.rewardType === "VOUCHER" && c.kind === "rate_twd") {
+                            let v = Math.round(tx.amount * c.rate)
+                            if (typeof c.capPerHitTwd === "number") v = Math.min(v, c.capPerHitTwd)
+                            voucherCandidates.push({ promo: p, amount: v })
+                            uniResult.breakdown.push(`[折價券候選] ${p.title}: $${v}`)
+                        }
+                    }
+
+                    // Best Voucher Logic
+                    let bestVoucher = null
+                    if (tx.voucherDailyOk === "no") {
+                        uniResult.voucherNote = "今日已領過 (每日一次)"
+                    } else if (voucherCandidates.length > 0) {
+                        bestVoucher = voucherCandidates.reduce((prev, curr) => (curr.amount > prev.amount) ? curr : prev)
+                        uniResult.voucher = bestVoucher.amount
+                        activeTitles.push(bestVoucher.promo.title)
+                        uniResult.voucherNote = `採用: ${bestVoucher.promo.title}`
+                        uniResult.breakdown.push(`[折價券擇優] 採用 ${bestVoucher.promo.title}: $${uniResult.voucher}`)
+                    } else {
+                        uniResult.voucherNote = "無符合條件"
+                    }
+
+                    uniResult.points = points
+                    uniResult.pointsNote = installment ? "分期不適用 (0點)" : (points > 0 ? "已加總符合活動" : "無符合活動")
+
+                    uniResult.activePromoTag = activeTitles.length > 0 ? activeTitles.slice(0, 2).join(" / ") + (activeTitles.length > 2 ? "..." : "") : "無"
+                }
+
+                // Global style injection for inputs
+                Vue.onMounted(() => {
+                    document.querySelectorAll('.input-base').forEach(el => el.className += ' ' + inputClasses)
+                })
+
+                // Watchers
+                Vue.watch(uniData, () => calculateUniRewards(), { deep: true })
+                Vue.watch(uniPromoJson, () => calculateUniRewards())
+
+                // Initial Run
+                calculateUniRewards()
+
+                return {
+                    amount, installments, feePercent, totalInterest, totalPayment, monthlyPayment, annualRate,
+                    uniData, uniResult, uniShowAdvanced, uniShowEditor, uniPromoJson, resetUniPromos, fmt
+                }
             }
         }).mount('#app')
     </script>
