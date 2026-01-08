@@ -68,9 +68,26 @@
 
         <main class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 space-y-6">
 
+            <!-- Mode Switcher -->
+            <div class="flex p-1 bg-stone-100 rounded-xl relative">
+                <div class="absolute inset-y-1 w-1/2 bg-white shadow-sm rounded-lg transition-all duration-300 ease-out"
+                    :class="calcMode === 'installment' ? 'left-1' : 'left-1/2 -ml-1'"></div>
+                <button @click="calcMode = 'installment'"
+                    class="relative w-1/2 py-2 text-sm font-bold transition-colors z-10"
+                    :class="calcMode === 'installment' ? 'text-stone-800' : 'text-stone-500 hover:text-stone-700'">
+                    分期試算
+                </button>
+                <button @click="calcMode = 'revolving'"
+                    class="relative w-1/2 py-2 text-sm font-bold transition-colors z-10"
+                    :class="calcMode === 'revolving' ? 'text-stone-800' : 'text-stone-500 hover:text-stone-700'">
+                    循環利息試算
+                </button>
+            </div>
+
             <div>
-                <label for="amount"
-                    class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">消費金額</label>
+                <label for="amount" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+                    {{ calcMode === 'installment' ? '消費金額' : '信用卡未繳餘額' }}
+                </label>
                 <div class="relative">
                     <span class="absolute left-4 top-3.5 text-stone-400 font-medium">$</span>
                     <input id="amount" type="number" v-model.number="amount"
@@ -78,62 +95,113 @@
                 </div>
             </div>
 
-            <div>
-                <span class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">分期期數</span>
-                <div class="grid grid-cols-5 gap-2">
-                    <button v-for="n in [3,6,12,18,24]" :key="n" @click="installments = n" :aria-label="'選擇' + n + '期'"
-                        :class="['py-2.5 rounded-xl text-sm font-bold transition-all border', 
-                        installments === n ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200' : 'bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100']">
-                        {{ n }}期
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <label for="feePercent"
-                    class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">總手續費率 (%)</label>
-                <div class="relative">
-                    <input id="feePercent" type="number" v-model.number="feePercent" step="0.1"
-                        class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                    <span class="absolute right-4 top-3.5 text-stone-400 text-sm font-medium">%</span>
-                </div>
-            </div>
-
-            <!-- 結果 -->
-            <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="text-center">
-                        <p class="text-stone-500 text-xs font-medium mb-1">每月應繳</p>
-                        <p class="text-2xl font-bold text-stone-800 font-mono tracking-tight">
-                            <span class="text-base text-stone-400 mr-1">$</span>{{ monthlyPayment }}
-                        </p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-stone-500 text-xs font-medium mb-1">多付利息</p>
-                        <p class="text-2xl font-bold text-rose-500 font-mono tracking-tight">
-                            <span class="text-base text-rose-300 mr-1">$</span>{{ totalInterest }}
-                        </p>
+            <!-- Installment Mode Inputs -->
+            <div v-if="calcMode === 'installment'" class="space-y-6">
+                <div>
+                    <span class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">分期期數</span>
+                    <div class="grid grid-cols-5 gap-2">
+                        <button v-for="n in [3,6,12,18,24]" :key="n" @click="installments = n"
+                            :aria-label="'選擇' + n + '期'"
+                            :class="['py-2.5 rounded-xl text-sm font-bold transition-all border', 
+                            installments === n ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200' : 'bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100']">
+                            {{ n }}期
+                        </button>
                     </div>
                 </div>
 
-                <div class="pt-5 border-t border-stone-200 flex flex-col items-center gap-2">
-                    <p class="text-stone-600 text-sm font-medium">
-                        總共付款 <span class="text-stone-900 font-bold font-mono text-lg">${{ totalPayment }}</span>
+                <div>
+                    <label for="feePercent"
+                        class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">總手續費率
+                        (%)</label>
+                    <div class="relative">
+                        <input id="feePercent" type="number" v-model.number="feePercent" step="0.1"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                        <span class="absolute right-4 top-3.5 text-stone-400 text-sm font-medium">%</span>
+                    </div>
+                </div>
+
+                <!-- 結果 (Installment) -->
+                <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center">
+                            <p class="text-stone-500 text-xs font-medium mb-1">每月應繳</p>
+                            <p class="text-2xl font-bold text-stone-800 font-mono tracking-tight">
+                                <span class="text-base text-stone-400 mr-1">$</span>{{ monthlyPayment }}
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-stone-500 text-xs font-medium mb-1">多付利息</p>
+                            <p class="text-2xl font-bold text-rose-500 font-mono tracking-tight">
+                                <span class="text-base text-rose-300 mr-1">$</span>{{ totalInterest }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-5 border-t border-stone-200 flex flex-col items-center gap-2">
+                        <p class="text-stone-600 text-sm font-medium">
+                            總共付款 <span class="text-stone-900 font-bold font-mono text-lg">${{ totalPayment }}</span>
+                        </p>
+                        <div
+                            class="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-100">
+                            真實年利率 (IRR) 約 <span class="text-lg ml-1">{{ annualRate }}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="totalInterest > 0"
+                    class="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
+                    <span class="text-lg">💡</span>
+                    <p class="text-amber-800 text-xs leading-relaxed font-medium">
+                        注意：這 <span class="font-bold">${{ totalInterest.toLocaleString() }}</span>
+                        是隱藏成本。很多標榜「0利率」的分期，其實透過「手續費」將利息灌在總價中，請務必精算。
                     </p>
-                    <div
-                        class="px-4 py-1.5 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-100">
-                        真實年利率 (IRR) 約 <span class="text-lg ml-1">{{ annualRate }}%</span>
-                    </div>
                 </div>
             </div>
 
-            <div v-if="totalInterest > 0"
-                class="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
-                <span class="text-lg">💡</span>
-                <p class="text-amber-800 text-xs leading-relaxed font-medium">
-                    注意：這 <span class="font-bold">${{ totalInterest.toLocaleString() }}</span>
-                    是隱藏成本。很多標榜「0利率」的分期，其實透過「手續費」將利息灌在總價中，請務必精算。
-                </p>
+            <!-- Revolving Mode Inputs -->
+            <div v-else class="space-y-6">
+                <div>
+                    <label for="revolvingRate"
+                        class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">循環年利率
+                        (%)</label>
+                    <div class="relative">
+                        <input id="revolvingRate" type="number" v-model.number="revolvingRate" step="0.1" max="16"
+                            placeholder="15"
+                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all">
+                        <span class="absolute right-4 top-3.5 text-stone-400 text-sm font-medium">%</span>
+                    </div>
+                    <p class="text-[10px] text-stone-400 mt-1">法規上限為 15%，通常介於 5%~15% 之間。</p>
+                </div>
+
+                <!-- 結果 (Revolving) -->
+                <div class="bg-rose-50 rounded-2xl p-6 border border-rose-100">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center">
+                            <p class="text-stone-500 text-xs font-medium mb-1">每日產生利息</p>
+                            <p class="text-2xl font-bold text-stone-800 font-mono tracking-tight">
+                                <span class="text-base text-stone-400 mr-1">$</span>{{ dailyInterest }}
+                            </p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-stone-500 text-xs font-medium mb-1">每月累積利息 (預估)</p>
+                            <p class="text-2xl font-bold text-rose-600 font-mono tracking-tight">
+                                <span class="text-base text-rose-400 mr-1">$</span>{{ monthlyRevolvingInterest }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-5 border-t border-rose-200/50 flex flex-col items-center gap-2">
+                        <div class="flex items-center gap-2 text-rose-800 text-sm font-bold">
+                            <span>⚠️ 這是高利貸等級的利息</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3 bg-stone-800 text-white border border-stone-700 rounded-xl p-4">
+                    <span class="text-lg">💸</span>
+                    <p class="text-stone-200 text-xs leading-relaxed font-medium">
+                        循環利息是以<span class="text-yellow-400 font-bold">「日」</span>計算。若只繳最低應繳金額，剩餘本金會每日滾息，非常可怕。建議優先償還此類債務。
+                    </p>
+                </div>
             </div>
 
         </main>
@@ -330,25 +398,56 @@
         createApp({
             setup() {
                 const amount = ref(30000)
+
+                // Mode: 'installment' or 'revolving'
+                const calcMode = ref('installment')
+
+                // Installment State
                 const installments = ref(12)
                 const feePercent = ref(4.5)
 
-                const totalInterest = computed(() => Math.round((amount.value || 0) * (feePercent.value / 100)))
-                const totalPayment = computed(() => (amount.value || 0) + totalInterest.value)
-                const monthlyPayment = computed(() => Math.round(totalPayment.value / installments.value).toLocaleString())
+                // Revolving State
+                const revolvingRate = ref(15)
 
-                // 簡單估算年化利率：(總手續費率 / 期數) * 12 * 2 (約略值，IRR會更精確但這裡用簡單公式逼近)
-                // 精確公式：總利息 / 貸款本金 / (期數+1) * 24 * 100? 
-                // 這裡用簡易平攤法：(費率/期數)*12 * 1.9 (約略係數)?
-                // 實際上銀行公會公式較複雜。這裡維持原有邏輯：(費率/期數)*12 * 1.9 (約略係數)?
-                // 原代碼：(feePercent / installments) * 12 * 2
-                const annualRate = computed(() => {
-                    if (!installments.value || !feePercent.value) return 0
-                    // 銀行分期真實年利率通常約為 (總手續費率 / 期數) * 12 * 1.8~1.9
-                    // 這裡先延用原本的 * 2 作為警示 (稍微高估一點沒關係，警示效果)
-                    return Math.round((feePercent.value / installments.value) * 12 * 1.9 * 10) / 10
+                // Installment Computed
+                const totalInterest = computed(() => {
+                    if (calcMode.value !== 'installment') return 0
+                    return Math.round((amount.value || 0) * (feePercent.value / 100))
+                })
+                const totalPayment = computed(() => {
+                    if (calcMode.value !== 'installment') return 0
+                    return (amount.value || 0) + totalInterest.value
+                })
+                const monthlyPayment = computed(() => {
+                    if (calcMode.value !== 'installment') return 0
+                    return Math.round(totalPayment.value / installments.value)
                 })
 
+                // Revolving Computed
+                const dailyInterest = computed(() => {
+                    if (calcMode.value !== 'revolving') return 0
+                    // Principle * Rate% / 365
+                    const p = amount.value || 0
+                    const r = revolvingRate.value || 0
+                    return Math.round(p * (r / 100) / 365)
+                })
+                const monthlyRevolvingInterest = computed(() => {
+                    if (calcMode.value !== 'revolving') return 0
+                    // Estimate 30 days
+                    return dailyInterest.value * 30
+                })
+
+                // IRR for Installment... stays same
+                // 簡單估算年化利率：(總手續費率 / 期數) * 12 * 2 (約略值，IRR會更精確但這裡用簡單公式逼近)
+                // 這裡用簡易平攤法：(費率/期數)*12 * 1.9 (約略係數)?
+                const annualRate = computed(() => {
+                    if (calcMode.value !== 'installment') return 0
+                    if (!installments.value || !feePercent.value) return 0
+                    const r = (feePercent.value / installments.value) * 12 * 1.9
+                    return Math.min(Math.round(r * 10) / 10, 100)
+                })
+
+                /* --- Carrefour Uniopen Logic --- */
                 // Carrefour Uniopen Logic
                 // ==========================================
 
@@ -572,7 +671,9 @@
                 calculateUniRewards()
 
                 return {
-                    amount, installments, feePercent, totalInterest, totalPayment, monthlyPayment, annualRate,
+                    amount, calcMode, installments, feePercent, revolvingRate,
+                    totalInterest, totalPayment, monthlyPayment, annualRate,
+                    dailyInterest, monthlyRevolvingInterest,
                     uniData, uniResult, uniShowAdvanced, uniShowEditor, uniPromoJson, resetUniPromos, fmt
                 }
             }
@@ -581,3 +682,4 @@
 </body>
 
 </html>
+```
