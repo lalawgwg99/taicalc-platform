@@ -307,8 +307,28 @@
             </section>
 
             <!-- Market Data Placeholder (Optional) -->
+            <!-- Market Data Toggle -->
+            <div class="text-center mb-6">
+                <button @click="showMarketData = !showMarketData"
+                    class="text-xs text-stone-400 hover:text-stone-600 flex items-center justify-center gap-1 mx-auto transition-colors">
+                    <span v-if="!showMarketData">📈</span>
+                    <span>{{ showMarketData ? '隱藏即時行情' : '查看即時銅價與匯率' }}</span>
+                    <svg v-if="!showMarketData" xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m18 15-6-6-6 6" />
+                    </svg>
+                </button>
+            </div>
+
             <!-- Market Data Widget (TradingView) -->
-            <div class="card bg-white rounded-2xl p-0 overflow-hidden shadow-sm border border-stone-200 mb-6 relative"
+            <div v-if="showMarketData"
+                class="card bg-white rounded-2xl p-0 overflow-hidden shadow-sm border border-stone-200 mb-6 relative animate-fade-in-down"
                 style="height: 78px;">
                 <div class="absolute inset-0 flex items-center justify-center text-xs text-stone-400 z-0 bg-stone-50">
                     載入即時行情中...<br>(若無顯示，請確認網路或關閉擋廣告軟體)
@@ -371,6 +391,7 @@
                 const gasPrice = ref(2)
 
                 const copyStatus = ref('idle')
+                const showMarketData = ref(false)
 
                 // Constants
                 const WASTE_RATE = 0.10
@@ -509,7 +530,7 @@ ${gasAdded.value ? `- 冷媒追加 (${gasExtraG.value}g): $${gasCost.value}` : '
                     boxLen, priceKit, priceSig, pricePwr, priceInsu,
                     gasLimit, gasRate, gasPrice,
                     displayTotalLen, breakdown, gasAdded, gasExtraG, gasCost, totalCost,
-                    resetDefaults, copyBreakdown, copyStatus
+                    resetDefaults, copyBreakdown, copyStatus, showMarketData
                 }
             }
         }).mount('#app')
