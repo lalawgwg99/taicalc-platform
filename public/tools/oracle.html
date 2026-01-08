@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socrates Oracle v3.2 (I Ching Decision Support)｜TaiCalc</title>
+    <title>Socrates Oracle v3.2 (易經決策)｜TaiCalc</title>
     <meta name="description" content="基於易經 64 卦的決策支援系統。把不確定性轉化為結構化思考框架。">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -42,6 +42,18 @@
         .oracle-pop {
             opacity: 0;
             animation: oraclePop 420ms ease-out forwards;
+        }
+
+        .delay-600 {
+            animation-delay: 600ms;
+        }
+
+        .delay-800 {
+            animation-delay: 800ms;
+        }
+
+        .delay-1000 {
+            animation-delay: 1000ms;
         }
 
         @keyframes scanline {
@@ -256,7 +268,7 @@
                     <panel title="說明 / 使用方式" icon="info">
                         <div class="space-y-4 text-xs leading-relaxed text-neutral-400 p-4">
                             <div>
-                                <div class="text-neutral-200 font-mono tracking-widest">SOCRATES 易經決策支援系統</div>
+                                <div class="text-neutral-200 font-mono tracking-widest">SOCRATES 易經決策系統</div>
                                 <div class="text-neutral-500 mt-1">
                                     這不是算命，而是一套把複雜情境壓縮成 64 種原型的「思考框架」。
                                 </div>
@@ -314,8 +326,8 @@
                         </div>
 
                         <!-- Arrow -->
-                        <div v-if="result.hasChange" class="flex flex-col justify-center text-neutral-700 info-pop"
-                            style="animation-delay: 600ms;">
+                        <div v-if="result.hasChange"
+                            class="flex flex-col justify-center text-neutral-700 info-pop delay-600">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -325,7 +337,7 @@
                         </div>
 
                         <!-- Future -->
-                        <div v-if="result.hasChange" class="text-center info-pop" style="animation-delay: 800ms;">
+                        <div v-if="result.hasChange" class="text-center info-pop delay-800">
                             <div class="text-[10px] font-mono text-neutral-500 mb-2 tracking-widest uppercase">Trend
                             </div>
                             <hexagram-visual :bits="result.futureBinary.split('')" :animate="false"></hexagram-visual>
@@ -336,7 +348,7 @@
                 </div>
 
                 <!-- Structured Analysis -->
-                <div v-if="structured" class="space-y-6 info-pop" style="animation-delay: 1000ms;">
+                <div v-if="structured" class="space-y-6 info-pop delay-1000">
 
                     <!-- Narrative -->
                     <div class="p-4 border-l-2 border-cyan-500 bg-cyan-950/10">
