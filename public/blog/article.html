@@ -8,6 +8,13 @@
     <meta name="description" content="TaiCalc 財經專欄文章">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 
+    <!-- Open Graph Default -->
+    <meta property="og:title" content="TaiCalc 專欄">
+    <meta property="og:description" content="TaiCalc 財經專欄文章">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -99,6 +106,7 @@
             </button>
             <div class="flex flex-col gap-8 text-xl font-medium text-stone-800 items-center">
                 <a href="../index.html" class="hover:text-emerald-600 transition-colors">首頁</a>
+                <a href="../dashboard.html" class="text-emerald-600 font-bold">個人儀表板</a>
                 <a href="../categories/finance.html" class="hover:text-emerald-600 transition-colors">退休理財</a>
                 <a href="../categories/life.html" class="hover:text-emerald-600 transition-colors">生活計算</a>
                 <a href="index.html" class="text-emerald-600 font-bold">專欄文章</a>
@@ -165,7 +173,34 @@
                             class="flex items-center gap-2 text-stone-500 hover:text-stone-800 font-medium transition-colors">
                             ← 返回文章列表
                         </a>
-                        <!-- Share Buttons Placeholders -->
+                        <!-- Share Buttons -->
+                        <div class="flex gap-3">
+                            <button @click="shareToLine" title="分享到 Line"
+                                class="w-10 h-10 flex items-center justify-center rounded-full bg-[#06C755] text-white hover:opacity-90 transition-opacity">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 0c4.418 0 8 3.29 8 7.353 0 2.062-.897 4.027-2.522 5.436.19 1.139.73 3.66 2.083 4.88.163.149.034.428-.179.414-1.393-.09-3.235-.49-4.821-1.67C9.697 16.793 8.868 17 8 17c-4.418 0-8-3.29-8-7.353C0 4.14 3.582 0 8 0z" />
+                                </svg>
+                            </button>
+                            <button @click="shareToFB" title="分享到 Facebook"
+                                class="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] text-white hover:opacity-90 transition-opacity">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                </svg>
+                            </button>
+                            <button @click="copyLink" title="複製連結"
+                                class="w-10 h-10 flex items-center justify-center rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </article>
@@ -193,6 +228,65 @@
                     return urlParams.get(name);
                 }
 
+                const setupSEO = (data) => {
+                    const currentUrl = window.location.href;
+                    // Update Title
+                    document.title = data.title + ' | TaiCalc 專欄';
+
+                    // Update Meta Tags
+                    const setMeta = (property, content) => {
+                        let element = document.querySelector(`meta[property="${property}"]`);
+                        if (!element) {
+                            element = document.createElement('meta');
+                            element.setAttribute('property', property);
+                            document.head.appendChild(element);
+                        }
+                        element.setAttribute('content', content);
+                    };
+
+                    setMeta('og:title', data.title);
+                    setMeta('og:description', data.excerpt);
+                    setMeta('og:url', currentUrl);
+
+                    if (data.coverImage) {
+                        // Convert relative path to absolute if needed, assuming root is domain
+                        const fullImgUrl = window.location.origin + data.coverImage;
+                        setMeta('og:image', fullImgUrl);
+                    }
+
+                    // Description
+                    const metaDesc = document.querySelector('meta[name="description"]');
+                    if (metaDesc) metaDesc.setAttribute('content', data.excerpt);
+
+                    // Canonical
+                    let canonical = document.querySelector('link[rel="canonical"]');
+                    if (!canonical) {
+                        canonical = document.createElement('link');
+                        canonical.setAttribute('rel', 'canonical');
+                        document.head.appendChild(canonical);
+                    }
+                    // Clean URL without extra query params if possible, but for now use current
+                    canonical.setAttribute('href', currentUrl.split('&')[0]);
+                }
+
+                // Share Actions
+                const shareToLine = () => {
+                    window.open(`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(window.location.href)}`, '_blank');
+                }
+
+                const shareToFB = () => {
+                    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
+                }
+
+                const copyLink = async () => {
+                    try {
+                        await navigator.clipboard.writeText(window.location.href);
+                        alert('連結已複製！');
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                    }
+                }
+
                 onMounted(async () => {
                     const id = getQueryParam('id')
                     if (!id) {
@@ -206,12 +300,8 @@
                             const articles = await res.json()
                             article.value = articles.find(a => a.id === id)
 
-                            // Update Title
                             if (article.value) {
-                                document.title = article.value.title + ' | TaiCalc 專欄'
-                                // Set meta description if possible
-                                const metaDesc = document.querySelector('meta[name="description"]')
-                                if (metaDesc) metaDesc.setAttribute('content', article.value.excerpt)
+                                setupSEO(article.value);
                             }
                         }
                     } catch (e) {
@@ -222,7 +312,7 @@
                 })
 
                 return {
-                    article, loading
+                    article, loading, shareToLine, shareToFB, copyLink
                 }
             }
         }).mount('#app')
