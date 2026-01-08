@@ -186,130 +186,132 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Coffee Simulator -->
-            <div
-                class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-6 relative overflow-hidden">
-                <div class="relative z-10">
-                    <div class="flex items-start justify-between mb-2">
-                        <h3 class="font-bold text-amber-900">拿鐵因子模擬</h3>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" v-model="coffeeMode" class="sr-only peer">
-                            <div
-                                class="w-11 h-6 bg-amber-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600">
-                            </div>
-                        </label>
+
+                <!-- Coffee Simulator -->
+                <div
+                    class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-6 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-bold text-amber-900">拿鐵因子模擬</h3>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" v-model="coffeeMode" class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-amber-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600">
+                                </div>
+                            </label>
+                        </div>
+                        <p class="text-sm text-amber-800/80 mb-4">
+                            每天少喝一杯拿鐵 ($150)，能提早多久退休？
+                        </p>
+
+                        <div v-if="coffeeMode" class="bg-white/60 rounded-lg p-3 text-center animate-fade-in-up">
+                            <p class="text-xs text-amber-800 mb-1">每月多存 $4,500，複利效果...</p>
+                            <p class="text-xl font-bold text-amber-600">提早 {{ coffeeSavedYears }} 年！</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-amber-800/80 mb-4">
-                        每天少喝一杯拿鐵 ($150)，能提早多久退休？
-                    </p>
+                    <!-- Decoration -->
+                    <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 pointer-events-none">☕</div>
+                </div>
 
-                    <div v-if="coffeeMode" class="bg-white/60 rounded-lg p-3 text-center animate-fade-in-up">
-                        <p class="text-xs text-amber-800 mb-1">每月多存 $4,500，複利效果...</p>
-                        <p class="text-xl font-bold text-amber-600">提早 {{ coffeeSavedYears }} 年！</p>
+            </div>
+
+            <!-- Result Section -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- Main KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Target Block -->
+                    <div class="bg-stone-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="20" height="14" x="2" y="5" rx="2" />
+                                <line x1="2" x2="22" y1="10" y2="10" />
+                            </svg>
+                        </div>
+                        <p class="text-stone-400 text-sm font-medium mb-1 uppercase tracking-wider">FIRE 目標資產</p>
+                        <p class="text-3xl sm:text-4xl font-bold font-mono text-emerald-400 mb-4">
+                            ${{ fmt(fireNumber) }}
+                        </p>
+                        <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden">
+                            <div class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full transition-all duration-1000"
+                                :style="{ width: progressPercent + '%' }"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-stone-500">
+                            <span>目前: ${{ fmt(currentNetWorth || 0) }}</span>
+                            <span>{{ progressPercent }}%</span>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Block -->
+                    <div
+                        class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden">
+                        <div v-if="yearsToFreedom > 0 && yearsToFreedom < 100">
+                            <p class="text-stone-500 text-sm font-medium mb-2">距離財務自由還有</p>
+                            <p class="text-5xl font-bold text-stone-800 font-mono tracking-tight leading-none mb-2">
+                                {{ yearsToFreedom }} <span class="text-xl text-stone-400 font-sans font-normal">年</span>
+                            </p>
+                            <p
+                                class="text-sm text-emerald-600 font-medium bg-emerald-50 px-3 py-1 rounded-full inline-block">
+                                {{ currentAge + yearsToFreedom }} 歲達成
+                            </p>
+                        </div>
+                        <div v-else-if="yearsToFreedom <= 0" class="flex flex-col items-center">
+                            <span class="text-5xl mb-2">🎉</span>
+                            <p class="text-xl font-bold text-stone-800">恭喜！您已達成財務自由</p>
+                            <p class="text-sm text-stone-500 mt-1">您的資產 4% 已足以覆蓋開銷。</p>
+                        </div>
+                        <div v-else>
+                            <span class="text-4xl mb-2">🐢</span>
+                            <p class="text-stone-500">路途遙遠，請增加儲蓄或提高報酬率。</p>
+                        </div>
                     </div>
                 </div>
-                <!-- Decoration -->
-                <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 pointer-events-none">☕</div>
-            </div>
 
-    </div>
-
-    <!-- Result Section -->
-    <div class="lg:col-span-8 space-y-6">
-
-        <!-- Main KPIs -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Target Block -->
-            <div class="bg-stone-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-                <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="20" height="14" x="2" y="5" rx="2" />
-                        <line x1="2" x2="22" y1="10" y2="10" />
-                    </svg>
+                <!-- Chart -->
+                <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
+                    <h3 class="font-bold text-stone-800 mb-6 flex items-center justify-between">
+                        資產成長預測
+                        <span class="text-xs font-normal text-stone-400 bg-stone-100 px-2 py-1 rounded">考慮複利</span>
+                    </h3>
+                    <div class="w-full h-64 md:h-80 relative">
+                        <canvas ref="fireChart"></canvas>
+                    </div>
                 </div>
-                <p class="text-stone-400 text-sm font-medium mb-1 uppercase tracking-wider">FIRE 目標資產</p>
-                <p class="text-3xl sm:text-4xl font-bold font-mono text-emerald-400 mb-4">
-                    ${{ fmt(fireNumber) }}
-                </p>
-                <div class="w-full bg-stone-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full transition-all duration-1000"
-                        :style="{ width: progressPercent + '%' }"></div>
-                </div>
-                <div class="flex justify-between mt-2 text-xs text-stone-500">
-                    <span>目前: ${{ fmt(currentNetWorth || 0) }}</span>
-                    <span>{{ progressPercent }}%</span>
-                </div>
-            </div>
 
-            <!-- Countdown Block -->
-            <div
-                class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden">
-                <div v-if="yearsToFreedom > 0 && yearsToFreedom < 100">
-                    <p class="text-stone-500 text-sm font-medium mb-2">距離財務自由還有</p>
-                    <p class="text-5xl font-bold text-stone-800 font-mono tracking-tight leading-none mb-2">
-                        {{ yearsToFreedom }} <span class="text-xl text-stone-400 font-sans font-normal">年</span>
-                    </p>
-                    <p class="text-sm text-emerald-600 font-medium bg-emerald-50 px-3 py-1 rounded-full inline-block">
-                        {{ currentAge + yearsToFreedom }} 歲達成
-                    </p>
+                <!-- Analysis Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-100">
+                        <p class="text-xs text-stone-500 mb-1">不工作月領</p>
+                        <p class="text-xl font-bold text-stone-700 font-mono">${{ fmt(Math.floor(currentNetWorth * 0.04
+                            / 12)) }}</p>
+                        <p class="text-[10px] text-stone-400">目前資產產生之被動收入</p>
+                    </div>
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-100">
+                        <p class="text-xs text-stone-500 mb-1">主要動力</p>
+                        <p class="text-lg font-bold text-stone-700">
+                            {{ monthlySavings > monthlyExpense ? '儲蓄力強 🚀' : '複利效應 📈' }}
+                        </p>
+                        <p class="text-[10px] text-stone-400">加速因子</p>
+                    </div>
+                    <div class="col-span-2 md:col-span-1 bg-stone-50 rounded-xl p-4 border border-stone-100">
+                        <p class="text-xs text-stone-500 mb-1">致富關鍵</p>
+                        <p class="text-sm text-stone-600 leading-snug">
+                            每多存 1 萬元，可讓退休提早
+                            <span class="font-bold text-emerald-600">{{ saveMoreImpact }}</span> 年
+                        </p>
+                    </div>
                 </div>
-                <div v-else-if="yearsToFreedom <= 0" class="flex flex-col items-center">
-                    <span class="text-5xl mb-2">🎉</span>
-                    <p class="text-xl font-bold text-stone-800">恭喜！您已達成財務自由</p>
-                    <p class="text-sm text-stone-500 mt-1">您的資產 4% 已足以覆蓋開銷。</p>
-                </div>
-                <div v-else>
-                    <span class="text-4xl mb-2">🐢</span>
-                    <p class="text-stone-500">路途遙遠，請增加儲蓄或提高報酬率。</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- Chart -->
-        <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
-            <h3 class="font-bold text-stone-800 mb-6 flex items-center justify-between">
-                資產成長預測
-                <span class="text-xs font-normal text-stone-400 bg-stone-100 px-2 py-1 rounded">考慮複利</span>
-            </h3>
-            <div class="w-full h-64 md:h-80 relative">
-                <canvas ref="fireChart"></canvas>
             </div>
-        </div>
+        </main>
 
-        <!-- Analysis Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="bg-stone-50 rounded-xl p-4 border border-stone-100">
-                <p class="text-xs text-stone-500 mb-1">不工作月領</p>
-                <p class="text-xl font-bold text-stone-700 font-mono">${{ fmt(Math.floor(currentNetWorth * 0.04
-                    / 12)) }}</p>
-                <p class="text-[10px] text-stone-400">目前資產產生之被動收入</p>
-            </div>
-            <div class="bg-stone-50 rounded-xl p-4 border border-stone-100">
-                <p class="text-xs text-stone-500 mb-1">主要動力</p>
-                <p class="text-lg font-bold text-stone-700">
-                    {{ monthlySavings > monthlyExpense ? '儲蓄力強 🚀' : '複利效應 📈' }}
-                </p>
-                <p class="text-[10px] text-stone-400">加速因子</p>
-            </div>
-            <div class="col-span-2 md:col-span-1 bg-stone-50 rounded-xl p-4 border border-stone-100">
-                <p class="text-xs text-stone-500 mb-1">致富關鍵</p>
-                <p class="text-sm text-stone-600 leading-snug">
-                    每多存 1 萬元，可讓退休提早
-                    <span class="font-bold text-emerald-600">{{ saveMoreImpact }}</span> 年
-                </p>
-            </div>
-        </div>
-
-    </div>
-    </main>
-
-    <footer class="mt-12 text-center text-stone-400 text-sm pb-8 border-t border-stone-200 pt-8">
-        <p class="mb-2"> TaiCalc </p>
-        <p class="text-xs">投資一定有風險，FIRE 計算僅供人生規劃參考。</p>
-    </footer>
+        <footer class="mt-12 text-center text-stone-400 text-sm pb-8 border-t border-stone-200 pt-8">
+            <p class="mb-2"> TaiCalc </p>
+            <p class="text-xs">投資一定有風險，FIRE 計算僅供人生規劃參考。</p>
+        </footer>
 
     </div>
 
