@@ -167,21 +167,14 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">通路</label>
-                        <select v-model="uniData.txChannel" class="input-base w-full">
-                            <option value="store_mass">家樂福量販店（實體）</option>
-                            <option value="store_super">家樂福超市店（實體）</option>
-                            <option value="online_ec">家樂福線上購物</option>
-                            <option value="online_hsd">家速配</option>
-                            <option value="uni_group_other">統一集團品牌商店（非家樂福）</option>
-                        </select>
+                        <div class="input-base w-full bg-stone-100 text-stone-500 cursor-not-allowed">家樂福量販店 (實體)</div>
+                        <!-- Hidden input to maintain model if needed, but since we init in JS, it's fine. Logic uses model. -->
                     </div>
                     <div>
                         <label
                             class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">支付方式</label>
-                        <select v-model="uniData.txPay" class="input-base w-full">
-                            <option value="uniopen_card_ok">uniopen 聯名卡 (含綁定支付)</option>
-                            <option value="not_eligible">其他支付方式</option>
-                        </select>
+                        <div class="input-base w-full bg-stone-100 text-stone-500 cursor-not-allowed">UNIopen 聯名卡
+                            (含綁定支付)</div>
                     </div>
                     <div>
                         <label
