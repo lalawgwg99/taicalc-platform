@@ -154,10 +154,12 @@
             <!-- Inputs -->
             <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="min-w-0">
+                    <div class="min-w-0 w-full">
                         <label
                             class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">消費日期</label>
-                        <input type="date" v-model="uniData.txDate" class="input-base w-full max-w-full">
+                        <input type="date" v-model="uniData.txDate"
+                            class="input-base block w-full appearance-none min-w-0"
+                            style="width: 100%; box-sizing: border-box;">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">金額
