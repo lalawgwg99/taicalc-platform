@@ -1,5 +1,43 @@
 [
     {
+        "id": "20260108-mortgage-grace-period-storm",
+        "title": "【新青安風暴】5 年寬限期到了繳不出房貸？首購族必看的「以房養老」與轉貸退路",
+        "slug": "new-green-housing-grace-period-crisis",
+        "excerpt": "新青安房貸的 5 年寬限期雖然誘人，但當「甜頭」結束，月付金可能瞬間暴增 2.5 倍！本文試算給你看，並解析「轉貸」、「寬限期展延」的可行性，以及為什麼你不能輕易「以房養房」。",
+        "category": "房產與貸款",
+        "tags": [
+            "新青安",
+            "房貸",
+            "寬限期",
+            "首購族",
+            "轉貸",
+            "以房養老",
+            "房貸計算機"
+        ],
+        "author": "TaiCalc 編輯部",
+        "date": "2026-01-08",
+        "coverImage": "../images/articles/mortgage-storm-placeholder.png",
+        "content": "<p>2026 年，許多首批申請「新青安房貸」的年輕人，即將面臨寬限期結束的震撼教育。當初為了輕鬆上車，許多人選擇了長達 5 年的「只繳息不還本」。</p><p>但你是否算過，當第 61 個月來臨時，你的月付金會發生什麼事？</p><h2>震撼試算：月付金暴增 2.6 倍的真相</h2><p>以貸款 <strong>1,000 萬元、40 年期、利率 1.775%</strong> 為例：</p><ul class=\"list-disc pl-5 space-y-2\"><li><strong>前 5 年 (寬限期)</strong>：每月僅需繳利息約 <strong>14,792 元</strong>。</li><li><strong>第 6 年起 (本利攤還)</strong>：每月需繳本金+利息約 <strong>38,500 元</strong>。</li></ul><p class=\"bg-red-50 text-red-700 p-4 rounded-lg my-4 font-bold\">警告：你的支出將瞬間暴增近 24,000 元！如果不幸遇到升息，壓力會更沉重。</p><h2>救命三招：繳不出來怎麼辦？</h2><p>許多年輕人問：「能不能用『以房養老』來解套？」</p><p><strong>❌ 錯誤觀念修正</strong>：傳統的「以房養老」是針對 60 歲以上長輩的逆向抵押貸款。年輕人想問的應該是<strong>「以房養房」 (出租還貸)</strong>。但請注意，新青安嚴格規定<strong>「必須自住」</strong>，若被抓到出租，將面臨利率調升、追討利息補貼的懲罰。</p><p>真正的退路有以下三條：</p><h3>1. 轉貸 (Refinance)</h3><p>將房貸搬到另一家銀行，爭取新的寬限期或更長的年限。</p><ul class=\"list-disc pl-5 space-y-2\"><li><strong>優點</strong>：有機會重新獲得 1~3 年寬限期。</li><li><strong>缺點</strong>：需支付轉貸規費、代書費 (約 1.5~2 萬元)，且新青安的優惠利率會消失 (目前地板價將回升)。</li></ul><h3>2. 向原銀行協商 (展延)</h3><p>若真的有困難，主動向銀行申請延長寬限期或還款期限。</p><ul class=\"list-disc pl-5 space-y-2\"><li><strong>注意</strong>：這會影響信用評分，且銀行不一定同意，通常需要證明你有「不可歸責」的還款困難。</li></ul><h3>3. 壯士斷腕：出售</h3><p>如果房價有漲，出售或許是最後一條路。撐過 5 年剛好過了房地合一稅 45% 的重稅期 (持有 5~10 年稅率為 20%)。</p><h2>結語：現在就拿出計算機</h2><p>不要等到收到帳單才嚇一跳。現在就打開 <a href='../tools/mortgage-calculator.html' class='text-emerald-600 underline font-bold'>房貸計算機</a>，輸入你的貸款條件，切換「有無寬限期」，看看你的未來月付金會是多少。提早儲蓄，才是最安全的避風港。</p>"
+    },
+    {
+        "id": "20260108-electricity-time-of-use",
+        "title": "【電費精算】台電「時間電價」真的省嗎？洗衣服選半夜到底能省多少？實測數據大公開",
+        "slug": "electricity-time-of-use-analysis",
+        "excerpt": "電價調漲後，許多人聽說「半夜洗衣服」可以省大錢，紛紛搶著申請台電的時間電價。但這真的適合你嗎？本文實測分析，告訴你如果有「這兩種家電」才值得辦。",
+        "category": "生活計算",
+        "tags": [
+            "電費",
+            "時間電價",
+            "省電",
+            "台電",
+            "生活理財"
+        ],
+        "author": "TaiCalc 編輯部",
+        "date": "2026-01-08",
+        "coverImage": "../images/articles/electricity-time-of-use-placeholder.png",
+        "content": "<p>最近網路上瘋傳：「申請時間電價，半夜洗衣服、開冷氣超便宜！」讓許多家庭主婦/夫躍躍欲試。</p><p>但你知道嗎？根據台電統計，申請時間電價的用戶中，其實有不佔少數的人<strong>「反而變貴了」</strong>！為什麼？因為你沒搞懂「尖峰」與「離峰」的殘酷比例。</p><h2>一秒看懂：什麼是時間電價？</h2><p>傳統電費是「累進費率」，用越多越貴 (例如超過 700 度每度變超貴)，但不分時段。</p><p>時間電價則是「分時段計價」：</p><ul class=\"list-disc pl-5 space-y-2\"><li><strong>尖峰時間 (通常是夏月 16:00~22:00)</strong>：電費爆貴 (每度可能破 6 元)。</li><li><strong>離峰時間 (半夜、週末)</strong>：電費超便宜 (每度約 1.8 元)。</li></ul><h2>迷思實測：半夜洗衣服能省多少？</h2><p>許多人為了省錢，堅持半夜起來洗衣服。我們來算給你聽：</p><p>一台洗衣機洗一次約耗電 0.5 度。</p><ul class=\"list-disc pl-5 space-y-2\"><li><strong>一般電價</strong>：約 1.5 元。</li><li><strong>時間電價離峰</strong>：約 0.9 元。</li></ul><p class=\"bg-stone-100 p-4 rounded-lg my-4 text-sm\"><strong>結論：</strong>洗一次衣服只省 <strong>0.6 元</strong>。就算你天天洗，一個月也才省 <strong>18 元</strong>。為了這 18 元犧牲睡眠，真的划算嗎？</p><h2>誰才適合辦？關鍵字：冷氣與電動車</h2><p>真正能把時間電價威力發揮出來的，是「高耗電」且「可移轉時間」的設備：</p><ol class=\"list-decimal pl-5 space-y-2\"><li><strong>電動車充電</strong>：充一次電可能幾十度，離峰充跟尖峰充，一個月價差可達上千元。</li><li><strong>全室冷氣 (週末族)</strong>：如果你平日白天都不在家，只有晚上和週末整天開冷氣 (週末全天算離峰)，那就非常划算。</li></ol><h2>結語：用功課表來決定</h2><p>在衝動申請前，請先記錄一週的用電習慣。</p><ul class=\"list-disc pl-5 space-y-2\"><li>如果你的用電集中在 <strong>平日下午到晚上 (16:00~22:00)</strong> 做飯、吹冷氣 &rarr; <strong>千萬別辦</strong>，會變貴。</li><li>如果你是 <strong>月用電量超過 700 度</strong> 的大戶，且白天沒人 &rarr; <strong>強烈建議申請</strong>。</li></ul><p>不確定自己適合哪種？歡迎使用我們的 <a href='../categories/life.html' class='text-emerald-600 underline font-bold'>家庭電費計算機</a> (即將推出進階版) 來試算看看！</p>"
+    },
+    {
         "id": "20260108-etf-dividend-truth",
         "title": "【ETF 真相】高股息 ETF 是「領息」還是「吃老本」？秒懂收益平準金與配息來源",
         "slug": "etf-dividend-truth-equalization-fund",
