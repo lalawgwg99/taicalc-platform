@@ -1,220 +1,238 @@
 <template>
-  <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
-    <!-- 總金額 -->
-    <div class="mb-6">
-      <label class="block text-sm font-bold text-stone-700 mb-2">總金額 (Total)</label>
-      <div class="relative">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 font-medium">$</span>
-        <input
-          type="number"
-          v-model.number="total"
-          class="w-full bg-stone-50 border border-stone-200 rounded-xl py-4 pl-10 pr-4 text-stone-900 text-2xl font-bold font-mono focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all placeholder:text-stone-300"
-          placeholder="1000"
-        />
-      </div>
+  <div class="max-w-2xl mx-auto space-y-8">
+    
+    <!-- 1. 總額設定 -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+         <div class="mb-6 text-center">
+             <label class="block text-xs font-bold text-stone-400 mb-2 uppercase tracking-wide">總消費金額 (Total)</label>
+             <div class="relative max-w-xs mx-auto">
+                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-300 font-bold text-xl">$</span>
+                 <input 
+                    v-model.number="totalAmount" 
+                    type="number" 
+                    class="w-full text-center text-4xl font-bold font-mono text-stone-800 border-b-2 border-stone-100 focus:border-emerald-500 outline-none py-2"
+                    placeholder="0"
+                 />
+             </div>
+         </div>
+
+         <!-- 人員設定 -->
+         <div>
+             <div class="flex justify-between items-center mb-4">
+                 <h3 class="font-bold text-stone-700">成員名單 ({{ members.length }}人)</h3>
+                 <button @click="addMember" class="text-sm text-emerald-600 font-bold hover:bg-emerald-50 px-3 py-1 rounded-lg transition-colors">+ 新增成員</button>
+             </div>
+             
+             <div class="space-y-3">
+                 <div v-for="(m, idx) in members" :key="m.id" class="flex items-center gap-3 bg-stone-50 p-2 rounded-xl border border-stone-100">
+                     <div class="w-8 h-8 flex items-center justify-center bg-white rounded-full border border-stone-200 text-xs font-bold text-stone-400">
+                        {{ idx + 1 }}
+                     </div>
+                     <input 
+                        v-model="m.name" 
+                        class="flex-1 bg-transparent font-medium text-stone-800 outline-none placeholder-stone-400" 
+                        placeholder="名字"
+                     />
+                     
+                     <!-- 切換模式開關 -->
+                     <div class="flex items-center gap-2">
+                         <div class="flex flex-col items-end">
+                             <span class="text-[10px] text-stone-400 uppercase tracking-wide">先付 (Paid)</span>
+                             <input 
+                                v-model.number="m.paid" 
+                                type="number" 
+                                class="w-20 text-right text-sm font-mono bg-white border border-stone-200 rounded px-1.5 py-0.5" 
+                                placeholder="0"
+                            />
+                         </div>
+                         <div class="flex flex-col items-end" v-if="mode === 'weighted'">
+                             <span class="text-[10px] text-stone-400 uppercase tracking-wide">權重 (份)</span>
+                             <input 
+                                v-model.number="m.weight" 
+                                type="number" 
+                                class="w-12 text-center text-sm font-bold bg-white border border-stone-200 rounded px-1 py-0.5" 
+                            />
+                         </div>
+                     </div>
+                     
+                     <button @click="removeMember(idx)" class="text-stone-300 hover:text-rose-500 px-1" v-if="members.length > 2">×</button>
+                 </div>
+             </div>
+         </div>
     </div>
 
-    <!-- 人數 -->
-    <div class="mb-8">
-      <label class="block text-sm font-bold text-stone-700 mb-2">人數 (People)</label>
-      <div class="flex items-center gap-3">
-        <button
-          @click="people = Math.max(1, people - 1)"
-          class="w-14 h-14 bg-white border border-stone-200 rounded-xl text-2xl text-stone-600 hover:bg-stone-50 hover:border-emerald-200 hover:text-emerald-600 transition-all active:scale-95 shadow-sm"
+    <!-- 模式切換 -->
+    <div class="flex justify-center gap-4">
+        <button 
+            @click="mode = 'even'" 
+            :class="['px-4 py-2 rounded-full text-sm font-bold transition-colors', mode === 'even' ? 'bg-stone-800 text-white shadow-lg' : 'bg-white text-stone-500 hover:bg-stone-50 border border-stone-200']"
         >
-          −
+            ⚖️ 平均分攤
         </button>
-        <input
-          type="number"
-          v-model.number="people"
-          min="1"
-          class="flex-1 bg-stone-50 border border-stone-200 rounded-xl py-4 text-center text-stone-900 text-2xl font-bold font-mono focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
-        />
-        <button
-          @click="people++"
-          class="w-14 h-14 bg-white border border-stone-200 rounded-xl text-2xl text-stone-600 hover:bg-stone-50 hover:border-emerald-200 hover:text-emerald-600 transition-all active:scale-95 shadow-sm"
+        <button 
+             @click="mode = 'weighted'" 
+             :class="['px-4 py-2 rounded-full text-sm font-bold transition-colors', mode === 'weighted' ? 'bg-stone-800 text-white shadow-lg' : 'bg-white text-stone-500 hover:bg-stone-50 border border-stone-200']"
         >
-          +
+            📊 權重分攤
         </button>
-      </div>
     </div>
 
     <!-- 結果 -->
-    <div class="bg-emerald-50 rounded-xl p-6 border border-emerald-100 mb-6">
-      <div class="flex justify-between items-center mb-2">
-        <span class="text-sm font-medium text-emerald-800">每人應付</span>
-        <span class="text-xs uppercase tracking-wider text-emerald-600 font-bold bg-emerald-100 px-2 py-0.5 rounded-full"
-          >Results</span
-        >
-      </div>
-      <div class="text-4xl font-bold text-emerald-600 font-mono tracking-tight flex items-baseline gap-1">
-        <span class="text-2xl">$</span>{{ perPerson }}
-      </div>
-      <div
-        v-if="remainder > 0"
-        class="mt-2 text-sm text-amber-600 flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-lg inline-block border border-amber-100"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" x2="12" y1="8" y2="12" />
-          <line x1="12" x2="12.01" y1="16" y2="16" />
-        </svg>
-        無法整除，剩餘 <span class="font-bold">${{ remainder }}</span>
-      </div>
+    <div class="card bg-emerald-50 rounded-2xl p-6 border border-emerald-100 relative overflow-hidden">
+         <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-200 rounded-full opacity-30 blur-2xl"></div>
+         
+         <h2 class="text-lg font-bold text-emerald-900 mb-4 text-center font-mono">結算清單 (Settlement)</h2>
+         
+         <!-- 轉帳建議 -->
+         <div v-if="transactions.length > 0" class="space-y-3 relative z-10">
+             <div v-for="(tx, i) in transactions" :key="i" class="flex items-center justify-between bg-white/80 backdrop-blur p-3 rounded-xl border border-emerald-100 shadow-sm">
+                 <div class="flex items-center gap-2">
+                     <span class="font-bold text-stone-700">{{ tx.from }}</span>
+                     <span class="text-xs text-stone-400">給</span>
+                     <span class="font-bold text-emerald-700">{{ tx.to }}</span>
+                 </div>
+                 <div class="font-mono font-bold text-lg text-emerald-600">${{ tx.amount }}</div>
+             </div>
+         </div>
+         <div v-else class="text-center text-stone-400 py-4 text-sm">
+             🎉 目前無人互欠 (完美平帳)
+         </div>
+         
+         <div class="mt-6 pt-4 border-t border-emerald-200/50 text-center">
+             <button @click="copyResult" class="text-sm font-bold text-emerald-700 flex items-center justify-center gap-2 hover:bg-emerald-100/50 py-2 px-4 rounded-full transition-colors mx-auto">
+                 <span v-if="copyStatus === 'idle'">📋 複製分帳結果</span>
+                 <span v-else>✓ 已複製</span>
+             </button>
+         </div>
     </div>
 
-    <!-- 進階：指定付款 -->
-    <div class="mt-6 border-t border-stone-100 pt-6">
-      <button
-        @click="showAdvanced = !showAdvanced"
-        class="w-full text-left text-sm font-medium text-stone-500 hover:text-stone-800 transition-colors flex items-center gap-2"
-      >
-        <span class="transition-transform duration-200" :class="{ 'rotate-90': showAdvanced }">▶</span>
-        進階選項：有人需要多付？
-      </button>
-
-      <div v-if="showAdvanced" class="mt-4 space-y-2.5">
-        <div
-          v-for="(p, i) in peopleList"
-          :key="i"
-          class="flex items-center gap-3 bg-stone-50 rounded-xl p-2 pr-4 border border-stone-100"
-        >
-          <div
-            class="w-8 h-8 rounded-full bg-white border border-stone-200 flex items-center justify-center text-xs text-stone-400 font-medium"
-          >
-            {{ i + 1 }}
-          </div>
-          <input
-            v-model="p.name"
-            class="flex-1 bg-transparent text-stone-800 text-sm font-medium focus:outline-none placeholder:text-stone-300"
-            :placeholder="'人員 ' + (i + 1)"
-          />
-          <span class="text-stone-400 text-xs">多付</span>
-          <input
-            type="number"
-            v-model.number="p.extra"
-            class="w-24 bg-white border border-stone-200 rounded-lg px-2 py-1.5 text-right font-mono text-sm focus:outline-none focus:border-emerald-500 text-stone-800"
-          />
-        </div>
-        <div class="text-xs text-stone-400 mt-2 px-1">
-          * 調整後每人基本應付: <span class="font-bold text-stone-600">${{ adjustedPerPerson }}</span> (+額外費用)
-        </div>
-      </div>
-    </div>
-
-    <!-- 複製按鈕 -->
-    <button
-      @click="copyResult"
-      class="mt-8 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-emerald-200 flex items-center justify-center gap-2 text-lg"
-    >
-      <span v-if="!copied" class="flex items-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-        </svg>
-        複製分帳結果
-      </span>
-      <span v-else class="flex items-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M20 6 9 17l-5-5" />
-        </svg>
-        已複製
-      </span>
-    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 
-const total = ref(1000);
-const people = ref(4);
-const showAdvanced = ref(false);
-const copied = ref(false);
-const peopleList = ref([]);
+const totalAmount = ref(1000);
+const mode = ref('even'); // 'even' | 'weighted'
+const members = ref([
+    { id: 1, name: 'Alice', paid: 1000, weight: 1 },
+    { id: 2, name: 'Bob', paid: 0, weight: 1 },
+    { id: 3, name: 'Charlie', paid: 0, weight: 1 }
+]);
 
-watch(
-  people,
-  (n) => {
-    while (peopleList.value.length < n) {
-      peopleList.value.push({ name: '', extra: 0 });
+const copyStatus = ref('idle');
+
+const addMember = () => {
+    const id = Date.now();
+    members.value.push({ id, name: '', paid: 0, weight: 1 });
+};
+const removeMember = (idx) => members.value.splice(idx, 1);
+
+// Logic
+const transactions = computed(() => {
+    let list = members.value.map(m => ({ ...m, paid: m.paid || 0, weight: m.weight || 1, name: m.name || `成員${m.id}` }));
+    
+    // 1. Calculate Fair Share per person
+    let totalPaid = list.reduce((sum, m) => sum + m.paid, 0);
+    
+    // User might input Total manually (override calculated total) or use Sum of Paid
+    // Let's assume 'totalAmount' input matches 'totalPaid' if user enters it? 
+    // Usually logic: Total Bill is X. Who paid what? 
+    // If sum(paid) != totalAmount, assume 'totalAmount' is correct and difference is "Common Fund" or just error?
+    // Let's simplify: Use 'totalAmount' as the bill. 'paid' is advance payment validation.
+    // Actually, usually: Total Bill = 1000.  User A paid 1000. User B paid 0.
+    
+    // Auto-update Total if sum(paid) changes? No, user might type 1000 first.
+    // Let's use sum(paid) as the "Money on Table" validation.
+    // But most users just want: Bill $1000. I paid. Split 3 ways.
+    
+    // Core Logic:
+    // Net Balance = Paid - ShouldPay
+    
+    // Calculate ShouldPay
+    let grandTotal = totalAmount.value; 
+    let totalWeight = list.reduce((sum, m) => sum + (mode.value === 'weighted' ? m.weight : 1), 0);
+    
+    let balances = list.map(m => {
+        let share = mode.value === 'weighted' 
+            ? (grandTotal * (m.weight / totalWeight)) 
+            : (grandTotal / list.length);
+        
+        return {
+            ...m,
+            shouldPay: share,
+            balance: m.paid - share // Positive = Owed money, Negative = Owes money
+        };
+    });
+    
+    // Sort creditors (+) and debtors (-)
+    let debtors = balances.filter(b => b.balance < -0.1).sort((a,b) => a.balance - b.balance); // Ascending (most negative first)
+    let creditors = balances.filter(b => b.balance > 0.1).sort((a,b) => b.balance - a.balance); // Descending (most positive first)
+    
+    let result = [];
+    
+    // Greedy match
+    let d = 0;
+    let c = 0;
+    
+    while(d < debtors.length && c < creditors.length) {
+        let debtor = debtors[d];
+        let creditor = creditors[c];
+        
+        let amount = Math.min(Math.abs(debtor.balance), creditor.balance);
+        
+        if (amount > 0) {
+            result.push({
+                from: debtor.name,
+                to: creditor.name,
+                amount: Math.round(amount)
+            });
+        }
+        
+        debtor.balance += amount;
+        creditor.balance -= amount;
+        
+        if(Math.abs(debtor.balance) < 0.1) d++;
+        if(creditor.balance < 0.1) c++;
     }
-    while (peopleList.value.length > n) {
-      peopleList.value.pop();
-    }
-  },
-  { immediate: true }
-);
-
-const perPerson = computed(() => {
-  if (!people.value || people.value < 1) return 0;
-  return Math.floor((total.value || 0) / people.value);
-});
-
-const remainder = computed(() => {
-  if (!people.value || people.value < 1) return 0;
-  return (total.value || 0) % people.value;
-});
-
-const totalExtra = computed(() => {
-  return peopleList.value.reduce((sum, p) => sum + (p.extra || 0), 0);
-});
-
-const adjustedPerPerson = computed(() => {
-  const remaining = (total.value || 0) - totalExtra.value;
-  return Math.floor(remaining / (people.value || 1));
+    
+    return result;
 });
 
 const copyResult = async () => {
-  const lines = [`分帳結果 (總額 $${total.value}，${people.value} 人)`];
-  if (showAdvanced.value && totalExtra.value > 0) {
-    peopleList.value.forEach((p, i) => {
-      const name = p.name || `人員${i + 1}`;
-      const amount = adjustedPerPerson.value + (p.extra || 0);
-      lines.push(`• ${name}: $${amount}`);
+    let lines = [`【分帳結果】總額: $${totalAmount.value}`];
+    transactions.value.forEach(tx => {
+        lines.push(`${tx.from} \t→ ${tx.to} \t$${tx.amount}`);
     });
-  } else {
-    lines.push(`每人付 $${perPerson.value}`);
-    if (remainder.value > 0) {
-      lines.push(`(剩餘 $${remainder.value} 待處理)`);
-    }
-  }
-  try {
-    await navigator.clipboard.writeText(lines.join('\n'));
-    copied.value = true;
-    setTimeout(() => (copied.value = false), 1500);
-  } catch (e) {
-    alert('複製失敗');
-  }
+    
+    if(transactions.value.length === 0) lines.push("無人互欠 (已結清)");
+    
+    try {
+        await navigator.clipboard.writeText(lines.join('\n'));
+        copyStatus.value = 'copied';
+        setTimeout(() => copyStatus.value = 'idle', 2000);
+    } catch(e) {}
 };
+
+// Persistence
+const STORAGE_KEY = 'taicalc_split_v2';
+watch([members, totalAmount, mode], () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        members: members.value,
+        totalAmount: totalAmount.value,
+        mode: mode.value
+    }));
+}, { deep: true });
+
+onMounted(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved) {
+        try {
+            const d = JSON.parse(saved);
+            if(d.members) members.value = d.members;
+            if(d.totalAmount) totalAmount.value = d.totalAmount;
+            if(d.mode) mode.value = d.mode;
+        } catch(e) {}
+    }
+});
 </script>
