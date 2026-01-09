@@ -4,5 +4,9 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://taicalc.com',
+  build: {
+    format: 'file'
+  },
   integrations: [vue(), tailwind()]
 });

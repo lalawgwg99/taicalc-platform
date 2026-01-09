@@ -21,6 +21,7 @@ const { title, description = "專為台灣人設計的免費財務計算機。�
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
         <!-- Google Tag Manager / Analytics could go here -->
 	</head>
 	<body class="antialiased bg-stone-50 min-h-screen flex flex-col">
