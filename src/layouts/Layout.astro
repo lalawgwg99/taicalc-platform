@@ -6,9 +6,18 @@ import Footer from '../components/Footer.astro';
 interface Props {
 	title: string;
     description?: string;
+    fullWidth?: boolean;
+    hideNav?: boolean;
+    hideFooter?: boolean;
 }
 
-const { title, description = "專為台灣人設計的免費財務計算機。整合 2026 最新勞健保費率、薪資扣除額、房貸試算、加班費規則與 FIRE 退休規劃。" } = Astro.props;
+const { 
+    title, 
+    description = "專為台灣人設計的免費財務計算機。整合 2026 最新勞健保費率、薪資扣除額、房貸試算、加班費規則與 FIRE 退休規劃。",
+    fullWidth = false,
+    hideNav = false,
+    hideFooter = false
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -24,13 +33,23 @@ const { title, description = "專為台灣人設計的免費財務計算機。�
         <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
         <!-- Google Tag Manager / Analytics could go here -->
 	</head>
-	<body class="antialiased bg-[#FAF3E0] text-[#1F2937] min-h-screen flex flex-col">
-        <div class="max-w-6xl mx-auto px-6 py-8 w-full flex-grow flex flex-col">
-            <Navbar />
-            <main class="flex-grow">
-		        <slot />
-            </main>
-            <Footer />
-        </div>
+    <body class="antialiased bg-[#FAF3E0] text-[#1F2937] min-h-screen flex flex-col">
+        { !fullWidth ? (
+            <div class="max-w-6xl mx-auto px-6 py-8 w-full flex-grow flex flex-col">
+                { !hideNav && <Navbar /> }
+                <main class="flex-grow">
+                    <slot />
+                </main>
+                { !hideFooter && <Footer /> }
+            </div>
+        ) : (
+            <div class="w-full flex-grow flex flex-col">
+                { !hideNav && <div class="max-w-6xl mx-auto px-6 w-full"><Navbar /></div> }
+                <main class="flex-grow">
+                    <slot />
+                </main>
+                { !hideFooter && <div class="max-w-6xl mx-auto px-6 w-full"><Footer /></div> }
+            </div>
+        )}
 	</body>
 </html>
