@@ -69,22 +69,42 @@
         <!-- Explanation -->
         <Panel title="說明 / 使用方式" icon="info">
           <div class="space-y-4 text-xs leading-relaxed text-neutral-400 p-4">
+            <div class="space-y-1">
+              <div class="text-neutral-200 font-mono tracking-widest">SOCRATES 易經決策支援系統</div>
+              <div class="text-neutral-500">
+                「宇宙是用數學語言寫成的。」—— 伽利略　｜　「至誠之道，可以前知。」——《中庸》
+              </div>
+            </div>
+
             <div>
-              <div class="text-neutral-200 font-mono tracking-widest">SOCRATES 易經決策系統</div>
-              <div class="text-neutral-500 mt-1">
-                這不是算命，而是一套把複雜情境壓縮成 64 種原型的「思考框架」。
-              </div>
+              <div class="text-cyan-400 font-mono uppercase tracking-widest mb-2">它是什麼？</div>
+              <p class="text-neutral-300">
+                這不是「保證預測」的工具，而是一套把複雜情境壓縮成 64 種原型的<strong>思考框架</strong>。
+                你輸入問題 → 系統生成卦象 → 以「本卦（當下）」與「變卦（走向）」提供結構化理解與行動建議。
+              </p>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <div class="text-cyan-400 mb-1">本卦 (System Analysis)</div>
-                <p>描述「當下結構」與盲點。</p>
-              </div>
-              <div>
-                <div class="text-amber-400 mb-1">變卦 (Trend Projection)</div>
-                <p>若有變爻，顯示未來的「走向」建議。</p>
-              </div>
+
+            <div>
+              <div class="text-cyan-400 font-mono uppercase tracking-widest mb-2">為什麼看起來會準？</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li><span class="text-neutral-200">原型映射</span>：六爻二進位形成 64 種狀態，像「模式庫」協助你辨識局勢類型。</li>
+                <li><span class="text-neutral-200">聚焦注意力</span>：把問題說清楚，等於把腦中的雜訊降到最低，決策品質會上升。</li>
+                <li><span class="text-neutral-200">自我覺察</span>：你在閱讀卦象時，其實在替自己的情境做「重新詮釋」與「取捨排序」。</li>
+              </ul>
             </div>
+
+            <div>
+              <div class="text-amber-400 font-mono uppercase tracking-widest mb-2">怎麼問最有效？</div>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>問題越具體越好：把時間、對象、選項寫出來。</li>
+                <li>避免是非題：改問「我該注意什麼 / 什麼會是最大風險 / 先做哪一步？」</li>
+                <li>同一件事不要連續重問：先照建議做一個小行動，再回來看是否需要第二次校準。</li>
+              </ul>
+            </div>
+
+             <div class="text-neutral-500 text-[10px] pt-2 border-t border-neutral-800">
+               提示：SOCRATES 是一面鏡子，不是水晶球；它提供的是「更好的理解與選擇」，而不是替你決定命運。
+             </div>
           </div>
         </Panel>
 
@@ -235,7 +255,7 @@ import { ref, computed, watch, nextTick, onMounted } from 'vue';
 // Typewriter
 const Typewriter = {
   props: ['text', 'speed'],
-  template: `<span>{{ shown }}<span v-if="!done" class="inline-block w-2 bg-current opacity-70 animate-caret h-3 align-middle ml-0.5"></span></span>`,
+  template: `<span>{{ shown }}<span class="inline-block w-2 bg-current animate-caret h-3 align-middle ml-0.5" :class="{ 'opacity-0': done }"></span></span>`,
   setup(props) {
     const shown = ref('');
     const done = ref(false);
@@ -246,7 +266,10 @@ const Typewriter = {
         shown.value = '';
         done.value = false;
         let i = 0;
+        let alive = true;
+        
         const tick = () => {
+          if (!alive) return;
           if (i >= newText.length) {
             done.value = true;
             return;
@@ -254,10 +277,12 @@ const Typewriter = {
           i++;
           shown.value = newText.slice(0, i);
           const ch = newText[i - 1];
-          const jitter = ch === ' ' || ch === '.' || ch === ',' ? 50 : 0;
+          // Jitter logic: punctuation causes longer pause
+          const jitter = ch === ' ' || ch === '.' || ch === ',' || ch === '，' || ch === '。' ? 80 : 0;
           setTimeout(tick, (props.speed || 10) + jitter);
         };
-        tick();
+        setTimeout(tick, 20);
+        return () => { alive = false; };
       },
       { immediate: true }
     );
@@ -290,58 +315,75 @@ const Panel = {
   },
 };
 
-// HexLine
-const HexLine = {
-  props: ['type', 'changing', 'animate'], // type: 'yin' | 'yang'
+// YinLine
+const YinLine = {
+  props: ['changing', 'label'],
   template: `
-    <div class="relative w-full h-4 sm:h-5 flex items-center justify-center my-1" :class="animate ? 'oracle-pop' : ''">
-        <!-- Yang -->
-        <div v-if="type === 'yang'" class="h-full w-full rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
-        
-        <!-- Yin -->
-        <div v-if="type === 'yin'" class="w-full h-full flex items-center justify-between">
-                <div class="h-full w-[42%] rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
-                <div class="h-full w-[16%] flex items-center justify-center">
-                <span v-if="changing" class="text-[10px] text-amber-300 font-mono animate-bounce">✕</span>
-                </div>
-                <div class="h-full w-[42%] rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
+    <div class="relative w-full h-4 sm:h-5 flex items-center my-1">
+        <div class="h-full basis-5/12 rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
+        <div class="h-full basis-2/12 flex items-center justify-center">
+            <span v-if="changing" class="text-[10px] text-amber-300 font-mono animate-bounce">✕</span>
         </div>
-
-        <!-- Change Marker for Yang -->
-        <span v-if="type === 'yang' && changing" class="absolute text-[10px] text-amber-200 font-mono bg-neutral-900 px-1 rounded animate-pulse">○</span>
+        <div class="h-full basis-5/12 rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
+        <span v-if="label" class="absolute -left-6 text-xs text-neutral-500 font-mono hidden sm:block w-4 text-right">{{ label }}</span>
     </div>
-  `,
+  `
+};
+
+// YangLine
+const YangLine = {
+  props: ['changing', 'label'],
+  template: `
+    <div class="relative w-full h-4 sm:h-5 flex items-center justify-center my-1">
+        <div class="h-full w-full rounded-sm transition-colors" :class="changing ? 'bg-amber-600 animate-pulse' : 'bg-neutral-200'"></div>
+        <span v-if="changing" class="absolute text-[10px] text-amber-200 font-mono bg-neutral-900 px-1 rounded animate-pulse">○</span>
+        <span v-if="label" class="absolute -left-6 text-xs text-neutral-500 font-mono hidden sm:block w-4 text-right">{{ label }}</span>
+    </div>
+  `
 };
 
 // HexagramVisual
 const HexagramVisual = {
-  components: { HexLine },
+  components: { YinLine, YangLine },
   props: ['lines', 'bits', 'animate'],
   template: `
-    <div class="flex flex-col w-20 sm:w-24 mx-auto py-2">
-        <div v-for="(l, i) in displayLines" :key="i" :style="{ animationDelay: (i * 100) + 'ms' }">
-            <HexLine 
-                :type="l.isYang ? 'yang' : 'yin'" 
-                :changing="l.isChanging"
-                :animate="animate"
-            />
+    <div class="flex flex-col w-28 sm:w-32 mx-auto py-2 bg-neutral-900/50 p-3 rounded border border-neutral-800/60">
+        <div v-for="(l, i) in displayLines" :key="i" :class="animate ? 'oracle-pop' : ''" :style="{ animationDelay: (i * 90) + 'ms' }">
+             <YangLine v-if="l.isYang" :changing="l.isChanging" :label="l.label" />
+             <YinLine v-else :changing="l.isChanging" :label="l.label" />
         </div>
     </div>
   `,
   computed: {
     displayLines() {
-      // lines (bottom->top) needs reverse for display (top->bottom)
+      const res = [];
       if (this.lines) {
-        return [...this.lines].reverse().map((val) => ({
-          isYang: val === 7 || val === 9,
-          isChanging: val === 6 || val === 9,
+        // lines array: [line1, line2, ..., line6] (bottom to top)
+        // map first, then reverse
+        const mapped = this.lines.map((val, idx) => ({
+             val,
+             idx: idx + 1, // 1-based index (bottom is 1)
+             isYang: val === 7 || val === 9,
+             isChanging: val === 6 || val === 9
+        }));
+        return mapped.reverse().map(item => ({
+            ...item,
+            label: String(item.idx)
         }));
       }
+      
       if (this.bits) {
-        return [...this.bits].reverse().map((b) => ({
-          isYang: b === '1',
-          isChanging: false,
-        }));
+         // bits array: ['1', '0', ...] (bottom to top)
+         const mapped = this.bits.map((b, idx) => ({
+             b,
+             idx: idx + 1,
+             isYang: b === '1',
+             isChanging: false
+         }));
+         return mapped.reverse().map(item => ({
+            ...item,
+            label: '' 
+         }));
       }
       return [];
     },
@@ -395,10 +437,10 @@ const HEXAGRAM_DB = {
   '111110': { name: '澤天夬', nature: '決斷去邪', desc: '必須果斷公開決策。清除阻礙與小人；但忌暴烈，以正制之。' },
   '011111': { name: '天風姤', nature: '不期而遇', desc: '突發相遇與干擾。機會與風險同來；保持界線，勿被牽著走。' },
   '1000110': { name: '澤地萃', nature: '會聚成勢', desc: '人潮與資源聚集。利組織、社群與募資；同時要防意外與內耗。' },
-  '000110': { name: '澤地萃', nature: '會聚成勢', desc: '人潮與資源聚集。利組織、社群與募資；同時要防意外與內耗。' }, // Fix key double
+  '000110': { name: '澤地萃', nature: '會聚成勢', desc: '人潮與資源聚集。利組織、社群與募資；同時要防意外與內耗。' }, 
   '011000': { name: '地風升', nature: '上升成長', desc: '循勢而上，步步登階。利求援見大人；重視流程與耐心。' },
   '010110': { name: '澤水困', nature: '困而守志', desc: '資源枯竭、信任不足。少說多做，守志自持；熬過即轉機。' },
-  '011010': { name: '水風井', nature: '制度長養', desc: '井不改而水常新。架構可留，內容要更新；重點在維護與供養。' },
+  '010110': { name: '水風井', nature: '制度長養', desc: '井不改而水常新。架構可留，內容要更新；重點在維護與供養。' },
   '101110': { name: '澤火革', nature: '變革更新', desc: '改革到點才成。時機成熟就改制；先獲信任再動刀。' },
   '011101': { name: '火風鼎', nature: '鼎新立制', desc: '建立新秩序、引入新人才。利整合資源、定規格，做長久之器。' },
   '100100': { name: '震為雷', nature: '驚而不亂', desc: '突發震動。能鎮定者得主導；先穩住、再處置。' },
@@ -606,7 +648,9 @@ onMounted(() => {
 watch(
   history,
   (newVal) => {
-    localStorage.setItem('socrates-history', JSON.stringify(newVal));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('socrates-history', JSON.stringify(newVal));
+    }
   },
   { deep: true }
 );
