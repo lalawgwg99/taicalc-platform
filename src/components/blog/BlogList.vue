@@ -10,6 +10,11 @@
             正在載入文章...
         </div>
 
+        <!-- Error State -->
+        <div v-else-if="error" class="text-center py-20 text-red-500">
+            {{ error }}
+        </div>
+
         <!-- Article Grid -->
         <div v-else>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -77,6 +82,7 @@ import { ref, onMounted, computed } from 'vue';
 
 const articles = ref([])
 const loading = ref(true)
+const error = ref(null)
 const currentPage = ref(1)
 const itemsPerPage = 9
 
@@ -112,13 +118,16 @@ const goToPage = (page) => {
 onMounted(async () => {
     try {
         const res = await fetch('/data/articles.json?v=' + Date.now())
-        if (res.ok) {
-            articles.value = await res.json()
-            // Sort by date desc
-            articles.value.sort((a, b) => new Date(b.date) - new Date(a.date))
+        if (!res.ok) {
+           throw new Error(`HTTP error! status: ${res.status}`);
         }
+        articles.value = await res.json()
+        // Sort by date desc
+        articles.value.sort((a, b) => new Date(b.date) - new Date(a.date))
+        
     } catch (e) {
         console.error(e)
+        error.value = "載入文章失敗，請稍後再試。"
     } finally {
         loading.value = false
     }
