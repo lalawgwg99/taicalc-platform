@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SplitCalculator from '../../components/calculators/SplitCalculator.vue';
+
+const title = "分帳計算機｜TaiCalc";
+const description = "快速分帳計算。聚餐、合租、團購輕鬆平分費用。";
+---
+
+<Layout title={title} description={description}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
+        <span>/</span>
+        <span class="text-stone-900 font-medium">分帳計算</span>
+    </div>
+
+    <header class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">分帳計算機</h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 font-medium">多人/AA制</span>
+        </div>
+        <p class="text-stone-500 text-sm">聚餐 · 旅遊 · 團購 · 輕鬆拆帳</p>
+    </header>
+
+    <SplitCalculator client:load />  
+</Layout>

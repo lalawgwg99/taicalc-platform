@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import OvertimeCalculator from '../../components/calculators/OvertimeCalculator.vue';
+
+const title = "加班費計算機｜2026 勞基法｜TaiCalc";
+const description = "依2026勞基法計算加班費。平日/休息日/例假日不同倍率，含週累計統計與超時警告。";
+---
+
+<Layout title={title} description={description}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
+        <span>/</span>
+        <span class="text-stone-900 font-medium">加班費計算</span>
+    </div>
+
+    <header class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">加班費計算機</h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 font-medium">
+                2026 勞基法
+            </span>
+        </div>
+        <p class="text-stone-500 text-sm">平日延長 · 休息日出勤 · 國定假日雙倍</p>
+    </header>
+
+    <OvertimeCalculator client:load />
+</Layout>

@@ -1,0 +1,224 @@
+<template>
+  <div class="space-y-6">
+    <!-- 設定卡片 -->
+    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-lg font-bold text-stone-800">基本與時薪</h2>
+        <div class="flex items-center gap-2">
+          <label for="hourlyWage" class="text-sm text-stone-500">時薪 NT$</label>
+          <input
+            id="hourlyWage"
+            type="number"
+            v-model.number="hourlyWage"
+            class="w-24 bg-stone-50 border border-stone-200 rounded-lg py-1.5 px-3 text-stone-800 font-semibold text-right focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500"
+          />
+        </div>
+      </div>
+
+      <!-- 排班表 (Desktop: Table, Mobile: Stacked) -->
+      <div class="space-y-3">
+        <div
+          v-for="(day, index) in weekSchedule"
+          :key="index"
+          class="flex flex-col sm:flex-row items-center gap-3 p-3 rounded-xl transition-colors"
+          :class="day.active ? 'bg-stone-50 border border-stone-200' : 'bg-transparent border border-transparent opacity-60'"
+        >
+          <!-- 啟用與星期 -->
+          <div class="flex items-center gap-3 w-full sm:w-32">
+            <input
+              type="checkbox"
+              v-model="day.active"
+              :aria-label="'啟用' + day.name"
+              title="啟用此工作日"
+              class="w-5 h-5 rounded text-sky-600 focus:ring-offset-0 focus:ring-0 cursor-pointer"
+            />
+            <span class="font-bold" :class="day.active ? 'text-stone-800' : 'text-stone-400'">
+              {{ day.name }}
+            </span>
+          </div>
+
+          <!-- 時間輸入 -->
+          <div class="grid grid-cols-2 gap-2 flex-grow w-full sm:w-auto" v-if="day.active">
+            <div class="flex items-center gap-2 bg-white border border-stone-200 rounded-lg px-2 py-1.5">
+              <span class="text-xs text-stone-400">起</span>
+              <input
+                type="time"
+                v-model="day.start"
+                :aria-label="day.name + '上班時間'"
+                title="上班時間"
+                class="w-full text-stone-700 font-mono text-sm focus:outline-none"
+              />
+            </div>
+            <div class="flex items-center gap-2 bg-white border border-stone-200 rounded-lg px-2 py-1.5">
+              <span class="text-xs text-stone-400">迄</span>
+              <input
+                type="time"
+                v-model="day.end"
+                :aria-label="day.name + '下班時間'"
+                title="下班時間"
+                class="w-full text-stone-700 font-mono text-sm focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <!-- 休息時間 & 小計 -->
+          <div class="flex items-center justify-between w-full sm:w-auto gap-4" v-if="day.active">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-stone-400">休</span>
+              <input
+                type="number"
+                v-model.number="day.break"
+                :aria-label="day.name + '休息分鐘數'"
+                title="休息時間(分鐘)"
+                class="w-12 text-center border-b border-stone-200 focus:border-sky-500 focus:outline-none text-sm py-1 bg-transparent"
+              />
+              <span class="text-xs text-stone-400">分</span>
+            </div>
+            <div class="text-right w-20">
+              <span class="block text-sm font-bold text-sky-600">{{ getDayHours(day) }}h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 統計結果 -->
+    <section class="grid sm:grid-cols-2 gap-6">
+      <!-- 數據卡片 -->
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col justify-center">
+        <div class="text-center mb-6">
+          <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">一週預估薪資</p>
+          <p class="text-4xl font-bold text-stone-800 stat-value">
+            <span class="text-2xl text-stone-400 mr-1">$</span>{{ totalPay.toLocaleString() }}
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-center border-t border-stone-100 pt-4">
+          <div>
+            <p class="text-xs text-stone-500 mb-1">總工時</p>
+            <p class="text-lg font-bold text-stone-700">
+              {{ totalHours }} <span class="text-xs font-normal text-stone-400">小時</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-xs text-stone-500 mb-1">工作天數</p>
+            <p class="text-lg font-bold text-stone-700">
+              {{ activeDays }} <span class="text-xs font-normal text-stone-400">天</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 圖表卡片 -->
+      <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+        <h3 class="text-sm font-bold text-stone-700 mb-4">每日工時分佈</h3>
+        <div class="relative h-60">
+          <canvas ref="chartCanvas"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import Chart from 'chart.js/auto';
+
+const hourlyWage = ref(196);
+
+// 週排班資料
+const weekSchedule = ref([
+  { name: '週一', active: true, start: '09:00', end: '18:00', break: 60 },
+  { name: '週二', active: true, start: '09:00', end: '18:00', break: 60 },
+  { name: '週三', active: true, start: '09:00', end: '18:00', break: 60 },
+  { name: '週四', active: true, start: '09:00', end: '18:00', break: 60 },
+  { name: '週五', active: true, start: '09:00', end: '18:00', break: 60 },
+  { name: '週六', active: false, start: '10:00', end: '16:00', break: 30 },
+  { name: '週日', active: false, start: '10:00', end: '16:00', break: 30 },
+]);
+
+const chartCanvas = ref(null);
+let chartInstance = null;
+
+const getDayHours = (day) => {
+  if (!day.active || !day.start || !day.end) return 0;
+  const [sh, sm] = day.start.split(':').map(Number);
+  const [eh, em] = day.end.split(':').map(Number);
+  let minutes = (eh * 60 + em) - (sh * 60 + sm) - (day.break || 0);
+  if (minutes < 0) minutes = 0; // 避免負數 (跨日暫不支援)
+  return Math.round((minutes / 60) * 10) / 10;
+};
+
+const totalHours = computed(() => {
+  return weekSchedule.value.reduce((sum, day) => sum + getDayHours(day), 0);
+});
+
+const totalPay = computed(() => {
+  return Math.round(totalHours.value * hourlyWage.value);
+});
+
+const activeDays = computed(() => weekSchedule.value.filter((d) => d.active).length);
+
+const updateChart = () => {
+  if (!chartCanvas.value) return;
+  if (chartInstance) chartInstance.destroy();
+
+  const labels = weekSchedule.value.map((d) => d.name);
+  const data = weekSchedule.value.map((d) => getDayHours(d));
+  const colors = weekSchedule.value.map((d) => (d.active ? '#0ea5e9' : '#e7e5e4')); // Sky-500 or Stone-200
+
+  chartInstance = new Chart(chartCanvas.value, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '工時 (小時)',
+          data: data,
+          backgroundColor: colors,
+          borderRadius: 4,
+          barThickness: 20,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          titleColor: '#1c1917',
+          bodyColor: '#44403c',
+          borderColor: '#e7e5e4',
+          borderWidth: 1,
+          padding: 10,
+          displayColors: false,
+          callbacks: {
+            label: (context) => `${context.formattedValue} 小時`,
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { color: '#78716c' },
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: '#57534e' },
+        },
+      },
+    },
+  });
+};
+
+watch([weekSchedule, hourlyWage], updateChart, { deep: true });
+
+onMounted(() => {
+    // wait for canvas
+    nextTick(() => {
+        updateChart();
+    });
+});
+</script>

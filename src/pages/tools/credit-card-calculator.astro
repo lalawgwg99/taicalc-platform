@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CreditCardCalculator from '../../components/calculators/CreditCardCalculator.vue';
+
+const title = "信用卡分期計算｜TaiCalc";
+const description = "計算信用卡分期真實利息。揭露銀行不說的隱藏成本。以及家樂福 Uniopen 回饋試算。";
+---
+
+<Layout title={title} description={description}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/categories/finance" class="hover:text-stone-800 transition-colors">退休理財</a>
+        <span>/</span>
+        <span class="text-stone-900 font-medium">信用卡計算</span>
+    </div>
+
+    <header class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">信用卡分期計算</h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200 font-medium">
+                真實利率
+            </span>
+        </div>
+        <p class="text-stone-500 text-sm">揭露銀行隱藏成本 · IRR 真實年化利率</p>
+    </header>
+
+    <CreditCardCalculator client:load />  
+</Layout>

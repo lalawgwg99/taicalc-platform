@@ -1,0 +1,102 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Oracle from '../../components/calculators/Oracle.vue';
+
+const title = "Socrates Oracle v3.2 (易經決策)｜TaiCalc";
+const description = "基於易經 64 卦的決策支援系統。把不確定性轉化為結構化思考框架。";
+---
+
+<Layout title={title} description={description} fullWidth={true}>
+    <!-- Special Layout for Oracle to maximize screen space if needed, 
+         but using standard layout is safer for nav consistency. 
+         We might want to override layout max-width or backgrounds for this specific tool.
+    -->
+    <style is:global>
+        /* Override body background for this page specifically to match Cyberpunk theme */
+        body {
+            background-color: #0a0a0a !important; /* neutral-950 */
+            color: #e5e5e5; /* neutral-200 */
+        }
+        /* Hide standard footer if desired, or keep it. */
+        .crt::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02) 2px, rgba(0, 0, 0, 0) 2px, rgba(0, 0, 0, 0) 4px);
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.18;
+        }
+        .crt::after {
+            content: "";
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 20vh;
+            background: linear-gradient(to bottom, rgba(34, 211, 238, 0.10), rgba(0, 0, 0, 0));
+            pointer-events: none;
+            z-index: 50;
+            animation: scanline 3s linear infinite;
+            opacity: 0.20;
+        }
+        .noise {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+            background-size: 3px 3px;
+            mix-blend-mode: overlay;
+            opacity: 0.10;
+            pointer-events: none;
+            animation: noiseMove 2s ease-in-out infinite;
+        }
+        @keyframes scanline {
+            0% { transform: translateY(-25%); opacity: 0.18; }
+            100% { transform: translateY(140%); opacity: 0.18; }
+        }
+        @keyframes noiseMove {
+            0% { transform: translateY(0); opacity: 0.10; }
+            50% { transform: translateY(-6%); opacity: 0.14; }
+            100% { transform: translateY(0); opacity: 0.10; }
+        }
+    </style>
+    
+    <!-- Add Font for Oracle -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet" slot="head" />
+
+    <div class="crt min-h-screen">
+        <div class="noise"></div>
+        
+        <div class="relative z-10 p-4">
+             <!-- Custom Header for Oracle to match style -->
+            <header class="border-b border-neutral-900 p-3 sm:p-4 flex justify-between items-center bg-neutral-950/80 backdrop-blur-md sticky top-0 z-30 mb-8">
+                <div class="flex items-center gap-3">
+                    <a href="/" class="text-neutral-600 hover:text-cyan-400 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </a>
+                    <div class="w-px h-6 bg-neutral-800"></div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="w-5 h-5 text-cyan-500 animate-pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+                            </svg>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-mono text-sm tracking-widest text-cyan-400 font-bold leading-none">SOCRATES</span>
+                            <span class="text-[10px] text-neutral-600 tracking-wider leading-none mt-0.5">DECISION SUPPORT v3.2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-xs font-mono text-neutral-600">
+                    <span class="hidden sm:inline">SYS_STATUS: ONLINE</span>
+                    <span class="flex items-center gap-1">DB: 64/64</span>
+                </div>
+            </header>
+
+            <Oracle client:load />  
+        </div>
+    </div>
+</Layout>

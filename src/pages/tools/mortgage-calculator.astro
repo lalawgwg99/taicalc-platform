@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
+
+const title = "2026 房貸試算 (新青安版)｜TaiCalc";
+const description = "2026 新青安房貸試算。支援寬限期、分段利率計算，精準模擬補貼結束後的月付金變化。比較一般房貸與優惠貸款差異。";
+---
+
+<Layout title={title} description={description}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
+        <span>/</span>
+        <span class="text-stone-800 font-medium">房貸計算</span>
+    </div>
+
+    <header class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">房貸試算 (新青安版)</h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">2026年版</span>
+        </div>
+        <p class="text-stone-500 text-sm">支援寬限期與分段利率。精準計算 2026 新青安補貼截止後還款變化。</p>
+    </header>
+
+    <MortgageCalculator client:load />
+</Layout>

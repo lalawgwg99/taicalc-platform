@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import articles from '../../data/articles.json';
+
+export async function getStaticPaths() {
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+---
+
+<Layout title={article.title + "｜TaiCalc 專欄"} description={article.excerpt}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/blog" class="hover:text-stone-800 transition-colors">專欄文章</a>
+        <span>/</span>
+        <span class="text-stone-800 font-medium truncate max-w-[200px]">{article.title}</span>
+    </div>
+
+    <article class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-100">
+                    {article.category}
+                </span>
+                <time class="text-sm text-stone-500">{article.date}</time>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight leading-tight mb-6">
+                {article.title}
+            </h1>
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                {article.tags.map((tag: string) => (
+                    <span class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-md">#{tag}</span>
+                ))}
+            </div>
+
+            <!-- Cover Image -->
+            {article.coverImage && (
+                <div class="rounded-2xl overflow-hidden shadow-lg mb-8">
+                    <img src={article.coverImage} alt={article.title} class="w-full h-auto object-cover" />
+                </div>
+            )}
+        </header>
+
+        <!-- Content -->
+        <!-- Use Tailwind Typography (prose) if available, otherwise manual styling -->
+        <div class="prose prose-stone prose-lg max-w-none mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100" set:html={article.content} />
+        
+        <!-- Back Button -->
+        <div class="mt-12 text-center">
+            <a href="/blog" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium px-6 py-3 bg-emerald-50 rounded-full hover:bg-emerald-100 transition-colors">
+                ← 回到專欄列表
+            </a>
+        </div>
+    </article>
+</Layout>
+
+<style is:global>
+    /* Custom Styling for Article Content (simulating Typography plugin if missing) */
+    .prose h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #1c1917; /* stone-900 */
+    }
+    .prose h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        color: #292524; /* stone-800 */
+    }
+    .prose p {
+        margin-bottom: 1.25rem;
+        line-height: 1.75;
+        color: #44403c; /* stone-700 */
+    }
+    .prose ul, .prose ol {
+        margin-bottom: 1.25rem;
+        padding-left: 1.5rem;
+        list-style-type: disc;
+    }
+    .prose li {
+        margin-bottom: 0.5rem;
+    }
+    .prose blockquote {
+        border-left: 4px solid #10b981;
+        padding-left: 1rem;
+        font-style: italic;
+        color: #57534e;
+        background: #f5f5f4;
+        padding: 1rem;
+        border-radius: 0 0.5rem 0.5rem 0;
+        margin-bottom: 1.25rem;
+    }
+    .prose img {
+        border-radius: 0.75rem;
+        margin: 2rem auto;
+    }
+    .prose figure figcaption {
+        text-align: center;
+        color: #78716c;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+    }
+    .prose strong {
+        font-weight: 600;
+        color: #1c1917;
+    }
+</style>

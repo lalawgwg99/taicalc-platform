@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DeliveryIncomeCalculator from '../../components/calculators/DeliveryIncomeCalculator.vue';
+
+const title = "外送收入計算｜TaiCalc";
+const description = "計算外送平台實際收入，扣除油錢、機車折舊後的淨所得。";
+---
+
+<Layout title={title} description={description}>
+    <!-- Breadcrumb -->
+    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
+        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+        <span>/</span>
+        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
+        <span>/</span>
+        <span class="text-stone-900 font-medium">外送收入</span>
+    </div>
+
+    <header class="mb-8">
+        <div class="flex items-center justify-between mb-2">
+            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">外送收入計算</h1>
+            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">淨利試算</span>
+        </div>
+        <p class="text-stone-500 text-sm">扣除油錢、保養後的實際時薪</p>
+    </header>
+
+    <DeliveryIncomeCalculator client:load />  
+</Layout>
