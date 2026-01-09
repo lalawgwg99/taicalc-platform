@@ -3,17 +3,29 @@
     <!-- 輸入區塊 -->
     <div class="grid lg:grid-cols-2 gap-6">
       <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
-        <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">💰 收入與工時</h2>
+        <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
         <div class="space-y-4">
           <div>
-            <label for="grossIncome" class="block text-xs font-medium text-stone-500 mb-1"
-              >每月總收入 (跑單金額+獎勵)</label
+            <label for="baseIncome" class="block text-xs font-medium text-stone-500 mb-1"
+              >基礎跑單收入 (不含獎勵)</label
             >
             <input
-              id="grossIncome"
+              id="baseIncome"
               type="number"
-              v-model.number="grossIncome"
+              v-model.number="baseIncome"
               class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+            />
+          </div>
+          <div>
+            <label for="incentive" class="block text-xs font-medium text-stone-500 mb-1"
+              >平台獎勵/加碼 (趟次達標)</label
+            >
+            <input
+              id="incentive"
+              type="number"
+              v-model.number="incentive"
+              class="w-full bg-emerald-50 border border-emerald-200 rounded-xl py-2.5 px-3 text-emerald-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              placeholder="0"
             />
           </div>
           <div class="grid grid-cols-2 gap-4">
@@ -65,7 +77,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="maintenancePerKm" class="block text-xs font-medium text-stone-500 mb-1"
-                >每公里保養 (機油/輪胎..)</label
+                >每公里保養攤提</label
               >
               <div class="relative">
                 <input
@@ -79,14 +91,14 @@
               </div>
             </div>
             <div>
-              <label for="otherMonthlyCost" class="block text-xs font-medium text-stone-500 mb-1"
-                >其他月開銷 (保險/稅/費)</label
+              <label for="insuranceMonthly" class="block text-xs font-medium text-stone-500 mb-1"
+                >商用保險/折舊</label
               >
               <div class="relative">
                 <input
-                  id="otherMonthlyCost"
+                  id="insuranceMonthly"
                   type="number"
-                  v-model.number="otherMonthlyCost"
+                  v-model.number="insuranceMonthly"
                   class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500 pl-8"
                 />
                 <span class="absolute left-3 top-2 text-stone-400">$</span>
@@ -120,11 +132,11 @@
 
         <div class="relative z-10 pt-6 mt-6 border-t border-emerald-200/60 grid grid-cols-2 gap-4">
           <div>
-            <p class="text-xs text-emerald-600 mb-1">總成本佔比</p>
-            <p class="text-lg font-bold text-emerald-800">{{ costRatio }}%</p>
+            <p class="text-xs text-emerald-600 mb-1">燃料成本占比</p>
+             <p class="text-lg font-bold text-rose-600">{{ fuelCostRatio }}%</p>
           </div>
           <div>
-            <p class="text-xs text-emerald-600 mb-1">預估稅前獲利</p>
+            <p class="text-xs text-emerald-600 mb-1">獲利能力 (Margin)</p>
             <p class="text-lg font-bold text-emerald-800">{{ profitMargin }}%</p>
           </div>
         </div>
@@ -133,7 +145,7 @@
       <!-- 成本結構圖表 -->
       <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex items-center">
         <div class="w-1/2">
-          <h3 class="text-sm font-bold text-stone-700 mb-4">成本結構分析</h3>
+          <h3 class="text-sm font-bold text-stone-700 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">
             <li class="flex justify-between">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span>油錢</span>
@@ -141,15 +153,15 @@
             </li>
             <li class="flex justify-between">
               <span class="flex items-center gap-1"
-                ><span class="w-2 h-2 rounded-full bg-orange-400"></span>保養耗材</span
+                ><span class="w-2 h-2 rounded-full bg-orange-400"></span>保養</span
               >
               <span class="font-mono text-stone-600">${{ maintenanceTotal }}</span>
             </li>
             <li class="flex justify-between">
               <span class="flex items-center gap-1"
-                ><span class="w-2 h-2 rounded-full bg-gray-400"></span>固定開銷</span
+                ><span class="w-2 h-2 rounded-full bg-gray-400"></span>保險/其他</span
               >
-              <span class="font-mono text-stone-600">${{ otherMonthlyCostDisplay }}</span>
+              <span class="font-mono text-stone-600">${{ insuranceMonthlyDisplay }}</span>
             </li>
             <li class="pt-2 mt-2 border-t border-dashed border-stone-100 flex justify-between font-bold">
               <span class="text-stone-700">總成本</span>
@@ -166,7 +178,7 @@
     </div>
 
     <div class="text-center text-xs text-stone-400 mt-8">
-      💡 建議：每公里保養成本 (機油/輪胎/傳動) 一般速克達約在 $0.5 ~ $1.5 之間。
+      💡 建議：平台獎勵是各家業者的獲利關鍵，建議每週至少跑滿「達標趟次」才能有效拉高實薪。
     </div>
   </div>
 </template>
@@ -175,18 +187,21 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
 
-const grossIncome = ref(0);
+const baseIncome = ref(0);
+const incentive = ref(0);
 const kilometers = ref(0);
 const gasPrice = ref(30);
 const kmPerLiter = ref(35);
 const workHours = ref(0);
 const maintenancePerKm = ref(0.8);
-const otherMonthlyCost = ref(0);
+const insuranceMonthly = ref(0);
 
 const chartCanvas = ref(null);
 let chartInstance = null;
 
 // Computed
+const grossIncome = computed(() => (baseIncome.value || 0) + (incentive.value || 0));
+
 const gasCostRaw = computed(() => {
   if (!kmPerLiter.value) return 0;
   return (kilometers.value / kmPerLiter.value) * gasPrice.value;
@@ -195,9 +210,9 @@ const maintenanceTotalRaw = computed(() => kilometers.value * maintenancePerKm.v
 
 const gasCost = computed(() => Math.round(gasCostRaw.value).toLocaleString());
 const maintenanceTotal = computed(() => Math.round(maintenanceTotalRaw.value).toLocaleString());
-const otherMonthlyCostDisplay = computed(() => Math.round(otherMonthlyCost.value).toLocaleString());
+const insuranceMonthlyDisplay = computed(() => Math.round(insuranceMonthly.value).toLocaleString());
 
-const totalCostRaw = computed(() => gasCostRaw.value + maintenanceTotalRaw.value + otherMonthlyCost.value);
+const totalCostRaw = computed(() => gasCostRaw.value + maintenanceTotalRaw.value + insuranceMonthly.value);
 const totalCost = computed(() => Math.round(totalCostRaw.value).toLocaleString());
 
 const netIncomeRaw = computed(() => grossIncome.value - totalCostRaw.value);
@@ -210,8 +225,8 @@ const perKm = computed(() =>
   kilometers.value > 0 ? Math.round((netIncomeRaw.value / kilometers.value) * 10) / 10 : 0
 );
 
-const costRatio = computed(() =>
-  grossIncome.value > 0 ? Math.round((totalCostRaw.value / grossIncome.value) * 100) : 0
+const fuelCostRatio = computed(() =>
+  grossIncome.value > 0 ? Math.round((gasCostRaw.value / grossIncome.value) * 100) : 0
 );
 const profitMargin = computed(() =>
   grossIncome.value > 0 ? Math.round((netIncomeRaw.value / grossIncome.value) * 100) : 0
@@ -224,7 +239,7 @@ const updateChart = () => {
 
   const net = Math.max(0, netIncomeRaw.value);
   const gas = gasCostRaw.value;
-  const maint = maintenanceTotalRaw.value + otherMonthlyCost.value;
+  const maint = maintenanceTotalRaw.value + insuranceMonthly.value;
 
   chartInstance = new Chart(chartCanvas.value, {
     type: 'doughnut',
@@ -260,32 +275,34 @@ onMounted(() => {
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      if (data.grossIncome) grossIncome.value = data.grossIncome;
+      if (data.baseIncome) baseIncome.value = data.baseIncome;
+      if (data.incentive) incentive.value = data.incentive;
       if (data.kilometers) kilometers.value = data.kilometers;
       if (data.gasPrice) gasPrice.value = data.gasPrice;
       if (data.kmPerLiter) kmPerLiter.value = data.kmPerLiter;
       if (data.workHours) workHours.value = data.workHours;
       if (data.maintenancePerKm) maintenancePerKm.value = data.maintenancePerKm;
-      if (data.otherMonthlyCost) otherMonthlyCost.value = data.otherMonthlyCost;
+       if (data.insuranceMonthly) insuranceMonthly.value = data.insuranceMonthly;
     } catch (e) {}
   }
   setTimeout(updateChart, 100);
 });
 
 watch(
-  [grossIncome, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, otherMonthlyCost],
+  [baseIncome, incentive, kilometers, gasPrice, kmPerLiter, workHours, maintenancePerKm, insuranceMonthly],
   (vals) => {
     updateChart();
     localStorage.setItem(
       STORAGE_KEY_INPUTS,
       JSON.stringify({
-        grossIncome: vals[0],
-        kilometers: vals[1],
-        gasPrice: vals[2],
-        kmPerLiter: vals[3],
-        workHours: vals[4],
-        maintenancePerKm: vals[5],
-        otherMonthlyCost: vals[6],
+        baseIncome: vals[0],
+        incentive: vals[1],
+        kilometers: vals[2],
+        gasPrice: vals[3],
+        kmPerLiter: vals[4],
+        workHours: vals[5],
+        maintenancePerKm: vals[6],
+        insuranceMonthly: vals[7],
       })
     );
   }
