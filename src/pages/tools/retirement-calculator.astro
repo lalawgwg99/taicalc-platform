@@ -1,28 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import RetirementCalculator from '../../components/calculators/RetirementCalculator.vue';
 
 const title = "退休規劃計算｜TaiCalc";
 const description = "計算退休所需金額與每月儲蓄目標，規劃財務自由之路，支援4%法則試算。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/finance" class="hover:text-stone-800 transition-colors">退休理財</a>
-        <span>/</span>
-        <span class="text-stone-800 font-medium">退休規劃</span>
+<ToolLayout title={title} description={description} category="退休理財">
+    <RetirementCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>退休規劃三支柱：勞保、勞退與個人儲蓄</h2>
+        <p>在台灣，理想的退休金來源通常被比喻為「三腳板凳」：第一層是政府給的基礎保障（勞保年金），第二層是雇主強制的職業退休金（勞退 6%），第三層則完全取決於您個人的理財積累。</p>
+
+        <h3>退休金缺口怎麼算？</h3>
+        <p>假設您希望退休後每月有 5 萬元生活費，預計從 65 歲活到 85 歲（20年）：</p>
+        <ul class="list-disc pl-5 space-y-2">
+            <li>總需求：5 萬 × 12 月 × 20 年 = <strong>1,200 萬元</strong></li>
+            <li>扣除勞保：假設月領 2 萬，20 年約領 480 萬。</li>
+            <li>扣除勞退：假設累積 200 萬。</li>
+            <li><strong>缺口：</strong> 1200 - 480 - 200 = <strong>520 萬元</strong></li>
+        </ul>
+        <p>這 520 萬元就是您必須透過投資理財（股票、基金、保險）在退休前準備好的金額。越早開始複利效果越強！</p>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">退休規劃計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200 font-medium">財務自由</span>
-        </div>
-        <p class="text-stone-500 text-sm">計算退休金缺口與每月儲蓄目標</p>
-    </header>
-
-    <RetirementCalculator client:load />  
-</Layout>
+</ToolLayout>

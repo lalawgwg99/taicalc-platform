@@ -1,28 +1,27 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import SplitCalculator from '../../components/calculators/SplitCalculator.vue';
 
 const title = "分帳計算機｜TaiCalc";
 const description = "快速分帳計算。聚餐、合租、團購輕鬆平分費用。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">分帳計算</span>
+<ToolLayout title={title} description={description} category="實用工具">
+    <SplitCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>分帳不尷尬：多人出遊、聚餐的 AA 制藝術</h2>
+        <p>「這餐誰先付？」「車錢怎麼算？」多人出遊最怕碰到錢算不清楚，不僅麻煩，還可能傷感情。使用分帳計算機，讓數字說話，快速結清恩怨情仇。</p>
+
+        <h3>常見的分帳情境</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>平均分攤 (Even Split)：</strong> 最簡單，總金額除以人數。適用於吃合菜、唱 KTV。</li>
+            <li><strong>個別付費 (Itemized)：</strong> 誰點什麼就付什麼。適用於每個人餐點價差很大的時候。</li>
+            <li><strong>公基金模式：</strong> 每人先繳一筆公費（例如 5000 元），出遊開銷統由公費支出，最後多退少補。這是長途旅遊最推薦的方式。</li>
+        </ul>
+
+        <blockquote>
+            <strong>小提醒：</strong> 若有人墊付了大筆款項（如住宿費），結帳時若能無條件進位到百位數，或是請對方喝杯飲料，是維持良好旅伴關係的貼心舉動喔！
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">分帳計算機</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 font-medium">多人/AA制</span>
-        </div>
-        <p class="text-stone-500 text-sm">聚餐 · 旅遊 · 團購 · 輕鬆拆帳</p>
-    </header>
-
-    <SplitCalculator client:load />  
-</Layout>
+</ToolLayout>

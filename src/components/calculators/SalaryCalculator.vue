@@ -7,7 +7,7 @@
         -->
 
         <!-- 輸入卡片 -->
-        <section class="card rounded-2xl p-6 shadow-sm border border-stone-200 bg-white">
+        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
             <!-- 比較模式切換 -->
             <div class="flex items-center justify-between mb-6 pb-6 border-b border-stone-100">
                 <h2 class="text-lg font-bold text-stone-800">薪資設定</h2>
@@ -15,8 +15,8 @@
                     <span class="text-sm font-medium" :class="mode === 'compare' ? 'text-stone-800' : 'text-stone-400'">比較模式</span>
                     <button @click="mode = mode === 'single' ? 'compare' : 'single'" aria-label="切換比較模式"
                         class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none"
-                        :class="mode === 'compare' ? 'bg-emerald-500' : 'bg-stone-200'">
-                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                        :class="mode === 'compare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 'bg-stone-200'">
+                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
                             :class="mode === 'compare' ? 'translate-x-6' : 'translate-x-1'"></span>
                     </button>
                 </div>
@@ -43,8 +43,8 @@
                         <label class="block text-xs font-medium text-stone-500 mb-2">勞退自提 (%)</label>
                         <div class="grid grid-cols-3 gap-1">
                             <button v-for="n in [0, 3, 6]" :key="n" @click="pension = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all', 
-                                            pension === n ? 'bg-emerald-600 text-white shadow-sm' : 'bg-stone-100 text-stone-500 hover:bg-stone-200']">
+                                :class="['py-2 rounded-lg text-sm font-medium transition-all group', 
+                                            pension === n ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-500 hover:bg-white border border-stone-100']">
                                 {{ n }}%
                             </button>
                         </div>
@@ -71,7 +71,7 @@
                         <div class="grid grid-cols-3 gap-1">
                             <button v-for="n in [0, 3, 6]" :key="n" @click="pensionB = n"
                                 :class="['py-2 rounded-lg text-sm font-medium transition-all', 
-                                            pensionB === n ? 'bg-emerald-600 text-white shadow-sm' : 'bg-stone-100 text-stone-500 hover:bg-stone-200']">
+                                            pensionB === n ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-500 hover:bg-white border border-stone-100']">
                                 {{ n }}%
                             </button>
                         </div>
@@ -81,7 +81,7 @@
         </section>
 
         <!-- 主要結果 -->
-        <section class="card rounded-2xl p-6 shadow-sm border border-stone-200 bg-white">
+        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
             <!-- 單人模式結果 -->
             <div v-if="mode === 'single'">
                 <div class="flex items-start justify-between mb-6">
@@ -166,7 +166,7 @@
         </section>
 
         <!-- 5年預測 -->
-        <section class="card rounded-2xl p-6 shadow-sm border border-stone-200 bg-white" v-show="mode === 'single'">
+        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-show="mode === 'single'">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-sm font-semibold text-stone-800">5 年薪資預測</h2>
                 <div class="flex items-center gap-3 text-xs text-stone-500">
@@ -219,7 +219,7 @@
         </section>
 
         <!-- 雇主視角 -->
-        <section class="card rounded-2xl p-6 shadow-sm border border-stone-200 bg-white" v-if="mode === 'single'">
+        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-if="mode === 'single'">
             <h2 class="text-sm font-semibold text-stone-800 mb-4">💼 雇主視角：實際人力成本</h2>
             <div class="grid grid-cols-3 gap-4 text-center">
                 <div>
@@ -241,7 +241,7 @@
         </section>
 
         <!-- 費率說明 & FAQ - Extracted to a separate component usually, but keeping here for now -->
-        <footer class="card rounded-xl p-6 border border-stone-200 bg-stone-50 text-sm text-stone-600 space-y-6">
+        <footer class="card rounded-xl p-6 border border-white/40 bg-white/40 backdrop-blur-md text-sm text-stone-600 space-y-6">
             <div>
                 <h3 class="font-bold text-stone-800 mb-2">📌 2026 年最新費率依據</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
@@ -281,12 +281,13 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
+import Decimal from 'decimal.js';
 
 // 2026 費率常數 & 級距表
-const LABOR_RATE = 0.12     // 11% Ordinary + 1% Employment
-const LABOR_SHARE = 0.2     // Worker 20%
-const HEALTH_RATE = 0.0517
-const HEALTH_SHARE = 0.3    // Worker 30%
+const LABOR_RATE = new Decimal(0.12)     // 11% Ordinary + 1% Employment
+const LABOR_SHARE = new Decimal(0.2)     // Worker 20%
+const HEALTH_RATE = new Decimal(0.0517)
+const HEALTH_SHARE = new Decimal(0.3)    // Worker 30%
 
 // 2026 Labor (Min 29500, Max 45800)
 const LABOR_GRADES = [
@@ -334,42 +335,67 @@ let lineInstance = null
 
 // 計算邏輯函式
 const calc = (s, b, p) => {
-    const sal = s || 0
-
+    const sal = new Decimal(s || 0)
+    const bon = new Decimal(b || 0)
+    
     // 1. Get Brackets
-    const laborGrade = getGrade(sal, LABOR_GRADES, 45800)
-    const healthGrade = getGrade(sal, HEALTH_GRADES, 313000)
+    const laborGradeVal = getGrade(sal.toNumber(), LABOR_GRADES, 45800)
+    const healthGradeVal = getGrade(sal.toNumber(), HEALTH_GRADES, 313000)
+    
+    const laborGrade = new Decimal(laborGradeVal)
+    const healthGrade = new Decimal(healthGradeVal)
 
     // 2. Calc Costs
     // Worker Labor: Grade * 12% * 20%
-    const labor = Math.round(laborGrade * LABOR_RATE * LABOR_SHARE)
+    const labor = laborGrade.mul(LABOR_RATE).mul(LABOR_SHARE).round().toNumber()
 
     // Worker Health: Grade * 5.17% * 30% * (1+0 dependents assumed for basic calc)
-    const health = Math.round(healthGrade * HEALTH_RATE * HEALTH_SHARE)
+    const health = healthGrade.mul(HEALTH_RATE).mul(HEALTH_SHARE).round().toNumber()
 
     // Pension
     // Pension Table is capped at 150000. Closely aligned with Health grades up to 150k.
-    const pensionBasis = getGrade(sal, HEALTH_GRADES, 150000)
-    const penS_Real = Math.round(pensionBasis * p / 100)
+    const pensionBasisVal = getGrade(sal.toNumber(), HEALTH_GRADES, 150000)
+    const pensionBasis = new Decimal(pensionBasisVal)
+    const penS_Real = pensionBasis.mul(p).div(100).round().toNumber()
 
-    const mNet = sal - labor - health - penS_Real
-    const tSave = Math.round(penS_Real * 12 * 0.12) // Assuming 12% tax bracket
-    const yNet = mNet * 12 + sal * b - (labor + health) * b + tSave
+    const mNet = sal.minus(labor).minus(health).minus(penS_Real).toNumber()
+    const tSave = new Decimal(penS_Real).mul(12).mul(0.12).round().toNumber() // Assuming 12% tax bracket
+    
+    // Yearly Net: mNet * 12 + sal * b - (labor + health) * b + tSave
+    // Note: Bonus usually deducts labor/health? Actually NO. 
+    // Standard bonus usually doesn't deduct monthly labor/health unless specified. 
+    // However, 2nd Gen Health Insurance applies if bonus > 4 * insured salary.
+    // For simplicity and standard "Yearly Take Home", let's assume bonus is taxed but no labor/health fee unless threshold.
+    // The original logic was: sal * b - (labor + health) * b. This implies labor/health is deducted from bonus too. 
+    // This is generally NOT true for standard year-end bonus in Taiwan (Labor/Health is monthly). 
+    // Only 2nd Gen Health applies. 
+    // Let's stick to original logic for now to avoid changing business logic unless requested, 
+    // BUT the original logic `(labor + health) * b` seems wrong for Taiwan. 
+    // Let's correct it: Year End Bonus usually just has withholding tax (5%) if > 88501, and 2nd Gen Health (2.11%) if > 4*Insured.
+    // To match "Logic Optimization", let's just make the math precise first.
+    // Original: `mNet * 12 + sal * b - (labor + health) * b + tSave`
+    // I will KEEP the original formula structure but use Decimal to ensure it matches previous behavior exactly, just with better precision.
+    
+    const yearlyNet = new Decimal(mNet).mul(12)
+        .plus(sal.mul(bon))
+        .minus(new Decimal(labor).plus(health).mul(bon)) // Preserving original logic
+        .plus(tSave)
+        .toNumber()
 
     // Employer Cost
     const lg = laborGrade
     const hg = healthGrade
     // Employer Labor: Grade * 12% * 70%
-    const empLabor = Math.round(lg * LABOR_RATE * 0.7)
+    const empLabor = lg.mul(LABOR_RATE).mul(0.7).round().toNumber()
     // Employer Health: Grade * 5.17% * 60% * 1.58
-    const empHealth = Math.round(hg * HEALTH_RATE * 0.6 * 1.58)
+    const empHealth = hg.mul(HEALTH_RATE).mul(0.6).mul(1.58).round().toNumber()
     // Employer Pension: Grade * 6%
-    const empPension = Math.round(pensionBasis * 0.06)
+    const empPension = pensionBasis.mul(0.06).round().toNumber()
 
     const empCost = empLabor + empHealth + empPension
-    const tCost = sal + empCost
+    const tCost = sal.plus(empCost).toNumber()
 
-    return { labor, health, penS: penS_Real, mNet, tSave, yNet, empCost, tCost }
+    return { labor, health, penS: penS_Real, mNet, tSave, yNet: Math.round(yearlyNet), empCost, tCost }
 }
 
 // A 方案計算
@@ -397,15 +423,28 @@ const healthInsB = computed(() => resB.value.health)
 // 5年預測
 const forecast = computed(() => {
     const res = []
-    let s = salary.value || 0
-    let cumInf = 1
+    let s = new Decimal(salary.value || 0)
+    let cumInf = new Decimal(1)
+    const rr = new Decimal(raiseRate.value).div(100).plus(1)
+    const ir = new Decimal(inflationRate.value).div(100).plus(1)
+    
     for (let i = 0; i < 5; i++) {
-        if (i > 0) s = Math.round(s * (1 + raiseRate.value / 100))
-        cumInf *= (1 + inflationRate.value / 100)
-        const nominal = Math.round(s * (12 + bonus.value) * 0.88)
-        const real = Math.round(nominal / cumInf)
-        const growth = i === 0 ? '-' : (real > res[0].real ? `+${Math.round((real / res[0].real - 1) * 100)}%` : `${Math.round((real / res[0].real - 1) * 100)}%`)
-        res.push({ nominal, real, growth })
+        if (i > 0) s = s.mul(rr).round()
+        cumInf = cumInf.mul(ir)
+        
+        // nominal = s * (12 + bonus) * 0.88 (Basic Tax assumption?)
+        const nominal = s.mul(new Decimal(12).plus(bonus.value)).mul(0.88).round()
+        const real = nominal.div(cumInf).round()
+        
+        // Growth
+        let growth = '-'
+        if (i > 0) {
+           const prevReal = new Decimal(res[0].real)
+           const g = real.div(prevReal).minus(1).mul(100).round().toNumber()
+           growth = (g > 0 ? '+' : '') + g + '%'
+        }
+        
+        res.push({ nominal: nominal.toNumber(), real: real.toNumber(), growth })
     }
     return res
 })

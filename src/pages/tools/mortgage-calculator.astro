@@ -1,28 +1,31 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
 
 const title = "2026 房貸試算 (新青安版)｜TaiCalc";
 const description = "2026 新青安房貸試算。支援寬限期、分段利率計算，精準模擬補貼結束後的月付金變化。比較一般房貸與優惠貸款差異。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
-        <span>/</span>
-        <span class="text-stone-800 font-medium">房貸計算</span>
+<ToolLayout title={title} description={description} category="房產居家">
+    <MortgageCalculator client:load slot="tool" />
+
+    <div slot="article">
+        <h2>2026 房貸試算重點：新青安與寬限期策略</h2>
+        <p>隨著 2026 年房市政策變化，購屋族最關心的莫過於「新青安貸款 (New Youth Housing Loan)」的補貼期限與還款壓力測試。本工具協助您精算寬限期後的真實負擔。</p>
+
+        <h3>什麼是新青安貸款？</h3>
+        <p>為了減輕年輕人買房壓力，政府推出的優惠貸款方案。特色包括：</p>
+        <ul>
+            <li><strong>額度提高：</strong>最高貸款額度拉高至 1000 萬元。</li>
+            <li><strong>年限延長：</strong>貸款年限最長可達 40 年，大幅降低每月還款金額。</li>
+            <li><strong>寬限期展延：</strong>寬限期（只繳息不還本）最長可達 5 年。</li>
+        </ul>
+
+        <h3>2026 利率風險提示</h3>
+        <p>需特別注意，新青安的利息補貼是有期限的。當補貼結束後，或者央行升息時，您的利率將會回歸市場水準。建議在使用本計算機時，務必觀察「分段利率」功能的第二段還款金额，那才是您長期需要負擔的真實房貸壓力。</p>
+
+        <blockquote>
+            <strong>專家建議：</strong>不要只看寬限期內的低月付。請確保補貼結束後（第 6 年起），您的家庭月收入仍能負擔房貸支出不超過 30%~40%，才是健康的財務結構。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">房貸試算 (新青安版)</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">2026年版</span>
-        </div>
-        <p class="text-stone-500 text-sm">支援寬限期與分段利率。精準計算 2026 新青安補貼截止後還款變化。</p>
-    </header>
-
-    <MortgageCalculator client:load />
-</Layout>
+</ToolLayout>

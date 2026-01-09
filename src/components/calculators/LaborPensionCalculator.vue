@@ -1,9 +1,10 @@
+```
 <template>
   <div class="space-y-6">
     <div class="grid lg:grid-cols-3 gap-6">
       <!-- 左側：輸入 -->
       <div class="space-y-6 lg:col-span-1">
-        <section class="card bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
+        <section class="card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-6">
           <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span>🐢</span> 基礎設定
           </h2>
@@ -46,14 +47,11 @@
             <div>
               <label class="block text-xs font-medium text-stone-500 mb-2">自提比例 (0-6%)</label>
               <div class="flex gap-1">
-                <button
-                  v-for="n in [0, 6]"
-                  :key="n"
-                  @click="selfRate = n"
-                  :class="['flex-1 py-1.5 rounded-lg text-xs font-medium transition-all', selfRate === n ? 'bg-amber-500 text-white shadow-sm' : 'bg-stone-100 text-stone-500 hover:bg-stone-200']"
-                >
-                  {{ n }}%
-                </button>
+                <button v-for="rate in [0, 3, 6]" :key="rate" @click="selfRate = rate"
+                                :class="['flex-1 py-2 rounded-lg text-sm font-medium transition-all group',
+                                         selfRate === rate ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-600 hover:bg-white border border-stone-100']">
+                                {{ rate }}%
+                            </button>
                 <input
                   aria-label="自提比例"
                   type="number"
@@ -167,28 +165,24 @@
           <!-- 節稅 & 月提 -->
           <section class="card bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
             <h3 class="text-sm font-bold text-stone-700 mb-4">🎁 節稅效益</h3>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between p-3 bg-emerald-50 rounded-xl border border-emerald-100">
-                <div>
-                  <p class="text-xs text-emerald-600 mb-0.5 font-medium">只要自提 {{ selfRate }}%</p>
-                  <p class="text-lg font-bold text-emerald-700 font-mono">+${{ taxSavingYearly.toLocaleString() }}</p>
+            <div class="relative z-10">
+                <div class="text-center mb-6">
+                    <p class="text-stone-500 text-sm mb-1 uppercase tracking-wider">預估 65 歲累積資產</p>
+                    <p class="text-4xl md:text-5xl font-bold text-stone-800">
+                        <span class="text-emerald-500 text-2xl mr-1">$</span>{{ totalAmount.toLocaleString() }}
+                    </p>
                 </div>
-                <div class="text-right">
-                  <p class="text-[10px] text-emerald-500">每年省下稅金</p>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
+                        <p class="text-xs text-stone-400 mb-1">本金投入</p>
+                        <p class="text-lg font-bold text-stone-700">${{ totalPrincipal.toLocaleString() }}</p>
+                    </div>
+                    <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
+                        <p class="text-xs text-stone-400 mb-1">複利獲利</p>
+                        <p class="text-lg font-bold text-amber-500">+${{ totalInterest.toLocaleString() }}</p>
+                    </div>
                 </div>
-              </div>
-              <div class="grid grid-cols-2 gap-2 text-xs">
-                <div class="p-2 bg-stone-50 rounded border border-stone-100">
-                  <span class="block text-stone-400 mb-1">雇主提撥(6%)</span>
-                  <span class="block font-mono text-stone-700 font-medium"
-                    >${{ employerMonthlyContribution }}/月</span
-                  >
-                </div>
-                <div class="p-2 bg-stone-50 rounded border border-stone-100">
-                  <span class="block text-stone-400 mb-1">個人自提({{ selfRate }}%)</span>
-                  <span class="block font-mono text-stone-700 font-medium">${{ selfMonthlyContribution }}/月</span>
-                </div>
-              </div>
             </div>
           </section>
         </div>
@@ -219,20 +213,26 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
+import Decimal from 'decimal.js';
 
-// Labor Pension Grades (Simplified Key Steps, Cap 150000)
+// 2026 級距 (Min 1500, Max 150000 for Pension)
 const PENSION_GRADES = [
-  1500, 3000, 4500, 6000, 7500, 8700, 9900, 11100, 12540, 13500, 15840, 16500, 17280, 17880, 19047, 20008, 21009, 22000,
-  23100, 24000, 25200, 26400, 27600, 28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200,
-  50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100,
-  105600, 110100, 115500, 120900, 126300, 131700, 137100, 142500, 147900, 150000,
-];
+    1500, 3000, 4500, 6000, 7500, 8700, 9900, 11100, 12540, 13500, 15840, 16500,
+    17280, 17880, 19047, 20008, 21009, 22000, 23100, 24000, 25200, 26400, 27600,
+    28800, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
+    48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500,
+    80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900,
+    126300, 131700, 137100, 142500, 147900, 150000
+]
 
-const getGrade = (s) => {
-  const val = Math.max(s || 0, 1500);
-  for (let g of PENSION_GRADES) if (val <= g) return g;
-  return 150000; // Max cap
-};
+const getPensionGrade = (s) => {
+    if (s < 1500) return 1500
+    if (s > 150000) return 150000
+    for (let g of PENSION_GRADES) {
+        if (g >= s) return g
+    }
+    return 150000
+}
 
 const salary = ref(45000);
 const currentAge = ref(30);
@@ -245,40 +245,40 @@ const growthChart = ref(null);
 let chartInstance = null;
 
 const years = computed(() => Math.max(1, retireAge.value - currentAge.value));
-const monthlyWageGrade = computed(() => getGrade(salary.value));
+const monthlyWageGrade = computed(() => getPensionGrade(salary.value));
 
-const employerMonthlyContribution = computed(() => Math.round(monthlyWageGrade.value * 0.06));
-const selfMonthlyContribution = computed(() => Math.round(monthlyWageGrade.value * (selfRate.value / 100)));
-const totalMonthlyContribution = computed(() => employerMonthlyContribution.value + selfMonthlyContribution.value);
+const employerMonthlyContribution = computed(() => new Decimal(monthlyWageGrade.value).mul(0.06).round().toNumber());
+const selfMonthlyContribution = computed(() => new Decimal(monthlyWageGrade.value).mul(new Decimal(selfRate.value).div(100)).round().toNumber());
+const totalMonthlyContribution = computed(() => new Decimal(employerMonthlyContribution.value).plus(selfMonthlyContribution.value).toNumber());
 
 // Tax Saving
-const taxSavingYearly = computed(() => Math.round(selfMonthlyContribution.value * 12 * (taxRate.value / 100)));
+const taxSavingYearly = computed(() => new Decimal(selfMonthlyContribution.value).mul(12).mul(new Decimal(taxRate.value).div(100)).round().toNumber());
 
 // Projection
 const calculateProjection = () => {
   const months = years.value * 12;
-  const monthlyRate = roi.value / 100 / 12;
+  const monthlyRate = new Decimal(roi.value).div(100).div(12);
 
-  const monthlyContribBasic = employerMonthlyContribution.value;
-  const monthlyContribTotal = totalMonthlyContribution.value;
+  const monthlyContribBasic = new Decimal(employerMonthlyContribution.value);
+  const monthlyContribTotal = new Decimal(totalMonthlyContribution.value);
 
   let data = [];
-  let balanceBasic = 0;
-  let balanceTotal = 0;
-  let principalTotal = 0;
+  let balanceBasic = new Decimal(0);
+  let balanceTotal = new Decimal(0);
+  let principalTotal = new Decimal(0);
 
   for (let i = 1; i <= years.value; i++) {
     for (let m = 0; m < 12; m++) {
-      balanceBasic = balanceBasic * (1 + monthlyRate) + monthlyContribBasic;
-      balanceTotal = balanceTotal * (1 + monthlyRate) + monthlyContribTotal;
-      principalTotal += monthlyContribTotal;
+      balanceBasic = balanceBasic.mul(monthlyRate.plus(1)).plus(monthlyContribBasic);
+      balanceTotal = balanceTotal.mul(monthlyRate.plus(1)).plus(monthlyContribTotal);
+      principalTotal = principalTotal.plus(monthlyContribTotal);
     }
     data.push({
       year: currentAge.value + i,
-      balanceBasic: Math.round(balanceBasic),
-      balanceTotal: Math.round(balanceTotal),
-      principal: Math.round(principalTotal),
-      interest: Math.round(balanceTotal - principalTotal),
+      balanceBasic: balanceBasic.round().toNumber(),
+      balanceTotal: balanceTotal.round().toNumber(),
+      principal: principalTotal.round().toNumber(),
+      interest: balanceTotal.minus(principalTotal).round().toNumber(),
     });
   }
   return data;
@@ -290,18 +290,18 @@ const totalPrincipal = computed(() => projection.value[projection.value.length -
 const totalInterest = computed(() => projection.value[projection.value.length - 1]?.interest || 0);
 
 const principalPercent = computed(() =>
-  totalAmount.value > 0 ? Math.round((totalPrincipal.value / totalAmount.value) * 100) : 0
+  totalAmount.value > 0 ? new Decimal(totalPrincipal.value).div(totalAmount.value).mul(100).round().toNumber() : 0
 );
 const interestPercent = computed(() => 100 - principalPercent.value);
 
 // Monthly Pension Estimate (Annuity for 20 years @ 2% post-retirement)
 const monthlyPension = computed(() => {
-  const r = 0.02 / 12;
+  const r = new Decimal(0.02).div(12);
   const n = 20 * 12;
   // PV = PMT * ((1 - (1+r)^-n) / r) => PMT = PV * r / (1 - (1+r)^-n)
   if (totalAmount.value === 0) return 0;
-  const factor = (1 - Math.pow(1 + r, -n)) / r;
-  return Math.round(totalAmount.value / factor);
+  const factor = (new Decimal(1).minus(r.plus(1).pow(-n))).div(r);
+  return new Decimal(totalAmount.value).div(factor).round().toNumber();
 });
 
 const updateChart = () => {

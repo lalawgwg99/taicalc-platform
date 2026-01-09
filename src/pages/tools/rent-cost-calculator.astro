@@ -1,28 +1,28 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import RentCostCalculator from '../../components/calculators/RentCostCalculator.vue';
 
 const title = "租金成本計算｜TaiCalc";
 const description = "計算租屋真實成本，包含押金機會成本與隱藏費用。";
 ---
 
-<Layout title={title} description={description}>
-   <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/life" class="hover:text-stone-800 transition-colors">生活計算</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">租金成本</span>
+<ToolLayout title={title} description={description} category="生活計算">
+    <RentCostCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>租屋不只是繳房租：隱形成本大揭密</h2>
+        <p>很多租屋族在計算預算時，往往只看到每個月的「房租」，卻忽略了押金的時間價值與其他潛在費用。這可能導致您低估了真實的居住成本。</p>
+
+        <h3>租屋三大隱形成本</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>押金機會成本：</strong> 兩個月的押金壓在房東那裡（通常是數萬元），這筆錢如果拿去投資（例如 5% 的 ETF），一年下來其實有數千元的「少賺利息」。</li>
+            <li><strong>電費價差：</strong> 許多分租套房採取「一度電 5 元」甚至更高的計價方式，遠高於台電的一般費率。</li>
+            <li><strong>通勤成本：</strong> 為了省房租住得遠，反而增加了每日的交通費與時間成本。</li>
+        </ul>
+
+        <blockquote>
+            <strong>租屋補貼：</strong> 別忘了查詢政府的「300億元中央擴大租金補貼專案」。只要符合資格（單身、新婚、育兒家庭等），每月可補助 2,000 ~ 8,000 元不等，能大幅降低您的租屋負擔。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">租金成本計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">真實開銷</span>
-        </div>
-        <p class="text-stone-500 text-sm">含押金機會成本與隱藏費用試算</p>
-    </header>
-
-    <RentCostCalculator client:load />  
-</Layout>
+</ToolLayout>

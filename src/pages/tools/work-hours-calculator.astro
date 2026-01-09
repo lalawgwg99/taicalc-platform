@@ -1,30 +1,27 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import WorkHoursCalculator from '../../components/calculators/WorkHoursCalculator.vue';
 
 const title = "工時計算｜薪資試算｜TaiCalc";
 const description = "計算上班時數與薪資，適用於時薪、兼職、計時工作者。週排班視覺化與薪資預估。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/life" class="hover:text-stone-800 transition-colors">生活計算</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">工時計算</span>
+<ToolLayout title={title} description={description} category="薪資權益">
+    <WorkHoursCalculator client:load slot="tool" />
+
+    <div slot="article">
+        <h2>工時帳本：紀錄時間，就是守護薪資</h2>
+        <p>對於時薪制 (Part-time) 與排班制工作者來說，「工時」直接決定了收入。清楚紀錄每日上工時間，不僅能核對薪資單，更是申請加班費的重要依據。</p>
+
+        <h3>勞基法工時重點</h3>
+        <ul>
+            <li><strong>每日正常工時：</strong> 不得超過 8 小時。</li>
+            <li><strong>每週工時：</strong> 不得超過 40 小時。</li>
+            <li><strong>休息時間：</strong> 連續工作 4 小時，應有 30 分鐘休息時間（除非實行輪班制或工作有連續性或緊急性）。</li>
+        </ul>
+
+        <blockquote>
+            <strong>變形工時：</strong> 餐飲業、服務業常見「變形工時」（如雙週 80 小時彈性挪移），這種情況下每日工時可達 10 小時而不算加班，但必須經過工會或勞資會議同意。建議您在入職前確認公司的工時制度。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">工時排班計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 font-medium">
-                週排班
-            </span>
-        </div>
-        <p class="text-stone-500 text-sm">一週工時統計 · 薪資預估 · 視覺化班表</p>
-    </header>
-
-    <WorkHoursCalculator client:load />
-</Layout>
+</ToolLayout>

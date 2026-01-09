@@ -1,28 +1,30 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import InsuranceAssessment from '../../components/calculators/InsuranceAssessment.vue';
 
 const title = "保險效益評估 (IRR/需求試算)｜TaiCalc";
 const description = "全方位保險評估工具。儲蓄險 IRR 真實報酬率試算，協助判斷保單價值；壽險需求分析，精準計算家庭責任缺口與建議保額。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">保險評估</span>
+<ToolLayout title={title} description={description} category="理財規劃">
+    <InsuranceAssessment client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>買保險是保障還是投資？IRR 幫你照妖鏡</h2>
+        <p>許多人在購買儲蓄險時，常被業務員的話術迷惑：「預定利率 2.5%」、「比定存高」、「還本賺利息」。但這些名詞往往不等於您實際拿到的報酬率。要評估一張保單是否划算，您唯一需要看的指標叫做 <strong>IRR (內部報酬率)</strong>。</p>
+
+        <h3>為什麼儲蓄險要看 IRR？</h3>
+        <p>因為保險公司會扣除「附加費用」（給業務的佣金、行政成本等），您繳的保費並不是 100% 進入滾息。IRR 考慮了金錢的時間價值與實際現金流，是衡量儲蓄型保單真實收益率的黃金標準。</p>
+        
+        <h4>IRR 判讀標準：</h4>
+        <ul>
+            <li><strong>IRR < 定存利率 (約 1.6%)：</strong> 不如放定存，流動性還比較好。</li>
+            <li><strong>IRR > 定存利率：</strong> 可考慮作為長期保守資產配置。</li>
+            <li><strong>負值：</strong> 代表提前解約會虧損本金（儲蓄險常見閉鎖期）。</li>
+        </ul>
+
+        <blockquote>
+            <strong>雙十原則：</strong> 對於壽險保障（身故賠償），專家建議保額應為「年收入的 10 倍」，保費支出不超過「年收入的 1/10」。本工具亦提供簡易的壽險需求分析，幫您算出家庭責任缺口。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">保險效益評估</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 font-medium">IRR / 需求分析</span>
-        </div>
-         <p class="text-stone-500 text-sm">真實呈現儲蓄險年化報酬率 (IRR)，與家庭壽險責任缺口分析。</p>
-    </header>
-
-    <InsuranceAssessment client:load />  
-</Layout>
+</ToolLayout>

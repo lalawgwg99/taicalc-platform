@@ -1,28 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import DeliveryIncomeCalculator from '../../components/calculators/DeliveryIncomeCalculator.vue';
 
 const title = "外送收入計算｜TaiCalc";
 const description = "計算外送平台實際收入，扣除油錢、機車折舊後的淨所得。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">外送收入</span>
+<ToolLayout title={title} description={description} category="工作計算">
+    <DeliveryIncomeCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>跑外送真的好賺嗎？揭密騎士的真實時薪</h2>
+        <p>外送平台的高薪神話已成過去式，取而代之的是更精算的獎勵機制。想要在外送戰場生存，您不能只看「跑單總收入」，更要學會計算「淨利」。</p>
+
+        <h3>外送兩大隱形殺手</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>油錢消耗：</strong> 市區走走停停最耗油。建議使用具備怠速熄火的車款，或考慮電動車資費方案（視每月里程而定）。</li>
+            <li><strong>機車折舊與保養：</strong> 黑油、輪胎、煞車皮的更換頻率是常人的 3~5 倍。如果不把這些耗損算進去，您可能只是在「預支未來修車的錢」。</li>
+        </ul>
+
+        <blockquote>
+            <strong>商業保險：</strong> 無論是 UberEats 或 foodpanda，都強烈建議投保「營業用機車險」（第三責任險+超額）。因為一般自用機車險在「營業行為」發生事故時是<strong>不理賠</strong>的。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">外送收入計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 font-medium">淨利試算</span>
-        </div>
-        <p class="text-stone-500 text-sm">扣除油錢、保養後的實際時薪</p>
-    </header>
-
-    <DeliveryIncomeCalculator client:load />  
-</Layout>
+</ToolLayout>

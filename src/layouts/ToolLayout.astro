@@ -1,0 +1,63 @@
+---
+
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  category?: string;
+}
+
+const { title, description, category = "工具" } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- 1. Header: Back to Hub -->
+        <nav class="mb-8 pt-4">
+            <a href="/" class="inline-flex items-center text-stone-500 hover:text-[#10B981] transition-colors group">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 group-hover:-translate-x-1 transition-transform">
+                    <path d="m15 18-6-6 6-6"/>
+                </svg>
+                回首頁
+            </a>
+        </nav>
+
+        <!-- Tool Header -->
+        <header class="mb-10 text-center">
+            <span class="text-xs font-bold tracking-wider text-[#10B981] uppercase mb-2 block">{category}</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-4">{title}</h1>
+            <p class="text-lg text-stone-500 max-w-2xl mx-auto">{description}</p>
+        </header>
+
+        <!-- 2. Tool: Calculator Component -->
+        <main class="mb-20 bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-6 md:p-8">
+            <slot name="tool" />
+        </main>
+
+        <!-- 3. Article: SEO Content -->
+        <article class="prose prose-stone prose-lg mx-auto mb-20">
+            <slot name="article" />
+        </article>
+
+        <!-- 4. Cross-Linking: Related Tools -->
+        <section class="border-t border-stone-200 pt-16 mb-20">
+            <h3 class="text-2xl font-bold text-stone-900 mb-8 text-center">更多實用工具</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Dynamic or Hardcoded Recommendations (Can be refined later) -->
+                 <a href="/tools/salary-calculator.html" class="card p-4 rounded-xl bg-white/40 backdrop-blur-md border border-white/30 hover:border-emerald-500 hover:bg-white/60 transition-all block group">
+                    <div class="font-bold text-stone-800 mb-1 group-hover:text-emerald-700">薪資實拿試算</div>
+                    <div class="text-sm text-stone-600">扣除勞健保後實際領多少？</div>
+                </a>
+                <a href="/tools/mortgage-calculator.html" class="card p-4 rounded-xl bg-white/40 backdrop-blur-md border border-white/30 hover:border-emerald-500 hover:bg-white/60 transition-all block group">
+                    <div class="font-bold text-stone-800 mb-1 group-hover:text-emerald-700">房貸試算</div>
+                    <div class="text-sm text-stone-600">新青安、寬限期與還款試算。</div>
+                </a>
+                <a href="/tools/fire-calculator.html" class="card p-4 rounded-xl bg-white/40 backdrop-blur-md border border-white/30 hover:border-emerald-500 hover:bg-white/60 transition-all block group">
+                    <div class="font-bold text-stone-800 mb-1 group-hover:text-emerald-700">退休規劃</div>
+                    <div class="text-sm text-stone-600">計算你需要多少錢才能退休？</div>
+                </a>
+            </div>
+        </section>
+    </div>
+</Layout>

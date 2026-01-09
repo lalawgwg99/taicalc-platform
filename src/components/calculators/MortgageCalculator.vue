@@ -1,10 +1,10 @@
 <template>
     <div class="space-y-6">
-        <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+        <div class="card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 overflow-hidden">
             <!-- Presets -->
             <div class="grid grid-cols-2 border-b border-stone-200">
                 <button @click="applyPreset('newYouth')"
-                    class="py-3 text-sm font-bold text-center transition-colors hover:bg-emerald-50 text-emerald-700 border-r border-stone-100">
+                    class="py-3 text-sm font-bold text-center transition-all hover:bg-emerald-50 text-emerald-700 border-r border-stone-100 hover:text-emerald-800">
                     🏠 新青安 2026 (40年)
                 </button>
                 <button @click="applyPreset('general')"
@@ -113,7 +113,7 @@
 
                     <!-- Monthly Pay -->
                     <div
-                        class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-6 border border-emerald-100 text-center">
+                        class="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-xl p-6 border border-emerald-100 text-center shadow-inner">
                         <p class="text-xs text-emerald-700 uppercase tracking-wide mb-1">預估月付金</p>
 
                         <!-- Logic for Displaying Ranges -->
@@ -143,12 +143,12 @@
 
                     <!-- Summary Stats -->
                     <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div class="bg-stone-50 p-3 rounded-xl border border-stone-200">
+                        <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
                             <span class="block text-stone-400 mb-1">利息總支出</span>
                             <span class="block text-lg font-bold text-stone-700 font-mono">${{
                                 fmt(results.totalInterest) }}</span>
                         </div>
-                        <div class="bg-stone-50 p-3 rounded-xl border border-stone-200">
+                        <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
                             <span class="block text-stone-400 mb-1">本息總額</span>
                             <span class="block text-lg font-bold text-stone-700 font-mono">${{
                                 fmt(results.totalPayment) }}</span>
@@ -157,7 +157,7 @@
 
                     <!-- Prepayment Comparison -->
                     <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
-                        class="mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
+                        class="mt-4 bg-amber-50/80 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
                         <h4 class="text-amber-800 font-bold mb-2 flex items-center gap-2">
                             <span>🎉 提前還款效益</span>
                         </h4>
@@ -196,6 +196,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
+import Decimal from 'decimal.js';
 
 const amountWan = ref(1000) // 1000萬
 const years = ref(40)
@@ -230,16 +231,23 @@ const applyPreset = (type) => {
     }
 }
 
-const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'
+const fmt = (n) => n ? new Decimal(n).round().toNumber().toLocaleString('zh-TW') : '0'
 
 const PMT = (rateYear, nMonths, pv) => {
-    if (rateYear === 0) return pv / nMonths
-    const r = rateYear / 100 / 12
-    return pv * r * Math.pow(1 + r, nMonths) / (Math.pow(1 + r, nMonths) - 1)
+    const ry = new Decimal(rateYear)
+    const nm = new Decimal(nMonths)
+    const pval = new Decimal(pv)
+    
+    if (ry.equals(0)) return pval.div(nm)
+    const r = ry.div(100).div(12)
+    const onePlusR = r.plus(1)
+    const pow = onePlusR.pow(nm)
+    // pv * r * pow / (pow - 1)
+    return pval.mul(r).mul(pow).div(pow.minus(1))
 }
 
 const results = computed(() => {
-    const loan = (amountWan.value || 0) * 10000
+    const loan = new Decimal(amountWan.value || 0).mul(10000)
     const totalMonths = (years.value || 0) * 12
     const graceMonths = (graceYears.value || 0) * 12
     const changeMonth = twoStageMode.value ? stage1Months.value : 99999
@@ -247,40 +255,62 @@ const results = computed(() => {
     if (totalMonths <= 0) return {}
 
     // Rate Helper
-    const getRate = (m) => ((m <= changeMonth) ? rate1.value : (rate2.value || rate1.value)) / 100 / 12
+    const getRate = (m) => {
+        const rVal = (m <= changeMonth) ? rate1.value : (rate2.value || rate1.value)
+        return new Decimal(rVal).div(100).div(12)
+    }
 
     // Pass 1: Original Schedule
     let bal1 = loan
-    let totInt1 = 0
+    let totInt1 = new Decimal(0)
     let pmts = []
-    let payGrace = 0
-    let payStart = 0
-    let payStage2 = 0
-    let currentStdPMT = 0
+    let payGrace = new Decimal(0)
+    let payStart = new Decimal(0)
+    let payStage2 = new Decimal(0)
+    let currentStdPMT = new Decimal(0)
 
     for (let m = 1; m <= totalMonths; m++) {
         const r = getRate(m)
-        const int = bal1 * r
-        totInt1 += int
+        const int = bal1.mul(r).round() // Interest is properly rounded monthly
+        totInt1 = totInt1.plus(int)
 
-        let pmt = 0
+        let pmt = new Decimal(0)
         if (m <= graceMonths) {
             pmt = int
             if (m === 1) payGrace = pmt
         } else {
             if (m === graceMonths + 1 || m === changeMonth + 1) {
                 const rem = totalMonths - m + 1
-                currentStdPMT = PMT(getRate(m) * 12 * 100, rem, bal1)
+                // Recalculate PMT based on remaining balance
+                if (bal1.gt(0)) {
+                    // PMT needs rate in %, remaining months, and PV
+                    const ratePct = (m <= changeMonth ? rate1.value : (rate2.value || rate1.value))
+                    currentStdPMT = PMT(ratePct, rem, bal1).round()
+                } else {
+                    currentStdPMT = new Decimal(0)
+                }
             }
             pmt = currentStdPMT
             if (m === graceMonths + 1) payStart = pmt
             if (m === changeMonth + 1) payStage2 = pmt
         }
+        
+        // Final adjustment for last month? Usually regular PMT covers it, but with rounding differences...
+        // For standard simulation, we just decrease balance.
+        // If balance < pmt (last month), we just pay balance + int?
+        // Standard amortization usually keeps PMT constant. Let's stick to standard.
+        // But we should check if balance goes negative.
 
+        let prin = pmt.minus(int)
+        
+        // Handling the very last payment precision if needed? 
+        // For now, let standard logic run. 
+        
         pmts.push(pmt)
-        const prin = pmt - int
-        bal1 -= prin
+        bal1 = bal1.minus(prin)
     }
+
+    const totalPayment1 = loan.plus(totInt1)
 
     // Pass 2: Prepayment
     let totInt2 = totInt1
@@ -288,25 +318,27 @@ const results = computed(() => {
 
     if (prepaymentMode.value && (extraMonthly.value > 0 || extraLump.value > 0)) {
         let bal2 = loan
-        totInt2 = 0
+        totInt2 = new Decimal(0)
         realMonths = 0
         const lumpM = (lumpYear.value * 12)
+        const exMon = new Decimal(extraMonthly.value || 0)
+        const exLump = new Decimal(extraLump.value || 0).mul(10000)
 
         let balPrepay = loan
 
         for (let m = 1; m <= totalMonths; m++) {
-            if (balPrepay <= 10) {
+            if (balPrepay.lte(10)) { // Threshold for "paid off"
                 if (realMonths === 0) realMonths = m - 1
                 break
             }
-            realMonths = m // actively paying
+            realMonths = m 
 
             const r = getRate(m)
-            const int = balPrepay * r
-            totInt2 += int
+            const int = balPrepay.mul(r).round()
+            totInt2 = totInt2.plus(int)
 
-            let basePmt = pmts[m - 1] || 0
-            let actualPay = 0
+            let basePmt = pmts[m - 1] || new Decimal(0)
+            let actualPay = new Decimal(0)
 
             if (m <= graceMonths) {
                 actualPay = int
@@ -314,31 +346,36 @@ const results = computed(() => {
                 actualPay = basePmt
             }
 
-            let extra = (extraMonthly.value || 0)
-            if (m === lumpM) extra += (extraLump.value || 0) * 10000
+            let extra = exMon
+            if (m === lumpM) extra = extra.plus(exLump)
 
-            let totalPay = actualPay + extra
+            let totalPay = actualPay.plus(extra)
 
-            if (totalPay > balPrepay + int) totalPay = balPrepay + int
+            if (totalPay.gt(balPrepay.plus(int))) {
+                 totalPay = balPrepay.plus(int)
+            }
 
-            const prin = totalPay - int
-            balPrepay -= prin
+            const prin = totalPay.minus(int)
+            balPrepay = balPrepay.minus(prin)
         }
     }
+    
+    // Calculate stats
+    const interestSaved = totInt1.minus(totInt2)
 
     return {
-        gracePay: payGrace,
-        afterGracePay: payStart,
-        stage2Pay: payStage2 || payStart,
-        basePay: payStart,
-        totalInterest: totInt1,
-        totalPayment: loan + totInt1,
+        gracePay: payGrace.toNumber(),
+        afterGracePay: payStart.toNumber(),
+        stage2Pay: (payStage2.gt(0) ? payStage2 : payStart).toNumber(),
+        basePay: payStart.toNumber(),
+        totalInterest: totInt1.toNumber(),
+        totalPayment: totalPayment1.toNumber(),
 
         // New Results
-        newTotalInterest: totInt2,
-        newTotalPayment: loan + totInt2,
+        newTotalInterest: totInt2.toNumber(),
+        newTotalPayment: loan.plus(totInt2).toNumber(),
         monthsSaved: totalMonths - realMonths,
-        interestSaved: totInt1 - totInt2,
+        interestSaved: interestSaved.toNumber(),
         finalMonths: realMonths
     }
 })

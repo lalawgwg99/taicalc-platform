@@ -1,28 +1,32 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import StockCalculator from '../../components/calculators/StockCalculator.vue';
 
 const title = "股票損益計算機 (2026版)｜TaiCalc";
 const description = "2026 最新股票交易成本計算：手續費、證交稅、當沖稅率優惠。支援現股、當沖、ETF 交易成本試算，精準掌握獲利。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">工具</a>
-        <span>/</span>
-        <span class="text-stone-800 font-medium">股票損益計算</span>
+<ToolLayout title={title} description={description} category="理財規劃">
+    <StockCalculator client:load slot="tool" />
+
+    <div slot="article">
+        <h2>股票交易成本全解析：別讓手續費吃掉你的獲利</h2>
+        <p>許多股市新手只關注股價漲跌，卻忽略了「交易成本」其實是影響獲利的關鍵。在台灣股市交易，主要可以分為「買進」與「賣出」兩個階段的費用。</p>
+
+        <h3>股市交易費用明細</h3>
+        <ul>
+            <li><strong>手續費 (買賣皆收)：</strong> 公定價為成交金額的 <strong>0.1425%</strong>。通常券商會給予折扣（常見為 2.8 折 ~ 6 折）。單筆最低通常收 20 元（零股除外）。</li>
+            <li><strong>證交稅 (僅賣出收)：</strong> 這是政府收的稅，無法打折。
+                <ul>
+                    <li>一般股票：<strong>0.3%</strong></li>
+                    <li>ETF：<strong>0.1%</strong></li>
+                    <li>當沖交易：<strong>0.15%</strong> (目前優惠減半)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <blockquote>
+            <strong>當沖客注意：</strong> 雖然當沖稅率減半，但別忘了還是要付兩次手續費。本計算機已內建最新的證交稅率，輸入成交價與股數，直接幫您算出「損益平衡點」是多少錢。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">股票損益計算機</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-red-100 text-red-700 border border-red-200 font-medium">2026年版</span>
-        </div>
-        <p class="text-stone-500 text-sm">支援現股 (0.3%)、當沖 (0.15%)、ETF (0.1%) 稅率計算。</p>
-    </header>
-
-    <StockCalculator client:load />
-</Layout>
+</ToolLayout>

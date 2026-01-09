@@ -1,28 +1,24 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import ACInstallationCalculator from '../../components/calculators/ACInstallationCalculator.vue';
 
 const title = "冷氣安裝成本計算｜TaiCalc";
 const description = "專業冷氣配管成本試算工具。整合銅管損耗、彎頭、冷媒追加費用，協助師傅與業主精準估價。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/life" class="hover:text-stone-800 transition-colors">生活計算</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">冷氣安裝成本</span>
+<ToolLayout title={title} description={description} category="生活計算">
+    <ACInstallationCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>冷氣安裝報價單怎麼看？魔鬼藏在細節裡</h2>
+        <p>很多屋主在詢問冷氣安裝時，常被「基本安裝費」誤導，最後結帳時才發現多了好幾千元的「施工費」。這不是師傅亂喊價，而是冷氣配管工程本身就是高度客製化的專業技術。</p>
+
+        <h3>常見加價項目</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>冷媒銅管超長：</strong> 原廠通常只附 5 米銅管，超過部分以公尺計價（每米約 $400~$500）。</li>
+            <li><strong>洗孔/穿牆：</strong> 若牆壁太厚或有特殊材質（如洗過樑），需要特殊機具鑽孔，每孔計價。</li>
+            <li><strong>架設室外機架：</strong> 豪華架、白鐵架、遮雨棚都是額外選配。</li>
+            <li><strong>危險施工費：</strong> 若室外機安裝在無立足點的外牆，師傅需要承擔高風險施工，這筆費用是為了保障工安，千萬別砍價。</li>
+        </ul>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">冷氣安裝成本計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 font-medium">PRO v3.2</span>
-        </div>
-        <p class="text-stone-500 text-sm">專業配管估價 · 銅管損耗精算 · 冷媒追加費用</p>
-    </header>
-
-    <ACInstallationCalculator client:load />  
-</Layout>
+</ToolLayout>

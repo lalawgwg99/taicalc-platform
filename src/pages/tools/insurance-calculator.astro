@@ -1,28 +1,29 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import InsuranceCalculator from '../../components/calculators/InsuranceCalculator.vue';
 
 const title = "2026 勞健保計算機｜TaiCalc";
 const description = "2026最新勞健保費用試算。輸入薪資自動對應投保級距，支援一般勞工、職業工會、雇主等身分，精準計算個人與公司負擔金額。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">工具</a>
-        <span>/</span>
-        <span class="text-stone-800 font-medium">勞健保計算機</span>
+<ToolLayout title={title} description={description} category="薪資權益">
+    <InsuranceCalculator client:load slot="tool" />
+
+    <div slot="article">
+        <h2>2026 勞健保費率解析：雇主與勞工負擔比例</h2>
+        <p>勞健保是台灣社會安全的基石。不論您是一般上班族、職業工會投保人，或是雇主，每年都必須關注基本工資與費率的調整。</p>
+
+        <h3>費用是怎麼算出來的？</h3>
+        <p>勞健保費 = <strong>投保薪資級距 × 費率 × 負擔比例 × (1 + 眷屬人數)</strong></p>
+        
+        <h4>一般受僱勞工負擔比例：</h4>
+        <ul>
+            <li><strong>勞保：</strong> 勞工 20% / 雇主 70% / 政府 10%</li>
+            <li><strong>健保：</strong> 勞工 30% / 雇主 60% / 政府 10%</li>
+        </ul>
+
+        <blockquote>
+            <strong>職業工會提醒：</strong> 若您是透過職業工會投保，您必須負擔 60% 的勞健保費用（政府補助 40%），且沒有「勞退 6%」的雇主提撥，建議自行規劃退休金（如勞退自提或投資）。
+        </blockquote>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">勞健保計算機</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200 font-medium">2026年版</span>
-        </div>
-        <p class="text-stone-500 text-sm">適用 2026 基本工資 29,500 元。自動計算勞保、健保、勞退自行與雇主負擔。</p>
-    </header>
-
-    <InsuranceCalculator client:load /> 
-</Layout>
+</ToolLayout>

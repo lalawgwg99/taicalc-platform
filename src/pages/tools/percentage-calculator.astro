@@ -1,30 +1,23 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import ToolLayout from '../../layouts/ToolLayout.astro';
 import PercentageCalculator from '../../components/calculators/PercentageCalculator.vue';
 
 const title = "百分比計算機｜TaiCalc";
 const description = "多功能百分比計算：折扣換算、變化率漲跌、求原值、求佔比。視覺化圖解，清楚易懂。";
 ---
 
-<Layout title={title} description={description}>
-    <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-6 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
-        <span>/</span>
-        <a href="/categories/tools" class="hover:text-stone-800 transition-colors">實用工具</a>
-        <span>/</span>
-        <span class="text-stone-900 font-medium">百分比計算</span>
+<ToolLayout title={title} description={description} category="數學工具">
+    <PercentageCalculator client:load slot="tool" />  
+
+    <div slot="article">
+        <h2>生活中無處不在的「百分比」</h2>
+        <p>從百貨公司的「打 8 折」、股市的「漲跌幅 5%」、到食材的「含水量 70%」，百分比（Percentage）是現代生活中最常用的數學語言。搞懂怎麼算，才不會被數字遊戲忽悠。</p>
+
+        <h3>三大實用場景</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>折扣換算：</strong> 「打 8 折」= 售價 × 0.8 / 「20% OFF」= 售價 × (1 - 0.2)。兩者意思一樣，但寫法不同。</li>
+            <li><strong>成長率計算：</strong> (今年營收 - 去年營收) ÷ 去年營收 × 100%。正數代表成長，負數代表衰退。</li>
+            <li><strong>服務費/小費：</strong> 在國外餐廳，通常需外加 10%~20% 小費。簡單心算法：先算 10% (移動小數點一位)，再看是否要加倍。</li>
+        </ul>
     </div>
-
-    <header class="mb-8">
-        <div class="flex items-center justify-between mb-2">
-            <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">百分比計算</h1>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200 font-medium">
-                多功能版
-            </span>
-        </div>
-        <p class="text-stone-500 text-sm">折扣、變化率、反推原值、佔比計算，透過圖解一次搞懂。</p>
-    </header>
-
-    <PercentageCalculator client:load />
-</Layout>
+</ToolLayout>
