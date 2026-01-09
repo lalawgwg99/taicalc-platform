@@ -382,6 +382,7 @@ const results = computed(() => {
 
 // Auto-save for Dashboard
 watch(results, (newVal) => {
+    if (typeof localStorage === 'undefined') return
     if (newVal.afterGracePay > 0) {
         localStorage.setItem('taicalc_mortgage_monthly', Math.floor(newVal.afterGracePay))
     } else {
@@ -391,6 +392,7 @@ watch(results, (newVal) => {
 
 // Persistence
 onMounted(() => {
+    if (typeof localStorage === 'undefined') return
     const saved = localStorage.getItem('taicalc_mortgage_inputs')
     if (saved) {
         try {
@@ -406,6 +408,7 @@ onMounted(() => {
 })
 
 watch([amountWan, years, graceYears, rate1, rate2, twoStageMode], (vals) => {
+    if (typeof localStorage === 'undefined') return
     localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
         amountWan: vals[0], years: vals[1], graceYears: vals[2],
         rate1: vals[3], rate2: vals[4], twoStageMode: vals[5]
