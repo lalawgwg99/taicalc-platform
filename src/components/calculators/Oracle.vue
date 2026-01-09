@@ -480,7 +480,7 @@ const structured = computed(() => {
     actions,
     risks,
     questions,
-  };
+    };
 });
 
 const loadHistory = (rec) => {
