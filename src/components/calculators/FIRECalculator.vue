@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
     <!-- Input Section -->
     <div class="lg:col-span-4 space-y-6">
-      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-4 md:p-6">
         <h2 class="text-lg font-bold text-stone-800 mb-5 flex items-center gap-2">
           <span class="w-1 h-6 bg-emerald-500 rounded-full"></span>
           現況輸入
@@ -152,7 +152,7 @@
 
       <!-- Coffee Simulator -->
       <div
-        class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-6 relative overflow-hidden"
+        class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-4 md:p-6 relative overflow-hidden"
       >
         <div class="relative z-10">
           <div class="flex items-start justify-between mb-2">
@@ -181,7 +181,7 @@
       <!-- Main KPIs -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Target Block -->
-        <div class="bg-stone-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+        <div class="bg-stone-900 text-white rounded-2xl p-4 md:p-6 shadow-xl relative overflow-hidden group">
           <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +214,7 @@
 
         <!-- Countdown Block -->
         <div
-          class="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden"
+          class="bg-white border border-stone-200 rounded-2xl p-4 md:p-6 shadow-sm flex flex-col justify-center items-center text-center relative overflow-hidden"
         >
           <div v-if="yearsToFreedom > 0 && yearsToFreedom < 100">
             <p class="text-stone-500 text-sm font-medium mb-2">距離財務自由還有</p>
@@ -238,7 +238,7 @@
       </div>
 
       <!-- Chart -->
-      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6">
+      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-4 md:p-6">
         <h3 class="font-bold text-stone-800 mb-6 flex items-center justify-between">
           資產成長預測
           <span class="text-xs font-normal text-stone-400 bg-stone-100 px-2 py-1 rounded">考慮複利</span>

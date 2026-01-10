@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <!-- 設定卡片 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-lg font-bold text-stone-800">基本與時薪</h2>
         <div class="flex items-center gap-2">
@@ -85,7 +85,7 @@
     <!-- 統計結果 -->
     <section class="grid sm:grid-cols-2 gap-6">
       <!-- 數據卡片 -->
-      <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col justify-center">
+      <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 flex flex-col justify-center">
         <div class="text-center mb-6">
           <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">一週預估薪資</p>
           <p class="text-4xl font-bold text-stone-800 stat-value">
@@ -109,7 +109,7 @@
       </div>
 
       <!-- 圖表卡片 -->
-      <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
         <h3 class="text-sm font-bold text-stone-700 mb-4">每日工時分佈</h3>
         <div class="relative h-60">
           <canvas ref="chartCanvas"></canvas>

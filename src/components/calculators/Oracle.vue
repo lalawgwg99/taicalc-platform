@@ -142,7 +142,7 @@
       <!-- Hexagram Visual -->
       <div
         v-if="result"
-        class="bg-black/20 border border-neutral-800 p-6 rounded-sm min-h-[200px] flex items-center justify-center relative overflow-hidden"
+        class="bg-black/20 border border-neutral-800 p-4 md:p-6 rounded-sm min-h-[200px] flex items-center justify-center relative overflow-hidden"
       >
         <div class="flex gap-8 sm:gap-12">
           <!-- Original -->

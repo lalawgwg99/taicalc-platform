@@ -2,7 +2,7 @@
   <div class="max-w-4xl mx-auto space-y-8">
     
     <!-- 1. 客戶資料頭 -->
-    <div class="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
+    <div class="bg-white rounded-2xl p-4 md:p-8 shadow-sm border border-stone-200">
          <div class="flex justify-between items-center mb-8 border-b border-stone-100 pb-4">
             <h1 class="text-2xl font-bold text-stone-900">冷氣安裝估價單</h1>
             <div class="text-right">
@@ -45,7 +45,7 @@
              <span class="text-xs text-stone-500 bg-white px-2 py-1 rounded border border-stone-200">自動計算耗損</span>
         </div>
         
-        <div class="p-8 space-y-8">
+        <div class="p-4 md:p-8 space-y-8">
             <!-- 銅管 -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                 <div class="md:col-span-4">
@@ -113,7 +113,7 @@
     </div>
     
     <!-- 3. 危險施工與其他 -->
-    <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
         <button @click="showExtra = !showExtra" class="flex items-center justify-between w-full group">
             <h2 class="font-bold text-stone-800 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-stone-300 group-hover:bg-emerald-500 transition-colors"></span>

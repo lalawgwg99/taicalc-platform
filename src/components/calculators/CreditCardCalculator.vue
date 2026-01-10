@@ -72,7 +72,7 @@
       </div>
 
       <!-- 結果 (Installment) -->
-      <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+      <div class="bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-200">
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div class="text-center">
             <p class="text-stone-500 text-xs font-medium mb-1">每月應繳</p>
@@ -132,7 +132,7 @@
       </div>
 
       <!-- 結果 (Revolving) -->
-      <div class="bg-rose-50 rounded-2xl p-6 border border-rose-100">
+      <div class="bg-rose-50 rounded-2xl p-4 md:p-6 border border-rose-100">
         <div class="grid grid-cols-2 gap-4 mb-6">
           <div class="text-center">
             <p class="text-stone-500 text-xs font-medium mb-1">每日產生利息</p>
@@ -164,7 +164,7 @@
   </div>
 
   <!-- Carrefour Uniopen Calculator Section -->
-  <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 mt-8 space-y-6">
+  <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 mt-8 space-y-6">
     <header class="flex items-center justify-between mb-4 border-b border-stone-100 pb-4">
       <div>
         <h2 class="text-xl font-bold text-stone-800 flex items-center gap-2">

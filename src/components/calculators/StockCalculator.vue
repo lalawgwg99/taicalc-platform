@@ -81,7 +81,7 @@
         </button>
       </div>
 
-      <div class="p-6 space-y-6">
+      <div class="p-4 md:p-6 space-y-6">
         <!-- Common Inputs (Single Trade) -->
         <div class="space-y-4" v-show="mode !== 'avg'">
           <!-- Type Selection -->

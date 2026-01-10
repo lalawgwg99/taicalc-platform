@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 space-y-6">
+    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 space-y-6">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="currentAge" class="block text-xs font-semibold text-stone-500 mb-2">現在年齡</label>
@@ -73,7 +73,7 @@
       </div>
 
       <!-- 結果 -->
-      <div class="bg-stone-50 rounded-2xl p-6 border border-stone-200">
+      <div class="bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-200">
         <div class="text-center mb-6">
           <p class="text-xs text-stone-500 font-bold uppercase tracking-wider mb-2">退休所需總金額</p>
           <p class="text-3xl sm:text-4xl font-bold text-stone-800 font-mono tracking-tight">
@@ -94,7 +94,7 @@
           </div>
         </div>
 
-        <div class="text-center pt-6 mt-6 border-t border-stone-200 bg-blue-50/50 -mx-6 -mb-6 p-6 rounded-b-2xl">
+        <div class="text-center pt-6 mt-6 border-t border-stone-200 bg-blue-50/50 -mx-4 -mb-4 p-4 md:-mx-6 md:-mb-6 md:p-6 rounded-b-2xl">
           <p class="text-blue-800/70 text-sm font-medium mb-2">為達成目標，每月需儲蓄</p>
           <p class="text-3xl font-bold text-blue-600 font-mono">NT$ {{ monthlySaving }}</p>
         </div>

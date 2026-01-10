@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6">
+    <div class="space-y-6 card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-4 md:p-6">
         <!-- Presets -->
         <div class="grid grid-cols-2 bg-stone-100/50 rounded-xl p-1 mb-6">
             <button @click="applyPreset('newYouth')"
@@ -115,7 +115,7 @@
 
                 <!-- Monthly Pay -->
                 <div
-                    class="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-xl p-6 border border-emerald-100 text-center shadow-inner">
+                    class="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-xl p-4 md:p-6 border border-emerald-100 text-center shadow-inner">
                     <p class="text-xs text-emerald-700 uppercase tracking-wide mb-1">預估月付金</p>
 
                     <!-- Logic for Displaying Ranges -->

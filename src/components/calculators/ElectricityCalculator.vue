@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <!-- 輸入區 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <div class="grid grid-cols-2 gap-3 mb-6">
         <button
           @click="isSummer = true"
@@ -50,7 +50,7 @@
     </section>
 
     <!-- 主要結果 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <div class="flex items-end justify-between mb-6 pb-6 border-b border-stone-100">
         <div>
           <p class="text-xs text-stone-500 font-semibold uppercase tracking-wider mb-1">預估電費</p>
@@ -98,7 +98,7 @@
     </section>
 
     <!-- 省電模擬 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">💡</span> 省電模擬
         <span class="text-stone-400 font-normal text-xs ml-auto">如果每月少用...</span>
@@ -130,7 +130,7 @@
     </section>
 
     <!-- 耗電怪獸分析 (Appliance Analysis) -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">👻</span> 耗電怪獸分析
       </h2>
@@ -239,7 +239,7 @@
     </section>
 
     <!-- 冷氣耗電估算 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">🌡️</span> 冷氣耗電估算
       </h2>

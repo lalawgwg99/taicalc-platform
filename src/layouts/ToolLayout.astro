@@ -12,9 +12,9 @@ const { title, description, category = "工具" } = Astro.props;
 ---
 
 <Layout title={title} description={description}>
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-4xl mx-auto px-0 md:px-4">
         <!-- 1. Header: Back to Hub -->
-        <nav class="mb-8 pt-4">
+        <nav class="mb-8 pt-4 px-4 md:px-0">
             <a href="/" class="inline-flex items-center text-stone-500 hover:text-[#10B981] transition-colors group">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 group-hover:-translate-x-1 transition-transform">
                     <path d="m15 18-6-6 6-6"/>
@@ -24,14 +24,14 @@ const { title, description, category = "工具" } = Astro.props;
         </nav>
 
         <!-- Tool Header -->
-        <header class="mb-10 text-center">
+        <header class="mb-10 text-center px-4 md:px-0">
             <span class="text-xs font-bold tracking-wider text-[#10B981] uppercase mb-2 block">{category}</span>
             <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-4">{title}</h1>
             <p class="text-lg text-stone-500 max-w-2xl mx-auto">{description}</p>
         </header>
 
         <!-- 2. Tool: Calculator Component -->
-        <main class="mb-20 bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-6 md:p-8">
+        <main class="mb-20">
             <slot name="tool" />
         </main>
 
