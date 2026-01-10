@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+// 1. Generate Static Paths
+export async function getStaticPaths() {
+  const tools = await getCollection('tools');
+  return tools.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+// 2. Props Access
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 3. Dynamic Component Import
+// Map functionality to React components efficiently
+// We need a mapping from slug (or a frontmatter field) to the actual React component.
+// Since dynamic imports in Astro frontmatter can be tricky with partial hydration,
+// a simple map is robust for this scale.
+
+import TaxIncomeCalculator from '../../components/calculators/TaxIncomeCalculator.tsx';
+// import TaxFreelanceCalculator from '../../components/calculators/TaxFreelanceCalculator.tsx';
+// ... other imports
+
+const componentMap = {
+  'tax-income': TaxIncomeCalculator,
+  // 'tax-freelance': TaxFreelanceCalculator,
+};
+
+const CalculatorComponent = componentMap[entry.slug];
+---
+
+<ToolLayout title={entry.data.title} description={entry.data.description} category={entry.data.category}>
+  <!-- React Island: Client Load -->
+  <div slot="tool">
+      {CalculatorComponent ? (
+          <CalculatorComponent client:load />
+      ) : (
+          <div class="p-4 text-center text-stone-500 bg-stone-100 rounded">
+            🚧 Calculator Component Not Found: {entry.slug}
+          </div>
+      )}
+  </div>
+
+  <!-- Markdown Content -->
+  <div slot="article">
+    <Content />
+  </div>
+</ToolLayout>
