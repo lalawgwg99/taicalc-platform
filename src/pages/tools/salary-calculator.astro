@@ -7,7 +7,7 @@ const description = "2026年最新勞健保費率精算，每月實拿、年度�
 ---
 
 <ToolLayout title={title} description={description} category="薪資權益">
-    <SalaryCalculator client:load slot="tool" />
+    <SalaryCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>2026 薪資實拿怎麼算？扣除項目全解析</h2>

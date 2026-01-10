@@ -7,7 +7,7 @@ const description = "專業冷氣配管成本試算工具。整合銅管損耗�
 ---
 
 <ToolLayout title={title} description={description} category="生活計算">
-    <ACInstallationCalculator client:load slot="tool" />  
+    <ACInstallationCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>冷氣安裝報價單怎麼看？魔鬼藏在細節裡</h2>

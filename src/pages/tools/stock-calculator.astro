@@ -7,7 +7,7 @@ const description = "2026 最新股票交易成本計算：手續費、證交稅
 ---
 
 <ToolLayout title={title} description={description} category="理財規劃">
-    <StockCalculator client:load slot="tool" />
+    <StockCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>股票交易成本全解析：別讓手續費吃掉你的獲利</h2>

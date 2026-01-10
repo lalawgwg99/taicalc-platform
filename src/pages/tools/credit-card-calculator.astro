@@ -7,7 +7,7 @@ const description = "計算信用卡分期真實利息。揭露銀行不說的�
 ---
 
 <ToolLayout title={title} description={description} category="理財規劃">
-    <CreditCardCalculator client:load slot="tool" />  
+    <CreditCardCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>分期零利率是真的嗎？揭開信用卡分期的秘密</h2>

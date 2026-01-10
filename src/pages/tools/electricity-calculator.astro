@@ -7,7 +7,7 @@ const description = "2024台電累進電價計算，夏月/非夏月費率。含
 ---
 
 <ToolLayout title={title} description={description} category="生活計算">
-    <ElectricityCalculator client:load slot="tool" />  
+    <ElectricityCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>2024 台電電費怎麼算？累進費率懶人包</h2>

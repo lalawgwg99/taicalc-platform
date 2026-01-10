@@ -7,7 +7,7 @@ const description = "量化金錢與自由的距離。計算你需要多少資�
 ---
 
 <ToolLayout title={title} description={description} category="退休理財">
-    <FIRECalculator client:load slot="tool" />  
+    <FIRECalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>什麼是 FIRE 運動？4% 法則真的準嗎？</h2>

@@ -7,7 +7,7 @@ const description = "計算上班時數與薪資，適用於時薪、兼職、�
 ---
 
 <ToolLayout title={title} description={description} category="薪資權益">
-    <WorkHoursCalculator client:load slot="tool" />
+    <WorkHoursCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>工時帳本：紀錄時間，就是守護薪資</h2>

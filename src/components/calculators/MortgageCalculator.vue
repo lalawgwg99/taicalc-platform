@@ -1,22 +1,23 @@
 <template>
     <div class="space-y-6">
-        <div class="card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 overflow-hidden">
-            <!-- Presets -->
-            <div class="grid grid-cols-2 border-b border-stone-200">
-                <button @click="applyPreset('newYouth')"
-                    class="py-3 text-sm font-bold text-center transition-all hover:bg-emerald-50 text-emerald-700 border-r border-stone-100 hover:text-emerald-800">
-                    🏠 新青安 2026 (40年)
-                </button>
-                <button @click="applyPreset('general')"
-                    class="py-3 text-sm font-bold text-center transition-colors hover:bg-stone-50 text-stone-600">
-                    🏦 一般房貸 (30年)
-                </button>
-            </div>
+        <!-- Presets -->
+        <div class="grid grid-cols-2 bg-stone-100/50 rounded-xl p-1 mb-6">
+            <button @click="applyPreset('newYouth')"
+                :class="['py-2 text-sm font-bold text-center rounded-lg transition-all', 
+                type === 'newYouth' ? 'bg-white text-emerald-700 shadow-sm' : 'text-stone-500 hover:text-stone-700']">
+                🏠 新青安
+            </button>
+            <button @click="applyPreset('general')"
+                :class="['py-2 text-sm font-bold text-center rounded-lg transition-all',
+                type === 'general' ? 'bg-white text-stone-700 shadow-sm' : 'text-stone-500 hover:text-stone-700']">
+                🏦 一般房貸
+            </button>
+        </div>
 
-            <div class="p-6 space-y-6">
+        <div class="space-y-6">
 
-                <!-- Basic Inputs -->
-                <div class="grid grid-cols-2 gap-4">
+            <!-- Basic Inputs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="col-span-2">
                         <label class="block text-xs font-semibold text-stone-500 mb-1">貸款總額 (萬)</label>
                         <input type="number" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
@@ -74,9 +75,10 @@
                 </div>
 
                 <!-- Prepayment Settings -->
+                <!-- Prepayment Settings -->
                 <div class="bg-stone-50 rounded-xl p-4 border border-stone-200 space-y-3">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-bold text-stone-700">提前還款 (Prepayment)</h3>
+                        <h3 class="text-sm font-bold text-stone-700">提前還款</h3>
                         <button @click="prepaymentMode = !prepaymentMode"
                             class="text-xs text-blue-600 hover:underline">
                             {{ prepaymentMode ? '關閉試算' : '開啟試算' }}
@@ -108,80 +110,79 @@
                     </div>
                 </div>
 
-                <!-- Results -->
-                <div class="pt-4 border-t border-stone-100 grid gap-4">
+            <!-- Results -->
+            <div class="pt-4 border-t border-stone-100 grid gap-4">
 
-                    <!-- Monthly Pay -->
-                    <div
-                        class="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-xl p-6 border border-emerald-100 text-center shadow-inner">
-                        <p class="text-xs text-emerald-700 uppercase tracking-wide mb-1">預估月付金</p>
+                <!-- Monthly Pay -->
+                <div
+                    class="bg-gradient-to-br from-emerald-50/80 to-teal-50/80 rounded-xl p-6 border border-emerald-100 text-center shadow-inner">
+                    <p class="text-xs text-emerald-700 uppercase tracking-wide mb-1">預估月付金</p>
 
-                        <!-- Logic for Displaying Ranges -->
-                        <div v-if="graceYears > 0">
-                            <p class="text-sm font-medium text-emerald-600 mb-1">寬限期內 ({{graceYears}}年)</p>
-                            <p class="text-3xl font-bold font-mono text-emerald-800 mb-3">${{ fmt(results.gracePay) }}
-                            </p>
+                    <!-- Logic for Displaying Ranges -->
+                    <div v-if="graceYears > 0">
+                        <p class="text-sm font-medium text-emerald-600 mb-1">寬限期內 ({{graceYears}}年)</p>
+                        <p class="text-3xl font-bold font-mono text-emerald-800 mb-3">${{ fmt(results.gracePay) }}
+                        </p>
 
-                            <div class="h-px bg-emerald-200 w-1/2 mx-auto my-3"></div>
+                        <div class="h-px bg-emerald-200 w-1/2 mx-auto my-3"></div>
 
-                            <p class="text-sm font-medium text-emerald-600 mb-1">寬限期後</p>
-                            <p class="text-2xl font-bold font-mono text-emerald-800">${{ fmt(results.afterGracePay) }}
-                            </p>
-                            <p v-if="twoStageMode && results.stage2Pay !== results.afterGracePay"
-                                class="text-xs text-emerald-600/70 mt-1">
-                                (利率變更後: ${{ fmt(results.stage2Pay) }})
-                            </p>
-                        </div>
-                        <div v-else>
-                            <p class="text-3xl font-bold font-mono text-emerald-800">${{ fmt(results.basePay) }}</p>
-                            <p v-if="twoStageMode && results.stage2Pay !== results.basePay"
-                                class="text-sm text-emerald-600 mt-2">
-                                第 {{stage1Months + 1}} 個月起: ${{ fmt(results.stage2Pay) }}
-                            </p>
-                        </div>
+                        <p class="text-sm font-medium text-emerald-600 mb-1">寬限期後</p>
+                        <p class="text-2xl font-bold font-mono text-emerald-800">${{ fmt(results.afterGracePay) }}
+                        </p>
+                        <p v-if="twoStageMode && results.stage2Pay !== results.afterGracePay"
+                            class="text-xs text-emerald-600/70 mt-1">
+                            (利率變更後: ${{ fmt(results.stage2Pay) }})
+                        </p>
                     </div>
-
-                    <!-- Summary Stats -->
-                    <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
-                            <span class="block text-stone-400 mb-1">利息總支出</span>
-                            <span class="block text-lg font-bold text-stone-700 font-mono">${{
-                                fmt(results.totalInterest) }}</span>
-                        </div>
-                        <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
-                            <span class="block text-stone-400 mb-1">本息總額</span>
-                            <span class="block text-lg font-bold text-stone-700 font-mono">${{
-                                fmt(results.totalPayment) }}</span>
-                        </div>
+                    <div v-else>
+                        <p class="text-3xl font-bold font-mono text-emerald-800">${{ fmt(results.basePay) }}</p>
+                        <p v-if="twoStageMode && results.stage2Pay !== results.basePay"
+                            class="text-sm text-emerald-600 mt-2">
+                            第 {{stage1Months + 1}} 個月起: ${{ fmt(results.stage2Pay) }}
+                        </p>
                     </div>
-
-                    <!-- Prepayment Comparison -->
-                    <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
-                        class="mt-4 bg-amber-50/80 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
-                        <h4 class="text-amber-800 font-bold mb-2 flex items-center gap-2">
-                            <span>🎉 提前還款效益</span>
-                        </h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <span class="block text-amber-600/80 text-xs mb-1">節省利息</span>
-                                <span class="block text-xl font-bold text-amber-700 font-mono">${{
-                                    fmt(results.interestSaved) }}</span>
-                            </div>
-                            <div>
-                                <span class="block text-amber-600/80 text-xs mb-1">縮短時間</span>
-                                <span class="block text-xl font-bold text-amber-700 font-mono">{{
-                                    Math.floor(results.monthsSaved / 12) }}年 {{ results.monthsSaved % 12 }}月</span>
-                            </div>
-                            <div
-                                class="col-span-2 pt-2 border-t border-amber-200/50 flex justify-between items-center">
-                                <span class="text-amber-600/80 text-xs">預計還清時間</span>
-                                <span class="text-sm font-bold text-amber-800 font-mono">第 {{
-                                    Math.floor(results.finalMonths / 12) + 1 }} 年</span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+
+                <!-- Summary Stats -->
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
+                        <span class="block text-stone-400 mb-1">利息總支出</span>
+                        <span class="block text-lg font-bold text-stone-700 font-mono">${{
+                            fmt(results.totalInterest) }}</span>
+                    </div>
+                    <div class="bg-white/50 p-3 rounded-xl border border-stone-200">
+                        <span class="block text-stone-400 mb-1">本息總額</span>
+                        <span class="block text-lg font-bold text-stone-700 font-mono">${{
+                            fmt(results.totalPayment) }}</span>
+                    </div>
+                </div>
+
+                <!-- Prepayment Comparison -->
+                <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
+                    class="mt-4 bg-amber-50/80 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
+                    <h4 class="text-amber-800 font-bold mb-2 flex items-center gap-2">
+                        <span>🎉 提前還款效益</span>
+                    </h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="block text-amber-600/80 text-xs mb-1">節省利息</span>
+                            <span class="block text-xl font-bold text-amber-700 font-mono">${{
+                                fmt(results.interestSaved) }}</span>
+                        </div>
+                        <div>
+                            <span class="block text-amber-600/80 text-xs mb-1">縮短時間</span>
+                            <span class="block text-xl font-bold text-amber-700 font-mono">{{
+                                Math.floor(results.monthsSaved / 12) }}年 {{ results.monthsSaved % 12 }}月</span>
+                        </div>
+                        <div
+                            class="col-span-2 pt-2 border-t border-amber-200/50 flex justify-between items-center">
+                            <span class="text-amber-600/80 text-xs">預計還清時間</span>
+                            <span class="text-sm font-bold text-amber-800 font-mono">第 {{
+                                Math.floor(results.finalMonths / 12) + 1 }} 年</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -407,7 +408,20 @@ onMounted(() => {
     }
 })
 
+const validateInputs = () => {
+    if (amountWan.value < 0) amountWan.value = 0
+    if (years.value < 1) years.value = 1
+    if (years.value > 50) years.value = 50
+    if (graceYears.value < 0) graceYears.value = 0
+    if (graceYears.value >= years.value) graceYears.value = years.value - 1
+    if (rate1.value < 0) rate1.value = 0
+    if (rate2.value < 0) rate2.value = 0
+}
+
+watch([amountWan, years, graceYears, rate1, rate2], validateInputs)
+
 watch([amountWan, years, graceYears, rate1, rate2, twoStageMode], (vals) => {
+    validateInputs()
     if (typeof localStorage === 'undefined') return
     localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
         amountWan: vals[0], years: vals[1], graceYears: vals[2],

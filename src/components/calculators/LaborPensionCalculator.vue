@@ -378,6 +378,11 @@ const updateChart = () => {
   });
 };
 
+watch(selfRate, (val) => {
+    if (val < 0) selfRate.value = 0
+    if (val > 6) selfRate.value = 6
+})
+
 watch([salary, currentAge, retireAge, selfRate, roi, taxRate], updateChart, { deep: true });
 
 onMounted(() => {

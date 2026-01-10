@@ -7,7 +7,7 @@ const description = "全方位保險評估工具。儲蓄險 IRR 真實報酬率
 ---
 
 <ToolLayout title={title} description={description} category="理財規劃">
-    <InsuranceAssessment client:load slot="tool" />  
+    <InsuranceAssessment client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>買保險是保障還是投資？IRR 幫你照妖鏡</h2>

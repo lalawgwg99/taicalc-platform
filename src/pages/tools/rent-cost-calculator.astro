@@ -8,7 +8,7 @@ const description = "計算租屋真實成本，包含押金機會成本與隱�
 ---
 
 <ToolLayout title={title} description={description} category="生活計算">
-    <RentCostCalculator client:load slot="tool" />  
+    <RentCostCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>租屋不只是繳房租：隱形成本大揭密</h2>

@@ -7,7 +7,7 @@ const description = "2026最新勞健保費用試算。輸入薪資自動對應�
 ---
 
 <ToolLayout title={title} description={description} category="薪資權益">
-    <InsuranceCalculator client:load slot="tool" />
+    <InsuranceCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>2026 勞健保費率解析：雇主與勞工負擔比例</h2>

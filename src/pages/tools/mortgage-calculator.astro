@@ -7,11 +7,11 @@ const description = "2026 新青安房貸試算。支援寬限期、分段利率
 ---
 
 <ToolLayout title={title} description={description} category="房產居家">
-    <MortgageCalculator client:load slot="tool" />
+    <MortgageCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>2026 房貸試算重點：新青安與寬限期策略</h2>
-        <p>隨著 2026 年房市政策變化，購屋族最關心的莫過於「新青安貸款 (New Youth Housing Loan)」的補貼期限與還款壓力測試。本工具協助您精算寬限期後的真實負擔。</p>
+        <p>隨著 2026 年房市政策變化，購屋族最關心的莫過於「新青安貸款」的補貼期限與還款壓力測試。本工具協助您精算寬限期後的真實負擔。</p>
 
         <h3>什麼是新青安貸款？</h3>
         <p>為了減輕年輕人買房壓力，政府推出的優惠貸款方案。特色包括：</p>

@@ -7,7 +7,7 @@ const description = "快速分帳計算。聚餐、合租、團購輕鬆平分�
 ---
 
 <ToolLayout title={title} description={description} category="實用工具">
-    <SplitCalculator client:load slot="tool" />  
+    <SplitCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>分帳不尷尬：多人出遊、聚餐的 AA 制藝術</h2>

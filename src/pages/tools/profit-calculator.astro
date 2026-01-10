@@ -7,7 +7,7 @@ const description = "計算銷售利潤與利潤率，評估每筆交易獲利�
 ---
 
 <ToolLayout title={title} description={description} category="商業計算">
-    <ProfitCalculator client:load slot="tool" />  
+    <ProfitCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>定價決定生死：毛利率與淨利率的差別</h2>

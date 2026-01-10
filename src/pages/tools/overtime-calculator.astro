@@ -7,7 +7,7 @@ const description = "依2026勞基法計算加班費。平日/休息日/例假�
 ---
 
 <ToolLayout title={title} description={description} category="薪資權益">
-    <OvertimeCalculator client:load slot="tool" />
+    <OvertimeCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>加班費倍率攻略：平日、休息日、國定假日大不同</h2>

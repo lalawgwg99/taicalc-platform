@@ -7,19 +7,19 @@ const description = "2026最新勞工退休金試算。視覺化複利成長曲�
 ---
 
 <ToolLayout title={title} description={description} category="退休理財">
-    <LaborPensionCalculator client:load slot="tool" />  
+    <LaborPensionCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>為什麼要自提 6%？三大優勢一次看懂</h2>
         <p>很多勞工朋友聽到「自提 6%」的第一個反應是：「為什麼要讓政府扣我的錢？」其實，勞退自提是政府送給受薪階級最強大的<strong>合法節稅與強迫儲蓄工具</strong>。</p>
         
-        <h3>1. 立即節稅 (Tax Benefits)</h3>
+        <h3>1. 立即節稅</h3>
         <p>您自提的金額，會從當年度的「個人綜合所得總額」中全數扣除。這意味著您的課稅級距可能因此降低，直接少繳稅金。對於高收入族群來說，效益更是驚人。</p>
 
-        <h3>2. 保證收益 (Guaranteed Return)</h3>
+        <h3>2. 保證收益</h3>
         <p>勞退基金由政府操盤，法律保障「最低收益率」不會低於當地銀行兩年期定存利率。這意味著這筆投資基本上是<strong>保本</strong>的，而且長期來看，歷史平均投報率往往高於定存。</p>
 
-        <h3>3. 複利滾存 (Compound Interest)</h3>
+        <h3>3. 複利滾存</h3>
         <p>退休金帳戶是跟著您個人的（可攜式帳戶），無論換幾份工作，這筆錢都在累積。透過時間的複利效果，年輕時多提撥的每一塊錢，在 30 年後都會變成可觀的退休資產。</p>
 
         <blockquote>

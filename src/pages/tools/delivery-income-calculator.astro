@@ -7,7 +7,7 @@ const description = "計算外送平台實際收入，扣除油錢、機車折�
 ---
 
 <ToolLayout title={title} description={description} category="工作計算">
-    <DeliveryIncomeCalculator client:load slot="tool" />  
+    <DeliveryIncomeCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>跑外送真的好賺嗎？揭密騎士的真實時薪</h2>

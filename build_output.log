@@ -1,0 +1,25 @@
+
+> better-belt@0.0.1 build
+> astro build
+
+[2m19:38:15[22m [34m[content][39m Syncing content
+[33m[1m19:38:15[22m [WARN] [glob-loader][39m No files found matching "**/*.md,!**/_*/**/*.md,!**/_*.md" in directory "src\content\blog"
+[2m19:38:15[22m [34m[content][39m Synced content
+[2m19:38:15[22m [34m[types][39m Generated [2m294ms[22m
+[2m19:38:15[22m [34m[build][39m output: [34m"static"[39m
+[2m19:38:15[22m [34m[build][39m mode: [34m"static"[39m
+[2m19:38:15[22m [34m[build][39m directory: [34mC:\Users\user.DESKTOP-A01S3O1\OneDrive\Desktop\taicalc\dist\[39m
+[2m19:38:15[22m [34m[build][39m Collecting build info...
+[2m19:38:15[22m [34m[build][39m [32m??Completed in 349ms.[39m
+[2m19:38:15[22m [34m[build][39m Building static entrypoints...
+19:38:15 [ERROR] [vite] ??[39m Build failed in 758ms
+[vite:vue] [plugin vite:vue] src/components/calculators/MortgageCalculator.vue (17:9): Element is missing end tag.
+file: C:/Users/user.DESKTOP-A01S3O1/OneDrive/Desktop/taicalc/src/components/calculators/MortgageCalculator.vue:17:9
+  Location:
+    C:/Users/user.DESKTOP-A01S3O1/OneDrive/Desktop/taicalc/src/components/calculators/MortgageCalculator.vue:17:9
+  Stack trace:
+    at createCompilerError (C:\Users\user.DESKTOP-A01S3O1\OneDrive\Desktop\taicalc\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:1374:17)
+    at Object.onclosetag (C:\Users\user.DESKTOP-A01S3O1\OneDrive\Desktop\taicalc\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:2377:13)
+    at Tokenizer.parse (C:\Users\user.DESKTOP-A01S3O1\OneDrive\Desktop\taicalc\node_modules\@vue\compiler-core\dist\compiler-core.cjs.prod.js:1157:16)
+    at Object.parse (C:\Users\user.DESKTOP-A01S3O1\OneDrive\Desktop\taicalc\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.prod.js:665:23)
+    at createDescriptor (file:///C:/Users/user.DESKTOP-A01S3O1/OneDrive/Desktop/taicalc/node_modules/@vitejs/plugin-vue/dist/index.mjs:71:43)

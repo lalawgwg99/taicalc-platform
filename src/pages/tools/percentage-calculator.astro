@@ -7,7 +7,7 @@ const description = "多功能百分比計算：折扣換算、變化率漲跌�
 ---
 
 <ToolLayout title={title} description={description} category="數學工具">
-    <PercentageCalculator client:load slot="tool" />  
+    <PercentageCalculator client:only="vue" slot="tool" />  
 
     <div slot="article">
         <h2>生活中無處不在的「百分比」</h2>
