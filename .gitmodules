@@ -1,0 +1,3 @@
+[submodule "lifeos-audit"]
+	path = lifeos-audit
+	url = https://github.com/lalawgwg99/NEWOSLIFE.git
