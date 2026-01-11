@@ -19,11 +19,10 @@
           <div>
             <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">目前淨資產 (TWD)</label>
             <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">$</span>
               <input
                 type="number"
                 v-model.number="currentNetWorth"
-                class="input-base w-full pl-12 text-lg font-mono"
+                class="input-base w-full text-lg font-mono"
                 placeholder="1000000"
               />
             </div>
@@ -37,11 +36,10 @@
               >目標月支出 (退休後)</label
             >
             <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">$</span>
               <input
                 type="number"
                 v-model.number="monthlyExpense"
-                class="input-base w-full pl-12 text-lg font-mono"
+                class="input-base w-full text-lg font-mono"
                 placeholder="40000"
               />
             </div>
@@ -54,11 +52,10 @@
               >每月能存 (投入投資)</label
             >
             <div class="relative">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">$</span>
               <input
                 type="number"
                 v-model.number="monthlySavings"
-                class="input-base w-full pl-12 text-lg font-mono"
+                class="input-base w-full text-lg font-mono"
                 placeholder="20000"
               />
             </div>
