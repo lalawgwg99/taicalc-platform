@@ -39,9 +39,8 @@
               id="monthlyRent"
               type="number"
               v-model.number="monthlyRent"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pl-9"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
             />
-            <span class="absolute left-4 top-4 text-stone-400 font-bold">$</span>
           </div>
         </div>
 
@@ -74,9 +73,8 @@
                 id="managementFee"
                 type="number"
                 v-model.number="managementFee"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-7 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
               />
-              <span class="absolute left-3 top-2.5 text-stone-400">$</span>
             </div>
           </div>
           <div>
@@ -86,9 +84,8 @@
                 id="electricityFee"
                 type="number"
                 v-model.number="electricityFee"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-7 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
               />
-              <span class="absolute left-3 top-2.5 text-stone-400">$</span>
             </div>
           </div>
         </div>

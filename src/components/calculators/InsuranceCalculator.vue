@@ -25,11 +25,10 @@
       <div>
         <label class="block text-xs font-semibold text-stone-500 mb-2">月薪收入</label>
         <div class="relative">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400">$</span>
           <input
             type="number"
             v-model.number="salary"
-            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-8 pr-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             placeholder="請輸入月薪"
           />
         </div>

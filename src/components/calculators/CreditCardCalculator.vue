@@ -27,12 +27,11 @@
         {{ calcMode === 'installment' ? '消費金額' : '信用卡未繳餘額' }}
       </label>
       <div class="relative">
-        <span class="absolute left-4 top-3.5 text-stone-400 font-medium">$</span>
         <input
           id="amount"
           type="number"
           v-model.number="amount"
-          class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 pl-8 pr-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+          class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
         />
       </div>
     </div>

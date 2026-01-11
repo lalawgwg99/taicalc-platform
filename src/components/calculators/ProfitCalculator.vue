@@ -10,9 +10,8 @@
               id="sellingPrice"
               type="number"
               v-model.number="sellingPrice"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pl-9"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
             />
-            <span class="absolute left-3 top-3.5 text-stone-400 font-bold">$</span>
         </div>
       </div>
       <div>
@@ -24,9 +23,8 @@
               id="costPrice"
               type="number"
               v-model.number="costPrice"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pl-9"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
             />
-            <span class="absolute left-3 top-3.5 text-stone-400 font-bold">$</span>
         </div>
       </div>
     </div>
@@ -52,9 +50,8 @@
               id="marketingCost"
               type="number"
               v-model.number="marketingCost"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pl-9"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
             />
-             <span class="absolute left-3 top-3.5 text-stone-400 font-bold">$</span>
         </div>
       </div>
        <div>
@@ -66,9 +63,8 @@
               id="otherCost"
               type="number"
               v-model.number="otherCost"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pl-9"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-3 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
             />
-             <span class="absolute left-3 top-3.5 text-stone-400 font-bold">$</span>
         </div>
       </div>
     </div>

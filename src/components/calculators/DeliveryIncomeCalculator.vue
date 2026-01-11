@@ -85,9 +85,8 @@
                   type="number"
                   v-model.number="maintenancePerKm"
                   step="0.1"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500 pl-8"
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
                 />
-                <span class="absolute left-3 top-2 text-stone-400">$</span>
               </div>
             </div>
             <div>
@@ -99,9 +98,8 @@
                   id="insuranceMonthly"
                   type="number"
                   v-model.number="insuranceMonthly"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500 pl-8"
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
                 />
-                <span class="absolute left-3 top-2 text-stone-400">$</span>
               </div>
             </div>
           </div>

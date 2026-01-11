@@ -6,7 +6,7 @@
          <div class="mb-6 text-center">
              <label class="block text-xs font-bold text-stone-400 mb-2 uppercase tracking-wide">總消費金額 (Total)</label>
              <div class="relative max-w-xs mx-auto">
-                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-300 font-bold text-xl">$</span>
+
                  <input 
                     v-model.number="totalAmount" 
                     type="number" 

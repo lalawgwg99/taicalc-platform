@@ -31,9 +31,8 @@
             id="monthlyExpense"
             type="number"
             v-model.number="monthlyExpense"
-            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 pl-9 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
           />
-          <span class="absolute left-4 top-4 text-stone-400 font-bold">$</span>
         </div>
       </div>
 
@@ -66,9 +65,8 @@
             id="currentSavings"
             type="number"
             v-model.number="currentSavings"
-            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 pl-9 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
           />
-          <span class="absolute left-4 top-2.5 text-stone-400 font-bold">$</span>
         </div>
       </div>
 

@@ -24,11 +24,10 @@
              <div>
                  <label class="block text-xs font-bold text-stone-500 mb-2 uppercase tracking-wide">基本安裝費 (台)</label>
                  <div class="relative">
-                     <span class="absolute left-4 top-3.5 text-stone-400 font-bold">$</span>
                      <input 
                         v-model.number="baseInstallFee" 
                         type="number" 
-                        class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 pl-9 text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                        class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                      />
                  </div>
              </div>
@@ -81,22 +80,19 @@
                  <div>
                     <label class="block text-xs font-bold text-stone-500 mb-2">訊號線 (式/米)</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-2.5 text-stone-400 text-xs">$</span>
-                        <input v-model.number="priceSig" type="number" class="w-full bg-stone-50 rounded-lg pl-6 pr-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
+                        <input v-model.number="priceSig" type="number" class="w-full bg-stone-50 rounded-lg px-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
                     </div>
                  </div>
                  <div>
                     <label class="block text-xs font-bold text-stone-500 mb-2">電源線 (式/米)</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-2.5 text-stone-400 text-xs">$</span>
-                        <input v-model.number="pricePwr" type="number" class="w-full bg-stone-50 rounded-lg pl-6 pr-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
+                        <input v-model.number="pricePwr" type="number" class="w-full bg-stone-50 rounded-lg px-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
                     </div>
                  </div>
                  <div>
                     <label class="block text-xs font-bold text-stone-500 mb-2">排水/保溫 (式)</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-2.5 text-stone-400 text-xs">$</span>
-                        <input v-model.number="priceInsu" type="number" class="w-full bg-stone-50 rounded-lg pl-6 pr-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
+                        <input v-model.number="priceInsu" type="number" class="w-full bg-stone-50 rounded-lg px-3 py-2 text-sm font-bold border-transparent focus:bg-white focus:border-emerald-500 border transition-all" />
                     </div>
                  </div>
              </div>
