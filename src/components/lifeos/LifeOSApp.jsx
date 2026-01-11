@@ -296,23 +296,190 @@ export default function App() {
     // Chat
     const [chatHistory, setChatHistory] = useState([]);
 
-    // I18N Mock (Can be expanded)
-    const t = {
-        title: "LifeOS Audit",
-        subtitle: "System Diagnostics & Optimization",
-        startBtn: "Run System Audit",
-        analyzing: "Decompiling Life Architecture...",
-        sections: {
-            input: "System Inputs",
-            result: "Diagnostic Report",
-            action: "Hotfix Protocol",
-            console: "System Terminal"
+    // Language State
+    const [language, setLanguage] = useState(() => {
+        return localStorage.getItem('lifeos-language') || 'zh-TW';
+    });
+
+    // I18N Translations
+    const translations = {
+        'zh-TW': {
+            title: "LifeOS Audit",
+            subtitle: "系統診斷與優化",
+            slogan1: "Debug Your",
+            slogan2: "Existence.",
+            description: "為人類作業系統設計的全方位診斷工具。識別洩漏、優化核心、修補安全弱點。",
+            startBtn: "執行系統稽核",
+            analyzing: "正在解析生命架構...",
+            sections: {
+                input: "系統輸入",
+                result: "診斷報告",
+                action: "修復方案",
+                console: "系統終端"
+            },
+            console: {
+                placeholder: "查詢系統核心..."
+            },
+            restart: "重啟系統",
+            form: {
+                kernel: "核心規格",
+                birthDate: "創建日期（出生）",
+                birthLocation: "生成位置",
+                energySource: "能量來源",
+                logicProcessor: "邏輯處理器",
+                rootDirectory: "根目錄（家庭）",
+                initialEnv: "初始環境",
+                adminStyle: "管理者風格（父母）",
+                sequenceId: "序列 ID（排行）",
+                legacyCode: "遺留代碼（祖父母）",
+                runtime: "運行時統計",
+                currentRole: "當前角色",
+                resourceInflow: "資源流入",
+                uptime: "正常運行時間",
+                criticalErrors: "關鍵錯誤",
+                currentBottleneck: "當前瓶頸",
+                connectionLogs: "連接日誌（關係）",
+                screenTime: "平均螢幕時間",
+                placeholders: {
+                    location: "例如：台北，台灣",
+                    family: "簡述家庭氛圍...",
+                    parentStyle: "嚴格、缺席、直升機？",
+                    sibling: "例如：長子、中間、么子、獨生",
+                    grandparent: "重大事件？戰爭、破產、遷移？",
+                    role: "職位名稱",
+                    income: "年收入",
+                    years: "年資",
+                    bottleneck: "現在是什麼阻止了你？",
+                    relationship: "重複模式？",
+                    hours: "小時/天"
+                },
+                options: {
+                    intro: "內向 (I)",
+                    extro: "外向 (E)",
+                    thinking: "思考型 (T)",
+                    feeling: "感覺型 (F)"
+                }
+            },
+            loading: {
+                title: "執行診斷中...",
+                subtitle: "存取神經核心... 編譯生命數據...",
+                steps: {
+                    kernel: "載入核心模組... 成功",
+                    memory: "掃描記憶庫... 成功",
+                    emotional: "偵測情感洩漏...",
+                    found: "找到",
+                    optimizing: "優化決策演算法...",
+                    compiling: "編譯最終報告..."
+                },
+                waiting: "💡 系統運作正常，請耐心等待..."
+            },
+            errors: {
+                missingData: "錯誤：缺少核心資料參數",
+                apiFailure: "系統故障：API 握手失敗。請重試。",
+                systemError: "系統錯誤：與核心連接中斷。"
+            },
+            footer: ":: API 已加密 :: 不記錄資料 ::",
+            score: {
+                integrity: "LifeOS 完整度",
+                grade: "等級",
+                outperforms: "您的 LifeOS 優於"
+            },
+            consoleInit: "系統初始化完成。等待使用者輸入..."
         },
-        console: {
-            placeholder: "Query system kernel..."
-        },
-        restart: "Reboot System"
+        'en': {
+            title: "LifeOS Audit",
+            subtitle: "System Diagnostics & Optimization",
+            slogan1: "Debug Your",
+            slogan2: "Existence.",
+            description: "A comprehensive diagnostic tool for the human operating system. Identify leaks, optimize kernels, and patch security vulnerabilities.",
+            startBtn: "Run System Audit",
+            analyzing: "Decompiling Life Architecture...",
+            sections: {
+                input: "System Inputs",
+                result: "Diagnostic Report",
+                action: "Hotfix Protocol",
+                console: "System Terminal"
+            },
+            console: {
+                placeholder: "Query system kernel..."
+            },
+            restart: "Reboot System",
+            form: {
+                kernel: "Kernel Specifications",
+                birthDate: "Creation Date (Birth)",
+                birthLocation: "Spawn Location",
+                energySource: "Energy Source",
+                logicProcessor: "Logic Processor",
+                rootDirectory: "Root Directory (Family)",
+                initialEnv: "Initial Environment",
+                adminStyle: "Admin Style (Parents)",
+                sequenceId: "Sequence ID (Sibling Order)",
+                legacyCode: "Legacy Code (Grandparents)",
+                runtime: "Runtime Stats",
+                currentRole: "Current Role",
+                resourceInflow: "Resource Inflow",
+                uptime: "Uptime",
+                criticalErrors: "Critical Errors",
+                currentBottleneck: "Current Bottleneck",
+                connectionLogs: "Connection Logs (Relationships)",
+                screenTime: "Screen Time Avg",
+                placeholders: {
+                    location: "e.g. Taipei, Taiwan",
+                    family: "Briefly describe family atmosphere...",
+                    parentStyle: "Strict, Absent, Helicopter?",
+                    sibling: "e.g. Eldest, Middle, Youngest, Only",
+                    grandparent: "Any major events? War, bankruptcy, migration?",
+                    role: "Job Title",
+                    income: "Annual Income",
+                    years: "Years in role",
+                    bottleneck: "What is stopping you right now?",
+                    relationship: "Recurring patterns?",
+                    hours: "Hours/Day"
+                },
+                options: {
+                    intro: "Into (I)",
+                    extro: "Extro (E)",
+                    thinking: "Thinking (T)",
+                    feeling: "Feeling (F)"
+                }
+            },
+            loading: {
+                title: "Running Diagnostics...",
+                subtitle: "Accessing Neural Core... Compiling Life Data...",
+                steps: {
+                    kernel: "Loading kernel modules... OK",
+                    memory: "Scanning memory banks... OK",
+                    emotional: "Detecting emotional leaks...",
+                    found: "FOUND",
+                    optimizing: "Optimizing decision algorithms...",
+                    compiling: "Compiling final report..."
+                },
+                waiting: "💡 System running normally, please wait..."
+            },
+            errors: {
+                missingData: "CRITICAL ERROR: MISSING CORE DATA PARAMETERS",
+                apiFailure: "SYSTEM FAILURE: API HANDSHAKE FAILED. TRY AGAIN.",
+                systemError: "System Error: Connection to Kernel Lost."
+            },
+            footer: ":: API ENCRYPTED :: NO DATA LOGGING ::",
+            score: {
+                integrity: "LifeOS Integrity",
+                grade: "Grade",
+                outperforms: "Your LifeOS outperforms"
+            },
+            consoleInit: "System initialized. Waiting for user input..."
+        }
     };
+
+    const t = translations[language];
+
+    // Toggle Language
+    const toggleLanguage = () => {
+        const newLang = language === 'zh-TW' ? 'en' : 'zh-TW';
+        setLanguage(newLang);
+        localStorage.setItem('lifeos-language', newLang);
+    };
+
 
     // --- API HANDLERS ---
 
@@ -385,7 +552,7 @@ export default function App() {
 
     const handleAnalyze = async () => {
         if (!formData.birthDate || !formData.currentBottleneck) {
-            setErrorMsg("CRITICAL ERROR: MISSING CORE DATA PARAMETERS");
+            setErrorMsg(t.errors.missingData);
             return;
         }
 
@@ -417,7 +584,7 @@ export default function App() {
             clearInterval(interval);
             setLoading(false);
             setStep('input');
-            setErrorMsg("SYSTEM FAILURE: API HANDSHAKE FAILED. TRY AGAIN.");
+            setErrorMsg(t.errors.apiFailure);
         }
     };
 
@@ -445,9 +612,23 @@ export default function App() {
                         </div>
                         <h1 className="font-bold text-lg tracking-tight">LifeOS<span className="text-accent">_Audit</span></h1>
                     </div>
-                    <div className="text-xs font-mono text-muted flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        SYSTEM ONLINE v2.4
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={toggleLanguage}
+                            className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2"
+                            title="Switch Language"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                            {language === 'zh-TW' ? 'EN' : '繁中'}
+                        </button>
+                        <div className="text-xs font-mono text-muted flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            SYSTEM ONLINE v2.4
+                        </div>
                     </div>
                 </div>
             </header>
@@ -458,13 +639,12 @@ export default function App() {
                 {step === 'input' && (
                     <div className="animate-[slideUp_0.6s_ease-out] space-y-12">
                         <div className="text-center space-y-4 mb-12">
-                            <h2 className="text-5xl md:text-6xl font-black text-ink tracking-tighter leading-tight">
-                                Debug Your <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-ink to-gray-500">Existence.</span>
+                            <h2 className="text-5xl md:text-6xl font-black track tracking-tighter leading-tight">
+                                {t.slogan1} <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-ink to-gray-500">{t.slogan2}</span>
                             </h2>
                             <p className="text-lg text-gray-500 max-w-xl mx-auto font-medium">
-                                A comprehensive diagnostic tool for the human operating system.
-                                Identify leaks, optimize kernels, and patch security vulnerabilities.
+                                {t.description}
                             </p>
                         </div>
 
@@ -472,7 +652,7 @@ export default function App() {
                             {/* SECTION 1: KERNEL */}
                             <div className="mb-10">
                                 <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">
-                                    <Cpu size={16} /> Kernel Specifications
+                                    <Cpu size={16} /> {t.form.kernel}
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <InputField
