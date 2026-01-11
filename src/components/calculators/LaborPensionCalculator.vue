@@ -167,20 +167,21 @@
             <h3 class="text-sm font-bold text-stone-700 mb-4">🎁 節稅效益</h3>
             <div class="relative z-10">
                 <div class="text-center mb-6">
-                    <p class="text-stone-500 text-sm mb-1 uppercase tracking-wider">預估 65 歲累積資產</p>
-                    <p class="text-4xl md:text-5xl font-bold text-stone-800">
-                        <span class="text-emerald-500 text-2xl mr-1">$</span>{{ totalAmount.toLocaleString() }}
+                    <p class="text-stone-500 text-sm mb-1 uppercase tracking-wider">每年預估省稅</p>
+                    <p class="text-4xl md:text-5xl font-bold text-emerald-600">
+                        <span class="text-emerald-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
+                    <p class="text-xs text-stone-400 mt-2">根據您的稅率 {{ taxRate }}% 計算</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="grid grid-cols-2 gap-4 mb-2">
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-400 mb-1">本金投入</p>
-                        <p class="text-lg font-bold text-stone-700">${{ totalPrincipal.toLocaleString() }}</p>
+                        <p class="text-xs text-stone-400 mb-1">自提總投入</p>
+                        <p class="text-lg font-bold text-stone-700">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-400 mb-1">複利獲利</p>
-                        <p class="text-lg font-bold text-amber-500">+${{ totalInterest.toLocaleString() }}</p>
+                        <p class="text-xs text-stone-400 mb-1">累計省稅</p>
+                        <p class="text-lg font-bold text-emerald-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
                     </div>
                 </div>
             </div>

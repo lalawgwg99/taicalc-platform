@@ -23,7 +23,7 @@
               <input
                 type="number"
                 v-model.number="currentNetWorth"
-                class="input-base w-full pl-8 text-lg font-mono"
+                class="input-base w-full pl-12 text-lg font-mono"
                 placeholder="1000000"
               />
             </div>
@@ -41,7 +41,7 @@
               <input
                 type="number"
                 v-model.number="monthlyExpense"
-                class="input-base w-full pl-8 text-lg font-mono"
+                class="input-base w-full pl-12 text-lg font-mono"
                 placeholder="40000"
               />
             </div>
@@ -58,7 +58,7 @@
               <input
                 type="number"
                 v-model.number="monthlySavings"
-                class="input-base w-full pl-8 text-lg font-mono"
+                class="input-base w-full pl-12 text-lg font-mono"
                 placeholder="20000"
               />
             </div>

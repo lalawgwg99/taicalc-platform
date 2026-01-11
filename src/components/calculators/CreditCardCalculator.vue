@@ -165,15 +165,28 @@
 
   <!-- Carrefour Uniopen Calculator Section -->
   <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 mt-8 space-y-6">
-    <header class="flex items-center justify-between mb-4 border-b border-stone-100 pb-4">
+    <header 
+        @click="showUniopen = !showUniopen" 
+        class="flex items-center justify-between mb-4 pb-2 cursor-pointer select-none group"
+    >
       <div>
-        <h2 class="text-xl font-bold text-stone-800 flex items-center gap-2">
+        <h2 class="text-xl font-bold text-stone-800 flex items-center gap-2 group-hover:text-amber-600 transition-colors">
           家樂福 uniopen 回饋試算
           <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600 font-bold border border-blue-200">Beta</span>
         </h2>
         <p class="text-xs text-stone-400 mt-1">最高 11% 回饋攻略 · 點數 / 折價券試算</p>
       </div>
+      <div 
+        class="w-8 h-8 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center transition-all duration-300"
+        :class="showUniopen ? 'rotate-180 bg-stone-200 text-stone-600' : ''"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
     </header>
+
+    <div v-show="showUniopen" class="space-y-6 animate-fade-in-down">
 
     <!-- Inputs -->
     <div class="space-y-4">
@@ -372,6 +385,7 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 </template>
 
@@ -380,6 +394,7 @@ import { ref, computed, reactive, watch, onMounted } from 'vue';
 
 const amount = ref(30000);
 const calcMode = ref('installment'); // 'installment' or 'revolving'
+const showUniopen = ref(false);
 
 // Installment State
 const installments = ref(12);
