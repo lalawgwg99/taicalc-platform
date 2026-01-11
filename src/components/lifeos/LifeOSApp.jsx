@@ -111,13 +111,13 @@ const ScoreCard = ({ scoreData }) => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
                 {/* Left: Total Score */}
                 <div className="flex flex-col items-center justify-center text-center">
-                    <div className="text-muted text-sm font-medium tracking-widest uppercase mb-2">LifeOS Integrity</div>
+                    <div className="text-muted text-sm font-medium tracking-widest uppercase mb-2">{t.score.integrity}</div>
                     <div className="flex items-baseline justify-center">
                         <span className="text-7xl font-black text-ink tracking-tighter">{scoreData.total}</span>
                         <span className="text-xl text-gray-400 font-medium">/1000</span>
                     </div>
                     <div className={`mt-4 px-6 py-2 rounded-full border text-xl font-bold ${gradeStyle}`}>
-                        Grade {scoreData.grade}
+                        {t.score.grade} {scoreData.grade}
                     </div>
                 </div>
 
@@ -147,7 +147,7 @@ const ScoreCard = ({ scoreData }) => {
             </div>
             <div className="mt-6 text-center">
                 <p className="text-sm text-gray-500">
-                    Your LifeOS outperforms <span className="font-bold text-ink">{scoreData.percentile}%</span> of users.
+                    {t.score.outperforms} <span className="font-bold text-ink">{scoreData.percentile}%</span> of users.
                 </p>
             </div>
         </div>
@@ -216,7 +216,7 @@ const SystemConsole = ({ title, onSend, history, placeholder }) => {
                 {/* Initial System Message */}
                 <div className="flex gap-3">
                     <div className="text-accent shrink-0">➜</div>
-                    <div className="text-gray-300 text-sm">System initialized. Waiting for user input...</div>
+                    <div className="text-gray-300 text-sm">{t.consoleInit}</div>
                 </div>
 
                 {history.map((msg, idx) => (
@@ -544,7 +544,7 @@ export default function App() {
             return result.text;
         } catch (error) {
             console.error(error);
-            return "System Error: Connection to Kernel Lost.";
+            return t.errors.systemError;
         }
     };
 
@@ -633,7 +633,7 @@ export default function App() {
                 </div>
             </header>
 
-            <main className="pt-28 max-w-4xl mx-auto px-6 relative z-10">
+            <main className="pt-32 max-w-4xl mx-auto px-6 relative z-10">
 
                 {/* INPUT VIEW */}
                 {step === 'input' && (
@@ -656,28 +656,28 @@ export default function App() {
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <InputField
-                                        label="Creation Date (Birth)"
+                                        label={t.form.birthDate}
                                         type="date"
                                         value={formData.birthDate}
                                         onChange={(v) => setFormData({ ...formData, birthDate: v })}
                                     />
                                     <InputField
-                                        label="Spawn Location"
-                                        placeholder="e.g. Taipei, Taiwan"
+                                        label={t.form.birthLocation}
+                                        placeholder={t.form.placeholders.location}
                                         value={formData.birthLocation}
                                         onChange={(v) => setFormData({ ...formData, birthLocation: v })}
                                     />
                                     <InputField
-                                        label="Energy Source"
+                                        label={t.form.energySource}
                                         value={formData.energySource}
                                         onChange={(v) => setFormData({ ...formData, energySource: v })}
-                                        options={['Into (I)', 'Extro (E)']}
+                                        options={[t.form.options.intro, t.form.options.extro]}
                                     />
                                     <InputField
-                                        label="Logic Processor"
+                                        label={t.form.logicProcessor}
                                         value={formData.decisionModel}
                                         onChange={(v) => setFormData({ ...formData, decisionModel: v })}
-                                        options={['Thinking (T)', 'Feeling (F)']}
+                                        options={[t.form.options.thinking, t.form.options.feeling]}
                                     />
                                 </div>
                             </div>
@@ -687,32 +687,32 @@ export default function App() {
                             {/* SECTION 2: ROOT DIRECTORY */}
                             <div className="mb-10">
                                 <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">
-                                    <Database size={16} /> Root Directory (Family)
+                                    <Database size={16} /> {t.form.rootDirectory}
                                 </h3>
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <InputField
-                                            label="Initial Environment"
-                                            placeholder="Briefly describe family atmosphere..."
+                                            label={t.form.initialEnv}
+                                            placeholder={t.form.placeholders.family}
                                             value={formData.familyBackground}
                                             onChange={(v) => setFormData({ ...formData, familyBackground: v })}
                                         />
                                         <InputField
-                                            label="Admin Style (Parents)"
-                                            placeholder="Strict, Absent, Helicopter?"
+                                            label={t.form.adminStyle}
+                                            placeholder={t.form.placeholders.parentStyle}
                                             value={formData.parentalStyle}
                                             onChange={(v) => setFormData({ ...formData, parentalStyle: v })}
                                         />
                                     </div>
                                     <InputField
-                                        label="Sequence ID (Sibling Order)"
-                                        placeholder="e.g. Eldest, Middle, Youngest, Only"
+                                        label={t.form.sequenceId}
+                                        placeholder={t.form.placeholders.sibling}
                                         value={formData.siblingOrder}
                                         onChange={(v) => setFormData({ ...formData, siblingOrder: v })}
                                     />
                                     <InputField
-                                        label="Legacy Code (Grandparents)"
-                                        placeholder="Any major events? War, bankruptcy, migration?"
+                                        label={t.form.legacyCode}
+                                        placeholder={t.form.placeholders.grandparent}
                                         value={formData.grandparentHistory}
                                         onChange={(v) => setFormData({ ...formData, grandparentHistory: v })}
                                     />
@@ -724,24 +724,24 @@ export default function App() {
                             {/* SECTION 3: RUNTIME METRICS */}
                             <div className="mb-10">
                                 <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">
-                                    <Activity size={16} /> Runtime Stats
+                                    <Activity size={16} /> {t.form.runtime}
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <InputField
-                                        label="Current Role"
-                                        placeholder="Job Title"
+                                        label={t.form.currentRole}
+                                        placeholder={t.form.placeholders.role}
                                         value={formData.currentRole}
                                         onChange={(v) => setFormData({ ...formData, currentRole: v })}
                                     />
                                     <InputField
-                                        label="Resource Inflow"
-                                        placeholder="Annual Income"
+                                        label={t.form.resourceInflow}
+                                        placeholder={t.form.placeholders.income}
                                         value={formData.salary}
                                         onChange={(v) => setFormData({ ...formData, salary: v })}
                                     />
                                     <InputField
-                                        label="Uptime"
-                                        placeholder="Years in role"
+                                        label={t.form.uptime}
+                                        placeholder={t.form.placeholders.years}
                                         value={formData.yearInJob}
                                         onChange={(v) => setFormData({ ...formData, yearInJob: v })}
                                     />
@@ -753,25 +753,25 @@ export default function App() {
                             {/* SECTION 4: ERROR LOGS */}
                             <div className="mb-10">
                                 <h3 className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-widest mb-6">
-                                    <AlertTriangle size={16} /> Critical Errors
+                                    <AlertTriangle size={16} /> {t.form.criticalErrors}
                                 </h3>
                                 <div className="space-y-6">
                                     <InputField
-                                        label="Current Bottleneck"
-                                        placeholder="What is stopping you right now?"
+                                        label={t.form.currentBottleneck}
+                                        placeholder={t.form.placeholders.bottleneck}
                                         value={formData.currentBottleneck}
                                         onChange={(v) => setFormData({ ...formData, currentBottleneck: v })}
                                     />
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <InputField
-                                            label="Connection Logs (Relationships)"
-                                            placeholder="Recurring patterns?"
+                                            label={t.form.connectionLogs}
+                                            placeholder={t.form.placeholders.relationship}
                                             value={formData.pastRelationship}
                                             onChange={(v) => setFormData({ ...formData, pastRelationship: v })}
                                         />
                                         <InputField
-                                            label="Screen Time Avg"
-                                            placeholder="Hours/Day"
+                                            label={t.form.screenTime}
+                                            placeholder={t.form.placeholders.hours}
                                             value={formData.screenTime}
                                             onChange={(v) => setFormData({ ...formData, screenTime: v })}
                                         />
@@ -796,7 +796,7 @@ export default function App() {
                         </div>
 
                         <div className="text-center text-xs text-gray-400 font-mono">
-                            :: API ENCRYPTED :: NO DATA LOGGING ::
+                            {t.footer}
                         </div>
                     </div>
                 )}
@@ -810,19 +810,19 @@ export default function App() {
                                 {progress}%
                             </div>
                         </div>
-                        <h2 className="mt-8 text-2xl font-bold text-ink tracking-tight animate-pulse">Running Diagnostics...</h2>
+                        <h2 className="mt-8 text-2xl font-bold text-ink tracking-tight animate-pulse">{t.loading.title}</h2>
                         <div className="mt-2 text-gray-500 font-mono text-sm">
-                            Accessing Neural Core... Compiling Life Data...
+                            {t.loading.subtitle}
                         </div>
 
                         {/* Fake Terminal Output */}
                         <div className="mt-8 w-full max-w-md bg-black text-green-500 p-4 rounded-xl font-mono text-xs opacity-80 h-32 overflow-hidden shadow-2xl border border-gray-800">
                             <div className="space-y-1">
-                                {progress > 10 && <div>&gt; Loading kernel modules... OK</div>}
-                                {progress > 30 && <div>&gt; Scanning memory banks... OK</div>}
-                                {progress > 50 && <div>&gt; Detecting emotional leaks... <span className="text-red-500">FOUND</span></div>}
-                                {progress > 70 && <div>&gt; Optimizing decision algorithms...</div>}
-                                {progress > 90 && <div>&gt; Compiling final report...</div>}
+                                {progress > 10 && <div>&gt; {t.loading.steps.kernel}</div>}
+                                {progress > 30 && <div>&gt; {t.loading.steps.memory}</div>}
+                                {progress > 50 && <div>&gt; {t.loading.steps.emotional} <span className="text-red-500">{t.loading.steps.found}</span></div>}
+                                {progress > 70 && <div>&gt; {t.loading.steps.optimizing}</div>}
+                                {progress > 90 && <div>&gt; {t.loading.steps.compiling}</div>}
                                 <div className="animate-pulse">_</div>
                             </div>
                             <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -832,7 +832,7 @@ export default function App() {
                                 ></div>
                             </div>
                             <p className="text-[10px] text-muted mt-3 text-center">
-                                💡 系統運作正常，請耐心等待...
+                                {t.loading.waiting}
                             </p>
                         </div>
                     </div>
