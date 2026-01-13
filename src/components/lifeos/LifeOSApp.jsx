@@ -3,7 +3,7 @@ import {
     Terminal, RefreshCw, Lock, Search,
     AlertTriangle, Check, ArrowRight,
     Activity, Database, Cpu, Network, Compass, Layers, Zap,
-    BrainCircuit
+    BrainCircuit, Info, X, BookOpen, Shield, Code
 } from 'lucide-react';
 
 /**
@@ -488,6 +488,120 @@ const HotfixCard = ({ tasks, title }) => (
     </div>
 );
 
+const MethodologyModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
+            <div className="bg-zinc-900 border border-zinc-700 w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl flex flex-col">
+                {/* Header */}
+                <div className="flex items-center justify-between p-6 border-b border-zinc-800 sticky top-0 bg-zinc-900/95 backdrop-blur z-10">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-emerald-500/10 rounded-lg">
+                            <Cpu className="text-emerald-400" size={24} />
+                        </div>
+                        <div>
+                            <h2 className="text-zinc-100 font-bold text-lg tracking-wide uppercase font-mono">System Architecture</h2>
+                            <p className="text-zinc-500 text-xs uppercase tracking-wider">LifeOS 核心運算原理 v7.0</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 hover:bg-zinc-800 rounded-lg text-zinc-400 hover:text-white transition-colors"
+                    >
+                        <X size={20} />
+                    </button>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-8 font-sans">
+
+                    {/* Section 1: Philosophy */}
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-emerald-400 font-mono text-sm uppercase tracking-widest font-bold">
+                            <BookOpen size={16} />
+                            <h3>Core Philosophy (核心哲學)</h3>
+                        </div>
+                        <p className="text-zinc-300 leading-relaxed text-sm">
+                            LifeOS 不僅僅是一個心理測驗，它是一套<span className="text-zinc-100 font-bold">「社會學逆向工程」</span>系統。
+                            我們不相信星座或運勢，我們相信<span className="text-zinc-100 font-bold">「輸入決定輸出」</span>。
+                            您的現狀（Output），是您過去所有選擇、環境參數與思維模式（Input）的總和。
+                        </p>
+                    </div>
+
+                    {/* Section 2: Three Pillars */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
+                            <h4 className="text-emerald-300 font-bold text-sm mb-2 font-mono uppercase">1. Adlerian Psychology</h4>
+                            <p className="text-zinc-400 text-xs leading-5">
+                                <span className="text-zinc-500 block mb-1">阿德勒心理學</span>
+                                「所有的煩惱都是人際關係的煩惱。」系統會分析您的依附類型與家庭動力，找出深層的性格設定。
+                            </p>
+                        </div>
+                        <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
+                            <h4 className="text-emerald-300 font-bold text-sm mb-2 font-mono uppercase">2. Kondratiev Waves</h4>
+                            <p className="text-zinc-400 text-xs leading-5">
+                                <span className="text-zinc-500 block mb-1">康波週期經濟學</span>
+                                個人奮鬥固然重要，但也要看歷史進程。系統會計算您的出生年份是否踩在經濟週期的紅利點上。
+                            </p>
+                        </div>
+                        <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
+                            <h4 className="text-emerald-300 font-bold text-sm mb-2 font-mono uppercase">3. Game Theory</h4>
+                            <p className="text-zinc-400 text-xs leading-5">
+                                <span className="text-zinc-500 block mb-1">博弈論與策略</span>
+                                生活是資源配置的遊戲。系統會評估您的「時間」、「金錢」與「注意力」是否配置在最高期望值的選項上。
+                            </p>
+                        </div>
+                        <div className="bg-zinc-950/50 p-4 rounded-xl border border-zinc-800/50">
+                            <h4 className="text-emerald-300 font-bold text-sm mb-2 font-mono uppercase">4. Object Relations</h4>
+                            <p className="text-zinc-400 text-xs leading-5">
+                                <span className="text-zinc-500 block mb-1">客體關係理論</span>
+                                分析「童年腳本」如何潛意識地影響您現在的職場與感情決策（例如：強迫性重複）。
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Section 3: How it Works */}
+                    <div className="space-y-4 pt-4 border-t border-zinc-800">
+                        <div className="flex items-center gap-2 text-emerald-400 font-mono text-sm uppercase tracking-widest font-bold">
+                            <Code size={16} />
+                            <h3>Processing Logic (運算邏輯)</h3>
+                        </div>
+                        <ul className="space-y-3 text-sm text-zinc-400">
+                            <li className="flex gap-3">
+                                <span className="text-emerald-500 font-mono">01.</span>
+                                <div>
+                                    <span className="text-zinc-200 font-bold">去識別化數據 (Anonymization)</span>
+                                    <p className="text-xs mt-1">我們不收集您的姓名或隱私。我們只提取特徵值（如：家中排行、父母教養風格）進行模式匹配。</p>
+                                </div>
+                            </li>
+                            <li className="flex gap-3">
+                                <span className="text-emerald-500 font-mono">02.</span>
+                                <div>
+                                    <span className="text-zinc-200 font-bold">多維度交叉分析 (Cross-Analysis)</span>
+                                    <p className="text-xs mt-1">單一維度（如 MBTI）無法解釋複雜人生。本系統交叉比對「先天性格」x「後天環境」x「時代機遇」。</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+
+                {/* Footer */}
+                <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 rounded-b-2xl">
+                    <button
+                        onClick={onClose}
+                        className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold py-3 rounded-xl transition-all uppercase tracking-widest text-xs"
+                    >
+                        Close System Specs
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const SystemConsole = ({ title, placeholder, onSend, history }) => {
     const [input, setInput] = useState("");
     const messagesEndRef = useRef(null);
@@ -564,6 +678,7 @@ export default function App() {
     const [loadingLogIndex, setLoadingLogIndex] = useState(0);
 
     const [chatHistory, setChatHistory] = useState([]);
+    const [showMethodology, setShowMethodology] = useState(false); // New State
 
     useEffect(() => {
         let interval;
@@ -659,9 +774,18 @@ export default function App() {
                         <Terminal className="text-accent" size={32} strokeWidth={2.5} />
                         <span className="font-mono">{t.title}</span>
                     </h1>
-                    <p className="text-xs md:text-sm font-medium mt-2 uppercase tracking-widest text-muted">
-                        {t.subtitle} <span className="bg-accent text-white px-2 py-0.5 ml-2 rounded">{t.version}</span>
-                    </p>
+                    <div className="flex items-center gap-4 mt-2">
+                        <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-muted">
+                            {t.subtitle} <span className="bg-accent text-white px-2 py-0.5 ml-2 rounded">{t.version}</span>
+                        </p>
+                        <button
+                            onClick={() => setShowMethodology(true)}
+                            className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-muted hover:text-accent transition-colors bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded-md"
+                        >
+                            <Info size={12} />
+                            System Docs
+                        </button>
+                    </div>
                 </div>
 
                 {/* LANGUAGE SWITCHER */}
@@ -680,6 +804,8 @@ export default function App() {
                     </button>
                 </div>
             </header>
+
+            <MethodologyModal isOpen={showMethodology} onClose={() => setShowMethodology(false)} />
 
             {/* MAIN CONTENT */}
             <main className="w-full max-w-4xl">
