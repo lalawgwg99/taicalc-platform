@@ -4,9 +4,12 @@
     <!-- 🌍 Global Header -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
       <div>
-        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
-          {{ t('title') }}
-        </h1>
+        <div class="flex items-center gap-3 mb-2">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            {{ t('title') }}
+            </h1>
+            <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded-full border border-emerald-200 uppercase tracking-wide">Beta 2.0</span>
+        </div>
         <p class="text-stone-500 font-medium">{{ t('subtitle') }}</p>
       </div>
 
@@ -31,8 +34,22 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       
-      <!-- 🎛️ Input Panel -->
+      <!-- 🎛️ Input & Config Panel -->
       <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Lifestyle Tier Selector -->
+        <div class="bg-white rounded-3xl shadow-sm border border-stone-200 p-2 flex">
+           <button 
+             v-for="tier in ['survival', 'comfort', 'luxury']"
+             :key="tier"
+             @click="inputs.lifestyle = tier"
+             class="flex-1 py-3 rounded-2xl text-sm font-bold transition-all relative overflow-hidden"
+             :class="inputs.lifestyle === tier ? 'bg-emerald-600 text-white shadow-md' : 'text-stone-500 hover:bg-stone-50'"
+           >
+             {{ t('tier_' + tier) }}
+           </button>
+        </div>
+
         <div class="bg-white rounded-3xl shadow-xl shadow-stone-200/50 border border-stone-100 p-6 relative overflow-hidden">
           <!-- Ambient BG -->
           <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
@@ -86,11 +103,6 @@
                 min="1" max="15" step="0.5"
                 class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-emerald-500"
               >
-              <div class="flex justify-between text-[10px] text-stone-400 mt-1 font-mono">
-                <span>1%</span>
-                <span>SP500 Avg (8-10%)</span>
-                <span>15%</span>
-              </div>
             </div>
 
             <!-- Withdrawal Rate -->
@@ -105,65 +117,76 @@
                 min="2" max="6" step="0.1"
                 class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
               >
-              <p class="text-xs text-stone-400 mt-2 leading-relaxed">
-                {{ t('withdraw_desc') }}
-              </p>
             </div>
           </div>
         </div>
 
-        <!-- 💡 Insight Card -->
-        <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-lg p-6 text-white relative overflow-hidden">
+        <!-- 💡 Your Power Card -->
+        <div class="bg-gradient-to-br from-stone-900 to-stone-800 rounded-3xl shadow-lg p-6 text-white relative overflow-hidden">
           <div class="relative z-10">
-            <h3 class="font-bold text-lg mb-2 opacity-90">{{ t('insight_title') }}</h3>
-            <p class="text-sm opacity-80 leading-relaxed mb-4">
-              {{ t('insight_body') }}
-            </p>
-            <div class="flex items-baseline gap-2">
-              <span class="text-3xl font-bold font-mono">{{ formatMoney(safeWithdrawalAmount / 12) }}</span>
+            <h3 class="font-bold text-lg mb-2 opacity-90">{{ t('your_passive_power') }}</h3>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-3xl font-bold font-mono text-emerald-400">{{ formatMoney(safeWithdrawalAmount / 12) }}</span>
               <span class="text-sm opacity-70">/ {{ t('month') }}</span>
             </div>
-            <p class="text-xs opacity-50 mt-1">{{ t('passive_income_potential') }}</p>
+             <p class="text-xs opacity-60 mb-4">{{ t('based_on_withdrawal', { rate: inputs.withdrawal }) }}</p>
+
+            <div class="h-px bg-white/10 w-full mb-4"></div>
+            
+            <div class="flex justify-between items-center">
+                <span class="text-sm opacity-80">{{ t('lifestyle_target') }}:</span>
+                <span class="font-bold text-amber-400">{{ t('tier_' + inputs.lifestyle) }}</span>
+            </div>
           </div>
-          <!-- Deco -->
-          <div class="absolute -right-4 -bottom-4 bg-white opacity-10 w-32 h-32 rounded-full blur-2xl"></div>
         </div>
       </div>
 
-      <!-- 🗺️ Geo-Arbitrage Result -->
+      <!-- 🗺️ Geo-Arbitrage Engine -->
       <div class="lg:col-span-8">
-        <div class="flex items-center justify-between mb-6">
+        <!-- Controls -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h2 class="text-xl font-bold text-stone-800 flex items-center gap-2">
             🚀 {{ t('geo_title') }}
-            <span class="text-xs font-normal text-stone-500 bg-stone-100 px-2 py-1 rounded-full border border-stone-200 ml-2 hidden sm:inline-block">
-              {{ lang === 'zh-TW' ? '基於 4% 法則' : 'Based on 4% Rule' }}
-            </span>
           </h2>
+          
+          <div class="flex gap-2">
+            <select v-model="sortBy" class="bg-white border border-stone-200 text-stone-700 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-2">
+                <option value="freedom">{{ t('sort_freedom') }}</option>
+                <option value="cost_low">{{ t('sort_cost_low') }}</option>
+                <option value="safety">{{ t('sort_safety') }}</option>
+            </select>
+          </div>
         </div>
 
-        <!-- Cities Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4">
+        <!-- City Cards Grid -->
+        <div v-if="loading" class="text-center py-20 text-stone-400">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto mb-4"></div>
+            Loading Global Database...
+        </div>
+
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div 
-            v-for="city in citiesComputed" 
+            v-for="city in sortedCities" 
             :key="city.id"
             class="group relative bg-white rounded-2xl border-2 transition-all duration-300 overflow-hidden hover:shadow-xl hover:-translate-y-1"
-            :class="city.isFree ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-stone-100 hover:border-emerald-300'"
+            :class="city.isFree ? 'border-emerald-500 ring-4 ring-emerald-500/10' : 'border-stone-100 hover:border-emerald-300'"
           >
             <!-- Badge: Freedom Status -->
             <div 
-              class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold shadow-sm backdrop-blur-md"
-              :class="city.isFree ? 'bg-emerald-500 text-white' : 'bg-stone-200/80 text-stone-600'"
+              class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold shadow-sm backdrop-blur-md flex items-center gap-1"
+              :class="city.isFree ? 'bg-emerald-500 text-white' : 'bg-red-50 text-red-600 border border-red-100'"
             >
-              {{ city.isFree ? 'FREEDOM 🎉' : `${city.yearsLeft} ${t('years_left')}` }}
+              <span v-if="city.isFree">FREEDOM 🎉</span>
+              <span v-else>Gap: -{{ formatMoney(city.monthlyGap) }}/mo</span>
             </div>
 
             <div class="p-5 flex items-start gap-5">
               <!-- Visual -->
-              <div class="w-20 h-20 rounded-xl bg-stone-100 flex-shrink-0 overflow-hidden relative shadow-inner">
+              <div class="w-24 h-24 rounded-xl bg-stone-100 flex-shrink-0 overflow-hidden relative shadow-inner">
                 <img 
-                  :src="city.img" 
+                  :src="city.image" 
                   alt="City" 
-                  class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition-transform duration-500"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                 >
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -171,283 +194,295 @@
 
               <!-- Content -->
               <div class="flex-1 min-w-0">
-                <h3 class="font-bold text-lg text-stone-800 mb-1 truncate">{{ city.name[lang] }}</h3>
-                <p class="text-xs text-stone-500 mb-3 flex items-center gap-1">
-                  <span class="opacity-70">{{ city.country[lang] }}</span> • 
-                  <span class="text-stone-400">{{ t('col_index') }}: {{ city.colIndex }}</span>
+                <div class="flex justify-between items-start">
+                    <h3 class="font-bold text-lg text-stone-800 mb-1 truncate pr-28">{{ city.name[lang.split('-')[0]] || city.name.en }}</h3>
+                </div>
+                <p class="text-xs text-stone-500 mb-3 flex items-center gap-2">
+                  <span class="opacity-70">{{ city.country[lang.split('-')[0]] || city.country.en }}</span>
+                  <span class="px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 font-medium">{{ city.region }}</span>
                 </p>
+
+                <!-- Key Metrics Mini-Grid -->
+                <div class="grid grid-cols-3 gap-2 mb-3 text-[10px] text-stone-500">
+                    <div class="bg-stone-50 rounded p-1 text-center">
+                        <div class="font-bold text-stone-700">{{ city.indices.safety }}/100</div>
+                        <div>Safety</div>
+                    </div>
+                    <div class="bg-stone-50 rounded p-1 text-center">
+                        <div class="font-bold text-stone-700">{{ city.indices.weather }}/100</div>
+                        <div>Weather</div>
+                    </div>
+                    <div class="bg-stone-50 rounded p-1 text-center">
+                        <div class="font-bold text-stone-700">{{ city.indices.internet }} Mbps</div>
+                        <div>Net</div>
+                    </div>
+                </div>
 
                 <!-- Financial Bar -->
                 <div class="space-y-1.5">
-                  <div class="flex justify-between text-xs font-medium">
-                    <span :class="city.isFree ? 'text-emerald-600' : 'text-stone-600'">
-                      {{ t('cost_living') }}: {{ formatMoney(city.monthlyCost) }}
+                  <div class="flex justify-between text-xs font-medium items-end">
+                    <span class="text-stone-500">
+                       Target: <span class="text-stone-800 font-bold">{{ formatMoney(city.targetCost) }}</span>
                     </span>
+                    <span v-if="!city.isFree" class="text-amber-600 font-bold">{{ city.yearsLeft }} {{ t('years_to_fire') }}</span>
                   </div>
                   
                   <!-- Progress Bar -->
-                  <div class="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden relative">
-                    <!-- Target Marker (100%) -->
-                    <div class="absolute right-0 top-0 bottom-0 w-0.5 bg-stone-300 z-10"></div>
-                    <!-- Fill -->
+                  <div class="w-full h-3 bg-stone-100 rounded-full overflow-hidden relative">
                     <div 
                       class="h-full rounded-full transition-all duration-1000 ease-out"
-                      :class="city.isFree ? 'bg-emerald-500' : 'bg-amber-400'"
+                      :class="city.isFree ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-red-400'"
                       :style="{ width: Math.min(100, city.progress) + '%' }"
                     ></div>
                   </div>
-                  <div class="flex justify-between text-[10px] text-stone-400 font-mono mt-1">
-                    <span>{{ Math.round(city.progress) }}% {{ t('covered') }}</span>
+                  <div class="flex justify-between text-[10px] items-center mt-1">
+                    <span class="text-stone-400">{{ Math.round(city.progress) }}% {{ t('covered') }}</span>
+                    <span class="text-stone-300 italic">{{ t('lifestyle') }}: {{ t('tier_' + inputs.lifestyle) }}</span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- "Move Here" CTA (Mock) -->
-            <div class="bg-stone-50 px-5 py-3 border-t border-stone-100 flex justify-between items-center">
-               <span class="text-xs text-stone-500 italic">
-                 {{ city.tagline[lang] }}
-               </span>
-               <button class="text-xs font-bold text-stone-700 hover:text-emerald-600 transition-colors flex items-center gap-1">
-                 {{ t('explore') }} →
-               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 💡 Methodology Section -->
-    <div class="mt-16 border-t border-stone-200 pt-8 text-center text-stone-500 space-y-4 max-w-2xl mx-auto">
-      <h4 class="text-sm font-bold uppercase tracking-widest opacity-50">{{ t('methodology') }}</h4>
-      <p class="text-sm">
-        {{ t('methodology_desc') }}
-      </p>
-      <div class="flex justify-center gap-4 text-xs opacity-60">
-        <span>Numbeo Data (2025)</span>
-        <span>•</span>
-        <span>4% Rule (Trinity Study)</span>
-        <span>•</span>
-        <span>Inflation Adjusted</span>
-      </div>
+    <!-- 💡 Detailed Methodology (Collapsible) -->
+    <div class="mt-16 bg-stone-100 rounded-2xl p-6 text-sm text-stone-600">
+        <details class="group cursor-pointer">
+            <summary class="font-bold text-lg text-stone-800 list-none flex items-center gap-2 select-none">
+                <span class="group-open:rotate-90 transition-transform">▸</span>
+                {{ t('methodology_title') }}
+            </summary>
+            <div class="mt-4 space-y-4 pl-4 border-l-2 border-stone-300">
+                <p>{{ t('methodology_p1') }}</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>{{ t('methodology_source') }}:</strong> Numbeo 2025 Cost of Living Index.</li>
+                    <li><strong>{{ t('methodology_rule') }}:</strong> Trinity Study (4% Rule) - Safe Withdrawal Rate.</li>
+                    <li><strong>{{ t('methodology_tiers') }}:</strong>
+                        <ul class="list-circle pl-5 mt-1 text-stone-500">
+                            <li>Survival: Basic rent (studio outside center), cooking at home, minimal transport.</li>
+                            <li>Comfort: 1BR in center, eating out 30%, coworking space, occasional trips.</li>
+                            <li>Luxury: Penthouse/Villa, eating out 80%, taxi everywhere, premium services.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="text-xs opacity-70 italic">{{ t('methodology_disclaimer') }}</p>
+            </div>
+        </details>
     </div>
 
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 
 // --- i18n Dictionary ---
 const messages = {
   'zh-TW': {
     title: '全球 FIRE 自由度模擬器',
-    subtitle: '你的錢在台灣只能活 10 年，但在這裡你是國王。',
-    input_section: '設定你的資產現況',
-    curr_net_worth: '目前淨資產',
-    monthly_saving: '每月可存金額',
-    annual_return: '預期年化報酬率',
-    withdrawal_rate: '安全提領率',
-    withdraw_desc: '傳統建議為 4%。這決定了你需要多少本金才能讓資產永續不滅。',
-    insight_title: '金錢的時空價值',
-    insight_body: '這不僅是計算機，這是一台時光機與任意門。看看你的資產搬到世界的另一端會有什麼魔力。',
+    subtitle: '如果這筆錢搬到別的國家，你會過著什麼樣的人生？',
+    input_section: '資產配置',
+    curr_net_worth: '淨資產總額',
+    monthly_saving: '每月儲蓄',
+    annual_return: '年化報酬率',
+    withdrawal_rate: '提領率',
+    your_passive_power: '你的被動鈔能力',
     month: '月',
-    day: '天',
-    passive_income_potential: '潛在被動收入 (4%)',
-    geo_title: '你的多重宇宙人生',
-    cost_living: '當地舒適開銷',
-    years_left: '年後自由',
-    covered: '開銷覆蓋率',
-    explore: '探索生活',
-    col_index: '物價指數',
-    methodology: '計算方法',
-    methodology_desc: '我們使用 Numbeo 2025 的全球生活成本指數，結合您的資產產生之被動收入，計算在不同城市的相對自由度。',
+    years_to_fire: '年後自由',
+    geo_title: '全球自由度排名',
+    sort_freedom: '排序: 最快自由',
+    sort_cost_low: '排序: 物價最低',
+    sort_safety: '排序: 治安最好',
+    tier_survival: '生存模式 (窮遊)',
+    tier_comfort: '舒適模式 (標準)',
+    tier_luxury: '奢華模式 (富養)',
+    covered: '已覆蓋',
+    lifestyle: '生活等級',
+    lifestyle_target: '目標生活',
+    based_on_withdrawal: '基於 {rate}% 安全提領率計算',
+    methodology_title: '演算邏輯與數據來源透明化報告',
+    methodology_p1: '本工具旨在提供跨國界的財務自由度比較。我們不只是計算數字，更考慮了不同城市的生活品質差異。',
+    methodology_source: '數據來源',
+    methodology_rule: '核心法則',
+    methodology_tiers: '生活分級定義',
+    methodology_disclaimer: '註：所有數據僅供模擬參考，實際開銷因個人消費習慣而異。投資具有風險，過往績效不代表未來表現。',
   },
   'en': {
     title: 'Global FIRE Simulator',
-    subtitle: 'Your money might last 10 years here, but elsewhere? You could be a king.',
-    input_section: 'Your Financial Base',
-    curr_net_worth: 'Current Net Worth',
-    monthly_saving: 'Monthly Savings',
-    annual_return: 'Exp. Annual Return',
-    withdrawal_rate: 'Safe Withdrawal Rate',
-    withdraw_desc: 'Standard is 4%. This determines the capital needed for perpetual sustainability.',
-    insight_title: 'Geo-Arbitrage Power',
-    insight_body: 'This isn\'t just a calculator; it’s a teleportation device. See how your freedom timeline shifts across borders.',
+    subtitle: 'What if you moved your wealth elsewhere? Discover your parallel lives.',
+    input_section: 'Financial Base',
+    curr_net_worth: 'Net Worth',
+    monthly_saving: 'Monthly Saving',
+    annual_return: 'Annual Return',
+    withdrawal_rate: 'Withdrawal Rate',
+    your_passive_power: 'Passive Income Power',
     month: 'mo',
-    day: 'day',
-    passive_income_potential: 'Potential Passive Income (4%)',
-    geo_title: 'Your Freedom Map',
-    cost_living: 'Local Cost',
-    years_left: 'Years to FIRE',
+    years_to_fire: 'Years to FIRE',
+    geo_title: 'Global Freedom Index',
+    sort_freedom: 'Sort: Easiest FIRE',
+    sort_cost_low: 'Sort: Lowest Cost',
+    sort_safety: 'Sort: Safest',
+    tier_survival: 'Survival (Lean)',
+    tier_comfort: 'Comfort (Std)',
+    tier_luxury: 'Luxury (Fat)',
     covered: 'Covered',
-    explore: 'Explore',
-    col_index: 'COL Index',
-    methodology: 'Methodology',
-    methodology_desc: 'Using Numbeo 2025 Cost of Living indices combined with your passive income potential to calculate financial freedom relative to each city.',
+    lifestyle: 'Lifestyle',
+    lifestyle_target: 'Target Tier',
+    based_on_withdrawal: 'Based on {rate}% SWR',
+    methodology_title: 'Methodology & Data Transparency',
+    methodology_p1: 'This tool compares financial freedom across borders, accounting for quality of life differences.',
+    methodology_source: 'Data Source',
+    methodology_rule: 'Core Rule',
+    methodology_tiers: 'Lifestyle Definitions',
+    methodology_disclaimer: 'Disclaimer: Data for simulation only. Real costs vary by habit. Investment involves risk.',
   }
 };
 
 const lang = ref('zh-TW'); // State
-const t = (key) => messages[lang.value][key] || key;
+const t = (key, params = {}) => {
+  let text = messages[lang.value][key] || key;
+  // Simple param replacement
+  Object.keys(params).forEach(k => {
+    text = text.replace(`{${k}}`, params[k]);
+  });
+  return text;
+};
 
 // --- State ---
-// Default Values are in TWD roughly
 const inputs = ref({
   netWorth: 5000000,
   monthlySaving: 30000,
   roi: 6,
-  withdrawal: 4
+  withdrawal: 4,
+  lifestyle: 'comfort' // survival, comfort, luxury
 });
+
+const citiesData = ref([]);
+const loading = ref(true);
+const sortBy = ref('freedom');
 
 // --- Currency Logic ---
 const EXCHANGE_RATE = 32; // 1 USD = 32 TWD
-
 const currencySymbol = computed(() => lang.value === 'zh-TW' ? 'NT$' : '$');
 const currencyCode = computed(() => lang.value === 'zh-TW' ? 'TWD' : 'USD');
 
 // Auto-convert values when switching languages
 watch(lang, (newLang, oldLang) => {
   if (newLang === 'en' && oldLang === 'zh-TW') {
-    // TWD -> USD
     inputs.value.netWorth = Math.round(inputs.value.netWorth / EXCHANGE_RATE);
     inputs.value.monthlySaving = Math.round(inputs.value.monthlySaving / EXCHANGE_RATE);
   } else if (newLang === 'zh-TW' && oldLang === 'en') {
-    // USD -> TWD
     inputs.value.netWorth = Math.round(inputs.value.netWorth * EXCHANGE_RATE);
     inputs.value.monthlySaving = Math.round(inputs.value.monthlySaving * EXCHANGE_RATE);
   }
 });
 
-const setLang = (l) => {
-  lang.value = l;
-};
+const setLang = (l) => lang.value = l;
+const formatMoney = (val) => currencySymbol.value + Math.round(val).toLocaleString();
 
-const formatMoney = (val) => {
-  return currencySymbol.value + val.toLocaleString();
-};
-
-// --- Geo Logic ---
-// Passive Income = Net Worth * Withdrawal Rate
+// --- Core Logic ---
 const safeWithdrawalAmount = computed(() => {
   return inputs.value.netWorth * (inputs.value.withdrawal / 100);
 });
 
-// City Database (Abstracted Cost Units)
-// Base Cost is in USD for easier scaling, we convert to TWD if needed.
-const CITIES = [
-  {
-    id: 'chiang_mai',
-    name: { 'zh-TW': '清邁, 泰國', 'en': 'Chiang Mai, Thailand' },
-    country: { 'zh-TW': '東南亞', 'en': 'Southeast Asia' },
-    tagline: { 'zh-TW': '數位遊牧聖地，天天按摩', 'en': 'Digital Nomad Hub' },
-    baseCostUSD: 800, // Comfortable single life
-    img: '/images/cities/city_chiang_mai_thumbnail_1768274099394.png',
-    colIndex: 35
-  },
-  {
-    id: 'lisbon',
-    name: { 'zh-TW': '里斯本, 葡萄牙', 'en': 'Lisbon, Portugal' },
-    country: { 'zh-TW': '歐洲', 'en': 'Europe' },
-    tagline: { 'zh-TW': '歐洲後花園，陽光普照', 'en': 'Sunny European Gateway' },
-    baseCostUSD: 1600,
-    img: '/images/cities/city_lisbon_thumbnail_1768274113632.png',
-    colIndex: 55
-  },
-  {
-    id: 'jaipur',
-    name: { 'zh-TW': '齋浦爾, 印度', 'en': 'Jaipur, India' },
-    country: { 'zh-TW': '南亞', 'en': 'South Asia' },
-    tagline: { 'zh-TW': '粉紅城市，極低成本奢華', 'en': 'The Pink City' },
-    baseCostUSD: 500,
-    img: '/images/cities/city_jaipur_thumbnail_1768274129569.png',
-    colIndex: 25
-  },
-  {
-    id: 'taipei',
-    name: { 'zh-TW': '台北, 台灣', 'en': 'Taipei, Taiwan' },
-    country: { 'zh-TW': '東亞', 'en': 'East Asia' },
-    tagline: { 'zh-TW': '便利超商之都，醫療頂級', 'en': 'Convenience Capital' },
-    baseCostUSD: 1400,
-    img: '/images/cities/city_taipei_thumbnail_1768274152964.png',
-    colIndex: 65
-  },
-  {
-    id: 'osaka',
-    name: { 'zh-TW': '大阪, 日本', 'en': 'Osaka, Japan' },
-    country: { 'zh-TW': '東北亞', 'en': 'East Asia' },
-    tagline: { 'zh-TW': '美食之都，比東京宜居', 'en': 'Kitchen of Japan' },
-    baseCostUSD: 1800,
-    img: '/images/cities/city_osaka_thumbnail_1768274167362.png',
-    colIndex: 70
-  },
-  {
-    id: 'new_york',
-    name: { 'zh-TW': '紐約, 美國', 'en': 'New York, USA' },
-    country: { 'zh-TW': '北美', 'en': 'North America' },
-    tagline: { 'zh-TW': '世界的中心，燃燒靈魂', 'en': 'Concrete Jungle' },
-    baseCostUSD: 4500,
-    img: '/images/cities/city_new_york_thumbnail_1768274185933.png',
-    colIndex: 100
-  },
-];
-
-const citiesComputed = computed(() => {
-  return CITIES.map(city => {
-    // 1. Determine local monthly cost in current currency
-    // Current Lang 'zh-TW' -> Cost should be TWD. city.baseCostUSD * 32
-    // Current Lang 'en' -> Cost should be USD. city.baseCostUSD
-    let localCost = 0;
-    if (lang.value === 'zh-TW') {
-      localCost = city.baseCostUSD * EXCHANGE_RATE;
-    } else {
-      localCost = city.baseCostUSD;
+// Fetch Data
+onMounted(async () => {
+    try {
+        const response = await fetch('/data/cities.json');
+        citiesData.value = await response.json();
+    } catch (e) {
+        console.error("Failed to fetch city data", e);
+    } finally {
+        loading.value = false;
     }
+});
 
-    // 2. Annualize cost
-    const annualCost = localCost * 12;
+const sortedCities = computed(() => {
+    // 1. Process Logic for each city
+    const processed = citiesData.value.map(city => {
+        // Determine Cost based on Lifestyle Tier
+        const baseCostUSD = city.costs_usd[inputs.value.lifestyle];
+        
+        let localCost = 0;
+        if (lang.value === 'zh-TW') {
+            localCost = baseCostUSD * EXCHANGE_RATE;
+        } else {
+            localCost = baseCostUSD;
+        }
+        
+        const annualCost = localCost * 12;
+        const monthlyGap = localCost - (safeWithdrawalAmount.value / 12);
+        
+        const progress = (safeWithdrawalAmount.value / annualCost) * 100;
+        const isFree = progress >= 100;
+        
+        // Years Left Calculation
+        let yearsLeft = 0;
+        if(!isFree) {
+           const targetPrincipal = annualCost / (inputs.value.withdrawal / 100);
+           const principalGap = targetPrincipal - inputs.value.netWorth;
+           
+           // NPER-like approximation:
+           // r = roi/100, pmt = annualSave, pv = netWorth, fv = -target
+           // Simplified: Gap / (Save + Returns on existing)
+           // Let's use a robust accumulation formula or simple gap/save for Prototype 2.0
+           // Using simple growth approximation for speed and clarity
+           const annualSave = inputs.value.monthlySaving * 12;
+           if (annualSave > 0) {
+              const r = inputs.value.roi / 100;
+              // Simple formula: n = ln((PMT + r*FV) / (PMT + r*PV)) / ln(1+r)
+              // This is exact for compound interest
+              const pmt = annualSave;
+              const pv = inputs.value.netWorth;
+              const fv = targetPrincipal;
+              
+              if (r === 0) {
+                  yearsLeft = (fv - pv) / pmt;
+              } else {
+                 try {
+                   // Solve for n in: FV = PV(1+r)^n + PMT [ ((1+r)^n - 1) / r ]
+                   // FV = (1+r)^n * (PV + PMT/r) - PMT/r
+                   // (1+r)^n = (FV + PMT/r) / (PV + PMT/r)
+                   const numerator = fv + (pmt / r);
+                   const denominator = pv + (pmt / r);
+                   const base = 1 + r;
+                   yearsLeft = Math.log(numerator / denominator) / Math.log(base);
+                 } catch(err) {
+                   yearsLeft = 999;
+                 }
+              }
+              yearsLeft = Math.max(0, yearsLeft).toFixed(1);
+           } else {
+             yearsLeft = '∞'; // Never if no savings
+           }
+        }
+        
+        return {
+            ...city,
+            targetCost: localCost, // Monthly target
+            monthlyGap,
+            progress,
+            isFree,
+            yearsLeft,
+            image: city.image // Use local image
+        };
+    });
 
-    // 3. Compare with Safe Withdrawal Amount
-    const passiveIncome = safeWithdrawalAmount.value; // Already in current currency
-    
-    // 4. Calculate Progress
-    const progress = (passiveIncome / annualCost) * 100;
-    const isFree = progress >= 100;
-
-    // 5. Calculate Years Left if not free
-    // Formula: NPER function essentially. 
-    // Simpler approximation: (Target - Current) / MonthlySavingAndGrowth
-    let yearsLeft = 0;
-    if(!isFree) {
-       const target = annualCost / (inputs.value.withdrawal / 100);
-       const gap = target - inputs.value.netWorth;
-       // Simply assume we save strictly linear for this quick viz (or use simple growth)
-       // Let's use simple logic: Gap / (MonthlySave * 12) roughly
-       // Better: use the same math as FIRE calculator but simplified
-       // Here we just give a rough Estimate for the card
-       const annualSave = inputs.value.monthlySaving * 12;
-       if (annualSave > 0) {
-         yearsLeft = Math.ceil(gap / annualSave); // Very rough, ignores compound interest for visual speed
-         // Adjust for compound partially
-         yearsLeft = Math.max(0.1, yearsLeft * 0.7).toFixed(1); // Discounting future value
-       } else {
-         yearsLeft = '∞';
-       }
-    }
-
-    return {
-      ...city,
-      monthlyCost: localCost,
-      annualCost,
-      progress,
-      isFree,
-      yearsLeft
-    };
-  }).sort((a, b) => b.progress - a.progress); // Sort by easiest to hardest
+    // 2. Sort
+    return processed.sort((a, b) => {
+        if (sortBy.value === 'freedom') return b.progress - a.progress;
+        if (sortBy.value === 'cost_low') return a.costs_usd[inputs.value.lifestyle] - b.costs_usd[inputs.value.lifestyle];
+        if (sortBy.value === 'safety') return b.indices.safety - a.indices.safety;
+        return 0;
+    });
 });
 
 </script>
 
 <style scoped>
-/* Custom Scrollbar if needed */
+.list-circle {
+    list-style-type: circle;
+}
 </style>
