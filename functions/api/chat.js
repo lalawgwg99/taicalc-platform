@@ -15,7 +15,7 @@ export async function onRequestPost(context) {
     }
 
     try {
-        const apiKey = env.GEMINI_API_KEY;
+        const apiKey = env.GEMINI_API_KEY || env.GOOGLE_GENERATIVE_AI_API_KEY;
         if (!apiKey) {
             return new Response(JSON.stringify({
                 error: 'API Key not configured',
