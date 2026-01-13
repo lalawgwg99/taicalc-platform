@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GlobalFIRECalculator from '../components/calculators/GlobalFIRECalculator.vue';
+
+---
+
+<Layout title="全球 FIRE 自由度模擬器 | Global FIRE Simulator - TaiCalc" description="Calculate your financial freedom timeline across different global cities. See where your money goes further.">
+  <main class="min-h-screen bg-stone-50">
+    <!-- Beta Banner -->
+    <div class="bg-indigo-600 text-white text-center py-2 text-xs font-bold uppercase tracking-widest">
+      Global Beta • 測試版
+    </div>
+    
+    <GlobalFIRECalculator client:load />
+
+    <!-- Footer Note -->
+    <div class="text-center py-10 text-stone-400 text-sm">
+      <p>© 2026 TaiCalc Global Initiative. </p>
+      <a href="/" class="underline hover:text-stone-600">Back to Taiwan Station</a>
+    </div>
+  </main>
+</Layout>
