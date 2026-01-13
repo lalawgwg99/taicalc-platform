@@ -1,0 +1,37 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LifePathTester from '../../components/lab/LifePathTester.vue';
+---
+
+<Layout title="人生岔路模擬器 | TaiCalc Lab" description="買房還是投資？創業還是就業？讓數據幫你推演兩條不同人生的財富終局。">
+  <main class="min-h-screen bg-[#fafaf9]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Nav -->
+      <nav class="flex mb-8" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a href="/" class="inline-flex items-center text-sm font-medium text-stone-500 hover:text-emerald-600">首頁</a>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <span class="mx-2 text-stone-400">/</span>
+              <a href="/lab" class="text-sm font-medium text-stone-500 hover:text-emerald-600">實驗室</a>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <span class="mx-2 text-stone-400">/</span>
+              <span class="text-sm font-medium text-emerald-600">人生岔路模擬器</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <LifePathTester client:load />
+
+      <div class="max-w-2xl mx-auto mt-20 text-center text-stone-500 text-sm">
+        <p>模擬結果僅供參考，人生無法重來，但決策可以優化。</p>
+      </div>
+    </div>
+  </main>
+</Layout>
