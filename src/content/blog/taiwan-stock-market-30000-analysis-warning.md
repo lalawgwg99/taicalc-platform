@@ -1,8 +1,8 @@
 ---
 title: "台股站上3萬點真的穩了嗎？分析師警告：出現這三種警訊千萬別太樂觀"
 slug: "taiwan-stock-market-30000-analysis-warning"
-description: "台股寫下歷史新高突破 3 萬點，是多頭的延續還是泡沫的終章？本文深入解析外資動向、技術指標背離與地緣政治風險，帶你聽懂市場繁榮背後的弦外之音。"
-publishDate: "2026-01-13"
+excerpt: "台股寫下歷史新高突破 3 萬點，是多頭的延續還是泡沫的終章？本文深入解析外資動向、技術指標背離與地緣政治風險，帶你聽懂市場繁榮背後的弦外之音。"
+date: "2026-01-13"
 coverImage: "/images/articles/taiwan-stock-30000.png"
 category: "財經趨勢"
 tags: [
