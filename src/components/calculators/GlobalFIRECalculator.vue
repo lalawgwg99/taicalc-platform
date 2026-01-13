@@ -53,7 +53,7 @@
                 <input 
                   type="number" 
                   v-model.number="inputs.netWorth" 
-                  class="w-full bg-stone-50 border-2 border-stone-100 rounded-xl py-3 pl-10 pr-4 text-xl font-bold font-mono text-stone-800 focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all shadow-inner"
+                  class="w-full bg-stone-50 border-2 border-stone-100 rounded-xl py-3 pl-16 pr-4 text-xl font-bold font-mono text-stone-800 focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all shadow-inner"
                   :placeholder="lang === 'en' ? '250000' : '5000000'"
                 >
               </div>
@@ -69,7 +69,7 @@
                 <input 
                   type="number" 
                   v-model.number="inputs.monthlySaving" 
-                  class="w-full bg-stone-50 border-2 border-stone-100 rounded-xl py-3 pl-10 pr-4 text-xl font-bold font-mono text-stone-800 focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all shadow-inner"
+                  class="w-full bg-stone-50 border-2 border-stone-100 rounded-xl py-3 pl-16 pr-4 text-xl font-bold font-mono text-stone-800 focus:outline-none focus:border-emerald-500/50 focus:bg-white transition-all shadow-inner"
                 >
               </div>
             </div>
@@ -342,16 +342,16 @@ const CITIES = [
     country: { 'zh-TW': '東南亞', 'en': 'Southeast Asia' },
     tagline: { 'zh-TW': '數位遊牧聖地，天天按摩', 'en': 'Digital Nomad Hub' },
     baseCostUSD: 800, // Comfortable single life
-    img: 'https://images.unsplash.com/photo-1598970529348-e24dc1c74765?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_chiang_mai_thumbnail_1768274099394.png',
     colIndex: 35
   },
   {
     id: 'lisbon',
     name: { 'zh-TW': '里斯本, 葡萄牙', 'en': 'Lisbon, Portugal' },
     country: { 'zh-TW': '歐洲', 'en': 'Europe' },
-    tagline: { 'zh-TW': '歐洲後的後花園，陽光普照', 'en': 'Sunny European Gateway' },
+    tagline: { 'zh-TW': '歐洲後花園，陽光普照', 'en': 'Sunny European Gateway' },
     baseCostUSD: 1600,
-    img: 'https://images.unsplash.com/photo-1555881400-74d7acaacd81?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_lisbon_thumbnail_1768274113632.png',
     colIndex: 55
   },
   {
@@ -360,7 +360,7 @@ const CITIES = [
     country: { 'zh-TW': '南亞', 'en': 'South Asia' },
     tagline: { 'zh-TW': '粉紅城市，極低成本奢華', 'en': 'The Pink City' },
     baseCostUSD: 500,
-    img: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_jaipur_thumbnail_1768274129569.png',
     colIndex: 25
   },
   {
@@ -369,7 +369,7 @@ const CITIES = [
     country: { 'zh-TW': '東亞', 'en': 'East Asia' },
     tagline: { 'zh-TW': '便利超商之都，醫療頂級', 'en': 'Convenience Capital' },
     baseCostUSD: 1400,
-    img: 'https://images.unsplash.com/photo-1470004914212-05527e49370b?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_taipei_thumbnail_1768274152964.png',
     colIndex: 65
   },
   {
@@ -378,7 +378,7 @@ const CITIES = [
     country: { 'zh-TW': '東北亞', 'en': 'East Asia' },
     tagline: { 'zh-TW': '美食之都，比東京宜居', 'en': 'Kitchen of Japan' },
     baseCostUSD: 1800,
-    img: 'https://images.unsplash.com/photo-1590559899731-a3828395a22c?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_osaka_thumbnail_1768274167362.png',
     colIndex: 70
   },
   {
@@ -387,7 +387,7 @@ const CITIES = [
     country: { 'zh-TW': '北美', 'en': 'North America' },
     tagline: { 'zh-TW': '世界的中心，燃燒靈魂', 'en': 'Concrete Jungle' },
     baseCostUSD: 4500,
-    img: 'https://images.unsplash.com/photo-1496442226666-8d4a0e62e6e9?q=80&w=300&auto=format&fit=crop',
+    img: '/images/cities/city_new_york_thumbnail_1768274185933.png',
     colIndex: 100
   },
 ];
