@@ -31,7 +31,18 @@ const {
 		<title>{title}</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
         <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
-        <!-- Google Tag Manager / Analytics could go here -->
+        <!-- Google Analytics (GA4) -->
+        { import.meta.env.PUBLIC_GA_ID && (
+            <>
+                <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
+                <script is:inline define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', gaId);
+                </script>
+            </>
+        )}
 	</head>
     <body class="antialiased bg-[#FDFBF7] text-[#1F2937] min-h-screen flex flex-col">
         { !fullWidth ? (
