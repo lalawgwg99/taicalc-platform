@@ -168,77 +168,85 @@
           <div 
             v-for="city in sortedCities" 
             :key="city.id"
-            class="group relative bg-white rounded-2xl border-2 transition-all duration-300 overflow-hidden hover:shadow-xl hover:-translate-y-1"
+            class="group bg-white rounded-2xl border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden"
             :class="city.isFree ? 'border-emerald-500 ring-4 ring-emerald-500/10' : 'border-stone-100 hover:border-emerald-300'"
           >
-            <!-- Badge: Freedom Status -->
-            <div 
-              class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold shadow-sm backdrop-blur-md flex items-center gap-1"
-              :class="city.isFree ? 'bg-emerald-500 text-white' : 'bg-red-50 text-red-600 border border-red-100'"
-            >
-              <span v-if="city.isFree">FREEDOM 🎉</span>
-              <span v-else>Gap: -{{ formatMoney(city.monthlyGap) }}/mo</span>
-            </div>
+            <div class="p-4 flex flex-col h-full">
+              <!-- Top Row: Image + Name + Badge -->
+              <div class="flex items-start gap-4 mb-3">
+                <!-- Visual -->
+                <div class="w-16 h-16 rounded-xl bg-stone-100 flex-shrink-0 overflow-hidden relative shadow-inner">
+                    <img 
+                    :src="city.image" 
+                    alt="City" 
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                    >
+                </div>
 
-            <div class="p-5 flex items-start gap-5">
-              <!-- Visual -->
-              <div class="w-24 h-24 rounded-xl bg-stone-100 flex-shrink-0 overflow-hidden relative shadow-inner">
-                <img 
-                  :src="city.image" 
-                  alt="City" 
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  loading="lazy"
-                >
-                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <!-- Header Info -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start gap-2">
+                        <div>
+                            <h3 class="font-bold text-lg text-stone-800 leading-tight">{{ city.name[lang] || city.name.en }}</h3>
+                            <p class="text-xs text-stone-500 mt-1">
+                                {{ city.country[lang] || city.country.en }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
               </div>
 
-              <!-- Content -->
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                    <h3 class="font-bold text-lg text-stone-800 mb-1 truncate pr-28">{{ city.name[lang.split('-')[0]] || city.name.en }}</h3>
-                </div>
-                <p class="text-xs text-stone-500 mb-3 flex items-center gap-2">
-                  <span class="opacity-70">{{ city.country[lang.split('-')[0]] || city.country.en }}</span>
-                  <span class="px-1.5 py-0.5 rounded bg-stone-100 text-stone-600 font-medium">{{ city.region }}</span>
-                </p>
+              <!-- Status Badge (Moved to own row/block for safety) -->
+              <div class="mb-4">
+                  <div 
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold w-full justify-between"
+                    :class="city.isFree ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-red-50 text-red-700 border border-red-100'"
+                  >
+                    <span v-if="city.isFree">🎉 {{ t('status_freedom') }}</span>
+                    <span v-else>📉 {{ t('status_gap') }}: -{{ formatMoney(city.monthlyGap) }}/{{ t('month_short') }}</span>
+                    
+                    <span class="text-[10px] opacity-80 font-normal">
+                        {{ city.isFree ? t('surplus') : t('shortage') }}
+                    </span>
+                  </div>
+              </div>
 
-                <!-- Key Metrics Mini-Grid -->
-                <div class="grid grid-cols-3 gap-2 mb-3 text-[10px] text-stone-500">
-                    <div class="bg-stone-50 rounded p-1 text-center">
-                        <div class="font-bold text-stone-700">{{ city.indices.safety }}/100</div>
-                        <div>Safety</div>
-                    </div>
-                    <div class="bg-stone-50 rounded p-1 text-center">
-                        <div class="font-bold text-stone-700">{{ city.indices.weather }}/100</div>
-                        <div>Weather</div>
-                    </div>
-                    <div class="bg-stone-50 rounded p-1 text-center">
-                        <div class="font-bold text-stone-700">{{ city.indices.internet }} Mbps</div>
-                        <div>Net</div>
-                    </div>
-                </div>
+              <!-- Key Metrics -->
+              <div class="grid grid-cols-3 gap-2 mb-4 text-[10px] text-stone-500">
+                  <div class="bg-stone-50 rounded p-1.5 text-center border border-stone-100">
+                      <div class="font-bold text-stone-700 text-xs">{{ city.indices.safety }}/100</div>
+                      <div>{{ t('metric_safety') }}</div>
+                  </div>
+                  <div class="bg-stone-50 rounded p-1.5 text-center border border-stone-100">
+                      <div class="font-bold text-stone-700 text-xs">{{ city.indices.weather }}/100</div>
+                      <div>{{ t('metric_weather') }}</div>
+                  </div>
+                  <div class="bg-stone-50 rounded p-1.5 text-center border border-stone-100">
+                      <div class="font-bold text-stone-700 text-xs">{{ city.indices.internet }}M</div>
+                      <div>{{ t('metric_internet') }}</div>
+                  </div>
+              </div>
 
-                <!-- Financial Bar -->
-                <div class="space-y-1.5">
-                  <div class="flex justify-between text-xs font-medium items-end">
+              <!-- Progress Section (Pushed to bottom) -->
+              <div class="mt-auto space-y-2">
+                <div class="flex justify-between text-xs font-medium items-end">
                     <span class="text-stone-500">
-                       Target: <span class="text-stone-800 font-bold">{{ formatMoney(city.targetCost) }}</span>
+                        {{ t('target_label') }}: <span class="text-stone-800 font-bold">{{ formatMoney(city.targetCost) }}</span>
                     </span>
                     <span v-if="!city.isFree" class="text-amber-600 font-bold">{{ city.yearsLeft }} {{ t('years_to_fire') }}</span>
-                  </div>
-                  
-                  <!-- Progress Bar -->
-                  <div class="w-full h-3 bg-stone-100 rounded-full overflow-hidden relative">
+                </div>
+                
+                <div class="w-full h-3 bg-stone-100 rounded-full overflow-hidden relative">
                     <div 
-                      class="h-full rounded-full transition-all duration-1000 ease-out"
-                      :class="city.isFree ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-red-400'"
-                      :style="{ width: Math.min(100, city.progress) + '%' }"
+                        class="h-full rounded-full transition-all duration-1000 ease-out"
+                        :class="city.isFree ? 'bg-emerald-500' : 'bg-gradient-to-r from-amber-400 to-red-400'"
+                        :style="{ width: Math.min(100, city.progress) + '%' }"
                     ></div>
-                  </div>
-                  <div class="flex justify-between text-[10px] items-center mt-1">
-                    <span class="text-stone-400">{{ Math.round(city.progress) }}% {{ t('covered') }}</span>
-                    <span class="text-stone-300 italic">{{ t('lifestyle') }}: {{ t('tier_' + inputs.lifestyle) }}</span>
-                  </div>
+                </div>
+                <div class="flex justify-between text-[10px] items-center text-stone-400">
+                    <span>{{ Math.round(city.progress) }}% {{ t('covered') }}</span>
+                    <span>{{ t('tier_label') }}: {{ t('tier_' + inputs.lifestyle) }}</span>
                 </div>
               </div>
             </div>
@@ -290,15 +298,25 @@ const messages = {
     withdrawal_rate: '提領率',
     your_passive_power: '你的被動鈔能力',
     month: '月',
+    month_short: '月',
     years_to_fire: '年後自由',
     geo_title: '全球自由度排名',
     sort_freedom: '排序: 最快自由',
     sort_cost_low: '排序: 物價最低',
     sort_safety: '排序: 治安最好',
-    tier_survival: '生存模式 (窮遊)',
-    tier_comfort: '舒適模式 (標準)',
-    tier_luxury: '奢華模式 (富養)',
+    tier_survival: '生存模式',
+    tier_comfort: '舒適模式',
+    tier_luxury: '奢華模式',
+    tier_label: '生活等級',
     covered: '已覆蓋',
+    status_freedom: '財務自由',
+    status_gap: '每月缺口',
+    surplus: '資金充裕',
+    shortage: '需持續累積',
+    target_label: '目標開銷',
+    metric_safety: '治安',
+    metric_weather: '氣候',
+    metric_internet: '網速',
     lifestyle: '生活等級',
     lifestyle_target: '目標生活',
     based_on_withdrawal: '基於 {rate}% 安全提領率計算',
@@ -318,7 +336,8 @@ const messages = {
     annual_return: 'Annual Return',
     withdrawal_rate: 'Withdrawal Rate',
     your_passive_power: 'Passive Income Power',
-    month: 'mo',
+    month: 'month',
+    month_short: 'mo',
     years_to_fire: 'Years to FIRE',
     geo_title: 'Global Freedom Index',
     sort_freedom: 'Sort: Easiest FIRE',
@@ -327,7 +346,16 @@ const messages = {
     tier_survival: 'Survival (Lean)',
     tier_comfort: 'Comfort (Std)',
     tier_luxury: 'Luxury (Fat)',
+    tier_label: 'Tier',
     covered: 'Covered',
+    status_freedom: 'Freedom',
+    status_gap: 'Gap',
+    surplus: 'Surplus',
+    shortage: 'Work needed',
+    target_label: 'Target',
+    metric_safety: 'Safety',
+    metric_weather: 'Weather',
+    metric_internet: 'Net',
     lifestyle: 'Lifestyle',
     lifestyle_target: 'Target Tier',
     based_on_withdrawal: 'Based on {rate}% SWR',
@@ -424,16 +452,9 @@ const sortedCities = computed(() => {
            const targetPrincipal = annualCost / (inputs.value.withdrawal / 100);
            const principalGap = targetPrincipal - inputs.value.netWorth;
            
-           // NPER-like approximation:
-           // r = roi/100, pmt = annualSave, pv = netWorth, fv = -target
-           // Simplified: Gap / (Save + Returns on existing)
-           // Let's use a robust accumulation formula or simple gap/save for Prototype 2.0
-           // Using simple growth approximation for speed and clarity
            const annualSave = inputs.value.monthlySaving * 12;
            if (annualSave > 0) {
               const r = inputs.value.roi / 100;
-              // Simple formula: n = ln((PMT + r*FV) / (PMT + r*PV)) / ln(1+r)
-              // This is exact for compound interest
               const pmt = annualSave;
               const pv = inputs.value.netWorth;
               const fv = targetPrincipal;
@@ -442,9 +463,7 @@ const sortedCities = computed(() => {
                   yearsLeft = (fv - pv) / pmt;
               } else {
                  try {
-                   // Solve for n in: FV = PV(1+r)^n + PMT [ ((1+r)^n - 1) / r ]
-                   // FV = (1+r)^n * (PV + PMT/r) - PMT/r
-                   // (1+r)^n = (FV + PMT/r) / (PV + PMT/r)
+                   // Solve n: (1+r)^n = (FV + PMT/r) / (PV + PMT/r)
                    const numerator = fv + (pmt / r);
                    const denominator = pv + (pmt / r);
                    const base = 1 + r;
@@ -455,7 +474,7 @@ const sortedCities = computed(() => {
               }
               yearsLeft = Math.max(0, yearsLeft).toFixed(1);
            } else {
-             yearsLeft = '∞'; // Never if no savings
+             yearsLeft = '∞'; 
            }
         }
         
@@ -466,7 +485,7 @@ const sortedCities = computed(() => {
             progress,
             isFree,
             yearsLeft,
-            image: city.image // Use local image
+            image: city.image
         };
     });
 
