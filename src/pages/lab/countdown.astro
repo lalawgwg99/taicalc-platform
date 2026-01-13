@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FreedomCountdown from '../../components/lab/FreedomCountdown.vue';
+---
+
+<Layout title="自由日倒數計時器 | TaiCalc Lab" description="你的每一筆花費，都在偷偷竊取（或買回）你的未來。即時計算你的財務自由日。">
+  <main class="min-h-screen bg-[#fafaf9]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Breadcrumb -->
+      <nav class="flex mb-8" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a href="/" class="inline-flex items-center text-sm font-medium text-stone-500 hover:text-emerald-600">
+              首頁
+            </a>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="w-3 h-3 text-stone-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <a href="/lab" class="ml-1 text-sm font-medium text-stone-500 hover:text-emerald-600 md:ml-2">實驗室</a>
+            </div>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-3 h-3 text-stone-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+              </svg>
+              <span class="ml-1 text-sm font-medium text-emerald-600 md:ml-2">自由倒數</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+
+      <FreedomCountdown client:load />
+
+      <!-- Explanation / Content -->
+      <div class="max-w-2xl mx-auto mt-24 prose prose-stone">
+        <h2 class="text-center font-bold text-stone-800">為什麼要算「時間」而不是「金錢」？</h2>
+        <p class="lead text-center">
+            人類的大腦對數字不敏感，但對「刑期」很敏感。
+        </p>
+        <p>
+            當我們說「這杯咖啡只要 150 元」時，你會覺得很便宜。但如果換算成「這杯咖啡會讓你多工作 2 小時」，你的感受完全不同。
+        </p>
+        <p>
+            這個工具的核心邏輯是將你的每一分錢，透過複利公式直接轉換成「時間」。
+        </p>
+        <ul>
+            <li><strong>左邊 (Status Quo)：</strong> 如果你保持現狀，還要被工作綁住多久。</li>
+            <li><strong>右邊 (New Life)：</strong> 如果你現在做出這點改變，你能買回多少自由。</li>
+        </ul>
+      </div>
+
+    </div>
+  </main>
+</Layout>
