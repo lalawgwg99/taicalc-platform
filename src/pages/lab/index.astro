@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="TaiCalc Lab | 人生決策實驗室" description="這裡沒有標準答案，只有關於你人生的創意模擬。">
+  <!-- Hero Section -->
+  <section class="relative bg-stone-900 py-24 overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop')] opacity-10 bg-cover bg-center"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-6">
+        TaiCalc <span class="text-emerald-400">Lab</span> 🧪
+      </h1>
+      <p class="text-xl text-stone-300 max-w-2xl mx-auto mb-10">
+        這裡沒有冰冷的計算機，只有關於你人生的瘋狂實驗。
+        <br>我們將金錢、時間與情緒，轉化為你看得見的未來。
+      </p>
+    </div>
+  </section>
+
+  <!-- Tools Grid -->
+  <section class="py-20 bg-[#fafaf9]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Card 1: Countdown -->
+        <a href="/lab/countdown" class="group bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <div class="h-48 bg-stone-100 relative overflow-hidden">
+                <div class="absolute inset-0 bg-stone-900 group-hover:bg-stone-800 transition-colors flex items-center justify-center">
+                    <span class="text-6xl">⏳</span>
+                </div>
+            </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-black text-stone-800 mb-2 group-hover:text-emerald-600 transition-colors">自由日倒數</h3>
+                <p class="text-stone-500 leading-relaxed mb-4">
+                    別再算錢了，算命吧。每多花一筆錢，你的自由日就會往後推遲多久？即時看見你的「時間刑期」。
+                </p>
+                <span class="text-emerald-600 font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                    前往實驗 <span class="text-xl">→</span>
+                </span>
+            </div>
+        </a>
+
+        <!-- Card 2: Path Tester -->
+        <a href="/lab/path-tester" class="group bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <div class="h-48 bg-stone-100 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 opacity-90 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="text-6xl text-white">🏎️</span>
+                </div>
+            </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-black text-stone-800 mb-2 group-hover:text-blue-600 transition-colors">人生岔路模擬</h3>
+                <p class="text-stone-500 leading-relaxed mb-4">
+                    買房還是投資？創業還是就業？讓兩條平行宇宙的資產曲線在他賽跑，看看誰會贏。
+                </p>
+                <span class="text-blue-600 font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                    前往對決 <span class="text-xl">→</span>
+                </span>
+            </div>
+        </a>
+
+        <!-- Card 3: Asset Garden -->
+        <a href="/lab/garden" class="group bg-white rounded-3xl overflow-hidden shadow-lg border border-stone-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <div class="h-48 bg-stone-100 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[#f0fdf4] flex items-center justify-center">
+                    <!-- Simple SVG Illustration -->
+                    <span class="text-6xl">🌿</span>
+                </div>
+            </div>
+            <div class="p-8">
+                <h3 class="text-2xl font-black text-stone-800 mb-2 group-hover:text-emerald-600 transition-colors">資產花園</h3>
+                <p class="text-stone-500 leading-relaxed mb-4">
+                    債務是害蟲，股票是果樹，現金是水源。用生成的視覺生態系，檢視你的財務健康度。
+                </p>
+                <span class="text-emerald-600 font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                    前往種植 <span class="text-xl">→</span>
+                </span>
+            </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+</Layout>
