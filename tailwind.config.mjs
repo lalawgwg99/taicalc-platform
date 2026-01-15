@@ -15,7 +15,17 @@ export default {
                     700: '#44403c',
                     800: '#292524',
                     900: '#1c1917',
-                }
+                },
+                // 優化後的柔和配色系統
+                primary: '#10B981',
+                'soft-blue': '#E0F2FE',
+                'soft-emerald': '#D1FAE5',
+                'soft-amber': '#FEF3C7',
+                'soft-purple': '#EDE9FE',
+                'accent-blue': '#0EA5E9',
+                'accent-emerald': '#10B981',
+                'accent-amber': '#F59E0B',
+                'accent-purple': '#8B5CF6',
             },
             animation: {
                 'float': 'float 6s ease-in-out infinite',
