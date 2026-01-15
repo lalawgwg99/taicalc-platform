@@ -32,16 +32,63 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Modern Card Styles - 優化配色系統 */
+/* Modern Card Styles - 遊戲化路徑風格 */
 .modern-card {
-    border: 2px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 4px solid #18181b;
+    box-shadow: 8px 8px 0px #18181b;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modern-card:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    transform: translateY(-4px);
+    transform: translateY(-4px) rotate(1deg);
+    box-shadow: 12px 12px 0px #18181b;
+}
+
+/* 浮動動畫 */
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(var(--rotate, 0deg));
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(calc(var(--rotate, 0deg) + 2deg));
+    }
+}
+
+/* 圓形圖標徽章 */
+.circular-badge {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    position: absolute;
+}
+
+.circular-badge:hover {
+    transform: scale(1.1);
+}
+
+/* SVG 路徑動畫 */
+.path-line {
+    stroke-dasharray: 10, 10;
+    animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -1000;
+    }
 }
 
 /* Navbar Styles */
