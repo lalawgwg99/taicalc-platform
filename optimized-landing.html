@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="zh-TW">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TaiCalc - 你的財務冒險地圖</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Bubblegum+Sans&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#10B981",
+                        "background-light": "#FAFAF9",
+                        "background-dark": "#18181B",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#27272A",
+                        // 優化後的柔和色系
+                        "soft-blue": "#E0F2FE",
+                        "soft-emerald": "#D1FAE5",
+                        "soft-amber": "#FEF3C7",
+                        "soft-purple": "#EDE9FE",
+                        "accent-blue": "#0EA5E9",
+                        "accent-emerald": "#10B981",
+                        "accent-amber": "#F59E0B",
+                        "accent-purple": "#8B5CF6",
+                    },
+                    fontFamily: {
+                        sans: ['"Fredoka"', '"Noto Sans TC"', 'sans-serif'],
+                        whimsical: ['"Bubblegum Sans"', 'cursive'],
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '3rem',
+                    }
+                },
+            },
+        };
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .path-line {
+                stroke-dasharray: 10, 10;
+                animation: dash 20s linear infinite;
+            }
+            @keyframes dash {
+                to { stroke-dashoffset: -1000; }
+            }
+            .floating {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%, 100% { transform: translateY(0) rotate(var(--tw-rotate, 0deg)); }
+                50% { transform: translateY(-15px) rotate(calc(var(--tw-rotate, 0deg) + 2deg)); }
+            }
+            /* 優化後的邊框風格 */
+            .modern-card {
+                border: 2px solid rgba(0, 0, 0, 0.08);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .modern-card:hover {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+                transform: translateY(-4px);
+            }
+            .dark .modern-card {
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            .dark .modern-card:hover {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 font-sans antialiased overflow-x-hidden">
+
+    <!-- 導覽列 -->
+    <nav class="fixed w-full z-50 top-4 px-4 sm:px-10 pointer-events-none">
+        <div
+            class="max-w-7xl mx-auto flex justify-between items-center bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl p-4 rounded-full border border-slate-200/50 dark:border-zinc-700/50 pointer-events-auto shadow-lg">
+            <a class="text-3xl font-black tracking-tighter text-primary flex items-center gap-2" href="#">
+                <span class="material-symbols-outlined text-4xl">rocket_launch</span>
+                TaiCalc
+            </a>
+            <div class="hidden md:flex space-x-6 items-center pr-4">
+                <a class="hover:text-primary font-semibold transition-colors" href="#">冒險起點</a>
+                <a class="hover:text-primary font-semibold transition-colors" href="#">錢包升級</a>
+                <a class="px-5 py-2 bg-primary text-white rounded-full hover:scale-105 transition-transform shadow-md"
+                    href="#">加入挑戰</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="relative pt-40 pb-40">
+        <!-- 背景路徑 -->
+        <div class="absolute inset-0 z-0 opacity-10 dark:opacity-5 pointer-events-none">
+            <svg class="w-full h-full" fill="none" viewBox="0 0 1440 3000" xmlns="http://www.w3.org/2000/svg">
+                <path class="path-line stroke-primary" d="M200 100 Q 800 300 400 700 T 1000 1200 T 300 1800 T 1100 2400"
+                    stroke-linecap="round" stroke-width="4"></path>
+            </svg>
+        </div>
+
+        <!-- Hero 區域 -->
+        <section class="relative z-10 max-w-5xl mx-auto px-6 text-center mb-32">
+            <div
+                class="inline-block bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 text-amber-700 dark:text-amber-300 px-6 py-2 rounded-full font-bold text-sm mb-6 rotate-[-1deg] border border-amber-200 dark:border-amber-800">
+                新任務解鎖：2026 財務地圖
+            </div>
+            <h1 class="font-whimsical text-6xl md:text-8xl text-slate-900 dark:text-white mb-8 leading-tight">
+                準備好開始你的<br />
+                <span class="text-primary underline decoration-amber-400 decoration-wavy decoration-4">金錢大冒險</span>嗎？
+            </h1>
+            <p
+                class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium">
+                告別死板的數字與表格！跟著地圖走，完成你的財務挑戰，把複雜的理財變成一場超好玩的升級遊戲。
+            </p>
+        </section>
+
+        <!-- 任務卡片區域 -->
+        <div class="relative z-10 max-w-7xl mx-auto px-6 space-y-48 lg:space-y-0">
+
+            <!-- Quest 01 - 薪資權益森林 -->
+            <div class="lg:flex lg:justify-start lg:items-center relative">
+                <div
+                    class="floating modern-card bg-soft-blue dark:bg-blue-900/20 p-10 rounded-5xl w-full lg:w-[450px] relative z-20 group cursor-pointer">
+                    <div
+                        class="absolute -top-12 -right-12 w-28 h-28 bg-gradient-to-br from-accent-blue to-blue-600 rounded-full flex items-center justify-center text-white border-4 border-white dark:border-zinc-800 shadow-xl group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-5xl">payments</span>
+                    </div>
+                    <span class="text-xs font-bold text-accent-blue dark:text-blue-400 tracking-widest uppercase">Quest
+                        01</span>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mt-2 mb-4">薪資權益森林</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6 font-medium leading-relaxed">
+                        穿越滿是合約與勞基法的森林，守護每一塊屬於你的戰利品！
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-blue-100 dark:border-blue-800">
+                            💰 薪資實拿</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-blue-100 dark:border-blue-800">
+                            🛡️ 勞健保</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-blue-100 dark:border-blue-800">
+                            ⚡ 加班費</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-blue-100 dark:border-blue-800">
+                            🛵 外送計算</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quest 02 - 房產築夢城鎮 -->
+            <div class="lg:flex lg:justify-end lg:items-center relative lg:-mt-20">
+                <div
+                    class="floating modern-card bg-soft-emerald dark:bg-emerald-900/20 p-10 rounded-5xl w-full lg:w-[480px] relative z-20 group cursor-pointer [--tw-rotate:-1deg]">
+                    <div
+                        class="absolute -top-12 -left-12 w-28 h-28 bg-gradient-to-br from-accent-emerald to-green-600 rounded-full flex items-center justify-center text-white border-4 border-white dark:border-zinc-800 shadow-xl group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-5xl">home_work</span>
+                    </div>
+                    <span
+                        class="text-xs font-bold text-accent-emerald dark:text-emerald-400 tracking-widest uppercase">Quest
+                        02</span>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mt-2 mb-4">房產築夢城鎮</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6 font-medium leading-relaxed">
+                        想蓋自己的城堡？先來這裏算算房貸防護罩跟電費怪獸！
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-emerald-100 dark:border-emerald-800">
+                            🏠 房貸試算</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-emerald-100 dark:border-emerald-800">
+                            🔑 租金解析</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-emerald-100 dark:border-emerald-800">
+                            💡 電費攻略</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-emerald-100 dark:border-emerald-800">
+                            ❄️ 冷氣評估</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quest 03 - 財富自由荒野 -->
+            <div class="lg:flex lg:justify-center lg:items-center relative lg:-mt-10">
+                <div
+                    class="floating modern-card bg-soft-amber dark:bg-amber-900/20 p-10 rounded-5xl w-full lg:w-[500px] relative z-20 group cursor-pointer">
+                    <div
+                        class="absolute -bottom-12 -right-12 w-28 h-28 bg-gradient-to-br from-accent-amber to-orange-600 rounded-full flex items-center justify-center text-white border-4 border-white dark:border-zinc-800 shadow-xl group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-5xl">account_balance_wallet</span>
+                    </div>
+                    <span
+                        class="text-xs font-bold text-accent-amber dark:text-amber-400 tracking-widest uppercase">Quest
+                        03</span>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mt-2 mb-4">財富自由荒野</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6 font-medium leading-relaxed">
+                        挑戰 4% 法則的高塔，駕馭股票波動的浪潮，通往 FIRE 終點！
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-amber-100 dark:border-amber-800">
+                            🔥 FIRE 退休</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-amber-100 dark:border-amber-800">
+                            📈 股票損益</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-amber-100 dark:border-amber-800">
+                            🛡️ 保險評估</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-amber-100 dark:border-amber-800">
+                            💳 分期計算</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quest 04 - 生存工具寶庫 -->
+            <div class="lg:flex lg:justify-start lg:items-center relative lg:pt-32">
+                <div
+                    class="floating modern-card bg-soft-purple dark:bg-purple-900/20 p-10 rounded-5xl w-full lg:w-[480px] relative z-20 group cursor-pointer [--tw-rotate:2deg]">
+                    <div
+                        class="absolute -top-12 -right-8 w-28 h-28 bg-gradient-to-br from-accent-purple to-purple-600 rounded-full flex items-center justify-center text-white border-4 border-white dark:border-zinc-800 shadow-xl group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-5xl">construction</span>
+                    </div>
+                    <span
+                        class="text-xs font-bold text-accent-purple dark:text-purple-400 tracking-widest uppercase">Quest
+                        04</span>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mt-2 mb-4">生存工具寶庫</h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6 font-medium leading-relaxed">
+                        解決日常生活中的各種難題，讓你的生存技能點全開！
+                    </p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-purple-100 dark:border-purple-800">
+                            🤝 AA 分帳</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-purple-100 dark:border-purple-800">
+                            📊 % 數計算</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-purple-100 dark:border-purple-800">
+                            ☯️ 易經決策</div>
+                        <div
+                            class="bg-white/70 dark:bg-white/10 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white dark:hover:bg-white/20 transition-colors border border-purple-100 dark:border-purple-800">
+                            👁️ LifeOS Audit</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 裝飾性圖標 - 尺寸縮小 -->
+        <div class="absolute top-[20%] left-[5%] opacity-20 select-none animate-bounce">
+            <span class="material-symbols-outlined text-6xl text-accent-blue">local_atm</span>
+        </div>
+        <div class="absolute top-[45%] right-[5%] opacity-20 select-none animate-pulse">
+            <span class="material-symbols-outlined text-6xl text-accent-amber">trending_up</span>
+        </div>
+        <div class="absolute bottom-[15%] left-[10%] opacity-20 select-none floating">
+            <span class="material-symbols-outlined text-6xl text-accent-emerald">auto_awesome</span>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-20 bg-slate-900 text-white py-24 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" data-name="Layer 1" preserveAspectRatio="none"
+                viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                <path class="fill-background-light dark:fill-background-dark"
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z">
+                </path>
+            </svg>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="mb-10 inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-4xl text-primary">sports_esports</span>
+                <span class="text-3xl font-black tracking-tight">TaiCalc.fun</span>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-slate-400">
+                <a class="hover:text-white transition-colors" href="#">關於我們的任務</a>
+                <a class="hover:text-white transition-colors" href="#">更新日誌</a>
+                <a class="hover:text-white transition-colors" href="#">聯繫盟友</a>
+                <a class="hover:text-white transition-colors" href="#">隱私與條款</a>
+            </div>
+            <p class="text-slate-500 font-medium">© 2026 TaiCalc - 為你的財務冒險而生</p>
+        </div>
+    </footer>
+
+    <script>
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+</body>
+
+</html>
