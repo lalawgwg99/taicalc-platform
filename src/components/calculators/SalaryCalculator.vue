@@ -7,7 +7,7 @@
         -->
 
         <!-- 輸入卡片 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
+        <section class="card rounded-2xl p-6 md:p-8">
             <!-- 比較模式切換 -->
             <div class="flex items-center justify-between mb-6 pb-6 border-b border-stone-100">
                 <h2 class="text-lg font-bold text-stone-800">薪資設定</h2>
@@ -43,8 +43,8 @@
                         <label class="block text-xs font-medium text-stone-500 mb-2">勞退自提 (%)</label>
                         <div class="grid grid-cols-3 gap-1">
                             <button v-for="n in [0, 3, 6]" :key="n" @click="pension = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all group', 
-                                            pension === n ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-500 hover:bg-white border border-stone-100']">
+                                :class="['py-2.5 rounded-lg text-sm font-semibold transition-all duration-200', 
+                                            pension === n ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-md' : 'bg-stone-50 text-stone-600 hover:bg-stone-100 hover:text-stone-800 active:scale-95 border border-stone-200 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2']">
                                 {{ n }}%
                             </button>
                         </div>
@@ -81,19 +81,19 @@
         </section>
 
         <!-- 主要結果 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
+        <section class="card rounded-2xl p-6 md:p-8">
             <!-- 單人模式結果 -->
             <div v-if="mode === 'single'">
                 <div class="flex items-start justify-between mb-6">
                     <div>
-                        <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">每月實拿 (Net Income)</p>
-                        <p class="text-4xl sm:text-5xl font-bold text-stone-800 stat-value">
-                            <span class="text-emerald-500">$</span>{{ monthlyNet.toLocaleString() }}
+                        <p class="text-xs text-stone-400 uppercase tracking-wider font-semibold mb-2">每月實拿</p>
+                        <p class="text-5xl md:text-6xl font-black text-stone-900 stat-value">
+                            <span class="text-primary text-3xl md:text-4xl mr-1">$</span>{{ monthlyNet.toLocaleString() }}
                         </p>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs text-stone-500 mb-1">年度總額</p>
-                        <p class="text-xl font-semibold text-stone-600 stat-value">${{ yearlyNet.toLocaleString() }}
+                        <p class="text-xs text-stone-400 uppercase tracking-wider mb-1">年度總額</p>
+                        <p class="text-base font-medium text-stone-600 stat-value">${{ yearlyNet.toLocaleString() }}
                         </p>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
         </section>
 
         <!-- 5年預測 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-show="mode === 'single'">
+        <section class="card rounded-2xl p-6 md:p-8" v-show="mode === 'single'">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-sm font-semibold text-stone-800">5 年薪資預測</h2>
                 <div class="flex items-center gap-3 text-xs text-stone-500">
@@ -219,7 +219,7 @@
         </section>
 
         <!-- 雇主視角 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-if="mode === 'single'">
+        <section class="card rounded-2xl p-6 md:p-8" v-if="mode === 'single'">
             <h2 class="text-sm font-semibold text-stone-800 mb-4">💼 雇主視角：實際人力成本</h2>
             <div class="grid grid-cols-3 gap-4 text-center">
                 <div>
@@ -241,7 +241,7 @@
         </section>
 
         <!-- 費率說明 & FAQ - Extracted to a separate component usually, but keeping here for now -->
-        <footer class="card rounded-xl p-6 border border-white/40 bg-white/40 backdrop-blur-md text-sm text-stone-600 space-y-6">
+        <footer class="card rounded-2xl p-6 md:p-8 text-sm text-stone-600 space-y-6">
             <div>
                 <h3 class="font-bold text-stone-800 mb-2">📌 2026 年最新費率依據</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">

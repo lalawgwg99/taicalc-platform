@@ -280,6 +280,40 @@
         </details>
     </div>
 
+    <!-- 🚀 Next Steps: Creative Lab Integration -->
+    <div class="mt-12 bg-gradient-to-br from-stone-900 to-stone-800 rounded-3xl p-8 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop')] opacity-10 bg-cover bg-center"></div>
+        
+        <div class="relative z-10 text-center">
+            <h2 class="text-2xl font-bold mb-4">{{ t('lab_promo_title') }}</h2>
+            <p class="text-stone-300 max-w-2xl mx-auto mb-8">{{ t('lab_promo_desc') }}</p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/lab/countdown" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 px-6 py-4 rounded-xl flex items-center gap-3 transition-all hover:-translate-y-1">
+                    <span class="text-2xl">⏳</span>
+                    <div class="text-left">
+                        <div class="font-bold text-sm text-emerald-300">{{ t('lab_tool_1') }}</div>
+                        <div class="text-xs text-stone-400">Time Calculator</div>
+                    </div>
+                </a>
+                <a href="/lab/path-tester" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 px-6 py-4 rounded-xl flex items-center gap-3 transition-all hover:-translate-y-1">
+                    <span class="text-2xl">🏎️</span>
+                    <div class="text-left">
+                        <div class="font-bold text-sm text-blue-300">{{ t('lab_tool_2') }}</div>
+                        <div class="text-xs text-stone-400">Path Simulator</div>
+                    </div>
+                </a>
+                <a href="/lab/garden" class="bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 px-6 py-4 rounded-xl flex items-center gap-3 transition-all hover:-translate-y-1">
+                    <span class="text-2xl">🌿</span>
+                    <div class="text-left">
+                        <div class="font-bold text-sm text-purple-300">{{ t('lab_tool_3') }}</div>
+                        <div class="text-xs text-stone-400">Asset Garden</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
   </div>
 </template>
 

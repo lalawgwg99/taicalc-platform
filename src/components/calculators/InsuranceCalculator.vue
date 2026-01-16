@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-6 space-y-6">
+    <div class="card rounded-2xl p-6 space-y-6">
       <!-- Identity Selection -->
       <div>
         <label class="block text-xs font-semibold text-stone-500 mb-2">投保身分</label>

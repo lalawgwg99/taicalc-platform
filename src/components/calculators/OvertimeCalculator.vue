@@ -2,7 +2,7 @@
   <div class="space-y-6">
 
     <!-- 基本設定 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card rounded-2xl p-6 md:p-8">
         <div class="grid sm:grid-cols-2 gap-4">
             <div>
                 <label for="salary" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">月薪 (NT$)</label>
@@ -23,7 +23,7 @@
     </section>
 
     <!-- 加班類型選擇 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card rounded-2xl p-6 md:p-8">
         <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
             選擇加班類型
@@ -44,7 +44,7 @@
     </section>
 
     <!-- 加班時數輸入 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card rounded-2xl p-6 md:p-8">
         <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
             輸入加班時數
@@ -137,7 +137,7 @@
     </section>
 
     <!-- 週累計 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="card rounded-2xl p-6 md:p-8">
         <div class="flex items-center justify-between mb-5">
             <h2 class="text-sm font-bold text-stone-700 flex items-center gap-2">
                 <span class="text-base">📅</span> 週累計清單

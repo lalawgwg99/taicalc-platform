@@ -35,7 +35,7 @@
     </div>
 
     <!-- 2. 材料明細 -->
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+    <div class="card rounded-2xl overflow-hidden">
         <div class="bg-stone-50 px-8 py-4 border-b border-stone-200 flex justify-between items-center">
             <h2 class="font-bold text-stone-800 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
@@ -109,7 +109,7 @@
     </div>
     
     <!-- 3. 危險施工與其他 -->
-    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
+    <div class="card rounded-2xl p-6 md:p-8">
         <button @click="showExtra = !showExtra" class="flex items-center justify-between w-full group">
             <h2 class="font-bold text-stone-800 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-stone-300 group-hover:bg-emerald-500 transition-colors"></span>

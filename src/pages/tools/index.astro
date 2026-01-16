@@ -1,0 +1,103 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const tools = [
+  {
+    category: "薪資與工作",
+    items: [
+      { name: "薪資計算", icon: "payments", path: "/tools/salary-calculator.html", desc: "實拿薪資、勞健保計算" },
+      { name: "加班費試算", icon: "schedule", path: "/tools/overtime-calculator.html", desc: "平日、休息日加班費" },
+      { name: "工時計算", icon: "timer", path: "/tools/work-hours-calculator.html", desc: "工作時數統計" },
+      { name: "勞退試算", icon: "savings", path: "/tools/labor-pension-calculator.html", desc: "勞工退休金預估" },
+      { name: "外送收入", icon: "delivery_dining", path: "/tools/delivery-income-calculator.html", desc: "外送員淨收入試算" }
+    ]
+  },
+  {
+    category: "房產與居住",
+    items: [
+      { name: "房貸規劃", icon: "home_work", path: "/tools/mortgage-calculator.html", desc: "房貸試算、寬限期" },
+      { name: "租房成本", icon: "key", path: "/tools/rent-cost-calculator.html", desc: "租屋相關開銷" },
+      { name: "冷氣安裝", icon: "ac_unit", path: "/tools/ac-installation-calculator.html", desc: "冷氣噸數與安裝費" },
+      { name: "電費試算", icon: "bolt", path: "/tools/electricity-calculator.html", desc: "家庭用電電費預估" }
+    ]
+  },
+  {
+    category: "投資與理財",
+    items: [
+      { name: "股票試算", icon: "trending_up", path: "/tools/stock-calculator.html", desc: "股票損益、手續費" },
+      { name: "FIRE 退休", icon: "rocket_launch", path: "/tools/fire-calculator.html", desc: "財務自由目標計算" },
+      { name: "退休規劃", icon: "elderly", path: "/tools/retirement-calculator.html", desc: "一般退休金需求" },
+      { name: "利潤計算", icon: "percent", path: "/tools/profit-calculator.html", desc: "商品利潤率試算" },
+      { name: "分帳計算", icon: "call_split", path: "/tools/split-calculator.html", desc: "多人費用分攤" },
+      { name: "百分比計算", icon: "calculate", path: "/tools/percentage-calculator.html", desc: "快速百分比換算" }
+    ]
+  },
+  {
+    category: "保險與其他",
+    items: [
+      { name: "保險需求", icon: "security", path: "/tools/insurance-assessment.html", desc: "保險保障缺口評估" },
+      { name: "保費試算", icon: "request_quote", path: "/tools/insurance-calculator.html", desc: "保費預算規劃" },
+      { name: "信用卡分期", icon: "credit_card", path: "/tools/credit-card-calculator.html", desc: "分期付款利息試算" },
+      { name: "成本計算", icon: "sell", path: "/tools/cost-calculator.html", desc: "產品成本與定價" }
+    ]
+  }
+];
+---
+
+<Layout title="工具庫 - TaiCalc" description="TaiCalc 完整工具庫，包含薪資、房貸、投資、生活等 18+ 種實用計算器。">
+  <div class="space-y-12 mb-12">
+    <!-- Header -->
+    <header class="text-center space-y-4 max-w-2xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-black text-stone-900 tracking-tight">
+        工具庫
+      </h1>
+      <p class="text-lg text-stone-600 leading-relaxed">
+        專為台灣人設計的財務決策工具箱。<br>從日常記帳到人生規劃，這裡都能幫你算清楚。
+      </p>
+    </header>
+
+    <!-- Categories -->
+    {tools.map(category => (
+      <section>
+        <h2 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+          <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
+          {category.category}
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {category.items.map(tool => (
+            <a href={tool.path} class="group block h-full">
+              <div class="modern-card bg-white rounded-2xl p-6 h-full border border-stone-200 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+                <div class="flex items-start justify-between mb-4">
+                  <div class="w-12 h-12 rounded-xl bg-stone-50 flex items-center justify-center text-stone-600 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                    <span class="material-symbols-outlined text-2xl">{tool.icon}</span>
+                  </div>
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2">
+                    <span class="material-symbols-outlined text-emerald-400">arrow_outward</span>
+                  </div>
+                </div>
+                
+                <h3 class="text-lg font-bold text-stone-900 mb-2 group-hover:text-emerald-700 transition-colors">
+                  {tool.name}
+                </h3>
+                <p class="text-sm text-stone-500 leading-relaxed">
+                  {tool.desc}
+                </p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</Layout>
+
+<style>
+/* 確保 modern-card 類別的效果一致 */
+.modern-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modern-card:hover {
+    transform: translateY(-4px);
+}
+</style>

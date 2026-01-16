@@ -168,6 +168,58 @@
                     <span :class="healthStatus.color">{{ healthStatus.text }}</span>
                 </div>
             </div>
+
+            <!-- 🛡️ The Gardener's Log (Action Plan) -->
+            <div class="mt-8 bg-white rounded-3xl p-8 border border-stone-100 shadow-lg">
+                <h3 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                    📋 {{ t.gardener_log_title }}
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Diagnosis -->
+                    <div class="space-y-4">
+                        <div v-if="assets.debt > 0" class="flex gap-4 p-4 bg-rose-50 rounded-2xl border border-rose-100">
+                            <span class="text-2xl">🐛</span>
+                            <div>
+                                <h4 class="font-bold text-rose-700 text-sm">{{ t.task_pest_title }}</h4>
+                                <p class="text-xs text-rose-600 mt-1">{{ t.task_pest_desc }}</p>
+                            </div>
+                        </div>
+                        
+                        <div v-if="assets.cash < 100000" class="flex gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                            <span class="text-2xl">💧</span>
+                            <div>
+                                <h4 class="font-bold text-amber-700 text-sm">{{ t.task_water_title }}</h4>
+                                <p class="text-xs text-amber-600 mt-1">{{ t.task_water_desc }}</p>
+                            </div>
+                        </div>
+
+                        <div v-if="assets.stock < assets.cash && assets.cash > 500000" class="flex gap-4 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                            <span class="text-2xl">🌱</span>
+                            <div>
+                                <h4 class="font-bold text-emerald-700 text-sm">{{ t.task_plant_title }}</h4>
+                                <p class="text-xs text-emerald-600 mt-1">{{ t.task_plant_desc }}</p>
+                            </div>
+                        </div>
+
+                        <div v-if="assets.debt === 0 && assets.stock > 1000000 && assets.cash > 200000" class="flex gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                            <span class="text-2xl">🏆</span>
+                            <div>
+                                <h4 class="font-bold text-blue-700 text-sm">{{ t.task_master_title }}</h4>
+                                <p class="text-xs text-blue-600 mt-1">{{ t.task_master_desc }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="bg-stone-50 rounded-2xl p-6 flex flex-col justify-center text-center">
+                        <div class="text-stone-400 text-xs font-bold uppercase mb-2">{{ t.garden_score }}</div>
+                        <div class="text-5xl font-black text-stone-800 mb-2">{{ gardenScore }}<span class="text-lg text-stone-400 font-normal">/100</span></div>
+                        <p class="text-stone-500 text-sm px-4">{{ healthStatus.message }}</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
   </div>
@@ -178,7 +230,7 @@ import { ref, computed } from 'vue';
 
 const t = {
     title: '數位資產花園',
-    subtitle: '將冷冰冰的資產數字，轉化為直觀的生態系。看見你的財富生命力。',
+    subtitle: '將冷冰冰的資產數字，轉化為直觀的生態系。這不只是圖，更是你的財務健檢報告。',
     input_title: '種植你的資產',
     cat_cash: '現金水位',
     cat_stock: '股票/ETF',
@@ -195,6 +247,16 @@ const t = {
     season_spring: '牛市 (春暖花開)',
     season_winter: '熊市 (休養生息)',
     garden_status: '花園健康度',
+    gardener_log_title: '園丁日誌 (行動建議)',
+    task_pest_title: '緊急：清除害蟲',
+    task_pest_desc: '你的花園裡有債務害蟲正在啃食果實。優先償還高利債務，否則施肥（投資）也沒用。',
+    task_water_title: '警告：水源枯竭',
+    task_water_desc: '現金水位過低，花園隨時可能枯死。請優先建立緊急預備金（至少 6 個月開銷）。',
+    task_plant_title: '建議：擴大種植',
+    task_plant_desc: '你的水源（現金）充足，但果樹（資產）太少。通膨會蒸發水分，請開始定期定額種樹。',
+    task_master_title: '狀態：生態平衡',
+    task_master_desc: '你的花園生機盎然，無害蟲且水源充足。只需維持紀律，等待時間讓果樹長大。',
+    garden_score: '生態評分',
 };
 
 const assets = ref({
@@ -211,54 +273,49 @@ const formatMoney = (v) => '$' + Math.round(v).toLocaleString();
 
 // --- Visual Generators ---
 
-// Water: Height depends on Cash absolute value relative to a "Healthy Baseline" (say 1M)
+// Water
 const waterPath = computed(() => {
-    // Canvas Height 600. Water starts from bottom.
-    // Max Cash ~ 5M -> Height 300.
     const height = Math.min(300, (assets.value.cash / 5000000) * 200 + 50); 
     const y = 600 - height;
-    
-    // Create a wave looking path
     return `M 0 600 L 0 ${y} Q 200 ${y+20} 400 ${y} T 800 ${y} L 800 600 Z`;
 });
 
-// Resources generator
 const seededRandom = (seed) => {
     var x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
 
-// Rocks (Real Estate)
+// Rocks
 const rockNodes = computed(() => {
-    const count = Math.ceil(assets.value.realEstate / 4000000); // 1 Rock per 4M
+    const count = Math.ceil(assets.value.realEstate / 4000000); 
     const nodes = [];
     for(let i=0; i<count; i++) {
         nodes.push({
             scale: 0.5 + seededRandom(i)*0.5,
             x: i * 80,
-            d: "M0 0 Q 30 -50 60 0 Z" // Triangle-ish
+            d: "M0 0 Q 30 -50 60 0 Z"
         });
     }
     return nodes;
 });
 
-// Trees (Stocks)
+// Trees
 const treeNodes = computed(() => {
-    const count = Math.min(15, Math.ceil(assets.value.stock / 500000)); // 1 Tree per 500k
+    const count = Math.min(15, Math.ceil(assets.value.stock / 500000));
     const nodes = [];
     for(let i=0; i<count; i++) {
         nodes.push({
-            x: 100 + (i * 50) + seededRandom(i)*30, // Spread out
-            y: 450 + seededRandom(i+10)*20,          // Vary depth
+            x: 100 + (i * 50) + seededRandom(i)*30,
+            y: 450 + seededRandom(i+10)*20,
             scale: 0.7 + seededRandom(i+20)*0.5
         });
     }
     return nodes;
 });
 
-// Flowers (Crypto)
+// Flowers
 const flowerNodes = computed(() => {
-    const count = Math.min(20, Math.ceil(assets.value.crypto / 50000)); // 1 Flower per 50k
+    const count = Math.min(20, Math.ceil(assets.value.crypto / 50000));
     const nodes = [];
     for(let i=0; i<count; i++) {
         nodes.push({
@@ -270,12 +327,11 @@ const flowerNodes = computed(() => {
     return nodes;
 });
 
-// Bugs (Debt)
+// Bugs
 const bugNodes = computed(() => {
-    const count = Math.min(10, Math.ceil(assets.value.debt / 100000)); // 1 Bug per 100k
+    const count = Math.min(10, Math.ceil(assets.value.debt / 100000));
     const nodes = [];
     for(let i=0; i<count; i++) {
-        // Bugs target trees (stocks) first!
         const targetTreeIdx = Math.floor(seededRandom(i)*treeNodes.value.length);
         const targetX = treeNodes.value.length > 0 ? treeNodes.value[targetTreeIdx].x : 400;
         const targetY = treeNodes.value.length > 0 ? treeNodes.value[targetTreeIdx].y - 50 : 300;
@@ -289,12 +345,29 @@ const bugNodes = computed(() => {
     return nodes;
 });
 
-// Health Status Logic
+// Health Status & Score
+const gardenScore = computed(() => {
+    let score = 50;
+    // Debt penalty
+    if (assets.value.debt > 0) score -= 30;
+    if (assets.value.debt > assets.value.cash) score -= 20;
+    
+    // Cash buffer
+    if (assets.value.cash > 200000) score += 10;
+    if (assets.value.cash < 50000) score -= 20;
+
+    // Investment
+    if (assets.value.stock > 1000000) score += 20;
+    if (assets.value.stock > assets.value.cash * 2) score += 10; // Good deployment
+
+    return Math.max(0, Math.min(100, score));
+});
+
 const healthStatus = computed(() => {
-    if (assets.value.debt > assets.value.cash + assets.value.stock) return { text: '瀕臨枯竭 (Critical)', color: 'text-rose-600' };
-    if (assets.value.cash < 50000) return { text: '缺水乾旱 (Dry)', color: 'text-amber-500' };
-    if (assets.value.stock > 0 && assets.value.debt === 0) return { text: '欣欣向榮 (Thriving)', color: 'text-emerald-600' };
-    return { text: '穩定生長 (Stable)', color: 'text-blue-500' };
+    if (assets.value.debt > 0) return { text: '蟲害警報 (Critical)', color: 'text-rose-600', message: '害蟲肆虐！立即停止投資，優先執行除蟲計畫（還債）。' };
+    if (assets.value.cash < 50000) return { text: '嚴重乾旱 (Dry)', color: 'text-amber-500', message: '水源不足，生態系即將崩潰。請盡快注入現金流。' };
+    if (gardenScore.value > 80) return { text: '蓬勃發展 (Excellent)', color: 'text-emerald-600', message: '這是一座大師級的花園。請保持目前的灌溉節奏。' };
+    return { text: '穩定生長 (Stable)', color: 'text-blue-500', message: '基礎體質良好，可以考慮種植更多果樹（投資）來增加產出。' };
 });
 
 </script>

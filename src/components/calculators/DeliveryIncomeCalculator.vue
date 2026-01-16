@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <!-- 輸入區塊 -->
     <div class="grid lg:grid-cols-2 gap-6">
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <section class="card rounded-2xl p-6 md:p-8">
         <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
         <div class="space-y-4">
           <div>
@@ -51,7 +51,7 @@
         </div>
       </section>
 
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <section class="card rounded-2xl p-6 md:p-8">
         <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">🛵 車輛與隱性成本</h2>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
@@ -141,7 +141,7 @@
       </section>
 
       <!-- 成本結構圖表 -->
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex items-center">
+      <section class="card rounded-2xl p-6 md:p-8 flex items-center">
         <div class="w-1/2">
           <h3 class="text-sm font-bold text-stone-700 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">

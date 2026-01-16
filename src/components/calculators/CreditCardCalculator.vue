@@ -163,7 +163,7 @@
   </div>
 
   <!-- Carrefour Uniopen Calculator Section -->
-  <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 mt-8 space-y-6">
+  <section class="card rounded-2xl p-6 md:p-8 mt-8 space-y-6">
     <header 
         @click="showUniopen = !showUniopen" 
         class="flex items-center justify-between mb-4 pb-2 cursor-pointer select-none group"

@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200 space-y-6">
+    <div class="card rounded-2xl p-6 md:p-8 space-y-6">
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="currentAge" class="block text-xs font-semibold text-stone-500 mb-2">現在年齡</label>

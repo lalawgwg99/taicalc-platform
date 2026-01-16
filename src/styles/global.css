@@ -4,48 +4,74 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================
+   CSS 變數 - 設計系統 Tokens
+   ======================================== */
+:root {
+    /* 背景色 */
+    --color-bg-primary: #FDFBF7;
+    --color-bg-secondary: #FFFFFF;
+    --color-bg-tertiary: #F5F5F4;
 
+    /* 動畫速度 */
+    --duration-instant: 100ms;
+    --duration-quick: 200ms;
+    --duration-smooth: 400ms;
+    --duration-slow: 600ms;
 
+    /* 緩動曲線 */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* ========================================
+   全域樣式
+   ======================================== */
 * {
     font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background-color: #FAFAF9;
-    /* stone-50 */
+    background-color: var(--color-bg-primary);
     color: #44403C;
-    /* stone-700 */
 }
 
-/* Card Styles */
+/* ========================================
+   卡片樣式
+   ======================================== */
 .card {
-    background: #FFFFFF;
+    background: var(--color-bg-secondary);
     border: 1px solid #E7E5E4;
-    /* stone-200 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: transform var(--duration-quick) var(--ease-in-out),
+        box-shadow var(--duration-quick) var(--ease-in-out);
 }
 
 .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Modern Card Styles - 遊戲化路徑風格 */
+/* Modern Card - Quest 風格 */
 .modern-card {
-    border: 4px solid #18181b;
-    box-shadow: 8px 8px 0px #18181b;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid #1C1917;
+    box-shadow: 6px 6px 0px #1C1917;
+    transition: transform var(--duration-quick) var(--ease-in-out),
+        box-shadow var(--duration-quick) var(--ease-in-out);
 }
 
 .modern-card:hover {
-    transform: translateY(-4px) rotate(1deg);
-    box-shadow: 12px 12px 0px #18181b;
+    transform: translateY(-4px);
+    box-shadow: 8px 8px 0px #1C1917;
 }
 
-/* 浮動動畫 */
+/* ========================================
+   浮動動畫
+   ======================================== */
 .floating {
+    will-change: transform;
     animation: float 6s ease-in-out infinite;
 }
 
@@ -53,25 +79,25 @@ body {
 
     0%,
     100% {
-        transform: translateY(0) rotate(var(--rotate, 0deg));
+        transform: translate3d(0, 0, 0) rotate(var(--rotate, 0deg));
     }
 
     50% {
-        transform: translateY(-15px) rotate(calc(var(--rotate, 0deg) + 2deg));
+        transform: translate3d(0, -15px, 0) rotate(calc(var(--rotate, 0deg) + 1deg));
     }
 }
 
 /* 圓形圖標徽章 */
 .circular-badge {
-    width: 112px;
-    height: 112px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 4px solid white;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    border: 3px solid white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: transform var(--duration-quick) var(--ease-spring);
     position: absolute;
 }
 
@@ -91,37 +117,36 @@ body {
     }
 }
 
-/* Navbar Styles */
+/* ========================================
+   導航樣式
+   ======================================== */
 .nav-glass {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.85);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(231, 229, 228, 0.5);
-    /* stone-200 */
 }
 
 .nav-link {
     color: #78716C;
-    /* stone-500 */
-    transition: color 0.2s;
+    transition: color var(--duration-quick) var(--ease-in-out);
 }
 
 .nav-link:hover {
     color: #1C1917;
-    /* stone-900 */
 }
 
 .nav-link.active {
-    color: #059669;
-    /* emerald-600 */
+    color: #10B981;
     font-weight: 500;
 }
 
-/* Input Styles */
+/* ========================================
+   表單樣式
+   ======================================== */
 .input-label {
     display: block;
     color: #57534E;
-    /* stone-600 */
     font-size: 0.875rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
@@ -129,62 +154,81 @@ body {
 
 .input-field {
     width: 100%;
-    background-color: #F5F5F4;
-    /* stone-100 */
+    background-color: var(--color-bg-tertiary);
     border: 1px solid transparent;
     color: #1C1917;
-    /* stone-900 */
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
     font-size: 1rem;
-    transition: all 0.2s;
+    transition: background-color var(--duration-quick) var(--ease-in-out),
+        border-color var(--duration-quick) var(--ease-in-out),
+        box-shadow var(--duration-quick) var(--ease-in-out);
 }
 
 .input-field:focus {
-    background-color: #FFFFFF;
+    background-color: var(--color-bg-secondary);
     border-color: #10B981;
-    /* emerald-500 */
     outline: none;
     box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
 }
 
-/* Button Styles */
+/* ========================================
+   按鈕樣式
+   ======================================== */
 .btn-primary {
-    background-color: #059669;
-    /* emerald-600 */
+    background: linear-gradient(to right, #10B981, #059669);
     color: white;
-    font-weight: 500;
+    font-weight: 600;
     padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
+    border-radius: 0.75rem;
+    transition: transform var(--duration-quick) var(--ease-in-out),
+        box-shadow var(--duration-quick) var(--ease-in-out);
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.25);
 }
 
 .btn-primary:hover {
-    background-color: #047857;
-    /* emerald-700 */
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary:active {
     transform: translateY(0);
 }
 
-/* Results Section */
+.btn-primary:focus-visible {
+    outline: 2px solid #10B981;
+    outline-offset: 2px;
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========================================
+   結果區樣式
+   ======================================== */
 .result-card {
-    background-color: #FDFBF7;
-    /* Warm Rice Paper */
+    background-color: var(--color-bg-primary);
     border: 1px solid #E7E5E4;
     border-radius: 1rem;
     padding: 1.5rem;
 }
 
+/* 數字顯示規範 */
+.stat-value {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+}
+
+/* ========================================
+   其他樣式
+   ======================================== */
 [v-cloak] {
     display: none;
 }
 
-/* Additional Styles from Index */
 .icon-box {
     display: inline-flex;
     align-items: center;
@@ -193,7 +237,7 @@ body {
     height: 48px;
     border-radius: 12px;
     margin-bottom: 12px;
-    transition: all 0.3s ease;
+    transition: transform var(--duration-quick) var(--ease-in-out);
 }
 
 .card:hover .icon-box {
@@ -201,7 +245,7 @@ body {
 }
 
 .hero-gradient {
-    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -209,13 +253,15 @@ body {
 
 /* Mobile Menu */
 #mobile-menu {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity var(--duration-quick) var(--ease-in-out),
+        transform var(--duration-quick) var(--ease-in-out);
 }
 
 #mobile-menu.hidden {
     display: none;
 }
 
+/* Fade In Up 動畫 */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -230,6 +276,20 @@ body {
 
 .animate-fade-in-up {
     animation-name: fadeInUp;
-    animation-duration: 0.5s;
+    animation-duration: var(--duration-smooth);
     animation-fill-mode: both;
+}
+
+/* ========================================
+   無障礙支援
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

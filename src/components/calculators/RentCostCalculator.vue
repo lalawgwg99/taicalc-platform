@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-8">
     <!-- Main Calculator Card -->
-    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
+    <div class="card rounded-2xl p-6 md:p-8">
       
       <!-- Tabs -->
       <div class="flex border-b border-stone-100 mb-6">

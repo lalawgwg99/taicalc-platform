@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <!-- Global Settings -->
     <div
-      class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-4 transition-all"
+      class="card rounded-2xl p-6 md:p-8 transition-all"
       :class="{ 'opacity-100': showSettings, 'opacity-70': !showSettings }"
     >
       <div class="flex items-center justify-between cursor-pointer" @click="showSettings = !showSettings">
@@ -55,7 +55,7 @@
     </div>
 
     <!-- Main Calc Card -->
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+    <div class="card rounded-2xl overflow-hidden">
       <!-- Tabs -->
       <div class="flex border-b border-stone-200">
         <button

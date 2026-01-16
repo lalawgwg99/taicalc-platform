@@ -1,18 +1,27 @@
 ---
 ---
-<nav class="flex items-center justify-between mb-16 py-4 bg-white/50 backdrop-blur-md sticky top-0 z-50 rounded-2xl border border-stone-200/50 px-6 shadow-sm">
-    <a href="/" class="flex items-center gap-2 group">
-        <span class="text-2xl font-bold tracking-tight text-stone-800 group-hover:text-emerald-600 transition-colors">TaiCalc</span>
+<nav class="flex items-center justify-between mb-16 py-4 bg-white/80 backdrop-blur-md sticky top-0 z-50 rounded-2xl border border-stone-200/50 px-6 shadow-sm">
+    <a href="/" class="flex items-center gap-3 group">
+        <!-- Logo Icon -->
+        <div class="relative w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
+            <span class="text-white font-black text-xl">T</span>
+            <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-accent-amber rounded-full border-2 border-white"></div>
+        </div>
+        <!-- Logo Text -->
+        <div class="flex flex-col leading-none">
+            <span class="text-xl font-black tracking-tight bg-gradient-to-r from-stone-900 via-stone-700 to-stone-900 bg-clip-text text-transparent">TaiCalc</span>
+            <span class="text-[10px] text-stone-400 tracking-widest uppercase">台灣財務計算</span>
+        </div>
     </a>
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex gap-6 text-sm">
         <a href="/" class="nav-link">首頁</a>
         <a href="/dashboard.html" class="nav-link font-bold text-emerald-600">儀表板</a>
-        <a href="/#salary" class="nav-link">薪資權益</a>
-        <a href="/#housing" class="nav-link">房產居家</a>
-        <a href="/#finance" class="nav-link">理財規劃</a>
-        <a href="/#utilities" class="nav-link">實用工具</a>
+        <a href="/tools/salary-calculator.html" class="nav-link">薪資計算</a>
+        <a href="/tools/mortgage-calculator.html" class="nav-link">房貸規劃</a>
+        <a href="/tools/fire-calculator.html" class="nav-link">退休規劃</a>
+        <a href="/tools" class="nav-link">工具庫</a>
         <a href="/blog" class="nav-link">專欄文章</a>
     </div>
 
@@ -32,10 +41,10 @@
         <a href="/" class="hover:text-emerald-600 menu-link">首頁</a>
         <a href="/dashboard.html" class="text-emerald-600 font-bold menu-link">個人儀表板</a>
         <div class="w-16 h-[1px] bg-stone-100 my-2"></div>
-        <a href="/#salary" class="hover:text-emerald-600 menu-link">薪資權益</a>
-        <a href="/#housing" class="hover:text-emerald-600 menu-link">房產居家</a>
-        <a href="/#finance" class="hover:text-emerald-600 menu-link">理財規劃</a>
-        <a href="/#utilities" class="hover:text-emerald-600 menu-link">實用工具</a>
+        <a href="/tools/salary-calculator.html" class="hover:text-emerald-600 menu-link">薪資計算</a>
+        <a href="/tools/mortgage-calculator.html" class="hover:text-emerald-600 menu-link">房貸規劃</a>
+        <a href="/tools/fire-calculator.html" class="hover:text-emerald-600 menu-link">退休規劃</a>
+        <a href="/tools" class="hover:text-emerald-600 menu-link">工具庫</a>
         <div class="w-16 h-[1px] bg-stone-100 my-2"></div>
         <a href="/blog" class="hover:text-emerald-600 menu-link">專欄文章</a>
         

@@ -1,5 +1,5 @@
 <template>
-  <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+  <div class="card rounded-2xl overflow-hidden">
     <!-- Tab Navigation -->
     <div class="flex border-b border-stone-200 overflow-x-auto scrollbar-hide">
       <button

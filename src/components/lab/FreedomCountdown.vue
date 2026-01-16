@@ -192,8 +192,8 @@ const t = {
     freedom_day: '你的自由日',
     earlier_by: '提早自由',
     later_by: '延後刑期',
-    positive_message: '恭喜！你刚刚用这点小小的牺牲，买回了人生中最宝贵的自由时光。',
-    negative_message: '警告：这一时的享受，将让你在工作岗位上多被囚禁这段时间。值得吗？',
+    positive_message: '恭喜！你剛好用這點小小的犧牲，買回了人生中最寶貴的自由時光。',
+    negative_message: '警告：這一時的享受，將讓你在工作崗位上多被囚禁這段時間。值得嗎？',
     neutral_message: '試著移動滑桿，看看你的「拿鐵因子」對 20 年後有多大影響。'
 };
 

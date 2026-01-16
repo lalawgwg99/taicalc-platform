@@ -2,7 +2,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
     <!-- Input Section -->
     <div class="lg:col-span-4 space-y-6">
-      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-4 md:p-6">
+      <div class="card rounded-2xl p-6 md:p-8">
         <h2 class="text-lg font-bold text-stone-800 mb-5 flex items-center gap-2">
           <span class="w-1 h-6 bg-emerald-500 rounded-full"></span>
           現況輸入
@@ -235,7 +235,7 @@
       </div>
 
       <!-- Chart -->
-      <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-4 md:p-6">
+      <div class="card rounded-2xl p-6 md:p-8">
         <h3 class="font-bold text-stone-800 mb-6 flex items-center justify-between">
           資產成長預測
           <span class="text-xs font-normal text-stone-400 bg-stone-100 px-2 py-1 rounded">考慮複利</span>

@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6 card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-4 md:p-6">
+    <div class="space-y-6 card rounded-2xl p-6 md:p-8">
         <!-- Presets -->
         <div class="grid grid-cols-2 bg-stone-100/50 rounded-xl p-1 mb-6">
             <button @click="applyPreset('newYouth')"
