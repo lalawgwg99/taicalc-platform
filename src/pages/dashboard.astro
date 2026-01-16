@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DashboardApp from '../components/Dashboard.vue';
+---
+
+<Layout title="生活儀表板 Life Dashboard | TaiCalc" description="您的財務生命徵象儀表板。自動整合薪資、支出與投資數據，一目了然您的財務健康狀況。">
+  <DashboardApp client:only="vue" />
+</Layout>
