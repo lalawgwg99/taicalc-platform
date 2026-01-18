@@ -26,6 +26,39 @@ export async function onRequestPost(context) {
         const formData = await request.json();
 
         // 2. 建構 Gemini 2.0 深度優化 Prompt (後端處理)
+
+        // 定義輸出結構說明
+        const outputStructureReq = `60: 請輸出以下 JSON 結構（內容需豐富，每個 content 至少 300字）：
+61: {
+62:   "life_os_score": {
+63:     "total": 0-1000,
+64:     "emotional_stability": 0-1000,
+65:     "relationship_quality": 0-1000,
+66:     "career_alignment": 0-1000,
+67:     "financial_mindset": 0-1000,
+68:     "energy_management": 0-1000,
+69:     "percentile": 0-99,
+70:     "grade": "S/A/B/C"
+71:   },
+72:   "childhood_audit": { "title": "童年根源分析", "content": "..." },
+73:   "personality_kernel": { "title": "性格核心解析", "content": "..." },
+74:   "sunk_cost_scanner": { "title": "沉沒成本覺察", "content": "..." },
+75:   "relationship_debugger": { "title": "關係模式透視", "content": "..." },
+76:   "dopamine_leak": { "title": "注意力與成癮分析", "content": "..." },
+77:   "generational_trauma": { "title": "世代傳承的傷痕", "content": "..." },
+78:   "career_throughput": { "title": "職涯天賦與方向", "content": "..." },
+79:   "wealth_algorithm": { "title": "金錢觀與財務心態", "content": "..." },
+80:   "energy_protocol": { "title": "能量管理與自我照顧", "content": "..." },
+81:   "security_vulnerabilities": { "title": "內心深處的不安", "content": "..." },
+82:   "life_meaning_search": { "title": "人生意義探尋", "content": "..." },
+83:   "future_vision_blueprint": { "title": "未來成長藍圖", "content": "..." },
+84:   "hotfix_protocol": [
+85:     {"id": 1, "type": "認知轉換", "text": "..."},
+86:     {"id": 2, "type": "行為改變", "text": "..."},
+87:     {"id": 3, "type": "生活習慣", "text": "..."}
+88:   ]
+89: }`;
+
         const systemInstruction = `
 ### 角色定義 (Role Definition)
 你是一套名為 "LifeOS Audit" 的高階社會學演算法系統，背後運行的是一位精通「阿德勒心理學」、「康波週期經濟學」與「孫子兵法戰略學」的資深人生架構師。
@@ -57,36 +90,7 @@ export async function onRequestPost(context) {
 4. **康波週期應用**：根據出生年份分析時代紅利（不要直接寫學術名詞，寫實際情境）。
 5. **JSON 格式**：請嚴格遵守 JSON 結構輸出。
 
-請輸出以下 JSON 結構（內容需豐富，每個 content 至少 300字）：
-{
-  "life_os_score": {
-    "total": 0-1000,
-    "emotional_stability": 0-1000,
-    "relationship_quality": 0-1000,
-    "career_alignment": 0-1000,
-    "financial_mindset": 0-1000,
-    "energy_management": 0-1000,
-    "percentile": 0-99,
-    "grade": "S/A/B/C"
-  },
-  "childhood_audit": { "title": "童年根源分析", "content": "..." },
-  "personality_kernel": { "title": "性格核心解析", "content": "..." },
-  "sunk_cost_scanner": { "title": "沉沒成本覺察", "content": "..." },
-  "relationship_debugger": { "title": "關係模式透視", "content": "..." },
-  "dopamine_leak": { "title": "注意力與成癮分析", "content": "..." },
-  "generational_trauma": { "title": "世代傳承的傷痕", "content": "..." },
-  "career_throughput": { "title": "職涯天賦與方向", "content": "..." },
-  "wealth_algorithm": { "title": "金錢觀與財務心態", "content": "..." },
-  "energy_protocol": { "title": "能量管理與自我照顧", "content": "..." },
-  "security_vulnerabilities": { "title": "內心深處的不安", "content": "..." },
-  "life_meaning_search": { "title": "人生意義探尋", "content": "..." },
-  "future_vision_blueprint": { "title": "未來成長藍圖", "content": "..." },
-  "hotfix_protocol": [
-    {"id": 1, "type": "認知轉換", "text": "..."},
-    {"id": 2, "type": "行為改變", "text": "..."},
-    {"id": 3, "type": "生活習慣", "text": "..."}
-  ]
-}`;
+${outputStructureReq}`;
 
         // 3. 調用 Gemini API
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
@@ -120,7 +124,8 @@ export async function onRequestPost(context) {
         // 4. 回傳前端
         return new Response(JSON.stringify({
             text: aiText,
-            model: 'gemini-2.0-flash-exp-backend-prompt'
+            model: 'gemini-2.0-flash-exp-backend-prompt',
+            tier: tier
         }), {
             status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }

@@ -3,9 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 
 const tools = [
   {
-    category: "薪資與工作",
+    category: "職場與收入",
     items: [
-      { name: "薪資計算", icon: "payments", path: "/tools/salary-calculator.html", desc: "實拿薪資、勞健保計算" },
+      { name: "薪資計算", icon: "payments", path: "/tools/salary-calculator.html", desc: "實拿薪資、勞健保計算", tags: ["hot"] },
       { name: "加班費試算", icon: "schedule", path: "/tools/overtime-calculator.html", desc: "平日、休息日加班費" },
       { name: "工時計算", icon: "timer", path: "/tools/work-hours-calculator.html", desc: "工作時數統計" },
       { name: "勞退試算", icon: "savings", path: "/tools/labor-pension-calculator.html", desc: "勞工退休金預估" },
@@ -13,83 +13,197 @@ const tools = [
     ]
   },
   {
-    category: "房產與居住",
+    category: "人生決策與 AI",
     items: [
-      { name: "房貸規劃", icon: "home_work", path: "/tools/mortgage-calculator.html", desc: "房貸試算、寬限期" },
+      { name: "LifeOS 人生審計", icon: "psychology", path: "/lifeos", desc: "AI 深度解析性格與命運", tags: ["ai", "new"] },
+      { name: "易經決策 Oracle", icon: "water_drop", path: "/tools/oracle", desc: "不確定性結構化決策輔助", tags: ["ai"] },
+      { name: "FIRE 退休", icon: "rocket_launch", path: "/tools/fire-calculator.html", desc: "財務自由目標計算", tags: ["hot"] },
+      { name: "退休規劃", icon: "elderly", path: "/tools/retirement-calculator.html", desc: "一般退休金需求" }
+    ]
+  },
+  {
+    category: "居住與生活",
+    items: [
+      { name: "房貸規劃", icon: "home_work", path: "/tools/mortgage-calculator.html", desc: "房貸試算、寬限期", tags: ["hot"] },
       { name: "租房成本", icon: "key", path: "/tools/rent-cost-calculator.html", desc: "租屋相關開銷" },
       { name: "冷氣安裝", icon: "ac_unit", path: "/tools/ac-installation-calculator.html", desc: "冷氣噸數與安裝費" },
-      { name: "電費試算", icon: "bolt", path: "/tools/electricity-calculator.html", desc: "家庭用電電費預估" }
+      { name: "電費試算", icon: "bolt", path: "/tools/electricity-calculator.html", desc: "家庭用電電費預估", tags: ["summer"] }
     ]
   },
   {
-    category: "投資與理財",
+    category: "投資與商業",
     items: [
       { name: "股票試算", icon: "trending_up", path: "/tools/stock-calculator.html", desc: "股票損益、手續費" },
-      { name: "FIRE 退休", icon: "rocket_launch", path: "/tools/fire-calculator.html", desc: "財務自由目標計算" },
-      { name: "退休規劃", icon: "elderly", path: "/tools/retirement-calculator.html", desc: "一般退休金需求" },
       { name: "利潤計算", icon: "percent", path: "/tools/profit-calculator.html", desc: "商品利潤率試算" },
-      { name: "分帳計算", icon: "call_split", path: "/tools/split-calculator.html", desc: "多人費用分攤" },
-      { name: "百分比計算", icon: "calculate", path: "/tools/percentage-calculator.html", desc: "快速百分比換算" }
+      { name: "成本計算", icon: "sell", path: "/tools/cost-calculator.html", desc: "產品成本與定價" }
     ]
   },
   {
-    category: "保險與其他",
+    category: "生活精算",
     items: [
-      { name: "保險需求", icon: "security", path: "/tools/insurance-assessment.html", desc: "保險保障缺口評估" },
-      { name: "保費試算", icon: "request_quote", path: "/tools/insurance-calculator.html", desc: "保費預算規劃" },
       { name: "信用卡分期", icon: "credit_card", path: "/tools/credit-card-calculator.html", desc: "分期付款利息試算" },
-      { name: "成本計算", icon: "sell", path: "/tools/cost-calculator.html", desc: "產品成本與定價" }
+      { name: "分帳計算", icon: "call_split", path: "/tools/split-calculator.html", desc: "多人費用分攤" },
+      { name: "百分比計算", icon: "calculate", path: "/tools/percentage-calculator.html", desc: "快速百分比換算" },
+      { name: "保險需求", icon: "security", path: "/tools/insurance-assessment.html", desc: "保險保障缺口評估" },
+      { name: "保費試算", icon: "request_quote", path: "/tools/insurance-calculator.html", desc: "保費預算規劃" }
     ]
   }
 ];
 ---
 
-<Layout title="工具庫 - TaiCalc" description="TaiCalc 完整工具庫，包含薪資、房貸、投資、生活等 18+ 種實用計算器。">
+<Layout title="工具庫 - TaiCalc" description="TaiCalc 完整工具庫，包含薪資、房貸、投資、AI 人生決策等 20+ 種實用計算器。">
+  <!-- Search Overlay (Optional, or just inline) -->
+  <div class="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-cyan-500 z-50"></div>
+
   <div class="space-y-12 mb-12">
-    <!-- Header -->
-    <header class="text-center space-y-4 max-w-2xl mx-auto">
-      <h1 class="text-4xl md:text-5xl font-black text-stone-900 tracking-tight">
-        工具庫
-      </h1>
-      <p class="text-lg text-stone-600 leading-relaxed">
-        專為台灣人設計的財務決策工具箱。<br>從日常記帳到人生規劃，這裡都能幫你算清楚。
-      </p>
+    <!-- Header & Search -->
+    <header class="text-center space-y-8 max-w-3xl mx-auto px-4 mt-8">
+      <div class="space-y-4">
+        <h1 class="text-4xl md:text-5xl font-black text-stone-900 tracking-tight">
+          工具導航
+        </h1>
+        <p class="text-lg text-stone-600 leading-relaxed">
+          收錄 <span class="font-bold text-emerald-600 count-up">22</span> 款台灣專屬決策工具。<br>
+          <span class="text-sm opacity-75">所有計算皆在本地執行，隱私 100% 安全。</span>
+        </p>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="relative max-w-lg mx-auto group">
+        <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+          <span class="material-symbols-outlined text-stone-400 group-focus-within:text-emerald-500 transition-colors">search</span>
+        </div>
+        <input 
+          type="text" 
+          id="toolSearch" 
+          placeholder="搜尋工具... (例如：加班、房貸、AI)" 
+          class="w-full pl-12 pr-4 py-4 bg-white border-2 border-stone-100 rounded-2xl shadow-sm text-stone-800 placeholder:text-stone-300 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all text-lg"
+        >
+        <div class="absolute inset-y-0 right-4 flex items-center">
+            <span class="text-xs text-stone-300 bg-stone-50 px-2 py-1 rounded-md border border-stone-100 hidden sm:block">CMD+K</span>
+        </div>
+      </div>
     </header>
 
     <!-- Categories -->
-    {tools.map(category => (
-      <section>
-        <h2 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-2">
-          <span class="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
-          {category.category}
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {category.items.map(tool => (
-            <a href={tool.path} class="group block h-full">
-              <div class="modern-card bg-white rounded-2xl p-6 h-full border border-stone-200 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-                <div class="flex items-start justify-between mb-4">
-                  <div class="w-12 h-12 rounded-xl bg-stone-50 flex items-center justify-center text-stone-600 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
-                    <span class="material-symbols-outlined text-2xl">{tool.icon}</span>
-                  </div>
-                  <div class="opacity-0 group-hover:opacity-100 transition-opacity -mr-2 -mt-2">
-                    <span class="material-symbols-outlined text-emerald-400">arrow_outward</span>
-                  </div>
+    <div id="toolsContainer" class="space-y-16">
+        {tools.map(category => (
+        <section class="tool-category transition-all duration-500">
+            <h2 class="text-xl font-bold text-stone-800 mb-6 flex items-center gap-3 px-2">
+            <span class="w-2 h-8 bg-emerald-500 rounded-full shadow-emerald-200 shadow-lg"></span>
+            {category.category}
+            <span class="text-xs font-normal text-stone-400 bg-stone-100 px-2 py-0.5 rounded-full ml-auto">
+                {category.items.length} Tools
+            </span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {category.items.map(tool => (
+                <a href={tool.path} class="tool-card group block h-full" data-name={tool.name} data-desc={tool.desc} data-tags={tool.tags?.join(' ')}>
+                <div class={`modern-card bg-white rounded-2xl p-6 h-full border border-stone-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden ${tool.tags?.includes('ai') ? 'ring-2 ring-purple-100' : ''}`}>
+                    
+                    {/* Badges */}
+                    <div class="absolute top-4 right-4 flex gap-2">
+                        {tool.tags?.includes('hot') && (
+                            <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-rose-100">HOT</span>
+                        )}
+                        {tool.tags?.includes('new') && (
+                            <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-100 animate-pulse">NEW</span>
+                        )}
+                        {tool.tags?.includes('ai') && (
+                            <span class="px-2 py-0.5 bg-purple-50 text-purple-600 text-[10px] font-bold uppercase tracking-wider rounded-full border border-purple-100 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[10px]">auto_awesome</span> AI
+                            </span>
+                        )}
+                    </div>
+
+                    <div class="flex items-start justify-between mb-4">
+                    <div class={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors shadow-sm
+                        ${tool.tags?.includes('ai') ? 'bg-purple-50 text-purple-600 group-hover:bg-purple-100' : 'bg-stone-50 text-stone-600 group-hover:bg-emerald-50 group-hover:text-emerald-600'}
+                    `}>
+                        <span class="material-symbols-outlined text-3xl">{tool.icon}</span>
+                    </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-bold text-stone-900 mb-2 group-hover:text-emerald-700 transition-colors flex items-center gap-2">
+                    {tool.name}
+                    </h3>
+                    <p class="text-sm text-stone-500 leading-relaxed font-medium">
+                    {tool.desc}
+                    </p>
                 </div>
-                
-                <h3 class="text-lg font-bold text-stone-900 mb-2 group-hover:text-emerald-700 transition-colors">
-                  {tool.name}
-                </h3>
-                <p class="text-sm text-stone-500 leading-relaxed">
-                  {tool.desc}
-                </p>
-              </div>
-            </a>
-          ))}
+                </a>
+            ))}
+            </div>
+        </section>
+        ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="noResults" class="hidden text-center py-24">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-stone-100 text-stone-400 mb-4">
+            <span class="material-symbols-outlined text-3xl">search_off</span>
         </div>
-      </section>
-    ))}
+        <h3 class="text-lg font-bold text-stone-700">找不到相關工具</h3>
+        <p class="text-stone-500 text-sm mt-2">試試看不同的關鍵字？</p>
+    </div>
+
   </div>
+
+  <script>
+    const searchInput = document.getElementById('toolSearch');
+    const toolCards = document.querySelectorAll('.tool-card');
+    const toolCategories = document.querySelectorAll('.tool-category');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        let hasVisibleTools = false;
+
+        toolCategories.forEach(category => {
+            let hasVisibleCardsInCategory = false;
+            const cards = category.querySelectorAll('.tool-card');
+
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const desc = card.dataset.desc.toLowerCase();
+                const tags = card.dataset.tags ? card.dataset.tags.toLowerCase() : '';
+                
+                const isMatch = name.includes(term) || desc.includes(term) || tags.includes(term);
+                
+                if (isMatch) {
+                    card.style.display = 'block';
+                    hasVisibleCardsInCategory = true;
+                    hasVisibleTools = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide empty categories
+            if (hasVisibleCardsInCategory) {
+                category.style.display = 'block';
+            } else {
+                category.style.display = 'none';
+            }
+        });
+
+        // Show/Hide No Results
+        if (hasVisibleTools) {
+            noResults.classList.add('hidden');
+        } else {
+            noResults.classList.remove('hidden');
+        }
+    });
+
+    // Keyboard Shortcut (CMD+K / CTRL+K)
+    document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+    });
+  </script>
 </Layout>
 
 <style>
