@@ -20,33 +20,33 @@ import {
 const I18N = {
     'zh-TW': {
         ui: {
-            title: 'LifeOS Audit',
-            subtitle: 'GEMINI 2.0 FLASH EXPERIMENTAL',
-            version: 'v7.1 AI',
-            restart: 'REBOOT SYSTEM',
-            startBtn: 'RUN DEEP SCAN',
-            awaiting: 'WAITING FOR INPUT...',
-            privacy: ':: API ENCRYPTED :: NO DATA LOGGING ::',
-            error_missing: '[ERROR] 參數缺失 MISSING PARAMS',
-            error_api: '[ERROR] API 連線失敗 (已切換至備援模式)',
+            title: 'LifeOS: 人生除錯計畫',
+            subtitle: 'LIFE DEBUGGER // SYSTEM v8.0',
+            version: 'v8.0 AI',
+            restart: 'REBOOT_SYSTEM',
+            startBtn: 'INITIATE_DEBUG_SEQUENCE',
+            awaiting: 'WAITING_FOR_INPUT_VECTOR...',
+            privacy: ':: ENCRYPTED_CONNECTION :: LOGS_PURGED ::',
+            error_missing: '[ERROR] 參數缺失 MISSING_PARAMS',
+            error_api: '[ERROR] CONNECTION_LOST (Switching to Offline Mode)',
             sections: {
-                kernel: 'KERNEL SPECS 核心參數',
-                social: 'SOCIAL VARS 社會變數',
-                status: 'RUNTIME STATUS 當前狀態',
-                action: 'ACTION PATCH 行動補丁',
-                console: 'SYSTEM CONSOLE 系統終端'
+                kernel: 'KERNEL_LOGIC (核心邏輯)',
+                social: 'ENV_VARIABLES (環境變數)',
+                status: 'RUNTIME_STATUS (當前狀態)',
+                action: 'HOTFIX_PATCH (行動補丁)',
+                console: 'DEBUG_CONSOLE (除錯終端)'
             },
             loading: {
-                main: 'GEMINI 2.0 IS REASONING...',
+                main: 'SYSTEM_DIAGNOSTIC_IN_PROGRESS...',
                 logs: [
-                    '> Initializing Gemini 2.0 Flash Engine...',
-                    '> Processing Sociological Parameters...',
-                    '> Running Multi-Dimensional Analysis...',
-                    '> Synthesizing Strategic Insights...'
+                    '> Mounting LifeOS v8.0 Kernel...',
+                    '> Scanning for Cognitive Bias Bugs...',
+                    '> Compiling Trauma Logs...',
+                    '> Generating Hotfix Protocol...'
                 ]
             },
             console: {
-                placeholder: '輸入指令或是詢問系統 Bug (e.g., 如何修復感情內耗?)',
+                placeholder: '輸入指令或詢問 Bug (e.g., /fix 感情內耗)',
                 send: 'EXECUTE'
             }
         },
@@ -316,22 +316,25 @@ const runDeepSeekChat = async (history, userQuery, userContext) => {
 
 const InputField = ({ label, type = "text", value, onChange, options = null, placeholder = "" }) => (
     <div className="flex flex-col gap-2 w-full group">
-        <label className="text-xs font-semibold text-muted uppercase tracking-wider group-hover:text-accent transition-colors">{label}</label>
+        <label className="text-xs font-mono font-bold text-emerald-600/70 uppercase tracking-widest group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+            <span className="w-1 h-1 bg-emerald-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
+            {label}
+        </label>
         {options ? (
             <div className="relative">
                 <select
                     value={value}
                     onChange={onChange}
-                    className="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3.5 text-base font-medium focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent shadow-card transition-all duration-200 appearance-none cursor-pointer"
+                    className="w-full bg-black/40 border border-emerald-900/30 rounded-sm px-4 py-3.5 text-base font-medium text-emerald-100 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 focus:border-emerald-500/50 shadow-none transition-all duration-200 appearance-none cursor-pointer hover:bg-emerald-900/10 placeholder-emerald-800"
                 >
-                    <option value="" disabled>--- SELECT ---</option>
+                    <option value="" disabled className="bg-neutral-900 text-neutral-500">--- SELECT_OPTION ---</option>
                     {options.map((opt, i) => {
                         const val = typeof opt === 'object' ? opt.value : opt;
                         const lbl = typeof opt === 'object' ? opt.label : opt;
-                        return <option key={val || i} value={val}>{lbl}</option>;
+                        return <option key={val || i} value={val} className="bg-neutral-900 text-emerald-100">{lbl}</option>;
                     })}
                 </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted font-bold">▼</div>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-600 font-bold text-xs">▼</div>
             </div>
         ) : (
             <input
@@ -339,7 +342,7 @@ const InputField = ({ label, type = "text", value, onChange, options = null, pla
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className="w-full bg-white/80 border border-gray-200 rounded-xl px-4 py-3.5 text-base font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent shadow-card transition-all duration-200"
+                className="w-full bg-black/40 border border-emerald-900/30 rounded-sm px-4 py-3.5 text-base font-medium text-emerald-100 placeholder-emerald-900/50 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 focus:border-emerald-500/50 shadow-none transition-all duration-200"
             />
         )}
     </div>
@@ -377,15 +380,18 @@ const TypewriterText = ({ text, speed = 20, delay = 0 }) => {
 
 const ResultCard = ({ title, content, icon: Icon, delay }) => (
     <div
-        className="bg-paper rounded-2xl p-6 h-full flex flex-col shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300"
+        className="bg-neutral-900/60 backdrop-blur-md rounded-sm border border-emerald-500/20 p-6 h-full flex flex-col hover:border-emerald-500/50 transition-all duration-300 group relative overflow-hidden"
         style={{ animation: `fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards`, animationDelay: `${delay}ms`, opacity: 0 }}
     >
-        <h3 className="font-mono font-bold text-xs uppercase tracking-widest mb-4 pb-3 border-b border-gray-100 flex items-center gap-2 text-ink">
-            {Icon && <Icon size={14} className="text-accent" />}
+        <div className="absolute top-0 right-0 p-2 opacity-20 group-hover:opacity-40 transition-opacity">
+            <Icon size={40} className="text-emerald-500" />
+        </div>
+        <h3 className="font-mono font-bold text-xs uppercase tracking-widest mb-4 pb-3 border-b border-emerald-500/20 flex items-center gap-2 text-emerald-400">
+            {Icon && <Icon size={14} />}
             {title}
         </h3>
-        <p className="font-sans text-base leading-7 text-ink/85 whitespace-pre-line text-left flex-grow">
-            <TypewriterText text={content} speed={15} delay={delay + 300} />
+        <p className="font-sans text-sm leading-7 text-emerald-100/90 whitespace-pre-line text-justify flex-grow font-light">
+            <TypewriterText text={content} speed={10} delay={delay + 300} />
         </p>
     </div>
 );
@@ -762,28 +768,31 @@ export default function App() {
     };
 
     return (
-        <div className="min-h-screen bg-cream text-ink font-sans p-6 md:p-12 flex flex-col items-center">
+        <div className="min-h-screen bg-black text-emerald-50 font-sans p-4 md:p-8 flex flex-col items-center relative overflow-hidden">
+            <div className="fixed inset-0 bg-[url('/grid.svg')] opacity-10 pointer-events-none"></div>
+            <div className="fixed inset-0 bg-gradient-to-b from-black via-transparent to-emerald-950/20 pointer-events-none"></div>
+
             <style>{`
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
             {/* HEADER */}
-            <header className="w-full max-w-4xl flex justify-between items-end mb-10 border-b border-gray-200 pb-6">
+            <header className="w-full max-w-5xl flex justify-between items-end mb-12 border-b border-emerald-900/30 pb-6 relative z-10">
                 <div>
-                    <h1 className="text-3xl md:text-5xl font-bold tracking-tight flex items-center gap-3">
-                        <Terminal className="text-accent" size={32} strokeWidth={2.5} />
-                        <span className="font-mono">{t.title}</span>
+                    <h1 className="text-2xl md:text-4xl font-black tracking-tight flex items-center gap-4 text-white">
+                        <Terminal className="text-emerald-500" size={36} strokeWidth={2} />
+                        <span className="font-mono tracking-tighter">{t.title}</span>
                     </h1>
-                    <div className="flex items-center gap-4 mt-2">
-                        <p className="text-xs md:text-sm font-medium uppercase tracking-widest text-muted">
-                            {t.subtitle} <span className="bg-accent text-white px-2 py-0.5 ml-2 rounded">{t.version}</span>
+                    <div className="flex items-center gap-4 mt-3">
+                        <p className="text-xs md:text-xs font-mono font-bold uppercase tracking-[0.2em] text-emerald-600/80 pl-1">
+                            {t.subtitle} <span className="bg-emerald-900/50 text-emerald-400 px-2 py-0.5 ml-2 rounded text-[10px] border border-emerald-500/20">{t.version}</span>
                         </p>
                         <button
                             onClick={() => setShowMethodology(true)}
-                            className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-muted hover:text-accent transition-colors bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded-md"
+                            className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700 hover:text-emerald-400 transition-colors px-2 py-1"
                         >
                             <Info size={12} />
-                            System Docs
+                            DOCS
                         </button>
                     </div>
                 </div>
