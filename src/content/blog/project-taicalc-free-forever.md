@@ -1,8 +1,15 @@
 ---
 title: "TaiCalc 決定全面免費：為什麼我們放棄了訂閱制？"
-description: "這是一個艱難但正確的決定。從今天起，TaiCalc 的所有進階功能，包含 LifeOS 人生審計，全部免費開放。"
-pubDate: "2026-01-19"
-heroImage: "/blog-placeholder-about.jpg" 
+excerpt: "這是一個艱難但正確的決定。從今天起，TaiCalc 的所有進階功能，包含 LifeOS 人生審計，全部免費開放。"
+date: "2026-01-19"
+coverImage: "/blog-placeholder-about.jpg"
+category: "官方公告"
+tags: [
+  "TaiCalc",
+  "免費資源",
+  "LifeOS",
+  "公益"
+] 
 ---
 
 ## 這是一個艱難，但正確的決定
