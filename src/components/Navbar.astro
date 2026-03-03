@@ -14,9 +14,10 @@ const isActive = (href: string) => {
         <!-- Desktop Menu -->
         <div class="hidden md:flex items-center gap-1 text-sm">
             <a href="/" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>首頁</a>
-            <a href="/dashboard.html" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/dashboard') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>儀表板</a>
             <span class="w-px h-4 bg-paper-300 mx-1"></span>
+            <!-- 熱門工具 -->
             <a href="/tools/salary-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/salary') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>薪資</a>
+            <a href="/tools/income-tax-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/income-tax') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>所得稅</a>
             <a href="/tools/mortgage-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/mortgage') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>房貸</a>
             <a href="/tools/fire-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/fire') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>退休</a>
             <span class="w-px h-4 bg-paper-300 mx-1"></span>
@@ -39,23 +40,24 @@ const isActive = (href: string) => {
 <!-- Mobile Menu -->
 <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-paper-100/98 backdrop-blur-xl pt-16">
     <div class="px-4 pt-6 pb-8 flex flex-col gap-1">
-        <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">
-            首頁
-        </a>
-        <a href="/dashboard.html" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">
-            儀表板
-        </a>
+        <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">首頁</a>
         <div class="h-px bg-paper-300 my-3"></div>
-        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">計算工具</p>
-        <a href="/tools/salary-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">薪資計算</a>
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">薪資與稅務</p>
+        <a href="/tools/salary-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">
+            <span>薪資實拿計算</span>
+        </a>
+        <a href="/tools/income-tax-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">
+            <span>綜合所得稅試算</span>
+            <span class="text-[10px] font-bold text-azure bg-azure-50 px-1.5 py-0.5 rounded-full border border-azure-200">NEW</span>
+        </a>
+        <a href="/tools/overtime-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">加班費試算</a>
+        <div class="h-px bg-paper-300 my-3"></div>
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">居住與投資</p>
         <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">房貸試算</a>
-        <a href="/tools/fire-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">FIRE 退休</a>
-        <a href="/tools/overtime-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">加班費</a>
-        <a href="/tools/electricity-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">電費試算</a>
+        <a href="/tools/fire-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">FIRE 退休規劃</a>
+        <a href="/tools/labor-pension-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">勞退試算</a>
         <div class="h-px bg-paper-300 my-3"></div>
-        <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">
-            專欄文章
-        </a>
+        <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">專欄文章</a>
     </div>
 </div>
 
@@ -85,9 +87,5 @@ const isActive = (href: string) => {
     });
 
     menuLinks.forEach(link => link.addEventListener('click', closeMenu));
-
-    // Close on backdrop click
-    mobileMenu?.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) closeMenu();
-    });
+    mobileMenu?.addEventListener('click', (e) => { if (e.target === mobileMenu) closeMenu(); });
 </script>

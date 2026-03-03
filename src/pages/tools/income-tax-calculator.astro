@@ -1,0 +1,37 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import IncomeTaxCalculator from '../../components/calculators/IncomeTaxCalculator.vue';
+
+const title = "2026 綜合所得稅試算機｜TaiCalc";
+const description = "估算 2026 年度台灣綜合所得稅。支援薪資、股利、利息、租金等多項所得輸入，自動比較標準 vs 列舉扣除，推薦最省稅選擇。";
+---
+
+<ToolLayout title={title} description={description} category="薪資與稅務">
+    <IncomeTaxCalculator client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>綜合所得稅怎麼計算？2026 年版詳解</h2>
+        <p>台灣個人綜合所得稅採<strong>累進稅率制</strong>，課稅所得越高，稅率越高（5% 到 40%）。關鍵在於：最終「課稅所得淨額」是從全年總所得扣掉免稅額、扣除額與各項特別扣除後的金額，通常比你想的低很多。</p>
+
+        <h3>計算公式</h3>
+        <p><strong>課稅所得 = 全年所得 − 薪資特別扣除 − 免稅額 − 扣除額（標準或列舉）− 其他特別扣除</strong></p>
+        <p>許多人誤以為「年薪 100 萬就要繳很高的稅」，實際上扣掉一系列扣除後，大多數上班族課稅所得會降至 5% ~12% 稅率區間。</p>
+
+        <h3>標準扣除 vs 列舉扣除</h3>
+        <ul>
+            <li><strong>標準扣除：</strong>不需檢附收據，單身 131,000 元，夫妻合申 262,000 元，最省事。</li>
+            <li><strong>列舉扣除：</strong>需整理捐贈、保費、房貸利息、租金等收據。超過標準扣除額才有利。一般適合有自用住宅房貸利息者。</li>
+        </ul>
+
+        <blockquote>
+            <strong>本試算機特色：</strong>自動計算兩種扣除方式，並直接告訴你哪個方案稅最少。
+        </blockquote>
+
+        <h3>常見誤解</h3>
+        <ul>
+            <li>年終獎金不會提高月薪對應的扣繳稅率，但合計到年度所得後可能進入更高的累進區間。</li>
+            <li>股利所得有「合併計稅」或「分離課稅（28%）」兩種方式可選，本試算機採合併計稅（較常見）。</li>
+            <li>勞退自提的金額可以全額從薪資所得中扣除，有節稅效果。</li>
+        </ul>
+    </div>
+</ToolLayout>
