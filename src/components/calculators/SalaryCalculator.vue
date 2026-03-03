@@ -1,280 +1,269 @@
 <template>
-    <div class="space-y-6">
-        <!-- Header (Originally in HTML body but outside #app, moving inside component or Page? 
-             Actually Breadcrumb and Header were inside #app in the original HTML. 
-             I will keep them here for now, or maybe move Breadcrumb to Page. 
-             Let's keep the main tool logic here.) 
-        -->
+    <div class="space-y-4">
 
         <!-- 輸入卡片 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
-            <!-- 比較模式切換 -->
-            <div class="flex items-center justify-between mb-6 pb-6 border-b border-stone-100">
-                <h2 class="text-lg font-bold text-stone-800">薪資設定</h2>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-medium" :class="mode === 'compare' ? 'text-stone-800' : 'text-stone-400'">比較模式</span>
-                    <button @click="mode = mode === 'single' ? 'compare' : 'single'" aria-label="切換比較模式"
-                        class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none"
-                        :class="mode === 'compare' ? 'bg-gradient-to-r from-emerald-500 to-teal-500' : 'bg-stone-200'">
-                        <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
-                            :class="mode === 'compare' ? 'translate-x-6' : 'translate-x-1'"></span>
-                    </button>
-                </div>
+        <div class="card-surface p-5">
+            <!-- 模式切換 -->
+            <div class="seg-control mb-5">
+                <button @click="mode = 'single'" :class="['seg-btn', mode === 'single' ? 'seg-btn-active' : '']">單一薪資</button>
+                <button @click="mode = 'compare'" :class="['seg-btn', mode === 'compare' ? 'seg-btn-active' : '']">比較 Offer</button>
             </div>
 
-            <div class="grid gap-6" :class="mode === 'compare' ? 'grid-cols-2' : ''">
+            <div class="grid gap-5" :class="mode === 'compare' ? 'grid-cols-1 sm:grid-cols-2' : ''">
                 <!-- A 方案 -->
                 <div class="space-y-4">
-                    <div v-if="mode === 'compare'"
-                        class="font-bold text-stone-900 border-b border-stone-200 pb-2 mb-4">方案 A (現職)</div>
-
+                    <div v-if="mode === 'compare'" class="text-xs font-medium text-ink-400 uppercase tracking-widest pb-1 border-b border-paper-300">方案 A（現職）</div>
                     <div>
-                        <label for="salaryA" class="block text-xs font-medium text-stone-500 mb-2">月薪 (NT$)</label>
-                        <input id="salaryA" type="number" v-model.number="salary"
-                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-                            placeholder="45,800">
+                        <label for="salaryA" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（NT$）</label>
+                        <input id="salaryA" type="number" v-model.number="salary" class="input-clean text-xl font-semibold tabular-nums" placeholder="45,800">
                     </div>
                     <div>
-                        <label for="bonusA" class="block text-xs font-medium text-stone-500 mb-2">年終獎金 (月)</label>
-                        <input id="bonusA" type="number" v-model.number="bonus" step="0.5" min="0" max="12"
-                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-4 text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                        <label for="bonusA" class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金（月數）</label>
+                        <input id="bonusA" type="number" v-model.number="bonus" step="0.5" min="0" max="12" class="input-clean" placeholder="2">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-stone-500 mb-2">勞退自提 (%)</label>
-                        <div class="grid grid-cols-3 gap-1">
-                            <button v-for="n in [0, 3, 6]" :key="n" @click="pension = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all group', 
-                                            pension === n ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-500 hover:bg-white border border-stone-100']">
+                        <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button v-for="n in [0, 2, 4, 6]" :key="n" @click="pension = n"
+                                :class="['py-2 rounded-lg text-sm font-medium transition-all',
+                                    pension === n
+                                        ? 'bg-azure text-white shadow-sm'
+                                        : 'bg-paper-200 text-ink-500 hover:bg-paper-300']">
                                 {{ n }}%
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- B 方案 (比較用) -->
-                <div v-if="mode === 'compare'" class="space-y-4 border-l border-stone-200 pl-6">
-                    <div class="font-bold text-emerald-700 border-b border-stone-200 pb-2 mb-4">方案 B (新 Offer)</div>
-
+                <!-- B 方案 -->
+                <div v-if="mode === 'compare'" class="space-y-4 sm:border-l sm:border-paper-300 sm:pl-5">
+                    <div class="text-xs font-medium text-azure uppercase tracking-widest pb-1 border-b border-paper-300">方案 B（新 Offer）</div>
                     <div>
-                        <label for="salaryB" class="block text-xs font-medium text-stone-500 mb-2">月薪 (NT$)</label>
-                        <input id="salaryB" type="number" v-model.number="salaryB"
-                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
-                            placeholder="50,000">
+                        <label for="salaryB" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（NT$）</label>
+                        <input id="salaryB" type="number" v-model.number="salaryB" class="input-clean text-xl font-semibold tabular-nums" placeholder="50,000">
                     </div>
                     <div>
-                        <label for="bonusB" class="block text-xs font-medium text-stone-500 mb-2">年終獎金 (月)</label>
-                        <input id="bonusB" type="number" v-model.number="bonusB" step="0.5" min="0" max="12"
-                            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-4 text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500">
+                        <label for="bonusB" class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金（月數）</label>
+                        <input id="bonusB" type="number" v-model.number="bonusB" step="0.5" min="0" max="12" class="input-clean" placeholder="1">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-stone-500 mb-2">勞退自提 (%)</label>
-                        <div class="grid grid-cols-3 gap-1">
-                            <button v-for="n in [0, 3, 6]" :key="n" @click="pensionB = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all', 
-                                            pensionB === n ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-500 hover:bg-white border border-stone-100']">
+                        <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button v-for="n in [0, 2, 4, 6]" :key="n" @click="pensionB = n"
+                                :class="['py-2 rounded-lg text-sm font-medium transition-all',
+                                    pensionB === n
+                                        ? 'bg-azure text-white shadow-sm'
+                                        : 'bg-paper-200 text-ink-500 hover:bg-paper-300']">
                                 {{ n }}%
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 主要結果 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl">
-            <!-- 單人模式結果 -->
-            <div v-if="mode === 'single'">
-                <div class="flex items-start justify-between mb-6">
+        <!-- ── 單一模式結果 ── -->
+        <div v-if="mode === 'single'" class="space-y-4">
+            <!-- 主要數字 -->
+            <div class="card-surface p-5">
+                <div class="flex items-start justify-between mb-5">
                     <div>
-                        <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">每月實拿 (Net Income)</p>
-                        <p class="text-4xl sm:text-5xl font-bold text-stone-800 stat-value">
-                            <span class="text-emerald-500">$</span>{{ monthlyNet.toLocaleString() }}
+                        <p class="stat-label">每月實拿</p>
+                        <p class="stat-value-lg">
+                            <span class="text-2xl text-ink-400 font-light mr-1">$</span>{{ monthlyNet.toLocaleString() }}
                         </p>
                     </div>
                     <div class="text-right">
-                        <p class="text-xs text-stone-500 mb-1">年度總額</p>
-                        <p class="text-xl font-semibold text-stone-600 stat-value">${{ yearlyNet.toLocaleString() }}
-                        </p>
+                        <p class="stat-label">年度總額</p>
+                        <p class="stat-value-md text-ink-500">$ {{ yearlyNet.toLocaleString() }}</p>
+                        <p class="text-xs text-ink-400 mt-0.5">≈ {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
                     </div>
                 </div>
 
-                <!-- 甜甜圈圖 (保留) -->
-                <div class="chart-container mb-6 h-[180px] relative">
+                <!-- 甜甜圈圖 -->
+                <div class="h-44 relative mb-5">
                     <canvas ref="donutChartRef"></canvas>
                 </div>
 
-                <!-- 明細 -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-500 mb-1">勞保費 (自付)</p>
-                        <p class="text-lg font-semibold text-rose-500 stat-value">-{{ laborIns.toLocaleString() }}
-                        </p>
+                <!-- 明細 4 格 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-red-50 rounded-xl p-3">
+                        <p class="text-xs text-red-400 mb-0.5">勞保費（自付）</p>
+                        <p class="text-base font-semibold text-red-600 tabular-nums">− {{ laborIns.toLocaleString() }}</p>
                     </div>
-                    <div class="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-500 mb-1">健保費 (自付)</p>
-                        <p class="text-lg font-semibold text-rose-500 stat-value">-{{ healthIns.toLocaleString() }}
-                        </p>
+                    <div class="bg-red-50 rounded-xl p-3">
+                        <p class="text-xs text-red-400 mb-0.5">健保費（自付）</p>
+                        <p class="text-base font-semibold text-red-600 tabular-nums">− {{ healthIns.toLocaleString() }}</p>
                     </div>
-                    <div class="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-500 mb-1">勞退自提</p>
-                        <p class="text-lg font-semibold text-amber-500 stat-value">-{{ pensionSelf.toLocaleString()
-                            }}</p>
+                    <div class="bg-amber-50 rounded-xl p-3">
+                        <p class="text-xs text-amber-500 mb-0.5">勞退自提</p>
+                        <p class="text-base font-semibold text-amber-600 tabular-nums">− {{ pensionSelf.toLocaleString() }}</p>
                     </div>
-                    <div class="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-500 mb-1">節稅/年</p>
-                        <p class="text-lg font-semibold text-emerald-600 stat-value">+{{ taxSave.toLocaleString() }}
-                        </p>
+                    <div class="bg-green-50 rounded-xl p-3">
+                        <p class="text-xs text-green-500 mb-0.5">年省所得稅</p>
+                        <p class="text-base font-semibold text-green-600 tabular-nums">+ {{ taxSave.toLocaleString() }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 比較模式結果 (雙欄) -->
-            <div v-else class="grid grid-cols-2 gap-0">
-                <div class="pr-4 border-r border-stone-200">
-                    <p class="text-xs text-stone-400 mb-1 text-center">方案 A (現職)</p>
-                    <p class="text-2xl font-bold text-stone-800 text-center mb-4">${{ monthlyNet.toLocaleString() }}
-                    </p>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between text-stone-500"><span>勞保</span><span>-{{ laborIns }}</span>
+            <!-- 雇主成本視角 -->
+            <div class="card-surface p-5">
+                <h3 class="text-sm font-medium text-ink-600 mb-4">💼 雇主視角：實際人力成本</h3>
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                        <p class="stat-label">你的月薪</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ (salary || 0).toLocaleString() }}</p>
+                    </div>
+                    <div>
+                        <p class="stat-label">雇主額外</p>
+                        <p class="text-base font-semibold text-red-500 tabular-nums">+ {{ employerCost.toLocaleString() }}</p>
+                    </div>
+                    <div>
+                        <p class="stat-label">總人力成本</p>
+                        <p class="text-base font-semibold text-ink-800 tabular-nums">$ {{ totalCost.toLocaleString() }}</p>
+                    </div>
+                </div>
+                <p class="note-box mt-3">雇主每月額外負擔：勞保 70%、健保 60%（×1.58 眷屬係數）、勞退 6%。</p>
+            </div>
+
+            <!-- 5年預測 -->
+            <div class="card-surface p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-ink-600">5 年薪資預測</h3>
+                    <div class="flex items-center gap-3 text-xs text-ink-400">
+                        <label class="flex items-center gap-1">
+                            調薪
+                            <input type="number" v-model.number="raiseRate" step="0.5" aria-label="每年調薪幅度"
+                                class="w-12 input-clean-sm text-center px-2 py-1 text-xs">%
+                        </label>
+                        <label class="flex items-center gap-1">
+                            通膨
+                            <input type="number" v-model.number="inflationRate" step="0.5" aria-label="通膨率"
+                                class="w-12 input-clean-sm text-center px-2 py-1 text-xs">%
+                        </label>
+                    </div>
+                </div>
+                <div class="h-44 relative mb-4">
+                    <canvas ref="lineChartRef"></canvas>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="text-ink-400 border-b border-paper-300">
+                                <th class="text-left py-2 font-medium">年份</th>
+                                <th class="text-right py-2 font-medium">名目年薪</th>
+                                <th class="text-right py-2 font-medium">實質購買力</th>
+                                <th class="text-right py-2 font-medium">成長</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, i) in forecast" :key="i" class="border-b border-paper-200">
+                                <td class="py-2 text-ink-400">{{ 2026 + i }}</td>
+                                <td class="py-2 text-right tabular-nums text-ink-600">$ {{ row.nominal.toLocaleString() }}</td>
+                                <td class="py-2 text-right tabular-nums"
+                                    :class="row.real < row.nominal ? 'text-amber-600' : 'text-green-600'">
+                                    $ {{ row.real.toLocaleString() }}
+                                </td>
+                                <td class="py-2 text-right"
+                                    :class="row.growth.startsWith('+') ? 'text-green-600' : 'text-ink-400'">
+                                    {{ row.growth }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── 比較模式結果 ── -->
+        <div v-if="mode === 'compare'" class="card-surface p-5">
+            <!-- 差異標語 -->
+            <div v-if="monthlyNetB !== monthlyNet" class="flex justify-center mb-5">
+                <span :class="['px-3 py-1 rounded-full text-sm font-medium',
+                    monthlyNetB > monthlyNet ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600']">
+                    B 方案每月
+                    {{ monthlyNetB > monthlyNet ? '多拿' : '少拿' }}
+                    $ {{ Math.abs(monthlyNetB - monthlyNet).toLocaleString() }}
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- 方案 A -->
+                <div class="text-center">
+                    <p class="text-xs text-ink-400 mb-1">方案 A（現職）</p>
+                    <p class="text-2xl font-semibold text-ink-700 tabular-nums">$ {{ monthlyNet.toLocaleString() }}</p>
+                    <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
+                    <div class="space-y-1 mt-3 text-xs text-ink-400">
+                        <div class="flex justify-between">
+                            <span>勞保</span><span>− {{ laborIns.toLocaleString() }}</span>
                         </div>
-                        <div class="flex justify-between text-stone-500"><span>健保</span><span>-{{ healthIns
-                                }}</span></div>
-                        <div class="flex justify-between text-stone-500"><span>年薪</span><span
-                                class="font-medium text-stone-700">{{ (yearlyNet/10000).toFixed(1) }}萬</span></div>
+                        <div class="flex justify-between">
+                            <span>健保</span><span>− {{ healthIns.toLocaleString() }}</span>
+                        </div>
                     </div>
                 </div>
-                <div class="pl-4 relative">
-                    <!-- 差異標記 -->
-                    <div v-if="monthlyNetB - monthlyNet > 0"
-                        class="absolute -top-3 right-0 bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-bold border border-emerald-200">
-                        +${{ (monthlyNetB - monthlyNet).toLocaleString() }}
-                    </div>
-
-                    <p class="text-xs text-emerald-600 mb-1 text-center font-bold">方案 B (新 Offer)</p>
-                    <p class="text-2xl font-bold text-emerald-700 text-center mb-4">${{ monthlyNetB.toLocaleString()
-                        }}</p>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between text-stone-500"><span>勞保</span><span>-{{ laborInsB
-                                }}</span></div>
-                        <div class="flex justify-between text-stone-500"><span>健保</span><span>-{{ healthInsB
-                                }}</span></div>
-                        <div class="flex justify-between text-stone-500"><span>年薪</span><span
-                                class="font-bold text-emerald-600">{{ (yearlyNetB/10000).toFixed(1) }}萬</span></div>
+                <!-- 方案 B -->
+                <div class="text-center border-l border-paper-300 pl-4">
+                    <p class="text-xs text-azure mb-1">方案 B（新 Offer）</p>
+                    <p class="text-2xl font-semibold tabular-nums"
+                       :class="monthlyNetB >= monthlyNet ? 'text-azure' : 'text-red-500'">
+                        $ {{ monthlyNetB.toLocaleString() }}
+                    </p>
+                    <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNetB / 10000).toFixed(1) }} 萬</p>
+                    <div class="space-y-1 mt-3 text-xs text-ink-400">
+                        <div class="flex justify-between">
+                            <span>勞保</span><span>− {{ laborInsB.toLocaleString() }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>健保</span><span>− {{ healthInsB.toLocaleString() }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- 5年預測 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-show="mode === 'single'">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-sm font-semibold text-stone-800">5 年薪資預測</h2>
-                <div class="flex items-center gap-3 text-xs text-stone-500">
-                    <label class="flex items-center gap-1">
-                        調薪
-                        <input id="raiseRate" aria-label="每年調薪幅度" type="number" v-model.number="raiseRate"
-                            step="0.5"
-                            class="w-12 bg-stone-100 border border-stone-200 rounded px-2 py-1 text-stone-700 text-center">%
-                    </label>
-                    <label class="flex items-center gap-1">
-                        通膨
-                        <input id="inflationRate" aria-label="預估通膨率" type="number" v-model.number="inflationRate"
-                            step="0.5"
-                            class="w-12 bg-stone-100 border border-stone-200 rounded px-2 py-1 text-stone-700 text-center">%
-                    </label>
-                </div>
-            </div>
-
-            <!-- 折線圖 -->
-            <div class="chart-container mb-4 h-[200px] relative">
-                <canvas ref="lineChartRef"></canvas>
-            </div>
-
-            <!-- 5年數據表 -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="text-stone-400 text-xs">
-                            <th class="text-left py-2 font-medium">年份</th>
-                            <th class="text-right py-2 font-medium">名目年薪</th>
-                            <th class="text-right py-2 font-medium">實質購買力</th>
-                            <th class="text-right py-2 font-medium">成長</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(row, i) in forecast" :key="i" class="border-t border-stone-100">
-                            <td class="py-2 text-stone-500">{{ 2026 + i }}</td>
-                            <td class="py-2 text-right font-mono text-stone-700">${{ row.nominal.toLocaleString() }}
-                            </td>
-                            <td class="py-2 text-right font-mono"
-                                :class="row.real < row.nominal ? 'text-amber-600' : 'text-emerald-600'">${{
-                                row.real.toLocaleString() }}</td>
-                            <td class="py-2 text-right text-xs"
-                                :class="row.growth.startsWith('+') ? 'text-emerald-600' : 'text-stone-400'">{{
-                                row.growth }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- 雇主視角 -->
-        <section class="card rounded-2xl p-6 shadow-lg border border-white/50 bg-white/60 backdrop-blur-xl" v-if="mode === 'single'">
-            <h2 class="text-sm font-semibold text-stone-800 mb-4">💼 雇主視角：實際人力成本</h2>
-            <div class="grid grid-cols-3 gap-4 text-center">
+            <!-- 年薪比較 -->
+            <div class="border-t border-paper-300 mt-5 pt-4 grid grid-cols-2 gap-4 text-center text-xs">
                 <div>
-                    <p class="text-xs text-stone-500 mb-1">你的月薪</p>
-                    <p class="text-lg font-semibold text-stone-700 stat-value">${{ (salary || 0).toLocaleString() }}
-                    </p>
+                    <p class="text-ink-400 mb-1">年薪（含年終）</p>
+                    <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ yearlyNet.toLocaleString() }}</p>
                 </div>
-                <div>
-                    <p class="text-xs text-stone-500 mb-1">雇主額外負擔</p>
-                    <p class="text-lg font-semibold text-rose-500 stat-value">+${{ employerCost.toLocaleString() }}
-                    </p>
-                </div>
-                <div>
-                    <p class="text-xs text-stone-500 mb-1">總人力成本</p>
-                    <p class="text-lg font-semibold text-stone-900 stat-value">${{ totalCost.toLocaleString() }}</p>
-                </div>
-            </div>
-            <p class="text-xs text-stone-400 mt-3 text-center">雇主每月需額外負擔勞保 70%、健保 60%、勞退 6%</p>
-        </section>
-
-        <!-- 費率說明 & FAQ - Extracted to a separate component usually, but keeping here for now -->
-        <footer class="card rounded-xl p-6 border border-white/40 bg-white/40 backdrop-blur-md text-sm text-stone-600 space-y-6">
-            <div>
-                <h3 class="font-bold text-stone-800 mb-2">📌 2026 年最新費率依據</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                    <div class="bg-white p-2 rounded border border-stone-200">基本工資 <span
-                            class="block text-lg font-bold text-stone-900">$29,500</span></div>
-                    <div class="bg-white p-2 rounded border border-stone-200">勞保費率 <span
-                            class="block text-lg font-bold text-stone-900">12%</span><span
-                            class="text-stone-400 text-[10px]">含就保1%</span></div>
-                    <div class="bg-white p-2 rounded border border-stone-200">健保費率 <span
-                            class="block text-lg font-bold text-stone-900">5.17%</span></div>
-                    <div class="bg-white p-2 rounded border border-stone-200">勞退提撥 <span
-                            class="block text-lg font-bold text-stone-900">6%</span><span
-                            class="text-stone-400 text-[10px]">雇主全額</span></div>
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <h3 class="font-bold text-stone-800">常見問題</h3>
-                <div>
-                    <h4 class="font-medium text-stone-700 mb-1">為什麼實領薪水比面議的少？</h4>
-                    <p class="text-stone-500 text-xs leading-relaxed">
-                        面議薪資通常指「稅前月薪」(Gross Salary)，實際入帳時會扣除「勞保自付額 (20%)」與「健保自付額 (30%)」。若您有自願提繳勞退
-                        (0~6%)，也會一併從當月薪資扣除。
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-medium text-stone-700 mb-1">年終獎金會扣補充保費嗎？</h4>
-                    <p class="text-stone-500 text-xs leading-relaxed">
-                        當單筆獎金超過「投保金額的 4 倍」時，超過的部分才需要扣繳 2.11% 的二代健保補充保費。本計算機已內建此邏輯估算。
+                <div class="border-l border-paper-300">
+                    <p class="text-ink-400 mb-1">年薪（含年終）</p>
+                    <p class="text-base font-semibold tabular-nums"
+                       :class="yearlyNetB >= yearlyNet ? 'text-azure' : 'text-red-500'">
+                        $ {{ yearlyNetB.toLocaleString() }}
                     </p>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <!-- 費率說明 -->
+        <div class="note-box space-y-2">
+            <p class="font-medium text-ink-500">📌 2026 費率依據</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                    <p class="text-xs text-ink-400">基本工資</p>
+                    <p class="text-sm font-bold text-ink-700 mt-0.5">$29,500</p>
+                </div>
+                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                    <p class="text-xs text-ink-400">勞保費率</p>
+                    <p class="text-sm font-bold text-ink-700 mt-0.5">12%</p>
+                    <p class="text-[10px] text-ink-300">含就保 1%</p>
+                </div>
+                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                    <p class="text-xs text-ink-400">健保費率</p>
+                    <p class="text-sm font-bold text-ink-700 mt-0.5">5.17%</p>
+                </div>
+                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                    <p class="text-xs text-ink-400">勞退提撥</p>
+                    <p class="text-sm font-bold text-ink-700 mt-0.5">6%</p>
+                    <p class="text-[10px] text-ink-300">雇主全額</p>
+                </div>
+            </div>
+            <p class="text-[11px] text-ink-400 mt-2">
+                年終獎金不扣月勞健保費；單筆年終超過投保薪資 4 倍時，超過部分扣繳 2.11% 二代健保補充保費。
+            </p>
+        </div>
     </div>
 </template>
 
@@ -283,18 +272,16 @@ import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
 import Decimal from 'decimal.js';
 
-// 2026 費率常數 & 級距表
-const LABOR_RATE = new Decimal(0.12)     // 11% Ordinary + 1% Employment
-const LABOR_SHARE = new Decimal(0.2)     // Worker 20%
+// ── 2026 費率常數 ──────────────────────────────────────────────
+const LABOR_RATE  = new Decimal(0.12)   // 11% 普通 + 1% 就保
+const LABOR_SHARE = new Decimal(0.2)    // 勞工自付 20%
 const HEALTH_RATE = new Decimal(0.0517)
-const HEALTH_SHARE = new Decimal(0.3)    // Worker 30%
+const HEALTH_SHARE = new Decimal(0.3)   // 勞工自付 30%
+const SUPP_HEALTH_RATE = new Decimal(0.0211) // 二代健保補充保費
 
-// 2026 Labor (Min 29500, Max 45800)
 const LABOR_GRADES = [
     29500, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
 ]
-
-// 2026 Health (Min 29500, Max 313000)
 const HEALTH_GRADES = [
     29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
     48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800,
@@ -303,155 +290,137 @@ const HEALTH_GRADES = [
     169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 313000
 ]
 
-// Helper: Find Insured Salary
 const getGrade = (salary, table, max) => {
-    if (salary < table[0]) return table[0] // Min floor
-    if (salary >= max) return max
-    for (let g of table) {
-        if (g >= salary) return g
-    }
+    if (salary < table[0]) return table[0]
+    if (salary >= max)     return max
+    for (let g of table) { if (g >= salary) return g }
     return max
 }
 
-const mode = ref('single') // single, compare
+// ── 響應式狀態 ─────────────────────────────────────────────────
+const mode = ref('single')
 
-// A 方案
-const salary = ref(45800)
-const bonus = ref(2)
+// 方案 A
+const salary  = ref(45800)
+const bonus   = ref(2)
 const pension = ref(6)
 
-// B 方案 (比較用)
-const salaryB = ref(50000)
-const bonusB = ref(1)
+// 方案 B（比較用）
+const salaryB  = ref(50000)
+const bonusB   = ref(1)
 const pensionB = ref(0)
 
-const raiseRate = ref(3)
+const raiseRate     = ref(3)
 const inflationRate = ref(2)
 
 const donutChartRef = ref(null)
-const lineChartRef = ref(null)
+const lineChartRef  = ref(null)
 let donutInstance = null
-let lineInstance = null
+let lineInstance  = null
 
-// 計算邏輯函式
+// ── 核心計算函式 ────────────────────────────────────────────────
 const calc = (s, b, p) => {
     const sal = new Decimal(s || 0)
     const bon = new Decimal(b || 0)
-    
-    // 1. Get Brackets
-    const laborGradeVal = getGrade(sal.toNumber(), LABOR_GRADES, 45800)
-    const healthGradeVal = getGrade(sal.toNumber(), HEALTH_GRADES, 313000)
-    
-    const laborGrade = new Decimal(laborGradeVal)
-    const healthGrade = new Decimal(healthGradeVal)
 
-    // 2. Calc Costs
-    // Worker Labor: Grade * 12% * 20%
-    const labor = laborGrade.mul(LABOR_RATE).mul(LABOR_SHARE).round().toNumber()
+    // 1. 取投保薪資級距
+    const laborGrade  = new Decimal(getGrade(sal.toNumber(), LABOR_GRADES,  45800))
+    const healthGrade = new Decimal(getGrade(sal.toNumber(), HEALTH_GRADES, 313000))
 
-    // Worker Health: Grade * 5.17% * 30% * (1+0 dependents assumed for basic calc)
+    // 2. 月扣費用
+    const labor  = laborGrade.mul(LABOR_RATE).mul(LABOR_SHARE).round().toNumber()
     const health = healthGrade.mul(HEALTH_RATE).mul(HEALTH_SHARE).round().toNumber()
 
-    // Pension
-    // Pension Table is capped at 150000. Closely aligned with Health grades up to 150k.
-    const pensionBasisVal = getGrade(sal.toNumber(), HEALTH_GRADES, 150000)
-    const pensionBasis = new Decimal(pensionBasisVal)
-    const penS_Real = pensionBasis.mul(p).div(100).round().toNumber()
+    // 3. 勞退自提（上限 150,000）
+    const pensionBasis = new Decimal(getGrade(sal.toNumber(), HEALTH_GRADES, 150000))
+    const penS = pensionBasis.mul(p).div(100).round().toNumber()
 
-    const mNet = sal.minus(labor).minus(health).minus(penS_Real).toNumber()
-    const tSave = new Decimal(penS_Real).mul(12).mul(0.12).round().toNumber() // Assuming 12% tax bracket
-    
-    // Yearly Net: mNet * 12 + sal * b - (labor + health) * b + tSave
-    // Note: Bonus usually deducts labor/health? Actually NO. 
-    // Standard bonus usually doesn't deduct monthly labor/health unless specified. 
-    // However, 2nd Gen Health Insurance applies if bonus > 4 * insured salary.
-    // For simplicity and standard "Yearly Take Home", let's assume bonus is taxed but no labor/health fee unless threshold.
-    // The original logic was: sal * b - (labor + health) * b. This implies labor/health is deducted from bonus too. 
-    // This is generally NOT true for standard year-end bonus in Taiwan (Labor/Health is monthly). 
-    // Only 2nd Gen Health applies. 
-    // Let's stick to original logic for now to avoid changing business logic unless requested, 
-    // BUT the original logic `(labor + health) * b` seems wrong for Taiwan. 
-    // Let's correct it: Year End Bonus usually just has withholding tax (5%) if > 88501, and 2nd Gen Health (2.11%) if > 4*Insured.
-    // To match "Logic Optimization", let's just make the math precise first.
-    // Original: `mNet * 12 + sal * b - (labor + health) * b + tSave`
-    // I will KEEP the original formula structure but use Decimal to ensure it matches previous behavior exactly, just with better precision.
-    
+    // 4. 每月實拿
+    const mNet = sal.minus(labor).minus(health).minus(penS).toNumber()
+
+    // 5. 節稅金額（假設邊際稅率 12%，自提每月省稅）
+    const tSave = new Decimal(penS).mul(12).mul(0.12).round().toNumber()
+
+    // 6. 年薪計算（修正：年終獎金不扣月勞健保費）
+    //    台灣法規：年終為年度獎金，不屬於月薪資，不逐月計算勞健保
+    //    超過 4 倍投保薪資的部分才扣 2.11% 二代健保補充保費
+    const bonusTotal  = sal.mul(bon)
+    const fourTimesInsured = healthGrade.mul(4)
+    const suppHealthBonus = bonusTotal.gt(fourTimesInsured)
+        ? bonusTotal.minus(fourTimesInsured).mul(SUPP_HEALTH_RATE).round()
+        : new Decimal(0)
+
     const yearlyNet = new Decimal(mNet).mul(12)
-        .plus(sal.mul(bon))
-        .minus(new Decimal(labor).plus(health).mul(bon)) // Preserving original logic
+        .plus(bonusTotal)
+        .minus(suppHealthBonus)
         .plus(tSave)
+        .round()
         .toNumber()
 
-    // Employer Cost
-    const lg = laborGrade
-    const hg = healthGrade
-    // Employer Labor: Grade * 12% * 70%
-    const empLabor = lg.mul(LABOR_RATE).mul(0.7).round().toNumber()
-    // Employer Health: Grade * 5.17% * 60% * 1.58
-    const empHealth = hg.mul(HEALTH_RATE).mul(0.6).mul(1.58).round().toNumber()
-    // Employer Pension: Grade * 6%
+    // 7. 雇主成本
+    const empLabor   = laborGrade.mul(LABOR_RATE).mul(0.7).round().toNumber()
+    const empHealth  = healthGrade.mul(HEALTH_RATE).mul(0.6).mul(1.58).round().toNumber() // 眷屬係數 1.58
     const empPension = pensionBasis.mul(0.06).round().toNumber()
+    const empCost    = empLabor + empHealth + empPension
+    const tCost      = sal.plus(empCost).toNumber()
 
-    const empCost = empLabor + empHealth + empPension
-    const tCost = sal.plus(empCost).toNumber()
-
-    return { labor, health, penS: penS_Real, mNet, tSave, yNet: Math.round(yearlyNet), empCost, tCost }
+    return { labor, health, penS, mNet, tSave, yNet: yearlyNet, empCost, tCost }
 }
 
-// A 方案計算
-const res = computed(() => calc(salary.value, bonus.value, pension.value))
-
-// B 方案計算
+// ── Computed ───────────────────────────────────────────────────
+const res  = computed(() => calc(salary.value,  bonus.value,  pension.value))
 const resB = computed(() => calc(salaryB.value, bonusB.value, pensionB.value))
 
-// 綁定回傳值
-const laborIns = computed(() => res.value.labor)
-const healthIns = computed(() => res.value.health)
+const laborIns    = computed(() => res.value.labor)
+const healthIns   = computed(() => res.value.health)
 const pensionSelf = computed(() => res.value.penS)
-const monthlyNet = computed(() => res.value.mNet)
-const taxSave = computed(() => res.value.tSave)
-const yearlyNet = computed(() => res.value.yNet)
+const monthlyNet  = computed(() => res.value.mNet)
+const taxSave     = computed(() => res.value.tSave)
+const yearlyNet   = computed(() => res.value.yNet)
 const employerCost = computed(() => res.value.empCost)
-const totalCost = computed(() => res.value.tCost)
+const totalCost   = computed(() => res.value.tCost)
 
-// B 方案回傳
 const monthlyNetB = computed(() => resB.value.mNet)
-const yearlyNetB = computed(() => resB.value.yNet)
-const laborInsB = computed(() => resB.value.labor)
-const healthInsB = computed(() => resB.value.health)
+const yearlyNetB  = computed(() => resB.value.yNet)
+const laborInsB   = computed(() => resB.value.labor)
+const healthInsB  = computed(() => resB.value.health)
 
-// 5年預測
+// ── 5年預測 ────────────────────────────────────────────────────
 const forecast = computed(() => {
-    const res = []
+    const rows = []
     let s = new Decimal(salary.value || 0)
     let cumInf = new Decimal(1)
     const rr = new Decimal(raiseRate.value).div(100).plus(1)
     const ir = new Decimal(inflationRate.value).div(100).plus(1)
-    
+
     for (let i = 0; i < 5; i++) {
         if (i > 0) s = s.mul(rr).round()
         cumInf = cumInf.mul(ir)
-        
-        // nominal = s * (12 + bonus) * 0.88 (Basic Tax assumption?)
+
+        // 年薪 = (月薪 × 12 + 年終) × (1 - 勞健保率約 12%)
         const nominal = s.mul(new Decimal(12).plus(bonus.value)).mul(0.88).round()
-        const real = nominal.div(cumInf).round()
-        
-        // Growth
-        let growth = '-'
+        const real    = nominal.div(cumInf).round()
+
+        let growth = '—'
         if (i > 0) {
-           const prevReal = new Decimal(res[0].real)
-           const g = real.div(prevReal).minus(1).mul(100).round().toNumber()
-           growth = (g > 0 ? '+' : '') + g + '%'
+            const prevNominal = new Decimal(rows[0].nominal)
+            const g = real.div(prevNominal).minus(1).mul(100).round().toNumber()
+            growth = (g > 0 ? '+' : '') + g + '%'
         }
-        
-        res.push({ nominal: nominal.toNumber(), real: real.toNumber(), growth })
+        rows.push({ nominal: nominal.toNumber(), real: real.toNumber(), growth })
     }
-    return res
+    return rows
 })
 
-// 繪製圖表
+// ── 圖表 ───────────────────────────────────────────────────────
+const CHART_COLORS = {
+    primary: '#3B93F7',
+    red:     '#EF4444',
+    amber:   '#F59E0B',
+    ink:     '#6B6760',
+}
+
 const updateCharts = () => {
-    // Donut Chart
     if (donutInstance) donutInstance.destroy()
     if (donutChartRef.value) {
         donutInstance = new Chart(donutChartRef.value, {
@@ -460,22 +429,31 @@ const updateCharts = () => {
                 labels: ['實拿薪資', '勞保費', '健保費', '勞退自提'],
                 datasets: [{
                     data: [monthlyNet.value, laborIns.value, healthIns.value, pensionSelf.value],
-                    backgroundColor: ['#10b981', '#f43f5e', '#f97316', '#f59e0b'],
-                    borderWidth: 0
+                    backgroundColor: [CHART_COLORS.primary, CHART_COLORS.red, '#F97316', CHART_COLORS.amber],
+                    borderWidth: 2,
+                    borderColor: '#F5F4F0',
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '70%',
+                cutout: '72%',
                 plugins: {
-                    legend: { display: true, position: 'right', labels: { color: '#57534e', font: { size: 11, family: 'Inter' }, usePointStyle: true } }
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#6B6760',
+                            font: { size: 11, family: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif' },
+                            usePointStyle: true,
+                            pointStyleWidth: 8,
+                            padding: 12
+                        }
+                    }
                 }
             }
         })
     }
 
-    // Line Chart
     if (lineInstance) lineInstance.destroy()
     if (lineChartRef.value) {
         lineInstance = new Chart(lineChartRef.value, {
@@ -486,18 +464,22 @@ const updateCharts = () => {
                     {
                         label: '名目年薪',
                         data: forecast.value.map(r => r.nominal),
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                        borderColor: CHART_COLORS.primary,
+                        backgroundColor: 'rgba(59,147,247,0.07)',
                         fill: true,
-                        tension: 0.3
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: CHART_COLORS.primary,
                     },
                     {
                         label: '實質購買力',
                         data: forecast.value.map(r => r.real),
-                        borderColor: '#f59e0b',
-                        borderDash: [5, 5],
+                        borderColor: CHART_COLORS.amber,
+                        borderDash: [4, 4],
                         fill: false,
-                        tension: 0.3
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: CHART_COLORS.amber,
                     }
                 ]
             },
@@ -505,42 +487,52 @@ const updateCharts = () => {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    x: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#78716c' } },
-                    y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#78716c', callback: v => '$' + (v / 10000) + '萬' } }
+                    x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#9B9890', font: { size: 11 } } },
+                    y: {
+                        grid: { color: 'rgba(0,0,0,0.04)' },
+                        ticks: {
+                            color: '#9B9890',
+                            font: { size: 11 },
+                            callback: v => '$' + (v / 10000).toFixed(0) + '萬'
+                        }
+                    }
                 },
                 plugins: {
-                    legend: { display: true, position: 'top', labels: { color: '#57534e', font: { size: 11 } } }
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#6B6760',
+                            font: { size: 11 },
+                            usePointStyle: true,
+                            pointStyleWidth: 8,
+                            padding: 12
+                        }
+                    }
                 }
             }
         })
     }
 }
 
-// Auto-save for Dashboard
-watch(monthlyNet, (newVal) => {
-    if (newVal > 0) {
-        localStorage.setItem('taicalc_salary_net', newVal)
-    } else {
-        localStorage.removeItem('taicalc_salary_net')
-    }
+// ── 儲存 / 持久化 ───────────────────────────────────────────────
+watch(monthlyNet, (v) => {
+    if (v > 0) localStorage.setItem('taicalc_salary_net', v)
+    else       localStorage.removeItem('taicalc_salary_net')
 })
 
 watch([salary, bonus, pension, raiseRate, inflationRate], updateCharts, { deep: true })
-watch(mode, () => {
-    if (mode.value === 'single') setTimeout(updateCharts, 100)
-})
+watch(mode, () => { if (mode.value === 'single') setTimeout(updateCharts, 100) })
 
-// Persistence
 onMounted(() => {
-    const saved = localStorage.getItem('taicalc_salary_inputs')
-    if (saved) {
-        try {
+    try {
+        const saved = localStorage.getItem('taicalc_salary_inputs')
+        if (saved) {
             const data = JSON.parse(saved)
-            if (data.salary) salary.value = data.salary
-            if (data.bonus !== undefined) bonus.value = data.bonus
+            if (data.salary)              salary.value  = data.salary
+            if (data.bonus  !== undefined) bonus.value  = data.bonus
             if (data.pension !== undefined) pension.value = data.pension
-        } catch (e) { }
-    }
+        }
+    } catch (e) {}
     setTimeout(updateCharts, 100)
 })
 

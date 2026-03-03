@@ -1,129 +1,132 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const title = "TaiCalc - 你的財務冒險地圖";
-const description = "告別死板的數字與表格！跟著地圖走，完成你的財務挑戰，把複雜的理財變成一場超好玩的升級遊戲。";
+const title = "TaiCalc 財務計算平台";
+const description = "整合薪資、房貸與退休規劃的財務計算平台。2026 最新費率，所有計算在本地執行，安全隱私。";
+
+const sections = [
+    {
+        id: "01",
+        title: "薪資與權益",
+        desc: "計算實拿薪資、勞健保費率與加班費，確保您的勞動權益不打折。",
+        icon: `<path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>`,
+        tools: [
+            { href: "/tools/salary-calculator", label: "薪資實拿計算", desc: "月薪扣除勞健保後實領多少" },
+            { href: "/tools/insurance-calculator", label: "勞健保計算", desc: "費率級距與眷屬附保明細" },
+            { href: "/tools/overtime-calculator", label: "加班費試算", desc: "平日、休息日、國定假日" },
+            { href: "/tools/delivery-income-calculator", label: "外送收入計算", desc: "跑單淨收入與油費成本" },
+        ]
+    },
+    {
+        id: "02",
+        title: "居住與房產",
+        desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
+        icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+        tools: [
+            { href: "/tools/mortgage-calculator", label: "房貸試算", desc: "新青安、寬限期與提前還款" },
+            { href: "/tools/rent-cost-calculator", label: "租金解析", desc: "租屋押金與真實月支出" },
+            { href: "/tools/electricity-calculator", label: "電費試算", desc: "台電累進費率自動計算" },
+            { href: "/tools/ac-installation-calculator", label: "冷氣評估", desc: "安裝費與回本年限試算" },
+        ]
+    },
+    {
+        id: "03",
+        title: "投資與退休",
+        desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
+        icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+        tools: [
+            { href: "/tools/fire-calculator", label: "FIRE 退休規劃", desc: "複利效應與財務自由倒數" },
+            { href: "/tools/stock-calculator", label: "股票損益試算", desc: "現股、當沖與 ETF 手續費" },
+            { href: "/tools/insurance-assessment", label: "保險效益評估", desc: "儲蓄險 IRR 與壽險需求" },
+            { href: "/tools/credit-card-calculator", label: "信用卡分期", desc: "真實年利率 IRR 計算" },
+        ]
+    },
+    {
+        id: "04",
+        title: "生活工具",
+        desc: "分帳、百分比計算與決策輔助工具，解決日常數字困擾。",
+        icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+        tools: [
+            { href: "/tools/split-calculator", label: "分帳計算", desc: "聚餐旅遊 AA 制輕鬆搞定" },
+            { href: "/tools/percentage-calculator", label: "百分比計算", desc: "折扣、漲幅四種模式" },
+            { href: "/tools/oracle", label: "易經決策", desc: "不確定性分析與決策輔助" },
+            { href: "/lifeos", label: "LifeOS Audit", desc: "生活系統健康度評估" },
+        ]
+    },
+];
 ---
 
 <Layout title={title} description={description}>
-    <main class="relative pt-40 pb-40">
-        <!-- 背景路徑 -->
-        <div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
-            <svg class="w-full h-full" fill="none" viewBox="0 0 1440 3000" xmlns="http://www.w3.org/2000/svg">
-                <path class="path-line stroke-primary" d="M200 100 Q 800 300 400 700 T 1000 1200 T 300 1800 T 1100 2400" stroke-linecap="round" stroke-width="4"></path>
-            </svg>
-        </div>
+    <main class="py-16 md:py-24">
 
-        <!-- Hero 區域 -->
-        <section class="relative z-10 max-w-5xl mx-auto px-6 text-center mb-32">
-            <div class="inline-block bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 px-6 py-2 rounded-full font-bold text-sm mb-6 rotate-[-1deg] border-2 border-amber-200">
-                新任務解鎖：2026 財務地圖
+        <!-- Hero -->
+        <header class="mb-20 max-w-xl">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="w-2 h-2 bg-azure rounded-full"></span>
+                <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">2026 最新費率</span>
             </div>
-            <h1 class="text-6xl md:text-8xl font-black text-stone-900 mb-8 leading-tight" style="font-family: 'Bubblegum Sans', 'Noto Sans TC', cursive;">
-                準備好開始你的<br/>
-                <span class="text-primary underline decoration-amber-400 decoration-wavy decoration-4">金錢大冒險</span>嗎？
+            <h1 class="text-4xl md:text-5xl font-normal text-ink-700 tracking-tight leading-tight mb-6">
+                讓每一分錢<br>都算清楚
             </h1>
-            <p class="text-xl md:text-2xl text-stone-600 max-w-2xl mx-auto leading-relaxed font-medium">
-                告別死板的數字與表格！跟著地圖走，完成你的財務挑戰，把複雜的理財變成一場超好玩的升級遊戲。
+            <p class="text-base text-ink-400 leading-relaxed max-w-md">
+                從薪資到退休，整合台灣最常用的財務計算工具。<br>
+                所有計算在本地執行，不需要帳號，完全免費。
             </p>
-        </section>
+        </header>
 
-        <!-- 任務卡片區域 -->
-        <div class="relative z-10 max-w-7xl mx-auto px-6 space-y-48 lg:space-y-0">
-            
-            <!-- Quest 01 - 薪資權益森林 -->
-            <div class="lg:flex lg:justify-start lg:items-center relative">
-                <div class="floating modern-card bg-soft-blue p-10 rounded-[3rem] w-full lg:w-[450px] relative z-20 group cursor-pointer" style="--rotate: 0deg;">
-                    <div class="circular-badge bg-gradient-to-br from-accent-blue to-blue-600 -top-12 -right-12 group-hover:scale-110">
-                        <span class="material-symbols-outlined text-white text-5xl">payments</span>
+        <!-- Tool Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-14">
+            {sections.map((section) => (
+                <section>
+                    <!-- Section header -->
+                    <div class="border-t border-paper-300 pt-5 mb-6">
+                        <div class="flex items-start justify-between mb-3">
+                            <span class="text-[10px] font-medium text-ink-400 uppercase tracking-widest">Section {section.id}</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-paper-200 flex items-center justify-center flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500" set:html={section.icon}></svg>
+                            </div>
+                            <h2 class="text-xl font-medium text-ink-700">{section.title}</h2>
+                        </div>
+                        <p class="text-sm text-ink-400 leading-relaxed">{section.desc}</p>
                     </div>
-                    <span class="text-xs font-bold text-accent-blue tracking-widest uppercase">Quest 01</span>
-                    <h2 class="text-4xl font-black text-stone-900 mt-2 mb-4">薪資權益森林</h2>
-                    <p class="text-lg text-stone-600 mb-6 font-medium leading-relaxed">
-                        穿越滿是合約與勞基法的森林，守護每一塊屬於你的戰利品！
-                    </p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="/tools/salary-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-blue-100">💰 薪資實拿</a>
-                        <a href="/tools/insurance-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-blue-100">🛡️ 勞健保</a>
-                        <a href="/tools/overtime-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-blue-100">⚡ 加班費</a>
-                        <a href="/tools/delivery-income-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-blue-100">🛵 外送計算</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Quest 02 - 房產築夢城鎮 -->
-            <div class="lg:flex lg:justify-end lg:items-center relative lg:-mt-20">
-                <div class="floating modern-card bg-soft-emerald p-10 rounded-[3rem] w-full lg:w-[480px] relative z-20 group cursor-pointer" style="--rotate: -1deg;">
-                    <div class="circular-badge bg-gradient-to-br from-accent-emerald to-green-600 -top-12 -left-12 group-hover:scale-110">
-                        <span class="material-symbols-outlined text-white text-5xl">home_work</span>
-                    </div>
-                    <span class="text-xs font-bold text-accent-emerald tracking-widest uppercase">Quest 02</span>
-                    <h2 class="text-4xl font-black text-stone-900 mt-2 mb-4">房產築夢城鎮</h2>
-                    <p class="text-lg text-stone-600 mb-6 font-medium leading-relaxed">
-                        想蓋自己的城堡？先來這裏算算房貸防護罩跟電費怪獸！
-                    </p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="/tools/mortgage-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-emerald-100">🏠 房貸試算</a>
-                        <a href="/tools/rent-cost-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-emerald-100">🔑 租金解析</a>
-                        <a href="/tools/electricity-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-emerald-100">💡 電費攻略</a>
-                        <a href="/tools/ac-installation-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-emerald-100">❄️ 冷氣評估</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quest 03 - 財富自由荒野 -->
-            <div class="lg:flex lg:justify-center lg:items-center relative lg:-mt-10">
-                <div class="floating modern-card bg-soft-amber p-10 rounded-[3rem] w-full lg:w-[500px] relative z-20 group cursor-pointer" style="--rotate: 0deg;">
-                    <div class="circular-badge bg-gradient-to-br from-accent-amber to-orange-600 -bottom-12 -right-12 group-hover:scale-110">
-                        <span class="material-symbols-outlined text-white text-5xl">account_balance_wallet</span>
-                    </div>
-                    <span class="text-xs font-bold text-accent-amber tracking-widest uppercase">Quest 03</span>
-                    <h2 class="text-4xl font-black text-stone-900 mt-2 mb-4">財富自由荒野</h2>
-                    <p class="text-lg text-stone-600 mb-6 font-medium leading-relaxed">
-                        挑戰 4% 法則的高塔，駕馭股票波動的浪潮，通往 FIRE 終點！
-                    </p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="/tools/fire-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-amber-100">🔥 FIRE 退休</a>
-                        <a href="/tools/stock-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-amber-100">📈 股票損益</a>
-                        <a href="/tools/insurance-assessment.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-amber-100">🛡️ 保險評估</a>
-                        <a href="/tools/credit-card-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-amber-100">💳 分期計算</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quest 04 - 生存工具寶庫 -->
-            <div class="lg:flex lg:justify-start lg:items-center relative lg:pt-32">
-                <div class="floating modern-card bg-soft-purple p-10 rounded-[3rem] w-full lg:w-[480px] relative z-20 group cursor-pointer" style="--rotate: 2deg;">
-                    <div class="circular-badge bg-gradient-to-br from-accent-purple to-purple-600 -top-12 -right-8 group-hover:scale-110">
-                        <span class="material-symbols-outlined text-white text-5xl">construction</span>
-                    </div>
-                    <span class="text-xs font-bold text-accent-purple tracking-widest uppercase">Quest 04</span>
-                    <h2 class="text-4xl font-black text-stone-900 mt-2 mb-4">生存工具寶庫</h2>
-                    <p class="text-lg text-stone-600 mb-6 font-medium leading-relaxed">
-                        解決日常生活中的各種難題，讓你的生存技能點全開！
-                    </p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="/tools/split-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-purple-100">🤝 AA 分帳</a>
-                        <a href="/tools/percentage-calculator.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-purple-100">📊 % 數計算</a>
-                        <a href="/tools/oracle.html" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-purple-100">☯️ 易經決策</a>
-                        <a href="/lifeos" class="bg-white/70 backdrop-blur-sm p-3 rounded-2xl text-sm font-bold hover:bg-white transition-colors border border-purple-100">👁️ LifeOS Audit</a>
-                    </div>
-                </div>
-            </div>
+                    <!-- Tool links -->
+                    <ul class="space-y-2">
+                        {section.tools.map((tool) => (
+                            <li>
+                                <a href={tool.href}
+                                   class="flex items-center justify-between py-3 px-4 bg-paper-200/40 rounded-xl hover:bg-paper-200 hover:border-paper-300 border border-transparent transition-all duration-150 group">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors">{tool.label}</span>
+                                        <span class="text-xs text-ink-400 mt-0.5">{tool.desc}</span>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-ink-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-3">
+                                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            ))}
         </div>
 
-        <!-- 裝飾性圖標 -->
-        <div class="absolute top-[20%] left-[5%] opacity-20 select-none animate-bounce">
-            <span class="material-symbols-outlined text-6xl text-accent-blue">local_atm</span>
-        </div>
-        <div class="absolute top-[45%] right-[5%] opacity-20 select-none animate-pulse">
-            <span class="material-symbols-outlined text-6xl text-accent-amber">trending_up</span>
-        </div>
-        <div class="absolute bottom-[15%] left-[10%] opacity-20 select-none floating">
-            <span class="material-symbols-outlined text-6xl text-accent-emerald">auto_awesome</span>
+        <!-- Bottom trust strip -->
+        <div class="mt-20 pt-8 border-t border-paper-300 flex flex-wrap items-center gap-6">
+            <div class="flex items-center gap-2 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                本地計算，資料不上傳
+            </div>
+            <div class="flex items-center gap-2 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                2026 最新法規費率
+            </div>
+            <div class="flex items-center gap-2 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                免費，無需帳號
+            </div>
         </div>
     </main>
 </Layout>
-
-<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />

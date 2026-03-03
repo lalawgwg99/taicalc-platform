@@ -1,235 +1,185 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-
+/* ─── Base Reset ─────────────────────────────────────────────── */
 * {
-    font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: #FAFAF9;
-    /* stone-50 */
-    color: #44403C;
-    /* stone-700 */
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif;
+    @apply bg-paper-100 text-ink-700 antialiased;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
 }
 
-/* Card Styles */
-.card {
-    background: #FFFFFF;
-    border: 1px solid #E7E5E4;
-    /* stone-200 */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* ─── Component Layer ─────────────────────────────────────────── */
+@layer components {
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Modern Card Styles - 遊戲化路徑風格 */
-.modern-card {
-    border: 4px solid #18181b;
-    box-shadow: 8px 8px 0px #18181b;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.modern-card:hover {
-    transform: translateY(-4px) rotate(1deg);
-    box-shadow: 12px 12px 0px #18181b;
-}
-
-/* 浮動動畫 */
-.floating {
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(var(--rotate, 0deg));
+    /* Surface card — replaces scattered `bg-white/60 backdrop-blur-xl` */
+    .card-surface {
+        @apply bg-white border border-paper-300 rounded-2xl shadow-card;
     }
 
-    50% {
-        transform: translateY(-15px) rotate(calc(var(--rotate, 0deg) + 2deg));
+    .card-surface-hover {
+        @apply card-surface hover:shadow-card-hover hover:border-paper-400 transition-all duration-200;
+    }
+
+    /* Input fields — unified cross all calculators */
+    .input-clean {
+        @apply w-full bg-paper-200 border border-transparent text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-300 focus:outline-none focus:bg-white focus:border-azure focus:shadow-input;
+        font-weight: 400;
+    }
+
+    .input-clean-sm {
+        @apply input-clean py-2 text-sm;
+    }
+
+    /* Primary Button */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-normal px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-600 active:scale-[0.98];
+    }
+
+    .btn-azure {
+        @apply inline-flex items-center justify-center gap-2 bg-azure text-white font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-azure-600 active:scale-[0.98] shadow-sm;
+    }
+
+    /* Ghost Button */
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-500 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
+    }
+
+    /* Segmented Control (tab selector) */
+    .seg-control {
+        @apply flex bg-paper-200 rounded-xl p-1;
+    }
+
+    .seg-btn {
+        @apply flex-1 py-2 px-3 text-sm font-medium text-ink-400 rounded-lg transition-all duration-200 cursor-pointer text-center;
+    }
+
+    .seg-btn-active {
+        @apply bg-white text-ink-700 shadow-card;
+    }
+
+    /* Stat display */
+    .stat-label {
+        @apply text-xs text-ink-400 uppercase tracking-wider mb-1;
+    }
+
+    .stat-value-lg {
+        @apply text-4xl font-semibold text-ink-700 tracking-tight tabular-nums;
+    }
+
+    .stat-value-md {
+        @apply text-2xl font-semibold text-ink-700 tabular-nums;
+    }
+
+    .stat-value-sm {
+        @apply text-lg font-medium text-ink-600 tabular-nums;
+    }
+
+    /* Signal badges */
+    .badge-positive {
+        @apply text-xs font-medium text-signal-green bg-green-50 border border-green-100 px-2 py-0.5 rounded-full;
+    }
+
+    .badge-negative {
+        @apply text-xs font-medium text-signal-red bg-red-50 border border-red-100 px-2 py-0.5 rounded-full;
+    }
+
+    .badge-neutral {
+        @apply text-xs font-medium text-ink-500 bg-paper-200 px-2 py-0.5 rounded-full;
+    }
+
+    /* Section divider */
+    .divider {
+        @apply w-full h-px bg-paper-300 my-6;
+    }
+
+    /* Info / Note box */
+    .note-box {
+        @apply text-xs text-ink-400 bg-paper-200/60 rounded-lg px-4 py-3 leading-relaxed;
     }
 }
 
-/* 圓形圖標徽章 */
-.circular-badge {
-    width: 112px;
-    height: 112px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid white;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-    position: absolute;
-}
+/* ─── Utilities ───────────────────────────────────────────────── */
+@layer utilities {
+    .tabular-nums {
+        font-variant-numeric: tabular-nums;
+    }
 
-.circular-badge:hover {
-    transform: scale(1.1);
-}
-
-/* SVG 路徑動畫 */
-.path-line {
-    stroke-dasharray: 10, 10;
-    animation: dash 20s linear infinite;
-}
-
-@keyframes dash {
-    to {
-        stroke-dashoffset: -1000;
+    /* For Chart.js containers */
+    .chart-wrap {
+        position: relative;
+        width: 100%;
     }
 }
 
-/* Navbar Styles */
-.nav-glass {
-    background-color: rgba(255, 255, 255, 0.8);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(231, 229, 228, 0.5);
-    /* stone-200 */
+/* ─── Prose Overrides ─────────────────────────────────────────── */
+.prose {
+    @apply text-ink-500;
 }
 
-.nav-link {
-    color: #78716C;
-    /* stone-500 */
-    transition: color 0.2s;
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+    @apply text-ink-700 font-semibold tracking-tight;
 }
 
-.nav-link:hover {
-    color: #1C1917;
-    /* stone-900 */
+.prose a {
+    @apply text-azure no-underline hover:underline;
 }
 
-.nav-link.active {
-    color: #059669;
-    /* emerald-600 */
-    font-weight: 500;
+.prose blockquote {
+    @apply border-l-2 border-paper-300 pl-4 text-ink-500 not-italic;
 }
 
-/* Input Styles */
-.input-label {
-    display: block;
-    color: #57534E;
-    /* stone-600 */
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.input-field {
-    width: 100%;
-    background-color: #F5F5F4;
-    /* stone-100 */
-    border: 1px solid transparent;
-    color: #1C1917;
-    /* stone-900 */
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    transition: all 0.2s;
-}
-
-.input-field:focus {
-    background-color: #FFFFFF;
-    border-color: #10B981;
-    /* emerald-500 */
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
-}
-
-/* Button Styles */
-.btn-primary {
-    background-color: #059669;
-    /* emerald-600 */
-    color: white;
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2);
-}
-
-.btn-primary:hover {
-    background-color: #047857;
-    /* emerald-700 */
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-/* Results Section */
-.result-card {
-    background-color: #FDFBF7;
-    /* Warm Rice Paper */
-    border: 1px solid #E7E5E4;
-    border-radius: 1rem;
-    padding: 1.5rem;
-}
-
-[v-cloak] {
-    display: none;
-}
-
-/* Additional Styles from Index */
-.icon-box {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-}
-
-.card:hover .icon-box {
-    transform: scale(1.1);
-}
-
-.hero-gradient {
-    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Mobile Menu */
-#mobile-menu {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-#mobile-menu.hidden {
-    display: none;
-}
-
+/* ─── Animations ──────────────────────────────────────────────── */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translate3d(0, 20px, 0);
+        transform: translateY(8px);
     }
 
     to {
         opacity: 1;
-        transform: translate3d(0, 0, 0);
+        transform: translateY(0);
     }
 }
 
 .animate-fade-in-up {
-    animation-name: fadeInUp;
-    animation-duration: 0.5s;
-    animation-fill-mode: both;
+    animation: fadeInUp 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-paper-300 rounded-full;
 }
