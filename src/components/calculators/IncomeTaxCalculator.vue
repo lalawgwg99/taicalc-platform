@@ -415,4 +415,22 @@ const copyResult = async () => {
 
 // 若列舉比標準高，自動切換建議提示
 watch(deductionType, () => {})
+
+// ── 從 LocalStorage 抓取全站通用輸入 (黏著度體驗) ───────────────────
+import { onMounted } from 'vue'
+onMounted(() => {
+  try {
+    const saved = localStorage.getItem('taicalc_salary_inputs')
+    if (saved) {
+      const data = JSON.parse(saved)
+      if (data.salary) {
+        // 從薪資計算器帶入年薪：月薪 * (12 + (年終或0))
+        const s = data.salary
+        const b = data.bonus !== undefined ? data.bonus : 0
+        salaryIncome.value = s * (12 + b)
+      }
+    }
+  } catch (e) {}
+})
+
 </script>

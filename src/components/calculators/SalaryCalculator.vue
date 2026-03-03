@@ -73,10 +73,46 @@
                             <span class="text-2xl text-ink-400 font-light mr-1">$</span>{{ monthlyNet.toLocaleString() }}
                         </p>
                     </div>
-                    <div class="text-right">
-                        <p class="stat-label">年度總額</p>
-                        <p class="stat-value-md text-ink-500">$ {{ yearlyNet.toLocaleString() }}</p>
-                        <p class="text-xs text-ink-400 mt-0.5">≈ {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="text-right">
+                            <p class="stat-label">年度總額</p>
+                            <p class="stat-value-md text-ink-500">$ {{ yearlyNet.toLocaleString() }}</p>
+                            <p class="text-xs text-ink-400 mt-0.5">≈ {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
+                        </div>
+                        <button @click="shareResult"
+                            class="btn-ghost text-xs flex items-center gap-1.5 px-2 py-1 -mr-2 text-azure hover:bg-azure/10 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                            </svg>
+                            {{ copied ? '已複製 ✓' : '分享結果' }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 薪資百分位 (PR值) -->
+                <div class="mt-1 mb-6 p-4 bg-gradient-to-br from-azure-50 to-blue-50 rounded-xl border border-azure-100 flex items-center justify-between relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 opacity-5 pointer-events-none">
+                        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2z"/></svg>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <p class="text-xs text-ink-500 font-medium">台灣同齡 (25-34歲) 薪資排名</p>
+                            <div class="group relative cursor-help">
+                                <svg class="text-ink-300 w-3 h-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                                <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-ink-800 text-white text-[10px] rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">本推估基於行政院主計總處 112 年受僱員工薪資調查進行常態分佈精算。</div>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-sm font-medium text-ink-600">前</span>
+                            <span class="text-3xl font-bold tracking-tight text-azure">{{ prValue }}</span>
+                            <span class="text-sm font-medium text-ink-600">%</span>
+                        </div>
+                    </div>
+                    <div class="text-right relative z-10">
+                        <p class="text-[10px] text-ink-400 mb-0.5">大約贏過</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums">{{ prBeatenCount }} 萬人</p>
                     </div>
                 </div>
 
@@ -237,6 +273,47 @@
             </div>
         </div>
 
+        <!-- 回本分析分析 (僅比較模式) -->
+        <div v-if="mode === 'compare'" class="card-surface p-5 bg-gradient-to-br from-white to-amber-50/30">
+            <h3 class="text-sm font-medium text-ink-600 mb-4 flex items-center gap-2">
+                <span class="text-base">🚀</span> 換工作回本分析
+            </h3>
+            
+            <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
+                <label class="block text-xs font-medium text-ink-400 mb-1.5">轉職沉沒成本 (NT$)</label>
+                <input type="number" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
+                <p class="text-[10px] text-ink-400 mt-1.5">例如：放棄的未領年終、搬家租屋違約金、待業期空白成本</p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center p-4 rounded-xl text-center border"
+                 :class="breakEvenMonths > 0 ? 'bg-amber-50/50 border-amber-100' : 'bg-paper-100/50 border-paper-200'">
+                <template v-if="monthlyNetB <= monthlyNet && yearlyNetB <= yearlyNet">
+                    <p class="text-sm font-medium text-ink-600">新 Offer 收入未達現職水準</p>
+                    <p class="text-xs text-ink-400 mt-1">無法計算回本時間，請謹慎評估發展性</p>
+                </template>
+                <template v-else-if="breakEvenMonths === 0 && relocationCost === 0">
+                    <p class="text-sm font-medium text-green-600">跳槽立刻加薪無痛上壘！</p>
+                    <p class="text-xs text-ink-400 mt-1">每月淨賺多 $ {{ Math.max(0, monthlyNetB - monthlyNet).toLocaleString() }}</p>
+                </template>
+                <template v-else-if="breakEvenMonths > 0">
+                    <p class="text-xs text-ink-500 mb-1">為了彌補沉沒成本，預計需要</p>
+                    <p class="text-3xl font-bold text-amber-600 my-1">{{ breakEvenMonths }} <span class="text-sm font-medium text-ink-500">個月</span></p>
+                    <p class="text-xs text-ink-400">才能透過新工作的薪資差距回本</p>
+                </template>
+                <template v-else>
+                    <p class="text-sm font-medium text-green-600">僅靠年薪差距即可首年回本！</p>
+                </template>
+            </div>
+            
+            <!-- 3 年淨利基差 -->
+            <div v-if="threeYearsNetGap" class="mt-4 flex justify-between items-center text-xs px-1">
+                <span class="text-ink-400">3 年後累計財富差距：</span>
+                <span class="font-semibold tabular-nums" :class="threeYearsNetGap > 0 ? 'text-azure' : 'text-red-500'">
+                    {{ threeYearsNetGap > 0 ? '+' : '' }}$ {{ threeYearsNetGap.toLocaleString() }}
+                </span>
+            </div>
+        </div>
+
         <!-- 費率說明 -->
         <div class="note-box space-y-2">
             <p class="font-medium text-ink-500">📌 2026 費率依據</p>
@@ -312,6 +389,9 @@ const pensionB = ref(0)
 
 const raiseRate     = ref(3)
 const inflationRate = ref(2)
+
+const relocationCost = ref(0)
+const copied = ref(false)
 
 const donutChartRef = ref(null)
 const lineChartRef  = ref(null)
@@ -411,6 +491,81 @@ const forecast = computed(() => {
     }
     return rows
 })
+
+// ── 薪資排名與洞察 (主計處公開數據估算) ─────────────────────────────────
+// 主計處 25-34 歲受僱者月薪概況：PR25約3.2萬、PR50約4.1萬、PR75約5.4萬、PR90約7.2萬
+const prValue = computed(() => {
+    const s = salary.value || 0
+    let p = 1
+    if (s < 28000) p = 10 + ((s-27470)/530) * 10
+    else if (s < 32000) p = 20 + ((s-28000)/4000) * 5
+    else if (s < 41000) p = 25 + ((s-32000)/9000) * 25
+    else if (s < 54000) p = 50 + ((s-41000)/13000) * 25
+    else if (s < 72000) p = 75 + ((s-54000)/18000) * 15
+    else if (s < 90000) p = 90 + ((s-72000)/18000) * 5
+    else if (s < 120000) p = 95 + ((s-90000)/30000) * 4
+    else p = 99
+    
+    // 轉換為排名：前 {p}% (也就是 100 - 百分位)
+    return Math.max(1, Math.min(99, Math.round(100 - p)))
+})
+
+// 主計處數據：25-34歲受僱員工約 230 萬人
+const prBeatenCount = computed(() => {
+    const beatenPercent = 100 - prValue.value
+    return ((beatenPercent / 100) * 230).toFixed(1)
+})
+
+// ── 回本分析 ──────────────────────────────────────────────────
+const breakEvenMonths = computed(() => {
+    const monthlyGap = monthlyNetB.value - monthlyNet.value
+    const yearlyGap  = yearlyNetB.value - yearlyNet.value
+    
+    // 如果連年薪都不如現職，那就永遠不會回本
+    if (yearlyGap <= 0 && monthlyGap <= 0) return -1
+    
+    // 如果單月薪水變少，但年薪變高，表示靠年終回血，以年來計算更準確
+    if (monthlyGap <= 0 && yearlyGap > 0) {
+        if (relocationCost.value <= yearlyGap) return 12 // 首年發年終時回本
+        return Math.ceil(relocationCost.value / (yearlyGap/12))
+    }
+    
+    // 如果月薪變高，單靠月薪差幾個月回本
+    if (monthlyGap > 0) {
+        const months = Math.ceil(relocationCost.value / monthlyGap)
+        // 防呆，如果回本期過長超過 5 年
+        if (months > 60) return 60
+        return months
+    }
+    return 0
+})
+
+const threeYearsNetGap = computed(() => {
+     // 新方案 3 年總拿到的錢 - 原方案 3 年總拿到的 - 轉職成本
+     return (yearlyNetB.value * 3) - (yearlyNet.value * 3) - (relocationCost.value || 0)
+})
+
+// ── 分享卡片 ──────────────────────────────────────────────────
+const shareResult = async () => {
+    const title = 'TaiCalc 薪資試算分析'
+    const text = `🎯 \n\n💰 名目月薪：$${(salary.value || 0).toLocaleString()}\n✨ 每月實拿：$${monthlyNet.value.toLocaleString()}\n🎉 年薪估算：$${yearlyNet.value.toLocaleString()}\n\n🏆 贏過了全台同齡（25-34歲）中 ${prValue.value}% 受僱者！\n（約嬴過 ${prBeatenCount.value} 萬人）\n\n👇 來算算你的隱藏薪資落點`
+    const url = 'https://taicalc.com/tools/salary-calculator'
+    
+    // 優先使用 Native Share API (手機使用極佳體驗)
+    if (navigator.share) {
+        try {
+            await navigator.share({ title, text, url })
+            return
+        } catch (e) { console.log('分享取消或失敗。') }
+    }
+    
+    // Fallback 到剪貼簿複製
+    try {
+        await navigator.clipboard.writeText(`${title}\n${text}\n${url}`)
+        copied.value = true
+        setTimeout(() => copied.value = false, 2500)
+    } catch {}
+}
 
 // ── 圖表 ───────────────────────────────────────────────────────
 const CHART_COLORS = {
@@ -531,12 +686,13 @@ onMounted(() => {
             if (data.salary)              salary.value  = data.salary
             if (data.bonus  !== undefined) bonus.value  = data.bonus
             if (data.pension !== undefined) pension.value = data.pension
+            if (data.relocationCost !== undefined) relocationCost.value = data.relocationCost
         }
     } catch (e) {}
     setTimeout(updateCharts, 100)
 })
 
-watch([salary, bonus, pension], ([s, b, p]) => {
-    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p }))
+watch([salary, bonus, pension, relocationCost], ([s, b, p, r]) => {
+    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p, relocationCost: r }))
 })
 </script>
