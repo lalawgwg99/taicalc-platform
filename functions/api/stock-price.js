@@ -17,7 +17,10 @@ function jsonResponse(data, status = 200, extraHeaders = {}) {
 async function fetchTWSE(exchange, code) {
     const url = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=${exchange}_${code}.tw&json=1&delay=0`;
     const res = await fetch(url, {
-        headers: { 'Referer': 'https://mis.twse.com.tw/' },
+        headers: {
+            'Referer': 'https://mis.twse.com.tw/',
+            'User-Agent': 'Mozilla/5.0 (compatible; TaiCalc/1.0)',
+        },
     });
     if (!res.ok) return null;
     const data = await res.json();

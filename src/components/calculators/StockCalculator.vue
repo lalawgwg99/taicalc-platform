@@ -98,7 +98,7 @@
           <span class="text-xl font-bold tabular-nums text-stone-800">${{ stockResult.price.toFixed(2) }}</span>
           <span
             class="text-sm font-medium tabular-nums"
-            :class="stockResult.change >= 0 ? 'text-green-600' : 'text-red-500'"
+            :class="stockResult.change >= 0 ? 'text-red-500' : 'text-green-600'"
           >
             {{ stockResult.change >= 0 ? '▲' : '▼' }}
             {{ Math.abs(stockResult.change).toFixed(2) }}
