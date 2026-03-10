@@ -47,9 +47,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 		<title>{title}</title>
 
-        <!-- Material Symbols — always load, not gated behind GA -->
+        <!-- Fonts — Material Symbols + Noto Serif TC (hero display) -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet" />
 
         <!-- Google Analytics (GA4) -->
         { import.meta.env.PUBLIC_GA_ID && (
@@ -82,5 +83,146 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                 { !hideFooter && <div class="max-w-6xl mx-auto px-4 md:px-6 w-full"><Footer /></div> }
             </div>
         )}
+
+    <!-- ── 浮動 AI 助理 (FAB) ─────────────────────────────────────── -->
+    <div id="taicalc-fab" class="fixed bottom-6 right-5 z-40 flex flex-col items-end gap-2">
+
+        <!-- 對話面板 (在按鈕上方展開) -->
+        <div id="fab-panel" class="hidden w-80 rounded-2xl overflow-hidden shadow-card-hover border border-paper-300 animate-fade-in-up">
+
+            <!-- 標題列 -->
+            <div class="flex items-center justify-between px-4 py-3 bg-ink-700">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">💡</span>
+                    <span class="text-sm font-medium text-paper-50">TaiCalc AI 助理</span>
+                    <span class="text-[10px] text-ink-300 bg-ink-600 px-1.5 py-0.5 rounded-full">算盤</span>
+                </div>
+                <button id="fab-close" aria-label="關閉"
+                    class="text-paper-300 hover:text-paper-50 transition-colors text-xl leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-ink-600">
+                    ×
+                </button>
+            </div>
+
+            <!-- 訊息區 -->
+            <div id="fab-messages" class="px-3 py-3 space-y-2 max-h-56 overflow-y-auto bg-paper-100 no-scrollbar">
+                <div class="bg-azure-50 rounded-xl px-3 py-2 text-xs text-ink-600 mr-6 leading-relaxed">
+                    👋 你好！我是算盤，TaiCalc 的 AI 助理。<br>有任何薪資、房貸或退休問題，直接問我！
+                </div>
+            </div>
+
+            <!-- 輸入列 -->
+            <div class="px-3 py-3 bg-white border-t border-paper-300 flex gap-2">
+                <input id="fab-input" type="text"
+                    placeholder="例：月薪 5 萬實拿多少？"
+                    class="flex-1 text-xs bg-paper-200 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-300
+                           focus:outline-none focus:bg-white focus:ring-1 focus:ring-azure transition-all" />
+                <button id="fab-send"
+                    class="bg-ink-700 text-paper-50 rounded-lg px-3 py-2 text-xs font-medium
+                           hover:bg-ink-600 transition-colors disabled:opacity-40">
+                    送出
+                </button>
+            </div>
+
+            <!-- 免責標注 -->
+            <div class="px-3 pb-2.5 bg-white">
+                <p class="text-[10px] text-ink-400">由 Gemini AI 驅動 · 僅供參考，不構成投資建議</p>
+            </div>
+        </div>
+
+        <!-- FAB 主按鈕 -->
+        <button id="fab-toggle"
+            class="flex items-center gap-2 bg-ink-700 text-paper-50 pl-3.5 pr-4 py-2.5 rounded-full
+                   shadow-lg hover:bg-ink-600 active:scale-95 transition-all duration-150 text-sm font-medium">
+            <svg id="fab-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span id="fab-label">AI 幫我算</span>
+        </button>
+    </div>
+
+    <script>
+    // ── TaiCalc 浮動 AI 助理 ─────────────────────────────────────────
+    (function () {
+        const fab      = document.getElementById('taicalc-fab');
+        const toggle   = document.getElementById('fab-toggle');
+        const panel    = document.getElementById('fab-panel');
+        const closeBtn = document.getElementById('fab-close');
+        const input    = document.getElementById('fab-input') as HTMLInputElement | null;
+        const sendBtn  = document.getElementById('fab-send') as HTMLButtonElement | null;
+        const msgs     = document.getElementById('fab-messages');
+        if (!toggle || !panel) return;
+
+        const openPanel = () => {
+            panel.classList.remove('hidden');
+            input?.focus();
+        };
+        const closePanel = () => panel.classList.add('hidden');
+
+        toggle.addEventListener('click', () =>
+            panel.classList.contains('hidden') ? openPanel() : closePanel()
+        );
+        closeBtn?.addEventListener('click', closePanel);
+
+        // 點外部關閉
+        document.addEventListener('click', (e) => {
+            if (!fab?.contains(e.target as Node)) closePanel();
+        });
+
+        const addMsg = (role: 'user' | 'ai', text: string) => {
+            const d = document.createElement('div');
+            d.className = role === 'user'
+                ? 'bg-paper-200 rounded-xl px-3 py-2 text-xs text-ink-600 ml-6 leading-relaxed'
+                : 'bg-azure-50 rounded-xl px-3 py-2 text-xs text-ink-600 mr-6 leading-relaxed';
+            d.textContent = text;
+            msgs?.appendChild(d);
+            msgs?.scrollTo({ top: msgs.scrollHeight, behavior: 'smooth' });
+            return d;
+        };
+
+        let history: { role: string; content: string }[] = [];
+
+        const send = async () => {
+            const q = input?.value.trim();
+            if (!q || sendBtn?.disabled) return;
+
+            addMsg('user', q);
+            history.push({ role: 'user', content: q });
+            if (input) input.value = '';
+            if (sendBtn) sendBtn.disabled = true;
+
+            const thinking = addMsg('ai', '💭 思考中…');
+            thinking.classList.add('animate-pulse');
+
+            try {
+                const res = await fetch('/api/taicalc-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        history: history.slice(-6),
+                        userQuery: q,
+                    }),
+                });
+                thinking.remove();
+                const data = res.ok ? await res.json() : null;
+                const reply = data?.text ?? '🔌 服務暫時無法使用，請稍後再試。';
+                addMsg('ai', reply);
+                history.push({ role: 'assistant', content: reply });
+            } catch (_) {
+                thinking.remove();
+                addMsg('ai', '🌐 連線失敗，請確認網路狀態。');
+            }
+
+            if (sendBtn) sendBtn.disabled = false;
+            input?.focus();
+        };
+
+        sendBtn?.addEventListener('click', send);
+        input?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+        });
+    })();
+    </script>
+
 	</body>
 </html>

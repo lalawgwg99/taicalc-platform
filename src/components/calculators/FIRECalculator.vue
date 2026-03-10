@@ -42,7 +42,20 @@
         </label>
         <input type="range" v-model.number="annualReturn" min="1" max="15" step="0.5"
           class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-azure" />
-        <p class="text-[10px] text-ink-400 mt-1">保守 4–5%，積極 7–8%（扣除通膨後）</p>
+        <!-- ETF 歷史報酬快速帶入 -->
+        <div class="flex flex-wrap gap-1.5 mt-2 items-center">
+          <span class="text-[10px] text-ink-400">參考帶入：</span>
+          <button v-for="p in returnPresets" :key="p.symbol"
+                  @click="annualReturn = p.rate"
+                  :title="p.note"
+                  :class="['text-[11px] px-2.5 py-1 rounded-full border transition-all duration-150 cursor-pointer',
+                           annualReturn === p.rate
+                             ? 'bg-azure text-white border-azure'
+                             : 'bg-paper-200 text-ink-600 border-transparent hover:border-azure-200 hover:text-azure']">
+            {{ p.label }} {{ p.rate }}%
+          </button>
+        </div>
+        <p class="text-[10px] text-ink-400 mt-1.5">保守 4–5%，積極 7–8%（扣除通膨後）</p>
       </div>
 
       <!-- 進階設定 -->
@@ -64,6 +77,18 @@
             </label>
             <input type="range" v-model.number="inflationRate" min="0" max="10" step="0.1"
               class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-red-400" />
+            <!-- ⚡ 主計總處即時 CPI -->
+            <div v-if="liveCPI" class="flex items-center gap-2 mt-2 bg-red-50 rounded-lg px-3 py-1.5 animate-fade-in-up">
+              <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></span>
+              <span class="text-[11px] text-red-600 flex-1">
+                主計總處最新 CPI <strong>{{ liveCPI.rate }}%</strong>
+                <span class="text-[10px] text-red-400 ml-1">（{{ liveCPI.period }}）</span>
+              </span>
+              <button @click="inflationRate = parseFloat(liveCPI.rate)"
+                      class="text-[11px] font-medium text-red-600 hover:text-red-800 transition-colors flex-shrink-0">
+                套用 →
+              </button>
+            </div>
           </div>
           <div>
             <label class="block text-xs font-medium text-ink-400 mb-2">
@@ -186,6 +211,31 @@ const inflationRate   = ref(2.0);
 const withdrawalRate  = ref(4.0);
 const showAdvanced    = ref(false);
 const coffeeMode      = ref(false);
+
+// ── 主計總處即時 CPI + ETF 報酬預設 ─────────────────────────────────
+const liveCPI = ref(null);
+
+const returnPresets = [
+  { symbol: '0050', label: '0050',    rate: 10, note: '元大台灣50 2009–2024 含息年化 ~10%' },
+  { symbol: '0056', label: '0056',    rate:  8, note: '元大高股息 2008–2024 含息年化 ~8%' },
+  { symbol: 'MIX',  label: '股債均衡', rate:  6, note: '60/40 股債配置長期均值' },
+  { symbol: 'SAFE', label: '保守',    rate:  4, note: '保守估算（扣通膨後）' },
+];
+
+const fetchLiveCPI = async () => {
+  try {
+    const res = await fetch('/api/rates?type=cpi');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data?.rate) {
+      liveCPI.value = data;
+      // 僅在使用者尚未修改預設值時才自動帶入
+      if (inflationRate.value === 2.0) {
+        inflationRate.value = parseFloat(data.rate);
+      }
+    }
+  } catch (_) {}
+};
 
 const fireChartRef = ref(null);
 let chartInstance  = null;
@@ -340,5 +390,8 @@ watch(
   { deep: true }
 );
 
-onMounted(() => setTimeout(updateChart, 200));
+onMounted(() => {
+  fetchLiveCPI();
+  setTimeout(updateChart, 200);
+});
 </script>

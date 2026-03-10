@@ -46,7 +46,7 @@
                         {{ twoStageMode ? '第一段利率（%）' : '年利率（%）' }}
                     </label>
                     <input type="number" v-model.number="rate1" step="0.005" aria-label="利率"
-                        class="input-clean font-semibold tabular-nums">
+                        :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
                 <div v-if="twoStageMode">
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">第二段利率（%）</label>
@@ -54,7 +54,21 @@
                         class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
-            <div v-if="twoStageMode" class="animate-fade-in-up">
+            <!-- ⚡ 央行即時利率提示 -->
+        <div v-if="liveRate" class="flex items-center justify-between bg-azure-50 rounded-lg px-3 py-2 animate-fade-in-up">
+            <div class="flex items-center gap-1.5 text-[11px] text-azure min-w-0">
+                <span class="w-1.5 h-1.5 bg-azure rounded-full animate-pulse flex-shrink-0"></span>
+                <span>央行最新平均</span>
+                <strong class="font-semibold">{{ liveRate.rate }}%</strong>
+                <span class="text-ink-400 truncate">（{{ liveRate.period }}）</span>
+            </div>
+            <button @click="applyLiveRate"
+                class="text-[11px] font-medium text-azure hover:text-azure-700 transition-colors ml-3 flex-shrink-0">
+                套用 →
+            </button>
+        </div>
+
+        <div v-if="twoStageMode" class="animate-fade-in-up">
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">第一段期間（月）</label>
                 <div class="flex gap-2 items-center">
                     <input type="number" v-model.number="stage1Months" placeholder="7"
@@ -178,6 +192,26 @@ const twoStageMode = ref(false)  // 預設關閉，避免初次用戶困惑
 const stage1Months = ref(7)
 const preset       = ref('newYouth')
 const monthlyIncomeRef = ref(0)
+
+// ── 央行即時利率 ──────────────────────────────────────────────────────
+const liveRate  = ref(null)
+const rateFlash = ref(false)
+
+const fetchLiveRate = async () => {
+    try {
+        const res = await fetch('/api/rates?type=mortgage')
+        if (!res.ok) return
+        const data = await res.json()
+        if (data?.rate) liveRate.value = data
+    } catch (_) {}
+}
+
+const applyLiveRate = () => {
+    if (!liveRate.value) return
+    rate1.value     = parseFloat(liveRate.value.rate)
+    rateFlash.value = true
+    setTimeout(() => { rateFlash.value = false }, 1500)
+}
 
 const prepaymentMode = ref(false)
 const extraMonthly   = ref(0)
@@ -332,6 +366,7 @@ watch(results, (v) => {
 
 // ── 持久化 ─────────────────────────────────────────────────────
 onMounted(() => {
+    fetchLiveRate()
     if (typeof localStorage === 'undefined') return
     try {
         const saved = localStorage.getItem('taicalc_mortgage_inputs')
