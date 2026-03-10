@@ -14,6 +14,13 @@ export default {
                     'Arial',
                     'sans-serif',
                 ],
+                serif: [
+                    '"Noto Serif TC"',
+                    '"Noto Serif"',
+                    'Georgia',
+                    '"Times New Roman"',
+                    'serif',
+                ],
             },
             colors: {
                 // Kenya Hara / MUJI Natural Material Palette

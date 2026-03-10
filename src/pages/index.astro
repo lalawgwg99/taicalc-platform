@@ -128,7 +128,7 @@ const sections = [
                 <span class="w-2 h-2 bg-azure rounded-full"></span>
                 <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">2026 最新費率</span>
             </div>
-            <h1 class="text-4xl md:text-5xl font-normal text-ink-700 tracking-tight leading-tight mb-4">
+            <h1 class="text-4xl md:text-5xl font-serif font-light text-ink-700 tracking-tight leading-tight mb-4">
                 讓每一分錢<br>都算清楚
             </h1>
             <p class="text-base text-ink-400 leading-relaxed max-w-md mb-5">
@@ -161,19 +161,19 @@ const sections = [
             <div class="mt-5 -mx-4 px-4 md:mx-0 md:px-0">
                 <div id="quick-actions" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
                     <a href="/tools/salary-calculator" data-season="always"
-                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
                         <span>🤔</span> 剛拿到 Offer？算實拿
                     </a>
                     <a href="/tools/income-tax-calculator" data-season="tax"
-                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
                         <span>🧾</span> 五月要報稅？算稅額
                     </a>
                     <a href="/tools/mortgage-calculator" data-season="always"
-                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
                         <span>🏠</span> 準備買房？算月付
                     </a>
                     <a href="/tools/fire-calculator" data-season="always"
-                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
                         <span>🏝️</span> 何時能退休？算 FIRE
                     </a>
                 </div>
@@ -283,8 +283,8 @@ const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
 if (taxBtn) {
     // 報稅季：3月~5月底，高亮並移至最前
     if (month >= 3 && month <= 5) {
-        taxBtn.classList.remove('bg-paper-200', 'text-ink-600');
-        taxBtn.classList.add('bg-red-50', 'border', 'border-red-100', 'text-red-700', 'font-semibold');
+        taxBtn.classList.remove('bg-white', 'border-paper-300', 'text-ink-600', 'hover:border-azure', 'hover:text-azure');
+        taxBtn.classList.add('bg-red-50', 'border-red-200', 'text-red-700', 'font-semibold');
         // 紅點提示
         const dot = document.createElement('span');
         dot.className = 'w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0';
