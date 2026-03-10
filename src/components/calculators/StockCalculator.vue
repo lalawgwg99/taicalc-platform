@@ -54,6 +54,71 @@
       </div>
     </div>
 
+    <!-- 股票代碼查詢 -->
+    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-4">
+      <h2 class="text-sm font-bold text-stone-600 mb-3 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        即時報價查詢
+      </h2>
+      <div class="flex gap-2">
+        <input
+          v-model="stockQuery"
+          @keydown.enter="fetchStockPrice"
+          type="text"
+          maxlength="6"
+          placeholder="輸入股票代碼，例如 2330"
+          aria-label="股票代碼"
+          class="flex-1 bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+        />
+        <button
+          @click="fetchStockPrice"
+          :disabled="stockLoading || !stockQuery.trim()"
+          class="px-4 py-2 text-sm font-bold rounded-lg border transition-all"
+          :class="stockLoading || !stockQuery.trim()
+            ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
+            : 'bg-stone-800 text-white border-stone-800 hover:bg-stone-700'"
+        >
+          {{ stockLoading ? '查詢中…' : '查詢' }}
+        </button>
+      </div>
+
+      <!-- 錯誤訊息 -->
+      <p v-if="stockError" class="mt-2 text-xs text-red-500">{{ stockError }}</p>
+
+      <!-- 查詢結果 -->
+      <div v-if="stockResult" class="mt-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <span class="text-sm font-bold text-stone-800">{{ stockResult.name }}</span>
+            <span class="text-xs text-stone-400 ml-1.5">({{ stockResult.code }})</span>
+          </div>
+          <span v-if="!stockResult.isMarketOpen" class="text-[10px] text-stone-400 bg-stone-200 rounded px-1.5 py-0.5">收盤</span>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <span class="text-xl font-bold tabular-nums text-stone-800">${{ stockResult.price.toFixed(2) }}</span>
+          <span
+            class="text-sm font-medium tabular-nums"
+            :class="stockResult.change >= 0 ? 'text-red-500' : 'text-green-600'"
+          >
+            {{ stockResult.change >= 0 ? '▲' : '▼' }}
+            {{ Math.abs(stockResult.change).toFixed(2) }}
+            ({{ stockResult.changePercent >= 0 ? '+' : '' }}{{ stockResult.changePercent.toFixed(2) }}%)
+          </span>
+        </div>
+        <p class="text-[10px] text-stone-400 mt-1">昨收 ${{ stockResult.yesterday.toFixed(2) }}</p>
+        <div class="flex gap-2 mt-3">
+          <button
+            @click="buyPrice = stockResult.price; mode = 'profit'"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-stone-800 text-white hover:bg-stone-700 transition-all"
+          >套用為買入價</button>
+          <button
+            @click="sellPrice = stockResult.price; mode = 'profit'"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg border border-stone-300 text-stone-600 hover:bg-stone-50 transition-all"
+          >套用為賣出價</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Main Calc Card -->
     <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
       <!-- Tabs -->
@@ -348,6 +413,29 @@ import { ref, computed, watch, onMounted } from 'vue';
 
 const mode = ref('profit');
 const showSettings = ref(false);
+
+// ── 股票即時報價查詢 ────────────────────────────────────────────
+const stockQuery = ref('');
+const stockResult = ref(null);
+const stockLoading = ref(false);
+const stockError = ref('');
+
+const fetchStockPrice = async () => {
+  if (!stockQuery.value.trim()) return;
+  stockLoading.value = true;
+  stockError.value = '';
+  stockResult.value = null;
+  try {
+    const res = await fetch(`/api/stock-price?code=${stockQuery.value.trim()}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || '查詢失敗');
+    stockResult.value = data;
+  } catch (e) {
+    stockError.value = e.message;
+  } finally {
+    stockLoading.value = false;
+  }
+};
 
 const settings = ref({
   discount: 6,
