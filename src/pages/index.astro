@@ -5,49 +5,116 @@ const title = "TaiCalc 財務計算平台";
 const description = "整合薪資、所得稅、房貸與退休規劃的財務計算平台。2026 最新費率，所有計算在本地執行，安全隱私。";
 
 const allTools = [
-    { href: "/tools/salary-calculator",       label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     section: "薪資與稅務" },
-    { href: "/tools/income-tax-calculator",    label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   section: "薪資與稅務", isNew: true },
-    { href: "/tools/insurance-calculator",     label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       section: "薪資與稅務" },
-    { href: "/tools/overtime-calculator",      label: "加班費試算",     desc: "平日、休息日、國定假日",       section: "薪資與稅務" },
-    { href: "/tools/delivery-income-calculator", label: "外送收入計算", desc: "跑單淨收入與油費成本",         section: "薪資與稅務" },
-    { href: "/tools/mortgage-calculator",      label: "房貸試算",       desc: "新青安、寬限期與提前還款",     section: "居住與房產" },
-    { href: "/tools/rent-cost-calculator",     label: "租金解析",       desc: "租屋押金與真實月支出",         section: "居住與房產" },
-    { href: "/tools/electricity-calculator",   label: "電費試算",       desc: "台電累進費率自動計算",         section: "居住與房產" },
-    { href: "/tools/ac-installation-calculator", label: "冷氣評估",     desc: "安裝費與回本年限試算",         section: "居住與房產" },
-    { href: "/tools/fire-calculator",          label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       section: "投資與退休" },
-    { href: "/tools/labor-pension-calculator", label: "勞退試算",       desc: "複利滾存與節稅效益分析",       section: "投資與退休" },
-    { href: "/tools/stock-calculator",         label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     section: "投資與退休" },
-    { href: "/tools/insurance-assessment",     label: "保險效益評估",   desc: "儲蓄險 IRR 與壽險需求",       section: "投資與退休" },
-    { href: "/tools/credit-card-calculator",   label: "信用卡分期",     desc: "真實年利率 IRR 計算",          section: "投資與退休" },
-    { href: "/tools/split-calculator",         label: "分帳計算",       desc: "聚餐旅遊 AA 制輕鬆搞定",      section: "生活工具" },
-    { href: "/tools/percentage-calculator",    label: "百分比計算",     desc: "折扣、漲幅四種模式",           section: "生活工具" },
-    { href: "/tools/profit-calculator",        label: "利潤試算",       desc: "成本、售價與毛利率",           section: "生活工具" },
+    {
+        href: "/tools/salary-calculator", label: "薪資實拿計算", desc: "月薪扣除勞健保後實領多少", section: "薪資與稅務",
+        icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>`,
+    },
+    {
+        href: "/tools/income-tax-calculator", label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案", section: "薪資與稅務", isNew: true,
+        icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
+    },
+    {
+        href: "/tools/insurance-calculator", label: "勞健保計算", desc: "費率級距與眷屬附保明細", section: "薪資與稅務",
+        icon: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>`,
+    },
+    {
+        href: "/tools/overtime-calculator", label: "加班費試算", desc: "平日、休息日、國定假日", section: "薪資與稅務",
+        icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>`,
+    },
+    {
+        href: "/tools/delivery-income-calculator", label: "外送收入計算", desc: "跑單淨收入與油費成本", section: "薪資與稅務",
+        icon: `<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>`,
+    },
+    {
+        href: "/tools/mortgage-calculator", label: "房貸試算", desc: "新青安、寬限期與提前還款", section: "居住與房產",
+        icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+    },
+    {
+        href: "/tools/rent-cost-calculator", label: "租金解析", desc: "租屋押金與真實月支出", section: "居住與房產",
+        icon: `<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>`,
+    },
+    {
+        href: "/tools/electricity-calculator", label: "電費試算", desc: "台電累進費率自動計算", section: "居住與房產",
+        icon: `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+    },
+    {
+        href: "/tools/ac-installation-calculator", label: "冷氣評估", desc: "安裝費與回本年限試算", section: "居住與房產",
+        icon: `<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>`,
+    },
+    {
+        href: "/tools/fire-calculator", label: "FIRE 退休規劃", desc: "複利效應與財務自由倒數", section: "投資與退休",
+        icon: `<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>`,
+    },
+    {
+        href: "/tools/labor-pension-calculator", label: "勞退試算", desc: "複利滾存與節稅效益分析", section: "投資與退休",
+        icon: `<path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1a2 2 0 0 0 2 2h1"/><path d="M16 11h0"/>`,
+    },
+    {
+        href: "/tools/stock-calculator", label: "股票損益試算", desc: "現股、當沖與 ETF 手續費", section: "投資與退休",
+        icon: `<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>`,
+    },
+    {
+        href: "/tools/insurance-assessment", label: "保險效益評估", desc: "儲蓄險 IRR 與壽險需求", section: "投資與退休",
+        icon: `<path d="M22 12a10.06 10.06 1 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>`,
+    },
+    {
+        href: "/tools/credit-card-calculator", label: "信用卡分期", desc: "真實年利率 IRR 計算", section: "投資與退休",
+        icon: `<rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/>`,
+    },
+    {
+        href: "/tools/split-calculator", label: "分帳計算", desc: "聚餐旅遊 AA 制輕鬆搞定", section: "生活工具",
+        icon: `<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>`,
+    },
+    {
+        href: "/tools/percentage-calculator", label: "百分比計算", desc: "折扣、漲幅四種模式", section: "生活工具",
+        icon: `<line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>`,
+    },
+    {
+        href: "/tools/profit-calculator", label: "利潤試算", desc: "成本、售價與毛利率", section: "生活工具",
+        icon: `<line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+    },
 ];
 
 const sections = [
     {
         id: "01",
         title: "薪資與稅務",
+        shortTitle: "薪資",
         desc: "計算實拿薪資、所得稅與加班費，確保您的勞動權益不打折。",
         icon: `<path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>`,
+        iconBg: "bg-emerald-50",
+        iconColor: "text-emerald-600",
+        gridLayout: false,
     },
     {
         id: "02",
         title: "居住與房產",
+        shortTitle: "居住",
         desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
         icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+        iconBg: "bg-amber-50",
+        iconColor: "text-amber-600",
+        gridLayout: false,
     },
     {
         id: "03",
         title: "投資與退休",
+        shortTitle: "投資",
         desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
         icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
+        iconBg: "bg-azure-50",
+        iconColor: "text-azure",
+        gridLayout: false,
     },
     {
         id: "04",
         title: "生活工具",
+        shortTitle: "生活",
         desc: "分帳、百分比與利潤計算，解決日常數字困擾。",
         icon: `<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/>`,
+        iconBg: "bg-violet-50",
+        iconColor: "text-violet-600",
+        gridLayout: true,
     },
 ];
 ---
@@ -56,17 +123,25 @@ const sections = [
     <main class="py-16 md:py-24">
 
         <!-- Hero -->
-        <header class="mb-12 max-w-xl">
+        <header class="mb-10 max-w-xl">
             <div class="flex items-center gap-2 mb-6">
                 <span class="w-2 h-2 bg-azure rounded-full"></span>
                 <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">2026 最新費率</span>
             </div>
-            <h1 class="text-4xl md:text-5xl font-normal text-ink-700 tracking-tight leading-tight mb-6">
+            <h1 class="text-4xl md:text-5xl font-normal text-ink-700 tracking-tight leading-tight mb-4">
                 讓每一分錢<br>都算清楚
             </h1>
-            <p class="text-base text-ink-400 leading-relaxed max-w-md mb-8">
-                從薪資到退休，整合台灣最常用的財務計算工具。所有計算在本地執行，不需要帳號，完全免費。
+            <p class="text-base text-ink-400 leading-relaxed max-w-md mb-5">
+                從薪資到退休，整合台灣最常用的財務計算工具。不需要帳號，完全免費。
             </p>
+
+            <!-- 信任標章 (前置到 Hero，讓用戶在輸入薪資前就看到) -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
+                    <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <span class="text-xs font-medium text-emerald-700">本地計算，資料不上傳 · 隱私保障</span>
+            </div>
 
             <!-- 搜尋框 -->
             <div class="relative">
@@ -81,61 +156,103 @@ const sections = [
             <!-- 搜尋結果 -->
             <div id="search-results" class="hidden mt-2 card-surface p-2 space-y-0.5 max-h-72 overflow-y-auto">
             </div>
-            
-            <!-- 情境快速導覽 -->
-            <div class="mt-6 flex flex-wrap gap-2">
-                <a href="/tools/salary-calculator" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
-                    <span>🤔</span> 剛拿到 Offer？算實拿
-                </a>
-                <a href="/tools/income-tax-calculator" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
-                    <span>🧾</span> 五月要報稅？算稅額
-                </a>
-                <a href="/tools/mortgage-calculator" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
-                    <span>🏠</span> 準備買房？算月付
-                </a>
-                <a href="/tools/fire-calculator" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
-                    <span>🏝️</span> 何時能退休？算 FIRE
-                </a>
+
+            <!-- 情境快速導覽 (橫向滑動，支援季節性高亮) -->
+            <div class="mt-5 -mx-4 px-4 md:mx-0 md:px-0">
+                <div id="quick-actions" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    <a href="/tools/salary-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                        <span>🤔</span> 剛拿到 Offer？算實拿
+                    </a>
+                    <a href="/tools/income-tax-calculator" data-season="tax"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                        <span>🧾</span> 五月要報稅？算稅額
+                    </a>
+                    <a href="/tools/mortgage-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                        <span>🏠</span> 準備買房？算月付
+                    </a>
+                    <a href="/tools/fire-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-200 hover:bg-azure hover:text-white transition-colors text-xs font-medium text-ink-600">
+                        <span>🏝️</span> 何時能退休？算 FIRE
+                    </a>
+                </div>
             </div>
         </header>
+
+        <!-- Sticky 分類導覽列 (隨滾動吸附頂部，含 IntersectionObserver 高亮) -->
+        <nav id="category-nav"
+             class="sticky top-14 z-20 -mx-4 md:-mx-6 px-4 md:px-6 mb-10 bg-paper-100/95 backdrop-blur-md border-b border-paper-300/60 py-2.5 transition-all">
+            <div class="flex gap-1 overflow-x-auto no-scrollbar">
+                {sections.map((s) => (
+                    <a href={`#section-${s.id}`}
+                       data-nav-target={`section-${s.id}`}
+                       class="category-nav-btn flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-medium text-ink-500 hover:bg-paper-200 hover:text-ink-700 transition-all duration-150 cursor-pointer">
+                        {s.shortTitle}
+                    </a>
+                ))}
+            </div>
+        </nav>
 
         <!-- Tool Grid -->
         <div id="tool-grid" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-14">
             {sections.map((section) => {
                 const tools = allTools.filter(t => t.section === section.title);
                 return (
-                    <section data-section={section.title}>
+                    <section id={`section-${section.id}`} data-section={section.title}>
+                        <!-- Section Header -->
                         <div class="border-t border-paper-300 pt-5 mb-6">
                             <span class="text-[10px] font-medium text-ink-400 uppercase tracking-widest">Section {section.id}</span>
                             <div class="flex items-center gap-3 mt-3 mb-3">
-                                <div class="w-8 h-8 rounded-lg bg-paper-200 flex items-center justify-center flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500" set:html={section.icon}></svg>
+                                <div class={`w-8 h-8 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={section.icon}></svg>
                                 </div>
                                 <h2 class="text-xl font-medium text-ink-700">{section.title}</h2>
                             </div>
                             <p class="text-sm text-ink-400 leading-relaxed">{section.desc}</p>
                         </div>
-                        <ul class="space-y-2">
-                            {tools.map((tool) => (
-                                <li>
+
+                        <!-- 生活工具：雙欄方形卡片；其他區塊：標準清單 -->
+                        {section.gridLayout ? (
+                            <div class="grid grid-cols-2 gap-2">
+                                {tools.map((tool) => (
                                     <a href={tool.href}
-                                       class="flex items-center justify-between py-3 px-4 bg-paper-200/40 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group">
-                                        <div class="flex items-center gap-3">
-                                            <div class="flex flex-col">
-                                                <div class="flex items-center gap-2">
-                                                    <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors">{tool.label}</span>
-                                                    {tool.isNew && <span class="text-[10px] font-bold text-azure bg-azure-50 px-1.5 py-0.5 rounded-full border border-azure-200">NEW</span>}
-                                                </div>
-                                                <span class="text-xs text-ink-400 mt-0.5">{tool.desc}</span>
-                                            </div>
+                                       class="flex flex-col p-4 bg-paper-200/40 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group min-h-[100px]">
+                                        <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center mb-3 flex-shrink-0`}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
                                         </div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-ink-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-3">
-                                            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                                        </svg>
+                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors leading-snug">{tool.label}</span>
+                                        <span class="text-xs text-ink-400 mt-1 leading-relaxed">{tool.desc}</span>
                                     </a>
-                                </li>
-                            ))}
-                        </ul>
+                                ))}
+                            </div>
+                        ) : (
+                            <ul class="space-y-2">
+                                {tools.map((tool) => (
+                                    <li>
+                                        <a href={tool.href}
+                                           class="flex items-center justify-between py-3 px-4 bg-paper-200/40 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group">
+                                            <div class="flex items-center gap-3">
+                                                <!-- 工具專屬 Icon (帶有 section 色彩) -->
+                                                <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors">{tool.label}</span>
+                                                        {tool.isNew && <span class="text-[10px] font-bold text-azure bg-azure-50 px-1.5 py-0.5 rounded-full border border-azure-200">NEW</span>}
+                                                    </div>
+                                                    <span class="text-xs text-ink-400 mt-0.5">{tool.desc}</span>
+                                                </div>
+                                            </div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-ink-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 ml-3">
+                                                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </section>
                 );
             })}
@@ -160,30 +277,93 @@ const sections = [
 </Layout>
 
 <script>
+// ── 季節性快捷鍵高亮 ─────────────────────────────────────────────
+const month = new Date().getMonth() + 1; // 1-12
+const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
+if (taxBtn) {
+    // 報稅季：3月~5月底，高亮並移至最前
+    if (month >= 3 && month <= 5) {
+        taxBtn.classList.remove('bg-paper-200', 'text-ink-600');
+        taxBtn.classList.add('bg-red-50', 'border', 'border-red-100', 'text-red-700', 'font-semibold');
+        // 紅點提示
+        const dot = document.createElement('span');
+        dot.className = 'w-1.5 h-1.5 bg-red-500 rounded-full flex-shrink-0';
+        taxBtn.insertBefore(dot, taxBtn.firstChild);
+        // 移至最前
+        taxBtn.parentElement?.insertBefore(taxBtn, taxBtn.parentElement.firstChild);
+    }
+}
+
+// ── Sticky 分類導覽：IntersectionObserver 高亮 ───────────────────
+const sectionEls = document.querySelectorAll<HTMLElement>('[data-section]');
+const navBtns = document.querySelectorAll<HTMLAnchorElement>('.category-nav-btn');
+
+const setActiveNav = (sectionId: string) => {
+    navBtns.forEach(btn => {
+        const isActive = btn.dataset.navTarget === sectionId;
+        if (isActive) {
+            btn.classList.add('bg-paper-300', 'text-ink-700');
+            btn.classList.remove('text-ink-500');
+        } else {
+            btn.classList.remove('bg-paper-300', 'text-ink-700');
+            btn.classList.add('text-ink-500');
+        }
+    });
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            setActiveNav(entry.target.id);
+        }
+    });
+}, { rootMargin: '-15% 0px -75% 0px', threshold: 0 });
+
+sectionEls.forEach(el => observer.observe(el));
+
+// 平滑捲動至區塊（補偏移量避免被 Navbar + category-nav 遮住）
+navBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.dataset.navTarget;
+        if (!targetId) return;
+        const target = document.getElementById(targetId);
+        if (target) {
+            const offset = 110; // navbar (56px) + category nav (~44px) + buffer
+            const top = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+    });
+});
+
 // ── 搜尋功能 ────────────────────────────────────────────────────
 const allTools = [
-    { href: "/tools/salary-calculator",       label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     tags: "薪資 月薪 勞保 健保" },
-    { href: "/tools/income-tax-calculator",    label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   tags: "所得稅 報稅 稅 扣除 股利" },
-    { href: "/tools/insurance-calculator",     label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       tags: "勞保 健保 保費 投保" },
-    { href: "/tools/overtime-calculator",      label: "加班費試算",     desc: "平日、休息日、國定假日",       tags: "加班 加班費 休假 假日" },
-    { href: "/tools/mortgage-calculator",      label: "房貸試算",       desc: "新青安、寬限期與提前還款",     tags: "房貸 買房 新青安 利率 貸款" },
-    { href: "/tools/rent-cost-calculator",     label: "租金解析",       desc: "租屋押金與真實月支出",         tags: "租金 租屋 房租 押金" },
-    { href: "/tools/electricity-calculator",   label: "電費試算",       desc: "台電累進費率自動計算",         tags: "電費 台電 電力 用電" },
-    { href: "/tools/fire-calculator",          label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       tags: "退休 FIRE 財務自由 複利" },
-    { href: "/tools/labor-pension-calculator", label: "勞退試算",       desc: "複利滾存與節稅效益分析",       tags: "勞退 勞工退休金 提撥 退休" },
-    { href: "/tools/stock-calculator",         label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     tags: "股票 ETF 手續費 損益 當沖" },
-    { href: "/tools/split-calculator",         label: "分帳計算",       desc: "聚餐旅遊 AA 制輕鬆搞定",      tags: "分帳 AA 聚餐 旅遊" },
-    { href: "/tools/percentage-calculator",    label: "百分比計算",     desc: "折扣、漲幅四種模式",           tags: "百分比 折扣 漲幅 計算" },
-    { href: "/tools/credit-card-calculator",   label: "信用卡分期",     desc: "真實年利率 IRR 計算",          tags: "信用卡 分期 利率 IRR" },
+    { href: "/tools/salary-calculator",         label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     tags: "薪資 月薪 勞保 健保" },
+    { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   tags: "所得稅 報稅 稅 扣除 股利" },
+    { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       tags: "勞保 健保 保費 投保" },
+    { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       tags: "加班 加班費 休假 假日" },
+    { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",         tags: "外送 foodpanda ubereats 外賣" },
+    { href: "/tools/mortgage-calculator",        label: "房貸試算",       desc: "新青安、寬限期與提前還款",     tags: "房貸 買房 新青安 利率 貸款" },
+    { href: "/tools/rent-cost-calculator",       label: "租金解析",       desc: "租屋押金與真實月支出",         tags: "租金 租屋 房租 押金" },
+    { href: "/tools/electricity-calculator",     label: "電費試算",       desc: "台電累進費率自動計算",         tags: "電費 台電 電力 用電" },
+    { href: "/tools/ac-installation-calculator", label: "冷氣評估",       desc: "安裝費與回本年限試算",         tags: "冷氣 空調 安裝 電費" },
+    { href: "/tools/fire-calculator",            label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       tags: "退休 FIRE 財務自由 複利" },
+    { href: "/tools/labor-pension-calculator",   label: "勞退試算",       desc: "複利滾存與節稅效益分析",       tags: "勞退 勞工退休金 提撥 退休" },
+    { href: "/tools/stock-calculator",           label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     tags: "股票 ETF 手續費 損益 當沖" },
+    { href: "/tools/insurance-assessment",       label: "保險效益評估",   desc: "儲蓄險 IRR 與壽險需求",       tags: "保險 儲蓄險 壽險 IRR" },
+    { href: "/tools/credit-card-calculator",     label: "信用卡分期",     desc: "真實年利率 IRR 計算",          tags: "信用卡 分期 利率 IRR" },
+    { href: "/tools/split-calculator",           label: "分帳計算",       desc: "聚餐旅遊 AA 制輕鬆搞定",      tags: "分帳 AA 聚餐 旅遊" },
+    { href: "/tools/percentage-calculator",      label: "百分比計算",     desc: "折扣、漲幅四種模式",           tags: "百分比 折扣 漲幅 計算" },
+    { href: "/tools/profit-calculator",          label: "利潤試算",       desc: "成本、售價與毛利率",           tags: "利潤 成本 售價 毛利" },
 ];
 
-const searchInput   = document.getElementById('tool-search');
+const searchInput   = document.getElementById('tool-search') as HTMLInputElement | null;
 const searchResults = document.getElementById('search-results');
 
 searchInput?.addEventListener('input', (e) => {
-    const q = e.target.value.trim();
+    const q = (e.target as HTMLInputElement).value.trim();
     if (!q) {
-        searchResults.classList.add('hidden');
+        searchResults?.classList.add('hidden');
         return;
     }
 
@@ -191,26 +371,28 @@ searchInput?.addEventListener('input', (e) => {
         t.label.includes(q) || t.desc.includes(q) || t.tags.includes(q)
     );
 
-    if (!hits.length) {
-        searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${q}」的相關工具</p>`;
-    } else {
-        searchResults.innerHTML = hits.map(t => `
-            <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-200 transition-colors group">
-                <div>
-                    <p class="text-sm font-medium text-ink-700">${t.label}</p>
-                    <p class="text-xs text-ink-400 mt-0.5">${t.desc}</p>
-                </div>
-                <svg class="text-ink-300 group-hover:text-ink-500 shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-        `).join('');
+    if (searchResults) {
+        if (!hits.length) {
+            searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${q}」的相關工具</p>`;
+        } else {
+            searchResults.innerHTML = hits.map(t => `
+                <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-200 transition-colors group">
+                    <div>
+                        <p class="text-sm font-medium text-ink-700">${t.label}</p>
+                        <p class="text-xs text-ink-400 mt-0.5">${t.desc}</p>
+                    </div>
+                    <svg class="text-ink-300 group-hover:text-ink-500 shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            `).join('');
+        }
+        searchResults.classList.remove('hidden');
     }
-    searchResults.classList.remove('hidden');
 });
 
 // 點外部關閉搜尋結果
 document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-        searchResults.classList.add('hidden');
+    if (!searchInput?.contains(e.target as Node) && !searchResults?.contains(e.target as Node)) {
+        searchResults?.classList.add('hidden');
     }
 });
 </script>
