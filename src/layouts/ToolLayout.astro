@@ -5,12 +5,25 @@ interface Props {
   title: string;
   description: string;
   category?: string;
+  faqs?: { q: string; a: string }[];
 }
 
-const { title, description, category = "工具" } = Astro.props;
+const { title, description, category = "工具", faqs = [] } = Astro.props;
+
+// Build FAQ schema JSON-LD for SEO
+const faqSchema = faqs.length > 0 ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+}) : null;
 ---
 
 <Layout title={title} description={description}>
+    {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <div class="max-w-3xl mx-auto px-4 md:px-0">
         <!-- Compact Tool Header -->
         <header class="pt-6 pb-8">
@@ -38,37 +51,65 @@ const { title, description, category = "工具" } = Astro.props;
             <slot name="article" />
         </article>
 
+        <!-- FAQ Section (SEO + UX) -->
+        {faqs.length > 0 && (
+            <section class="mb-16">
+                <div class="flex items-center gap-3 mb-6 border-t border-paper-300 pt-10">
+                    <div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
+                            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-base font-semibold text-ink-700">常見問題</h2>
+                </div>
+                <dl class="space-y-3">
+                    {faqs.map((faq, i) => (
+                        <details class="group bg-white border border-paper-300 rounded-xl overflow-hidden hover:border-brand-200 transition-colors">
+                            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none">
+                                <dt class="text-sm font-medium text-ink-700 pr-4">{faq.q}</dt>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="text-ink-400 flex-shrink-0 transition-transform duration-200 group-open:rotate-180">
+                                    <path d="m6 9 6 6 6-6"/>
+                                </svg>
+                            </summary>
+                            <dd class="px-5 pb-4 text-sm text-ink-500 leading-relaxed border-t border-paper-300/60 pt-3">{faq.a}</dd>
+                        </details>
+                    ))}
+                </dl>
+            </section>
+        )}
+
         <!-- Cross-Linking: Related Tools -->
         <section class="border-t border-paper-300 pt-10 mb-16">
             <h3 class="text-sm font-medium text-ink-400 uppercase tracking-widest mb-6">更多工具</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                 <a href="/tools/salary-calculator" class="flex items-center justify-between p-4 rounded-xl border border-paper-300 hover:border-azure hover:bg-azure-50 transition-all group">
+                 <a href="/tools/salary-calculator" class="flex items-center justify-between p-4 rounded-xl bg-white border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
                     <div>
-                        <div class="text-sm font-medium text-ink-700 group-hover:text-azure-700 transition-colors">薪資實拿試算</div>
+                        <div class="text-sm font-medium text-ink-700 transition-colors">薪資實拿試算</div>
                         <div class="text-xs text-ink-400 mt-0.5">扣除勞健保後實際領多少？</div>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-azure group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
-                <a href="/tools/mortgage-calculator" class="flex items-center justify-between p-4 rounded-xl border border-paper-300 hover:border-azure hover:bg-azure-50 transition-all group">
+                <a href="/tools/mortgage-calculator" class="flex items-center justify-between p-4 rounded-xl bg-white border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
                     <div>
-                        <div class="text-sm font-medium text-ink-700 group-hover:text-azure-700 transition-colors">房貸試算</div>
+                        <div class="text-sm font-medium text-ink-700 transition-colors">房貸試算</div>
                         <div class="text-xs text-ink-400 mt-0.5">新青安、寬限期與還款試算。</div>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-azure group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
-                <a href="/tools/fire-calculator" class="flex items-center justify-between p-4 rounded-xl border border-paper-300 hover:border-azure hover:bg-azure-50 transition-all group">
+                <a href="/tools/fire-calculator" class="flex items-center justify-between p-4 rounded-xl bg-white border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
                     <div>
-                        <div class="text-sm font-medium text-ink-700 group-hover:text-azure-700 transition-colors">FIRE 退休規劃</div>
+                        <div class="text-sm font-medium text-ink-700 transition-colors">FIRE 退休規劃</div>
                         <div class="text-xs text-ink-400 mt-0.5">計算你需要多少錢才能退休？</div>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-azure group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
-                <a href="/tools/labor-pension-calculator" class="flex items-center justify-between p-4 rounded-xl border border-paper-300 hover:border-azure hover:bg-azure-50 transition-all group">
+                <a href="/tools/labor-pension-calculator" class="flex items-center justify-between p-4 rounded-xl bg-white border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
                     <div>
-                        <div class="text-sm font-medium text-ink-700 group-hover:text-azure-700 transition-colors">勞退試算</div>
+                        <div class="text-sm font-medium text-ink-700 transition-colors">勞退試算</div>
                         <div class="text-xs text-ink-400 mt-0.5">複利滾存與節稅效益分析。</div>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-azure group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                 </a>
             </div>
         </section>

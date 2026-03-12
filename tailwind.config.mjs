@@ -23,23 +23,34 @@ export default {
                 ],
             },
             colors: {
-                // Kenya Hara / MUJI Natural Material Palette
+                // Kenya Hara / MUJI Natural Material Palette — Milk Tea Edition
                 // Warm Neutrals (紙/Paper) - for backgrounds and surfaces
                 paper: {
                     50: '#FAFAF8',   // Lightest rice paper
-                    100: '#F5F4F0',   // Natural white - main background
+                    100: '#F7F5F0',   // Milk tea background — main bg
                     200: '#EAE8E0',   // Aged paper
-                    300: '#D9D6CC',   // Parchment - borders
+                    300: '#E2DED5',   // Warm border — card edges on milk-tea bg
                     400: '#C4C0B6',   // Deeper parchment
                 },
                 // Cool Neutrals (墨/Ink) - for text and emphasis
                 ink: {
                     300: '#BBBAB3',   // Light ink - disabled states
                     400: '#9B9890',   // Faded ink - secondary text
-                    500: '#6B6760',   // Medium ink - body text
-                    600: '#4A4741',   // Dark ink - headings
-                    700: '#2D2C28',   // Calligraphy black - primary text
-                    800: '#1A1917',   // Deep black
+                    500: '#5A5A5A',   // Medium ink - body text (warmer gray)
+                    600: '#3A3A3A',   // Dark ink - headings
+                    700: '#1A1A1A',   // Charcoal black - primary text
+                    800: '#0D0D0D',   // Deep black
+                },
+                // Brand Orange (活力橘) — icons, active tabs, highlights
+                brand: {
+                    50:  '#FEF3EC',
+                    100: '#FDE0CC',
+                    200: '#FBCBA9',
+                    300: '#F8A87A',
+                    DEFAULT: '#E86A33',
+                    500: '#E86A33',
+                    600: '#D15A24',
+                    dark: '#D15A24',
                 },
                 // Signal Color (天藍/Azure) - primary interactive color
                 // Replaces scattered emerald/blue/teal across components
