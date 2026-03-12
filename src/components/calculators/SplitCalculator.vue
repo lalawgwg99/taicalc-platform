@@ -98,10 +98,14 @@
              🎉 目前無人互欠 (完美平帳)
          </div>
          
-         <div class="mt-6 pt-4 border-t border-emerald-200/50 text-center">
-             <button @click="copyResult" class="text-sm font-bold text-emerald-700 flex items-center justify-center gap-2 hover:bg-emerald-100/50 py-2 px-4 rounded-full transition-colors mx-auto">
+         <div class="mt-6 pt-4 border-t border-emerald-200/50 flex flex-wrap items-center justify-center gap-2">
+             <button @click="copyResult" class="text-sm font-bold text-emerald-700 flex items-center justify-center gap-2 hover:bg-emerald-100/50 py-2 px-4 rounded-full transition-colors">
                  <span v-if="copyStatus === 'idle'">📋 複製分帳結果</span>
                  <span v-else>✓ 已複製</span>
+             </button>
+             <button @click="copyShareLink" class="text-sm font-bold text-stone-600 flex items-center justify-center gap-2 hover:bg-white/60 py-2 px-4 rounded-full transition-colors border border-emerald-200">
+                 <span v-if="!shareCopied">🔗 複製分享連結</span>
+                 <span v-else>✓ 連結已複製</span>
              </button>
          </div>
     </div>
@@ -204,14 +208,39 @@ const copyResult = async () => {
     transactions.value.forEach(tx => {
         lines.push(`${tx.from} \t→ ${tx.to} \t$${tx.amount}`);
     });
-    
+
     if(transactions.value.length === 0) lines.push("無人互欠 (已結清)");
-    
+
     try {
         await navigator.clipboard.writeText(lines.join('\n'));
         copyStatus.value = 'copied';
         setTimeout(() => copyStatus.value = 'idle', 2000);
     } catch(e) {}
+};
+
+// ── 分享連結 ─────────────────────────────────────────────────
+const shareCopied = ref(false);
+
+const buildShareURL = () => {
+    if (typeof window === 'undefined') return '';
+    const p = new URLSearchParams({
+        total: String(totalAmount.value),
+        mode:  mode.value,
+        m:     JSON.stringify(members.value.map(m => ({
+            n: m.name || '',
+            p: m.paid  || 0,
+            w: m.weight || 1,
+        }))),
+    });
+    return `${window.location.origin}/tools/split-calculator?${p.toString()}`;
+};
+
+const copyShareLink = async () => {
+    try {
+        await navigator.clipboard.writeText(buildShareURL());
+        shareCopied.value = true;
+        setTimeout(() => { shareCopied.value = false; }, 2500);
+    } catch(_) {}
 };
 
 // Persistence
@@ -225,6 +254,30 @@ watch([members, totalAmount, mode], () => {
 }, { deep: true });
 
 onMounted(() => {
+    // 1. URL 參數優先（分享連結）
+    if (typeof window !== 'undefined') {
+        const p = new URLSearchParams(window.location.search);
+        if (p.has('total') || p.has('m')) {
+            if (p.has('total'))  totalAmount.value = parseFloat(p.get('total')) || totalAmount.value;
+            if (p.has('mode'))   mode.value        = p.get('mode') === 'weighted' ? 'weighted' : 'even';
+            if (p.has('m')) {
+                try {
+                    const raw = JSON.parse(p.get('m'));
+                    if (Array.isArray(raw) && raw.length > 0) {
+                        members.value = raw.map((item, i) => ({
+                            id: Date.now() + i,
+                            name:   item.n || '',
+                            paid:   item.p || 0,
+                            weight: item.w || 1,
+                        }));
+                    }
+                } catch(_) {}
+            }
+            return; // skip localStorage
+        }
+    }
+
+    // 2. localStorage 備份
     const saved = localStorage.getItem(STORAGE_KEY);
     if(saved) {
         try {

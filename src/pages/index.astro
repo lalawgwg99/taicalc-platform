@@ -82,8 +82,8 @@ const sections = [
         shortTitle: "薪資",
         desc: "計算實拿薪資、所得稅與加班費，確保您的勞動權益不打折。",
         icon: `<path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>`,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-600",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
         gridLayout: false,
     },
     {
@@ -92,8 +92,8 @@ const sections = [
         shortTitle: "居住",
         desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
         icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-600",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
         gridLayout: false,
     },
     {
@@ -102,8 +102,8 @@ const sections = [
         shortTitle: "投資",
         desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
         icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
-        iconBg: "bg-azure-50",
-        iconColor: "text-azure",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
         gridLayout: false,
     },
     {
@@ -112,8 +112,8 @@ const sections = [
         shortTitle: "生活",
         desc: "分帳、百分比與利潤計算，解決日常數字困擾。",
         icon: `<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/>`,
-        iconBg: "bg-violet-50",
-        iconColor: "text-violet-600",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
         gridLayout: true,
     },
 ];
@@ -136,11 +136,11 @@ const sections = [
             </p>
 
             <!-- 信任標章 (前置到 Hero，讓用戶在輸入薪資前就看到) -->
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
                     <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                 </svg>
-                <span class="text-xs font-medium text-emerald-700">本地計算，資料不上傳 · 隱私保障</span>
+                <span class="text-xs font-medium text-brand-600">本地計算，資料不上傳 · 隱私保障</span>
             </div>
 
             <!-- 搜尋框 -->
@@ -182,7 +182,7 @@ const sections = [
 
         <!-- Sticky 分類導覽列 (隨滾動吸附頂部，含 IntersectionObserver 高亮) -->
         <nav id="category-nav"
-             class="sticky top-14 z-20 -mx-4 md:-mx-6 px-4 md:px-6 mb-10 bg-paper-100/95 backdrop-blur-md border-b border-paper-300/60 py-2.5 transition-all">
+             class="sticky top-14 z-20 -mx-4 md:-mx-6 px-4 md:px-6 mb-10 bg-paper-100/96 backdrop-blur-md border-b border-paper-300/50 py-2.5 transition-all">
             <div class="flex gap-1 overflow-x-auto no-scrollbar">
                 {sections.map((s) => (
                     <a href={`#section-${s.id}`}
@@ -217,7 +217,7 @@ const sections = [
                             <div class="grid grid-cols-2 gap-2">
                                 {tools.map((tool) => (
                                     <a href={tool.href}
-                                       class="flex flex-col p-4 bg-paper-200/60 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group min-h-[100px]">
+                                       class="flex flex-col p-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group min-h-[100px]">
                                         <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center mb-3 flex-shrink-0`}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
                                         </div>
@@ -242,7 +242,7 @@ const sections = [
                                 {tools.map((tool) => (
                                     <li>
                                         <a href={tool.href}
-                                           class="flex items-center justify-between py-3 px-4 bg-paper-200/60 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group">
+                                           class="flex items-center justify-between py-3 px-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group">
                                             <div class="flex items-center gap-3">
                                                 <!-- 工具專屬 Icon (帶有 section 色彩) -->
                                                 <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
@@ -313,10 +313,10 @@ const setActiveNav = (sectionId: string) => {
     navBtns.forEach(btn => {
         const isActive = btn.dataset.navTarget === sectionId;
         if (isActive) {
-            btn.classList.add('bg-paper-300', 'text-ink-700');
-            btn.classList.remove('text-ink-500');
+            btn.classList.add('bg-brand-50', 'text-brand-600', 'font-semibold');
+            btn.classList.remove('text-ink-500', 'bg-paper-300', 'text-ink-700');
         } else {
-            btn.classList.remove('bg-paper-300', 'text-ink-700');
+            btn.classList.remove('bg-brand-50', 'text-brand-600', 'font-semibold', 'bg-paper-300', 'text-ink-700');
             btn.classList.add('text-ink-500');
         }
     });

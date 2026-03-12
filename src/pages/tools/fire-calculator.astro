@@ -2,25 +2,48 @@
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import FIRECalculator from '../../components/calculators/FIRECalculator.vue';
 
-const title = "測算人生：財務自由 (FIRE Calculator)｜TaiCalc";
+const title = "FIRE 退休規劃計算機｜財務自由倒數｜TaiCalc";
 const description = "量化金錢與自由的距離。計算你需要多少資產才能提早退休 (FIRE)，並模擬日常消費對退休時間的影響。";
+
+const faqs = [
+    {
+        q: "在台灣實現 FIRE 要存多少錢？",
+        a: "按 4% 法則，需要年支出的 25 倍。在台灣雙北地區，單身月支出約 3～4 萬元，年支出 36～48 萬，FIRE 數字約 900～1,200 萬元。若不含房租（自有房屋），月支出可降至 2～2.5 萬，FIRE 數字約 600～750 萬元。縣市生活、簡樸生活族群可更快達成。"
+    },
+    {
+        q: "月薪 5 萬幾歲可以退休？儲蓄率多少才夠？",
+        a: "以月薪 5 萬、儲蓄率 30%（每月存 1.5 萬）、年報酬 7%（指數型投資）、月支出 3.5 萬估算：FIRE 數字約 1,050 萬，從零開始約需 27 年（約 50 多歲退休）。若提升儲蓄率到 50%（每月存 2.5 萬），只需約 17 年即可達標。儲蓄率是最關鍵的變數。"
+    },
+    {
+        q: "4% 法則適用台灣嗎？台股報酬率夠嗎？",
+        a: "4% 法則基於美股歷史數據（年均報酬約 10%，扣通膨後約 7%）。台股長期年均報酬約 8～10%（含息），不低於美股。但台灣通膨率較低（約 1.5～2%），且台灣人壽命較長（平均近 80 歲），建議採保守的 3.5% 提領率，並保留現金緩衝 2～3 年生活費。"
+    },
+    {
+        q: "FIRE 之後要怎麼投資？放哪裡？",
+        a: "FIRE 族常見的資產配置：70% 全球股票型 ETF（如 VT、0050+0051）+ 30% 債券型 ETF（如 BND、00720B）。每年再平衡一次。提領時遵循「現金桶、債券桶、股票桶」三桶策略，保留 1～2 年生活費在現金，避免在股市低點被迫賣出股票。"
+    },
+    {
+        q: "提早退休會影響勞保老年給付嗎？",
+        a: "會！台灣勞保老年給付依投保年資計算，年資越長、給付越多。若 40 歲提早退休，可能少累積 20 年年資。建議：(1) 轉自雇者或自願繼續加保至請領門檻；(2) 將勞保老年給付視為退休後的「補充收入」，而非主要來源；(3) 搭配勞退個人帳戶統籌規劃。"
+    },
+];
 ---
 
-<ToolLayout title={title} description={description} category="退休理財">
-    <FIRECalculator client:only="vue" slot="tool" />  
+<ToolLayout title={title} description={description} category="退休理財" faqs={faqs}>
+    <FIRECalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>什麼是 FIRE 運動？4% 法則真的準嗎？</h2>
-        <p>FIRE (Financial Independence, Retire Early) 是近年全球風行的理財概念，核心精神是透過「高儲蓄率」與「指數化投資」，儘早累積到足以支付生活開銷的生息資產，從而奪回人生的主導權。</p>
+        <p>FIRE (Financial Independence, Retire Early) 是近年全球風行的理財概念，核心精神是透過「高儲蓄率」與「指數化投資」，儘早累積到足以支付生活開銷的生息資產，從而奪回人生的主導權。本工具支援<strong>「台灣 FIRE 數字試算」</strong>與<strong>「儲蓄率 vs 退休年齡」</strong>模擬。</p>
 
         <h3>核心公式：4% 法則 (The 4% Rule)</h3>
         <p>源自 1994 年的 Trinity Study 研究。該法則指出，如果您從投資組合中每年提領 4% 作為生活費，且投資組合主要配置於股票與債券，那麼您的資產在 30 年內耗盡的機率極低。</p>
-        
+
         <h4>您的自由數字 (FIRE Number)</h4>
         <p>根據 4% 法則，您需要的退休金總額是<strong>年支出的 25 倍</strong>。</p>
         <ul>
-            <li>例如：每月開銷 4 萬元 -> 年支出 48 萬元。</li>
-            <li>FIRE 數字 = 48 萬 x 25 = <strong>1200 萬元</strong>。</li>
+            <li>例如：每月開銷 4 萬元 → 年支出 48 萬元。</li>
+            <li>FIRE 數字 = 48 萬 × 25 = <strong>1,200 萬元</strong>。</li>
         </ul>
 
         <blockquote>
