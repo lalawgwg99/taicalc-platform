@@ -268,44 +268,10 @@ const sections = [
                             {tools.map((tool) => (
                                 <li>
                                     <a href={tool.href}
-                                       class="flex flex-col p-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group min-h-[100px]">
-                                        <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center mb-3 flex-shrink-0`}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
-                                        </div>
-                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors leading-snug">{tool.label}</span>
-                                        <span class="text-xs text-ink-400 mt-1 leading-relaxed">{tool.desc}</span>
-                                    </a>
-                                ))}
-                                {/* 奇數卡片時補上「即將上線」佔位卡，維持網格平衡 */}
-                                {tools.length % 2 !== 0 && (
-                                    <div class="flex flex-col p-4 bg-paper-200/30 rounded-xl border border-dashed border-paper-300 min-h-[100px] items-center justify-center gap-1.5">
-                                        <div class="w-7 h-7 rounded-lg bg-paper-200 flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300">
-                                                <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
-                                            </svg>
-                                        </div>
-                                        <span class="text-[11px] text-ink-300 text-center leading-snug">更多工具<br>即將上線</span>
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <ul class="space-y-2">
-                                {tools.map((tool) => (
-                                    <li>
-                                        <a href={tool.href}
-                                           class="flex items-center justify-between py-3 px-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group">
-                                            <div class="flex items-center gap-3">
-                                                <!-- 工具專屬 Icon (帶有 section 色彩) -->
-                                                <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
-                                                </div>
-                                                <div class="flex flex-col">
-                                                    <div class="flex items-center gap-2">
-                                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors">{tool.label}</span>
-                                                        {tool.isNew && <span class="text-[10px] font-bold text-azure bg-azure-50 px-1.5 py-0.5 rounded-full border border-azure-200">NEW</span>}
-                                                    </div>
-                                                    <span class="text-xs text-ink-400 mt-0.5">{tool.desc}</span>
-                                                </div>
+                                       class="flex items-center justify-between py-2.5 px-3.5 bg-paper-200/60 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group">
+                                        <div class="flex items-center gap-3">
+                                            <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
                                             </div>
                                             <div class="flex flex-col">
                                                 <div class="flex items-center gap-2">
