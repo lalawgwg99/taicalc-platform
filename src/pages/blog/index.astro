@@ -1,11 +1,58 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import BlogList from '../../components/blog/BlogList.vue';
+import { getCollection } from 'astro:content';
 
-const title = "TaiCalc 專欄｜退休理財與生活指南";
-const description = "TaiCalc 財經專欄，提供勞退、投資、生活理財等實用攻略。";
+const title = "TaiCalc 專欄｜財務 · 稅務 · 退休規劃";
+const description = "TaiCalc 財經專欄，提供薪資稅務、買房規劃、FIRE 退休等實用攻略。";
+
+const posts = (await getCollection('blog'))
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const categoryColor: Record<string, string> = {
+    '薪資與稅務': 'text-emerald-600 bg-emerald-50',
+    '居住與房產': 'text-amber-600 bg-amber-50',
+    '房產居家': 'text-amber-600 bg-amber-50',
+    '投資與退休': 'text-azure bg-azure-50',
+    '財務教學': 'text-azure bg-azure-50',
+    '生活': 'text-violet-600 bg-violet-50',
+    '生活計算': 'text-violet-600 bg-violet-50',
+};
 ---
 
 <Layout title={title} description={description}>
-    <BlogList client:load />
+    <main class="py-12 md:py-16 max-w-3xl mx-auto">
+        <header class="mb-10">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="w-1.5 h-1.5 bg-azure rounded-full"></span>
+                <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">財務知識庫</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-serif font-normal text-ink-700 tracking-tight mb-3">TaiCalc 專欄</h1>
+            <p class="text-sm text-ink-400 leading-relaxed">薪資稅務、房產買租、投資退休的深度攻略，{posts.length} 篇實用文章。</p>
+        </header>
+
+        <div class="space-y-3">
+            {posts.map((post) => {
+                const cat = post.data.category ?? '';
+                const colorClass = categoryColor[cat] ?? 'text-ink-500 bg-paper-200';
+                return (
+                    <a href={`/blog/${post.slug}`}
+                       class="flex items-start gap-4 py-4 px-4 bg-paper-200/50 rounded-xl border border-transparent hover:bg-paper-200 hover:border-paper-300 transition-all group">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                {cat && <span class={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${colorClass}`}>{cat}</span>}
+                                <span class="text-[10px] text-ink-400">{post.data.date}</span>
+                            </div>
+                            <h2 class="text-sm font-medium text-ink-700 group-hover:text-ink-900 transition-colors leading-snug line-clamp-2">{post.data.title}</h2>
+                            {post.data.excerpt && (
+                                <p class="text-xs text-ink-400 mt-1 leading-relaxed line-clamp-2">{post.data.excerpt}</p>
+                            )}
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-ink-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1">
+                            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </a>
+                );
+            })}
+        </div>
+    </main>
 </Layout>

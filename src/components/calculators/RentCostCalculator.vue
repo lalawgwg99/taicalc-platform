@@ -158,8 +158,8 @@
              <div>
                  <label class="block text-xs font-semibold text-stone-500 mb-2">身分條件 (加碼倍數)</label>
                  <select v-model="subsidyStatus" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                     <option value="SingleL40">單身 (20-40歲)</option>
-                     <option value="Single">單身 (40歲以上) [1.2倍]</option>
+                     <option value="SingleL40">單身 (未滿40歲) [1.2倍]</option>
+                     <option value="Single">單身 (40歲以上) [無加碼]</option>
                      <option value="Newlywed">新婚 (2年內) [1.3倍]</option>
                      <option value="Child1">育有未成年子女 (1人) [1.4倍]</option>
                      <option value="Child2">育有未成年子女 (2人) [1.6倍]</option>
@@ -272,8 +272,8 @@ const baseSubsidyMap = {
 };
 
 const multiplierMap = {
-    SingleL40: 1,
-    Single: 1.2,
+    SingleL40: 1.2,
+    Single: 1,
     Newlywed: 1.3,
     Child1: 1.4,
     Child2: 1.6,
