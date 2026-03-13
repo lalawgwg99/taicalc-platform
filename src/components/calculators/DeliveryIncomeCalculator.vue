@@ -13,7 +13,7 @@
               id="baseIncome"
               type="number"
               v-model.number="baseIncome"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
           </div>
           <div>
@@ -24,7 +24,7 @@
               id="incentive"
               type="number"
               v-model.number="incentive"
-              class="w-full bg-emerald-50 border border-emerald-200 rounded-xl py-2.5 px-3 text-emerald-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full bg-brand-50 border border-brand-200 rounded-xl py-2.5 px-3 text-brand-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               placeholder="0"
             />
           </div>
@@ -35,7 +35,7 @@
                 id="kilometers"
                 type="number"
                 v-model.number="kilometers"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-brand-500"
               />
             </div>
             <div>
@@ -44,7 +44,7 @@
                 id="workHours"
                 type="number"
                 v-model.number="workHours"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-brand-500"
               />
             </div>
           </div>
@@ -61,7 +61,7 @@
                 id="gasPrice"
                 type="number"
                 v-model.number="gasPrice"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
               />
             </div>
             <div>
@@ -70,7 +70,7 @@
                 id="kmPerLiter"
                 type="number"
                 v-model.number="kmPerLiter"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
               />
             </div>
           </div>
@@ -85,7 +85,7 @@
                   type="number"
                   v-model.number="maintenancePerKm"
                   step="0.1"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
                 />
               </div>
             </div>
@@ -98,7 +98,7 @@
                   id="insuranceMonthly"
                   type="number"
                   v-model.number="insuranceMonthly"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-emerald-500"
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
                 />
               </div>
             </div>
@@ -111,31 +111,31 @@
     <div class="grid md:grid-cols-2 gap-6">
       <!-- 核心數據 -->
       <section
-        class="card bg-emerald-50 rounded-2xl p-6 border border-emerald-100 flex flex-col justify-between relative overflow-hidden"
+        class="card bg-brand-50 rounded-2xl p-6 border border-brand-100 flex flex-col justify-between relative overflow-hidden"
       >
         <div
-          class="absolute right-0 top-0 w-32 h-32 bg-emerald-100 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"
+          class="absolute right-0 top-0 w-32 h-32 bg-brand-100 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"
         ></div>
 
         <div class="relative z-10">
-          <p class="text-sm font-bold text-emerald-800 mb-1">實質淨收入 (Net Income)</p>
-          <p class="text-4xl font-extrabold text-emerald-600 tracking-tight mb-2">
+          <p class="text-sm font-bold text-brand-800 mb-1">實質淨收入 (Net Income)</p>
+          <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2">
             <span class="text-2xl opacity-70">$</span>{{ netIncome }}
           </p>
           <div class="flex items-center gap-3 text-sm">
-            <span class="bg-white/60 px-2 py-1 rounded text-emerald-700 font-medium">實薪 ${{ hourlyRate }}</span>
-            <span class="bg-white/60 px-2 py-1 rounded text-emerald-700 font-medium">${{ perKm }}/km</span>
+            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">實薪 ${{ hourlyRate }}</span>
+            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">${{ perKm }}/km</span>
           </div>
         </div>
 
-        <div class="relative z-10 pt-6 mt-6 border-t border-emerald-200/60 grid grid-cols-2 gap-4">
+        <div class="relative z-10 pt-6 mt-6 border-t border-brand-200/60 grid grid-cols-2 gap-4">
           <div>
-            <p class="text-xs text-emerald-600 mb-1">燃料成本占比</p>
+            <p class="text-xs text-brand-600 mb-1">燃料成本占比</p>
              <p class="text-lg font-bold text-rose-600">{{ fuelCostRatio }}%</p>
           </div>
           <div>
-            <p class="text-xs text-emerald-600 mb-1">獲利能力 (Margin)</p>
-            <p class="text-lg font-bold text-emerald-800">{{ profitMargin }}%</p>
+            <p class="text-xs text-brand-600 mb-1">獲利能力 (Margin)</p>
+            <p class="text-lg font-bold text-brand-800">{{ profitMargin }}%</p>
           </div>
         </div>
       </section>

@@ -421,7 +421,7 @@ const downloadCard = () => {
     ctx.fillRect(0, 0, W, H)
 
     // 橘色左側裝飾條
-    ctx.fillStyle = '#E86A33'
+    ctx.fillStyle = '#059669'
     ctx.fillRect(0, 0, 6, H)
 
     // 白色主卡片區
@@ -430,7 +430,7 @@ const downloadCard = () => {
     ctx.fill()
 
     // 品牌名稱
-    ctx.fillStyle = '#E86A33'
+    ctx.fillStyle = '#059669'
     ctx.font = 'bold 13px -apple-system, sans-serif'
     ctx.fillText('TaiCalc', 64, 72)
 
@@ -459,7 +459,7 @@ const downloadCard = () => {
     ctx.fillStyle = '#9B9890'
     ctx.font = '12px -apple-system, sans-serif'
     ctx.fillText(mainLabel, 64, 184)
-    ctx.fillStyle = '#E86A33'
+    ctx.fillStyle = '#059669'
     ctx.font = 'bold 44px -apple-system, sans-serif'
     ctx.fillText(`$ ${fmt(mainPay)}`, 64, 236)
 

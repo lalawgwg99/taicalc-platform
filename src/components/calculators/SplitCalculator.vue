@@ -10,7 +10,7 @@
                  <input 
                     v-model.number="totalAmount" 
                     type="number" 
-                    class="w-full text-center text-4xl font-bold font-mono text-stone-800 border-b-2 border-stone-100 focus:border-emerald-500 outline-none py-2"
+                    class="w-full text-center text-4xl font-bold font-mono text-stone-800 border-b-2 border-stone-100 focus:border-brand-500 outline-none py-2"
                     placeholder="0"
                  />
              </div>
@@ -20,7 +20,7 @@
          <div>
              <div class="flex justify-between items-center mb-4">
                  <h3 class="font-bold text-stone-700">成員名單 ({{ members.length }}人)</h3>
-                 <button @click="addMember" class="text-sm text-emerald-600 font-bold hover:bg-emerald-50 px-3 py-1 rounded-lg transition-colors">+ 新增成員</button>
+                 <button @click="addMember" class="text-sm text-brand-600 font-bold hover:bg-brand-50 px-3 py-1 rounded-lg transition-colors">+ 新增成員</button>
              </div>
              
              <div class="space-y-3">
@@ -78,32 +78,32 @@
     </div>
 
     <!-- 結果 -->
-    <div class="card bg-emerald-50 rounded-2xl p-6 border border-emerald-100 relative overflow-hidden">
-         <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-200 rounded-full opacity-30 blur-2xl"></div>
+    <div class="card bg-brand-50 rounded-2xl p-6 border border-brand-100 relative overflow-hidden">
+         <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-200 rounded-full opacity-30 blur-2xl"></div>
          
-         <h2 class="text-lg font-bold text-emerald-900 mb-4 text-center font-mono">結算清單 (Settlement)</h2>
+         <h2 class="text-lg font-bold text-brand-900 mb-4 text-center font-mono">結算清單 (Settlement)</h2>
          
          <!-- 轉帳建議 -->
          <div v-if="transactions.length > 0" class="space-y-3 relative z-10">
-             <div v-for="(tx, i) in transactions" :key="i" class="flex items-center justify-between bg-white/80 backdrop-blur p-3 rounded-xl border border-emerald-100 shadow-sm">
+             <div v-for="(tx, i) in transactions" :key="i" class="flex items-center justify-between bg-white/80 backdrop-blur p-3 rounded-xl border border-brand-100 shadow-sm">
                  <div class="flex items-center gap-2">
                      <span class="font-bold text-stone-700">{{ tx.from }}</span>
                      <span class="text-xs text-stone-400">給</span>
-                     <span class="font-bold text-emerald-700">{{ tx.to }}</span>
+                     <span class="font-bold text-brand-700">{{ tx.to }}</span>
                  </div>
-                 <div class="font-mono font-bold text-lg text-emerald-600">${{ tx.amount }}</div>
+                 <div class="font-mono font-bold text-lg text-brand-600">${{ tx.amount }}</div>
              </div>
          </div>
          <div v-else class="text-center text-stone-400 py-4 text-sm">
              🎉 目前無人互欠 (完美平帳)
          </div>
          
-         <div class="mt-6 pt-4 border-t border-emerald-200/50 flex flex-wrap items-center justify-center gap-2">
-             <button @click="copyResult" class="text-sm font-bold text-emerald-700 flex items-center justify-center gap-2 hover:bg-emerald-100/50 py-2 px-4 rounded-full transition-colors">
+         <div class="mt-6 pt-4 border-t border-brand-200/50 flex flex-wrap items-center justify-center gap-2">
+             <button @click="copyResult" class="text-sm font-bold text-brand-700 flex items-center justify-center gap-2 hover:bg-brand-100/50 py-2 px-4 rounded-full transition-colors">
                  <span v-if="copyStatus === 'idle'">📋 複製分帳結果</span>
                  <span v-else>✓ 已複製</span>
              </button>
-             <button @click="copyShareLink" class="text-sm font-bold text-stone-600 flex items-center justify-center gap-2 hover:bg-white/60 py-2 px-4 rounded-full transition-colors border border-emerald-200">
+             <button @click="copyShareLink" class="text-sm font-bold text-stone-600 flex items-center justify-center gap-2 hover:bg-white/60 py-2 px-4 rounded-full transition-colors border border-brand-200">
                  <span v-if="!shareCopied">🔗 複製分享連結</span>
                  <span v-else>✓ 連結已複製</span>
              </button>

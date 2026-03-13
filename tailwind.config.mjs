@@ -41,31 +41,33 @@ export default {
                     700: '#1A1A1A',   // Charcoal black - primary text
                     800: '#0D0D0D',   // Deep black
                 },
-                // Brand Orange (活力橘) — icons, active tabs, highlights
+                // Brand Jade Green (翡翠綠) — icons, active tabs, highlights
+                // Conveys trust, stability, and growth for a finance platform
                 brand: {
-                    50:  '#FEF3EC',
-                    100: '#FDE0CC',
-                    200: '#FBCBA9',
-                    300: '#F8A87A',
-                    DEFAULT: '#E86A33',
-                    500: '#E86A33',
-                    600: '#D15A24',
-                    dark: '#D15A24',
+                    50:  '#ECFDF5',
+                    100: '#D1FAE5',
+                    200: '#A7F3D0',
+                    300: '#6EE7B7',
+                    DEFAULT: '#059669',
+                    500: '#059669',
+                    600: '#047857',
+                    700: '#065F46',
+                    dark: '#047857',
                 },
-                // Signal Color (天藍/Azure) - primary interactive color
-                // Replaces scattered emerald/blue/teal across components
+                // Interactive Color (碧藍/Azure) - links, focus rings
+                // Teal-shifted to harmonize with jade-green brand
                 azure: {
-                    50: '#EEF6FF',
-                    100: '#DBEcFF',
-                    200: '#BFDFFF',
-                    300: '#93CBFF',
-                    400: '#60AFFF',
-                    500: '#3B93F7',   // Primary interactive
-                    600: '#2876E0',   // Darker / hover
-                    700: '#1A5CB8',   // Active / pressed
-                    light: '#EEF6FF',
-                    DEFAULT: '#3B93F7',
-                    dark: '#1A5CB8',
+                    50: '#ECFEFF',
+                    100: '#CFFAFE',
+                    200: '#A5F3FC',
+                    300: '#67E8F9',
+                    400: '#22D3EE',
+                    500: '#0891B2',   // Primary interactive
+                    600: '#0E7490',   // Darker / hover
+                    700: '#155E75',   // Active / pressed
+                    light: '#ECFEFF',
+                    DEFAULT: '#0891B2',
+                    dark: '#155E75',
                 },
                 // Accent (暖橙/Signal) - for alerts, warnings
                 signal: {
@@ -89,7 +91,7 @@ export default {
             boxShadow: {
                 'card': '0 1px 3px 0 rgba(45,44,40,0.08), 0 1px 2px -1px rgba(45,44,40,0.05)',
                 'card-hover': '0 4px 12px 0 rgba(45,44,40,0.12), 0 2px 4px -1px rgba(45,44,40,0.08)',
-                'input': '0 0 0 3px rgba(59,147,247,0.15)',
+                'input': '0 0 0 3px rgba(5,150,105,0.15)',
             },
             animation: {
                 'fade-in-up': 'fadeInUp 0.25s ease-out',

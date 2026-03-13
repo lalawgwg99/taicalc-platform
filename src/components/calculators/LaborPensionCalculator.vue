@@ -49,7 +49,7 @@
               <div class="flex gap-1">
                 <button v-for="rate in [0, 3, 6]" :key="rate" @click="selfRate = rate"
                                 :class="['flex-1 py-2 rounded-lg text-sm font-medium transition-all group',
-                                         selfRate === rate ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md' : 'bg-white/50 text-stone-600 hover:bg-white border border-stone-100']">
+                                         selfRate === rate ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white shadow-md' : 'bg-white/50 text-stone-600 hover:bg-white border border-stone-100']">
                                 {{ rate }}%
                             </button>
                 <input
@@ -168,8 +168,8 @@
             <div class="relative z-10">
                 <div class="text-center mb-6">
                     <p class="text-stone-500 text-sm mb-1 uppercase tracking-wider">每年預估省稅</p>
-                    <p class="text-4xl md:text-5xl font-bold text-emerald-600">
-                        <span class="text-emerald-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
+                    <p class="text-4xl md:text-5xl font-bold text-brand-600">
+                        <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
                     <p class="text-xs text-stone-400 mt-2">根據您的稅率 {{ taxRate }}% 計算</p>
                 </div>
@@ -181,7 +181,7 @@
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
                         <p class="text-xs text-stone-400 mb-1">累計省稅</p>
-                        <p class="text-lg font-bold text-emerald-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
+                        <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
                     </div>
                 </div>
             </div>

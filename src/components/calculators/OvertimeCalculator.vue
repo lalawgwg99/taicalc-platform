@@ -177,12 +177,12 @@
                 </div>
                 <div class="text-right">
                     <p class="text-xs text-stone-500 font-medium mb-1">本週加班總額</p>
-                    <p class="text-2xl font-bold text-emerald-600 font-mono tracking-tight">+${{ weeklyTotalPay.toLocaleString()}}</p>
+                    <p class="text-2xl font-bold text-brand-600 font-mono tracking-tight">+${{ weeklyTotalPay.toLocaleString()}}</p>
                 </div>
             </div>
 
             <div class="relative h-2.5 bg-stone-200 rounded-full overflow-hidden">
-                <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-500" :class="weeklyTotalHours > 46 ? 'bg-rose-500' : 'bg-emerald-500'" :style="{width: Math.min(weeklyTotalHours / 46 * 100, 100) + '%'}"></div>
+                <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-500" :class="weeklyTotalHours > 46 ? 'bg-rose-500' : 'bg-brand-500'" :style="{width: Math.min(weeklyTotalHours / 46 * 100, 100) + '%'}"></div>
             </div>
 
             <div v-if="weeklyTotalHours > 46" class="mt-3 flex items-start gap-2 p-2 bg-rose-50 border border-rose-100 rounded-lg text-xs leading-relaxed text-rose-700">

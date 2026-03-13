@@ -322,7 +322,7 @@ const updateChart = () => {
         {
           label: '資產累積',
           data,
-          borderColor: '#3B93F7',
+          borderColor: '#0891B2',
           backgroundColor: 'rgba(59,147,247,0.08)',
           fill: true,
           tension: 0.4,

@@ -111,19 +111,19 @@
           @click="simulateSave(n)"
           class="bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl p-3 text-center transition-all group active:scale-95"
         >
-          <p class="text-lg font-bold text-stone-700 group-hover:text-emerald-600">-{{ n }} 度</p>
+          <p class="text-lg font-bold text-stone-700 group-hover:text-brand-600">-{{ n }} 度</p>
           <p class="text-xs text-stone-500 mt-1">省 ${{ getSaving(n) }}</p>
         </button>
       </div>
 
       <div
         v-if="simulatedSave > 0"
-        class="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl text-center"
+        class="mt-4 p-4 bg-brand-50 border border-brand-100 rounded-xl text-center"
       >
-        <p class="text-emerald-800 text-sm font-medium">
-          省下 {{ simulatedSave }} 度，每月可省 <span class="text-xl font-bold text-emerald-600">${{ simulatedSaving }}</span>
+        <p class="text-brand-800 text-sm font-medium">
+          省下 {{ simulatedSave }} 度，每月可省 <span class="text-xl font-bold text-brand-600">${{ simulatedSaving }}</span>
         </p>
-        <p class="text-xs text-emerald-600/70 mt-1">
+        <p class="text-xs text-brand-600/70 mt-1">
           一年約可省下 ${{ (simulatedSaving * 12).toLocaleString() }}
         </p>
       </div>

@@ -7,24 +7,24 @@
       <div class="flex border-b border-stone-100 mb-6">
         <button 
           @click="activeTab = 'basic'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'basic' ? 'text-emerald-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'basic' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
         >
           租金試算
-          <div v-if="activeTab === 'basic'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-500 rounded-t-full"></div>
+          <div v-if="activeTab === 'basic'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
         <button 
           @click="activeTab = 'subsidy'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'subsidy' ? 'text-emerald-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'subsidy' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
         >
           租金補貼查詢
-          <div v-if="activeTab === 'subsidy'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-500 rounded-t-full"></div>
+          <div v-if="activeTab === 'subsidy'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
         <button 
           @click="activeTab = 'vs'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'vs' ? 'text-emerald-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'vs' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
         >
           租屋 vs 買房
-          <div v-if="activeTab === 'vs'" class="absolute bottom-0 left-0 w-full h-0.5 bg-emerald-500 rounded-t-full"></div>
+          <div v-if="activeTab === 'vs'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
       </div>
 
@@ -39,7 +39,7 @@
               id="monthlyRent"
               type="number"
               v-model.number="monthlyRent"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
             />
           </div>
         </div>
@@ -51,7 +51,7 @@
               id="depositMonths"
               type="number"
               v-model.number="depositMonths"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
           </div>
           <div>
@@ -60,7 +60,7 @@
               id="leaseMonths"
               type="number"
               v-model.number="leaseMonths"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
           </div>
         </div>
@@ -73,7 +73,7 @@
                 id="managementFee"
                 type="number"
                 v-model.number="managementFee"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               />
             </div>
           </div>
@@ -84,7 +84,7 @@
                 id="electricityFee"
                 type="number"
                 v-model.number="electricityFee"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               />
             </div>
           </div>
@@ -174,7 +174,7 @@
                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
              <p class="text-sm text-stone-400 mb-2">預估每月領取補貼</p>
-             <p class="text-4xl font-bold text-emerald-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
+             <p class="text-4xl font-bold text-brand-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
              <p class="text-xs text-stone-500">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>
       </div>
@@ -182,7 +182,7 @@
        <!-- Tab: Rent vs Buy -->
         <div v-else-if="activeTab === 'vs'" class="space-y-6">
             <h3 class="font-bold text-stone-800 text-lg">💡 10年期資產模擬</h3>
-            <p class="text-sm text-stone-500">若你有 <span class="text-emerald-600 font-bold font-mono">NT$ {{ (monthlyRent * 40).toLocaleString() }}</span> (模擬頭期款)，該買房還是租房投資？</p>
+            <p class="text-sm text-stone-500">若你有 <span class="text-brand-600 font-bold font-mono">NT$ {{ (monthlyRent * 40).toLocaleString() }}</span> (模擬頭期款)，該買房還是租房投資？</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Rent Scenario -->
@@ -199,7 +199,7 @@
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-stone-500">投資獲利</span>
-                            <span class="font-mono text-emerald-600">+{{ (investmentGain).toLocaleString() }}</span>
+                            <span class="font-mono text-brand-600">+{{ (investmentGain).toLocaleString() }}</span>
                         </div>
                          <div class="h-px bg-stone-200 my-2"></div>
                         <div class="flex justify-between font-bold">
@@ -212,7 +212,7 @@
                  <!-- Buy Scenario -->
                 <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
                     <h4 class="font-bold text-stone-700 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span class="w-2 h-2 rounded-full bg-brand-500"></span>
                         買房 (槓桿效應)
                     </h4>
                     <p class="text-xs text-stone-500 mb-4">假設房價年漲 2%，支付利息與稅金</p>
@@ -223,19 +223,19 @@
                         </div>
                         <div class="flex justify-between text-sm">
                             <span class="text-stone-500">房產增值</span>
-                            <span class="font-mono text-emerald-600">+{{ (propertyGain).toLocaleString() }}</span>
+                            <span class="font-mono text-brand-600">+{{ (propertyGain).toLocaleString() }}</span>
                         </div>
                         <div class="h-px bg-stone-200 my-2"></div>
                         <div class="flex justify-between font-bold">
                             <span class="text-stone-700">10年後淨值</span>
-                            <span class="font-mono text-emerald-600">{{ (buyScenarioNet).toLocaleString() }}</span>
+                            <span class="font-mono text-brand-600">{{ (buyScenarioNet).toLocaleString() }}</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-100">
-                <p class="text-sm font-bold text-emerald-800 text-center">
+            <div class="p-4 bg-brand-50 rounded-xl border border-brand-100">
+                <p class="text-sm font-bold text-brand-800 text-center">
                     結論：{{ buyScenarioNet > rentScenarioNet ? '買房勝出' : '租房投資勝出' }} 
                     (差距 {{ Math.abs(buyScenarioNet - rentScenarioNet).toLocaleString() }})
                 </p>

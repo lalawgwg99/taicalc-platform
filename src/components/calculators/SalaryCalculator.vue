@@ -569,7 +569,7 @@ const shareResult = async () => {
 
 // ── 圖表 ───────────────────────────────────────────────────────
 const CHART_COLORS = {
-    primary: '#3B93F7',
+    primary: '#0891B2',
     red:     '#EF4444',
     amber:   '#F59E0B',
     ink:     '#6B6760',
