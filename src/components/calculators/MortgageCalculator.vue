@@ -175,6 +175,24 @@
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
             <p class="mt-1">採本息平均攤還法計算。新青安試算：前 {{ stage1Months }} 個月利率較低，之後回復一般利率。</p>
         </div>
+
+        <!-- 分享列 -->
+        <div class="flex gap-2">
+            <button @click="copyShareLink"
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                {{ shareCopied ? '已複製連結 ✓' : '複製分享連結' }}
+            </button>
+            <button @click="downloadCard"
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
+                </svg>
+                下載試算圖卡
+            </button>
+        </div>
     </div>
 </template>
 
@@ -364,9 +382,158 @@ watch(results, (v) => {
     else         localStorage.removeItem('taicalc_mortgage_monthly')
 }, { deep: true, immediate: true })
 
-// ── 持久化 ─────────────────────────────────────────────────────
+// ── 分享連結 ───────────────────────────────────────────────────
+const shareCopied = ref(false)
+
+const buildShareURL = () => {
+    if (typeof window === 'undefined') return ''
+    const p = new URLSearchParams({
+        amount: String(amountWan.value),
+        years:  String(years.value),
+        grace:  String(graceYears.value),
+        r1:     String(rate1.value),
+        r2:     String(rate2.value),
+        ts:     twoStageMode.value ? '1' : '0',
+        sm:     String(stage1Months.value),
+    })
+    return `${window.location.origin}/tools/mortgage-calculator?${p.toString()}`
+}
+
+const copyShareLink = async () => {
+    try {
+        await navigator.clipboard.writeText(buildShareURL())
+        shareCopied.value = true
+        setTimeout(() => { shareCopied.value = false }, 2500)
+    } catch (_) {}
+}
+
+// ── 下載圖卡 ───────────────────────────────────────────────────
+const downloadCard = () => {
+    const canvas = document.createElement('canvas')
+    const W = 800, H = 420
+    canvas.width  = W
+    canvas.height = H
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    // 背景
+    ctx.fillStyle = '#F7F5F0'
+    ctx.fillRect(0, 0, W, H)
+
+    // 橘色左側裝飾條
+    ctx.fillStyle = '#E86A33'
+    ctx.fillRect(0, 0, 6, H)
+
+    // 白色主卡片區
+    ctx.fillStyle = '#FFFFFF'
+    roundRect(ctx, 32, 32, W - 64, H - 64, 16)
+    ctx.fill()
+
+    // 品牌名稱
+    ctx.fillStyle = '#E86A33'
+    ctx.font = 'bold 13px -apple-system, sans-serif'
+    ctx.fillText('TaiCalc', 64, 72)
+
+    // 標題
+    ctx.fillStyle = '#1A1A1A'
+    ctx.font = 'bold 22px -apple-system, sans-serif'
+    ctx.fillText('房貸試算結果', 64, 110)
+
+    // 貸款條件
+    ctx.fillStyle = '#5A5A5A'
+    ctx.font = '13px -apple-system, sans-serif'
+    const conditionText = `貸款 ${amountWan.value} 萬 · ${years.value} 年期 · 利率 ${rate1.value}%${graceYears.value > 0 ? ` · 寬限 ${graceYears.value} 年` : ''}`
+    ctx.fillText(conditionText, 64, 136)
+
+    // 分隔線
+    ctx.strokeStyle = '#E2DED5'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(64, 154)
+    ctx.lineTo(W - 64, 154)
+    ctx.stroke()
+
+    // 主要數字
+    const mainPay = results.value.gracePay || results.value.basePay
+    const mainLabel = graceYears.value > 0 ? `寬限期月付（${graceYears.value} 年）` : '每月還款'
+    ctx.fillStyle = '#9B9890'
+    ctx.font = '12px -apple-system, sans-serif'
+    ctx.fillText(mainLabel, 64, 184)
+    ctx.fillStyle = '#E86A33'
+    ctx.font = 'bold 44px -apple-system, sans-serif'
+    ctx.fillText(`$ ${fmt(mainPay)}`, 64, 236)
+
+    // 次要數字
+    if (graceYears.value > 0) {
+        ctx.fillStyle = '#9B9890'
+        ctx.font = '12px -apple-system, sans-serif'
+        ctx.fillText('寬限期後月付', 64, 266)
+        ctx.fillStyle = '#1A1A1A'
+        ctx.font = 'bold 24px -apple-system, sans-serif'
+        ctx.fillText(`$ ${fmt(results.value.afterGracePay)}`, 64, 293)
+    }
+
+    // 右側統計
+    const rightX = 500
+    ctx.fillStyle = '#9B9890'
+    ctx.font = '12px -apple-system, sans-serif'
+    ctx.fillText('利息總支出', rightX, 184)
+    ctx.fillStyle = '#1A1A1A'
+    ctx.font = 'bold 20px -apple-system, sans-serif'
+    ctx.fillText(`$ ${fmt(results.value.totalInterest)}`, rightX, 210)
+
+    ctx.fillStyle = '#9B9890'
+    ctx.font = '12px -apple-system, sans-serif'
+    ctx.fillText('本息總額', rightX, 240)
+    ctx.fillStyle = '#1A1A1A'
+    ctx.font = 'bold 20px -apple-system, sans-serif'
+    ctx.fillText(`$ ${fmt(results.value.totalPayment)}`, rightX, 266)
+
+    // 底部網址
+    ctx.fillStyle = '#C4C0B6'
+    ctx.font = '11px -apple-system, sans-serif'
+    ctx.fillText('taicalc.com  ·  本地計算，資料不上傳', 64, H - 44)
+
+    // 下載
+    const a = document.createElement('a')
+    a.download = `TaiCalc-房貸試算-${amountWan.value}萬.png`
+    a.href = canvas.toDataURL('image/png')
+    a.click()
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath()
+    ctx.moveTo(x + r, y)
+    ctx.lineTo(x + w - r, y)
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r)
+    ctx.lineTo(x + w, y + h - r)
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h)
+    ctx.lineTo(x + r, y + h)
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r)
+    ctx.lineTo(x, y + r)
+    ctx.quadraticCurveTo(x, y, x + r, y)
+    ctx.closePath()
+}
+
+// ── 持久化 + URL 參數 ─────────────────────────────────────────
 onMounted(() => {
     fetchLiveRate()
+
+    // 1. URL 參數優先（分享連結）
+    if (typeof window !== 'undefined') {
+        const p = new URLSearchParams(window.location.search)
+        if (p.has('amount'))  amountWan.value    = parseFloat(p.get('amount')) || amountWan.value
+        if (p.has('years'))   years.value        = parseInt(p.get('years'))    || years.value
+        if (p.has('grace'))   graceYears.value   = parseInt(p.get('grace'))    ?? graceYears.value
+        if (p.has('r1'))      rate1.value        = parseFloat(p.get('r1'))     || rate1.value
+        if (p.has('r2'))      rate2.value        = parseFloat(p.get('r2'))     || rate2.value
+        if (p.has('ts'))      twoStageMode.value = p.get('ts') === '1'
+        if (p.has('sm'))      stage1Months.value = parseInt(p.get('sm'))       || stage1Months.value
+        // 有 URL 參數時不再讀 localStorage，直接返回
+        if (p.has('amount') || p.has('r1')) return
+    }
+
+    // 2. localStorage 備份
     if (typeof localStorage === 'undefined') return
     try {
         const saved = localStorage.getItem('taicalc_mortgage_inputs')

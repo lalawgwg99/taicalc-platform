@@ -67,9 +67,9 @@ const sections = [
         shortTitle: "薪資",
         desc: "計算實拿薪資、所得稅與加班費，確保您的勞動權益不打折。",
         icon: `<path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>`,
-        iconBg: "bg-emerald-50",
-        iconColor: "text-emerald-600",
-        accentColor: "bg-emerald-500",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
+        gridLayout: false,
     },
     {
         id: "02",
@@ -77,9 +77,9 @@ const sections = [
         shortTitle: "居住",
         desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
         icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
-        iconBg: "bg-amber-50",
-        iconColor: "text-amber-600",
-        accentColor: "bg-amber-500",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
+        gridLayout: false,
     },
     {
         id: "03",
@@ -87,9 +87,19 @@ const sections = [
         shortTitle: "投資",
         desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
         icon: `<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>`,
-        iconBg: "bg-azure-50",
-        iconColor: "text-azure",
-        accentColor: "bg-azure",
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
+        gridLayout: false,
+    },
+    {
+        id: "04",
+        title: "生活工具",
+        shortTitle: "生活",
+        desc: "分帳、百分比與利潤計算，解決日常數字困擾。",
+        icon: `<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/>`,
+        iconBg: "bg-brand-50",
+        iconColor: "text-brand-500",
+        gridLayout: true,
     },
 ];
 ---
@@ -100,11 +110,47 @@ const sections = [
         <!-- ── 桌機：左右分割 Hero ─────────────────────────────── -->
         <div class="lg:grid lg:grid-cols-[1fr_340px] lg:gap-16 xl:gap-20 mb-16 lg:mb-20">
 
-            <!-- 左：Hero 文案 -->
-            <header>
-                <div class="flex items-center gap-2 mb-5">
-                    <span class="w-1.5 h-1.5 bg-azure rounded-full"></span>
-                    <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">2026 最新費率</span>
+            <!-- 信任標章 (前置到 Hero，讓用戶在輸入薪資前就看到) -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
+                    <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <span class="text-xs font-medium text-brand-600">本地計算，資料不上傳 · 隱私保障</span>
+            </div>
+
+            <!-- 搜尋框 -->
+            <div class="relative">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                </svg>
+                <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」"
+                    class="w-full pl-10 pr-4 py-3 bg-paper-200 border border-transparent rounded-xl text-sm text-ink-700
+                           placeholder:text-ink-300 focus:outline-none focus:border-azure focus:bg-white focus:shadow-input transition-all duration-200" />
+            </div>
+
+            <!-- 搜尋結果 -->
+            <div id="search-results" class="hidden mt-2 card-surface p-2 space-y-0.5 max-h-72 overflow-y-auto">
+            </div>
+
+            <!-- 情境快速導覽 (橫向滑動，支援季節性高亮) -->
+            <div class="mt-5 -mx-4 px-4 md:mx-0 md:px-0">
+                <div id="quick-actions" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                    <a href="/tools/salary-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
+                        <span>🤔</span> 剛拿到 Offer？算實拿
+                    </a>
+                    <a href="/tools/income-tax-calculator" data-season="tax"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
+                        <span>🧾</span> 五月要報稅？算稅額
+                    </a>
+                    <a href="/tools/mortgage-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
+                        <span>🏠</span> 準備買房？算月付
+                    </a>
+                    <a href="/tools/fire-calculator" data-season="always"
+                       class="quick-action-btn flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-paper-300 hover:border-azure hover:text-azure transition-all duration-150 text-xs font-medium text-ink-600">
+                        <span>🏝️</span> 何時能退休？算 FIRE
+                    </a>
                 </div>
                 <h1 class="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-serif font-normal text-ink-700 tracking-tight leading-tight mb-4">
                     讓每一分錢<br>都算清楚
@@ -187,7 +233,7 @@ const sections = [
 
         <!-- ── 分類導覽列 ──────────────────────────────────────── -->
         <nav id="category-nav"
-             class="sticky top-14 z-20 -mx-4 md:-mx-6 px-4 md:px-6 mb-10 bg-paper-100/95 backdrop-blur-md border-b border-paper-300/60 py-2.5 transition-all">
+             class="sticky top-14 z-20 -mx-4 md:-mx-6 px-4 md:px-6 mb-10 bg-paper-100/96 backdrop-blur-md border-b border-paper-300/50 py-2.5 transition-all">
             <div class="flex gap-1 overflow-x-auto no-scrollbar">
                 {sections.map((s) => (
                     <a href={`#section-${s.id}`}
@@ -222,10 +268,44 @@ const sections = [
                             {tools.map((tool) => (
                                 <li>
                                     <a href={tool.href}
-                                       class="flex items-center justify-between py-2.5 px-3.5 bg-paper-200/60 rounded-xl hover:bg-paper-200 border border-transparent hover:border-paper-300 transition-all duration-150 group">
-                                        <div class="flex items-center gap-3">
-                                            <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
+                                       class="flex flex-col p-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group min-h-[100px]">
+                                        <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center mb-3 flex-shrink-0`}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
+                                        </div>
+                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors leading-snug">{tool.label}</span>
+                                        <span class="text-xs text-ink-400 mt-1 leading-relaxed">{tool.desc}</span>
+                                    </a>
+                                ))}
+                                {/* 奇數卡片時補上「即將上線」佔位卡，維持網格平衡 */}
+                                {tools.length % 2 !== 0 && (
+                                    <div class="flex flex-col p-4 bg-paper-200/30 rounded-xl border border-dashed border-paper-300 min-h-[100px] items-center justify-center gap-1.5">
+                                        <div class="w-7 h-7 rounded-lg bg-paper-200 flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300">
+                                                <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[11px] text-ink-300 text-center leading-snug">更多工具<br>即將上線</span>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <ul class="space-y-2">
+                                {tools.map((tool) => (
+                                    <li>
+                                        <a href={tool.href}
+                                           class="flex items-center justify-between py-3 px-4 bg-white rounded-xl border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all duration-150 group">
+                                            <div class="flex items-center gap-3">
+                                                <!-- 工具專屬 Icon (帶有 section 色彩) -->
+                                                <div class={`w-7 h-7 rounded-lg ${section.iconBg} flex items-center justify-center flex-shrink-0`}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class={section.iconColor} set:html={tool.icon}></svg>
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-sm font-medium text-ink-600 group-hover:text-ink-700 transition-colors">{tool.label}</span>
+                                                        {tool.isNew && <span class="text-[10px] font-bold text-azure bg-azure-50 px-1.5 py-0.5 rounded-full border border-azure-200">NEW</span>}
+                                                    </div>
+                                                    <span class="text-xs text-ink-400 mt-0.5">{tool.desc}</span>
+                                                </div>
                                             </div>
                                             <div class="flex flex-col">
                                                 <div class="flex items-center gap-2">
@@ -316,10 +396,10 @@ const setActiveNav = (sectionId: string) => {
     navBtns.forEach(btn => {
         const isActive = btn.dataset.navTarget === sectionId;
         if (isActive) {
-            btn.classList.add('bg-paper-300', 'text-ink-700');
-            btn.classList.remove('text-ink-500');
+            btn.classList.add('bg-brand-50', 'text-brand-600', 'font-semibold');
+            btn.classList.remove('text-ink-500', 'bg-paper-300', 'text-ink-700');
         } else {
-            btn.classList.remove('bg-paper-300', 'text-ink-700');
+            btn.classList.remove('bg-brand-50', 'text-brand-600', 'font-semibold', 'bg-paper-300', 'text-ink-700');
             btn.classList.add('text-ink-500');
         }
     });
