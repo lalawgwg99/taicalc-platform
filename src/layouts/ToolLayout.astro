@@ -6,9 +6,10 @@ interface Props {
   description: string;
   category?: string;
   faqs?: { q: string; a: string }[];
+  keywords?: string;
 }
 
-const { title, description, category = "工具", faqs = [] } = Astro.props;
+const { title, description, category = "工具", faqs = [], keywords } = Astro.props;
 
 // Build FAQ schema JSON-LD for SEO
 const faqSchema = faqs.length > 0 ? JSON.stringify({
@@ -17,13 +18,37 @@ const faqSchema = faqs.length > 0 ? JSON.stringify({
   "mainEntity": faqs.map(f => ({
     "@type": "Question",
     "name": f.q,
-    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": f.a,
+      "dateCreated": new Date().toISOString().split('T')[0]
+    }
   }))
 }) : null;
+
+// WebApplication schema for calculator tools
+const webAppSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, ''),
+  "description": description,
+  "url": `https://taicalc.com/tools/${Astro.url.pathname.split('/').pop()}`,
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "TWD"
+  },
+  "browserRequirements": "Requires JavaScript",
+  "softwareVersion": "2026",
+  "keywords": keywords || "台灣,財務計算,免費工具"
+});
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} keywords={keywords}>
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
+    <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <div class="max-w-3xl mx-auto px-4 md:px-0">
         <!-- Compact Tool Header -->
         <header class="pt-6 pb-8">

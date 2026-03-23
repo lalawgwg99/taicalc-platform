@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 主要顏色系統
+        // 主要顏色系統 - 墨水色系
         ink: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -18,33 +18,34 @@ export default {
           800: '#1e293b',
           900: '#0f172a',
         },
+        // 紙張色系 - 溫暖米色
         paper: {
-          50: '#fafafa',
-          100: '#f5f5f5',
-          200: '#e5e5e5',
-          300: '#d4d4d4',
-          400: '#a3a3a3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717',
+          50: '#fefcf9',
+          100: '#faf7f2',
+          200: '#f5efe7',
+          300: '#e8dfd2',
+          400: '#d4c4ad',
+          500: '#b8a48a',
+          600: '#9a866a',
+          700: '#7d6a54',
+          800: '#5f4f3d',
+          900: '#42342b',
         },
-        // 品牌色系
+        // 品牌色系 - 專業深藍 + 翡翠綠
         brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
         },
-        // 藍色系
-        azure: {
+        // 主色調 - 深海軍藍
+        primary: {
           50: '#eff6ff',
           100: '#dbeafe',
           200: '#bfdbfe',
@@ -56,7 +57,7 @@ export default {
           800: '#1e40af',
           900: '#1e3a8a',
         },
-        // 琥珀色系（用於警告/提醒）
+        // 警告色系 - 琥珀金
         amber: {
           50: '#fffbeb',
           100: '#fef3c7',
@@ -69,7 +70,7 @@ export default {
           800: '#92400e',
           900: '#78350f',
         },
-        // 綠色系（用於成功/確認）
+        // 成功色系 - 翡翠綠
         emerald: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -82,7 +83,7 @@ export default {
           800: '#065f46',
           900: '#064e3b',
         },
-        // 紅色系（用於錯誤/危險）
+        // 危險色系 - 玫瑰紅
         rose: {
           50: '#fff1f2',
           100: '#ffe4e6',
@@ -95,21 +96,68 @@ export default {
           800: '#9f1239',
           900: '#881337',
         },
+        // 信息色系 - 天藍
+        sky: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9',
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+        },
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.3s ease-out',
-        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'slide-in-right': 'slideInRight 0.3s ease-out',
+        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+        'bounce-subtle': 'bounceSubtle 0.5s ease-out',
       },
       keyframes: {
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(10px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        pulseGlow: {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.4)' },
+          '50%': { boxShadow: '0 0 0 8px rgba(34, 197, 94, 0)' },
+        },
+        bounceSubtle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
       },
       boxShadow: {
         'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
-        'card-hover': '0 8px 24px rgba(0, 0, 0, 0.1)',
-        'input': '0 0 0 3px rgba(59, 130, 246, 0.1)',
+        'card-hover': '0 12px 32px rgba(0, 0, 0, 0.12)',
+        'input': '0 0 0 3px rgba(59, 130, 246, 0.15)',
+        'input-brand': '0 0 0 3px rgba(34, 197, 94, 0.15)',
+        'glow-brand': '0 0 20px rgba(34, 197, 94, 0.3)',
+        'glow-primary': '0 0 20px rgba(59, 130, 246, 0.3)',
+      },
+      borderRadius: {
+        'xl': '1rem',
+        '2xl': '1.5rem',
+        '3xl': '2rem',
+      },
+      backgroundImage: {
+        'gradient-brand': 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+        'gradient-primary': 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+        'gradient-gold': 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+        'gradient-warm': 'linear-gradient(180deg, #fefcf9 0%, #f5efe7 100%)',
+        'gradient-card': 'linear-gradient(145deg, #ffffff 0%, #faf7f2 100%)',
       },
     },
   },

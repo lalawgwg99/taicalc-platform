@@ -1,11 +1,10 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import ToolLayout from '../../layouts/ToolLayout.astro';
 import RentCostCalculator from '../../components/calculators/RentCostCalculator.vue';
 
 const title = "租金成本計算｜TaiCalc";
 const description = "計算租屋真實成本，包含押金機會成本與隱藏費用。";
----
+const keywords = "租金計算,租屋成本,押金機會成本,租屋試算,房租計算,租金補貼,租屋開銷,租屋預算";
 
 <ToolLayout title={title} description={description} category="生活計算">
     <RentCostCalculator client:only="vue" slot="tool" />  
