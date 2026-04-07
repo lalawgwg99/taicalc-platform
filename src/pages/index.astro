@@ -96,6 +96,30 @@ const workTools = [
     { href: "/tools/overtime-calculator",        label: "加班費試算",   desc: "平日、休息日、國定假日", icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>` },
     { href: "/tools/delivery-income-calculator", label: "外送收入計算", desc: "跑單淨收入與油費成本",      icon: `<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>` },
 ];
+
+const heroPortals = [
+    {
+        eyebrow: "薪資主線",
+        title: "先算這個月真正能用多少",
+        desc: "從月薪、勞健保到固定支出，一次看到實拿、可存與稅後年薪。",
+        href: "/tools/salary-calculator",
+        cta: "進入薪資儀表板",
+    },
+    {
+        eyebrow: "報稅季",
+        title: "先試算，再決定怎麼申報",
+        desc: "比較標準與列舉、股利合併與分離，先把退稅或補繳估出來。",
+        href: "/tax-season",
+        cta: "看報稅攻略",
+    },
+    {
+        eyebrow: "居住決策",
+        title: "買房還是租屋，用月付能力說話",
+        desc: "房貸、租金、電費與生活成本整合，避免只看單一數字。",
+        href: "/housing-toolbox",
+        cta: "打開居住工具箱",
+    },
+];
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
@@ -103,8 +127,10 @@ const workTools = [
     <!-- ═══════════════════════════════════════════════════════════
          HERO — 薪資主線定位
          ═══════════════════════════════════════════════════════════ -->
-    <section class="pt-16 pb-20 md:pt-24 md:pb-28 text-center relative overflow-hidden hero-sheen">
-        <div class="max-w-2xl mx-auto relative z-10">
+    <section class="pt-16 pb-20 md:pt-24 md:pb-28 relative overflow-hidden hero-sheen">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+            <div class="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px] items-start">
+                <div class="text-center lg:text-left">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
                     <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -115,11 +141,11 @@ const workTools = [
             <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-serif font-normal text-ink-700 tracking-tight leading-[1.2] mb-5">
                 上班族薪資實拿<br class="md:hidden">三分鐘算清楚
             </h1>
-            <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-md mx-auto mb-8">
+            <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-xl mx-auto lg:mx-0 mb-8">
                 從 Offer → 勞健保 → 報稅 → 退休，一條主線把你最在意的錢算清楚。
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
                 <a href="/tools/salary-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-ink-700 text-paper-50 text-sm font-medium hover:bg-ink-600 transition-colors w-full sm:w-auto shadow-card-hover">
                     立刻算實拿
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -133,7 +159,7 @@ const workTools = [
             </div>
 
             <!-- 搜尋框 -->
-            <div class="relative max-w-sm mx-auto mt-8">
+            <div class="relative max-w-sm mx-auto lg:mx-0 mt-8">
                 <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                 </svg>
@@ -149,6 +175,31 @@ const workTools = [
                            placeholder:text-ink-300 focus:outline-none focus:border-brand-500 focus:shadow-glow-brand transition-all duration-300" />
                 <!-- 搜尋結果 -->
                 <div id="search-results" class="hidden absolute left-0 right-0 mt-3 bg-white border-2 border-paper-200 rounded-2xl p-3 space-y-1 max-h-80 overflow-y-auto shadow-xl z-30">
+                </div>
+            </div>
+
+            <div class="mt-8 flex flex-wrap justify-center lg:justify-start gap-2">
+                <span class="data-pill">薪資實拿</span>
+                <span class="data-pill">報稅季</span>
+                <span class="data-pill">居住決策</span>
+                <span class="data-pill">退休規劃</span>
+            </div>
+                </div>
+
+                <div class="glass-panel p-5 md:p-6">
+                    <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">現在先做哪一題</p>
+                    <div class="mt-4 grid gap-3">
+                        {heroPortals.map((portal) => (
+                            <a href={portal.href} class="portal-card group">
+                                <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-400">{portal.eyebrow}</p>
+                                <h2 class="mt-2 text-lg font-semibold text-ink-700 group-hover:text-brand transition-colors">{portal.title}</h2>
+                                <p class="mt-2 text-sm leading-relaxed text-ink-400">{portal.desc}</p>
+                                <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand">{portal.cta}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                </span>
+                            </a>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,7 +219,7 @@ const workTools = [
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {focusSteps.map(step => (
                     <a href={step.href}
-                       class="group flex flex-col h-full p-5 bg-paper-100 border border-paper-300 rounded-2xl hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
+                       class="group flow-card flex flex-col h-full hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
                         <div class="flex items-center justify-between">
                             <span class="text-[10px] font-semibold text-ink-400 tracking-widest">{step.step}</span>
                             <div class="w-9 h-9 rounded-xl bg-white border border-paper-300 flex items-center justify-center">
@@ -177,9 +228,11 @@ const workTools = [
                         </div>
                         <h3 class="text-sm font-semibold text-ink-700 mt-4 mb-2 group-hover:text-brand transition-colors">{step.title}</h3>
                         <p class="text-xs text-ink-400 leading-relaxed flex-1">{step.desc}</p>
+                        <div class="mt-4 pt-4 border-t border-paper-200">
                         <span class="text-xs text-brand font-medium mt-4 inline-flex items-center gap-1">{step.cta}
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                         </span>
+                        </div>
                     </a>
                 ))}
             <!-- 快速情境導覽 -->

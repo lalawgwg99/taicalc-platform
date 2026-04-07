@@ -7,11 +7,18 @@ interface Props {
   category?: string;
   faqs?: { q: string; a: string }[];
   keywords?: string;
+  kicker?: string;
 }
 
-const { title, description, category = "工具", faqs = [], keywords } = Astro.props;
+const {
+  title,
+  description,
+  category = "工具",
+  faqs = [],
+  keywords,
+  kicker = "把複雜規則轉成可操作的答案"
+} = Astro.props;
 
-// Build FAQ schema JSON-LD for SEO
 const faqSchema = faqs.length > 0 ? JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -26,7 +33,6 @@ const faqSchema = faqs.length > 0 ? JSON.stringify({
   }))
 }) : null;
 
-// WebApplication schema for calculator tools
 const webAppSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -49,36 +55,66 @@ const webAppSchema = JSON.stringify({
 <Layout title={title} description={description} keywords={keywords}>
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
-    <div class="max-w-3xl mx-auto px-4 md:px-0">
-        <!-- Compact Tool Header -->
+    <div class="max-w-6xl mx-auto px-4 md:px-0">
         <header class="pt-6 pb-8">
-            <div class="flex items-center gap-2 mb-3">
-                <a href="/" class="inline-flex items-center gap-1.5 text-xs text-ink-400 hover:text-ink-700 transition-colors group">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                    所有工具
-                </a>
-                <span class="text-ink-300">/</span>
-                <span class="text-xs text-ink-400">{category}</span>
+            <div class="tool-hero-shell">
+                <div class="tool-hero-panel hero-sheen relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-3">
+                            <a href="/" class="inline-flex items-center gap-1.5 text-xs text-ink-400 hover:text-ink-700 transition-colors group">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
+                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                                </svg>
+                                所有工具
+                            </a>
+                            <span class="text-ink-300">/</span>
+                            <span class="text-xs text-ink-400">{category}</span>
+                        </div>
+                        <div class="data-pill mb-4">{kicker}</div>
+                        <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 tracking-tight mb-3">{title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, '')}</h1>
+                        <p class="text-sm md:text-base text-ink-400 leading-relaxed max-w-2xl">{description}</p>
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="data-pill">本地計算</span>
+                            <span class="data-pill">結果可立即行動</span>
+                            <span class="data-pill">免費使用</span>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="tool-hero-panel">
+                    <slot name="heroAside">
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">快速開始</p>
+                                <h2 class="text-lg font-semibold text-ink-700 mt-2">先輸入你眼前的問題</h2>
+                                <p class="text-sm text-ink-400 mt-2 leading-relaxed">這頁的設計不是為了看懂規則，而是讓你快速做決定。</p>
+                            </div>
+                            <div class="grid gap-2">
+                                <div class="rounded-2xl bg-paper-100 border border-paper-300 p-4">
+                                    <p class="text-xs text-ink-400">最適合</p>
+                                    <p class="text-sm font-medium text-ink-700 mt-1">第一次試算、轉職比較、快速確認結果</p>
+                                </div>
+                                <div class="rounded-2xl bg-paper-100 border border-paper-300 p-4">
+                                    <p class="text-xs text-ink-400">建議順序</p>
+                                    <p class="text-sm font-medium text-ink-700 mt-1">輸入數字 → 看結果卡 → 再讀下方說明</p>
+                                </div>
+                            </div>
+                        </div>
+                    </slot>
+                </aside>
             </div>
-            <h1 class="text-2xl md:text-3xl font-semibold text-ink-700 tracking-tight mb-2">{title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, '')}</h1>
-            <p class="text-sm text-ink-400 leading-relaxed max-w-2xl">{description}</p>
         </header>
 
-        <!-- Tool: Calculator Component -->
-        <main class="mb-16">
+        <main class="mb-16 max-w-3xl">
             <slot name="tool" />
         </main>
 
-        <!-- Article: SEO Content -->
-        <article class="prose prose-gray max-w-none mb-16 text-sm">
+        <article class="prose prose-gray max-w-3xl mb-16 text-sm">
             <slot name="article" />
         </article>
 
-        <!-- FAQ Section (SEO + UX) -->
         {faqs.length > 0 && (
-            <section class="mb-16">
+            <section class="mb-16 max-w-3xl">
                 <div class="flex items-center gap-3 mb-6 border-t border-paper-300 pt-10">
                     <div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
@@ -88,7 +124,7 @@ const webAppSchema = JSON.stringify({
                     <h2 class="text-base font-semibold text-ink-700">常見問題</h2>
                 </div>
                 <dl class="space-y-3">
-                    {faqs.map((faq, i) => (
+                    {faqs.map((faq) => (
                         <details class="group bg-white border border-paper-300 rounded-xl overflow-hidden hover:border-brand-200 transition-colors">
                             <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none">
                                 <dt class="text-sm font-medium text-ink-700 pr-4">{faq.q}</dt>
@@ -104,8 +140,7 @@ const webAppSchema = JSON.stringify({
             </section>
         )}
 
-        <!-- Cross-Linking: Related Tools -->
-        <section class="border-t border-paper-300 pt-10 mb-16">
+        <section class="border-t border-paper-300 pt-10 mb-16 max-w-3xl">
             <h3 class="text-sm font-medium text-ink-400 uppercase tracking-widest mb-6">更多工具</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                  <a href="/tools/salary-calculator" class="flex items-center justify-between p-4 rounded-xl bg-white border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
