@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "居住決策工具箱｜TaiCalc";
+const description = "買房 vs 租屋快速決策：房貸、新青安、寬限期、租金成本與電費試算一次完成。";
+
+const steps = [
+  {
+    title: "算月付能力",
+    desc: "先用房貸試算，估算新青安、利率與寬限期後的月付壓力。",
+    href: "/tools/mortgage-calculator",
+    cta: "房貸試算",
+  },
+  {
+    title: "算租屋真實成本",
+    desc: "押金、管理費與真實月支出一起算，避免只看表面租金。",
+    href: "/tools/rent-cost-calculator",
+    cta: "租金解析",
+  },
+  {
+    title: "生活費預估",
+    desc: "電費與日常支出加入考量，避免入住後支出爆表。",
+    href: "/tools/electricity-calculator",
+    cta: "電費試算",
+  },
+];
+
+const comparePoints = [
+  { title: "月付 vs 月租", desc: "買房月付是否超過可存金額？" },
+  { title: "寬限期風險", desc: "寬限期後月付是否過高？" },
+  { title: "租屋彈性", desc: "是否需要保留換城市或換工作彈性？" },
+  { title: "自備款壓力", desc: "自備款是否影響緊急預備金？" },
+];
+---
+
+<Layout title={title} description={description} fullWidth>
+  <section class="pt-16 pb-20 md:pt-24 md:pb-28 hero-sheen relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
+        <span class="text-xs font-medium text-brand-600">買房與租屋一次看懂</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-ink-700 tracking-tight leading-[1.2] mb-5">
+        居住決策不靠猜<br class="md:hidden">用數字說服自己
+      </h1>
+      <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-2xl mx-auto mb-8">
+        TaiCalc 幫你把房貸、租金與生活成本一次算清楚，快速做出可負擔的選擇。
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="/tools/mortgage-calculator" class="btn-primary rounded-xl px-5 py-3 text-sm">先算房貸</a>
+        <a href="/tools/rent-cost-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-paper-300 text-ink-600 text-sm font-medium hover:border-brand hover:text-brand transition-colors">先算租金</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white section-wash">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="max-w-xl mb-10 md:mb-14">
+        <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">三步驟</span>
+        <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">用 3 個計算完成居住決策</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {steps.map((item, i) => (
+          <a href={item.href}
+             class="group flex flex-col p-6 bg-white border border-paper-300 rounded-2xl hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
+            <span class="text-[10px] font-semibold text-ink-400 uppercase tracking-widest">STEP {String(i + 1).padStart(2, '0')}</span>
+            <h3 class="text-base font-semibold text-ink-700 mt-3 mb-2 group-hover:text-brand transition-colors">{item.title}</h3>
+            <p class="text-sm text-ink-400 leading-relaxed">{item.desc}</p>
+            <span class="text-xs text-brand font-medium mt-4 inline-flex items-center gap-1">{item.cta}
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-paper-100 section-wash">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="max-w-xl mb-10 md:mb-14">
+        <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">比較清單</span>
+        <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">買房 vs 租屋最常卡關的 4 個點</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {comparePoints.map(point => (
+          <div class="p-5 bg-white border border-paper-300 rounded-2xl">
+            <h3 class="text-sm font-semibold text-ink-700 mb-2">{point.title}</h3>
+            <p class="text-xs text-ink-400 leading-relaxed">{point.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-ink-700 text-paper-50 rounded-2xl">
+        <div>
+          <h3 class="text-lg font-semibold">把月付與生活成本一起算</h3>
+          <p class="text-sm text-paper-200 mt-1">避免只看房貸，忽略日常支出。</p>
+        </div>
+        <a href="/tools/mortgage-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-ink-700 text-sm font-medium hover:bg-paper-100 transition-colors">開始試算</a>
+      </div>
+    </div>
+  </section>
+</Layout>

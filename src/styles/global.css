@@ -14,6 +14,11 @@ body {
     @apply bg-paper-100 text-ink-700 antialiased;
     line-height: 1.7;
     letter-spacing: 0.01em;
+    background-image:
+        radial-gradient(1200px 520px at 10% -10%, rgba(5, 150, 105, 0.12), transparent 55%),
+        radial-gradient(900px 480px at 95% 0%, rgba(8, 145, 178, 0.10), transparent 60%),
+        linear-gradient(180deg, rgba(250, 250, 248, 0.9), rgba(247, 245, 240, 1));
+    background-attachment: fixed;
 }
 
 /* ─── Component Layer ─────────────────────────────────────────── */
@@ -21,7 +26,7 @@ body {
 
     /* Surface card — replaces scattered `bg-white/60 backdrop-blur-xl` */
     .card-surface {
-        @apply bg-white border border-paper-300 rounded-2xl shadow-card;
+        @apply bg-white/90 border border-paper-300 rounded-2xl shadow-card backdrop-blur-[2px];
     }
 
     .card-surface-hover {
@@ -40,7 +45,7 @@ body {
 
     /* Primary Button */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-normal px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-600 active:scale-[0.98];
+        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-normal px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-600 active:scale-[0.98] shadow-card-hover;
     }
 
     .btn-azure {
@@ -103,6 +108,18 @@ body {
     /* Info / Note box */
     .note-box {
         @apply text-xs text-ink-400 bg-paper-200/60 rounded-lg px-4 py-3 leading-relaxed;
+    }
+
+    .section-wash {
+        background-image:
+            radial-gradient(700px 260px at 10% 0%, rgba(5, 150, 105, 0.10), transparent 60%),
+            radial-gradient(700px 240px at 95% 10%, rgba(8, 145, 178, 0.10), transparent 62%);
+    }
+
+    .hero-sheen {
+        background-image:
+            radial-gradient(520px 260px at 20% 10%, rgba(8, 145, 178, 0.18), transparent 70%),
+            radial-gradient(420px 220px at 90% 0%, rgba(5, 150, 105, 0.18), transparent 70%);
     }
 }
 

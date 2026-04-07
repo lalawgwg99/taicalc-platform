@@ -60,6 +60,12 @@
                     </div>
                 </div>
             </div>
+
+            <div class="mt-5 pt-4 border-t border-paper-300">
+                <label for="monthlyExpense" class="block text-xs font-medium text-ink-400 mb-1.5">每月固定支出（NT$）</label>
+                <input id="monthlyExpense" type="number" v-model.number="monthlyExpense" class="input-clean" placeholder="20,000">
+                <p class="text-[10px] text-ink-400 mt-1.5">用來估算每月可存金額與緊急預備金目標。</p>
+            </div>
         </div>
 
         <!-- ── 單一模式結果 ── -->
@@ -160,6 +166,86 @@
                     </div>
                 </div>
                 <p class="note-box mt-3">雇主每月額外負擔：勞保 70%、健保 60%（×1.58 眷屬係數）、勞退 6%。</p>
+            </div>
+
+        <!-- 可存金額與緊急預備金 -->
+        <div class="card-surface p-5">
+            <h3 class="text-sm font-medium text-ink-600 mb-4">每月可存與安全墊</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-paper-100 rounded-xl p-3">
+                        <p class="text-xs text-ink-400 mb-0.5">每月固定支出</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ (monthlyExpense || 0).toLocaleString() }}</p>
+                    </div>
+                    <div class="rounded-xl p-3" :class="monthlyDisposable >= 0 ? 'bg-green-50' : 'bg-red-50'">
+                        <p class="text-xs mb-0.5" :class="monthlyDisposable >= 0 ? 'text-green-500' : 'text-red-500'">
+                            {{ monthlyDisposable >= 0 ? '每月可存' : '每月赤字' }}
+                        </p>
+                        <p class="text-base font-semibold tabular-nums" :class="monthlyDisposable >= 0 ? 'text-green-600' : 'text-red-600'">
+                            {{ monthlyDisposable >= 0 ? '+' : '−' }} {{ Math.abs(monthlyDisposable).toLocaleString() }}
+                        </p>
+                        <p v-if="monthlyNet > 0" class="text-[10px] text-ink-400 mt-0.5">存錢率 {{ Math.max(0, savingsRate).toFixed(0) }}%</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div v-if="emergencyFund" class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                            <p class="text-ink-400">3 個月安全墊</p>
+                            <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m3 }} 個月</p>
+                        </div>
+                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                            <p class="text-ink-400">6 個月安全墊</p>
+                            <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m6 }} 個月</p>
+                        </div>
+                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                            <p class="text-ink-400">12 個月安全墊</p>
+                            <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m12 }} 個月</p>
+                        </div>
+                    </div>
+                    <p v-else class="text-xs text-ink-400">目前支出高於實領，先降低支出或提升收入，才能建立安全墊。</p>
+                </div>
+            </div>
+
+            <!-- 稅後年薪與目標 -->
+            <div class="card-surface p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-ink-600">稅後年薪與存款目標</h3>
+                    <span class="text-[10px] text-ink-400">以標準扣除估算</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="block text-xs font-medium text-ink-400 mb-1.5">報稅狀態</label>
+                        <select v-model="taxFilingStatus" class="input-clean-sm">
+                            <option value="single">單身</option>
+                            <option value="married">已婚合併</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-ink-400 mb-1.5">扶養人數</label>
+                        <input type="number" v-model.number="taxDependents" class="input-clean-sm" min="0" max="10" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-paper-100 rounded-xl p-3">
+                        <p class="text-xs text-ink-400 mb-0.5">估算稅後年薪</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ estimatedAfterTaxAnnual.toLocaleString() }}</p>
+                        <p class="text-[10px] text-ink-400 mt-0.5">估算所得稅 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
+                    </div>
+                    <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
+                        <p class="text-xs text-paper-200 mb-0.5">稅後月平均</p>
+                        <p class="text-base font-semibold tabular-nums">$ {{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
+                    <div v-for="g in savingsGoals" :key="g.amount" class="bg-white border border-paper-300 rounded-lg py-2">
+                        <p class="text-ink-400">{{ g.label }}</p>
+                        <p class="text-sm font-semibold text-ink-700">{{ g.months }}</p>
+                    </div>
+                </div>
+                <p class="text-[10px] text-ink-400 mt-2">目標以「每月可存」估算，實際仍依個人狀況調整。</p>
             </div>
 
             <!-- 5年預測 -->
@@ -271,6 +357,21 @@
                     </p>
                 </div>
             </div>
+
+            <div class="border-t border-paper-300 mt-4 pt-4 grid grid-cols-2 gap-4 text-center text-xs">
+                <div>
+                    <p class="text-ink-400 mb-1">每月可存</p>
+                    <p class="text-base font-semibold tabular-nums" :class="monthlyDisposable >= 0 ? 'text-ink-700' : 'text-red-500'">
+                        {{ monthlyDisposable >= 0 ? '+' : '−' }} {{ Math.abs(monthlyDisposable).toLocaleString() }}
+                    </p>
+                </div>
+                <div class="border-l border-paper-300">
+                    <p class="text-ink-400 mb-1">每月可存</p>
+                    <p class="text-base font-semibold tabular-nums" :class="monthlyDisposableB >= 0 ? 'text-azure' : 'text-red-500'">
+                        {{ monthlyDisposableB >= 0 ? '+' : '−' }} {{ Math.abs(monthlyDisposableB).toLocaleString() }}
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- 回本分析分析 (僅比較模式) -->
@@ -367,6 +468,18 @@ const HEALTH_GRADES = [
     169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 313000
 ]
 
+const TAX_BRACKETS = [
+    { min: 0,       max: 590000,   rate: 0.05, subtract: 0       },
+    { min: 590000,  max: 1330000,  rate: 0.12, subtract: 41300   },
+    { min: 1330000, max: 2660000,  rate: 0.20, subtract: 147700  },
+    { min: 2660000, max: 4980000,  rate: 0.30, subtract: 413700  },
+    { min: 4980000, max: Infinity, rate: 0.40, subtract: 911700  },
+]
+const EXEMPTION_PER_PERSON  = 97000
+const SALARY_SPECIAL_MAX    = 218000
+const STANDARD_SINGLE       = 131000
+const STANDARD_MARRIED      = 262000
+
 const getGrade = (salary, table, max) => {
     if (salary < table[0]) return table[0]
     if (salary >= max)     return max
@@ -392,6 +505,9 @@ const inflationRate = ref(2)
 
 const relocationCost = ref(0)
 const copied = ref(false)
+const monthlyExpense = ref(20000)
+const taxFilingStatus = ref('single')
+const taxDependents = ref(0)
 
 const donutChartRef = ref(null)
 const lineChartRef  = ref(null)
@@ -460,10 +576,81 @@ const yearlyNet   = computed(() => res.value.yNet)
 const employerCost = computed(() => res.value.empCost)
 const totalCost   = computed(() => res.value.tCost)
 
+const monthlyDisposable = computed(() => monthlyNet.value - (monthlyExpense.value || 0))
+const savingsRate = computed(() => {
+    if (monthlyNet.value <= 0) return 0
+    return (monthlyDisposable.value / monthlyNet.value) * 100
+})
+
 const monthlyNetB = computed(() => resB.value.mNet)
 const yearlyNetB  = computed(() => resB.value.yNet)
 const laborInsB   = computed(() => resB.value.labor)
 const healthInsB  = computed(() => resB.value.health)
+const monthlyDisposableB = computed(() => monthlyNetB.value - (monthlyExpense.value || 0))
+
+const emergencyFund = computed(() => {
+    const expense = monthlyExpense.value || 0
+    const disposable = monthlyDisposable.value
+    if (expense <= 0 || disposable <= 0) return null
+    return {
+        m3: Math.ceil((expense * 3) / disposable),
+        m6: Math.ceil((expense * 6) / disposable),
+        m12: Math.ceil((expense * 12) / disposable),
+    }
+})
+
+const annualSalaryIncome = computed(() => {
+    const s = salary.value || 0
+    const b = bonus.value || 0
+    return Math.round(s * (12 + b))
+})
+
+const taxExemptions = computed(() => {
+    let count = 1
+    if (taxFilingStatus.value === 'married') count += 1
+    count += (taxDependents.value || 0)
+    return count
+})
+
+const taxStandardDeduction = computed(() =>
+    taxFilingStatus.value === 'married' ? STANDARD_MARRIED : STANDARD_SINGLE
+)
+
+const estimatedIncomeTax = computed(() => {
+    const pensionDeduct = pensionSelf.value * 12
+    const taxable = annualSalaryIncome.value
+        - Math.min(annualSalaryIncome.value, SALARY_SPECIAL_MAX)
+        - (taxExemptions.value * EXEMPTION_PER_PERSON)
+        - taxStandardDeduction.value
+        - pensionDeduct
+    const income = Math.max(0, Math.round(taxable))
+    if (income <= 0) return 0
+    for (const b of TAX_BRACKETS) {
+        if (income <= b.max) {
+            return Math.max(0, Math.round(income * b.rate - b.subtract))
+        }
+    }
+    return 0
+})
+
+const estimatedAfterTaxAnnual = computed(() => {
+    const base = yearlyNet.value
+    return Math.max(0, Math.round(base - estimatedIncomeTax.value))
+})
+
+const savingsGoals = computed(() => {
+    const goals = [
+        { label: '30 萬', amount: 300000 },
+        { label: '100 萬', amount: 1000000 },
+        { label: '300 萬', amount: 3000000 },
+    ]
+    const disposable = monthlyDisposable.value
+    return goals.map(g => {
+        if (disposable <= 0) return { ...g, months: '無法達成' }
+        const m = Math.ceil(g.amount / disposable)
+        return { ...g, months: m > 240 ? '超過 20 年' : `${m} 個月` }
+    })
+})
 
 // ── 5年預測 ────────────────────────────────────────────────────
 const forecast = computed(() => {
@@ -681,18 +868,21 @@ watch(mode, () => { if (mode.value === 'single') setTimeout(updateCharts, 100) }
 onMounted(() => {
     try {
         const saved = localStorage.getItem('taicalc_salary_inputs')
-        if (saved) {
-            const data = JSON.parse(saved)
-            if (data.salary)              salary.value  = data.salary
-            if (data.bonus  !== undefined) bonus.value  = data.bonus
-            if (data.pension !== undefined) pension.value = data.pension
-            if (data.relocationCost !== undefined) relocationCost.value = data.relocationCost
-        }
-    } catch (e) {}
-    setTimeout(updateCharts, 100)
+    if (saved) {
+        const data = JSON.parse(saved)
+        if (data.salary)              salary.value  = data.salary
+        if (data.bonus  !== undefined) bonus.value  = data.bonus
+        if (data.pension !== undefined) pension.value = data.pension
+        if (data.relocationCost !== undefined) relocationCost.value = data.relocationCost
+        if (data.taxFilingStatus) taxFilingStatus.value = data.taxFilingStatus
+        if (data.taxDependents !== undefined) taxDependents.value = data.taxDependents
+        if (data.monthlyExpense !== undefined) monthlyExpense.value = data.monthlyExpense
+    }
+} catch (e) {}
+setTimeout(updateCharts, 100)
 })
 
-watch([salary, bonus, pension, relocationCost], ([s, b, p, r]) => {
-    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p, relocationCost: r }))
+watch([salary, bonus, pension, relocationCost, monthlyExpense, taxFilingStatus, taxDependents], ([s, b, p, r, e, f, d]) => {
+    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p, relocationCost: r, monthlyExpense: e, taxFilingStatus: f, taxDependents: d }))
 })
 </script>
