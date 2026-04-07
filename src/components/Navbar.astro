@@ -19,8 +19,10 @@ const isActive = (href: string) => {
             <a href="/tools/salary-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/salary') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>薪資</a>
             <a href="/tools/income-tax-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/income-tax') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>所得稅</a>
             <a href="/tools/mortgage-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/mortgage') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>房貸</a>
+            <a href="/housing-toolbox" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/housing-toolbox') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>居住決策</a>
             <a href="/tools/fire-calculator" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tools/fire') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>退休</a>
             <span class="w-px h-4 bg-paper-300 mx-1"></span>
+            <a href="/tax-season" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/tax-season') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>報稅季</a>
             <a href="/blog" class={`px-3 py-1.5 rounded-lg transition-colors ${isActive('/blog') ? 'text-ink-700 bg-paper-200 font-medium' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200'}`}>專欄</a>
         </div>
 
@@ -54,9 +56,11 @@ const isActive = (href: string) => {
         <div class="h-px bg-paper-300 my-3"></div>
         <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">居住與投資</p>
         <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">房貸試算</a>
+        <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">居住決策工具箱</a>
         <a href="/tools/fire-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">FIRE 退休規劃</a>
         <a href="/tools/labor-pension-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">勞退試算</a>
         <div class="h-px bg-paper-300 my-3"></div>
+        <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">報稅季攻略</a>
         <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">專欄文章</a>
     </div>
 </div>

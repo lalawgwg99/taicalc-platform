@@ -1,0 +1,147 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "2026 報稅季攻略｜TaiCalc";
+const description = "2026 台灣報稅季完整攻略：免稅額、扣除額、特別扣除、節稅思路與試算流程。";
+
+const checklist = [
+  {
+    title: "先試算再申報",
+    desc: "輸入年薪、扣除與保險費，先看應繳稅額，避免多繳或漏繳。",
+    href: "/tools/income-tax-calculator",
+  },
+  {
+    title: "比對標準 vs 列舉",
+    desc: "把房貸利息、捐贈、醫療費列進去，看看哪一種更省稅。",
+    href: "/tools/income-tax-calculator",
+  },
+  {
+    title: "確認勞退自提",
+    desc: "自提金額可減少課稅所得，對中高薪族群很有感。",
+    href: "/tools/salary-calculator",
+  },
+];
+
+const deductions = [
+  {
+    title: "免稅額",
+    desc: "每人基本免稅額，依規定年度更新。",
+  },
+  {
+    title: "標準扣除額",
+    desc: "快速省力的扣除方式，適合無大量列舉支出的族群。",
+  },
+  {
+    title: "列舉扣除額",
+    desc: "房貸利息、捐贈、醫療費等可列舉，若金額高更有利。",
+  },
+  {
+    title: "特別扣除額",
+    desc: "薪資、身心障礙、教育學費、儲蓄投資等扣除項目。",
+  },
+];
+
+const timeline = [
+  {
+    title: "3-4 月",
+    desc: "整理薪資、扣繳憑單、保險費、捐贈與房貸利息資料。",
+  },
+  {
+    title: "5 月",
+    desc: "線上申報與繳稅，確認扣除額與退稅方式。",
+  },
+  {
+    title: "6-7 月",
+    desc: "確認退稅入帳或補繳完成，保存申報紀錄。",
+  },
+];
+---
+
+<Layout title={title} description={description} fullWidth>
+  <section class="pt-16 pb-20 md:pt-24 md:pb-28 hero-sheen relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
+        <span class="text-xs font-medium text-brand-600">2026 報稅季重點整理</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-ink-700 tracking-tight leading-[1.2] mb-5">
+        報稅不用硬猜<br class="md:hidden">先試算再申報
+      </h1>
+      <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-2xl mx-auto mb-8">
+        用 TaiCalc 把免稅額、扣除額、特別扣除一次跑完，找出最省稅的填法。
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="/tools/income-tax-calculator" class="btn-primary rounded-xl px-5 py-3 text-sm">開始試算稅額</a>
+        <a href="/tools/salary-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-paper-300 text-ink-600 text-sm font-medium hover:border-brand hover:text-brand transition-colors">先算薪資實拿</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white section-wash">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="max-w-xl mb-10 md:mb-14">
+        <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">三步走</span>
+        <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">報稅流程超簡化</h2>
+        <p class="text-sm text-ink-400 leading-relaxed mt-2">先試算、再比較扣除方式、最後確認可減免項目。</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {checklist.map((item, i) => (
+          <a href={item.href}
+             class="group flex flex-col p-6 bg-white border border-paper-300 rounded-2xl hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
+            <span class="text-[10px] font-semibold text-ink-400 uppercase tracking-widest">STEP {String(i + 1).padStart(2, '0')}</span>
+            <h3 class="text-base font-semibold text-ink-700 mt-3 mb-2 group-hover:text-brand transition-colors">{item.title}</h3>
+            <p class="text-sm text-ink-400 leading-relaxed">{item.desc}</p>
+            <span class="text-xs text-brand font-medium mt-4 inline-flex items-center gap-1">立即試算
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-paper-100 section-wash">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="max-w-xl mb-10 md:mb-14">
+        <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">扣除額重點</span>
+        <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">哪些扣除額最有感</h2>
+        <p class="text-sm text-ink-400 leading-relaxed mt-2">把常見扣除項目列清楚，對照自己的資料做最省選擇。</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {deductions.map((item) => (
+          <div class="p-5 bg-white border border-paper-300 rounded-2xl">
+            <h3 class="text-sm font-semibold text-ink-700 mb-2">{item.title}</h3>
+            <p class="text-xs text-ink-400 leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-24 bg-white section-wash">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="max-w-xl mb-10 md:mb-14">
+        <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">報稅時間軸</span>
+        <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">什麼時候準備什麼</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {timeline.map((item) => (
+          <div class="p-6 bg-white border border-paper-300 rounded-2xl">
+            <h3 class="text-base font-semibold text-ink-700 mb-2">{item.title}</h3>
+            <p class="text-sm text-ink-400 leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-ink-700 text-paper-50 rounded-2xl">
+        <div>
+          <h3 class="text-lg font-semibold">把稅額先算清楚，申報就不慌</h3>
+          <p class="text-sm text-paper-200 mt-1">用試算機跑一次，5 分鐘完成確認。</p>
+        </div>
+        <a href="/tools/income-tax-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-ink-700 text-sm font-medium hover:bg-paper-100 transition-colors">開始試算</a>
+      </div>
+    </div>
+  </section>
+</Layout>

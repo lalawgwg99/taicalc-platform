@@ -42,6 +42,17 @@
           <input type="number" v-model.number="otherIncome" class="input-clean tabular-nums" placeholder="0" />
         </div>
       </div>
+
+      <div>
+        <label class="block text-xs font-medium text-ink-400 mb-1.5">股利課稅方式</label>
+        <div class="seg-control">
+          <button @click="dividendTaxMode = 'combined'"
+            :class="['seg-btn', dividendTaxMode === 'combined' ? 'seg-btn-active' : '']">合併計稅（8.5% 抵減）</button>
+          <button @click="dividendTaxMode = 'separate'"
+            :class="['seg-btn', dividendTaxMode === 'separate' ? 'seg-btn-active' : '']">分離課稅（28%）</button>
+        </div>
+        <p class="text-[10px] text-ink-400 mt-1">高稅率族群可比較分離課稅；本頁提供估算參考。</p>
+      </div>
     </div>
 
     <!-- ── 家庭狀況 ── -->
@@ -63,6 +74,21 @@
           <label class="block text-xs font-medium text-ink-400 mb-1.5">扶養親屬人數</label>
           <input type="number" v-model.number="dependents" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">含子女、父母</p>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>
+          <input type="number" v-model.number="longTermCareEligibleCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <p class="text-[10px] text-ink-400 mt-1">每人 180,000（需符合規定）</p>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-ink-400 mb-1.5">身心障礙人數</label>
+          <input type="number" v-model.number="disabilityCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <p class="text-[10px] text-ink-400 mt-1">每人 218,000</p>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-ink-400 mb-1.5">學前幼兒人數</label>
+          <input type="number" v-model.number="preschoolCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <p class="text-[10px] text-ink-400 mt-1">每人 150,000</p>
         </div>
       </div>
 
@@ -164,6 +190,10 @@
           <span class="text-ink-400">全年綜合所得總額</span>
           <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(grossIncome) }}</span>
         </div>
+        <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">股利所得（分離課稅）</span>
+          <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(dividendIncome) }}</span>
+        </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">薪資特別扣除額</span>
           <span class="tabular-nums text-red-500">− $ {{ fmt(salarySpecialDeduction) }}</span>
@@ -176,6 +206,22 @@
           <span class="text-ink-400">{{ deductionType === 'standard' ? '標準' : '列舉' }}扣除額</span>
           <span class="tabular-nums text-red-500">− $ {{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
         </div>
+        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">長照特別扣除額</span>
+          <span class="tabular-nums text-red-500">− $ {{ fmt(longTermCareDeduction) }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">身障特別扣除額</span>
+          <span class="tabular-nums text-red-500">− $ {{ fmt(disabilityDeduction) }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">幼兒學前特別扣除額</span>
+          <span class="tabular-nums text-red-500">− $ {{ fmt(preschoolDeduction) }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">儲蓄投資特別扣除額</span>
+          <span class="tabular-nums text-red-500">− $ {{ fmt(savingsDeduction) }}</span>
+        </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200 font-medium">
           <span class="text-ink-600">課稅所得淨額</span>
           <span class="tabular-nums text-ink-700">$ {{ fmt(Math.max(0, taxableIncome)) }}</span>
@@ -184,11 +230,30 @@
           <span class="text-ink-400">適用稅率</span>
           <span class="font-bold text-azure">{{ taxBracketLabel }}</span>
         </div>
+        <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">股利可抵減稅額</span>
+          <span class="tabular-nums text-green-600">− $ {{ fmt(dividendCredit) }}</span>
+        </div>
+        <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">股利分離課稅</span>
+          <span class="tabular-nums text-ink-700">+ $ {{ fmt(dividendSeparateTax) }}</span>
+        </div>
         <div class="flex justify-between items-center py-2 font-semibold">
           <span class="text-ink-700">估算應納稅額</span>
           <span class="tabular-nums text-ink-800">$ {{ fmt(totalTax) }}</span>
         </div>
       </div>
+
+        <div class="grid grid-cols-2 gap-3 text-center text-xs">
+          <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
+            <p class="text-paper-200 mb-0.5">稅後年收入</p>
+            <p class="text-base font-semibold tabular-nums">$ {{ fmt(afterTaxIncome) }}</p>
+          </div>
+          <div class="bg-paper-200/60 rounded-xl p-3">
+            <p class="text-ink-400 mb-0.5">月平均稅後</p>
+            <p class="text-base font-bold text-ink-700 tabular-nums">$ {{ fmt(Math.round(afterTaxIncome / 12)) }}</p>
+          </div>
+        </div>
 
       <!-- 有效稅率 -->
       <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -203,6 +268,27 @@
         <div class="bg-paper-200/60 rounded-xl p-3">
           <p class="text-ink-400 mb-0.5">所得後稅率</p>
           <p class="text-base font-bold text-ink-700">{{ afterTaxRate }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 退稅 / 補繳估算 -->
+    <div class="card-surface p-5">
+      <h3 class="text-sm font-medium text-ink-600 mb-3">退稅 / 補繳估算</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-ink-400 mb-1.5">已扣繳稅額（NT$）</label>
+          <input type="number" v-model.number="withholdingTax" class="input-clean tabular-nums" placeholder="0" />
+          <p class="text-[10px] text-ink-400 mt-1">薪資單或扣繳憑單上的總額</p>
+        </div>
+        <div class="rounded-xl p-3 border border-paper-300 flex flex-col justify-center text-center"
+             :class="netTax >= 0 ? 'bg-red-50' : 'bg-green-50'">
+          <p class="text-xs mb-1" :class="netTax >= 0 ? 'text-red-500' : 'text-green-600'">
+            {{ netTax >= 0 ? '預估補繳' : '預估退稅' }}
+          </p>
+          <p class="text-base font-semibold tabular-nums" :class="netTax >= 0 ? 'text-red-600' : 'text-green-600'">
+            {{ netTax >= 0 ? '+' : '−' }} {{ Math.abs(netTax).toLocaleString() }}
+          </p>
         </div>
       </div>
     </div>
@@ -244,7 +330,7 @@
         <div>• 儲蓄投資特扣：<strong>$270,000</strong></div>
         <div>• 身障特別扣除：<strong>$218,000</strong>/人</div>
         <div>• 幼兒學前特扣：<strong>$150,000</strong>/人</div>
-        <div>• 長照特別扣除：<strong>$120,000</strong>/人</div>
+        <div>• 長照特別扣除：<strong>$180,000</strong>/人</div>
       </div>
     </div>
 
@@ -260,6 +346,9 @@ const SALARY_SPECIAL_MAX    = 218000   // 薪資特別扣除上限
 const STANDARD_SINGLE       = 131000   // 標準扣除（單身）
 const STANDARD_MARRIED      = 262000   // 標準扣除（已婚合申）
 const SAVINGS_DEDUCTION_MAX = 270000   // 儲蓄投資特別扣除
+const LONG_TERM_CARE_PER_PERSON = 180000 // 長照特別扣除/人
+const DISABILITY_DEDUCTION_PER_PERSON = 218000
+const PRESCHOOL_DEDUCTION_PER_PERSON = 150000
 
 const TAX_BRACKETS = [
   { min: 0,       max: 590000,   rate: 0.05, subtract: 0       },
@@ -278,7 +367,11 @@ const otherIncome       = ref(0)
 const spouseSalary      = ref(0)
 const filingStatus      = ref('single')
 const dependents        = ref(0)
+const longTermCareEligibleCount = ref(0)
+const disabilityCount   = ref(0)
+const preschoolCount    = ref(0)
 const deductionType     = ref('standard')
+const dividendTaxMode   = ref('combined')
 
 // 列舉扣除細項
 const donationDeduction   = ref(0)
@@ -287,6 +380,7 @@ const medicalDeduction    = ref(0)
 const mortgageDeduction   = ref(0)   // 上限 300,000
 const rentDeduction       = ref(0)   // 上限 120,000
 const politicalDeduction  = ref(0)
+const withholdingTax      = ref(0)
 
 const copied = ref(false)
 
@@ -297,7 +391,7 @@ const fmt = (n) => (n ? Math.round(n).toLocaleString('zh-TW') : '0')
 // 總所得
 const grossIncome = computed(() =>
   (salaryIncome.value || 0)
-  + (dividendIncome.value || 0)
+  + (dividendTaxMode.value === 'combined' ? (dividendIncome.value || 0) : 0)
   + (interestIncome.value || 0)
   + (rentalIncome.value || 0)
   + (otherIncome.value || 0)
@@ -335,6 +429,19 @@ const savingsDeduction = computed(() =>
   Math.min(interestIncome.value || 0, SAVINGS_DEDUCTION_MAX)
 )
 
+// 長照特別扣除
+const longTermCareDeduction = computed(() =>
+  Math.max(0, longTermCareEligibleCount.value || 0) * LONG_TERM_CARE_PER_PERSON
+)
+
+const disabilityDeduction = computed(() =>
+  Math.max(0, disabilityCount.value || 0) * DISABILITY_DEDUCTION_PER_PERSON
+)
+
+const preschoolDeduction = computed(() =>
+  Math.max(0, preschoolCount.value || 0) * PRESCHOOL_DEDUCTION_PER_PERSON
+)
+
 // 列舉扣除合計（含各項上限）
 const itemizedTotal = computed(() => {
   const perPersonInsuranceCap = 24000 * totalExemptions.value
@@ -361,6 +468,9 @@ const taxableIncome = computed(() => {
     - exemptionAmount.value
     - deduction
     - savingsDeduction.value
+    - longTermCareDeduction.value
+    - disabilityDeduction.value
+    - preschoolDeduction.value
 })
 
 // 計算稅額（累進）
@@ -374,7 +484,25 @@ const calcTax = (income) => {
   return 0
 }
 
-const totalTax = computed(() => Math.max(0, calcTax(taxableIncome.value)))
+const baseTax = computed(() => Math.max(0, calcTax(taxableIncome.value)))
+
+const dividendCredit = computed(() => {
+  if (dividendTaxMode.value !== 'combined') return 0
+  const credit = (dividendIncome.value || 0) * 0.085
+  return Math.min(80000, Math.round(credit))
+})
+
+const dividendSeparateTax = computed(() => {
+  if (dividendTaxMode.value !== 'separate') return 0
+  return Math.round((dividendIncome.value || 0) * 0.28)
+})
+
+const totalTax = computed(() => {
+  if (dividendTaxMode.value === 'separate') {
+    return Math.max(0, baseTax.value + dividendSeparateTax.value)
+  }
+  return Math.max(0, baseTax.value - dividendCredit.value)
+})
 
 // 目前適用稅率級距
 const currentBracket = computed(() => {
@@ -393,19 +521,31 @@ const taxBracketLabel = computed(() => {
 })
 
 // 有效稅率 & 稅後率
+const totalIncomeForDisplay = computed(() => {
+  return grossIncome.value + (dividendTaxMode.value === 'separate' ? (dividendIncome.value || 0) : 0)
+})
+
+const afterTaxIncome = computed(() => {
+  return Math.max(0, totalIncomeForDisplay.value - totalTax.value)
+})
+
 const effectiveRate = computed(() => {
-  if (!grossIncome.value) return '0'
-  return (totalTax.value / grossIncome.value * 100).toFixed(1)
+  if (!totalIncomeForDisplay.value) return '0'
+  return (totalTax.value / totalIncomeForDisplay.value * 100).toFixed(1)
 })
 
 const afterTaxRate = computed(() => {
-  if (!grossIncome.value) return '100'
-  return ((1 - totalTax.value / grossIncome.value) * 100).toFixed(1)
+  if (!totalIncomeForDisplay.value) return '100'
+  return ((1 - totalTax.value / totalIncomeForDisplay.value) * 100).toFixed(1)
+})
+
+const netTax = computed(() => {
+  return Math.round(totalTax.value - (withholdingTax.value || 0))
 })
 
 // ── 複製結果 ───────────────────────────────────────────────
 const copyResult = async () => {
-  const text = `TaiCalc 綜合所得稅試算結果\n── 2026 年度 ──\n全年所得：$${fmt(grossIncome.value)}\n應納稅額：$${fmt(totalTax.value)}\n有效稅率：${effectiveRate.value}%\n（以上為估算，詳見 taicalc.com）`
+  const text = `TaiCalc 綜合所得稅試算結果\n── 2026 年度 ──\n全年所得：$${fmt(totalIncomeForDisplay.value)}\n應納稅額：$${fmt(totalTax.value)}\n有效稅率：${effectiveRate.value}%\n（以上為估算，詳見 taicalc.com）`
   try {
     await navigator.clipboard.writeText(text)
     copied.value = true

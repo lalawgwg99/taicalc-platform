@@ -18,6 +18,11 @@ body {
     @apply bg-gradient-to-b from-paper-50 to-paper-100 text-ink-700 antialiased;
     line-height: 1.7;
     letter-spacing: 0.01em;
+    background-image:
+        radial-gradient(1200px 520px at 10% -10%, rgba(5, 150, 105, 0.12), transparent 55%),
+        radial-gradient(900px 480px at 95% 0%, rgba(8, 145, 178, 0.10), transparent 60%),
+        linear-gradient(180deg, rgba(250, 250, 248, 0.9), rgba(247, 245, 240, 1));
+    background-attachment: fixed;
 }
 
 /* ─── Component Layer ─────────────────────────────────────────── */
@@ -25,6 +30,7 @@ body {
 
     /* Surface card — 升級版卡片設計 */
     .card-surface {
+        @apply bg-white/90 border border-paper-300 rounded-2xl shadow-card backdrop-blur-[2px];
         @apply bg-gradient-to-br from-white to-paper-100 border border-paper-200 rounded-2xl shadow-card transition-all duration-300;
     }
 
@@ -54,6 +60,7 @@ body {
 
     /* Primary Button — 主按鈕 */
     .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-normal px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-600 active:scale-[0.98] shadow-card-hover;
         @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold px-8 py-3.5 rounded-full
                transition-all duration-300 cursor-pointer select-none hover:from-brand-600 hover:to-brand-700 active:scale-[0.98]
                shadow-lg hover:shadow-xl hover:-translate-y-0.5;
@@ -205,6 +212,18 @@ body {
 
     .step-indicator-inactive {
         @apply w-10 h-10 rounded-full bg-paper-200 text-ink-400 font-bold flex items-center justify-center;
+    }
+
+    .section-wash {
+        background-image:
+            radial-gradient(700px 260px at 10% 0%, rgba(5, 150, 105, 0.10), transparent 60%),
+            radial-gradient(700px 240px at 95% 10%, rgba(8, 145, 178, 0.10), transparent 62%);
+    }
+
+    .hero-sheen {
+        background-image:
+            radial-gradient(520px 260px at 20% 10%, rgba(8, 145, 178, 0.18), transparent 70%),
+            radial-gradient(420px 220px at 90% 0%, rgba(5, 150, 105, 0.18), transparent 70%);
     }
 }
 
