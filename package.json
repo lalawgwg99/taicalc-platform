@@ -1,28 +1,47 @@
 {
-  "name": "better-belt",
+  "name": "taicalc-platform",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit",
+    "analyze": "astro build && npx @astrojs/telemetry",
+    "security-audit": "npm audit",
+    "clean": "rm -rf dist node_modules/.vite",
+    "optimize-images": "echo 'Image optimization configured via vite-plugin-image-optimizer'"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
     "@astrojs/tailwind": "^6.0.2",
     "@astrojs/vue": "^5.1.4",
-    "@google/generative-ai": "^0.24.1",
     "astro": "^5.16.7",
-    "autoprefixer": "^10.4.23",
     "chart.js": "^4.5.1",
     "decimal.js": "^10.6.0",
     "lucide-react": "^0.562.0",
-    "numeral": "^2.0.6",
-    "postcss": "^8.5.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tailwindcss": "^3.4.17",
+    "vite-plugin-image-optimizer": "^1.1.6",
     "vue": "^3.5.26"
+  },
+  "devDependencies": {
+    "@astrojs/telemetry": "^3.3.0",
+    "@types/node": "^20.19.37",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^10.8.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

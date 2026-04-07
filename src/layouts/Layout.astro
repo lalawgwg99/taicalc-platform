@@ -10,18 +10,24 @@ interface Props {
     hideNav?: boolean;
     hideFooter?: boolean;
     ogImage?: string;
+    keywords?: string;
+    type?: string;
 }
 
-const { 
-    title, 
-    description = "專為台灣人設計的免費財務計算機。整合 2026 最新勞健保費率、薪資扣除額、房貸試算、加班費規則與 FIRE 退休規劃。",
+const {
+    title,
+    description = "TaiCalc 專業財務計算平台｜台灣人專用免費線上工具。2026 最新薪資稅額、勞健保級距、新青安房貸試算、FIRE 退休規劃、股票當沖手續費計算。完全本地運算，資料不外傳。",
     fullWidth = false,
     hideNav = false,
     hideFooter = false,
-    ogImage = "https://taicalc.com/og-image.png"
+    ogImage = "https://taicalc.com/og-image.png",
+    keywords = "薪資計算機,房貸試算,所得稅,2026新制,勞健保,FIRE退休,當沖手續費,台灣財務計算機,免費線上工具",
+    type = "website"
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteName = "TaiCalc 財務計算平台";
+const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 ---
 
 <!DOCTYPE html>
@@ -30,22 +36,72 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="author" content="TaiCalc" />
         <meta name="theme-color" content="#F5F4F0" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="language" content="Chinese" />
+        <meta name="revisit-after" content="7 days" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
         <link rel="canonical" href={canonicalURL} />
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
         <!-- Open Graph / Social -->
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={type} />
+        <meta property="og:site_name" content={siteName} />
         <meta property="og:url" content={canonicalURL} />
-        <meta property="og:title" content={title} />
+        <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
+        <meta property="og:locale" content="zh_TW" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
+        <meta name="twitter:site" content="@taicalc" />
+        <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
 
-		<title>{title}</title>
+		<title>{fullTitle}</title>
+
+        <!-- JSON-LD Structured Data -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": siteName,
+            "alternateName": "台灣財務計算機",
+            "url": "https://taicalc.com",
+            "description": description,
+            "keywords": keywords,
+            "inLanguage": "zh-TW",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://taicalc.com/?search={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        })} />
+
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "TaiCalc",
+            "url": "https://taicalc.com",
+            "logo": "https://taicalc.com/favicon.svg",
+            "description": "專為台灣人設計的免費財務計算機平台",
+            "sameAs": [
+                "https://github.com/lalawgwg99/taicalc-platform"
+            ],
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "service@taicalc.com",
+                "contactType": "customer service"
+            }
+        })} />
 
         <!-- Fonts — Material Symbols + Noto Serif TC (hero display) -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
