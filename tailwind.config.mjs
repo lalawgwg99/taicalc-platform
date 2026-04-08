@@ -4,47 +4,90 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: [
+          '"Space Grotesk"',
+          '"IBM Plex Sans"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+        ],
+        serif: [
+          '"Source Serif 4"',
+          '"Noto Serif TC"',
+          'Georgia',
+          '"Times New Roman"',
+          'serif',
+        ],
+      },
       colors: {
-        // 主要顏色系統 - 墨水色系
-        ink: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-        },
-        // 紙張色系 - 溫暖米色
+        // Hermes-inspired dark palette
         paper: {
-          50: '#fefcf9',
-          100: '#faf7f2',
-          200: '#f5efe7',
-          300: '#e8dfd2',
-          400: '#d4c4ad',
-          500: '#b8a48a',
-          600: '#9a866a',
-          700: '#7d6a54',
-          800: '#5f4f3d',
-          900: '#42342b',
+          50: '#0B0B0C',
+          100: '#0F1012',
+          200: '#151619',
+          300: '#202226',
+          400: '#2D3036',
+          500: '#3C4047',
+          600: '#4B5059',
+          700: '#5C626D',
+          800: '#727A86',
+          900: '#8B949F',
         },
-        // 品牌色系 - 專業深藍 + 翡翠綠
+        ink: {
+          50: '#15171B',
+          100: '#1B1E23',
+          200: '#2A2E35',
+          300: '#8E929A',
+          400: '#A6ABB4',
+          500: '#C7CBD3',
+          600: '#E1E4EA',
+          700: '#F2F4F8',
+          800: '#FFFFFF',
+          900: '#FFFFFF',
+        },
         brand: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          50: '#2A1D00',
+          100: '#3A2800',
+          200: '#5A3D00',
+          300: '#8A5B00',
+          400: '#B07200',
+          500: '#FFAC02',
+          600: '#D89000',
+          700: '#B97800',
+          800: '#905F00',
+          900: '#6B4700',
+          DEFAULT: '#FFAC02',
+          dark: '#D89000',
         },
-        // 主色調 - 深海軍藍
+        azure: {
+          50: '#0C151D',
+          100: '#111B25',
+          200: '#162330',
+          300: '#1F2E3F',
+          400: '#2A3B52',
+          500: '#9DD1FF',
+          600: '#7DBAF5',
+          700: '#5EA2E8',
+          light: '#9DD1FF',
+          DEFAULT: '#9DD1FF',
+          dark: '#5EA2E8',
+        },
+        signal: {
+          green: '#16A34A',
+          red: '#DC2626',
+          amber: '#D97706',
+          DEFAULT: '#16A34A',
+        },
+        earth: {
+          DEFAULT: '#C9952C',
+          light: '#E3B250',
+          dark: '#9A6F1C',
+        },
+        // Legacy palettes used across existing calculators
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -57,7 +100,6 @@ export default {
           800: '#1e40af',
           900: '#1e3a8a',
         },
-        // 警告色系 - 琥珀金
         amber: {
           50: '#fffbeb',
           100: '#fef3c7',
@@ -70,7 +112,6 @@ export default {
           800: '#92400e',
           900: '#78350f',
         },
-        // 成功色系 - 翡翠綠
         emerald: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -83,7 +124,6 @@ export default {
           800: '#065f46',
           900: '#064e3b',
         },
-        // 危險色系 - 玫瑰紅
         rose: {
           50: '#fff1f2',
           100: '#ffe4e6',
@@ -96,7 +136,6 @@ export default {
           800: '#9f1239',
           900: '#881337',
         },
-        // 信息色系 - 天藍
         sky: {
           50: '#f0f9ff',
           100: '#e0f2fe',
@@ -111,7 +150,7 @@ export default {
         },
       },
       animation: {
-        'fade-in-up': 'fadeInUp 0.3s ease-out',
+        'fade-in-up': 'fadeInUp 0.25s ease-out',
         'fade-in': 'fadeIn 0.2s ease-out',
         'slide-in-right': 'slideInRight 0.3s ease-out',
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
@@ -131,8 +170,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.4)' },
-          '50%': { boxShadow: '0 0 0 8px rgba(34, 197, 94, 0)' },
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(255, 172, 2, 0.35)' },
+          '50%': { boxShadow: '0 0 0 8px rgba(255, 172, 2, 0)' },
         },
         bounceSubtle: {
           '0%, 100%': { transform: 'translateY(0)' },
@@ -140,24 +179,25 @@ export default {
         },
       },
       boxShadow: {
-        'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
-        'card-hover': '0 12px 32px rgba(0, 0, 0, 0.12)',
-        'input': '0 0 0 3px rgba(59, 130, 246, 0.15)',
-        'input-brand': '0 0 0 3px rgba(34, 197, 94, 0.15)',
-        'glow-brand': '0 0 20px rgba(34, 197, 94, 0.3)',
+        card: '0 0 0 1px rgba(255,255,255,0.04), 0 18px 35px -24px rgba(0,0,0,0.7)',
+        'card-hover':
+          '0 0 0 1px rgba(255,255,255,0.08), 0 24px 45px -28px rgba(0,0,0,0.75)',
+        input: '0 0 0 3px rgba(255,172,2,0.18)',
+        'input-brand': '0 0 0 3px rgba(255,172,2,0.18)',
+        'glow-brand': '0 0 20px rgba(255,172,2,0.3)',
         'glow-primary': '0 0 20px rgba(59, 130, 246, 0.3)',
       },
       borderRadius: {
-        'xl': '1rem',
-        '2xl': '1.5rem',
-        '3xl': '2rem',
+        xl: '12px',
+        '2xl': '16px',
+        '3xl': '24px',
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #FFAC02 0%, #D89000 100%)',
         'gradient-primary': 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
         'gradient-gold': 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
-        'gradient-warm': 'linear-gradient(180deg, #fefcf9 0%, #f5efe7 100%)',
-        'gradient-card': 'linear-gradient(145deg, #ffffff 0%, #faf7f2 100%)',
+        'gradient-warm': 'linear-gradient(180deg, #0F1012 0%, #151619 100%)',
+        'gradient-card': 'linear-gradient(145deg, #151619 0%, #0F1012 100%)',
       },
     },
   },

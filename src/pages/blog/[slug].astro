@@ -20,31 +20,31 @@ const description = post.data.excerpt;
 
 <Layout title={title} description={description}>
     <!-- Breadcrumb -->
-    <div class="text-sm text-stone-500 mb-8 flex items-center gap-2">
-        <a href="/" class="hover:text-stone-800 transition-colors">首頁</a>
+    <div class="text-sm text-ink-400 mb-8 flex items-center gap-2">
+        <a href="/" class="hover:text-ink-700 transition-colors">首頁</a>
         <span>/</span>
-        <a href="/blog" class="hover:text-stone-800 transition-colors">專欄文章</a>
+        <a href="/blog" class="hover:text-ink-700 transition-colors">專欄文章</a>
         <span>/</span>
-        <span class="text-stone-800 font-medium truncate max-w-[200px]">{post.data.title}</span>
+        <span class="text-ink-700 font-medium truncate max-w-[200px]">{post.data.title}</span>
     </div>
 
     <article class="max-w-3xl mx-auto">
         <!-- Header -->
         <header class="mb-10 text-center">
             <div class="flex items-center justify-center gap-2 mb-4">
-                <span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-bold rounded-full border border-brand-100">
+                <span class="px-3 py-1 bg-brand-50 text-brand text-xs font-bold rounded-full border border-brand-200">
                     {post.data.category}
                 </span>
-                <time class="text-sm text-stone-500">{post.data.date}</time>
+                <time class="text-sm text-ink-400">{post.data.date}</time>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight leading-tight mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-ink-700 tracking-tight leading-tight mb-6">
                 {post.data.title}
             </h1>
             
             <!-- Tags -->
             <div class="flex flex-wrap justify-center gap-2 mb-8">
                 {post.data.tags.map((tag: string) => (
-                    <span class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-md">#{tag}</span>
+                    <span class="text-xs text-ink-400 bg-paper-200 border border-paper-300 px-2 py-1 rounded-md">#{tag}</span>
                 ))}
             </div>
 
@@ -63,7 +63,7 @@ const description = post.data.excerpt;
         
         <!-- Back Button -->
         <div class="mt-12 text-center">
-            <a href="/blog" class="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 font-medium px-6 py-3 bg-brand-50 rounded-full hover:bg-brand-100 transition-colors">
+            <a href="/blog" class="inline-flex items-center gap-2 text-brand hover:text-brand-600 font-medium px-6 py-3 bg-brand-50 rounded-full hover:bg-brand-100 transition-colors">
                 ← 回到專欄列表
             </a>
         </div>

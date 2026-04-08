@@ -34,11 +34,11 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 <html lang="zh-TW">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="author" content="TaiCalc" />
-        <meta name="theme-color" content="#F5F4F0" />
+        <meta name="theme-color" content="#0F1012" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
         <meta name="language" content="Chinese" />
@@ -103,10 +103,10 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             }
         })} />
 
-        <!-- Fonts — Material Symbols + Noto Serif TC (hero display) -->
+        <!-- Fonts — Space Grotesk + IBM Plex Sans -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet" />
 
         <!-- Google Analytics (GA4) -->
         { import.meta.env.PUBLIC_GA_ID && (
@@ -121,7 +121,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             </>
         )}
 	</head>
-    <body class="bg-paper-100 text-ink-700 min-h-screen flex flex-col font-sans antialiased selection:bg-ink-700 selection:text-paper-50">
+    <body class="bg-paper-100 text-ink-700 min-h-screen flex flex-col font-sans antialiased selection:bg-brand selection:text-paper-50">
         { !fullWidth ? (
             <div class="max-w-6xl mx-auto px-4 md:px-6 w-full flex-grow flex flex-col">
                 { !hideNav && <Navbar /> }
@@ -147,14 +147,14 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         <div id="fab-panel" class="hidden w-80 rounded-2xl overflow-hidden shadow-card-hover border border-paper-300 animate-fade-in-up">
 
             <!-- 標題列 -->
-            <div class="flex items-center justify-between px-4 py-3 bg-ink-700">
+            <div class="flex items-center justify-between px-4 py-3 bg-paper-200 border-b border-paper-300">
                 <div class="flex items-center gap-2">
                     <span class="text-sm">💡</span>
-                    <span class="text-sm font-medium text-paper-50">TaiCalc AI 助理</span>
-                    <span class="text-[10px] text-ink-300 bg-ink-600 px-1.5 py-0.5 rounded-full">算盤</span>
+                    <span class="text-sm font-medium text-ink-700">TaiCalc AI 助理</span>
+                    <span class="text-[10px] text-ink-400 bg-paper-100 border border-paper-300 px-1.5 py-0.5 rounded-full">算盤</span>
                 </div>
                 <button id="fab-close" aria-label="關閉"
-                    class="text-paper-300 hover:text-paper-50 transition-colors text-xl leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-ink-600">
+                    class="text-ink-400 hover:text-ink-700 transition-colors text-xl leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-paper-100">
                     ×
                 </button>
             </div>
@@ -167,20 +167,20 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             </div>
 
             <!-- 輸入列 -->
-            <div class="px-3 py-3 bg-white border-t border-paper-300 flex gap-2">
+            <div class="px-3 py-3 bg-paper-200 border-t border-paper-300 flex gap-2">
                 <input id="fab-input" type="text"
                     placeholder="例：月薪 5 萬實拿多少？"
-                    class="flex-1 text-xs bg-paper-200 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-300
-                           focus:outline-none focus:bg-white focus:ring-1 focus:ring-azure transition-all" />
+                    class="flex-1 text-xs bg-paper-100 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-400
+                           focus:outline-none focus:bg-paper-100 focus:ring-1 focus:ring-azure transition-all" />
                 <button id="fab-send"
                     class="bg-ink-700 text-paper-50 rounded-lg px-3 py-2 text-xs font-medium
-                           hover:bg-ink-600 transition-colors disabled:opacity-40">
+                           hover:bg-ink-800 transition-colors disabled:opacity-40">
                     送出
                 </button>
             </div>
 
             <!-- 免責標注 -->
-            <div class="px-3 pb-2.5 bg-white">
+            <div class="px-3 pb-2.5 bg-paper-200">
                 <p class="text-[10px] text-ink-400">由 Gemini AI 驅動 · 僅供參考，不構成投資建議</p>
             </div>
         </div>
@@ -188,7 +188,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         <!-- FAB 主按鈕 -->
         <button id="fab-toggle"
             class="flex items-center gap-2 bg-ink-700 text-paper-50 pl-3.5 pr-4 py-2.5 rounded-full
-                   shadow-lg hover:bg-ink-600 active:scale-95 transition-all duration-150 text-sm font-medium">
+                   shadow-lg hover:bg-ink-800 active:scale-95 transition-all duration-150 text-sm font-medium">
             <svg id="fab-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>

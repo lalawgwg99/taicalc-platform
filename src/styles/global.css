@@ -13,16 +13,24 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
-        Roboto, "Helvetica Neue", Arial, sans-serif;
-    @apply bg-gradient-to-b from-paper-50 to-paper-100 text-ink-700 antialiased;
+    font-family: "Space Grotesk", "IBM Plex Sans", -apple-system,
+        BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    @apply bg-paper-100 text-ink-700 antialiased;
     line-height: 1.7;
     letter-spacing: 0.01em;
     background-image:
-        radial-gradient(1200px 520px at 10% -10%, rgba(5, 150, 105, 0.12), transparent 55%),
-        radial-gradient(900px 480px at 95% 0%, rgba(8, 145, 178, 0.10), transparent 60%),
-        linear-gradient(180deg, rgba(250, 250, 248, 0.9), rgba(247, 245, 240, 1));
+        radial-gradient(800px 400px at 20% -10%, rgba(255, 172, 2, 0.12), transparent 60%),
+        radial-gradient(900px 500px at 80% -20%, rgba(255, 255, 255, 0.08), transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: auto, auto, 36px 36px, 36px 36px;
     background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+    }
 }
 
 /* ─── Component Layer ─────────────────────────────────────────── */
@@ -30,12 +38,12 @@ body {
 
     /* Surface card — 升級版卡片設計 */
     .card-surface {
-        @apply bg-white/90 border border-paper-300 rounded-2xl shadow-card backdrop-blur-[2px];
-        @apply bg-gradient-to-br from-white to-paper-100 border border-paper-200 rounded-2xl shadow-card transition-all duration-300;
+        @apply bg-paper-200 border border-paper-300 rounded-2xl shadow-card;
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
     }
 
     .card-surface-hover {
-        @apply card-surface hover:shadow-card-hover hover:border-brand-200 hover:-translate-y-1 transition-all duration-300;
+        @apply card-surface hover:shadow-card-hover hover:border-paper-400 hover:-translate-y-0.5 transition-all duration-200;
     }
 
     /* 卡片懸停發光效果 */
@@ -45,8 +53,7 @@ body {
 
     /* Input fields — 統一輸入框 */
     .input-clean {
-        @apply w-full bg-white border-2 border-transparent text-ink-700 rounded-xl px-4 py-3.5 text-base transition-all duration-200 placeholder:text-ink-300
-               focus:outline-none focus:bg-white focus:border-brand-500 focus:shadow-input-brand;
+        @apply w-full bg-paper-200 border border-paper-300 text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-400 focus:outline-none focus:bg-paper-100 focus:border-brand focus:shadow-input;
         font-weight: 400;
     }
 
@@ -60,16 +67,17 @@ body {
 
     /* Primary Button — 主按鈕 */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-normal px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-600 active:scale-[0.98] shadow-card-hover;
-        @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 to-brand-600 text-white font-semibold px-8 py-3.5 rounded-full
-               transition-all duration-300 cursor-pointer select-none hover:from-brand-600 hover:to-brand-700 active:scale-[0.98]
-               shadow-lg hover:shadow-xl hover:-translate-y-0.5;
+        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-800 active:scale-[0.98] shadow-card;
+    }
+
+    .btn-azure {
+        @apply inline-flex items-center justify-center gap-2 bg-brand text-paper-50 font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-brand-600 active:scale-[0.98] shadow-sm;
     }
 
     /* Secondary Button — 次要按鈕 */
     .btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 bg-white text-ink-700 font-medium px-6 py-3 rounded-full border-2 border-ink-200
-               transition-all duration-200 cursor-pointer select-none hover:bg-ink-50 hover:border-ink-300 active:scale-[0.98];
+        @apply inline-flex items-center justify-center gap-2 bg-paper-200 text-ink-700 font-medium px-6 py-3 rounded-full border border-paper-300
+               transition-all duration-200 cursor-pointer select-none hover:bg-paper-300 active:scale-[0.98];
     }
 
     /* Primary Blue Button */
@@ -81,8 +89,7 @@ body {
 
     /* Ghost Button — 透明按鈕 */
     .btn-ghost {
-        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-500 font-normal px-4 py-2 rounded-lg
-               transition-all duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
+        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-400 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
     }
 
     /* Segmented Control (tab selector) */
@@ -95,7 +102,7 @@ body {
     }
 
     .seg-btn-active {
-        @apply bg-white text-ink-700 shadow-card font-semibold;
+        @apply bg-paper-100 text-ink-700 shadow-card;
     }
 
     /* Stat display — 數據展示 */
@@ -122,19 +129,19 @@ body {
 
     /* Signal badges — 狀態標籤 */
     .badge-positive {
-        @apply text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full;
+        @apply text-xs font-medium text-signal-green bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full;
     }
 
     .badge-negative {
-        @apply text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full;
+        @apply text-xs font-medium text-signal-red bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full;
     }
 
     .badge-neutral {
-        @apply text-xs font-medium text-ink-600 bg-paper-200 px-3 py-1 rounded-full;
+        @apply text-xs font-medium text-ink-400 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full;
     }
 
     .badge-gold {
-        @apply text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full;
+        @apply text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full;
     }
 
     /* Section divider */
@@ -144,27 +151,27 @@ body {
 
     /* Info / Note box */
     .note-box {
-        @apply text-sm text-ink-600 bg-paper-100/80 border border-paper-200 rounded-xl px-5 py-4 leading-relaxed;
+        @apply text-xs text-ink-400 bg-paper-200 rounded-lg px-4 py-3 leading-relaxed;
     }
 
     /* 提示框 */
     .tip-box {
-        @apply text-sm bg-brand-50 border border-brand-200 text-brand-800 rounded-xl px-5 py-4 leading-relaxed;
+        @apply text-sm bg-paper-200 border border-brand-200 text-ink-600 rounded-xl px-5 py-4 leading-relaxed;
     }
 
     /* 警告框 */
     .warning-box {
-        @apply text-sm bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 leading-relaxed;
+        @apply text-sm bg-paper-200 border border-amber-200 text-ink-600 rounded-xl px-5 py-4 leading-relaxed;
     }
 
     /* 成功框 */
     .success-box {
-        @apply text-sm bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl px-5 py-4 leading-relaxed;
+        @apply text-sm bg-paper-200 border border-emerald-200 text-ink-600 rounded-xl px-5 py-4 leading-relaxed;
     }
 
     /* Hero Section — 首頁 Hero 區塊 */
     .hero-gradient {
-        @apply bg-gradient-to-br from-primary-50 via-white to-brand-50;
+        @apply bg-gradient-to-br from-paper-100 via-paper-200 to-paper-100;
     }
 
     /* 工具卡片增強 */
@@ -179,7 +186,7 @@ body {
 
     /* 導航欄增強 */
     .nav-link {
-        @apply relative text-ink-500 hover:text-ink-800 transition-colors duration-200 py-2;
+        @apply relative text-ink-400 hover:text-ink-700 transition-colors duration-200 py-2;
     }
 
     .nav-link::after {
@@ -193,7 +200,7 @@ body {
 
     /* 計算結果高亮 */
     .result-highlight {
-        @apply bg-gradient-to-r from-brand-50 to-emerald-50 border border-brand-200 rounded-2xl p-6;
+        @apply bg-paper-200 border border-brand-200 rounded-2xl p-6;
     }
 
     /* 進度條 */
@@ -207,7 +214,7 @@ body {
 
     /* 步驟指示器 */
     .step-indicator {
-        @apply w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 text-white font-bold flex items-center justify-center shadow-lg;
+        @apply w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 text-paper-50 font-bold flex items-center justify-center shadow-lg;
     }
 
     .step-indicator-inactive {
@@ -216,22 +223,22 @@ body {
 
     .section-wash {
         background-image:
-            radial-gradient(700px 260px at 10% 0%, rgba(5, 150, 105, 0.10), transparent 60%),
-            radial-gradient(700px 240px at 95% 10%, rgba(8, 145, 178, 0.10), transparent 62%);
+            radial-gradient(700px 260px at 10% 0%, rgba(255, 172, 2, 0.12), transparent 60%),
+            radial-gradient(700px 240px at 95% 10%, rgba(255, 255, 255, 0.08), transparent 62%);
     }
 
     .hero-sheen {
         background-image:
-            radial-gradient(520px 260px at 20% 10%, rgba(8, 145, 178, 0.18), transparent 70%),
-            radial-gradient(420px 220px at 90% 0%, rgba(5, 150, 105, 0.18), transparent 70%);
+            radial-gradient(520px 260px at 20% 10%, rgba(255, 172, 2, 0.22), transparent 70%),
+            radial-gradient(420px 220px at 90% 0%, rgba(255, 255, 255, 0.12), transparent 70%);
     }
 
     .glass-panel {
-        @apply bg-white/80 backdrop-blur-md border border-white/70 shadow-card rounded-3xl;
+        @apply bg-paper-200 backdrop-blur-md border border-paper-300 shadow-card rounded-3xl;
     }
 
     .data-pill {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/85 border border-paper-300 text-xs text-ink-500;
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 border border-paper-300 text-xs text-ink-400;
     }
 
     .ink-panel {
@@ -239,7 +246,7 @@ body {
     }
 
     .portal-card {
-        @apply relative overflow-hidden rounded-3xl border border-paper-300 bg-white/90 p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-200;
+        @apply relative overflow-hidden rounded-3xl border border-paper-300 bg-paper-200 p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-200;
     }
 
     .portal-card::before {
@@ -249,12 +256,12 @@ body {
         width: 140px;
         height: 140px;
         border-radius: 9999px;
-        background: radial-gradient(circle, rgba(8, 145, 178, 0.16), transparent 68%);
+        background: radial-gradient(circle, rgba(255, 172, 2, 0.16), transparent 68%);
         pointer-events: none;
     }
 
     .flow-card {
-        @apply relative rounded-3xl border border-paper-300 bg-white p-5 shadow-card;
+        @apply relative rounded-3xl border border-paper-300 bg-paper-200 p-5 shadow-card;
     }
 
     .flow-card::after {
@@ -264,7 +271,7 @@ body {
         right: -28px;
         width: 56px;
         height: 1px;
-        background: linear-gradient(90deg, rgba(5, 150, 105, 0.35), rgba(8, 145, 178, 0));
+        background: linear-gradient(90deg, rgba(255, 172, 2, 0.35), rgba(255, 172, 2, 0));
         display: none;
     }
 
@@ -349,7 +356,7 @@ body {
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -358,7 +365,7 @@ body {
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 0.4s ease-out;
+    animation: fadeInUp 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -371,7 +378,7 @@ body {
 }
 
 .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.2s ease-out;
 }
 
 @keyframes slideIn {
@@ -410,6 +417,30 @@ body {
     }
 }
 
+@keyframes floatSlow {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.animate-float-slow {
+    animation: floatSlow 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .animate-fade-in,
+    .animate-float-slow {
+        animation: none;
+    }
+}
+
 /* ─── No Scrollbar Utility ───────────────────────────────────── */
 .no-scrollbar {
     -ms-overflow-style: none;
@@ -445,5 +476,5 @@ body {
 
 /* ─── Selection ─────────────────────────────────────────────── */
 ::selection {
-    @apply bg-brand-200 text-ink-800;
+    @apply bg-brand-500 text-paper-50;
 }

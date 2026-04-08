@@ -2,8 +2,6 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const title = "TaiCalc 薪資實拿與財務試算";
-const description = "主打上班族薪資實拿、勞健保與所得稅試算。2026 最新費率，本地計算不留資料，三分鐘算清楚。";
 const title = "TaiCalc 財務計算平台｜台灣人專用 2026 薪資、房貸、所得稅免費線上計算機";
 const description = "2026 年最新版！專為台灣人設計的免費線上財務計算機。包含薪資實拿計算（最新勞健保級距）、新青安房貸試算、綜合所得稅試算、FIRE 退休規劃、股票當沖手續費計算。完全本地運算，資料不外傳。";
 const keywords = "2026薪資計算機,新青安房貸試算,所得稅試算,台灣財務計算,FIRE退休規劃,勞健保級距,當沖手續費,免費線上工具";
@@ -12,68 +10,23 @@ const latestPosts = (await getCollection('blog'))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
     .slice(0, 6);
 
-const focusSteps = [
+const sections = [
     {
-        step: "STEP 01",
-        title: "薪資實拿",
-        desc: "輸入月薪與扣繳，立刻知道實領金額與可支配收入。",
-        href: "/tools/salary-calculator",
-        cta: "算實拿",
-        icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>`,
+        id: "salary",
+        title: "薪資與稅務",
+        desc: "計算實拿薪資、所得稅與加班費，確保您的勞動權益不打折。",
+        tools: [
+            { href: "/tools/salary-calculator",          label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>` },
+            { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`, isNew: true },
+            { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       icon: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>` },
+            { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>` },
+            { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",        icon: `<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>` },
+        ],
     },
-    {
-        step: "STEP 02",
-        title: "勞健保費",
-        desc: "自動對應級距與眷屬附保，確認每月保費與負擔比例。",
-        href: "/tools/insurance-calculator",
-        cta: "算保費",
-        icon: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>`,
-    },
-    {
-        step: "STEP 03",
-        title: "所得稅試算",
-        desc: "比較標準/列舉扣除，找到最省稅方案與應繳金額。",
-        href: "/tools/income-tax-calculator",
-        cta: "算稅額",
-        icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
-    },
-    {
-        step: "STEP 04",
-        title: "退休與勞退",
-        desc: "用勞退與 FIRE 試算回推目標，建立長期計畫。",
-        href: "/tools/labor-pension-calculator",
-        cta: "算退休",
-        icon: `<path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1a2 2 0 0 0 2 2h1"/><path d="M16 11h0"/>`,
-    },
-];
-
-const scenarios = [
-    {
-        title: "剛拿到 Offer",
-        desc: "先算實拿，再看勞健保，避免實際落差。",
-        href: "/tools/salary-calculator",
-        tag: "新工作",
-    },
-    {
-        title: "轉職談薪",
-        desc: "比較不同薪資與扣繳方式，找出最有感的方案。",
-        href: "/tools/insurance-calculator",
-        tag: "跳槽",
-    },
-    {
-        title: "報稅季到了",
-        desc: "標準或列舉哪個省？先試算再申報。",
-        href: "/tax-season",
-        tag: "5 月報稅",
-        season: "tax",
-    },
-];
-
-const secondarySections = [
     {
         id: "housing",
         title: "居住與房產",
-        desc: "買房前先算月付與寬限期，租屋也能精算真實成本。",
+        desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
         tools: [
             { href: "/tools/mortgage-calculator",    label: "房貸試算",   desc: "新青安、寬限期與提前還款",   icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
             { href: "/tools/rent-cost-calculator",   label: "租金解析",   desc: "租屋押金與真實月支出",       icon: `<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>` },
@@ -83,122 +36,125 @@ const secondarySections = [
     {
         id: "invest",
         title: "投資與退休",
-        desc: "投資損益與退休目標一次算清楚，讓決策更踏實。",
+        desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
         tools: [
-            { href: "/tools/fire-calculator",      label: "FIRE 退休規劃", desc: "複利效應與財務自由倒數",     icon: `<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>` },
-            { href: "/tools/stock-calculator",     label: "股票損益試算",  desc: "現股、當沖與 ETF 手續費",    icon: `<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>` },
-            { href: "/tools/insurance-assessment", label: "保險效益評估",  desc: "儲蓄險 IRR 與壽險需求",     icon: `<path d="M22 12a10.06 10.06 1 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>` },
+            { href: "/tools/fire-calculator",            label: "FIRE 退休規劃", desc: "複利效應與財務自由倒數",     icon: `<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>` },
+            { href: "/tools/labor-pension-calculator",   label: "勞退試算",      desc: "複利滾存與節稅效益分析",     icon: `<path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1a2 2 0 0 0 2 2h1"/><path d="M16 11h0"/>` },
+            { href: "/tools/stock-calculator",           label: "股票損益試算",  desc: "現股、當沖與 ETF 手續費",    icon: `<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>` },
+            { href: "/tools/insurance-assessment",       label: "保險效益評估",  desc: "儲蓄險 IRR 與壽險需求",     icon: `<path d="M22 12a10.06 10.06 1 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>` },
         ],
     },
 ];
 
-const workTools = [
-    { href: "/tools/overtime-calculator",        label: "加班費試算",   desc: "平日、休息日、國定假日", icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>` },
-    { href: "/tools/delivery-income-calculator", label: "外送收入計算", desc: "跑單淨收入與油費成本",      icon: `<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>` },
-];
+const searchTools = sections.flatMap(s =>
+    s.tools.map(t => ({ ...t, section: s.title }))
+);
 
-const heroPortals = [
-    {
-        eyebrow: "薪資主線",
-        title: "先算這個月真正能用多少",
-        desc: "從月薪、勞健保到固定支出，一次看到實拿、可存與稅後年薪。",
-        href: "/tools/salary-calculator",
-        cta: "進入薪資儀表板",
-    },
-    {
-        eyebrow: "報稅季",
-        title: "先試算，再決定怎麼申報",
-        desc: "比較標準與列舉、股利合併與分離，先把退稅或補繳估出來。",
-        href: "/tax-season",
-        cta: "看報稅攻略",
-    },
-    {
-        eyebrow: "居住決策",
-        title: "買房還是租屋，用月付能力說話",
-        desc: "房貸、租金、電費與生活成本整合，避免只看單一數字。",
-        href: "/housing-toolbox",
-        cta: "打開居住工具箱",
-    },
+const quickLinks = [
+    sections[0].tools[0],
+    sections[0].tools[1],
+    sections[1].tools[0],
+    sections[2].tools[0],
 ];
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
 
     <!-- ═══════════════════════════════════════════════════════════
-         HERO — 薪資主線定位
+         HERO — Hermes-inspired control room
          ═══════════════════════════════════════════════════════════ -->
-    <section class="pt-16 pb-20 md:pt-24 md:pb-28 relative overflow-hidden hero-sheen">
-        <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
-            <div class="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px] items-start">
-                <div class="text-center lg:text-left">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
-                    <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <span class="text-sm font-semibold text-brand-700">本地計算 · 隱私保障 · 2026 最新費率</span>
-            </div>
+    <section class="relative overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[860px] h-[860px] bg-brand/10 blur-3xl animate-float-slow"></div>
+            <div class="absolute top-10 right-[-140px] w-[420px] h-[420px] bg-ink-800/5 blur-3xl"></div>
+        </div>
 
-            <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-serif font-normal text-ink-700 tracking-tight leading-[1.2] mb-5">
-                上班族薪資實拿<br class="md:hidden">三分鐘算清楚
-            </h1>
-            <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-xl mx-auto lg:mx-0 mb-8">
-                從 Offer → 勞健保 → 報稅 → 退休，一條主線把你最在意的錢算清楚。
-            </p>
+        <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
+            <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+                <div class="animate-fade-in-up">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300 bg-paper-200 text-ink-400 text-[11px] uppercase tracking-[0.2em]">
+                        Local Compute · 2026 Rates
+                    </div>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
-                <a href="/tools/salary-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-ink-700 text-paper-50 text-sm font-medium hover:bg-ink-600 transition-colors w-full sm:w-auto shadow-card-hover">
-                    立刻算實拿
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-                <a href="/tools/insurance-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-paper-300 text-ink-600 text-sm font-medium hover:border-brand hover:text-brand transition-colors w-full sm:w-auto">
-                    先看勞健保
-                </a>
-                <a href="/tax-season" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-paper-200 text-ink-600 text-sm font-medium hover:bg-paper-300 transition-colors w-full sm:w-auto">
-                    報稅季攻略
-                </a>
-            </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-[3.6rem] font-semibold text-ink-800 tracking-tight leading-[1.1] mt-6">
+                        財務計算的決策引擎
+                    </h1>
+                    <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-xl mt-4">
+                        整合台灣最常用的薪資、稅務、房貸與退休工具。所有計算在本地完成，快速、私密、可信。
+                    </p>
 
-            <!-- 搜尋框 -->
-            <div class="relative max-w-sm mx-auto lg:mx-0 mt-8">
-                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                </svg>
-                <input id="tool-search" type="text" placeholder="輸入你要算的事…例如「實拿」「房貸」"
-                    class="w-full pl-10 pr-4 py-3 bg-white border border-paper-300 rounded-xl text-sm text-ink-700
-                           placeholder:text-ink-300 focus:outline-none focus:border-brand focus:shadow-input transition-all duration-200" />
-            <div class="relative max-w-md mx-auto animate-fade-in-up" style="animation-delay: 0.3s">
-                <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                </svg>
-                <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」「新青安」"
-                    class="w-full pl-12 pr-4 py-4 bg-white border-2 border-paper-200 rounded-2xl text-base text-ink-700 shadow-lg
-                           placeholder:text-ink-300 focus:outline-none focus:border-brand-500 focus:shadow-glow-brand transition-all duration-300" />
-                <!-- 搜尋結果 -->
-                <div id="search-results" class="hidden absolute left-0 right-0 mt-3 bg-white border-2 border-paper-200 rounded-2xl p-3 space-y-1 max-h-80 overflow-y-auto shadow-xl z-30">
-                </div>
-            </div>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <a href="/tools/salary-calculator" class="btn-primary">開始計算</a>
+                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300">查看工具清單</a>
+                    </div>
 
-            <div class="mt-8 flex flex-wrap justify-center lg:justify-start gap-2">
-                <span class="data-pill">薪資實拿</span>
-                <span class="data-pill">報稅季</span>
-                <span class="data-pill">居住決策</span>
-                <span class="data-pill">退休規劃</span>
-            </div>
+                    <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-400">
+                        <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">工具數</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">12+</p>
+                        </div>
+                        <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">資料來源</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">官方費率</p>
+                        </div>
+                        <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 md:col-span-1 col-span-2">
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">隱私</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">本地計算</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="glass-panel p-5 md:p-6">
-                    <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">現在先做哪一題</p>
-                    <div class="mt-4 grid gap-3">
-                        {heroPortals.map((portal) => (
-                            <a href={portal.href} class="portal-card group">
-                                <p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-400">{portal.eyebrow}</p>
-                                <h2 class="mt-2 text-lg font-semibold text-ink-700 group-hover:text-brand transition-colors">{portal.title}</h2>
-                                <p class="mt-2 text-sm leading-relaxed text-ink-400">{portal.desc}</p>
-                                <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand">{portal.cta}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                                </span>
+                <div class="card-surface p-6 md:p-7 w-full max-w-md animate-fade-in-up" style="animation-delay: 120ms;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-widest text-ink-400">Quick Access</p>
+                            <p class="text-lg font-medium text-ink-700 mt-1">快速開始</p>
+                        </div>
+                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">HOT</span>
+                    </div>
+
+                    <!-- 搜尋框 -->
+                    <div class="relative mt-4">
+                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                        </svg>
+                        <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」"
+                            class="input-clean pl-10 pr-4 text-sm" />
+                        <!-- 搜尋結果 -->
+                        <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30">
+                        </div>
+                    </div>
+
+                    <div class="mt-5 grid gap-2">
+                        {quickLinks.map(tool => (
+                            <a href={tool.href}
+                               class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors">
+                                <div>
+                                    <p class="text-sm font-medium text-ink-700">{tool.label}</p>
+                                    <p class="text-xs text-ink-400 mt-0.5">{tool.desc}</p>
+                                </div>
+                                <svg class="text-ink-400 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>
                         ))}
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        <a href="/tools/salary-calculator" data-season="always"
+                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
+                            🤔 剛拿到 Offer？算實拿
+                        </a>
+                        <a href="/tools/income-tax-calculator" data-season="tax"
+                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
+                            🧾 五月要報稅？算稅額
+                        </a>
+                        <a href="/tools/mortgage-calculator" data-season="always"
+                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
+                            🏠 準備買房？算月付
+                        </a>
+                        <a href="/tools/fire-calculator" data-season="always"
+                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
+                            🏝️ 何時能退休？算 FIRE
+                        </a>
                     </div>
                 </div>
             </div>
@@ -206,161 +162,38 @@ const heroPortals = [
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════
-         薪資主線 4 步
+         工具區 — 模組化卡片
          ═══════════════════════════════════════════════════════════ -->
-    <section class="py-16 md:py-24 bg-white section-wash">
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="max-w-2xl mb-10 md:mb-14">
-                <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">上班族主線</span>
-                <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">從薪資到退休，一條主線解決</h2>
-                <p class="text-sm text-ink-400 leading-relaxed mt-2">先算實拿，再算勞健保與稅，最後看退休目標，完整又不碎片。</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {focusSteps.map(step => (
-                    <a href={step.href}
-                       class="group flow-card flex flex-col h-full hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-semibold text-ink-400 tracking-widest">{step.step}</span>
-                            <div class="w-9 h-9 rounded-xl bg-white border border-paper-300 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={step.icon}></svg>
-                            </div>
-                        </div>
-                        <h3 class="text-sm font-semibold text-ink-700 mt-4 mb-2 group-hover:text-brand transition-colors">{step.title}</h3>
-                        <p class="text-xs text-ink-400 leading-relaxed flex-1">{step.desc}</p>
-                        <div class="mt-4 pt-4 border-t border-paper-200">
-                        <span class="text-xs text-brand font-medium mt-4 inline-flex items-center gap-1">{step.cta}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                        </span>
-                        </div>
-                    </a>
-                ))}
-            <!-- 快速情境導覽 -->
-            <div class="mt-8 flex flex-wrap justify-center gap-3 animate-fade-in-up" style="animation-delay: 0.4s">
-                <a href="/tools/salary-calculator" data-season="always"
-                   class="quick-action-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-paper-200 hover:border-brand-500 hover:text-brand-600 hover:shadow-lg transition-all duration-200 text-sm font-medium text-ink-600 group">
-                    <span class="text-lg">💼</span>
-                    <span>剛拿到 Offer？算實拿</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-                <a href="/tools/income-tax-calculator" data-season="tax"
-                   class="quick-action-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-paper-200 hover:border-brand-500 hover:text-brand-600 hover:shadow-lg transition-all duration-200 text-sm font-medium text-ink-600 group">
-                    <span class="text-lg">🧾</span>
-                    <span>五月要報稅？算稅額</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-                <a href="/tools/mortgage-calculator" data-season="always"
-                   class="quick-action-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-paper-200 hover:border-brand-500 hover:text-brand-600 hover:shadow-lg transition-all duration-200 text-sm font-medium text-ink-600 group">
-                    <span class="text-lg">🏠</span>
-                    <span>準備買房？算月付</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-                <a href="/tools/fire-calculator" data-season="always"
-                   class="quick-action-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border-2 border-paper-200 hover:border-brand-500 hover:text-brand-600 hover:shadow-lg transition-all duration-200 text-sm font-medium text-ink-600 group">
-                    <span class="text-lg">🏝️</span>
-                    <span>何時能退休？算 FIRE</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         使用情境入口
-         ═══════════════════════════════════════════════════════════ -->
-    <section class="py-16 md:py-24 bg-paper-100 section-wash">
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between mb-10">
-                <div>
-                    <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">常見情境</span>
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-1">你可能正在遇到的事</h2>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {scenarios.map((card) => (
-                    <a href={card.href}
-                       data-season={card.season}
-                       class="group flex flex-col p-6 bg-white border border-paper-300 rounded-2xl hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
-                        <span class="text-[10px] font-semibold text-ink-400 uppercase tracking-widest">{card.tag}</span>
-                        <h3 class="text-base font-semibold text-ink-700 mt-3 mb-2 group-hover:text-brand transition-colors">{card.title}</h3>
-                        <p class="text-sm text-ink-400 leading-relaxed">{card.desc}</p>
-                        <span class="text-xs text-brand font-medium mt-4 inline-flex items-center gap-1">立即試算
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                        </span>
-                    </a>
-                ))}
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         其他工作收入工具
-         ═══════════════════════════════════════════════════════════ -->
-    <section class="py-16 md:py-24 bg-white section-wash">
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="max-w-xl mb-10 md:mb-14">
-                <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">工作收入</span>
-                <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-1">加班與外送也能算清楚</h2>
-                <p class="text-sm text-ink-400 leading-relaxed mt-2">有變動收入的族群，先確定每月實際淨收入。</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {workTools.map(tool => (
-                    <a href={tool.href}
-                       class="group flex items-start gap-4 p-5 bg-white border border-paper-300 rounded-2xl
-                              hover:border-brand-200 hover:shadow-card-hover hover:-translate-y-0.5
-                              transition-all duration-200">
-                        <div class="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <span class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</span>
-                            <p class="text-xs text-ink-400 leading-relaxed mt-1">{tool.desc}</p>
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="text-ink-300 group-hover:text-brand group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1.5">
-                            <path d="m9 18 6-6-6-6"/>
-                        </svg>
-                    </a>
-                ))}
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         延伸需求 — 其他計算工具
-         ═══════════════════════════════════════════════════════════ -->
-    {secondarySections.map((section, idx) => (
-        <section class={`py-16 md:py-24 ${idx % 2 === 0 ? 'bg-paper-100 section-wash' : 'bg-white section-wash'}`}>
+    {sections.map((section, idx) => (
+        <section class="py-16 md:py-20 border-t border-paper-300">
             <div class="max-w-6xl mx-auto px-4 md:px-6">
-                <div class="max-w-xl mb-10 md:mb-14">
-                    <span class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 uppercase tracking-widest mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-                        {section.title}
-                    </span>
-                    <p class="text-base text-ink-500 leading-relaxed mt-2">{section.desc}</p>
+                <!-- Section Header -->
+                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
+                    <div>
+                        <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Module {idx + 1}</p>
+                        <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">{section.title}</h2>
+                    </div>
+                    <p class="text-sm text-ink-400 leading-relaxed max-w-xl">{section.desc}</p>
                 </div>
 
+                <!-- 工具卡片 Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {section.tools.map((tool, toolIdx) => (
                         <a href={tool.href}
-                           class="group card-glow flex items-start gap-4 p-6 relative overflow-hidden"
-                           style={`animation-delay: ${toolIdx * 0.05}s`}>
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-emerald-500 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon}></svg>
+                           style={`animation-delay: ${toolIdx * 40}ms`}
+                           class="group flex items-start gap-4 p-5 card-surface-hover animate-fade-in-up">
+                            <div class="w-10 h-10 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <span class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</span>
-                                <p class="text-xs text-ink-400 leading-relaxed mt-1">{tool.desc}</p>
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="text-base font-semibold text-ink-800 group-hover:text-brand-600 transition-colors">{tool.label}</span>
-                                    {tool.isNew && <span class="badge-positive">NEW</span>}
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</span>
+                                    {tool.isNew && <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">NEW</span>}
                                 </div>
-                                <span class="text-sm text-ink-400 leading-relaxed">{tool.desc}</span>
+                                <span class="text-xs text-ink-400 leading-relaxed">{tool.desc}</span>
                             </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                 class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-1 transition-all flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="text-ink-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1.5">
                                 <path d="m9 18 6-6-6-6"/>
                             </svg>
                         </a>
@@ -370,56 +203,32 @@ const heroPortals = [
         </section>
     ))}
 
-    <section class="py-16 md:py-24 bg-paper-100 section-wash">
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 md:p-8 bg-ink-700 text-paper-50 rounded-3xl">
-                <div>
-                    <p class="text-xs text-paper-200 uppercase tracking-widest">居住決策工具箱</p>
-                    <h2 class="text-xl md:text-2xl font-semibold mt-2">買房 vs 租屋，三步算清楚</h2>
-                    <p class="text-sm text-paper-200 mt-2">房貸、租金、生活費一起算，做出可負擔的選擇。</p>
-                </div>
-                <a href="/housing-toolbox" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-ink-700 text-sm font-medium hover:bg-paper-100 transition-colors">
-                    進入工具箱
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
     <!-- ═══════════════════════════════════════════════════════════
          最新專欄文章
          ═══════════════════════════════════════════════════════════ -->
-    <section class="py-16 md:py-24 bg-gradient-to-b from-paper-100 to-paper-50">
+    <section class="py-16 md:py-20 border-t border-paper-300">
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex items-center justify-between mb-10">
                 <div>
-                    <span class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 uppercase tracking-widest mb-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
-                        財務知識庫
-                    </span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-ink-800">最新專欄</h2>
+                    <span class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Knowledge Base</span>
+                    <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">最新專欄</h2>
                 </div>
-                <a href="/blog" class="btn-secondary text-sm">
+                <a href="/blog" class="text-xs text-ink-400 hover:text-ink-700 transition-colors inline-flex items-center gap-1 group">
                     查看全部
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
                 </a>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {latestPosts.map((post, idx) => (
+                {latestPosts.map((post) => (
                     <a href={`/blog/${post.slug}`}
-                       class="group card-glow flex flex-col p-6 min-h-[140px]"
-                       style={`animation-delay: ${idx * 0.05}s`}>
-                        <div class="flex items-center gap-3 mb-4">
+                       class="group flex flex-col p-5 card-surface-hover min-h-[120px]">
+                        <div class="flex items-center gap-2 mb-3">
                             {post.data.category && (
-                                <span class="badge-gold">{post.data.category}</span>
+                                <span class="text-[10px] font-medium text-ink-400 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full">{post.data.category}</span>
                             )}
-                            <span class="text-xs text-ink-400">{post.data.date}</span>
+                            <span class="text-[10px] text-ink-400">{post.data.date}</span>
                         </div>
-                        <h3 class="text-base font-semibold text-ink-700 group-hover:text-brand-600 transition-colors leading-snug line-clamp-3 flex-1">{post.data.title}</h3>
-                        <div class="mt-4 flex items-center gap-2 text-sm text-brand-500 font-medium">
-                            閱讀更多
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="group-hover:translate-x-1 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
-                        </div>
+                        <h3 class="text-sm font-medium text-ink-600 group-hover:text-ink-800 transition-colors leading-snug line-clamp-3 flex-1">{post.data.title}</h3>
                     </a>
                 ))}
             </div>
@@ -429,36 +238,19 @@ const heroPortals = [
     <!-- ═══════════════════════════════════════════════════════════
          底部信任條
          ═══════════════════════════════════════════════════════════ -->
-    <section class="py-12 bg-white border-t-2 border-paper-200">
-        <div class="max-w-4xl mx-auto px-4 md:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="flex items-center justify-center gap-3 text-center md:text-left">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-500 to-emerald-500 flex items-center justify-center flex-shrink-0 shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-ink-800">本地計算</div>
-                        <div class="text-sm text-ink-400">資料永不離開瀏覽器</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center gap-3 text-center md:text-left">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-ink-800">2026 最新費率</div>
-                        <div class="text-sm text-ink-400">政府公告即時更新</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center gap-3 text-center md:text-left">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0 shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
-                    </div>
-                    <div>
-                        <div class="font-semibold text-ink-800">完全免費</div>
-                        <div class="text-sm text-ink-400">無廣告、無訂閱、無限用</div>
-                    </div>
-                </div>
+    <section class="py-12 border-t border-paper-300">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-8 md:gap-12">
+            <div class="flex items-center gap-2.5 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                本地計算，資料不上傳
+            </div>
+            <div class="flex items-center gap-2.5 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                2026 最新法規費率
+            </div>
+            <div class="flex items-center gap-2.5 text-xs text-ink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                免費，無需帳號
             </div>
         </div>
     </section>
@@ -470,27 +262,27 @@ const heroPortals = [
 const month = new Date().getMonth() + 1;
 const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
 if (taxBtn && month >= 3 && month <= 5) {
-    taxBtn.classList.remove('bg-white', 'border-paper-200', 'text-ink-600');
-    taxBtn.classList.add('bg-gradient-to-r', 'from-amber-50', 'to-orange-50', 'border-amber-300', 'text-amber-700', 'font-bold');
+    taxBtn.classList.remove('bg-paper-100', 'border-paper-300', 'text-ink-400');
+    taxBtn.classList.add('bg-red-500/10', 'border-red-500/40', 'text-red-300', 'font-semibold');
     const dot = document.createElement('span');
-    dot.className = 'w-2 h-2 bg-amber-500 rounded-full flex-shrink-0 animate-pulse';
+    dot.className = 'w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0';
     taxBtn.insertBefore(dot, taxBtn.firstChild);
     taxBtn.parentElement?.insertBefore(taxBtn, taxBtn.parentElement.firstChild);
 }
 
 // ── 搜尋功能 ────────────────────────────────────────────────────
 const searchTools = [
-    { href: "/tools/salary-calculator",         label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     tags: "薪資 月薪 勞保 健保 實拿 扣薪" },
-    { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   tags: "所得稅 報稅 稅 扣除 股利 2026 新制" },
-    { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       tags: "勞保 健保 保費 投保 級距 2026" },
-    { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       tags: "加班 加班費 休假 假日 平日 休息日" },
-    { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",         tags: "外送 foodpanda ubereats 外賣 熊貓" },
-    { href: "/tools/mortgage-calculator",        label: "房貸試算",       desc: "新青安、寬限期與提前還款",     tags: "房貸 買房 新青安 利率 貸款 月付 寬限期" },
+    { href: "/tools/salary-calculator",         label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     tags: "薪資 月薪 勞保 健保" },
+    { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   tags: "所得稅 報稅 稅 扣除 股利" },
+    { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       tags: "勞保 健保 保費 投保" },
+    { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       tags: "加班 加班費 休假 假日" },
+    { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",         tags: "外送 foodpanda ubereats 外賣" },
+    { href: "/tools/mortgage-calculator",        label: "房貸試算",       desc: "新青安、寬限期與提前還款",     tags: "房貸 買房 新青安 利率 貸款" },
     { href: "/tools/rent-cost-calculator",       label: "租金解析",       desc: "租屋押金與真實月支出",         tags: "租金 租屋 房租 押金" },
-    { href: "/tools/electricity-calculator",     label: "電費試算",       desc: "台電累進費率自動計算",         tags: "電費 台電 電力 用電 級距" },
-    { href: "/tools/fire-calculator",            label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       tags: "退休 FIRE 財務自由 複利 提領" },
-    { href: "/tools/labor-pension-calculator",   label: "勞退試算",       desc: "複利滾存與節稅效益分析",       tags: "勞退 勞工退休金 提撥 退休 自提" },
-    { href: "/tools/stock-calculator",           label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     tags: "股票 ETF 手續費 損益 當沖 現股" },
+    { href: "/tools/electricity-calculator",     label: "電費試算",       desc: "台電累進費率自動計算",         tags: "電費 台電 電力 用電" },
+    { href: "/tools/fire-calculator",            label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       tags: "退休 FIRE 財務自由 複利" },
+    { href: "/tools/labor-pension-calculator",   label: "勞退試算",       desc: "複利滾存與節稅效益分析",       tags: "勞退 勞工退休金 提撥 退休" },
+    { href: "/tools/stock-calculator",           label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     tags: "股票 ETF 手續費 損益 當沖" },
     { href: "/tools/insurance-assessment",       label: "保險效益評估",   desc: "儲蓄險 IRR 與壽險需求",       tags: "保險 儲蓄險 壽險 IRR" },
 ];
 
@@ -498,32 +290,27 @@ const searchInput   = document.getElementById('tool-search') as HTMLInputElement
 const searchResults = document.getElementById('search-results');
 
 searchInput?.addEventListener('input', (e) => {
-    const q = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    const q = (e.target as HTMLInputElement).value.trim();
     if (!q) {
         searchResults?.classList.add('hidden');
         return;
     }
 
     const hits = searchTools.filter(t =>
-        t.label.toLowerCase().includes(q) ||
-        t.desc.toLowerCase().includes(q) ||
-        t.tags.toLowerCase().includes(q)
+        t.label.includes(q) || t.desc.includes(q) || t.tags.includes(q)
     );
 
     if (searchResults) {
         if (!hits.length) {
-            searchResults.innerHTML = `<div class="text-center py-6 text-ink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto mb-2 opacity-50"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <p class="text-sm">找不到「${q}」的相關工具</p>
-            </div>`;
+            searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${q}」的相關工具</p>`;
         } else {
             searchResults.innerHTML = hits.map(t => `
-                <a href="${t.href}" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-brand-50 transition-colors group">
+                <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group">
                     <div>
-                        <p class="text-base font-semibold text-ink-800 group-hover:text-brand-600">${t.label}</p>
-                        <p class="text-sm text-ink-400 mt-0.5">${t.desc}</p>
+                        <p class="text-sm font-medium text-ink-700">${t.label}</p>
+                        <p class="text-xs text-ink-400 mt-0.5">${t.desc}</p>
                     </div>
-                    <svg class="text-brand-400 group-hover:text-brand-600 shrink-0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                    <svg class="text-ink-400 group-hover:text-brand shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                 </a>
             `).join('');
         }
@@ -535,24 +322,5 @@ document.addEventListener('click', (e) => {
     if (!searchInput?.contains(e.target as Node) && !searchResults?.contains(e.target as Node)) {
         searchResults?.classList.add('hidden');
     }
-});
-
-// ── 卡片動畫 ────────────────────────────────────────────────────
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in-up');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.card-glow').forEach(card => {
-    observer.observe(card);
 });
 </script>
