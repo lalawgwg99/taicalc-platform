@@ -71,8 +71,8 @@ const quickLinks = [
 
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
-                <div class="animate-fade-in-up">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300 bg-paper-200 text-ink-400 text-[11px] uppercase tracking-[0.2em]">
+                <div class="animate-fade-in-up reveal" data-reveal>
+                    <div class="hermes-label">
                         Local Compute · 2026 Rates
                     </div>
 
@@ -84,8 +84,8 @@ const quickLinks = [
                     </p>
 
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="/tools/salary-calculator" class="btn-primary">開始計算</a>
-                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300">查看工具清單</a>
+                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">開始計算</a>
+                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">查看工具清單</a>
                     </div>
 
                     <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-400">
@@ -104,7 +104,7 @@ const quickLinks = [
                     </div>
                 </div>
 
-                <div class="card-surface p-6 md:p-7 w-full max-w-md animate-fade-in-up" style="animation-delay: 120ms;">
+                <div class="card-surface p-6 md:p-7 w-full max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs uppercase tracking-widest text-ink-400">Quick Access</p>
@@ -128,7 +128,8 @@ const quickLinks = [
                     <div class="mt-5 grid gap-2">
                         {quickLinks.map(tool => (
                             <a href={tool.href}
-                               class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors">
+                               class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors"
+                               data-sfx="tap">
                                 <div>
                                     <p class="text-sm font-medium text-ink-700">{tool.label}</p>
                                     <p class="text-xs text-ink-400 mt-0.5">{tool.desc}</p>
@@ -139,21 +140,21 @@ const quickLinks = [
                     </div>
 
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="/tools/salary-calculator" data-season="always"
+                        <a href="/tools/salary-calculator" data-season="always" data-sfx="tap"
                            class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            🤔 剛拿到 Offer？算實拿
+                            剛拿到 Offer？算實拿
                         </a>
-                        <a href="/tools/income-tax-calculator" data-season="tax"
+                        <a href="/tools/income-tax-calculator" data-season="tax" data-sfx="tap"
                            class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            🧾 五月要報稅？算稅額
+                            五月要報稅？算稅額
                         </a>
-                        <a href="/tools/mortgage-calculator" data-season="always"
+                        <a href="/tools/mortgage-calculator" data-season="always" data-sfx="tap"
                            class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            🏠 準備買房？算月付
+                            準備買房？算月付
                         </a>
-                        <a href="/tools/fire-calculator" data-season="always"
+                        <a href="/tools/fire-calculator" data-season="always" data-sfx="tap"
                            class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            🏝️ 何時能退休？算 FIRE
+                            何時能退休？算 FIRE
                         </a>
                     </div>
                 </div>
@@ -165,7 +166,7 @@ const quickLinks = [
          工具區 — 模組化卡片
          ═══════════════════════════════════════════════════════════ -->
     {sections.map((section, idx) => (
-        <section class="py-16 md:py-20 border-t border-paper-300">
+        <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
             <div class="max-w-6xl mx-auto px-4 md:px-6">
                 <!-- Section Header -->
                 <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
@@ -181,7 +182,8 @@ const quickLinks = [
                     {section.tools.map((tool, toolIdx) => (
                         <a href={tool.href}
                            style={`animation-delay: ${toolIdx * 40}ms`}
-                           class="group flex items-start gap-4 p-5 card-surface-hover animate-fade-in-up">
+                           class="group flex items-start gap-4 p-5 card-surface-hover animate-fade-in-up"
+                           data-sfx="tap">
                             <div class="w-10 h-10 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
                             </div>
@@ -206,7 +208,7 @@ const quickLinks = [
     <!-- ═══════════════════════════════════════════════════════════
          最新專欄文章
          ═══════════════════════════════════════════════════════════ -->
-    <section class="py-16 md:py-20 border-t border-paper-300">
+    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex items-center justify-between mb-10">
                 <div>
@@ -221,7 +223,8 @@ const quickLinks = [
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {latestPosts.map((post) => (
                     <a href={`/blog/${post.slug}`}
-                       class="group flex flex-col p-5 card-surface-hover min-h-[120px]">
+                       class="group flex flex-col p-5 card-surface-hover min-h-[120px]"
+                       data-sfx="tap">
                         <div class="flex items-center gap-2 mb-3">
                             {post.data.category && (
                                 <span class="text-[10px] font-medium text-ink-400 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full">{post.data.category}</span>
@@ -238,7 +241,7 @@ const quickLinks = [
     <!-- ═══════════════════════════════════════════════════════════
          底部信任條
          ═══════════════════════════════════════════════════════════ -->
-    <section class="py-12 border-t border-paper-300">
+    <section class="py-12 border-t border-paper-300 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-8 md:gap-12">
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -305,7 +308,7 @@ searchInput?.addEventListener('input', (e) => {
             searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${q}」的相關工具</p>`;
         } else {
             searchResults.innerHTML = hits.map(t => `
-                <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group">
+                <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group" data-sfx="tap">
                     <div>
                         <p class="text-sm font-medium text-ink-700">${t.label}</p>
                         <p class="text-xs text-ink-400 mt-0.5">${t.desc}</p>

@@ -153,7 +153,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
                     <span class="text-sm font-medium text-ink-700">TaiCalc AI 助理</span>
                     <span class="text-[10px] text-ink-400 bg-paper-100 border border-paper-300 px-1.5 py-0.5 rounded-full">算盤</span>
                 </div>
-                <button id="fab-close" aria-label="關閉"
+                <button id="fab-close" aria-label="關閉" data-sfx="tap"
                     class="text-ink-400 hover:text-ink-700 transition-colors text-xl leading-none w-7 h-7 flex items-center justify-center rounded-lg hover:bg-paper-100">
                     ×
                 </button>
@@ -172,7 +172,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
                     placeholder="例：月薪 5 萬實拿多少？"
                     class="flex-1 text-xs bg-paper-100 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-400
                            focus:outline-none focus:bg-paper-100 focus:ring-1 focus:ring-azure transition-all" />
-                <button id="fab-send"
+                <button id="fab-send" data-sfx="accent"
                     class="bg-ink-700 text-paper-50 rounded-lg px-3 py-2 text-xs font-medium
                            hover:bg-ink-800 transition-colors disabled:opacity-40">
                     送出
@@ -186,7 +186,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         </div>
 
         <!-- FAB 主按鈕 -->
-        <button id="fab-toggle"
+        <button id="fab-toggle" data-sfx="tap"
             class="flex items-center gap-2 bg-ink-700 text-paper-50 pl-3.5 pr-4 py-2.5 rounded-full
                    shadow-lg hover:bg-ink-800 active:scale-95 transition-all duration-150 text-sm font-medium">
             <svg id="fab-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
@@ -277,6 +277,90 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         input?.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
         });
+    })();
+    </script>
+
+    <script>
+    // ── Hermes SFX + Reveal ────────────────────────────────────────
+    (function () {
+        const soundKey = 'taicalc-sfx';
+        const toggle = document.getElementById('sound-toggle') as HTMLButtonElement | null;
+        const toggleMobile = document.getElementById('sound-toggle-mobile') as HTMLButtonElement | null;
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        let ctx: AudioContext | null = null;
+        let enabled = localStorage.getItem(soundKey) === 'on';
+
+        const syncToggle = (el: HTMLButtonElement | null) => {
+            if (!el) return;
+            el.classList.toggle('is-on', enabled);
+            el.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+            el.textContent = enabled ? '音效 On' : '音效 Off';
+        };
+
+        const ensureCtx = () => {
+            if (!AudioCtx) return null;
+            if (!ctx) ctx = new AudioCtx();
+            if (ctx.state === 'suspended') ctx.resume();
+            return ctx;
+        };
+
+        const play = (type: 'tap' | 'accent' = 'tap', force = false) => {
+            if (!enabled && !force) return;
+            const audio = ensureCtx();
+            if (!audio) return;
+            const osc = audio.createOscillator();
+            const gain = audio.createGain();
+            const now = audio.currentTime;
+            const freq = type === 'accent' ? 680 : 520;
+            const dur = type === 'accent' ? 0.08 : 0.04;
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.exponentialRampToValueAtTime(0.08, now + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+            osc.connect(gain);
+            gain.connect(audio.destination);
+            osc.start(now);
+            osc.stop(now + dur + 0.02);
+        };
+
+        const toggleSound = () => {
+            enabled = !enabled;
+            localStorage.setItem(soundKey, enabled ? 'on' : 'off');
+            syncToggle(toggle);
+            syncToggle(toggleMobile);
+            play('accent', true);
+        };
+
+        syncToggle(toggle);
+        syncToggle(toggleMobile);
+        toggle?.addEventListener('click', toggleSound);
+        toggleMobile?.addEventListener('click', toggleSound);
+
+        document.addEventListener('click', (e) => {
+            const el = (e.target as HTMLElement | null)?.closest('[data-sfx]');
+            if (!el) return;
+            const type = (el.getAttribute('data-sfx') as 'tap' | 'accent' | null) ?? 'tap';
+            play(type);
+        });
+
+        const revealItems = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+        if (!revealItems.length) return;
+        if (!('IntersectionObserver' in window)) {
+            revealItems.forEach(el => el.classList.add('is-visible'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealItems.forEach(el => observer.observe(el));
     })();
     </script>
 

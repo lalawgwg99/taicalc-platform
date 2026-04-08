@@ -19,10 +19,10 @@ body {
     line-height: 1.7;
     letter-spacing: 0.01em;
     background-image:
-        radial-gradient(800px 400px at 20% -10%, rgba(255, 172, 2, 0.12), transparent 60%),
-        radial-gradient(900px 500px at 80% -20%, rgba(255, 255, 255, 0.08), transparent 60%),
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        radial-gradient(720px 360px at 18% -12%, rgba(255, 172, 2, 0.08), transparent 62%),
+        radial-gradient(860px 460px at 82% -18%, rgba(255, 255, 255, 0.06), transparent 65%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: auto, auto, 36px 36px, 36px 36px;
     background-attachment: fixed;
 }
@@ -44,6 +44,14 @@ body {
 
     .card-surface-hover {
         @apply card-surface hover:shadow-card-hover hover:border-paper-400 hover:-translate-y-0.5 transition-all duration-200;
+    }
+
+    .hermes-label {
+        @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink-400;
+    }
+
+    .hermes-rule {
+        @apply h-px w-full bg-gradient-to-r from-transparent via-paper-300 to-transparent;
     }
 
     /* 卡片懸停發光效果 */
@@ -90,6 +98,14 @@ body {
     /* Ghost Button — 透明按鈕 */
     .btn-ghost {
         @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-400 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
+    }
+
+    .sound-toggle {
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300 text-[11px] uppercase tracking-[0.2em] text-ink-400 bg-paper-200 transition-all duration-200;
+    }
+
+    .sound-toggle.is-on {
+        @apply border-brand-200 text-brand bg-brand-50;
     }
 
     /* Segmented Control (tab selector) */
@@ -313,6 +329,17 @@ body {
     .shadow-primary {
         box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);
     }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ─── Prose Overrides ─────────────────────────────────────────── */
@@ -433,11 +460,34 @@ body {
     animation: floatSlow 6s ease-in-out infinite;
 }
 
+@keyframes haloPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 172, 2, 0.2);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(255, 172, 2, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 172, 2, 0);
+    }
+}
+
+.animate-halo {
+    animation: haloPulse 2.6s ease-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .animate-fade-in-up,
     .animate-fade-in,
-    .animate-float-slow {
+    .animate-float-slow,
+    .animate-halo {
         animation: none;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }
 
