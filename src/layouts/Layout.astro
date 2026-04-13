@@ -162,14 +162,14 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             <!-- 訊息區 -->
             <div id="fab-messages" class="px-3 py-3 space-y-2 max-h-56 overflow-y-auto bg-paper-100 no-scrollbar">
                 <div class="bg-azure-50 rounded-xl px-3 py-2 text-xs text-ink-600 mr-6 leading-relaxed">
-                    👋 你好！我是算盤，TaiCalc 的 AI 助理。<br>有任何薪資、房貸或退休問題，直接問我！
+                    👋 你好！我是算盤，TaiCalc 的 AI 助理。<br>我會協助你選工具與解讀規則，最終金額以頁面計算結果為準。
                 </div>
             </div>
 
             <!-- 輸入列 -->
             <div class="px-3 py-3 bg-paper-200 border-t border-paper-300 flex gap-2">
                 <input id="fab-input" type="text"
-                    placeholder="例：月薪 5 萬實拿多少？"
+                    placeholder="例：拿到 Offer 月薪 5 萬該先算哪個？"
                     class="flex-1 text-xs bg-paper-100 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-400
                            focus:outline-none focus:bg-paper-100 focus:ring-1 focus:ring-azure transition-all" />
                 <button id="fab-send" data-sfx="accent"
@@ -181,7 +181,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 
             <!-- 免責標注 -->
             <div class="px-3 pb-2.5 bg-paper-200">
-                <p class="text-[10px] text-ink-400">由 Gemini AI 驅動 · 僅供參考，不構成投資建議</p>
+                <p class="text-[10px] text-ink-400">AI 僅導引與解釋，不替代計算結果；不提供投資建議，請勿輸入個資</p>
             </div>
         </div>
 
@@ -237,10 +237,18 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         };
 
         let history: { role: string; content: string }[] = [];
+        const piiPattern = /([A-Z][12]\d{8}|09\d{8}|[\\w.+-]+@[\\w.-]+\\.[A-Za-z]{2,}|\\b\\d{16}\\b)/i;
 
         const send = async () => {
             const q = input?.value.trim();
             if (!q || sendBtn?.disabled) return;
+
+            if (piiPattern.test(q)) {
+                addMsg('ai', '為保護隱私，請移除身分證字號、電話、Email 或卡號後再提問。');
+                if (input) input.value = '';
+                input?.focus();
+                return;
+            }
 
             addMsg('user', q);
             history.push({ role: 'user', content: q });

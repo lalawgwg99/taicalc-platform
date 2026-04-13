@@ -1,68 +1,60 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { platformGovernance } from '../data/regulatoryMetadata';
 
-const title = "TaiCalc 財務計算平台｜台灣人專用 2026 薪資、房貸、所得稅免費線上計算機";
-const description = "2026 年最新版！專為台灣人設計的免費線上財務計算機。包含薪資實拿計算（最新勞健保級距）、新青安房貸試算、綜合所得稅試算、FIRE 退休規劃、股票當沖手續費計算。完全本地運算，資料不外傳。";
-const keywords = "2026薪資計算機,新青安房貸試算,所得稅試算,台灣財務計算,FIRE退休規劃,勞健保級距,當沖手續費,免費線上工具";
+const title = "TaiCalc 台灣財務計算平台｜薪資、所得稅、房貸三大核心試算";
+const description = "聚焦台灣三大核心財務決策：薪資實拿、綜合所得稅、房貸負擔。提供年度版本、更新日期與官方來源，所有計算皆在本地完成。";
+const keywords = "台灣薪資計算機,所得稅試算,房貸試算,新青安,勞健保級距,台灣財務計算,本地計算";
 
 const latestPosts = (await getCollection('blog'))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
     .slice(0, 6);
 
-const sections = [
+const coreTools = [
     {
-        id: "salary",
-        title: "薪資與稅務",
-        desc: "計算實拿薪資、所得稅與加班費，確保您的勞動權益不打折。",
-        tools: [
-            { href: "/tools/salary-calculator",          label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>` },
-            { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`, isNew: true },
-            { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       icon: `<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>` },
-            { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       icon: `<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>` },
-            { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",        icon: `<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>` },
-        ],
+        href: '/tools/salary-calculator',
+        label: '薪資實拿計算',
+        desc: '輸入月薪後，快速看勞健保與可用現金。',
+        scenario: '拿到 Offer、談加薪前',
+        cta: '先算薪資實拿',
+        icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>`,
     },
     {
-        id: "housing",
-        title: "居住與房產",
-        desc: "評估房貸負擔、租金成本與居家能源消耗，找到適合的居住策略。",
-        tools: [
-            { href: "/tools/mortgage-calculator",    label: "房貸試算",   desc: "新青安、寬限期與提前還款",   icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>` },
-            { href: "/tools/rent-cost-calculator",   label: "租金解析",   desc: "租屋押金與真實月支出",       icon: `<circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/>` },
-            { href: "/tools/electricity-calculator", label: "電費試算",   desc: "台電累進費率自動計算",       icon: `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>` },
-        ],
+        href: '/tools/income-tax-calculator',
+        label: '綜合所得稅試算',
+        desc: '比較標準與列舉扣除，先知道補繳或退稅。',
+        scenario: '五月報稅前',
+        cta: '先估今年稅額',
+        icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
     },
     {
-        id: "invest",
-        title: "投資與退休",
-        desc: "規劃 FIRE 退休目標，分析股票損益，讓錢替你工作。",
-        tools: [
-            { href: "/tools/fire-calculator",            label: "FIRE 退休規劃", desc: "複利效應與財務自由倒數",     icon: `<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>` },
-            { href: "/tools/labor-pension-calculator",   label: "勞退試算",      desc: "複利滾存與節稅效益分析",     icon: `<path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1a2 2 0 0 0 2 2h1"/><path d="M16 11h0"/>` },
-            { href: "/tools/stock-calculator",           label: "股票損益試算",  desc: "現股、當沖與 ETF 手續費",    icon: `<line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>` },
-            { href: "/tools/insurance-assessment",       label: "保險效益評估",  desc: "儲蓄險 IRR 與壽險需求",     icon: `<path d="M22 12a10.06 10.06 1 0 0-20 0Z"/><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M12 2v1"/>` },
-        ],
+        href: '/tools/mortgage-calculator',
+        label: '房貸試算',
+        desc: '評估寬限期、利率變化與長期月付壓力。',
+        scenario: '準備買房、換屋前',
+        cta: '先算每月房貸',
+        icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
     },
 ];
 
-const searchTools = sections.flatMap(s =>
-    s.tools.map(t => ({ ...t, section: s.title }))
-);
-
-const quickLinks = [
-    sections[0].tools[0],
-    sections[0].tools[1],
-    sections[1].tools[0],
-    sections[2].tools[0],
+const supportTools = [
+    { href: '/tools/insurance-calculator', label: '勞健保計算', desc: '保費級距與負擔比例' },
+    { href: '/tools/overtime-calculator', label: '加班費試算', desc: '平日與休息日計算' },
+    { href: '/tools/rent-cost-calculator', label: '租金解析', desc: '押金與真實月支出' },
+    { href: '/tools/electricity-calculator', label: '電費試算', desc: '台電累進費率換算' },
+    { href: '/tools/fire-calculator', label: 'FIRE 退休規劃', desc: '財務自由年限預估' },
+    { href: '/tools/labor-pension-calculator', label: '勞退試算', desc: '提撥與滾存分析' },
+    { href: '/tools/stock-calculator', label: '股票損益試算', desc: '手續費與損益估算' },
+    { href: '/tools/insurance-assessment', label: '保險效益評估', desc: 'IRR 與需求檢視' },
+    { href: '/tools/delivery-income-calculator', label: '外送收入計算', desc: '跑單淨收入分析' },
+    { href: '/tools/split-calculator', label: '分帳計算', desc: '多人分攤快速拆帳' },
 ];
+
+const quickLinks = coreTools;
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         HERO — Hermes-inspired control room
-         ═══════════════════════════════════════════════════════════ -->
     <section class="relative overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24">
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[860px] h-[860px] bg-brand/10 blur-3xl animate-float-slow"></div>
@@ -72,34 +64,32 @@ const quickLinks = [
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
                 <div class="animate-fade-in-up reveal" data-reveal>
-                    <div class="hermes-label">
-                        Local Compute · 2026 Rates
-                    </div>
+                    <div class="hermes-label">Taiwan Rules Engine · {platformGovernance.version}</div>
 
-                    <h1 class="text-4xl md:text-5xl lg:text-[3.6rem] font-semibold text-ink-800 tracking-tight leading-[1.1] mt-6">
-                        財務計算的決策引擎
+                    <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold text-ink-800 tracking-tight leading-[1.1] mt-6">
+                        先算三件事：薪資、所得稅、房貸
                     </h1>
                     <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-xl mt-4">
-                        整合台灣最常用的薪資、稅務、房貸與退休工具。所有計算在本地完成，快速、私密、可信。
+                        TaiCalc 只聚焦台灣最重要的三個財務決策入口，其他工具退到輔助層。每個核心工具都附年度版本、更新日期與官方來源，避免黑箱試算。
                     </p>
 
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">開始計算</a>
-                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">查看工具清單</a>
+                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">先算薪資</a>
+                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">看輔助工具</a>
                     </div>
 
                     <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-400">
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">工具數</p>
-                            <p class="text-lg font-semibold text-ink-700 mt-1">12+</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">核心數</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">3</p>
                         </div>
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">資料來源</p>
-                            <p class="text-lg font-semibold text-ink-700 mt-1">官方費率</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">資料年度</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.dataYear}</p>
                         </div>
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 md:col-span-1 col-span-2">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">隱私</p>
-                            <p class="text-lg font-semibold text-ink-700 mt-1">本地計算</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-400">更新</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.updatedAt}</p>
                         </div>
                     </div>
                 </div>
@@ -108,28 +98,26 @@ const quickLinks = [
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs uppercase tracking-widest text-ink-400">Quick Access</p>
-                            <p class="text-lg font-medium text-ink-700 mt-1">快速開始</p>
+                            <p class="text-lg font-medium text-ink-700 mt-1">從情境直接進入</p>
                         </div>
-                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">HOT</span>
+                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
                     </div>
 
-                    <!-- 搜尋框 -->
                     <div class="relative mt-4">
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」"
-                            class="input-clean pl-10 pr-4 text-sm" />
-                        <!-- 搜尋結果 -->
-                        <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30">
-                        </div>
+                        <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」" class="input-clean pl-10 pr-4 text-sm" />
+                        <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                     </div>
 
                     <div class="mt-5 grid gap-2">
                         {quickLinks.map(tool => (
-                            <a href={tool.href}
-                               class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors"
-                               data-sfx="tap">
+                            <a
+                                href={tool.href}
+                                class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors"
+                                data-sfx="tap"
+                            >
                                 <div>
                                     <p class="text-sm font-medium text-ink-700">{tool.label}</p>
                                     <p class="text-xs text-ink-400 mt-0.5">{tool.desc}</p>
@@ -140,74 +128,101 @@ const quickLinks = [
                     </div>
 
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="/tools/salary-calculator" data-season="always" data-sfx="tap"
-                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            剛拿到 Offer？算實拿
-                        </a>
-                        <a href="/tools/income-tax-calculator" data-season="tax" data-sfx="tap"
-                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            五月要報稅？算稅額
-                        </a>
-                        <a href="/tools/mortgage-calculator" data-season="always" data-sfx="tap"
-                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            準備買房？算月付
-                        </a>
-                        <a href="/tools/fire-calculator" data-season="always" data-sfx="tap"
-                           class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">
-                            何時能退休？算 FIRE
-                        </a>
+                        <a href="/tools/salary-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">剛拿到 Offer？算實拿</a>
+                        <a href="/tools/income-tax-calculator" data-season="tax" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">五月要報稅？算稅額</a>
+                        <a href="/tools/mortgage-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">準備買房？算月付</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         工具區 — 模組化卡片
-         ═══════════════════════════════════════════════════════════ -->
-    {sections.map((section, idx) => (
-        <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
-            <div class="max-w-6xl mx-auto px-4 md:px-6">
-                <!-- Section Header -->
-                <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
-                    <div>
-                        <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Module {idx + 1}</p>
-                        <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">{section.title}</h2>
+    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
+                <div>
+                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Core IA</p>
+                    <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">三大核心入口</h2>
+                </div>
+                <p class="text-sm text-ink-400 leading-relaxed max-w-xl">每個入口都對應一個高頻決策場景，先解決最大不確定性，再往輔助工具細化。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {coreTools.map((tool) => (
+                    <article class="group card-surface p-6 flex flex-col h-full">
+                        <div class="w-11 h-11 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
+                        </div>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400 mt-5">{tool.scenario}</p>
+                        <h3 class="text-lg font-medium text-ink-700 mt-2">{tool.label}</h3>
+                        <p class="text-sm text-ink-400 mt-2 leading-relaxed flex-1">{tool.desc}</p>
+                        <a href={tool.href} class="mt-5 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-ink-700 text-paper-50 text-sm font-medium hover:bg-ink-800 transition-colors" data-sfx="accent">
+                            {tool.cta}
+                        </a>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section id="support-tools" class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
+                <div>
+                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Support Tools</p>
+                    <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">輔助工具入口</h2>
+                </div>
+                <p class="text-sm text-ink-400 leading-relaxed max-w-xl">輔助工具維持可用，但不與三大核心搶主視覺焦點，避免決策動線分散。</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {supportTools.map((tool) => (
+                    <a href={tool.href} class="group flex items-center justify-between p-4 card-surface-hover" data-sfx="tap">
+                        <div>
+                            <p class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</p>
+                            <p class="text-xs text-ink-400 mt-1">{tool.desc}</p>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="flex flex-col lg:flex-row gap-6">
+                <div class="card-surface p-6 flex-1">
+                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Trust & Governance</p>
+                    <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">資料可追溯，不靠口號</h2>
+                    <div class="mt-4 flex flex-wrap gap-2 text-xs">
+                        <span class="data-pill">版本：{platformGovernance.version}</span>
+                        <span class="data-pill">年度：{platformGovernance.dataYear}</span>
+                        <span class="data-pill">更新：{platformGovernance.updatedAt}</span>
                     </div>
-                    <p class="text-sm text-ink-400 leading-relaxed max-w-xl">{section.desc}</p>
+                    <ul class="mt-5 space-y-2">
+                        {platformGovernance.sources.map((source) => (
+                            <li>
+                                <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-ink-500 hover:text-brand transition-colors">{source.label}</a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
-                <!-- 工具卡片 Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {section.tools.map((tool, toolIdx) => (
-                        <a href={tool.href}
-                           style={`animation-delay: ${toolIdx * 40}ms`}
-                           class="group flex items-start gap-4 p-5 card-surface-hover animate-fade-in-up"
-                           data-sfx="tap">
-                            <div class="w-10 h-10 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</span>
-                                    {tool.isNew && <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">NEW</span>}
-                                </div>
-                                <span class="text-xs text-ink-400 leading-relaxed">{tool.desc}</span>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                 class="text-ink-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1.5">
-                                <path d="m9 18 6-6-6-6"/>
-                            </svg>
-                        </a>
-                    ))}
+                <div class="card-surface p-6 lg:max-w-md">
+                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">AI Position</p>
+                    <h3 class="text-lg font-medium text-ink-700 mt-2">AI 只導引，不替代計算</h3>
+                    <p class="text-sm text-ink-400 leading-relaxed mt-3">AI 助理只負責解釋規則、推薦工具與引導輸入流程。最終數字以工具計算結果為準。</p>
+                    <ul class="mt-4 text-xs text-ink-500 space-y-2">
+                        <li>• 不提供投資買賣建議</li>
+                        <li>• 不要求或處理身分證、電話、Email 等個資</li>
+                        <li>• 所有核心結果可在頁面直接重算驗證</li>
+                    </ul>
                 </div>
             </div>
-        </section>
-    ))}
+        </div>
+    </section>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         最新專欄文章
-         ═══════════════════════════════════════════════════════════ -->
     <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex items-center justify-between mb-10">
@@ -222,9 +237,7 @@ const quickLinks = [
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {latestPosts.map((post) => (
-                    <a href={`/blog/${post.slug}`}
-                       class="group flex flex-col p-5 card-surface-hover min-h-[120px]"
-                       data-sfx="tap">
+                    <a href={`/blog/${post.slug}`} class="group flex flex-col p-5 card-surface-hover min-h-[120px]" data-sfx="tap">
                         <div class="flex items-center gap-2 mb-3">
                             {post.data.category && (
                                 <span class="text-[10px] font-medium text-ink-400 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full">{post.data.category}</span>
@@ -238,9 +251,6 @@ const quickLinks = [
         </div>
     </section>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         底部信任條
-         ═══════════════════════════════════════════════════════════ -->
     <section class="py-12 border-t border-paper-300 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-8 md:gap-12">
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
@@ -249,19 +259,17 @@ const quickLinks = [
             </div>
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                2026 最新法規費率
+                版本化治理：{platformGovernance.version}
             </div>
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                免費，無需帳號
+                AI 僅導引，不替代試算
             </div>
         </div>
     </section>
-
 </Layout>
 
 <script>
-// ── 季節性快捷鍵高亮 ─────────────────────────────────────────────
 const month = new Date().getMonth() + 1;
 const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
 if (taxBtn && month >= 3 && month <= 5) {
@@ -273,23 +281,23 @@ if (taxBtn && month >= 3 && month <= 5) {
     taxBtn.parentElement?.insertBefore(taxBtn, taxBtn.parentElement.firstChild);
 }
 
-// ── 搜尋功能 ────────────────────────────────────────────────────
 const searchTools = [
-    { href: "/tools/salary-calculator",         label: "薪資實拿計算",   desc: "月薪扣除勞健保後實領多少",     tags: "薪資 月薪 勞保 健保" },
-    { href: "/tools/income-tax-calculator",      label: "綜合所得稅試算", desc: "標準vs列舉扣除，最省稅方案",   tags: "所得稅 報稅 稅 扣除 股利" },
-    { href: "/tools/insurance-calculator",       label: "勞健保計算",     desc: "費率級距與眷屬附保明細",       tags: "勞保 健保 保費 投保" },
-    { href: "/tools/overtime-calculator",        label: "加班費試算",     desc: "平日、休息日、國定假日",       tags: "加班 加班費 休假 假日" },
-    { href: "/tools/delivery-income-calculator", label: "外送收入計算",   desc: "跑單淨收入與油費成本",         tags: "外送 foodpanda ubereats 外賣" },
-    { href: "/tools/mortgage-calculator",        label: "房貸試算",       desc: "新青安、寬限期與提前還款",     tags: "房貸 買房 新青安 利率 貸款" },
-    { href: "/tools/rent-cost-calculator",       label: "租金解析",       desc: "租屋押金與真實月支出",         tags: "租金 租屋 房租 押金" },
-    { href: "/tools/electricity-calculator",     label: "電費試算",       desc: "台電累進費率自動計算",         tags: "電費 台電 電力 用電" },
-    { href: "/tools/fire-calculator",            label: "FIRE 退休規劃",  desc: "複利效應與財務自由倒數",       tags: "退休 FIRE 財務自由 複利" },
-    { href: "/tools/labor-pension-calculator",   label: "勞退試算",       desc: "複利滾存與節稅效益分析",       tags: "勞退 勞工退休金 提撥 退休" },
-    { href: "/tools/stock-calculator",           label: "股票損益試算",   desc: "現股、當沖與 ETF 手續費",     tags: "股票 ETF 手續費 損益 當沖" },
-    { href: "/tools/insurance-assessment",       label: "保險效益評估",   desc: "儲蓄險 IRR 與壽險需求",       tags: "保險 儲蓄險 壽險 IRR" },
+    { href: '/tools/salary-calculator', label: '薪資實拿計算', desc: '月薪扣除勞健保後實領多少', tags: '薪資 月薪 勞保 健保 offer' },
+    { href: '/tools/income-tax-calculator', label: '綜合所得稅試算', desc: '標準 vs 列舉扣除比較', tags: '所得稅 報稅 五月 退稅 補繳' },
+    { href: '/tools/mortgage-calculator', label: '房貸試算', desc: '新青安、寬限期與月付壓力', tags: '房貸 買房 新青安 利率 貸款' },
+    { href: '/tools/insurance-calculator', label: '勞健保計算', desc: '費率級距與眷屬附保明細', tags: '勞保 健保 保費 投保' },
+    { href: '/tools/overtime-calculator', label: '加班費試算', desc: '平日、休息日、國定假日', tags: '加班 加班費 休假 假日' },
+    { href: '/tools/rent-cost-calculator', label: '租金解析', desc: '租屋押金與真實月支出', tags: '租金 租屋 房租 押金' },
+    { href: '/tools/electricity-calculator', label: '電費試算', desc: '台電累進費率自動計算', tags: '電費 台電 電力 用電' },
+    { href: '/tools/fire-calculator', label: 'FIRE 退休規劃', desc: '複利效應與財務自由倒數', tags: '退休 FIRE 財務自由 複利' },
+    { href: '/tools/labor-pension-calculator', label: '勞退試算', desc: '複利滾存與節稅效益分析', tags: '勞退 勞工退休金 提撥 退休' },
+    { href: '/tools/stock-calculator', label: '股票損益試算', desc: '現股、當沖與 ETF 手續費', tags: '股票 ETF 手續費 損益 當沖' },
+    { href: '/tools/insurance-assessment', label: '保險效益評估', desc: '儲蓄險 IRR 與壽險需求', tags: '保險 儲蓄險 壽險 IRR' },
+    { href: '/tools/delivery-income-calculator', label: '外送收入計算', desc: '跑單淨收入與油費成本', tags: '外送 foodpanda ubereats 外賣' },
+    { href: '/tools/split-calculator', label: '分帳計算', desc: '聚餐與多人分攤快速計算', tags: '分帳 AA 聚餐' },
 ];
 
-const searchInput   = document.getElementById('tool-search') as HTMLInputElement | null;
+const searchInput = document.getElementById('tool-search') as HTMLInputElement | null;
 const searchResults = document.getElementById('search-results');
 
 searchInput?.addEventListener('input', (e) => {

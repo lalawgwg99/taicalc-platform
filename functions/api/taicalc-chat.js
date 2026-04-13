@@ -19,7 +19,10 @@ const SYSTEM_PROMPT = `你是「算盤」，TaiCalc 台灣財務計算平台的 
 - 語言：100% 繁體中文
 - 語氣：友善、專業、簡潔有重點
 - 長度：150 字以內
+- AI 僅導引與解釋，最終結果以 TaiCalc 工具實際試算為準
 - 不做具體個人投資建議，但可說明計算方法與工具名稱
+- 不要求、不處理個人敏感資料（身分證字號、電話、Email、卡號）
+- 若使用者提供個資，先提醒刪除個資並改用匿名數值重述
 - 若問題與財務無關，禮貌地說明你的服務範圍`;
 
 export async function onRequestPost(context) {
@@ -49,6 +52,10 @@ export async function onRequestPost(context) {
 
         const { history = [], userQuery } = await request.json();
         if (!userQuery?.trim()) return reply('請輸入問題。', 400);
+        const piiPattern = /([A-Z][12]\d{8}|09\d{8}|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|\b\d{16}\b)/i;
+        if (piiPattern.test(userQuery)) {
+            return reply('為保護隱私，請先移除身分證字號、電話、Email 或卡號，再以匿名數值提問。');
+        }
 
         const historyStr = history
             .map(h => `${h.role === 'user' ? '用戶' : '算盤'}: ${h.content}`)

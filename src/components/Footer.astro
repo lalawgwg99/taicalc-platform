@@ -1,26 +1,29 @@
 ---
+import { platformGovernance } from '../data/regulatoryMetadata';
+
 const currentYear = new Date().getFullYear();
 const tools = [
-    { href: '/tools/salary-calculator', label: '薪資計算' },
-    { href: '/tools/mortgage-calculator', label: '房貸試算' },
-    { href: '/tools/fire-calculator', label: 'FIRE 退休' },
-    { href: '/tools/overtime-calculator', label: '加班費' },
-    { href: '/tools/electricity-calculator', label: '電費試算' },
+    { href: '/tools/salary-calculator', label: '薪資實拿（核心）' },
+    { href: '/tools/income-tax-calculator', label: '所得稅試算（核心）' },
+    { href: '/tools/mortgage-calculator', label: '房貸試算（核心）' },
+    { href: '/#support-tools', label: '輔助工具入口' },
+    { href: '/tax-season', label: '報稅季攻略' },
+    { href: '/blog', label: '專欄文章' },
 ];
 ---
 <footer class="border-t border-paper-300 pt-10 pb-8 mt-auto">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <!-- Brand -->
         <div>
             <a href="/" class="text-base font-semibold text-ink-700 hover:text-ink-500 transition-colors">TaiCalc</a>
-            <p class="text-xs text-ink-400 mt-2 leading-relaxed max-w-xs">
-                專為台灣人設計的免費財務計算工具。<br>
-                所有計算均在本地執行，資料不傳送至伺服器。
+            <p class="text-xs text-ink-400 mt-2 leading-relaxed max-w-sm">
+                聚焦台灣三大核心試算：薪資、所得稅、房貸。<br>
+                每次更新都附資料版本與官方來源，所有計算均在本地執行。
             </p>
+            <p class="text-xs text-ink-400 mt-2">版本 {platformGovernance.version} · 更新 {platformGovernance.updatedAt}</p>
         </div>
-        <!-- Tool Links -->
+
         <div>
-            <p class="text-xs font-medium text-ink-400 uppercase tracking-widest mb-3">常用工具</p>
+            <p class="text-xs font-medium text-ink-400 uppercase tracking-widest mb-3">快速入口</p>
             <div class="grid grid-cols-2 gap-x-4 gap-y-2">
                 {tools.map(t => (
                     <a href={t.href} class="text-xs text-ink-400 hover:text-ink-700 transition-colors">{t.label}</a>
@@ -28,6 +31,7 @@ const tools = [
             </div>
         </div>
     </div>
+
     <div class="flex items-center justify-between border-t border-paper-300 pt-6">
         <p class="text-xs text-ink-400">© {currentYear} TaiCalc</p>
         <a href="mailto:service@taicalc.com" class="text-xs text-ink-400 hover:text-ink-600 transition-colors">回報問題</a>

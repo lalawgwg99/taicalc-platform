@@ -1,5 +1,5 @@
-export function onRequest(context, next) {
-  const response = next();
+export async function onRequest(context, next) {
+  const response = await next();
   
   // 添加安全頭部
   response.headers.set('X-Content-Type-Options', 'nosniff');

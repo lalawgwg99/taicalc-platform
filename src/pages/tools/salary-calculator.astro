@@ -1,10 +1,12 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import SalaryCalculator from '../../components/calculators/SalaryCalculator.vue';
+import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
 const title = "2026 薪資實拿計算機｜TaiCalc";
 const description = "2026 年最新薪資試算｜輸入月薪自動計算實拿金額。包含最新勞健保級距、勞退自提、5 年薪資成長預測。免費線上工具，資料本地運算不外傳。";
 const keywords = "月薪5萬實拿,2026薪資計算,勞健保級距,勞退自提6%,實拿薪資計算,台灣薪資扣除,所得稅前薪資";
+const governance = coreToolGovernance.salary;
 
 const faqs = [
     {
@@ -30,7 +32,17 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} category="薪資權益" faqs={faqs} kicker="先看實拿，再回推生活餘裕與稅後年薪">
+<ToolLayout
+    title={title}
+    description={description}
+    category="薪資權益"
+    faqs={faqs}
+    kicker="先看實拿，再回推生活餘裕與稅後年薪"
+    dataVersion={governance.version}
+    dataYear={governance.dataYear}
+    lastUpdated={governance.updatedAt}
+    sources={governance.sources}
+>
     <div slot="heroAside" class="space-y-4">
         <div class="ink-panel p-5">
             <p class="text-[11px] uppercase tracking-[0.2em] text-paper-200">這頁能回答</p>

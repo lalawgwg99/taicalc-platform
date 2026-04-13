@@ -7,17 +7,14 @@ const isActive = (href: string) => {
 ---
 <nav class="sticky top-0 z-50 bg-paper-100/75 backdrop-blur-md border-b border-paper-300">
     <div class="h-14 flex items-center justify-between">
-        <a href="/" class="text-lg font-semibold tracking-tight text-ink-700 hover:text-ink-500 transition-colors">
-            TaiCalc
-        </a>
+        <a href="/" class="text-lg font-semibold tracking-tight text-ink-700 hover:text-ink-500 transition-colors">TaiCalc</a>
 
-        <!-- Desktop Menu -->
         <div class="hidden md:flex items-center gap-4 text-[11px] uppercase tracking-[0.2em]">
             <a href="/" class={`px-2 py-1 transition-colors ${isActive('/') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>首頁</a>
             <a href="/tools/salary-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/salary') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>薪資</a>
             <a href="/tools/income-tax-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/income-tax') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>所得稅</a>
             <a href="/tools/mortgage-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/mortgage') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>房貸</a>
-            <a href="/tools/fire-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/fire') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>退休</a>
+            <a href="/#support-tools" class={`px-2 py-1 transition-colors ${currentPath === '/' ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>輔助工具</a>
             <a href="/blog" class={`px-2 py-1 transition-colors ${isActive('/blog') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>專欄</a>
             <span class="w-px h-4 bg-paper-300"></span>
             <button id="sound-toggle" class="sound-toggle" type="button" data-sfx="tap" aria-pressed="false">
@@ -25,7 +22,6 @@ const isActive = (href: string) => {
             </button>
         </div>
 
-        <!-- Mobile Menu Button -->
         <button id="menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-ink-400 hover:text-ink-700 hover:bg-paper-200 transition-colors" aria-label="開啟選單" data-sfx="tap">
             <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="3" y1="8" x2="21" y2="8"></line>
@@ -38,31 +34,27 @@ const isActive = (href: string) => {
     </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-paper-100/95 backdrop-blur-xl pt-16">
     <div class="px-4 pt-6 pb-8 flex flex-col gap-1">
         <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">首頁</a>
         <div class="h-px bg-paper-300 my-3"></div>
-        <button id="sound-toggle-mobile" class="sound-toggle w-full justify-center mb-2" type="button" data-sfx="tap" aria-pressed="false">
-            音效 Off
-        </button>
-        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">薪資與稅務</p>
-        <a href="/tools/salary-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">
-            <span>薪資實拿計算</span>
-        </a>
+        <button id="sound-toggle-mobile" class="sound-toggle w-full justify-center mb-2" type="button" data-sfx="tap" aria-pressed="false">音效 Off</button>
+
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">三大核心</p>
+        <a href="/tools/salary-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">薪資實拿計算</a>
         <a href="/tools/income-tax-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">
             <span>綜合所得稅試算</span>
-            <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">NEW</span>
+            <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">CORE</span>
         </a>
-        <a href="/tools/overtime-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">加班費試算</a>
-        <div class="h-px bg-paper-300 my-3"></div>
-        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">居住與投資</p>
         <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">房貸試算</a>
-        <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">居住決策工具箱</a>
-        <a href="/tools/fire-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">FIRE 退休規劃</a>
-        <a href="/tools/labor-pension-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">勞退試算</a>
+
         <div class="h-px bg-paper-300 my-3"></div>
-        <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">報稅季攻略</a>
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">輔助入口</p>
+        <a href="/#support-tools" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">查看輔助工具</a>
+        <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">居住決策工具箱</a>
+        <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">報稅季攻略</a>
+
+        <div class="h-px bg-paper-300 my-3"></div>
         <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">專欄文章</a>
     </div>
 </div>
