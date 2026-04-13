@@ -25,6 +25,9 @@ const SYSTEM_PROMPT = `你是「算盤」，TaiCalc 台灣財務計算平台的 
 - 若使用者提供個資，先提醒刪除個資並改用匿名數值重述
 - 若問題與財務無關，禮貌地說明你的服務範圍`;
 
+const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const OPENROUTER_MODEL = 'google/gemma-4-26b-a4b-it:free';
+
 export async function onRequestPost(context) {
     const { request, env } = context;
 
@@ -45,9 +48,9 @@ export async function onRequestPost(context) {
         });
 
     try {
-        const apiKey = env.GEMINI_API_KEY || env.GOOGLE_GENERATIVE_AI_API_KEY;
+        const apiKey = env.OPENROUTER_API_KEY;
         if (!apiKey) {
-            return reply('⚙️ AI 服務尚未啟用，請聯絡管理員設定 API 金鑰。');
+            return reply('⚙️ AI 服務尚未啟用，請設定 OPENROUTER_API_KEY。');
         }
 
         const { history = [], userQuery } = await request.json();
@@ -70,21 +73,33 @@ ${historyStr || '（對話開始）'}
 
 算盤：`;
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
-
-        const resp = await fetch(apiUrl, {
+        const resp = await fetch(OPENROUTER_API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+                'HTTP-Referer': 'https://taicalc.com',
+                'X-Title': 'TaiCalc',
+            },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 512 },
+                model: OPENROUTER_MODEL,
+                temperature: 0.7,
+                max_tokens: 300,
+                messages: [
+                    { role: 'system', content: SYSTEM_PROMPT },
+                    ...(history.map(h => ({
+                        role: h.role === 'user' ? 'user' : 'assistant',
+                        content: h.content,
+                    }))),
+                    { role: 'user', content: userQuery },
+                ],
             }),
         });
 
         if (!resp.ok) return reply('🔌 AI 暫時無法回應，請稍後再試。');
 
-        const data  = await resp.json();
-        const text  = data.candidates?.[0]?.content?.parts?.[0]?.text
+        const data = await resp.json();
+        const text = data?.choices?.[0]?.message?.content
             ?? '🤔 AI 無法理解，請換個方式描述。';
 
         return reply(text);
