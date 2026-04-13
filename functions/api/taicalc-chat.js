@@ -96,7 +96,11 @@ ${historyStr || '（對話開始）'}
             }),
         });
 
-        if (!resp.ok) return reply('🔌 AI 暫時無法回應，請稍後再試。');
+        if (!resp.ok) {
+            const errorText = await resp.text();
+            console.error('OpenRouter error', resp.status, errorText);
+            return reply(`🔌 AI 暫時無法回應（${resp.status}）。請稍後再試或確認金鑰與模型可用。`);
+        }
 
         const data = await resp.json();
         const text = data?.choices?.[0]?.message?.content
