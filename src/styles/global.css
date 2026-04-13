@@ -379,6 +379,43 @@ body {
     @apply text-ink-800 font-semibold;
 }
 
+/* ─── Prose Light (for white surfaces) ────────────────────────── */
+.prose-light {
+    @apply text-stone-700;
+}
+
+.prose-light h1,
+.prose-light h2,
+.prose-light h3,
+.prose-light h4 {
+    @apply text-stone-900 font-bold tracking-tight;
+}
+
+.prose-light a {
+    @apply text-primary-600 no-underline hover:underline;
+}
+
+.prose-light blockquote {
+    @apply border-l-4 border-emerald-500 pl-6 py-2 text-stone-600 not-italic bg-stone-50 rounded-r-xl;
+}
+
+.prose-light ul {
+    @apply list-none pl-0 space-y-2;
+}
+
+.prose-light ul li {
+    @apply relative pl-6 text-stone-700;
+}
+
+.prose-light ul li::before {
+    content: '✓';
+    @apply absolute left-0 text-amber-500 font-bold;
+}
+
+.prose-light strong {
+    @apply text-stone-900 font-semibold;
+}
+
 /* ─── Animations ──────────────────────────────────────────────── */
 @keyframes fadeInUp {
     from {

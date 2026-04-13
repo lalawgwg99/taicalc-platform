@@ -57,7 +57,7 @@ const description = post.data.excerpt;
         </header>
 
         <!-- Content (MDX/Markdown) -->
-        <div class="prose prose-stone prose-lg max-w-none mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100">
+        <div class="prose prose-light prose-lg max-w-none mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100">
             <Content />
         </div>
         
@@ -72,34 +72,35 @@ const description = post.data.excerpt;
 
 <style is:global>
     /* Custom Styling for Article Content (simulating Typography plugin if missing) */
-    .prose h2 {
+    .prose-light h2 {
         font-size: 1.5rem;
         font-weight: 700;
         margin-top: 2rem;
         margin-bottom: 1rem;
         color: #1c1917; /* stone-900 */
     }
-    .prose h3 {
+    .prose-light h3 {
         font-size: 1.25rem;
         font-weight: 600;
         margin-top: 1.5rem;
         margin-bottom: 0.75rem;
         color: #292524; /* stone-800 */
     }
-    .prose p {
+    .prose-light p {
         margin-bottom: 1.25rem;
         line-height: 1.75;
         color: #44403c; /* stone-700 */
     }
-    .prose ul, .prose ol {
+    .prose-light ul, .prose-light ol {
         margin-bottom: 1.25rem;
         padding-left: 1.5rem;
         list-style-type: disc;
     }
-    .prose li {
+    .prose-light li {
         margin-bottom: 0.5rem;
+        color: #44403c;
     }
-    .prose blockquote {
+    .prose-light blockquote {
         border-left: 4px solid #10b981;
         padding-left: 1rem;
         font-style: italic;
@@ -109,17 +110,17 @@ const description = post.data.excerpt;
         border-radius: 0 0.5rem 0.5rem 0;
         margin-bottom: 1.25rem;
     }
-    .prose img {
+    .prose-light img {
         border-radius: 0.75rem;
         margin: 2rem auto;
     }
-    .prose figure figcaption {
+    .prose-light figure figcaption {
         text-align: center;
         color: #78716c;
         font-size: 0.875rem;
         margin-top: 0.5rem;
     }
-    .prose strong {
+    .prose-light strong {
         font-weight: 600;
         color: #1c1917;
     }
