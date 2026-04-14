@@ -1,18 +1,17 @@
 <template>
   <div class="space-y-6">
-    <!-- 輸入區 -->
     <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <div class="grid grid-cols-2 gap-3 mb-6">
         <button
           @click="isSummer = true"
-          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border', 
+          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
           isSummer ? 'bg-orange-500 text-white border-orange-600 shadow-md shadow-orange-200' : 'bg-stone-50 text-stone-500 border-stone-200 hover:bg-stone-100']"
         >
           <span>🌞</span> 夏月 (6-9月)
         </button>
         <button
           @click="isSummer = false"
-          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border', 
+          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
           !isSummer ? 'bg-blue-500 text-white border-blue-600 shadow-md shadow-blue-200' : 'bg-stone-50 text-stone-500 border-stone-200 hover:bg-stone-100']"
         >
           <span>❄️</span> 非夏月
@@ -49,7 +48,6 @@
       </div>
     </section>
 
-    <!-- 主要結果 -->
     <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <div class="flex items-end justify-between mb-6 pb-6 border-b border-stone-100">
         <div>
@@ -60,6 +58,9 @@
           >
             <span class="text-2xl text-stone-400 mr-1">$</span>{{ totalCost.toLocaleString() }}
           </p>
+          <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-stone-500">
+            已含每月最低計收 $100，補足 ${{ minimumChargeApplied }}
+          </p>
         </div>
         <div class="text-right">
           <p class="text-xs text-stone-500 mb-1">平均每度</p>
@@ -67,7 +68,6 @@
         </div>
       </div>
 
-      <!-- 級距條形圖 -->
       <div class="space-y-3 mb-6">
         <div v-for="(tier, i) in breakdown" :key="i" class="relative">
           <div class="flex justify-between text-xs text-stone-500 mb-1 font-medium">
@@ -80,9 +80,13 @@
             <div
               class="h-full rounded-full transition-all duration-500"
               :class="i === breakdown.length - 1 && breakdown.length > 1 ? 'bg-red-500' : (isSummer ? 'bg-orange-400' : 'bg-blue-400')"
-              :style="{ width: (tier.cost / totalCost * 100) + '%' }"
+              :style="{ width: (tier.cost / Math.max(1, energyCharge) * 100) + '%' }"
             ></div>
           </div>
+        </div>
+        <div v-if="minimumChargeApplied > 0" class="flex justify-between text-xs text-stone-500 pt-2 border-t border-stone-100">
+          <span>每月最低計收補足</span>
+          <span class="font-bold text-stone-700">+$ {{ minimumChargeApplied }}</span>
         </div>
       </div>
 
@@ -92,12 +96,11 @@
       >
         <span>⚠️</span>
         <span>
-          高級距電費佔比 <span class="font-bold">{{ highTierPercent }}%</span>！最後一級每度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
+          高級距電費佔比 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級每度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
         </span>
       </div>
     </section>
 
-    <!-- 省電模擬 -->
     <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">💡</span> 省電模擬
@@ -129,13 +132,11 @@
       </div>
     </section>
 
-    <!-- 耗電怪獸分析 (Appliance Analysis) -->
     <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">👻</span> 耗電怪獸分析
       </h2>
 
-      <!-- Add Appliance Form -->
       <div class="bg-stone-50 rounded-xl p-4 mb-6 border border-stone-200">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-1">
@@ -179,9 +180,7 @@
         </button>
       </div>
 
-      <!-- Appliance List & Chart Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" v-if="userAppliances.length > 0">
-        <!-- List -->
         <div class="space-y-3">
           <div
             v-for="(app, idx) in userAppliances"
@@ -226,7 +225,6 @@
           </div>
         </div>
 
-        <!-- Chart -->
         <div class="flex flex-col items-center justify-center bg-stone-50 rounded-xl p-4 border border-stone-100">
           <div class="w-full h-[200px] relative">
             <canvas id="ghostChart"></canvas>
@@ -238,24 +236,40 @@
       </div>
     </section>
 
-    <!-- 冷氣耗電估算 -->
     <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">🌡️</span> 冷氣耗電估算
       </h2>
+
+      <div class="grid grid-cols-3 gap-2 mb-4">
+        <button
+          v-for="mode in acModes"
+          :key="mode.id"
+          @click="acInputMode = mode.id"
+          :class="[
+            'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
+            acInputMode === mode.id
+              ? 'border-blue-500 bg-blue-50 text-blue-700'
+              : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+          ]"
+        >
+          {{ mode.label }}
+        </button>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        <div v-if="acInputMode === 'kw'">
           <label for="acPower" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
-            冷氣功率
+            電功率
           </label>
           <input
             id="acPower"
             type="number"
             v-model.number="acPower"
-            min="0.3"
-            max="12"
+            min="0.1"
+            max="20"
             step="0.1"
-            aria-label="冷氣功率"
+            aria-label="冷氣電功率"
             class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
           />
           <div class="mt-2 flex flex-wrap gap-2">
@@ -266,11 +280,68 @@
               @click="acPower = preset"
               class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
             >
-              {{ preset }}kW
+              {{ preset }} kW
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-stone-400">支援大型機種，輸入範圍 0.3kW 到 12kW。</p>
+          <p class="mt-2 text-[11px] text-stone-400">直接輸入銘板上的消耗功率，適合已知實際耗電規格時使用。</p>
         </div>
+
+        <div v-else-if="acInputMode === 'btu'">
+          <label for="acBtu" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+            冷房能力
+          </label>
+          <input
+            id="acBtu"
+            type="number"
+            v-model.number="acBtu"
+            min="3000"
+            max="120000"
+            step="500"
+            aria-label="冷房能力 BTU/h"
+            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+          />
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button
+              v-for="preset in acBtuPresets"
+              :key="preset"
+              type="button"
+              @click="acBtu = preset"
+              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+            >
+              {{ preset.toLocaleString() }}
+            </button>
+          </div>
+          <p class="mt-2 text-[11px] text-stone-400">BTU/h 是冷房能力，不是耗電功率，仍需搭配 COP 或 CSPF 估算輸入功率。</p>
+        </div>
+
+        <div v-else>
+          <label for="acCapacityKw" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+            冷房能力
+          </label>
+          <input
+            id="acCapacityKw"
+            type="number"
+            v-model.number="acCapacityKw"
+            min="0.8"
+            max="35"
+            step="0.1"
+            aria-label="冷房能力 kW"
+            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+          />
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button
+              v-for="preset in acCapacityPresets"
+              :key="preset"
+              type="button"
+              @click="acCapacityKw = preset"
+              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+            >
+              {{ preset }} kW
+            </button>
+          </div>
+          <p class="mt-2 text-[11px] text-stone-400">若銘板標示為冷房能力 kW，可在這裡直接搭配 COP 或 CSPF 換算。</p>
+        </div>
+
         <div>
           <label for="acHours" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
             每日時數
@@ -283,30 +354,103 @@
             max="24"
             class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
           />
+          <p class="mt-2 text-[11px] text-stone-400">依每天平均運轉時數估算，變頻機實際耗電仍會受室外溫度與設定溫度影響。</p>
         </div>
       </div>
-      <div class="mt-4 p-3 bg-stone-100/50 rounded-xl text-center border border-stone-100">
-        <p class="text-stone-500 text-xs font-medium">冷氣每月預估</p>
-        <div class="flex items-center justify-center gap-2 mt-1">
-          <p class="text-2xl font-bold text-stone-800 font-mono">
-            {{ acMonthlyKwh }} <span class="text-sm font-sans text-stone-500 font-normal">度</span>
+
+      <div v-if="acInputMode !== 'kw'" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">效能指標</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              @click="acEfficiencyType = 'cop'"
+              :class="[
+                'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
+                acEfficiencyType === 'cop'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
+                  : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+              ]"
+            >
+              COP
+            </button>
+            <button
+              @click="acEfficiencyType = 'cspf'"
+              :class="[
+                'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
+                acEfficiencyType === 'cspf'
+                  ? 'border-blue-500 bg-blue-50 text-blue-700'
+                  : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+              ]"
+            >
+              CSPF
+            </button>
+          </div>
+          <p class="mt-2 text-[11px] text-stone-400">
+            COP 可近似即時效率；CSPF 是季節效率，本工具以平均值粗估輸入功率。
           </p>
-          <span class="text-stone-300">|</span>
-          <p class="text-sm text-stone-500">約 ${{ acMonthlyCost }}</p>
         </div>
-        <button @click="addAcToGhost" class="mt-2 text-xs text-blue-600 hover:underline">
-          + 加入到耗電怪獸分析
-        </button>
+        <div>
+          <label for="acEfficiencyValue" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+            {{ acEfficiencyType.toUpperCase() }} 數值
+          </label>
+          <input
+            id="acEfficiencyValue"
+            type="number"
+            v-model.number="acEfficiencyValue"
+            min="1"
+            max="8"
+            step="0.1"
+            aria-label="效能值"
+            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+          />
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button
+              v-for="preset in acEfficiencyPresets"
+              :key="preset"
+              type="button"
+              @click="acEfficiencyValue = preset"
+              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+            >
+              {{ preset }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-4 bg-stone-100/50 rounded-xl border border-stone-100">
+        <div class="flex flex-col gap-1 text-center">
+          <p class="text-stone-500 text-xs font-medium">冷氣每月預估</p>
+          <div class="flex items-center justify-center gap-2 mt-1">
+            <p class="text-2xl font-bold text-stone-800 font-mono">
+              {{ acMonthlyKwh }} <span class="text-sm font-sans text-stone-500 font-normal">度</span>
+            </p>
+            <span class="text-stone-300">|</span>
+            <p class="text-sm text-stone-500">約 ${{ acMonthlyCost }}</p>
+          </div>
+          <p class="text-xs text-stone-500 mt-1">
+            {{ acEstimateLabel }}
+          </p>
+          <p v-if="acInputMode !== 'kw'" class="text-[11px] text-stone-400">
+            冷房能力 {{ acCoolingCapacityKw.toFixed(2) }} kW
+            <span class="mx-1">≈</span>
+            {{ acCoolingCapacityBtu.toLocaleString() }} BTU/h
+            <span class="mx-1">→</span>
+            推估輸入功率 {{ acEstimatedInputKw.toFixed(2) }} kW
+          </p>
+          <button @click="addAcToGhost" class="mt-2 text-xs text-blue-600 hover:underline">
+            + 加入到耗電怪獸分析
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- 費率說明 -->
     <footer class="bg-stone-50 border border-stone-200 rounded-xl p-4 text-xs text-stone-500">
-      <p class="font-bold text-stone-600 mb-2">📌 台電 2024 年住宅電價結構</p>
-      <div class="grid grid-cols-2 gap-2 text-stone-500">
+      <p class="font-bold text-stone-600 mb-2">📌 資料版本與說明</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-stone-500">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> 非夏月：其他月份</div>
-        <div class="col-span-2 mt-1 text-stone-400">採 6 段累進費率，用越多越貴。</div>
+        <div class="md:col-span-2">住宅累進級距採台電 2024-04-01 起實施費率，高用電級距已更新為夏月 $6.24 / $8.46、非夏月 $5.66 / $6.71。</div>
+        <div class="md:col-span-2">已納入 2025-09-12 公告後之每月最低計收 $100 規則；冷氣 BTU/h、CSPF 換算為平均估算值，仍以設備銘板與實際帳單為準。</div>
       </div>
     </footer>
   </div>
@@ -316,41 +460,26 @@
 import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 
+const MINIMUM_MONTHLY_CHARGE = 100;
+const BTU_PER_KW = 3412.142;
+
 const SUMMER = [
   { limit: 120, rate: 1.68 },
   { limit: 330, rate: 2.45 },
-  { limit: 500, rate: 3.70 },
+  { limit: 500, rate: 3.7 },
   { limit: 700, rate: 5.04 },
-  { limit: 1000, rate: 6.03 },
-  { limit: Infinity, rate: 7.69 }
+  { limit: 1000, rate: 6.24 },
+  { limit: Infinity, rate: 8.46 }
 ];
+
 const NON_SUMMER = [
   { limit: 120, rate: 1.68 },
   { limit: 330, rate: 2.16 },
   { limit: 500, rate: 3.03 },
   { limit: 700, rate: 4.14 },
-  { limit: 1000, rate: 5.07 },
-  { limit: Infinity, rate: 6.63 }
+  { limit: 1000, rate: 5.66 },
+  { limit: Infinity, rate: 6.71 }
 ];
-
-const calcBreakdown = (kwh, rates) => {
-  let remain = kwh, prev = 0, result = [];
-  for (const t of rates) {
-    if (remain <= 0) break;
-    const use = Math.min(remain, t.limit - prev);
-    if (use > 0) {
-      result.push({
-        label: `${prev + 1}~${t.limit === Infinity ? '以上' : t.limit}度`,
-        kwh: use,
-        rate: t.rate,
-        cost: Math.round(use * t.rate)
-      });
-    }
-    remain -= use;
-    prev = t.limit;
-  }
-  return result;
-};
 
 const APPLIANCE_PRESETS = [
   { name: '冷氣 (小型)', watts: 800, hours: 8 },
@@ -363,65 +492,151 @@ const APPLIANCE_PRESETS = [
   { name: '電鍋 (保溫)', watts: 40, hours: 12 },
   { name: '吹風機', watts: 1200, hours: 0.2 },
   { name: '洗衣機', watts: 500, hours: 1 },
-  { name: '電燈 (全家)', watts: 100, hours: 6 },
+  { name: '電燈 (全家)', watts: 100, hours: 6 }
 ];
+
+const acModes = [
+  { id: 'kw', label: 'kW 輸入' },
+  { id: 'btu', label: 'BTU/h 輸入' },
+  { id: 'capacity', label: '冷房能力 + 效能' }
+];
+
+const acPowerPresets = [0.6, 0.8, 1.2, 1.8, 2.5, 3.6, 5, 7.2, 10];
+const acBtuPresets = [9000, 12000, 18000, 24000, 36000, 48000];
+const acCapacityPresets = [2.6, 3.5, 5, 7.1, 10, 14];
+const acEfficiencyPresets = [2.8, 3.2, 3.8, 4.5, 5.2, 6];
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+const calcBreakdown = (kwh, rates) => {
+  let remain = kwh;
+  let previousLimit = 0;
+  const result = [];
+
+  for (const tier of rates) {
+    if (remain <= 0) break;
+    const use = Math.min(remain, tier.limit - previousLimit);
+    if (use > 0) {
+      result.push({
+        label: `${previousLimit + 1}~${tier.limit === Infinity ? '以上' : tier.limit}度`,
+        kwh: use,
+        rate: tier.rate,
+        cost: Math.round(use * tier.rate)
+      });
+    }
+    remain -= use;
+    previousLimit = tier.limit;
+  }
+
+  return result;
+};
+
+const calcCostSummary = (kwh, rates) => {
+  const tiers = calcBreakdown(kwh, rates);
+  const energyCharge = tiers.reduce((sum, tier) => sum + tier.cost, 0);
+  const minimumChargeApplied = kwh > 0 && energyCharge < MINIMUM_MONTHLY_CHARGE
+    ? MINIMUM_MONTHLY_CHARGE - energyCharge
+    : 0;
+
+  return {
+    tiers,
+    energyCharge,
+    minimumChargeApplied,
+    totalCost: energyCharge + minimumChargeApplied
+  };
+};
 
 const kwh = ref(400);
 const isSummer = ref(true);
 const simulatedSave = ref(0);
-const acPower = ref(1.2);
-const acHours = ref(8);
-const acPowerPresets = [0.8, 1.2, 1.8, 2.5, 3.6, 5, 7.2, 10];
 
-// Ghost Hunter State
+const acInputMode = ref('kw');
+const acPower = ref(1.2);
+const acBtu = ref(12000);
+const acCapacityKw = ref(3.5);
+const acEfficiencyType = ref('cop');
+const acEfficiencyValue = ref(3.8);
+const acHours = ref(8);
+
 const userAppliances = ref([]);
 const newAppliance = ref({
   preset: '',
   watts: '',
   hours: ''
 });
+
 const appliancePresets = APPLIANCE_PRESETS;
 let chartInstance = null;
 
-const rates = computed(() => isSummer.value ? SUMMER : NON_SUMMER);
-const breakdown = computed(() => calcBreakdown(kwh.value || 0, rates.value));
-const totalCost = computed(() => breakdown.value.reduce((s, t) => s + t.cost, 0));
-const avgRate = computed(() => kwh.value > 0 ? (totalCost.value / kwh.value).toFixed(2) : '0.00');
+const rates = computed(() => (isSummer.value ? SUMMER : NON_SUMMER));
+const costSummary = computed(() => calcCostSummary(Number(kwh.value) || 0, rates.value));
+const breakdown = computed(() => costSummary.value.tiers);
+const energyCharge = computed(() => costSummary.value.energyCharge);
+const minimumChargeApplied = computed(() => costSummary.value.minimumChargeApplied);
+const totalCost = computed(() => costSummary.value.totalCost);
+const avgRate = computed(() => (kwh.value > 0 ? (totalCost.value / kwh.value).toFixed(2) : '0.00'));
 
 const highTierPercent = computed(() => {
-  if (breakdown.value.length < 2) return 0;
+  if (breakdown.value.length < 2 || totalCost.value <= 0) return 0;
   const last = breakdown.value[breakdown.value.length - 1];
   return Math.round(last.cost / totalCost.value * 100);
 });
+
 const highTierMultiple = computed(() => {
   if (breakdown.value.length < 2) return 1;
   return (breakdown.value[breakdown.value.length - 1].rate / breakdown.value[0].rate).toFixed(1);
 });
 
-const getSaving = (n) => {
-  const newKwh = Math.max(0, (kwh.value || 0) - n);
-  const newCost = calcBreakdown(newKwh, rates.value).reduce((s, t) => s + t.cost, 0);
+const getSaving = (savingKwh) => {
+  const newKwh = Math.max(0, (kwh.value || 0) - savingKwh);
+  const newCost = calcCostSummary(newKwh, rates.value).totalCost;
   return totalCost.value - newCost;
 };
 
 const simulatedSaving = computed(() => getSaving(simulatedSave.value));
+const simulateSave = (savingKwh) => {
+  simulatedSave.value = savingKwh;
+};
 
-const simulateSave = (n) => { simulatedSave.value = n; };
+const normalizedAcPower = computed(() => clamp(Number(acPower.value) || 0, 0.1, 20));
+const normalizedAcBtu = computed(() => clamp(Number(acBtu.value) || 0, 3000, 120000));
+const normalizedAcCapacityKw = computed(() => clamp(Number(acCapacityKw.value) || 0, 0.8, 35));
+const normalizedAcEfficiencyValue = computed(() => clamp(Number(acEfficiencyValue.value) || 0, 1, 8));
+const normalizedAcHours = computed(() => clamp(Number(acHours.value) || 0, 0, 24));
 
-const normalizedAcPower = computed(() => {
-  const value = Number(acPower.value) || 0;
-  return Math.min(12, Math.max(0.3, value));
+const acCoolingCapacityKw = computed(() => {
+  if (acInputMode.value === 'btu') {
+    return normalizedAcBtu.value / BTU_PER_KW;
+  }
+  if (acInputMode.value === 'capacity') {
+    return normalizedAcCapacityKw.value;
+  }
+  return normalizedAcPower.value;
 });
 
-const normalizedAcHours = computed(() => {
-  const value = Number(acHours.value) || 0;
-  return Math.min(24, Math.max(0, value));
+const acCoolingCapacityBtu = computed(() => Math.round(acCoolingCapacityKw.value * BTU_PER_KW));
+
+const acEstimatedInputKw = computed(() => {
+  if (acInputMode.value === 'kw') {
+    return normalizedAcPower.value;
+  }
+
+  const estimatedPower = acCoolingCapacityKw.value / normalizedAcEfficiencyValue.value;
+  return clamp(estimatedPower, 0.1, 20);
 });
 
-const acMonthlyKwh = computed(() => Math.round(normalizedAcPower.value * normalizedAcHours.value * 30));
-const acMonthlyCost = computed(() => calcBreakdown(acMonthlyKwh.value, rates.value).reduce((s, t) => s + t.cost, 0));
+const acEstimateLabel = computed(() => {
+  if (acInputMode.value === 'kw') {
+    return `以實際電功率 ${acEstimatedInputKw.value.toFixed(2)} kW 估算`;
+  }
 
-// Ghost Hunter Logic
+  const metric = acEfficiencyType.value.toUpperCase();
+  return `以冷房能力 ÷ ${metric} 推估平均輸入功率 ${acEstimatedInputKw.value.toFixed(2)} kW`;
+});
+
+const acMonthlyKwh = computed(() => Math.round(acEstimatedInputKw.value * normalizedAcHours.value * 30));
+const acMonthlyCost = computed(() => calcCostSummary(acMonthlyKwh.value, rates.value).totalCost);
+
 const applyPreset = () => {
   if (newAppliance.value.preset) {
     newAppliance.value.watts = newAppliance.value.preset.watts;
@@ -431,57 +646,64 @@ const applyPreset = () => {
 
 const addAppliance = () => {
   const { preset, watts, hours } = newAppliance.value;
-  const name = preset ? preset.name : (watts ? `自訂電器 (${watts}W)` : '未命名');
-  const w = Number(watts) || 0;
-  const h = Number(hours) || 0;
-  if (w > 0 && h > 0) {
+  const powerWatts = Number(watts) || 0;
+  const dailyHours = clamp(Number(hours) || 0, 0, 24);
+  const name = preset ? preset.name : (powerWatts ? `自訂電器 (${powerWatts}W)` : '未命名');
+
+  if (powerWatts > 0 && dailyHours > 0) {
     userAppliances.value.push({
       name,
-      watts: w,
-      hours: h,
-      monthlyKwh: (w * h * 30) / 1000,
-      monthlyCost: 0 // Calculated dynamically later
+      watts: powerWatts,
+      hours: dailyHours,
+      monthlyKwh: (powerWatts * dailyHours * 30) / 1000,
+      monthlyCost: 0
     });
-    // Reset but keep watts/hours maybe? No clear form
     newAppliance.value = { preset: '', watts: '', hours: '' };
   }
 };
 
+const getAcGhostName = () => {
+  if (acInputMode.value === 'kw') {
+    return `冷氣估算 (${acEstimatedInputKw.value.toFixed(1)}kW)`;
+  }
+  if (acInputMode.value === 'btu') {
+    return `冷氣估算 (${normalizedAcBtu.value.toLocaleString()} BTU/h, ${acEfficiencyType.value.toUpperCase()} ${normalizedAcEfficiencyValue.value.toFixed(1)})`;
+  }
+  return `冷氣估算 (${acCoolingCapacityKw.value.toFixed(1)}kW 冷房, ${acEfficiencyType.value.toUpperCase()} ${normalizedAcEfficiencyValue.value.toFixed(1)})`;
+};
+
 const addAcToGhost = () => {
-  const kw = normalizedAcPower.value;
-  const h = normalizedAcHours.value;
   userAppliances.value.push({
-    name: `冷氣估算 (${kw}kW)`,
-    watts: kw * 1000,
-    hours: h,
-    monthlyKwh: kw * h * 30,
+    name: getAcGhostName(),
+    watts: Math.round(acEstimatedInputKw.value * 1000),
+    hours: normalizedAcHours.value,
+    monthlyKwh: acEstimatedInputKw.value * normalizedAcHours.value * 30,
     monthlyCost: 0
   });
 };
 
-const removeAppliance = (idx) => {
-  userAppliances.value.splice(idx, 1);
+const removeAppliance = (index) => {
+  userAppliances.value.splice(index, 1);
 };
 
-// Update costs for appliances based on current total avg rate to give a rough estimate
 watch([avgRate, userAppliances], () => {
-  const rate = Number(avgRate.value) || 0;
-  userAppliances.value.forEach(app => {
-    app.monthlyCost = app.monthlyKwh * rate;
+  const averageRate = Number(avgRate.value) || 0;
+  userAppliances.value.forEach((appliance) => {
+    appliance.monthlyCost = appliance.monthlyKwh * averageRate;
   });
   updateChart();
 }, { deep: true });
 
-const totalGhostKwh = computed(() => Math.round(userAppliances.value.reduce((s, a) => s + a.monthlyKwh, 0)));
+const totalGhostKwh = computed(() => Math.round(userAppliances.value.reduce((sum, appliance) => sum + appliance.monthlyKwh, 0)));
 const ghostCoverage = computed(() => {
-  const total = kwh.value || 1;
-  return Math.min(100, Math.round(totalGhostKwh.value / total * 100));
+  const monthlyUsage = kwh.value || 1;
+  return Math.min(100, Math.round(totalGhostKwh.value / monthlyUsage * 100));
 });
 
 function updateChart() {
   const ctx = document.getElementById('ghostChart');
   if (!ctx) return;
-  
+
   if (userAppliances.value.length === 0) {
     if (chartInstance) chartInstance.destroy();
     return;
@@ -489,11 +711,10 @@ function updateChart() {
 
   if (chartInstance) chartInstance.destroy();
 
-  const labels = userAppliances.value.map(a => a.name);
-  const data = userAppliances.value.map(a => a.monthlyKwh);
-
-  // Add "Unknown" if coverage < 100
+  const labels = userAppliances.value.map((appliance) => appliance.name);
+  const data = userAppliances.value.map((appliance) => appliance.monthlyKwh);
   const unknown = (kwh.value || 0) - totalGhostKwh.value;
+
   if (unknown > 0) {
     labels.push('其他/未知');
     data.push(unknown);
@@ -502,12 +723,12 @@ function updateChart() {
   chartInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: labels,
+      labels,
       datasets: [{
-        data: data,
+        data,
         backgroundColor: [
           '#f87171', '#fb923c', '#fbbf24', '#a3e635', '#34d399', '#22d3ee', '#818cf8', '#a78bfa', '#e879f9', '#f472b6',
-          '#e5e7eb' // Gray for unknown
+          '#e5e7eb'
         ],
         borderWidth: 0
       }]
@@ -525,17 +746,15 @@ function updateChart() {
   });
 }
 
-// Auto-save for Dashboard
-watch(totalCost, (newVal) => {
-  const val = parseInt(newVal);
-  if (val > 0) {
-    localStorage.setItem('taicalc_electricity_monthly', val);
+watch(totalCost, (newValue) => {
+  const value = parseInt(newValue, 10);
+  if (value > 0) {
+    localStorage.setItem('taicalc_electricity_monthly', value);
   } else {
     localStorage.removeItem('taicalc_electricity_monthly');
   }
 });
 
-// Persistence
 onMounted(() => {
   const saved = localStorage.getItem('taicalc_electricity_inputs');
   if (saved) {
@@ -543,14 +762,19 @@ onMounted(() => {
       const data = JSON.parse(saved);
       if (data.kwh) kwh.value = data.kwh;
       if (data.isSummer !== undefined) isSummer.value = data.isSummer;
+      if (data.acInputMode) acInputMode.value = data.acInputMode;
       if (data.acPower) acPower.value = data.acPower;
+      if (data.acBtu) acBtu.value = data.acBtu;
+      if (data.acCapacityKw) acCapacityKw.value = data.acCapacityKw;
+      if (data.acEfficiencyType) acEfficiencyType.value = data.acEfficiencyType;
+      if (data.acEfficiencyValue) acEfficiencyValue.value = data.acEfficiencyValue;
       if (data.acHours) acHours.value = data.acHours;
       if (data.userAppliances) userAppliances.value = data.userAppliances;
-    } catch (e) { }
+    } catch (_) {}
   }
-  // Wait for DOM
+
   nextTick(() => {
-     updateChart();
+    updateChart();
   });
 });
 
@@ -561,6 +785,27 @@ watch(acPower, (value) => {
   }
 });
 
+watch(acBtu, (value) => {
+  const nextValue = Number(value) || 0;
+  if (nextValue !== normalizedAcBtu.value) {
+    acBtu.value = normalizedAcBtu.value;
+  }
+});
+
+watch(acCapacityKw, (value) => {
+  const nextValue = Number(value) || 0;
+  if (nextValue !== normalizedAcCapacityKw.value) {
+    acCapacityKw.value = normalizedAcCapacityKw.value;
+  }
+});
+
+watch(acEfficiencyValue, (value) => {
+  const nextValue = Number(value) || 0;
+  if (nextValue !== normalizedAcEfficiencyValue.value) {
+    acEfficiencyValue.value = normalizedAcEfficiencyValue.value;
+  }
+});
+
 watch(acHours, (value) => {
   const nextValue = Number(value) || 0;
   if (nextValue !== normalizedAcHours.value) {
@@ -568,11 +813,16 @@ watch(acHours, (value) => {
   }
 });
 
-watch([kwh, isSummer, acPower, acHours, userAppliances], () => {
+watch([kwh, isSummer, acInputMode, acPower, acBtu, acCapacityKw, acEfficiencyType, acEfficiencyValue, acHours, userAppliances], () => {
   localStorage.setItem('taicalc_electricity_inputs', JSON.stringify({
     kwh: kwh.value,
     isSummer: isSummer.value,
+    acInputMode: acInputMode.value,
     acPower: acPower.value,
+    acBtu: acBtu.value,
+    acCapacityKw: acCapacityKw.value,
+    acEfficiencyType: acEfficiencyType.value,
+    acEfficiencyValue: acEfficiencyValue.value,
     acHours: acHours.value,
     userAppliances: userAppliances.value
   }));

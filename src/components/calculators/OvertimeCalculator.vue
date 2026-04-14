@@ -167,12 +167,12 @@
         <div class="p-4 bg-stone-50 rounded-xl border border-stone-200">
             <div class="flex justify-between items-center mb-2">
                 <div>
-                    <p class="text-xs text-stone-500 font-medium mb-1">本週累計時數</p>
+                    <p class="text-xs text-stone-500 font-medium mb-1">已記錄加班時數</p>
                     <div class="flex items-baseline gap-1">
                         <span class="text-2xl font-bold tracking-tight" :class="weeklyTotalHours > 46 ? 'text-rose-600' : 'text-stone-800'">
                             {{ weeklyTotalHours }}
                         </span>
-                        <span class="text-xs text-stone-400">/ 46 上限</span>
+                        <span class="text-xs text-stone-400">/ 月上限 46 參考</span>
                     </div>
                 </div>
                 <div class="text-right">
@@ -187,7 +187,7 @@
 
             <div v-if="weeklyTotalHours > 46" class="mt-3 flex items-start gap-2 p-2 bg-rose-50 border border-rose-100 rounded-lg text-xs leading-relaxed text-rose-700">
                 <span class="text-lg">⚠️</span>
-                <span>注意：單月加班上限為 46 小時，若您持續以此頻率加班，可能會超過法規限制。</span>
+                <span>注意：勞基法原則上每月加班上限為 46 小時。此區是累積紀錄，若已超過，代表當月排班安排需要重新檢查。</span>
             </div>
         </div>
     </section>

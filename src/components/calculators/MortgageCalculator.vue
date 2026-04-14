@@ -171,7 +171,7 @@
         </div>
 
         <!-- 月付房租比 -->
-        <div v-if="monthlyIncomeRef > 0 || true" class="note-box">
+        <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
             <p class="mt-1">採本息平均攤還法計算。新青安試算：前 {{ stage1Months }} 個月利率較低，之後回復一般利率。</p>
         </div>
@@ -371,8 +371,15 @@ const validate = () => {
     if (graceYears.value >= years.value) graceYears.value = years.value - 1
     if (rate1.value < 0)               rate1.value = 0
     if (rate2.value < 0)               rate2.value = 0
+    if (stage1Months.value < 1)        stage1Months.value = 1
+    const maxStageMonths = Math.max(1, years.value * 12 - 1)
+    if (stage1Months.value > maxStageMonths) stage1Months.value = maxStageMonths
+    if (extraMonthly.value < 0)        extraMonthly.value = 0
+    if (extraLump.value < 0)           extraLump.value = 0
+    if (lumpYear.value < 1)            lumpYear.value = 1
+    if (lumpYear.value > Math.max(1, years.value - 1)) lumpYear.value = Math.max(1, years.value - 1)
 }
-watch([amountWan, years, graceYears, rate1, rate2], validate)
+watch([amountWan, years, graceYears, rate1, rate2, stage1Months, extraMonthly, extraLump, lumpYear], validate)
 
 // ── Dashboard 儲存 ─────────────────────────────────────────────
 watch(results, (v) => {
@@ -544,17 +551,18 @@ onMounted(() => {
             if (d.graceYears !== undefined) graceYears.value  = d.graceYears
             if (d.rate1)                   rate1.value        = d.rate1
             if (d.rate2)                   rate2.value        = d.rate2
+            if (d.stage1Months)            stage1Months.value = d.stage1Months
             if (d.twoStageMode !== undefined) twoStageMode.value = d.twoStageMode
         }
     } catch (e) {}
 })
 
-watch([amountWan, years, graceYears, rate1, rate2, twoStageMode], (vals) => {
+watch([amountWan, years, graceYears, rate1, rate2, twoStageMode, stage1Months], (vals) => {
     validate()
     if (typeof localStorage === 'undefined') return
     localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
         amountWan: vals[0], years: vals[1], graceYears: vals[2],
-        rate1: vals[3], rate2: vals[4], twoStageMode: vals[5]
+        rate1: vals[3], rate2: vals[4], twoStageMode: vals[5], stage1Months: vals[6]
     }))
 })
 </script>

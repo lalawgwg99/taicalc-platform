@@ -39,7 +39,7 @@
       </div>
 
       <!-- Dependents -->
-      <div v-if="currentRole !== 'union'">
+      <div>
         <label class="block text-xs font-semibold text-stone-500 mb-2">健保依附眷口數</label>
         <div class="flex items-center gap-2">
           <button
@@ -56,7 +56,7 @@
             {{ n - 1 }}
           </button>
         </div>
-        <p class="text-[10px] text-stone-400 mt-1">超過 3 口以 3 口計算。</p>
+        <p class="text-[10px] text-stone-400 mt-1">健保超過 3 口以 3 口計算；勞保不受眷口數影響。</p>
       </div>
 
       <!-- Results -->
