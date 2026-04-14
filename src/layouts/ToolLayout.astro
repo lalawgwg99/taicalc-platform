@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import { platformGovernance, type SourceLink } from '../data/regulatoryMetadata';
+import { toolCatalogMap } from '../data/toolCatalog';
 
 interface Props {
   title: string;
@@ -59,6 +60,16 @@ const webAppSchema = JSON.stringify({
   "softwareVersion": "2026",
   "keywords": keywords || "台灣,財務計算,免費工具"
 });
+
+const currentPath = Astro.url.pathname;
+const fallbackTitle = title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, '');
+const currentTool = toolCatalogMap[currentPath] ?? {
+  href: currentPath,
+  label: fallbackTitle,
+  desc: description,
+  category,
+};
+const currentToolJson = JSON.stringify(currentTool);
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
@@ -141,6 +152,21 @@ const webAppSchema = JSON.stringify({
             <div class="rounded-2xl border border-paper-300 bg-paper-200 p-4 text-xs text-ink-500 leading-relaxed">
                 AI 僅提供工具導引與計算邏輯解釋，不替代本頁實際計算結果，不提供投資建議，也不處理個人敏感資料。
             </div>
+
+            <div class="rounded-2xl border border-paper-300 bg-paper-200 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                    <p class="text-sm font-medium text-ink-700">把這頁加入常用工具</p>
+                    <p class="text-xs text-ink-400 mt-1">下次回首頁可以直接從「最近使用」或「常用工具」繼續。</p>
+                </div>
+                <button
+                    id="favorite-tool-toggle"
+                    type="button"
+                    class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-paper-300 bg-paper-100 text-sm font-medium text-ink-600 hover:border-brand hover:text-ink-700 transition-colors"
+                    data-tool={currentToolJson}
+                >
+                    加入常用
+                </button>
+            </div>
         </section>
 
         <main class="mb-16 max-w-3xl">
@@ -213,3 +239,54 @@ const webAppSchema = JSON.stringify({
         </section>
     </div>
 </Layout>
+
+<script>
+const favoriteToggle = document.getElementById('favorite-tool-toggle') as HTMLButtonElement | null;
+
+if (favoriteToggle) {
+    const storageKey = 'taicalc-tool-state-v1';
+    const currentTool = JSON.parse(favoriteToggle.dataset.tool || '{}');
+
+    const readState = () => {
+        try {
+            const raw = localStorage.getItem(storageKey);
+            return raw ? JSON.parse(raw) : { recent: [], pinned: [] };
+        } catch {
+            return { recent: [], pinned: [] };
+        }
+    };
+
+    const writeState = (state: { recent: any[]; pinned: any[] }) => {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+    };
+
+    const syncButton = () => {
+        const state = readState();
+        const isPinned = state.pinned.some((item: { href: string }) => item.href === currentTool.href);
+        favoriteToggle.textContent = isPinned ? '已加入常用' : '加入常用';
+        favoriteToggle.classList.toggle('border-brand', isPinned);
+        favoriteToggle.classList.toggle('text-ink-700', isPinned);
+    };
+
+    const trackVisit = () => {
+        const state = readState();
+        const timestamp = new Date().toISOString();
+        const nextItem = { ...currentTool, lastVisitedAt: timestamp };
+        state.recent = [nextItem, ...state.recent.filter((item: { href: string }) => item.href !== currentTool.href)].slice(0, 6);
+        writeState(state);
+    };
+
+    favoriteToggle.addEventListener('click', () => {
+        const state = readState();
+        const exists = state.pinned.some((item: { href: string }) => item.href === currentTool.href);
+        state.pinned = exists
+            ? state.pinned.filter((item: { href: string }) => item.href !== currentTool.href)
+            : [{ ...currentTool, pinnedAt: new Date().toISOString() }, ...state.pinned].slice(0, 6);
+        writeState(state);
+        syncButton();
+    });
+
+    trackVisit();
+    syncButton();
+}
+</script>
