@@ -36,6 +36,40 @@ body {
 /* ─── Component Layer ─────────────────────────────────────────── */
 @layer components {
 
+    /* Generic card wrapper — fix low-contrast text on light surfaces */
+    .card {
+        @apply text-ink-700;
+    }
+
+    .card .text-ink-400 {
+        @apply text-ink-600;
+    }
+
+    .card .text-ink-300 {
+        @apply text-ink-500;
+    }
+
+    .card .text-stone-400 {
+        @apply text-stone-600;
+    }
+
+    .card .text-stone-500 {
+        @apply text-stone-700;
+    }
+
+    .card .text-gray-400 {
+        @apply text-gray-600;
+    }
+
+    .card .text-slate-400 {
+        @apply text-slate-600;
+    }
+
+    .card .text-paper-200,
+    .card .text-paper-300 {
+        @apply text-ink-600;
+    }
+
     /* Surface card — 升級版卡片設計 */
     .card-surface {
         @apply bg-paper-200 border border-paper-300 rounded-2xl shadow-card;
