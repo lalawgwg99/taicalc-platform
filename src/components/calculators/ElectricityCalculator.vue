@@ -243,22 +243,33 @@
       <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
         <span class="text-lg">🌡️</span> 冷氣耗電估算
       </h2>
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="acPower" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
             冷氣功率
           </label>
-          <select
+          <input
             id="acPower"
+            type="number"
             v-model.number="acPower"
+            min="0.3"
+            max="12"
+            step="0.1"
             aria-label="冷氣功率"
             class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-          >
-            <option :value="0.8">小型 (0.8kW)</option>
-            <option :value="1.2">中型 (1.2kW)</option>
-            <option :value="1.8">大型 (1.8kW)</option>
-            <option :value="2.5">超大 (2.5kW)</option>
-          </select>
+          />
+          <div class="mt-2 flex flex-wrap gap-2">
+            <button
+              v-for="preset in acPowerPresets"
+              :key="preset"
+              type="button"
+              @click="acPower = preset"
+              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+            >
+              {{ preset }}kW
+            </button>
+          </div>
+          <p class="mt-2 text-[11px] text-stone-400">支援大型機種，輸入範圍 0.3kW 到 12kW。</p>
         </div>
         <div>
           <label for="acHours" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
@@ -360,6 +371,7 @@ const isSummer = ref(true);
 const simulatedSave = ref(0);
 const acPower = ref(1.2);
 const acHours = ref(8);
+const acPowerPresets = [0.8, 1.2, 1.8, 2.5, 3.6, 5, 7.2, 10];
 
 // Ghost Hunter State
 const userAppliances = ref([]);
@@ -396,7 +408,17 @@ const simulatedSaving = computed(() => getSaving(simulatedSave.value));
 
 const simulateSave = (n) => { simulatedSave.value = n; };
 
-const acMonthlyKwh = computed(() => Math.round(acPower.value * acHours.value * 30));
+const normalizedAcPower = computed(() => {
+  const value = Number(acPower.value) || 0;
+  return Math.min(12, Math.max(0.3, value));
+});
+
+const normalizedAcHours = computed(() => {
+  const value = Number(acHours.value) || 0;
+  return Math.min(24, Math.max(0, value));
+});
+
+const acMonthlyKwh = computed(() => Math.round(normalizedAcPower.value * normalizedAcHours.value * 30));
 const acMonthlyCost = computed(() => calcBreakdown(acMonthlyKwh.value, rates.value).reduce((s, t) => s + t.cost, 0));
 
 // Ghost Hunter Logic
@@ -426,8 +448,8 @@ const addAppliance = () => {
 };
 
 const addAcToGhost = () => {
-  const kw = acPower.value;
-  const h = acHours.value;
+  const kw = normalizedAcPower.value;
+  const h = normalizedAcHours.value;
   userAppliances.value.push({
     name: `冷氣估算 (${kw}kW)`,
     watts: kw * 1000,
@@ -530,6 +552,20 @@ onMounted(() => {
   nextTick(() => {
      updateChart();
   });
+});
+
+watch(acPower, (value) => {
+  const nextValue = Number(value) || 0;
+  if (nextValue !== normalizedAcPower.value) {
+    acPower.value = normalizedAcPower.value;
+  }
+});
+
+watch(acHours, (value) => {
+  const nextValue = Number(value) || 0;
+  if (nextValue !== normalizedAcHours.value) {
+    acHours.value = normalizedAcHours.value;
+  }
 });
 
 watch([kwh, isSummer, acPower, acHours, userAppliances], () => {
