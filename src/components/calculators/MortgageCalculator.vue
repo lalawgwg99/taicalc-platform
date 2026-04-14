@@ -199,6 +199,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import Decimal from 'decimal.js';
+import { calculateMortgageResults } from '../../utils/calculators/mortgage';
 
 // ── 狀態 ───────────────────────────────────────────────────────
 const amountWan    = ref(1000)
@@ -259,108 +260,20 @@ const applyPreset = (type) => {
 // ── 工具 ───────────────────────────────────────────────────────
 const fmt = (n) => n ? new Decimal(n).round().toNumber().toLocaleString('zh-TW') : '0'
 
-const PMT = (rateYear, nMonths, pv) => {
-    const ry   = new Decimal(rateYear)
-    const nm   = new Decimal(nMonths)
-    const pval = new Decimal(pv)
-    if (ry.equals(0)) return pval.div(nm)
-    const r      = ry.div(100).div(12)
-    const pow    = r.plus(1).pow(nm)
-    return pval.mul(r).mul(pow).div(pow.minus(1))
-}
-
 // ── 核心計算 ───────────────────────────────────────────────────
-const results = computed(() => {
-    const loan         = new Decimal(amountWan.value || 0).mul(10000)
-    const totalMonths  = (years.value || 0) * 12
-    const graceMonths  = (graceYears.value || 0) * 12
-    const changeMonth  = twoStageMode.value ? stage1Months.value : 99999
-
-    if (totalMonths <= 0) return {}
-
-    const getRate = (m) => {
-        const rVal = (m <= changeMonth) ? rate1.value : (rate2.value || rate1.value)
-        return new Decimal(rVal).div(100).div(12)
-    }
-
-    // Pass 1：標準攤還
-    let bal1 = loan
-    let totInt1 = new Decimal(0)
-    let pmts = []
-    let payGrace = new Decimal(0)
-    let payStart = new Decimal(0)
-    let payStage2 = new Decimal(0)
-    let currentStdPMT = new Decimal(0)
-
-    for (let m = 1; m <= totalMonths; m++) {
-        const r   = getRate(m)
-        const int = bal1.mul(r).round()
-        totInt1   = totInt1.plus(int)
-
-        let pmt = new Decimal(0)
-        if (m <= graceMonths) {
-            pmt = int
-            if (m === 1) payGrace = pmt
-        } else {
-            if (m === graceMonths + 1 || m === changeMonth + 1) {
-                const rem    = totalMonths - m + 1
-                const ratePct = (m <= changeMonth ? rate1.value : (rate2.value || rate1.value))
-                currentStdPMT = bal1.gt(0) ? PMT(ratePct, rem, bal1).round() : new Decimal(0)
-            }
-            pmt = currentStdPMT
-            if (m === graceMonths + 1) payStart  = pmt
-            if (m === changeMonth + 1) payStage2 = pmt
-        }
-
-        pmts.push(pmt)
-        bal1 = bal1.minus(pmt.minus(int))
-    }
-
-    const totalPayment1 = loan.plus(totInt1)
-
-    // Pass 2：提前還款
-    let totInt2  = totInt1
-    let realMonths = totalMonths
-
-    if (prepaymentMode.value && (extraMonthly.value > 0 || extraLump.value > 0)) {
-        let balPrepay = loan
-        totInt2    = new Decimal(0)
-        realMonths = 0
-        const lumpM  = lumpYear.value * 12
-        const exMon  = new Decimal(extraMonthly.value || 0)
-        const exLump = new Decimal(extraLump.value || 0).mul(10000)
-
-        for (let m = 1; m <= totalMonths; m++) {
-            if (balPrepay.lte(10)) { if (!realMonths) realMonths = m - 1; break }
-            realMonths = m
-            const r    = getRate(m)
-            const int  = balPrepay.mul(r).round()
-            totInt2    = totInt2.plus(int)
-
-            let basePmt   = pmts[m - 1] || new Decimal(0)
-            let actualPay = m <= graceMonths ? int : basePmt
-            let extra     = exMon
-            if (m === lumpM) extra = extra.plus(exLump)
-            let totalPay  = actualPay.plus(extra)
-            if (totalPay.gt(balPrepay.plus(int))) totalPay = balPrepay.plus(int)
-            balPrepay = balPrepay.minus(totalPay.minus(int))
-        }
-    }
-
-    const interestSaved = totInt1.minus(totInt2)
-
-    return {
-        gracePay:      payGrace.toNumber(),
-        afterGracePay: payStart.toNumber(),
-        stage2Pay:     (payStage2.gt(0) ? payStage2 : payStart).toNumber(),
-        basePay:       payStart.toNumber(),
-        totalInterest: totInt1.toNumber(),
-        totalPayment:  totalPayment1.toNumber(),
-        interestSaved: interestSaved.toNumber(),
-        monthsSaved:   totalMonths - realMonths,
-        finalMonths:   realMonths,
-    }
-})
+const results = computed(() => calculateMortgageResults({
+    amountWan: amountWan.value,
+    years: years.value,
+    graceYears: graceYears.value,
+    rate1: rate1.value,
+    rate2: rate2.value,
+    twoStageMode: twoStageMode.value,
+    stage1Months: stage1Months.value,
+    prepaymentMode: prepaymentMode.value,
+    extraMonthly: extraMonthly.value,
+    extraLump: extraLump.value,
+    lumpYear: lumpYear.value,
+}))
 
 // ── 驗證 ───────────────────────────────────────────────────────
 const validate = () => {

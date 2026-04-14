@@ -459,27 +459,15 @@
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
-
-const MINIMUM_MONTHLY_CHARGE = 100;
-const BTU_PER_KW = 3412.142;
-
-const SUMMER = [
-  { limit: 120, rate: 1.68 },
-  { limit: 330, rate: 2.45 },
-  { limit: 500, rate: 3.7 },
-  { limit: 700, rate: 5.04 },
-  { limit: 1000, rate: 6.24 },
-  { limit: Infinity, rate: 8.46 }
-];
-
-const NON_SUMMER = [
-  { limit: 120, rate: 1.68 },
-  { limit: 330, rate: 2.16 },
-  { limit: 500, rate: 3.03 },
-  { limit: 700, rate: 4.14 },
-  { limit: 1000, rate: 5.66 },
-  { limit: Infinity, rate: 6.71 }
-];
+import {
+  BTU_PER_KW,
+  NON_SUMMER_ELECTRICITY_RATES,
+  SUMMER_ELECTRICITY_RATES,
+  calcElectricityCostSummary,
+  convertKwToBtu,
+  estimateAcInputKw,
+  estimateAcMonthlyKwh
+} from '../../utils/calculators/electricity';
 
 const APPLIANCE_PRESETS = [
   { name: '冷氣 (小型)', watts: 800, hours: 8 },
@@ -508,44 +496,6 @@ const acEfficiencyPresets = [2.8, 3.2, 3.8, 4.5, 5.2, 6];
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const calcBreakdown = (kwh, rates) => {
-  let remain = kwh;
-  let previousLimit = 0;
-  const result = [];
-
-  for (const tier of rates) {
-    if (remain <= 0) break;
-    const use = Math.min(remain, tier.limit - previousLimit);
-    if (use > 0) {
-      result.push({
-        label: `${previousLimit + 1}~${tier.limit === Infinity ? '以上' : tier.limit}度`,
-        kwh: use,
-        rate: tier.rate,
-        cost: Math.round(use * tier.rate)
-      });
-    }
-    remain -= use;
-    previousLimit = tier.limit;
-  }
-
-  return result;
-};
-
-const calcCostSummary = (kwh, rates) => {
-  const tiers = calcBreakdown(kwh, rates);
-  const energyCharge = tiers.reduce((sum, tier) => sum + tier.cost, 0);
-  const minimumChargeApplied = kwh > 0 && energyCharge < MINIMUM_MONTHLY_CHARGE
-    ? MINIMUM_MONTHLY_CHARGE - energyCharge
-    : 0;
-
-  return {
-    tiers,
-    energyCharge,
-    minimumChargeApplied,
-    totalCost: energyCharge + minimumChargeApplied
-  };
-};
-
 const kwh = ref(400);
 const isSummer = ref(true);
 const simulatedSave = ref(0);
@@ -568,8 +518,8 @@ const newAppliance = ref({
 const appliancePresets = APPLIANCE_PRESETS;
 let chartInstance = null;
 
-const rates = computed(() => (isSummer.value ? SUMMER : NON_SUMMER));
-const costSummary = computed(() => calcCostSummary(Number(kwh.value) || 0, rates.value));
+const rates = computed(() => (isSummer.value ? SUMMER_ELECTRICITY_RATES : NON_SUMMER_ELECTRICITY_RATES));
+const costSummary = computed(() => calcElectricityCostSummary(Number(kwh.value) || 0, rates.value));
 const breakdown = computed(() => costSummary.value.tiers);
 const energyCharge = computed(() => costSummary.value.energyCharge);
 const minimumChargeApplied = computed(() => costSummary.value.minimumChargeApplied);
@@ -589,7 +539,7 @@ const highTierMultiple = computed(() => {
 
 const getSaving = (savingKwh) => {
   const newKwh = Math.max(0, (kwh.value || 0) - savingKwh);
-  const newCost = calcCostSummary(newKwh, rates.value).totalCost;
+  const newCost = calcElectricityCostSummary(newKwh, rates.value).totalCost;
   return totalCost.value - newCost;
 };
 
@@ -614,15 +564,16 @@ const acCoolingCapacityKw = computed(() => {
   return normalizedAcPower.value;
 });
 
-const acCoolingCapacityBtu = computed(() => Math.round(acCoolingCapacityKw.value * BTU_PER_KW));
+const acCoolingCapacityBtu = computed(() => convertKwToBtu(acCoolingCapacityKw.value));
 
 const acEstimatedInputKw = computed(() => {
-  if (acInputMode.value === 'kw') {
-    return normalizedAcPower.value;
-  }
-
-  const estimatedPower = acCoolingCapacityKw.value / normalizedAcEfficiencyValue.value;
-  return clamp(estimatedPower, 0.1, 20);
+  return estimateAcInputKw({
+    mode: acInputMode.value,
+    powerKw: normalizedAcPower.value,
+    btuPerHour: normalizedAcBtu.value,
+    coolingCapacityKw: normalizedAcCapacityKw.value,
+    efficiencyValue: normalizedAcEfficiencyValue.value
+  });
 });
 
 const acEstimateLabel = computed(() => {
@@ -634,8 +585,8 @@ const acEstimateLabel = computed(() => {
   return `以冷房能力 ÷ ${metric} 推估平均輸入功率 ${acEstimatedInputKw.value.toFixed(2)} kW`;
 });
 
-const acMonthlyKwh = computed(() => Math.round(acEstimatedInputKw.value * normalizedAcHours.value * 30));
-const acMonthlyCost = computed(() => calcCostSummary(acMonthlyKwh.value, rates.value).totalCost);
+const acMonthlyKwh = computed(() => estimateAcMonthlyKwh(acEstimatedInputKw.value, normalizedAcHours.value));
+const acMonthlyCost = computed(() => calcElectricityCostSummary(acMonthlyKwh.value, rates.value).totalCost);
 
 const applyPreset = () => {
   if (newAppliance.value.preset) {
