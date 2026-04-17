@@ -71,7 +71,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold text-ink-800 tracking-tight leading-[1.1] mt-6">
                         先算三件事：薪資、所得稅、房貸
                     </h1>
-                    <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-xl mt-4">
+                    <p class="text-base md:text-lg text-ink-500 leading-relaxed max-w-xl mt-4">
                         TaiCalc 只聚焦台灣最重要的三個財務決策入口，其他工具退到輔助層。每個核心工具都附年度版本、更新日期與官方來源，避免黑箱試算。
                     </p>
 
@@ -80,17 +80,17 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">看輔助工具</a>
                     </div>
 
-                    <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-400">
+                    <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-500">
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">核心數</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-500">核心數</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">3</p>
                         </div>
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">資料年度</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-500">資料年度</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.dataYear}</p>
                         </div>
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 md:col-span-1 col-span-2">
-                            <p class="text-[10px] uppercase tracking-widest text-ink-400">更新</p>
+                            <p class="text-[10px] uppercase tracking-widest text-ink-500">更新</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.updatedAt}</p>
                         </div>
                     </div>
@@ -99,14 +99,14 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <div class="card-surface p-6 md:p-7 w-full max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-widest text-ink-400">Quick Access</p>
+                            <p class="text-xs uppercase tracking-widest text-ink-500">Quick Access</p>
                             <p class="text-lg font-medium text-ink-700 mt-1">從情境直接進入</p>
                         </div>
                         <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
                     </div>
 
                     <div class="relative mt-4">
-                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
                         <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」" class="input-clean pl-10 pr-4 text-sm" />
@@ -122,17 +122,17 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                             >
                                 <div>
                                     <p class="text-sm font-medium text-ink-700">{tool.label}</p>
-                                    <p class="text-xs text-ink-400 mt-0.5">{tool.desc}</p>
+                                    <p class="text-xs text-ink-500 mt-0.5">{tool.desc}</p>
                                 </div>
-                                <svg class="text-ink-400 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                <svg class="text-ink-500 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>
                         ))}
                     </div>
 
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="/tools/salary-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">剛拿到 Offer？算實拿</a>
-                        <a href="/tools/income-tax-calculator" data-season="tax" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">五月要報稅？算稅額</a>
-                        <a href="/tools/mortgage-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-400">準備買房？算月付</a>
+                        <a href="/tools/salary-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-500">剛拿到 Offer？算實拿</a>
+                        <a href="/tools/income-tax-calculator" data-season="tax" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-500">五月要報稅？算稅額</a>
+                        <a href="/tools/mortgage-calculator" data-season="always" data-sfx="tap" class="quick-action-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper-100 border border-paper-300 hover:border-brand hover:text-ink-700 transition-all duration-150 text-[11px] font-medium text-ink-500">準備買房？算月付</a>
                     </div>
                 </div>
             </div>
@@ -144,9 +144,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
             <div class="card-surface p-6 md:p-7">
                 <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
                     <div>
-                        <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Retention Layer</p>
+                        <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Retention Layer</p>
                         <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">回來就能接著算</h2>
-                        <p class="text-sm text-ink-400 mt-2 leading-relaxed max-w-2xl">TaiCalc 會在你的裝置本地記住最近使用與常用工具，不用每次重新找入口，也不需要登入。</p>
+                        <p class="text-sm text-ink-500 mt-2 leading-relaxed max-w-2xl">TaiCalc 會在你的裝置本地記住最近使用與常用工具，不用每次重新找入口，也不需要登入。</p>
                     </div>
                     <div class="flex flex-wrap gap-2 text-xs">
                         <span class="data-pill">本地保存</span>
@@ -157,19 +157,19 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
 
                 <div id="retention-shell" data-tool-catalog={toolCatalogJson} class="mt-6 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
                     <div class="rounded-2xl border border-paper-300 bg-paper-100 p-5">
-                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400">Continue</p>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-500">Continue</p>
                         <div id="recent-tools" class="mt-3 space-y-3">
                             <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-200/70 p-4">
                                 <p class="text-sm font-medium text-ink-700">第一次使用？先從三大核心開始。</p>
-                                <p class="text-xs text-ink-400 mt-1">當你開始使用工具後，這裡會出現最近使用紀錄與一鍵返回入口。</p>
+                                <p class="text-xs text-ink-500 mt-1">當你開始使用工具後，這裡會出現最近使用紀錄與一鍵返回入口。</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="rounded-2xl border border-paper-300 bg-paper-100 p-5">
-                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400">Pinned</p>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-500">Pinned</p>
                         <div id="pinned-tools" class="mt-3 flex flex-wrap gap-2">
-                            <span class="text-xs text-ink-400">在工具頁點「加入常用」後，這裡會顯示你的固定入口。</span>
+                            <span class="text-xs text-ink-500">在工具頁點「加入常用」後，這裡會顯示你的固定入口。</span>
                         </div>
                     </div>
                 </div>
@@ -181,10 +181,10 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
                 <div>
-                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Core IA</p>
+                    <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Core IA</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">三大核心入口</h2>
                 </div>
-                <p class="text-sm text-ink-400 leading-relaxed max-w-xl">每個入口都對應一個高頻決策場景，先解決最大不確定性，再往輔助工具細化。</p>
+                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">每個入口都對應一個高頻決策場景，先解決最大不確定性，再往輔助工具細化。</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -193,9 +193,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         <div class="w-11 h-11 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-brand" set:html={tool.icon}></svg>
                         </div>
-                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400 mt-5">{tool.scenario}</p>
+                        <p class="text-[11px] uppercase tracking-[0.18em] text-ink-500 mt-5">{tool.scenario}</p>
                         <h3 class="text-lg font-medium text-ink-700 mt-2">{tool.label}</h3>
-                        <p class="text-sm text-ink-400 mt-2 leading-relaxed flex-1">{tool.desc}</p>
+                        <p class="text-sm text-ink-500 mt-2 leading-relaxed flex-1">{tool.desc}</p>
                         <a href={tool.href} class="mt-5 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-ink-700 text-paper-50 text-sm font-medium hover:bg-ink-800 transition-colors" data-sfx="accent">
                             {tool.cta}
                         </a>
@@ -209,10 +209,10 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
                 <div>
-                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Support Tools</p>
+                    <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Support Tools</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">輔助工具入口</h2>
                 </div>
-                <p class="text-sm text-ink-400 leading-relaxed max-w-xl">輔助工具維持可用，但不與三大核心搶主視覺焦點，避免決策動線分散。</p>
+                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">輔助工具維持可用，但不與三大核心搶主視覺焦點，避免決策動線分散。</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -220,9 +220,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <a href={tool.href} class="group flex items-center justify-between p-4 card-surface-hover" data-sfx="tap">
                         <div>
                             <p class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</p>
-                            <p class="text-xs text-ink-400 mt-1">{tool.desc}</p>
+                            <p class="text-xs text-ink-500 mt-1">{tool.desc}</p>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-400 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
                     </a>
                 ))}
             </div>
@@ -233,7 +233,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col lg:flex-row gap-6">
                 <div class="card-surface p-6 flex-1">
-                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Trust & Governance</p>
+                    <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Trust & Governance</p>
                     <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">資料可追溯，不靠口號</h2>
                     <div class="mt-4 flex flex-wrap gap-2 text-xs">
                         <span class="data-pill">版本：{platformGovernance.version}</span>
@@ -250,9 +250,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 </div>
 
                 <div class="card-surface p-6 lg:max-w-md">
-                    <p class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">AI Position</p>
+                    <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">AI Position</p>
                     <h3 class="text-lg font-medium text-ink-700 mt-2">AI 只導引，不替代計算</h3>
-                    <p class="text-sm text-ink-400 leading-relaxed mt-3">AI 助理只負責解釋規則、推薦工具與引導輸入流程。最終數字以工具計算結果為準。</p>
+                    <p class="text-sm text-ink-500 leading-relaxed mt-3">AI 助理只負責解釋規則、推薦工具與引導輸入流程。最終數字以工具計算結果為準。</p>
                     <ul class="mt-4 text-xs text-ink-500 space-y-2">
                         <li>• 不提供投資買賣建議</li>
                         <li>• 不要求或處理身分證、電話、Email 等個資</li>

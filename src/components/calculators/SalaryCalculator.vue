@@ -449,43 +449,8 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
 import Decimal from 'decimal.js';
-
-// ── 2026 費率常數 ──────────────────────────────────────────────
-const LABOR_RATE  = new Decimal(0.12)   // 11% 普通 + 1% 就保
-const LABOR_SHARE = new Decimal(0.2)    // 勞工自付 20%
-const HEALTH_RATE = new Decimal(0.0517)
-const HEALTH_SHARE = new Decimal(0.3)   // 勞工自付 30%
-const SUPP_HEALTH_RATE = new Decimal(0.0211) // 二代健保補充保費
-
-const LABOR_GRADES = [
-    29500, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800
-]
-const HEALTH_GRADES = [
-    29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
-    48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800,
-    76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500,
-    120900, 126300, 131700, 137100, 142500, 147900, 150000, 156400, 162800,
-    169200, 175600, 182000, 189500, 197000, 204500, 212000, 219500, 313000
-]
-
-const TAX_BRACKETS = [
-    { min: 0,       max: 590000,   rate: 0.05, subtract: 0       },
-    { min: 590000,  max: 1330000,  rate: 0.12, subtract: 41300   },
-    { min: 1330000, max: 2660000,  rate: 0.20, subtract: 147700  },
-    { min: 2660000, max: 4980000,  rate: 0.30, subtract: 413700  },
-    { min: 4980000, max: Infinity, rate: 0.40, subtract: 911700  },
-]
-const EXEMPTION_PER_PERSON  = 97000
-const SALARY_SPECIAL_MAX    = 218000
-const STANDARD_SINGLE       = 131000
-const STANDARD_MARRIED      = 262000
-
-const getGrade = (salary, table, max) => {
-    if (salary < table[0]) return table[0]
-    if (salary >= max)     return max
-    for (let g of table) { if (g >= salary) return g }
-    return max
-}
+import { calculateIncomeTax } from '../../utils/calculators/incomeTax';
+import { calculateSalaryBreakdown, estimateAnnualSalaryIncome } from '../../utils/calculators/salary';
 
 // ── 響應式狀態 ─────────────────────────────────────────────────
 const mode = ref('single')
@@ -514,58 +479,17 @@ const lineChartRef  = ref(null)
 let donutInstance = null
 let lineInstance  = null
 
-// ── 核心計算函式 ────────────────────────────────────────────────
-const calc = (s, b, p) => {
-    const sal = new Decimal(s || 0)
-    const bon = new Decimal(b || 0)
-
-    // 1. 取投保薪資級距
-    const laborGrade  = new Decimal(getGrade(sal.toNumber(), LABOR_GRADES,  45800))
-    const healthGrade = new Decimal(getGrade(sal.toNumber(), HEALTH_GRADES, 313000))
-
-    // 2. 月扣費用
-    const labor  = laborGrade.mul(LABOR_RATE).mul(LABOR_SHARE).round().toNumber()
-    const health = healthGrade.mul(HEALTH_RATE).mul(HEALTH_SHARE).round().toNumber()
-
-    // 3. 勞退自提（上限 150,000）
-    const pensionBasis = new Decimal(getGrade(sal.toNumber(), HEALTH_GRADES, 150000))
-    const penS = pensionBasis.mul(p).div(100).round().toNumber()
-
-    // 4. 每月實拿
-    const mNet = sal.minus(labor).minus(health).minus(penS).toNumber()
-
-    // 5. 節稅金額（假設邊際稅率 12%，自提每月省稅）
-    const tSave = new Decimal(penS).mul(12).mul(0.12).round().toNumber()
-
-    // 6. 年薪計算（修正：年終獎金不扣月勞健保費）
-    //    台灣法規：年終為年度獎金，不屬於月薪資，不逐月計算勞健保
-    //    超過 4 倍投保薪資的部分才扣 2.11% 二代健保補充保費
-    const bonusTotal  = sal.mul(bon)
-    const fourTimesInsured = healthGrade.mul(4)
-    const suppHealthBonus = bonusTotal.gt(fourTimesInsured)
-        ? bonusTotal.minus(fourTimesInsured).mul(SUPP_HEALTH_RATE).round()
-        : new Decimal(0)
-
-    const yearlyNet = new Decimal(mNet).mul(12)
-        .plus(bonusTotal)
-        .minus(suppHealthBonus)
-        .plus(tSave)
-        .round()
-        .toNumber()
-
-    // 7. 雇主成本
-    const empLabor   = laborGrade.mul(LABOR_RATE).mul(0.7).round().toNumber()
-    const empHealth  = healthGrade.mul(HEALTH_RATE).mul(0.6).mul(1.58).round().toNumber() // 眷屬係數 1.58
-    const empPension = pensionBasis.mul(0.06).round().toNumber()
-    const empCost    = empLabor + empHealth + empPension
-    const tCost      = sal.plus(empCost).toNumber()
-
-    return { labor, health, penS, mNet, tSave, yNet: yearlyNet, empCost, tCost }
-}
-
 // ── Computed ───────────────────────────────────────────────────
-const res  = computed(() => calc(salary.value,  bonus.value,  pension.value))
-const resB = computed(() => calc(salaryB.value, bonusB.value, pensionB.value))
+const res  = computed(() => calculateSalaryBreakdown({
+    salary: salary.value,
+    bonusMonths: bonus.value,
+    pensionRate: pension.value,
+}))
+const resB = computed(() => calculateSalaryBreakdown({
+    salary: salaryB.value,
+    bonusMonths: bonusB.value,
+    pensionRate: pensionB.value,
+}))
 
 const laborIns    = computed(() => res.value.labor)
 const healthIns   = computed(() => res.value.health)
@@ -600,38 +524,17 @@ const emergencyFund = computed(() => {
 })
 
 const annualSalaryIncome = computed(() => {
-    const s = salary.value || 0
-    const b = bonus.value || 0
-    return Math.round(s * (12 + b))
+    return estimateAnnualSalaryIncome(salary.value || 0, bonus.value || 0)
 })
 
-const taxExemptions = computed(() => {
-    let count = 1
-    if (taxFilingStatus.value === 'married') count += 1
-    count += (taxDependents.value || 0)
-    return count
-})
-
-const taxStandardDeduction = computed(() =>
-    taxFilingStatus.value === 'married' ? STANDARD_MARRIED : STANDARD_SINGLE
-)
-
-const estimatedIncomeTax = computed(() => {
-    const pensionDeduct = pensionSelf.value * 12
-    const taxable = annualSalaryIncome.value
-        - Math.min(annualSalaryIncome.value, SALARY_SPECIAL_MAX)
-        - (taxExemptions.value * EXEMPTION_PER_PERSON)
-        - taxStandardDeduction.value
-        - pensionDeduct
-    const income = Math.max(0, Math.round(taxable))
-    if (income <= 0) return 0
-    for (const b of TAX_BRACKETS) {
-        if (income <= b.max) {
-            return Math.max(0, Math.round(income * b.rate - b.subtract))
-        }
-    }
-    return 0
-})
+const estimatedIncomeTax = computed(() => calculateIncomeTax({
+    salaryIncome: annualSalaryIncome.value,
+    filingStatus: taxFilingStatus.value,
+    dependents: taxDependents.value,
+    deductionType: 'standard',
+    dividendTaxMode: 'combined',
+    laborPensionSelfContribution: pensionSelf.value * 12,
+}).totalTax)
 
 const estimatedAfterTaxAnnual = computed(() => {
     const base = yearlyNet.value

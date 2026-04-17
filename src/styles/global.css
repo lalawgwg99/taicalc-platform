@@ -45,7 +45,18 @@ body {
         @apply text-ink-600;
     }
 
+    .card-surface .text-ink-400,
+    .card-surface-hover .text-ink-400,
+    .note-box .text-ink-400 {
+        @apply text-ink-500;
+    }
+
     .card .text-ink-300 {
+        @apply text-ink-500;
+    }
+
+    .card-surface .text-ink-300,
+    .card-surface-hover .text-ink-300 {
         @apply text-ink-500;
     }
 
@@ -81,7 +92,7 @@ body {
     }
 
     .hermes-label {
-        @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink-400;
+        @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink-500;
     }
 
     .hermes-rule {
@@ -131,7 +142,7 @@ body {
 
     /* Ghost Button — 透明按鈕 */
     .btn-ghost {
-        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-400 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
+        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-500 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
     }
 
     .sound-toggle {
@@ -148,7 +159,7 @@ body {
     }
 
     .seg-btn {
-        @apply flex-1 py-2.5 px-4 text-sm font-medium text-ink-400 rounded-xl transition-all duration-200 cursor-pointer text-center;
+        @apply flex-1 py-2.5 px-4 text-sm font-medium text-ink-500 rounded-xl transition-all duration-200 cursor-pointer text-center;
     }
 
     .seg-btn-active {
@@ -157,7 +168,7 @@ body {
 
     /* Stat display — 數據展示 */
     .stat-label {
-        @apply text-xs text-ink-400 uppercase tracking-wider mb-1 font-medium;
+        @apply text-xs text-ink-500 uppercase tracking-wider mb-1 font-medium;
     }
 
     .stat-value-lg {
@@ -187,7 +198,7 @@ body {
     }
 
     .badge-neutral {
-        @apply text-xs font-medium text-ink-400 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full;
+        @apply text-xs font-medium text-ink-500 bg-paper-200 border border-paper-300 px-2 py-0.5 rounded-full;
     }
 
     .badge-gold {
@@ -201,7 +212,7 @@ body {
 
     /* Info / Note box */
     .note-box {
-        @apply text-xs text-ink-400 bg-paper-200 rounded-lg px-4 py-3 leading-relaxed;
+        @apply text-xs text-ink-500 bg-paper-200 rounded-lg px-4 py-3 leading-relaxed;
     }
 
     /* 提示框 */
@@ -288,7 +299,7 @@ body {
     }
 
     .data-pill {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 border border-paper-300 text-xs text-ink-400;
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 border border-paper-300 text-xs text-ink-500;
     }
 
     .ink-panel {

@@ -34,7 +34,7 @@
         </div>
         <p class="text-xs text-stone-400 mt-2">
           對應投保級距：<span class="font-bold text-stone-600">{{ fmt(matchedBracket) }}</span> 元
-          <span v-if="salary < 29500" class="text-red-500 ml-1">(低於基本工資 29,500)</span>
+          <span v-if="salary < MINIMUM_WAGE" class="text-red-500 ml-1">(低於基本工資 29,500)</span>
         </p>
       </div>
 
@@ -106,7 +106,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
+
+import { MINIMUM_WAGE } from '../../data/calculators/taiwanInsurance';
+import { calculateInsurancePremiums } from '../../utils/calculators/insurance';
 
 const roles = [
   { id: 'employee', label: '一般勞工' },
@@ -119,68 +122,12 @@ const dependents = ref(0);
 
 const fmt = (n) => (n ? n.toLocaleString('zh-TW') : '0');
 
-// 2026 Labor Insurance Table (Selected grades for lookup)
-const LABOR_GRADES = [29500, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
-
-// 2026 Health Insurance Table
-const HEALTH_GRADES = [
-  29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000, 55400, 57800, 60800,
-  63800, 66800, 69800, 72800, 76500, 80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900, 126300,
-  131700, 137100, 142500, 147900, 150000, 156400, 162800, 169200, 175600, 182000, 189500, 197000, 204500, 212000,
-  219500, 313000,
-];
-
-const getInsuredSalary = (salary, table, max) => {
-  if (salary < table[0]) return table[0];
-  if (salary >= max) return max;
-  for (let g of table) {
-    if (g >= salary) return g;
-  }
-  return max;
-};
-
 const result = computed(() => {
-  const s = salary.value || 0;
-
-  const lBracket = getInsuredSalary(s, LABOR_GRADES, 45800);
-  const hBracket = getInsuredSalary(s, HEALTH_GRADES, 313000);
-
-  let wLabor = 0,
-    eLabor = 0;
-  let wHealth = 0,
-    eHealth = 0;
-  let ePension = 0;
-
-  if (currentRole.value === 'employee') {
-    wLabor = Math.round(lBracket * 0.12 * 0.2);
-    const effDep = Math.min(dependents.value, 3);
-    wHealth = Math.round(hBracket * 0.0517 * 0.3 * (1 + effDep));
-
-    eLabor = Math.round(lBracket * 0.12 * 0.7);
-    eHealth = Math.round(hBracket * 0.0517 * 0.6 * 1.58);
-    // Pension based on higher grade table but cap 150k
-    ePension = Math.round(Math.min(getInsuredSalary(s, HEALTH_GRADES, 150000), 150000) * 0.06);
-  } else if (currentRole.value === 'union') {
-    wLabor = Math.round(lBracket * 0.11 * 0.6);
-    const effDep = Math.min(dependents.value, 3);
-    wHealth = Math.round(hBracket * 0.0517 * 0.6 * (1 + effDep));
-  } else if (currentRole.value === 'employer') {
-    const effDep = Math.min(dependents.value, 3);
-    wHealth = Math.round(hBracket * 0.0517 * 1.0 * (1 + effDep));
-    wLabor = Math.round(lBracket * 0.11);
-  }
-
-  return {
-    workerLabor: wLabor,
-    workerHealth: wHealth,
-    workerTotal: wLabor + wHealth,
-    employerLabor: eLabor,
-    employerHealth: eHealth,
-    employerPension: ePension,
-    employerTotal: eLabor + eHealth + ePension,
-    laborBracket: lBracket,
-    healthBracket: hBracket,
-  };
+  return calculateInsurancePremiums({
+    salary: salary.value || 0,
+    role: currentRole.value,
+    dependents: dependents.value,
+  });
 });
 
 const matchedBracket = computed(() => result.value.laborBracket);

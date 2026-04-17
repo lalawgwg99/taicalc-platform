@@ -338,239 +338,114 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
-// ── 2026 所得稅常數 ──────────────────────────────────────────
-const EXEMPTION_PER_PERSON  = 97000    // 免稅額/人
-const SALARY_SPECIAL_MAX    = 218000   // 薪資特別扣除上限
-const STANDARD_SINGLE       = 131000   // 標準扣除（單身）
-const STANDARD_MARRIED      = 262000   // 標準扣除（已婚合申）
-const SAVINGS_DEDUCTION_MAX = 270000   // 儲蓄投資特別扣除
-const LONG_TERM_CARE_PER_PERSON = 180000 // 長照特別扣除/人
-const DISABILITY_DEDUCTION_PER_PERSON = 218000
-const PRESCHOOL_DEDUCTION_PER_PERSON = 150000
+import { TAX_BRACKETS } from '../../data/calculators/taiwanIncomeTax';
+import { calculateIncomeTax } from '../../utils/calculators/incomeTax';
 
-const TAX_BRACKETS = [
-  { min: 0,       max: 590000,   rate: 0.05, subtract: 0       },
-  { min: 590000,  max: 1330000,  rate: 0.12, subtract: 41300   },
-  { min: 1330000, max: 2660000,  rate: 0.20, subtract: 147700  },
-  { min: 2660000, max: 4980000,  rate: 0.30, subtract: 413700  },
-  { min: 4980000, max: Infinity, rate: 0.40, subtract: 911700  },
-]
+const salaryIncome = ref(600000);
+const dividendIncome = ref(0);
+const interestIncome = ref(0);
+const rentalIncome = ref(0);
+const otherIncome = ref(0);
+const spouseSalary = ref(0);
+const filingStatus = ref('single');
+const dependents = ref(0);
+const longTermCareEligibleCount = ref(0);
+const disabilityCount = ref(0);
+const preschoolCount = ref(0);
+const deductionType = ref('standard');
+const dividendTaxMode = ref('combined');
 
-// ── 狀態 ─────────────────────────────────────────────────────
-const salaryIncome      = ref(600000)
-const dividendIncome    = ref(0)
-const interestIncome    = ref(0)
-const rentalIncome      = ref(0)
-const otherIncome       = ref(0)
-const spouseSalary      = ref(0)
-const filingStatus      = ref('single')
-const dependents        = ref(0)
-const longTermCareEligibleCount = ref(0)
-const disabilityCount   = ref(0)
-const preschoolCount    = ref(0)
-const deductionType     = ref('standard')
-const dividendTaxMode   = ref('combined')
+const donationDeduction = ref(0);
+const insuranceDeduction = ref(0);
+const medicalDeduction = ref(0);
+const mortgageDeduction = ref(0);
+const rentDeduction = ref(0);
+const politicalDeduction = ref(0);
+const withholdingTax = ref(0);
 
-// 列舉扣除細項
-const donationDeduction   = ref(0)
-const insuranceDeduction  = ref(0)   // 上限 24,000/人
-const medicalDeduction    = ref(0)
-const mortgageDeduction   = ref(0)   // 上限 300,000
-const rentDeduction       = ref(0)   // 上限 120,000
-const politicalDeduction  = ref(0)
-const withholdingTax      = ref(0)
+const copied = ref(false);
 
-const copied = ref(false)
+const fmt = (n) => (n ? Math.round(n).toLocaleString('zh-TW') : '0');
 
-// ── 工具 ─────────────────────────────────────────────────────
-const fmt = (n) => (n ? Math.round(n).toLocaleString('zh-TW') : '0')
+const taxResult = computed(() =>
+  calculateIncomeTax({
+    salaryIncome: salaryIncome.value || 0,
+    spouseSalary: spouseSalary.value || 0,
+    dividendIncome: dividendIncome.value || 0,
+    interestIncome: interestIncome.value || 0,
+    rentalIncome: rentalIncome.value || 0,
+    otherIncome: otherIncome.value || 0,
+    filingStatus: filingStatus.value,
+    dependents: dependents.value,
+    longTermCareEligibleCount: longTermCareEligibleCount.value,
+    disabilityCount: disabilityCount.value,
+    preschoolCount: preschoolCount.value,
+    deductionType: deductionType.value,
+    dividendTaxMode: dividendTaxMode.value,
+    donationDeduction: donationDeduction.value,
+    insuranceDeduction: insuranceDeduction.value,
+    medicalDeduction: medicalDeduction.value,
+    mortgageDeduction: mortgageDeduction.value,
+    rentDeduction: rentDeduction.value,
+    politicalDeduction: politicalDeduction.value,
+    withholdingTax: withholdingTax.value,
+  })
+);
 
-// ── Computed ─────────────────────────────────────────────────
-// 總所得
-const grossIncome = computed(() =>
-  (salaryIncome.value || 0)
-  + (dividendTaxMode.value === 'combined' ? (dividendIncome.value || 0) : 0)
-  + (interestIncome.value || 0)
-  + (rentalIncome.value || 0)
-  + (otherIncome.value || 0)
-  + (filingStatus.value === 'married' ? (spouseSalary.value || 0) : 0)
-)
+const grossIncome = computed(() => taxResult.value.grossIncome);
+const salarySpecialDeduction = computed(() => taxResult.value.salarySpecialDeduction);
+const totalExemptions = computed(() => taxResult.value.totalExemptions);
+const exemptionAmount = computed(() => taxResult.value.exemptionAmount);
+const standardDeduction = computed(() => taxResult.value.standardDeduction);
+const savingsDeduction = computed(() => taxResult.value.savingsDeduction);
+const longTermCareDeduction = computed(() => taxResult.value.longTermCareDeduction);
+const disabilityDeduction = computed(() => taxResult.value.disabilityDeduction);
+const preschoolDeduction = computed(() => taxResult.value.preschoolDeduction);
+const itemizedTotal = computed(() => taxResult.value.itemizedTotal);
+const recommendation = computed(() => (
+  deductionType.value === 'itemized' ? null : taxResult.value.recommendation
+));
+const taxableIncome = computed(() => taxResult.value.taxableIncome);
+const baseTax = computed(() => taxResult.value.baseTax);
+const dividendCredit = computed(() => taxResult.value.dividendCredit);
+const dividendSeparateTax = computed(() => taxResult.value.dividendSeparateTax);
+const totalTax = computed(() => taxResult.value.totalTax);
+const currentBracket = computed(() => taxResult.value.currentBracket);
+const taxBracketLabel = computed(() => taxResult.value.taxBracketLabel);
+const totalIncomeForDisplay = computed(() => taxResult.value.totalIncomeForDisplay);
+const afterTaxIncome = computed(() => taxResult.value.afterTaxIncome);
+const effectiveRate = computed(() => taxResult.value.effectiveRate.toFixed(1));
+const afterTaxRate = computed(() => taxResult.value.afterTaxRate.toFixed(1));
+const netTax = computed(() => taxResult.value.netTax);
 
-// 薪資特別扣除（不超過薪資所得本身，且上限 218,000/人）
-const salarySpecialDeduction = computed(() => {
-  const totalSalary = (salaryIncome.value || 0) + (filingStatus.value === 'married' ? (spouseSalary.value || 0) : 0)
-  const perPerson   = Math.min(totalSalary, SALARY_SPECIAL_MAX)
-  // 有配偶薪資則各別計算
-  if (filingStatus.value === 'married' && spouseSalary.value > 0) {
-    return Math.min(salaryIncome.value || 0, SALARY_SPECIAL_MAX) +
-           Math.min(spouseSalary.value || 0, SALARY_SPECIAL_MAX)
-  }
-  return Math.min(salaryIncome.value || 0, SALARY_SPECIAL_MAX)
-})
+const isCurrentBracket = (bracket) => bracket === currentBracket.value && taxableIncome.value > 0;
 
-// 免稅額（本人 + 配偶 + 扶養）
-const totalExemptions = computed(() => {
-  let count = 1
-  if (filingStatus.value === 'married') count += 1
-  count += (dependents.value || 0)
-  return count
-})
-const exemptionAmount = computed(() => totalExemptions.value * EXEMPTION_PER_PERSON)
-
-// 標準扣除額
-const standardDeduction = computed(() =>
-  filingStatus.value === 'married' ? STANDARD_MARRIED : STANDARD_SINGLE
-)
-
-// 儲蓄投資特別扣除（利息所得）
-const savingsDeduction = computed(() =>
-  Math.min(interestIncome.value || 0, SAVINGS_DEDUCTION_MAX)
-)
-
-// 長照特別扣除
-const longTermCareDeduction = computed(() =>
-  Math.max(0, longTermCareEligibleCount.value || 0) * LONG_TERM_CARE_PER_PERSON
-)
-
-const disabilityDeduction = computed(() =>
-  Math.max(0, disabilityCount.value || 0) * DISABILITY_DEDUCTION_PER_PERSON
-)
-
-const preschoolDeduction = computed(() =>
-  Math.max(0, preschoolCount.value || 0) * PRESCHOOL_DEDUCTION_PER_PERSON
-)
-
-// 列舉扣除合計（含各項上限）
-const itemizedTotal = computed(() => {
-  const perPersonInsuranceCap = 24000 * totalExemptions.value
-  const ins  = Math.min(insuranceDeduction.value || 0, perPersonInsuranceCap)
-  const mort = Math.min(mortgageDeduction.value || 0, 300000)
-  const rent = Math.min(rentDeduction.value || 0, 120000)
-  return (donationDeduction.value || 0) + ins + (medicalDeduction.value || 0) + mort + rent + (politicalDeduction.value || 0)
-})
-
-// 建議使用哪種扣除
-const recommendation = computed(() => {
-  if (deductionType.value === 'itemized') return null
-  return itemizedTotal.value > standardDeduction.value ? 'itemized' : 'standard'
-})
-
-// 課稅所得淨額
-const taxableIncome = computed(() => {
-  const deduction = deductionType.value === 'standard'
-    ? standardDeduction.value
-    : Math.max(itemizedTotal.value, 0)
-
-  return grossIncome.value
-    - salarySpecialDeduction.value
-    - exemptionAmount.value
-    - deduction
-    - savingsDeduction.value
-    - longTermCareDeduction.value
-    - disabilityDeduction.value
-    - preschoolDeduction.value
-})
-
-// 計算稅額（累進）
-const calcTax = (income) => {
-  if (income <= 0) return 0
-  for (const b of TAX_BRACKETS) {
-    if (income <= b.max) {
-      return Math.round(income * b.rate - b.subtract)
-    }
-  }
-  return 0
-}
-
-const baseTax = computed(() => Math.max(0, calcTax(taxableIncome.value)))
-
-const dividendCredit = computed(() => {
-  if (dividendTaxMode.value !== 'combined') return 0
-  const credit = (dividendIncome.value || 0) * 0.085
-  return Math.min(80000, Math.round(credit))
-})
-
-const dividendSeparateTax = computed(() => {
-  if (dividendTaxMode.value !== 'separate') return 0
-  return Math.round((dividendIncome.value || 0) * 0.28)
-})
-
-const totalTax = computed(() => {
-  if (dividendTaxMode.value === 'separate') {
-    return Math.max(0, baseTax.value + dividendSeparateTax.value)
-  }
-  return Math.max(0, baseTax.value - dividendCredit.value)
-})
-
-// 目前適用稅率級距
-const currentBracket = computed(() => {
-  const income = Math.max(0, taxableIncome.value)
-  for (const b of TAX_BRACKETS) {
-    if (income <= b.max) return b
-  }
-  return TAX_BRACKETS[TAX_BRACKETS.length - 1]
-})
-
-const isCurrentBracket = (b) => b === currentBracket.value && taxableIncome.value > 0
-
-const taxBracketLabel = computed(() => {
-  if (taxableIncome.value <= 0) return '0%（免稅）'
-  return currentBracket.value.rate * 100 + '%'
-})
-
-// 有效稅率 & 稅後率
-const totalIncomeForDisplay = computed(() => {
-  return grossIncome.value + (dividendTaxMode.value === 'separate' ? (dividendIncome.value || 0) : 0)
-})
-
-const afterTaxIncome = computed(() => {
-  return Math.max(0, totalIncomeForDisplay.value - totalTax.value)
-})
-
-const effectiveRate = computed(() => {
-  if (!totalIncomeForDisplay.value) return '0'
-  return (totalTax.value / totalIncomeForDisplay.value * 100).toFixed(1)
-})
-
-const afterTaxRate = computed(() => {
-  if (!totalIncomeForDisplay.value) return '100'
-  return ((1 - totalTax.value / totalIncomeForDisplay.value) * 100).toFixed(1)
-})
-
-const netTax = computed(() => {
-  return Math.round(totalTax.value - (withholdingTax.value || 0))
-})
-
-// ── 複製結果 ───────────────────────────────────────────────
 const copyResult = async () => {
-  const text = `TaiCalc 綜合所得稅試算結果\n── 2026 年度 ──\n全年所得：$${fmt(totalIncomeForDisplay.value)}\n應納稅額：$${fmt(totalTax.value)}\n有效稅率：${effectiveRate.value}%\n（以上為估算，詳見 taicalc.com）`
+  const text = `TaiCalc 綜合所得稅試算結果\n── 2026 年度 ──\n全年所得：$${fmt(totalIncomeForDisplay.value)}\n應納稅額：$${fmt(totalTax.value)}\n有效稅率：${effectiveRate.value}%\n（以上為估算，詳見 taicalc.com）`;
+
   try {
-    await navigator.clipboard.writeText(text)
-    copied.value = true
-    setTimeout(() => copied.value = false, 2000)
+    await navigator.clipboard.writeText(text);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
   } catch {}
-}
+};
 
-// 若列舉比標準高，自動切換建議提示
-watch(deductionType, () => {})
-
-// ── 從 LocalStorage 抓取全站通用輸入 (黏著度體驗) ───────────────────
-import { onMounted } from 'vue'
 onMounted(() => {
   try {
-    const saved = localStorage.getItem('taicalc_salary_inputs')
-    if (saved) {
-      const data = JSON.parse(saved)
-      if (data.salary) {
-        // 從薪資計算器帶入年薪：月薪 * (12 + (年終或0))
-        const s = data.salary
-        const b = data.bonus !== undefined ? data.bonus : 0
-        salaryIncome.value = s * (12 + b)
-      }
+    const saved = localStorage.getItem('taicalc_salary_inputs');
+    if (!saved) {
+      return;
     }
-  } catch (e) {}
-})
 
+    const data = JSON.parse(saved);
+    if (data.salary) {
+      const bonus = data.bonus !== undefined ? data.bonus : 0;
+      salaryIncome.value = data.salary * (12 + bonus);
+    }
+  } catch {}
+});
 </script>
