@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
-import { toolCatalog } from '../data/toolCatalog';
+import { getCoreTools, getSupportTools, toolCatalog } from '../data/toolCatalog';
 
 const title = "TaiCalc 台灣財務計算平台｜薪資、所得稅、房貸三大核心試算";
 const description = "聚焦台灣三大核心財務決策：薪資實拿、綜合所得稅、房貸負擔。提供年度版本、更新日期與官方來源，所有計算皆在本地完成。";
@@ -12,45 +12,8 @@ const latestPosts = (await getCollection('blog'))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
     .slice(0, 6);
 
-const coreTools = [
-    {
-        href: '/tools/salary-calculator',
-        label: '薪資實拿計算',
-        desc: '輸入月薪後，快速看勞健保與可用現金。',
-        scenario: '拿到 Offer、談加薪前',
-        cta: '先算薪資實拿',
-        icon: `<path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>`,
-    },
-    {
-        href: '/tools/income-tax-calculator',
-        label: '綜合所得稅試算',
-        desc: '比較標準與列舉扣除，先知道補繳或退稅。',
-        scenario: '五月報稅前',
-        cta: '先估今年稅額',
-        icon: `<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>`,
-    },
-    {
-        href: '/tools/mortgage-calculator',
-        label: '房貸試算',
-        desc: '評估寬限期、利率變化與長期月付壓力。',
-        scenario: '準備買房、換屋前',
-        cta: '先算每月房貸',
-        icon: `<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
-    },
-];
-
-const supportTools = [
-    { href: '/tools/insurance-calculator', label: '勞健保計算', desc: '保費級距與負擔比例' },
-    { href: '/tools/overtime-calculator', label: '加班費試算', desc: '平日與休息日計算' },
-    { href: '/tools/rent-cost-calculator', label: '租金解析', desc: '押金與真實月支出' },
-    { href: '/tools/electricity-calculator', label: '電費試算', desc: '台電累進費率換算' },
-    { href: '/tools/fire-calculator', label: 'FIRE 退休規劃', desc: '財務自由年限預估' },
-    { href: '/tools/labor-pension-calculator', label: '勞退試算', desc: '提撥與滾存分析' },
-    { href: '/tools/stock-calculator', label: '股票損益試算', desc: '手續費與損益估算' },
-    { href: '/tools/insurance-assessment', label: '保險效益評估', desc: 'IRR 與需求檢視' },
-    { href: '/tools/delivery-income-calculator', label: '外送收入計算', desc: '跑單淨收入分析' },
-    { href: '/tools/split-calculator', label: '分帳計算', desc: '多人分攤快速拆帳' },
-];
+const coreTools = getCoreTools();
+const supportTools = getSupportTools();
 
 const quickLinks = coreTools;
 const toolCatalogJson = JSON.stringify(toolCatalog);
@@ -83,7 +46,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-500">
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
                             <p class="text-[10px] uppercase tracking-widest text-ink-500">核心數</p>
-                            <p class="text-lg font-semibold text-ink-700 mt-1">3</p>
+                            <p class="text-lg font-semibold text-ink-700 mt-1">{coreTools.length}</p>
                         </div>
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
                             <p class="text-[10px] uppercase tracking-widest text-ink-500">資料年度</p>
@@ -321,24 +284,32 @@ if (taxBtn && month >= 3 && month <= 5) {
     taxBtn.parentElement?.insertBefore(taxBtn, taxBtn.parentElement.firstChild);
 }
 
-const searchTools = [
-    { href: '/tools/salary-calculator', label: '薪資實拿計算', desc: '月薪扣除勞健保後實領多少', tags: '薪資 月薪 勞保 健保 offer' },
-    { href: '/tools/income-tax-calculator', label: '綜合所得稅試算', desc: '標準 vs 列舉扣除比較', tags: '所得稅 報稅 五月 退稅 補繳' },
-    { href: '/tools/mortgage-calculator', label: '房貸試算', desc: '新青安、寬限期與月付壓力', tags: '房貸 買房 新青安 利率 貸款' },
-    { href: '/tools/insurance-calculator', label: '勞健保計算', desc: '費率級距與眷屬附保明細', tags: '勞保 健保 保費 投保' },
-    { href: '/tools/overtime-calculator', label: '加班費試算', desc: '平日、休息日、國定假日', tags: '加班 加班費 休假 假日' },
-    { href: '/tools/rent-cost-calculator', label: '租金解析', desc: '租屋押金與真實月支出', tags: '租金 租屋 房租 押金' },
-    { href: '/tools/electricity-calculator', label: '電費試算', desc: '台電累進費率自動計算', tags: '電費 台電 電力 用電' },
-    { href: '/tools/fire-calculator', label: 'FIRE 退休規劃', desc: '複利效應與財務自由倒數', tags: '退休 FIRE 財務自由 複利' },
-    { href: '/tools/labor-pension-calculator', label: '勞退試算', desc: '複利滾存與節稅效益分析', tags: '勞退 勞工退休金 提撥 退休' },
-    { href: '/tools/stock-calculator', label: '股票損益試算', desc: '現股、當沖與 ETF 手續費', tags: '股票 ETF 手續費 損益 當沖' },
-    { href: '/tools/insurance-assessment', label: '保險效益評估', desc: '儲蓄險 IRR 與壽險需求', tags: '保險 儲蓄險 壽險 IRR' },
-    { href: '/tools/delivery-income-calculator', label: '外送收入計算', desc: '跑單淨收入與油費成本', tags: '外送 foodpanda ubereats 外賣' },
-    { href: '/tools/split-calculator', label: '分帳計算', desc: '聚餐與多人分攤快速計算', tags: '分帳 AA 聚餐' },
-];
+const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;',
+}[char] ?? char));
 
 const searchInput = document.getElementById('tool-search') as HTMLInputElement | null;
 const searchResults = document.getElementById('search-results');
+const toolCatalogData = document.getElementById('retention-shell')?.dataset.toolCatalog || '[]';
+const searchTools = JSON.parse(toolCatalogData) as Array<{
+    href: string;
+    label: string;
+    desc: string;
+    category: string;
+    tags?: string[];
+    isCore?: boolean;
+}>;
+const toolByHref = new Map(searchTools.map((tool) => [tool.href, tool]));
+
+const resolveCatalogTool = (tool: { href?: string; lastVisitedAt?: string }) => {
+    if (!tool.href) return null;
+    const catalogTool = toolByHref.get(tool.href);
+    return catalogTool ? { ...catalogTool, lastVisitedAt: tool.lastVisitedAt } : null;
+};
 
 searchInput?.addEventListener('input', (e) => {
     const q = (e.target as HTMLInputElement).value.trim();
@@ -347,19 +318,22 @@ searchInput?.addEventListener('input', (e) => {
         return;
     }
 
-    const hits = searchTools.filter(t =>
-        t.label.includes(q) || t.desc.includes(q) || t.tags.includes(q)
+    const normalizedQuery = q.toLowerCase();
+    const hits = searchTools.filter((tool) =>
+        [tool.label, tool.desc, tool.category, ...(tool.tags ?? [])].some((keyword) =>
+            keyword.toLowerCase().includes(normalizedQuery)
+        )
     );
 
     if (searchResults) {
         if (!hits.length) {
-            searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${q}」的相關工具</p>`;
+            searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${escapeHtml(q)}」的相關工具</p>`;
         } else {
-            searchResults.innerHTML = hits.map(t => `
-                <a href="${t.href}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group" data-sfx="tap">
+            searchResults.innerHTML = hits.map((tool) => `
+                <a href="${escapeHtml(tool.href)}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group" data-sfx="tap">
                     <div>
-                        <p class="text-sm font-medium text-ink-700">${t.label}</p>
-                        <p class="text-xs text-ink-400 mt-0.5">${t.desc}</p>
+                        <p class="text-sm font-medium text-ink-700">${escapeHtml(tool.label)}</p>
+                        <p class="text-xs text-ink-400 mt-0.5">${escapeHtml(tool.desc)}</p>
                     </div>
                     <svg class="text-ink-400 group-hover:text-brand shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                 </a>
@@ -400,18 +374,17 @@ const renderRetention = () => {
     const pinnedRoot = document.getElementById('pinned-tools');
     if (!recentRoot || !pinnedRoot || !retentionShell) return;
 
-    const toolCatalog = JSON.parse(retentionShell.dataset.toolCatalog || '[]');
     const state = readRetentionState();
-    const recent = state.recent.slice(0, 3);
-    const pinned = state.pinned.slice(0, 6);
+    const recent = state.recent.map(resolveCatalogTool).filter(Boolean).slice(0, 3);
+    const pinned = state.pinned.map(resolveCatalogTool).filter(Boolean).slice(0, 6);
 
     if (recent.length) {
         recentRoot.innerHTML = recent.map((tool: { href: string; label: string; desc: string; category: string; lastVisitedAt?: string }, index: number) => `
-            <a href="${tool.href}" class="flex items-start justify-between gap-4 rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 hover:border-brand hover:bg-paper-100 transition-colors" data-sfx="tap">
+            <a href="${escapeHtml(tool.href)}" class="flex items-start justify-between gap-4 rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 hover:border-brand hover:bg-paper-100 transition-colors" data-sfx="tap">
                 <div>
                     <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400">${index === 0 ? '上次使用' : '最近使用'}</p>
-                    <p class="text-sm font-medium text-ink-700 mt-1">${tool.label}</p>
-                    <p class="text-xs text-ink-400 mt-1">${tool.desc || tool.category}</p>
+                    <p class="text-sm font-medium text-ink-700 mt-1">${escapeHtml(tool.label)}</p>
+                    <p class="text-xs text-ink-400 mt-1">${escapeHtml(tool.desc || tool.category)}</p>
                 </div>
                 <div class="text-right shrink-0">
                     <p class="text-[11px] text-ink-400">${relativeTime(tool.lastVisitedAt)}</p>
@@ -423,18 +396,18 @@ const renderRetention = () => {
 
     if (pinned.length) {
         pinnedRoot.innerHTML = pinned.map((tool: { href: string; label: string }) => `
-            <a href="${tool.href}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
+            <a href="${escapeHtml(tool.href)}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
                 <span class="text-brand">●</span>
-                <span>${tool.label}</span>
+                <span>${escapeHtml(tool.label)}</span>
             </a>
         `).join('');
         return;
     }
 
-    const defaults = toolCatalog.filter((tool: { isCore?: boolean }) => tool.isCore).slice(0, 3);
+    const defaults = searchTools.filter((tool) => tool.isCore).slice(0, 3);
     pinnedRoot.innerHTML = defaults.map((tool: { href: string; label: string }) => `
-        <a href="${tool.href}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
-            <span>${tool.label}</span>
+        <a href="${escapeHtml(tool.href)}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
+            <span>${escapeHtml(tool.label)}</span>
         </a>
     `).join('');
 };
