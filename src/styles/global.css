@@ -18,13 +18,27 @@ body {
     @apply bg-paper-100 text-ink-700 antialiased;
     line-height: 1.7;
     letter-spacing: 0.01em;
+    background-color: #090f1f;
     background-image:
-        radial-gradient(720px 360px at 18% -12%, rgba(255, 172, 2, 0.08), transparent 62%),
-        radial-gradient(860px 460px at 82% -18%, rgba(255, 255, 255, 0.06), transparent 65%),
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: auto, auto, 36px 36px, 36px 36px;
+        radial-gradient(820px 460px at 12% -10%, rgba(34, 211, 238, 0.2), transparent 62%),
+        radial-gradient(760px 420px at 88% 0%, rgba(129, 140, 248, 0.18), transparent 64%),
+        radial-gradient(700px 520px at 50% 110%, rgba(20, 184, 166, 0.1), transparent 70%),
+        linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
+    background-size: auto, auto, auto, 42px 42px, 42px 42px;
     background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        linear-gradient(120deg, transparent 0%, rgba(34, 211, 238, 0.06) 32%, transparent 54%),
+        radial-gradient(circle at 50% 0%, rgba(248, 250, 252, 0.08), transparent 34%);
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
 }
 
 @media (max-width: 768px) {
@@ -83,20 +97,23 @@ body {
 
     /* Surface card — 升級版卡片設計 */
     .card-surface {
-        @apply bg-paper-200 border border-paper-300 rounded-2xl shadow-card;
-        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+        @apply bg-paper-200/80 border border-paper-300/80 rounded-2xl shadow-card backdrop-blur-xl;
+        background-image:
+            linear-gradient(180deg, rgba(248, 250, 252, 0.075), rgba(248, 250, 252, 0.018)),
+            radial-gradient(520px 180px at 18% 0%, rgba(34, 211, 238, 0.08), transparent 70%);
     }
 
     .card-surface-hover {
-        @apply card-surface hover:shadow-card-hover hover:border-paper-400 hover:-translate-y-0.5 transition-all duration-200;
+        @apply card-surface hover:shadow-card-hover hover:border-brand-400/60 hover:-translate-y-0.5 transition-all duration-200;
     }
 
     .hermes-label {
-        @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-ink-500;
+        @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-brand-600;
+        text-shadow: 0 0 22px rgba(34, 211, 238, 0.32);
     }
 
     .hermes-rule {
-        @apply h-px w-full bg-gradient-to-r from-transparent via-paper-300 to-transparent;
+        @apply h-px w-full bg-gradient-to-r from-transparent via-brand-500/50 to-transparent;
     }
 
     /* 卡片懸停發光效果 */
@@ -106,12 +123,13 @@ body {
 
     /* Input fields — 統一輸入框 */
     .input-clean {
-        @apply w-full bg-paper-200 border border-paper-300 text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-400 focus:outline-none focus:bg-paper-100 focus:border-brand focus:shadow-input;
+        @apply w-full bg-paper-200/80 border border-paper-300/90 text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-400 focus:outline-none focus:bg-paper-100/95 focus:border-brand-500 focus:shadow-input;
         font-weight: 400;
+        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.045);
     }
 
     .input-clean:hover {
-        @apply border-paper-300;
+        @apply border-brand-400/50;
     }
 
     .input-clean-sm {
@@ -120,17 +138,23 @@ body {
 
     /* Primary Button — 主按鈕 */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 bg-ink-700 text-paper-50 font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-ink-800 active:scale-[0.98] shadow-card;
+        @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600 text-paper-50 font-semibold px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none active:scale-[0.98] shadow-card;
+        box-shadow: 0 16px 40px -20px rgba(34, 211, 238, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+
+    .btn-primary:hover {
+        filter: saturate(1.1) brightness(1.08);
+        transform: translateY(-1px);
     }
 
     .btn-azure {
-        @apply inline-flex items-center justify-center gap-2 bg-brand text-paper-50 font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-brand-600 active:scale-[0.98] shadow-sm;
+        @apply inline-flex items-center justify-center gap-2 bg-brand text-paper-50 font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none hover:bg-brand-600 active:scale-[0.98] shadow-glow-brand;
     }
 
     /* Secondary Button — 次要按鈕 */
     .btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 bg-paper-200 text-ink-700 font-medium px-6 py-3 rounded-full border border-paper-300
-               transition-all duration-200 cursor-pointer select-none hover:bg-paper-300 active:scale-[0.98];
+        @apply inline-flex items-center justify-center gap-2 bg-paper-200/80 text-ink-700 font-medium px-6 py-3 rounded-full border border-paper-300/90
+               transition-all duration-200 cursor-pointer select-none hover:bg-paper-300/90 hover:border-brand-400/50 active:scale-[0.98] backdrop-blur-xl;
     }
 
     /* Primary Blue Button */
@@ -142,11 +166,11 @@ body {
 
     /* Ghost Button — 透明按鈕 */
     .btn-ghost {
-        @apply inline-flex items-center justify-center gap-2 bg-transparent text-ink-500 font-normal px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer hover:bg-paper-200 hover:text-ink-700;
+        @apply inline-flex items-center justify-center gap-2 bg-paper-200/35 text-ink-500 font-normal px-4 py-2 rounded-lg border border-transparent transition-all duration-200 cursor-pointer hover:bg-paper-200/80 hover:border-brand-400/50 hover:text-ink-700;
     }
 
     .sound-toggle {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300 text-[11px] uppercase tracking-[0.2em] text-ink-400 bg-paper-200 transition-all duration-200;
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300/80 text-[11px] uppercase tracking-[0.2em] text-ink-400 bg-paper-200/80 backdrop-blur-xl transition-all duration-200;
     }
 
     .sound-toggle.is-on {
@@ -155,7 +179,7 @@ body {
 
     /* Segmented Control (tab selector) */
     .seg-control {
-        @apply flex bg-paper-200 rounded-2xl p-1.5 gap-1;
+        @apply flex bg-paper-200/80 border border-paper-300/70 rounded-2xl p-1.5 gap-1 backdrop-blur-xl;
     }
 
     .seg-btn {
@@ -163,7 +187,7 @@ body {
     }
 
     .seg-btn-active {
-        @apply bg-paper-100 text-ink-700 shadow-card;
+        @apply bg-gradient-to-r from-brand-500 to-azure-500 text-paper-50 shadow-card;
     }
 
     /* Stat display — 數據展示 */
@@ -284,30 +308,33 @@ body {
 
     .section-wash {
         background-image:
-            radial-gradient(700px 260px at 10% 0%, rgba(255, 172, 2, 0.12), transparent 60%),
-            radial-gradient(700px 240px at 95% 10%, rgba(255, 255, 255, 0.08), transparent 62%);
+            radial-gradient(760px 300px at 10% 0%, rgba(34, 211, 238, 0.14), transparent 60%),
+            radial-gradient(700px 260px at 95% 10%, rgba(129, 140, 248, 0.14), transparent 62%);
     }
 
     .hero-sheen {
         background-image:
-            radial-gradient(520px 260px at 20% 10%, rgba(255, 172, 2, 0.22), transparent 70%),
-            radial-gradient(420px 220px at 90% 0%, rgba(255, 255, 255, 0.12), transparent 70%);
+            radial-gradient(560px 280px at 20% 8%, rgba(34, 211, 238, 0.22), transparent 70%),
+            radial-gradient(460px 240px at 92% 0%, rgba(167, 139, 250, 0.18), transparent 70%),
+            linear-gradient(135deg, rgba(248, 250, 252, 0.08), rgba(248, 250, 252, 0));
     }
 
     .glass-panel {
-        @apply bg-paper-200 backdrop-blur-md border border-paper-300 shadow-card rounded-3xl;
+        @apply bg-paper-200/80 backdrop-blur-xl border border-paper-300/80 shadow-card rounded-3xl;
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.08), 0 24px 70px -42px rgba(0, 0, 0, 0.9);
     }
 
     .data-pill {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200 border border-paper-300 text-xs text-ink-500;
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200/75 border border-paper-300/80 text-xs text-ink-500 backdrop-blur-xl;
+        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
     }
 
     .ink-panel {
-        @apply bg-ink-700 text-paper-50 rounded-3xl shadow-card-hover;
+        @apply bg-gradient-to-br from-brand-500 via-azure-500 to-azure-600 text-paper-50 rounded-3xl shadow-card-hover;
     }
 
     .portal-card {
-        @apply relative overflow-hidden rounded-3xl border border-paper-300 bg-paper-200 p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-200;
+        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-400/60;
     }
 
     .portal-card::before {
@@ -317,12 +344,12 @@ body {
         width: 140px;
         height: 140px;
         border-radius: 9999px;
-        background: radial-gradient(circle, rgba(255, 172, 2, 0.16), transparent 68%);
+        background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 68%);
         pointer-events: none;
     }
 
     .flow-card {
-        @apply relative rounded-3xl border border-paper-300 bg-paper-200 p-5 shadow-card;
+        @apply relative rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl;
     }
 
     .flow-card::after {
@@ -332,7 +359,7 @@ body {
         right: -28px;
         width: 56px;
         height: 1px;
-        background: linear-gradient(90deg, rgba(255, 172, 2, 0.35), rgba(255, 172, 2, 0));
+        background: linear-gradient(90deg, rgba(34, 211, 238, 0.42), rgba(34, 211, 238, 0));
         display: none;
     }
 
@@ -359,7 +386,7 @@ body {
 
     /* 文字漸變 */
     .text-gradient-brand {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-500 to-emerald-500;
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600;
     }
 
     .text-gradient-primary {
@@ -368,7 +395,7 @@ body {
 
     /* 陰影增強 */
     .shadow-brand {
-        box-shadow: 0 4px 20px rgba(34, 197, 94, 0.25);
+        box-shadow: 0 4px 24px rgba(34, 211, 238, 0.28);
     }
 
     .shadow-primary {
@@ -400,7 +427,7 @@ body {
 }
 
 .prose a {
-    @apply text-primary-500 no-underline hover:underline;
+    @apply text-brand-500 no-underline hover:underline;
 }
 
 .prose blockquote {

@@ -144,10 +144,10 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
     <div id="taicalc-fab" class="fixed bottom-6 right-5 z-40 flex flex-col items-end gap-2">
 
         <!-- 對話面板 (在按鈕上方展開) -->
-        <div id="fab-panel" class="hidden w-80 rounded-2xl overflow-hidden shadow-card-hover border border-paper-300 animate-fade-in-up">
+        <div id="fab-panel" class="hidden w-80 rounded-2xl overflow-hidden shadow-card-hover border border-brand-400/30 bg-paper-200/90 backdrop-blur-2xl animate-fade-in-up">
 
             <!-- 標題列 -->
-            <div class="flex items-center justify-between px-4 py-3 bg-paper-200 border-b border-paper-300">
+            <div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-paper-200/95 to-paper-300/80 border-b border-paper-300/80">
                 <div class="flex items-center gap-2">
                     <span class="text-sm">💡</span>
                     <span class="text-sm font-medium text-ink-700">TaiCalc AI 助理</span>
@@ -160,21 +160,21 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             </div>
 
             <!-- 訊息區 -->
-            <div id="fab-messages" class="px-3 py-3 space-y-2 max-h-56 overflow-y-auto bg-paper-100 no-scrollbar">
+            <div id="fab-messages" class="px-3 py-3 space-y-2 max-h-56 overflow-y-auto bg-paper-100/75 no-scrollbar">
                 <div class="bg-azure-50 rounded-xl px-3 py-2 text-xs text-ink-600 mr-6 leading-relaxed">
                     👋 你好！我是算盤，TaiCalc 的 AI 助理。<br>我會協助你選工具與解讀規則，最終金額以頁面計算結果為準。
                 </div>
             </div>
 
             <!-- 輸入列 -->
-            <div class="px-3 py-3 bg-paper-200 border-t border-paper-300 flex gap-2">
+            <div class="px-3 py-3 bg-paper-200/90 border-t border-paper-300/80 flex gap-2">
                 <input id="fab-input" type="text"
                     placeholder="例：拿到 Offer 月薪 5 萬該先算哪個？"
                     class="flex-1 text-xs bg-paper-100 rounded-lg px-3 py-2 text-ink-700 placeholder:text-ink-400
                            focus:outline-none focus:bg-paper-100 focus:ring-1 focus:ring-azure transition-all" />
                 <button id="fab-send" data-sfx="accent"
-                    class="bg-ink-700 text-paper-50 rounded-lg px-3 py-2 text-xs font-medium
-                           hover:bg-ink-800 transition-colors disabled:opacity-40">
+                    class="bg-gradient-to-r from-brand-500 to-azure-500 text-paper-50 rounded-lg px-3 py-2 text-xs font-semibold
+                           hover:brightness-110 transition-all disabled:opacity-40">
                     送出
                 </button>
             </div>
@@ -187,8 +187,8 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 
         <!-- FAB 主按鈕 -->
         <button id="fab-toggle" data-sfx="tap"
-            class="flex items-center gap-2 bg-ink-700 text-paper-50 pl-3.5 pr-4 py-2.5 rounded-full
-                   shadow-lg hover:bg-ink-800 active:scale-95 transition-all duration-150 text-sm font-medium">
+            class="flex items-center gap-2 bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600 text-paper-50 pl-3.5 pr-4 py-2.5 rounded-full
+                   shadow-glow-brand hover:brightness-110 active:scale-95 transition-all duration-150 text-sm font-semibold">
             <svg id="fab-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>

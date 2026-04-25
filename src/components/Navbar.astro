@@ -5,24 +5,24 @@ const isActive = (href: string) => {
     return currentPath.startsWith(href);
 };
 ---
-<nav class="sticky top-0 z-50 bg-paper-100/75 backdrop-blur-md border-b border-paper-300">
+<nav class="sticky top-0 z-50 bg-paper-100/70 backdrop-blur-2xl border-b border-paper-300/70 shadow-[0_12px_40px_-30px_rgba(34,211,238,0.45)]">
     <div class="h-14 flex items-center justify-between">
-        <a href="/" class="text-lg font-semibold tracking-tight text-ink-700 hover:text-ink-500 transition-colors">TaiCalc</a>
+        <a href="/" class="text-lg font-semibold tracking-tight text-ink-800 hover:text-brand-500 transition-colors">Tai<span class="text-brand-500">Calc</span></a>
 
         <div class="hidden md:flex items-center gap-4 text-[11px] uppercase tracking-[0.2em]">
-            <a href="/" class={`px-2 py-1 transition-colors ${isActive('/') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>首頁</a>
-            <a href="/tools/salary-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/salary') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>薪資</a>
-            <a href="/tools/income-tax-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/income-tax') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>所得稅</a>
-            <a href="/tools/mortgage-calculator" class={`px-2 py-1 transition-colors ${isActive('/tools/mortgage') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>房貸</a>
-            <a href="/#support-tools" class={`px-2 py-1 transition-colors ${currentPath === '/' ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>輔助工具</a>
-            <a href="/blog" class={`px-2 py-1 transition-colors ${isActive('/blog') ? 'text-ink-700' : 'text-ink-400 hover:text-ink-700'}`}>專欄</a>
-            <span class="w-px h-4 bg-paper-300"></span>
+            <a href="/" class={`px-2 py-1 rounded-full transition-all ${isActive('/') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>首頁</a>
+            <a href="/tools/salary-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/salary') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>薪資</a>
+            <a href="/tools/income-tax-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/income-tax') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>所得稅</a>
+            <a href="/tools/mortgage-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/mortgage') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>房貸</a>
+            <a href="/#support-tools" class={`px-2 py-1 rounded-full transition-all ${currentPath === '/' ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>輔助工具</a>
+            <a href="/blog" class={`px-2 py-1 rounded-full transition-all ${isActive('/blog') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>專欄</a>
+            <span class="w-px h-4 bg-paper-300/80"></span>
             <button id="sound-toggle" class="sound-toggle" type="button" data-sfx="tap" aria-pressed="false">
                 音效 Off
             </button>
         </div>
 
-        <button id="menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-ink-400 hover:text-ink-700 hover:bg-paper-200 transition-colors" aria-label="開啟選單" data-sfx="tap">
+        <button id="menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-ink-400 hover:text-ink-700 hover:bg-paper-200/80 transition-colors" aria-label="開啟選單" data-sfx="tap">
             <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="3" y1="8" x2="21" y2="8"></line>
                 <line x1="3" y1="16" x2="21" y2="16"></line>
@@ -34,28 +34,28 @@ const isActive = (href: string) => {
     </div>
 </nav>
 
-<div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-paper-100/95 backdrop-blur-xl pt-16">
+<div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-paper-100/95 backdrop-blur-2xl pt-16">
     <div class="px-4 pt-6 pb-8 flex flex-col gap-1">
-        <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">首頁</a>
+        <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200/80 transition-colors">首頁</a>
         <div class="h-px bg-paper-300 my-3"></div>
         <button id="sound-toggle-mobile" class="sound-toggle w-full justify-center mb-2" type="button" data-sfx="tap" aria-pressed="false">音效 Off</button>
 
         <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">三大核心</p>
-        <a href="/tools/salary-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">薪資實拿計算</a>
-        <a href="/tools/income-tax-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">
+        <a href="/tools/salary-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">薪資實拿計算</a>
+        <a href="/tools/income-tax-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">
             <span>綜合所得稅試算</span>
             <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">CORE</span>
         </a>
-        <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">房貸試算</a>
+        <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">房貸試算</a>
 
         <div class="h-px bg-paper-300 my-3"></div>
         <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">輔助入口</p>
-        <a href="/#support-tools" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">查看輔助工具</a>
-        <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">居住決策工具箱</a>
-        <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200 transition-colors">報稅季攻略</a>
+        <a href="/#support-tools" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">查看輔助工具</a>
+        <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">居住決策工具箱</a>
+        <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">報稅季攻略</a>
 
         <div class="h-px bg-paper-300 my-3"></div>
-        <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200 transition-colors">專欄文章</a>
+        <a href="/blog" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200/80 transition-colors">專欄文章</a>
     </div>
 </div>
 
