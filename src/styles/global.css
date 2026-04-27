@@ -370,6 +370,107 @@ body::before {
     .tool-hero-panel {
         @apply glass-panel p-6 md:p-7;
     }
+
+    .section-heading {
+        @apply flex flex-col gap-3 md:flex-row md:items-end md:justify-between;
+    }
+
+    .section-heading-copy {
+        @apply max-w-xl text-sm text-ink-500 leading-relaxed;
+    }
+
+    .command-deck {
+        @apply grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)];
+    }
+
+    .command-card {
+        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl;
+    }
+
+    .command-card::before {
+        content: "";
+        position: absolute;
+        inset: auto -20% -55% auto;
+        width: 180px;
+        height: 180px;
+        border-radius: 9999px;
+        background: radial-gradient(circle, rgba(34, 211, 238, 0.12), transparent 68%);
+        pointer-events: none;
+    }
+
+    .command-meta-grid {
+        @apply grid gap-3 sm:grid-cols-3;
+    }
+
+    .meta-tile {
+        @apply rounded-2xl border border-paper-300/80 bg-paper-100/80 px-4 py-3;
+        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.05);
+    }
+
+    .meta-tile-label {
+        @apply text-[10px] uppercase tracking-[0.18em] text-ink-400;
+    }
+
+    .meta-tile-value {
+        @apply mt-2 text-sm font-semibold text-ink-700;
+    }
+
+    .action-stack {
+        @apply flex flex-col gap-3 sm:flex-row sm:flex-wrap;
+    }
+
+    .action-link {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-paper-300/80 bg-paper-100/80 px-4 py-3 text-sm font-medium text-ink-600 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-400/60 hover:text-ink-700;
+    }
+
+    .signal-list {
+        @apply space-y-2 text-sm text-ink-500;
+    }
+
+    .signal-list li {
+        @apply flex items-start gap-2;
+    }
+
+    .signal-dot {
+        @apply mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-500 shrink-0;
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+    }
+
+    .flow-card-emphasis {
+        @apply flow-card transition-all duration-200 hover:-translate-y-1 hover:border-brand-400/60 hover:shadow-card-hover;
+    }
+
+    .flow-index {
+        @apply inline-flex items-center justify-center rounded-full border border-brand-400/40 bg-brand-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-brand-500;
+    }
+
+    .flow-link {
+        @apply mt-5 inline-flex items-center gap-2 text-sm font-medium text-brand-500 transition-all duration-200 hover:gap-2.5;
+    }
+
+    .tool-spotlight {
+        @apply portal-card flex h-full flex-col gap-4;
+    }
+
+    .tool-spotlight-footer {
+        @apply mt-auto flex items-center justify-between gap-3 border-t border-paper-300/80 pt-4 text-xs text-ink-400;
+    }
+
+    .surface-badge {
+        @apply inline-flex items-center gap-2 rounded-full border border-paper-300/80 bg-paper-100/80 px-3 py-1 text-[11px] font-medium text-ink-500;
+    }
+
+    .story-card {
+        @apply relative flex flex-col gap-4 overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-brand-400/60 hover:shadow-card-hover;
+    }
+
+    .story-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(34, 211, 238, 0.04), transparent 48%);
+        pointer-events: none;
+    }
 }
 
 /* ─── Utilities ───────────────────────────────────────────────── */
