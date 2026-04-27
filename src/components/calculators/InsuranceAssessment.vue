@@ -1,28 +1,24 @@
 <template>
-  <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+  <div class="calculator-shell calculator-card-tight overflow-hidden">
     <!-- Tabs -->
-    <div class="flex border-b border-stone-200">
+    <div class="seg-control m-4 mb-0">
       <button
         @click="mode = 'irr'"
-        class="flex-1 py-3 text-sm font-bold text-center transition-colors relative"
-        :class="mode === 'irr' ? 'text-amber-600 bg-amber-50/50' : 'text-stone-500 hover:bg-stone-50'"
+        :class="['seg-btn', mode === 'irr' ? 'seg-btn-active' : '']"
       >
         儲蓄險 IRR 試算
-        <div v-if="mode === 'irr'" class="absolute bottom-0 left-0 w-full h-0.5 bg-amber-600"></div>
       </button>
       <button
         @click="mode = 'needs'"
-        class="flex-1 py-3 text-sm font-bold text-center transition-colors relative"
-        :class="mode === 'needs' ? 'text-blue-600 bg-blue-50/50' : 'text-stone-500 hover:bg-stone-50'"
+        :class="['seg-btn', mode === 'needs' ? 'seg-btn-active' : '']"
       >
         壽險需求分析
-        <div v-if="mode === 'needs'" class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600"></div>
       </button>
     </div>
 
     <div class="p-6 space-y-6">
       <!-- Tab 1: IRR Calculator -->
-      <div v-if="mode === 'irr'" class="space-y-6">
+      <div v-if="mode === 'irr'" class="calculator-shell">
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -92,7 +88,7 @@
       </div>
 
       <!-- Tab 2: Needs Analysis -->
-      <div v-if="mode === 'needs'" class="space-y-6">
+      <div v-if="mode === 'needs'" class="calculator-shell">
         <!-- Liabilities -->
         <div class="space-y-3">
           <h3 class="text-sm font-bold text-stone-700 border-l-4 border-blue-500 pl-2">1. 家庭責任 (負債與開銷)</h3>

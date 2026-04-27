@@ -1,8 +1,8 @@
 <template>
-  <div class="space-y-6">
+  <div class="calculator-shell">
 
     <!-- 基本設定 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="calculator-card">
         <div class="grid sm:grid-cols-2 gap-4">
             <div>
                 <label for="salary" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">月薪 (NT$)</label>
@@ -23,7 +23,7 @@
     </section>
 
     <!-- 加班類型選擇 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="calculator-card">
         <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
             選擇加班類型
@@ -44,7 +44,7 @@
     </section>
 
     <!-- 加班時數輸入 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="calculator-card">
         <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
             輸入加班時數
@@ -93,7 +93,7 @@
     </section>
 
     <!-- 計算結果 -->
-    <section class="card bg-amber-50 rounded-2xl p-6 border border-amber-100 relative overflow-hidden">
+    <section class="calculator-card-warm">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-40 mix-blend-multiply"></div>
 
         <div class="flex items-start justify-between mb-6 relative z-10">
@@ -137,7 +137,7 @@
     </section>
 
     <!-- 週累計 -->
-    <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <section class="calculator-card">
         <div class="flex items-center justify-between mb-5">
             <h2 class="text-sm font-bold text-stone-700 flex items-center gap-2">
                 <span class="text-base">📅</span> 週累計清單
@@ -193,7 +193,7 @@
     </section>
 
     <!-- 費率說明 -->
-    <footer class="bg-white rounded-xl p-5 border border-stone-200 shadow-sm">
+    <footer class="calculator-footer-note">
         <div class="flex items-center gap-2 mb-3">
             <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>

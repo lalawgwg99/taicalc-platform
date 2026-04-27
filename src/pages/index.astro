@@ -44,30 +44,30 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
-    <section class="relative overflow-hidden pt-20 pb-16 md:pt-28 md:pb-24">
+    <section class="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-28 md:pb-24">
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[860px] h-[860px] bg-brand/10 blur-3xl animate-float-slow"></div>
             <div class="absolute top-10 right-[-140px] w-[420px] h-[420px] bg-ink-800/5 blur-3xl"></div>
         </div>
 
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
-            <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+            <div class="grid gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 items-center">
                 <div class="animate-fade-in-up reveal" data-reveal>
                     <div class="hermes-label">Taiwan Rules Engine · {platformGovernance.version}</div>
 
-                    <h1 class="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold text-ink-800 tracking-tight leading-[1.1] mt-6">
+                    <h1 class="mt-5 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:mt-6 lg:text-[3.5rem]">
                         先算三件事：薪資、所得稅、房貸
                     </h1>
-                    <p class="text-base md:text-lg text-ink-500 leading-relaxed max-w-xl mt-4">
+                    <p class="mt-4 max-w-xl text-sm leading-relaxed text-ink-500 sm:text-base md:text-lg">
                         TaiCalc 只聚焦台灣最重要的三個財務決策入口，其他工具退到輔助層。每個核心工具都附年度版本、更新日期與官方來源，避免黑箱試算。
                     </p>
 
-                    <div class="mt-8 flex flex-wrap gap-3">
+                    <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                         <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">先算薪資</a>
                         <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">看輔助工具</a>
                     </div>
 
-                    <div class="mt-10 grid grid-cols-2 md:grid-cols-3 gap-3 text-xs text-ink-500">
+                    <div class="mt-8 grid grid-cols-1 gap-3 text-xs text-ink-500 sm:grid-cols-2 md:grid-cols-3">
                         <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3">
                             <p class="text-[10px] uppercase tracking-widest text-ink-500">核心數</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">{coreTools.length}</p>
@@ -76,14 +76,14 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                             <p class="text-[10px] uppercase tracking-widest text-ink-500">資料年度</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.dataYear}</p>
                         </div>
-                        <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 md:col-span-1 col-span-2">
+                        <div class="rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 sm:col-span-2 md:col-span-1">
                             <p class="text-[10px] uppercase tracking-widest text-ink-500">更新</p>
                             <p class="text-lg font-semibold text-ink-700 mt-1">{platformGovernance.updatedAt}</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-surface p-6 md:p-7 w-full max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
+                <div class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs uppercase tracking-widest text-ink-500">Quick Access</p>
@@ -104,7 +104,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         {quickLinks.map(tool => (
                             <a
                                 href={tool.href}
-                                class="group flex items-center justify-between px-3 py-2 rounded-xl border border-paper-300 bg-paper-100 hover:bg-paper-200 transition-colors"
+                                class="group flex items-center justify-between gap-3 rounded-xl border border-paper-300 bg-paper-100 px-3 py-2.5 hover:bg-paper-200 transition-colors"
                                 data-sfx="tap"
                             >
                                 <div>
@@ -126,7 +126,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section class="py-16 md:py-18 border-t border-paper-300 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-18 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="section-heading mb-10">
                 <div>
@@ -136,7 +136,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <p class="section-heading-copy">TaiCalc 不只是工具列表，而是一條把模糊問題收斂成可執行答案的路徑。先界定情境，再輸入數字，最後比較下一步。</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
                 {decisionFlow.map((item) => (
                     <article class="flow-card-emphasis">
                         <div class="flow-index">Step {item.step}</div>
@@ -152,7 +152,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section class="py-12 md:py-14 border-t border-paper-300 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-10 sm:py-12 md:py-14 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="card-surface p-6 md:p-7">
                 <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
@@ -190,9 +190,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
+            <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Core IA</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">三大核心入口</h2>
@@ -200,7 +200,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <p class="text-sm text-ink-500 leading-relaxed max-w-xl">每個入口都對應一個高頻決策場景，先解決最大不確定性，再往輔助工具細化。</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 {coreTools.map((tool) => (
                     <article class="tool-spotlight">
                         <div class="w-11 h-11 rounded-xl bg-paper-100 border border-paper-300 flex items-center justify-center">
@@ -227,9 +227,9 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section id="support-tools" class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+    <section id="support-tools" class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-10 md:mb-12">
+            <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Support Tools</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">輔助工具入口</h2>
@@ -251,7 +251,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col lg:flex-row gap-6">
                 <div class="card-surface p-6 flex-1">
@@ -285,7 +285,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
-    <section class="py-16 md:py-20 border-t border-paper-300 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex items-center justify-between mb-10">
                 <div>

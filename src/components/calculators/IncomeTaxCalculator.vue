@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="calculator-shell">
 
     <!-- 標題說明 -->
     <div class="note-box flex items-start gap-2">

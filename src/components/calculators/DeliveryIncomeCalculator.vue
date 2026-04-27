@@ -1,8 +1,8 @@
 <template>
-  <div class="space-y-6">
+  <div class="calculator-shell">
     <!-- 輸入區塊 -->
     <div class="grid lg:grid-cols-2 gap-6">
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <section class="calculator-card">
         <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
         <div class="space-y-4">
           <div>
@@ -51,7 +51,7 @@
         </div>
       </section>
 
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+      <section class="calculator-card">
         <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">🛵 車輛與隱性成本</h2>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
@@ -110,9 +110,7 @@
     <!-- 結果儀表板 -->
     <div class="grid md:grid-cols-2 gap-6">
       <!-- 核心數據 -->
-      <section
-        class="card bg-brand-50 rounded-2xl p-6 border border-brand-100 flex flex-col justify-between relative overflow-hidden"
-      >
+      <section class="calculator-card-accent flex flex-col justify-between">
         <div
           class="absolute right-0 top-0 w-32 h-32 bg-brand-100 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"
         ></div>
@@ -141,7 +139,7 @@
       </section>
 
       <!-- 成本結構圖表 -->
-      <section class="card bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex items-center">
+      <section class="calculator-card flex items-center">
         <div class="w-1/2">
           <h3 class="text-sm font-bold text-stone-700 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">
@@ -161,7 +159,7 @@
               >
               <span class="font-mono text-stone-600">${{ insuranceMonthlyDisplay }}</span>
             </li>
-            <li class="pt-2 mt-2 border-t border-dashed border-stone-100 flex justify-between font-bold">
+            <li class="mt-2 flex justify-between border-t border-dashed border-stone-100 pt-2 font-bold">
               <span class="text-stone-700">總成本</span>
               <span class="text-rose-500">-${{ totalCost }}</span>
             </li>
@@ -175,7 +173,7 @@
       </section>
     </div>
 
-    <div class="text-center text-xs text-stone-400 mt-8">
+    <div class="calculator-footer-note text-center">
       💡 建議：平台獎勵是各家業者的獲利關鍵，建議每週至少跑滿「達標趟次」才能有效拉高實薪。
     </div>
   </div>

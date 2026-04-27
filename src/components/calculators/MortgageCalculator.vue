@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-4">
+    <div class="calculator-shell">
 
         <!-- 快速預設 -->
         <div class="seg-control">

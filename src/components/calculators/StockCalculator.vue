@@ -1,8 +1,8 @@
 <template>
-  <div class="space-y-6">
+  <div class="calculator-shell">
     <!-- Global Settings -->
     <div
-      class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-4 transition-all"
+      class="calculator-card-tight transition-all"
       :class="{ 'opacity-100': showSettings, 'opacity-70': !showSettings }"
     >
       <div class="flex items-center justify-between cursor-pointer" @click="showSettings = !showSettings">
@@ -55,7 +55,7 @@
     </div>
 
     <!-- 股票代碼查詢 -->
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-4">
+    <div class="calculator-card-tight">
       <h2 class="text-sm font-bold text-stone-600 mb-3 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         即時報價查詢
@@ -120,27 +120,24 @@
     </div>
 
     <!-- Main Calc Card -->
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+    <div class="calculator-card-tight overflow-hidden">
       <!-- Tabs -->
-      <div class="flex border-b border-stone-200">
+      <div class="seg-control m-4 mb-0">
         <button
           @click="mode = 'profit'"
-          class="flex-1 py-3 text-sm font-bold text-center tab-btn"
-          :class="mode === 'profit' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'"
+          :class="['seg-btn', mode === 'profit' ? 'seg-btn-active' : '']"
         >
           損益試算
         </button>
         <button
           @click="mode = 'breakeven'"
-          class="flex-1 py-3 text-sm font-bold text-center tab-btn"
-          :class="mode === 'breakeven' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'"
+          :class="['seg-btn', mode === 'breakeven' ? 'seg-btn-active' : '']"
         >
           成本/損益平衡
         </button>
         <button
           @click="mode = 'avg'"
-          class="flex-1 py-3 text-sm font-bold text-center tab-btn"
-          :class="mode === 'avg' ? 'text-red-600 active bg-red-50/50' : 'text-stone-500 hover:bg-stone-50'"
+          :class="['seg-btn', mode === 'avg' ? 'seg-btn-active' : '']"
         >
           定期定額/均價
         </button>
@@ -389,11 +386,11 @@
               <span class="block text-stone-500 text-xs mb-1">加權平均價</span>
               <span class="block text-2xl font-bold text-blue-800 font-mono">{{ fmt(dcaResult.avgPrice) }}</span>
             </div>
-            <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+            <div class="calculator-subcard">
               <span class="block text-stone-500 text-xs mb-1">累積總股數</span>
               <span class="block text-2xl font-bold text-stone-700 font-mono">{{ fmt(dcaResult.totalQty) }}</span>
             </div>
-            <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+            <div class="calculator-subcard">
               <span class="block text-stone-500 text-xs mb-1">總投入成本</span>
               <span class="block text-lg font-bold text-stone-700 font-mono">{{ fmt(dcaResult.totalCost) }}</span>
             </div>

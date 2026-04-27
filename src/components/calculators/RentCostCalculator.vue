@@ -1,35 +1,32 @@
 <template>
-  <div class="space-y-8">
+  <div class="calculator-shell">
     <!-- Main Calculator Card -->
-    <div class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
+    <div class="calculator-card">
       
       <!-- Tabs -->
-      <div class="flex border-b border-stone-100 mb-6">
+      <div class="seg-control mb-6">
         <button 
           @click="activeTab = 'basic'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'basic' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['seg-btn', activeTab === 'basic' ? 'seg-btn-active' : '']"
         >
           租金試算
-          <div v-if="activeTab === 'basic'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
         <button 
           @click="activeTab = 'subsidy'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'subsidy' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['seg-btn', activeTab === 'subsidy' ? 'seg-btn-active' : '']"
         >
           租金補貼查詢
-          <div v-if="activeTab === 'subsidy'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
         <button 
           @click="activeTab = 'vs'"
-          :class="['px-4 py-2 text-sm font-medium transition-colors relative', activeTab === 'vs' ? 'text-brand-600' : 'text-stone-500 hover:text-stone-800']"
+          :class="['seg-btn', activeTab === 'vs' ? 'seg-btn-active' : '']"
         >
           租屋 vs 買房
-          <div v-if="activeTab === 'vs'" class="absolute bottom-0 left-0 w-full h-0.5 bg-brand-500 rounded-t-full"></div>
         </button>
       </div>
 
       <!-- Tab: Basic Calculator -->
-      <div v-if="activeTab === 'basic'" class="space-y-6">
+      <div v-if="activeTab === 'basic'" class="calculator-shell">
         <div>
           <label for="monthlyRent" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
             每個月租金 (NT$)
@@ -91,7 +88,7 @@
         </div>
 
         <!-- 結果 -->
-        <div class="bg-stone-50 rounded-2xl p-4 md:p-6 border border-stone-200">
+        <div class="calculator-subcard md:p-6">
           <div class="text-center mb-6">
             <p class="text-xs text-stone-500 font-bold uppercase tracking-wider mb-2">實際每月支出</p>
             <p class="text-4xl sm:text-5xl font-bold text-stone-800 font-mono tracking-tight">
@@ -125,7 +122,7 @@
       </div>
 
       <!-- Tab: Subsidy Checker -->
-      <div v-else-if="activeTab === 'subsidy'" class="space-y-6">
+      <div v-else-if="activeTab === 'subsidy'" class="calculator-shell">
          <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
              <div class="flex">
                  <div class="flex-shrink-0">
@@ -169,7 +166,7 @@
              </div>
          </div>
 
-         <div class="bg-stone-900 rounded-2xl p-4 md:p-6 text-center text-white relative overflow-hidden">
+         <div class="calculator-card-dark text-center">
              <div class="absolute top-0 right-0 p-4 opacity-10">
                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
@@ -180,13 +177,13 @@
       </div>
 
        <!-- Tab: Rent vs Buy -->
-        <div v-else-if="activeTab === 'vs'" class="space-y-6">
+        <div v-else-if="activeTab === 'vs'" class="calculator-shell">
             <h3 class="font-bold text-stone-800 text-lg">💡 10年期資產模擬</h3>
             <p class="text-sm text-stone-500">若你有 <span class="text-brand-600 font-bold font-mono">NT$ {{ (monthlyRent * 40).toLocaleString() }}</span> (模擬頭期款)，該買房還是租房投資？</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Rent Scenario -->
-                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                <div class="calculator-subcard">
                     <h4 class="font-bold text-stone-700 mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                         租房 + 投資 (ETF)
@@ -210,7 +207,7 @@
                 </div>
 
                  <!-- Buy Scenario -->
-                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
+                <div class="calculator-subcard">
                     <h4 class="font-bold text-stone-700 mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-brand-500"></span>
                         買房 (槓桿效應)

@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4">
+  <div class="calculator-shell">
 
     <!-- 輸入面板 -->
     <div class="card-surface p-5 space-y-5">

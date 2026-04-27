@@ -1,8 +1,8 @@
 <template>
-  <div class="max-w-2xl mx-auto space-y-8">
+  <div class="calculator-shell max-w-2xl mx-auto">
     
     <!-- 1. 總額設定 -->
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200">
+    <div class="calculator-card">
          <div class="mb-6 text-center">
              <label class="block text-xs font-bold text-stone-400 mb-2 uppercase tracking-wide">總消費金額 (Total)</label>
              <div class="relative max-w-xs mx-auto">
@@ -24,7 +24,7 @@
              </div>
              
              <div class="space-y-3">
-                 <div v-for="(m, idx) in members" :key="m.id" class="flex items-center gap-3 bg-stone-50 p-2 rounded-xl border border-stone-100">
+                 <div v-for="(m, idx) in members" :key="m.id" class="calculator-subcard flex items-center gap-3 p-2">
                      <div class="w-8 h-8 flex items-center justify-center bg-white rounded-full border border-stone-200 text-xs font-bold text-stone-400">
                         {{ idx + 1 }}
                      </div>
@@ -62,30 +62,30 @@
     </div>
 
     <!-- 模式切換 -->
-    <div class="flex justify-center gap-4">
+    <div class="seg-control">
         <button 
             @click="mode = 'even'" 
-            :class="['px-4 py-2 rounded-full text-sm font-bold transition-colors', mode === 'even' ? 'bg-stone-800 text-white shadow-lg' : 'bg-white text-stone-500 hover:bg-stone-50 border border-stone-200']"
+            :class="['seg-btn', mode === 'even' ? 'seg-btn-active' : '']"
         >
             ⚖️ 平均分攤
         </button>
         <button 
              @click="mode = 'weighted'" 
-             :class="['px-4 py-2 rounded-full text-sm font-bold transition-colors', mode === 'weighted' ? 'bg-stone-800 text-white shadow-lg' : 'bg-white text-stone-500 hover:bg-stone-50 border border-stone-200']"
+             :class="['seg-btn', mode === 'weighted' ? 'seg-btn-active' : '']"
         >
             📊 權重分攤
         </button>
     </div>
 
     <!-- 結果 -->
-    <div class="card bg-brand-50 rounded-2xl p-6 border border-brand-100 relative overflow-hidden">
+    <div class="calculator-card-accent">
          <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-200 rounded-full opacity-30 blur-2xl"></div>
          
          <h2 class="text-lg font-bold text-brand-900 mb-4 text-center font-mono">結算清單 (Settlement)</h2>
          
          <!-- 轉帳建議 -->
          <div v-if="transactions.length > 0" class="space-y-3 relative z-10">
-             <div v-for="(tx, i) in transactions" :key="i" class="flex items-center justify-between bg-white/80 backdrop-blur p-3 rounded-xl border border-brand-100 shadow-sm">
+             <div v-for="(tx, i) in transactions" :key="i" class="calculator-subcard flex items-center justify-between p-3">
                  <div class="flex items-center gap-2">
                      <span class="font-bold text-stone-700">{{ tx.from }}</span>
                      <span class="text-xs text-stone-400">給</span>
@@ -94,7 +94,7 @@
                  <div class="font-mono font-bold text-lg text-brand-600">${{ tx.amount }}</div>
              </div>
          </div>
-         <div v-else class="text-center text-stone-400 py-4 text-sm">
+         <div v-else class="calculator-empty text-center">
              🎉 目前無人互欠 (完美平帳)
          </div>
          

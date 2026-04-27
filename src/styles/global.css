@@ -471,6 +471,287 @@ body::before {
         background: linear-gradient(135deg, rgba(34, 211, 238, 0.04), transparent 48%);
         pointer-events: none;
     }
+
+    .calculator-shell {
+        @apply space-y-6;
+    }
+
+    .calculator-card {
+        @apply card-surface p-4 md:p-6;
+    }
+
+    .calculator-card-tight {
+        @apply card-surface p-4;
+    }
+
+    .calculator-card-accent {
+        @apply relative overflow-hidden rounded-3xl border border-brand-400/30 p-5 shadow-card backdrop-blur-xl;
+        background-image:
+            radial-gradient(240px 140px at 88% 0%, rgba(34, 211, 238, 0.16), transparent 72%),
+            linear-gradient(180deg, rgba(248, 250, 252, 0.1), rgba(248, 250, 252, 0.03)),
+            linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(148, 163, 184, 0.04));
+        background-color: rgba(15, 23, 42, 0.3);
+    }
+
+    .calculator-card-warm {
+        @apply relative overflow-hidden rounded-3xl border border-amber-200/80 p-5 shadow-card backdrop-blur-xl;
+        background-image:
+            radial-gradient(220px 120px at 88% 0%, rgba(251, 191, 36, 0.2), transparent 72%),
+            linear-gradient(180deg, rgba(255, 251, 235, 0.92), rgba(255, 247, 237, 0.8));
+    }
+
+    .calculator-card-dark {
+        @apply relative overflow-hidden rounded-3xl border border-paper-300/60 bg-ink-700/95 p-5 text-paper-50 shadow-card-hover;
+        box-shadow: 0 24px 70px -42px rgba(0, 0, 0, 0.92);
+    }
+
+    .calculator-subcard {
+        @apply rounded-2xl border border-paper-300/80 bg-paper-100/80 p-4;
+        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.05);
+    }
+
+    .calculator-subcard-muted {
+        @apply rounded-2xl border border-paper-300/70 bg-paper-200/75 p-4;
+    }
+
+    .calculator-subcard-contrast {
+        @apply rounded-2xl border border-paper-300/70 bg-ink-700 text-paper-50 p-4;
+    }
+
+    .calculator-section-title {
+        @apply text-sm font-medium text-ink-600 flex items-center gap-2;
+    }
+
+    .calculator-section-title::before {
+        content: "";
+        @apply h-4 w-1 rounded-full bg-brand-500;
+        box-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+    }
+
+    .calculator-label {
+        @apply mb-1.5 block text-xs font-medium text-ink-400;
+    }
+
+    .calculator-input {
+        @apply input-clean;
+    }
+
+    .calculator-input-sm {
+        @apply input-clean-sm;
+    }
+
+    .calculator-input-lg {
+        @apply input-clean text-lg font-semibold tabular-nums;
+    }
+
+    .calculator-pill {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-paper-300/80 bg-paper-100/80 px-3 py-2 text-sm font-medium text-ink-500 transition-all duration-200 hover:border-brand-400/60 hover:text-ink-700;
+    }
+
+    .calculator-pill-active {
+        @apply border-brand-400/60 bg-gradient-to-r from-brand-500 to-azure-500 text-paper-50 shadow-card;
+    }
+
+    .calculator-tile {
+        @apply rounded-2xl border border-paper-300/80 bg-paper-100/80 p-3;
+    }
+
+    .calculator-tile-positive {
+        @apply rounded-2xl border border-emerald-200 bg-emerald-50/90 p-3;
+    }
+
+    .calculator-tile-danger {
+        @apply rounded-2xl border border-rose-200 bg-rose-50/90 p-3;
+    }
+
+    .calculator-tile-warning {
+        @apply rounded-2xl border border-amber-200 bg-amber-50/90 p-3;
+    }
+
+    .calculator-tile-info {
+        @apply rounded-2xl border border-sky-200 bg-sky-50/90 p-3;
+    }
+
+    .calculator-kicker {
+        @apply text-[10px] uppercase tracking-[0.2em] text-ink-400;
+    }
+
+    .calculator-meta {
+        @apply text-xs text-ink-500;
+    }
+
+    .calculator-list-row {
+        @apply flex items-center justify-between gap-3 rounded-xl border border-paper-300/70 bg-paper-100/80 px-3 py-2.5 text-sm;
+    }
+
+    .calculator-empty {
+        @apply rounded-2xl border border-dashed border-paper-300/80 bg-paper-200/70 p-4 text-sm text-ink-500;
+    }
+
+    .calculator-footer-note {
+        @apply rounded-2xl border border-paper-300/80 bg-paper-200/75 px-4 py-3 text-xs leading-relaxed text-ink-500;
+    }
+
+    .calculator-shell .bg-stone-50 {
+        background-color: rgba(248, 250, 252, 0.82);
+    }
+
+    .calculator-shell .bg-stone-100,
+    .calculator-shell .bg-stone-100\/50,
+    .calculator-shell .bg-white\/50,
+    .calculator-shell .bg-white\/60,
+    .calculator-shell .bg-white\/80 {
+        background-color: rgba(226, 232, 240, 0.72);
+    }
+
+    .calculator-shell .bg-white {
+        background-color: rgba(248, 250, 252, 0.88);
+    }
+
+    .calculator-shell .border-stone-200,
+    .calculator-shell .border-stone-100 {
+        border-color: rgba(148, 163, 184, 0.32);
+    }
+
+    .calculator-shell .text-stone-900,
+    .calculator-shell .text-stone-800 {
+        @apply text-ink-700;
+    }
+
+    .calculator-shell .text-stone-700,
+    .calculator-shell .text-stone-600 {
+        @apply text-ink-600;
+    }
+
+    .calculator-shell .text-stone-500,
+    .calculator-shell .text-stone-400 {
+        @apply text-ink-400;
+    }
+
+    .calculator-card-dark .text-stone-800,
+    .calculator-card-dark .text-stone-700,
+    .calculator-card-dark .text-stone-600 {
+        @apply text-paper-50;
+    }
+
+    .calculator-card-dark .text-stone-500,
+    .calculator-card-dark .text-stone-400 {
+        color: rgba(226, 232, 240, 0.8);
+    }
+
+    .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+    .calculator-shell select,
+    .calculator-shell textarea {
+        color: rgb(15 23 42 / 1);
+        border-color: rgba(148, 163, 184, 0.34);
+        background-color: rgba(248, 250, 252, 0.88);
+        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
+    }
+
+    .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus,
+    .calculator-shell select:focus,
+    .calculator-shell textarea:focus {
+        outline: none;
+        border-color: rgba(34, 211, 238, 0.7);
+        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+    }
+
+    .support-fab {
+        @apply fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-5;
+    }
+
+    .support-panel {
+        @apply relative hidden overflow-hidden rounded-[28px] border border-paper-300/80 bg-paper-200/90 shadow-card-hover backdrop-blur-2xl;
+        width: min(24rem, calc(100vw - 1.5rem));
+        box-shadow: 0 28px 80px -44px rgba(0, 0, 0, 0.9);
+    }
+
+    .support-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(220px 120px at 100% 0%, rgba(34, 211, 238, 0.16), transparent 70%),
+            linear-gradient(180deg, rgba(248, 250, 252, 0.08), transparent 30%);
+        pointer-events: none;
+    }
+
+    .support-panel-shell {
+        @apply relative;
+    }
+
+    .support-header {
+        @apply relative border-b border-paper-300/80 px-4 py-4 sm:px-5;
+        background: linear-gradient(135deg, rgba(248, 250, 252, 0.1), rgba(248, 250, 252, 0.02));
+    }
+
+    .support-status {
+        @apply inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-500;
+    }
+
+    .support-status::before {
+        content: "";
+        @apply h-1.5 w-1.5 rounded-full bg-brand-500;
+        box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+    }
+
+    .support-quick-asks {
+        @apply flex gap-2 overflow-x-auto pb-1 no-scrollbar;
+    }
+
+    .support-chip {
+        @apply shrink-0 rounded-full border border-paper-300/80 bg-paper-100/80 px-3 py-1.5 text-[11px] font-medium text-ink-500 transition-all duration-200 hover:border-brand-400/60 hover:text-ink-700;
+    }
+
+    .support-messages {
+        @apply space-y-3 overflow-y-auto bg-paper-100/70 px-4 py-4 no-scrollbar sm:px-5;
+        max-height: min(24rem, 55vh);
+    }
+
+    .support-bubble-ai {
+        @apply mr-8 rounded-[20px] rounded-tl-md border border-paper-300/80 bg-paper-200/90 px-3.5 py-3 text-sm leading-relaxed text-ink-600;
+    }
+
+    .support-bubble-user {
+        @apply ml-8 rounded-[20px] rounded-tr-md border border-brand-400/30 bg-gradient-to-r from-brand-500 to-azure-500 px-3.5 py-3 text-sm leading-relaxed text-paper-50 shadow-card;
+    }
+
+    .support-bubble-note {
+        @apply rounded-2xl border border-paper-300/80 bg-paper-200/80 px-3 py-2 text-xs text-ink-500;
+    }
+
+    .support-input-shell {
+        @apply border-t border-paper-300/80 bg-paper-200/85 px-4 py-4 sm:px-5;
+    }
+
+    .support-input-row {
+        @apply flex items-end gap-2;
+    }
+
+    .support-input {
+        @apply input-clean min-h-[46px] flex-1 resize-none rounded-2xl py-3 text-sm;
+    }
+
+    .support-toggle {
+        @apply flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600 px-3.5 py-2.5 text-paper-50 shadow-glow-brand transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98];
+    }
+
+    .support-toggle-badge {
+        @apply flex h-9 w-9 items-center justify-center rounded-full bg-paper-50/20;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .support-toggle-caption {
+        @apply flex flex-col items-start leading-none;
+    }
+
+    .support-toggle-caption span:first-child {
+        @apply text-[10px] uppercase tracking-[0.2em] text-paper-50/70;
+    }
+
+    .support-toggle-caption span:last-child {
+        @apply mt-1 text-sm font-semibold;
+    }
 }
 
 /* ─── Utilities ───────────────────────────────────────────────── */

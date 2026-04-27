@@ -1,10 +1,9 @@
-```
 <template>
-  <div class="space-y-6">
+  <div class="calculator-shell">
     <div class="grid lg:grid-cols-3 gap-6">
       <!-- 左側：輸入 -->
       <div class="space-y-6 lg:col-span-1">
-        <section class="card bg-white/60 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 p-4 md:p-6">
+        <section class="calculator-card">
           <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span>🐢</span> 基礎設定
           </h2>
@@ -39,7 +38,7 @@
           </div>
         </section>
 
-        <section class="card bg-white rounded-2xl p-4 md:p-5 shadow-sm border border-stone-200">
+        <section class="calculator-card">
           <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
             <span>📈</span> 投資與節稅
           </h2>
@@ -113,7 +112,7 @@
       <!-- 右側：結果與圖表 -->
       <div class="lg:col-span-2 space-y-6">
         <!-- 核心數字 -->
-        <section class="card bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-stone-200">
+        <section class="calculator-card">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
             <div>
               <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">
@@ -138,7 +137,7 @@
         <!-- 分析卡片 -->
         <div class="grid sm:grid-cols-2 gap-4">
           <!-- 資金結構 -->
-          <section class="card bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
+          <section class="calculator-card-tight">
             <h3 class="text-sm font-bold text-stone-700 mb-4">💰 資金結構 (本金 vs 複利)</h3>
             <div class="space-y-4">
               <div>
@@ -163,7 +162,7 @@
           </section>
 
           <!-- 節稅 & 月提 -->
-          <section class="card bg-white rounded-2xl p-5 shadow-sm border border-stone-200">
+          <section class="calculator-card-tight">
             <h3 class="text-sm font-bold text-stone-700 mb-4">🎁 節稅效益</h3>
             <div class="relative z-10">
                 <div class="text-center mb-6">

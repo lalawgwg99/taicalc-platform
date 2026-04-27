@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-6">
-    <div class="card bg-white rounded-2xl shadow-sm border border-stone-200 p-6 space-y-6">
+  <div class="calculator-shell">
+    <div class="calculator-card space-y-6">
       <!-- Identity Selection -->
       <div>
         <label class="block text-xs font-semibold text-stone-500 mb-2">投保身分</label>
@@ -9,10 +9,10 @@
             v-for="role in roles"
             :key="role.id"
             @click="currentRole = role.id"
-            class="py-2.5 px-2 text-sm font-bold rounded-lg border transition-all truncate"
+            class="py-2.5 px-2 text-sm font-bold rounded-xl border transition-all truncate"
             :class="
               currentRole === role.id
-                ? 'bg-stone-800 text-white border-stone-800'
+                ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
                 : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'
             "
           >
@@ -46,10 +46,10 @@
             v-for="n in 5"
             :key="n - 1"
             @click="dependents = n - 1"
-            class="w-10 h-10 rounded-lg border transition-all font-bold text-sm flex items-center justify-center"
+            class="flex h-10 w-10 items-center justify-center rounded-xl border text-sm font-bold transition-all"
             :class="
               dependents === n - 1
-                ? 'bg-blue-600 text-white border-blue-600'
+                ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
                 : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'
             "
           >
@@ -62,7 +62,7 @@
       <!-- Results -->
       <div class="pt-6 border-t border-stone-100 grid gap-4">
         <!-- Worker Cost -->
-        <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+        <div class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-stone-700">個人負擔</h3>
             <span class="text-2xl font-bold font-mono text-blue-600">{{ fmt(result.workerTotal) }}</span>
@@ -80,7 +80,7 @@
         </div>
 
         <!-- Company Cost -->
-        <div v-if="currentRole === 'employee'" class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+        <div v-if="currentRole === 'employee'" class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-stone-700">雇主負擔</h3>
             <span class="text-2xl font-bold font-mono text-stone-600">{{ fmt(result.employerTotal) }}</span>
