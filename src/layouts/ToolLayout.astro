@@ -78,148 +78,92 @@ const relatedTools = getRelatedTools(currentPath);
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <div class="max-w-6xl mx-auto px-4 md:px-0">
-        <header class="pt-6 pb-8">
-            <div class="tool-hero-shell">
-                <div class="tool-hero-panel hero-sheen relative overflow-hidden">
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-2 mb-3">
-                            <a href="/" class="inline-flex items-center gap-1.5 text-xs text-ink-400 hover:text-ink-700 transition-colors group">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
-                                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                                </svg>
-                                所有工具
-                            </a>
-                            <span class="text-ink-300">/</span>
-                            <span class="text-xs text-ink-400">{category}</span>
-                        </div>
-                        <div class="flex flex-wrap items-center gap-2 mb-4">
-                            <div class="data-pill">{kicker}</div>
-                            <span class="surface-badge">分類：{category}</span>
-                        </div>
-                        <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 tracking-tight mb-3">{cleanTitle}</h1>
-                        <p class="text-sm md:text-base text-ink-400 leading-relaxed max-w-2xl">{description}</p>
-                        <div class="mt-5 flex flex-wrap gap-2">
-                            <span class="data-pill">本地計算</span>
-                            <span class="data-pill">結果可立即行動</span>
-                            <span class="data-pill">免費使用</span>
-                        </div>
+        <header class="pt-6 pb-6">
+            <div class="tool-hero-panel hero-sheen relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 mb-3">
+                        <a href="/" class="inline-flex items-center gap-1.5 text-xs text-ink-400 hover:text-ink-700 transition-colors group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            所有工具
+                        </a>
+                        <span class="text-ink-300">/</span>
+                        <span class="text-xs text-ink-400">{category}</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <div class="data-pill">{kicker}</div>
+                        <span class="surface-badge">資料 {dataYear}</span>
+                    </div>
+                    <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
+                    <p class="text-sm md:text-base text-ink-500 leading-relaxed max-w-2xl">{description}</p>
+                    <div class="mt-5 flex flex-wrap gap-2">
+                        <a href="#calculator-panel" class="action-link" data-sfx="accent">直接開始試算</a>
+                        <button
+                            id="favorite-tool-toggle"
+                            type="button"
+                            class="action-link"
+                            data-tool={currentToolJson}
+                        >
+                            加入常用
+                        </button>
                     </div>
                 </div>
-
-                <aside class="tool-hero-panel">
-                    <slot name="heroAside">
-                        <div class="space-y-4">
-                            <div>
-                                <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">快速開始</p>
-                                <h2 class="text-lg font-semibold text-ink-700 mt-2">先輸入你眼前的問題</h2>
-                                <p class="text-sm text-ink-400 mt-2 leading-relaxed">這頁的設計不是為了看懂規則，而是讓你快速做決定。</p>
-                            </div>
-                            <div class="grid gap-2">
-                                <div class="rounded-2xl bg-paper-100 border border-paper-300 p-4">
-                                    <p class="text-xs text-ink-400">最適合</p>
-                                    <p class="text-sm font-medium text-ink-700 mt-1">第一次試算、轉職比較、快速確認結果</p>
-                                </div>
-                                <div class="rounded-2xl bg-paper-100 border border-paper-300 p-4">
-                                    <p class="text-xs text-ink-400">建議順序</p>
-                                    <p class="text-sm font-medium text-ink-700 mt-1">輸入數字 → 看結果卡 → 再讀下方說明</p>
-                                </div>
-                            </div>
-                        </div>
-                    </slot>
-                </aside>
             </div>
         </header>
 
-        <section class="max-w-4xl mb-10">
-            <div class="command-deck">
-                <div class="command-card">
-                    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">Governance</p>
-                            <h2 class="text-lg font-semibold text-ink-700 mt-2">這頁依據哪一版資料運作</h2>
-                        </div>
-                        <p class="text-sm text-ink-500 max-w-sm leading-relaxed">每個核心工具都應該能回答兩件事：規則從哪來，今天這份結果是否仍可追溯。</p>
-                    </div>
-                    <div class="command-meta-grid mt-5">
-                        <div class="meta-tile">
-                            <p class="meta-tile-label">Version</p>
-                            <p class="meta-tile-value">{dataVersion}</p>
-                        </div>
-                        <div class="meta-tile">
-                            <p class="meta-tile-label">Data Year</p>
-                            <p class="meta-tile-value">{dataYear}</p>
-                        </div>
-                        <div class="meta-tile">
-                            <p class="meta-tile-label">Updated</p>
-                            <p class="meta-tile-value">{lastUpdated}</p>
-                        </div>
-                    </div>
-                    <p class="text-xs text-ink-400 mt-4">資料可追溯到官方來源；若公告變動，版本號與更新日會一起調整。</p>
-                    <ul class="mt-4 grid gap-2 sm:grid-cols-2">
-                        {sources.map((source) => (
-                            <li>
-                                <a
-                                    href={source.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="action-link w-full justify-between !text-xs"
-                                >
-                                    <span>{source.label}</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div class="grid gap-4">
-                    <div class="command-card">
-                        <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">AI Boundary</p>
-                        <h2 class="text-lg font-semibold text-ink-700 mt-2">AI 只導引，不替代結果</h2>
-                        <ul class="signal-list mt-4">
-                            <li><span class="signal-dot"></span><span>AI 只解釋規則、推薦工具與輸入順序。</span></li>
-                            <li><span class="signal-dot"></span><span>最終數字以本頁計算結果為準，不提供投資建議。</span></li>
-                            <li><span class="signal-dot"></span><span>不要輸入身分證、電話、Email 等敏感資料。</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="command-card">
-                        <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">Actions</p>
-                        <h2 class="text-lg font-semibold text-ink-700 mt-2">下一步直接做</h2>
-                        <div class="action-stack mt-4">
-                            <a href="#calculator-panel" class="action-link">
-                                直接開始試算
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                            </a>
-                            <a href="#guide-panel" class="action-link">
-                                先看規則說明
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                            </a>
-                            <button
-                                id="favorite-tool-toggle"
-                                type="button"
-                                class="action-link"
-                                data-tool={currentToolJson}
-                            >
-                                加入常用
-                            </button>
-                        </div>
-                        <p class="text-xs text-ink-400 mt-4">把這頁加入常用後，下次可從首頁的最近使用或固定入口直接返回。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <main id="calculator-panel" class="mb-16 max-w-3xl">
-            <div class="section-heading mb-6">
+        <main id="calculator-panel" class="mb-10 max-w-3xl">
+            <div class="section-heading mb-5">
                 <div>
-                    <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">Calculator</p>
-                    <h2 class="text-xl font-semibold text-ink-700 mt-2">先把你現在的條件代進來</h2>
+                    <h2 class="text-xl font-semibold text-ink-700">輸入條件</h2>
                 </div>
-                <p class="section-heading-copy">先輸入你手上已有的數字，讓結果卡先告訴你壓力點或決策差距，再往下讀規則說明。</p>
+                <p class="section-heading-copy">先看答案，再決定要不要展開規則。</p>
             </div>
             <slot name="tool" />
         </main>
+
+        <section class="max-w-3xl mb-12">
+            <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
+                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源與 AI 使用邊界</summary>
+                <div class="mt-5 grid gap-4 md:grid-cols-3">
+                    <div class="meta-tile">
+                        <p class="meta-tile-label">Version</p>
+                        <p class="meta-tile-value">{dataVersion}</p>
+                    </div>
+                    <div class="meta-tile">
+                        <p class="meta-tile-label">Data Year</p>
+                        <p class="meta-tile-value">{dataYear}</p>
+                    </div>
+                    <div class="meta-tile">
+                        <p class="meta-tile-label">Updated</p>
+                        <p class="meta-tile-value">{lastUpdated}</p>
+                    </div>
+                </div>
+                <div class="mt-5 grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
+                    <div>
+                        <p class="text-sm font-medium text-ink-700">官方來源</p>
+                        <ul class="mt-3 grid gap-2">
+                            {sources.map((source) => (
+                                <li>
+                                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="action-link w-full justify-between !text-xs">
+                                        <span>{source.label}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-ink-700">AI 只做導引</p>
+                        <ul class="signal-list mt-3">
+                            <li><span class="signal-dot"></span><span>最終數字以本頁計算結果為準。</span></li>
+                            <li><span class="signal-dot"></span><span>不提供投資建議。</span></li>
+                            <li><span class="signal-dot"></span><span>請勿輸入個資。</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+        </section>
 
         <article id="guide-panel" class="prose prose-gray max-w-3xl mb-16 text-sm">
             <div class="section-heading not-prose mb-6 border-t border-paper-300 pt-10">

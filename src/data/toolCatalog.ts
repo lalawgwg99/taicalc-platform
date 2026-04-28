@@ -121,8 +121,10 @@ export const toolCatalogMap = Object.fromEntries(
 ) as Record<string, ToolCatalogItem>;
 
 export const normalizeToolPath = (path: string): string => {
-  const normalizedPath = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
-  return normalizedPath;
+  const withoutTrailingSlash = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
+  return withoutTrailingSlash.endsWith('.html')
+    ? withoutTrailingSlash.slice(0, -5)
+    : withoutTrailingSlash;
 };
 
 export const getToolByHref = (href: string): ToolCatalogItem | undefined => {
