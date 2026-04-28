@@ -19,21 +19,21 @@ const decisionFlow = [
     {
         step: '01',
         title: '先界定你的問題',
-        desc: '是拿到 Offer、五月要報稅，還是準備看房？先把決策情境定清楚，才不會被一堆工具分散注意力。',
+        desc: '先決定你現在要解的題目：Offer、報稅或房貸。',
         href: '/tools/salary-calculator',
         cta: '從薪資開始',
     },
     {
         step: '02',
         title: '代入現在的真實數字',
-        desc: '輸入月薪、扣除額、貸款條件等現況資料，用本地計算先看出壓力點與可行範圍。',
+        desc: '輸入現在的月薪、扣除額、貸款條件，快速看出壓力點。',
         href: '/tools/income-tax-calculator',
         cta: '接著估稅額',
     },
     {
         step: '03',
         title: '比較下一步行動',
-        desc: '看完結果，不只知道數字，也能接著算下一個關鍵工具，例如薪資接稅務、房貸接生活成本。',
+        desc: '看完結果後，直接接下一個關鍵工具。',
         href: '/tools/mortgage-calculator',
         cta: '最後看房貸',
     },
@@ -59,7 +59,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         先算三件事：薪資、所得稅、房貸
                     </h1>
                     <p class="mt-4 max-w-xl text-sm leading-relaxed text-ink-500 sm:text-base md:text-lg">
-                        TaiCalc 只聚焦台灣最重要的三個財務決策入口，其他工具退到輔助層。每個核心工具都附年度版本、更新日期與官方來源，避免黑箱試算。
+                        只做三個核心入口：薪資、所得稅、房貸。每個工具都標示年度版本、更新日期與官方來源。
                     </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -133,7 +133,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Decision Flow</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">先問哪一題，再決定進哪一頁</h2>
                 </div>
-                <p class="section-heading-copy">TaiCalc 不只是工具列表，而是一條把模糊問題收斂成可執行答案的路徑。先界定情境，再輸入數字，最後比較下一步。</p>
+                <p class="section-heading-copy">先定題目，再輸入數字，最後比較下一步。</p>
             </div>
 
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -159,7 +159,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <div>
                         <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Retention Layer</p>
                         <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">回來就能接著算</h2>
-                        <p class="text-sm text-ink-500 mt-2 leading-relaxed max-w-2xl">TaiCalc 會在你的裝置本地記住最近使用與常用工具，不用每次重新找入口，也不需要登入。</p>
+                        <p class="text-sm text-ink-500 mt-2 leading-relaxed max-w-2xl">最近使用與常用工具會保存在本地，不用登入也能接著算。</p>
                     </div>
                     <div class="flex flex-wrap gap-2 text-xs">
                         <span class="data-pill">本地保存</span>
@@ -174,7 +174,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         <div id="recent-tools" class="mt-3 space-y-3">
                             <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-200/70 p-4">
                                 <p class="text-sm font-medium text-ink-700">第一次使用？先從三大核心開始。</p>
-                                <p class="text-xs text-ink-500 mt-1">當你開始使用工具後，這裡會出現最近使用紀錄與一鍵返回入口。</p>
+                                <p class="text-xs text-ink-500 mt-1">使用後，這裡會出現最近紀錄。</p>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <div class="rounded-2xl border border-paper-300 bg-paper-100 p-5">
                         <p class="text-[11px] uppercase tracking-[0.18em] text-ink-500">Pinned</p>
                         <div id="pinned-tools" class="mt-3 flex flex-wrap gap-2">
-                            <span class="text-xs text-ink-500">在工具頁點「加入常用」後，這裡會顯示你的固定入口。</span>
+                            <span class="text-xs text-ink-500">在工具頁點「加入常用」後，這裡會顯示固定入口。</span>
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Core IA</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">三大核心入口</h2>
                 </div>
-                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">每個入口都對應一個高頻決策場景，先解決最大不確定性，再往輔助工具細化。</p>
+                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">先進核心入口，先解決最大不確定性。</p>
             </div>
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -234,7 +234,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">Support Tools</p>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700 mt-2">輔助工具入口</h2>
                 </div>
-                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">輔助工具維持可用，但不與三大核心搶主視覺焦點，避免決策動線分散。</p>
+                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">輔助工具集中在這裡，避免主流程被分散。</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -273,8 +273,8 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
 
                 <div class="card-surface p-6 lg:max-w-md">
                     <p class="text-[11px] text-ink-500 uppercase tracking-[0.2em]">AI Position</p>
-                    <h3 class="text-lg font-medium text-ink-700 mt-2">AI 只導引，不替代計算</h3>
-                    <p class="text-sm text-ink-500 leading-relaxed mt-3">AI 助理只負責解釋規則、推薦工具與引導輸入流程。最終數字以工具計算結果為準。</p>
+                    <h3 class="text-lg font-medium text-ink-700 mt-2">AI 只導引</h3>
+                    <p class="text-sm text-ink-500 leading-relaxed mt-3">AI 只負責解釋規則與推薦工具，最終數字以工具結果為準。</p>
                     <ul class="mt-4 text-xs text-ink-500 space-y-2">
                         <li>• 不提供投資買賣建議</li>
                         <li>• 不要求或處理身分證、電話、Email 等個資</li>

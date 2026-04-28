@@ -661,7 +661,7 @@ body::before {
     }
 
     .support-panel {
-        @apply relative hidden overflow-hidden rounded-[28px] border border-paper-300/80 bg-paper-200/90 shadow-card-hover backdrop-blur-2xl;
+        @apply relative overflow-hidden rounded-[28px] border border-paper-300/80 bg-paper-200/90 shadow-card-hover backdrop-blur-2xl;
         width: min(24rem, calc(100vw - 1.5rem));
         box-shadow: 0 28px 80px -44px rgba(0, 0, 0, 0.9);
     }

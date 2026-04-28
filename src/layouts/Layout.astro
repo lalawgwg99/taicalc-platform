@@ -147,7 +147,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
                 <div class="support-header">
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
-                            <span class="support-status">客服入口</span>
+                            <span class="support-status">AI 支援</span>
                             <div class="mt-3 flex items-start gap-3">
                                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-paper-300/80 bg-paper-100/80 text-lg shadow-card">
                                     算
@@ -157,7 +157,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
                                         <p class="text-sm font-semibold text-ink-700">TaiCalc AI 助理</p>
                                         <span class="rounded-full border border-paper-300/80 bg-paper-100/80 px-2 py-0.5 text-[10px] text-ink-500">算盤</span>
                                     </div>
-                                    <p class="mt-1 text-xs leading-relaxed text-ink-500">協助選工具、整理規則、解讀試算，不替代頁面正式計算結果。</p>
+                                    <p class="mt-1 text-xs leading-relaxed text-ink-500">幫你找工具、解讀結果。最終以頁面試算為準。</p>
                                 </div>
                             </div>
                         </div>
@@ -168,8 +168,8 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
                     </div>
 
                     <div class="mt-4 grid grid-cols-2 gap-2 text-[11px]">
-                        <div class="support-bubble-note">會推薦合適工具與下一步</div>
-                        <div class="support-bubble-note">不收身分證、電話、Email</div>
+                        <div class="support-bubble-note">推薦下一步</div>
+                        <div class="support-bubble-note">不收個資</div>
                     </div>
 
                     <div class="support-quick-asks mt-4">
@@ -181,21 +181,21 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 
                 <div id="fab-messages" class="support-messages">
                     <div class="support-bubble-ai">
-                        你好，我是算盤。你可以直接問情境，例如「月薪 5 萬實拿多少」或「冷氣一天開 8 小時一個月多少電費」。
+                        我是算盤。直接說情境，我幫你選工具。
                     </div>
                 </div>
 
                 <div class="support-input-shell">
                     <div class="support-input-row">
                         <textarea id="fab-input" rows="1"
-                            placeholder="直接描述情境，我幫你找工具與讀規則"
+                            placeholder="例如：月薪 5 萬先算哪個？"
                             class="support-input"></textarea>
                         <button id="fab-send" data-sfx="accent"
                             class="inline-flex h-[46px] shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-brand-500 to-azure-500 px-4 text-sm font-semibold text-paper-50 transition-all hover:brightness-110 disabled:opacity-40">
                             送出
                         </button>
                     </div>
-                    <p class="mt-3 text-[10px] leading-relaxed text-ink-400">由 OpenRouter 免費模型驅動。僅做導引與解釋，不提供投資建議，請勿輸入個資。</p>
+                    <p class="mt-3 text-[10px] leading-relaxed text-ink-400">僅導引與解釋，不提供投資建議，請勿輸入個資。</p>
                 </div>
             </div>
         </div>
@@ -268,7 +268,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             if (!q || sendBtn?.disabled) return;
 
             if (piiPattern.test(q)) {
-                addMsg('ai', '為保護隱私，請移除身分證字號、電話、Email 或卡號後再提問。');
+                addMsg('ai', '請先移除身分證、電話、Email 或卡號。');
                 if (input) input.value = '';
                 syncComposerHeight();
                 input?.focus();
@@ -281,7 +281,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             syncComposerHeight();
             if (sendBtn) sendBtn.disabled = true;
 
-            const thinking = addMsg('ai', '正在整理規則與工具入口…');
+            const thinking = addMsg('ai', '整理中…');
             thinking.classList.add('animate-pulse');
 
             try {
