@@ -301,6 +301,7 @@ if (favoriteToggle) {
     const writeState = (state: { recent: any[]; pinned: any[] }) => {
         localStorage.setItem(storageKey, JSON.stringify(state));
     };
+    const track = (window as any).taicalcTrackEvent as ((eventName: string, params?: Record<string, string | number | boolean>) => void) | undefined;
 
     const syncButton = () => {
         const state = readState();
@@ -330,5 +331,74 @@ if (favoriteToggle) {
 
     trackVisit();
     syncButton();
+
+    const calculatorPanel = document.getElementById('calculator-panel');
+    if (calculatorPanel) {
+        const toolPath = window.location.pathname;
+        let started = false;
+        let lastCompletionAt = 0;
+        let lastResultSignature = '';
+
+        const markStarted = () => {
+            if (started) return;
+            started = true;
+            track?.('input_start', {
+                tool_path: toolPath,
+            });
+        };
+
+        const readResultSignature = () => {
+            const blocks = Array.from(
+                calculatorPanel.querySelectorAll<HTMLElement>('.result-card, .result-main-card, .result-value, [class*="result"]')
+            );
+            const values = blocks
+                .map((block) => block.textContent?.replace(/\s+/g, ' ').trim() ?? '')
+                .filter((text) => /[\d$%NT]/.test(text))
+                .slice(0, 8);
+            return values.join('|').slice(0, 360);
+        };
+
+        const markCompleted = () => {
+            if (!started) return;
+            const now = Date.now();
+            if (now - lastCompletionAt < 1200) return;
+            const signature = readResultSignature();
+            if (!signature || signature === lastResultSignature) return;
+            lastResultSignature = signature;
+            lastCompletionAt = now;
+            track?.('calculation_complete', {
+                tool_path: toolPath,
+            });
+        };
+
+        calculatorPanel.addEventListener('input', (event) => {
+            const target = event.target as HTMLElement | null;
+            if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement)) return;
+            markStarted();
+        });
+
+        calculatorPanel.addEventListener('change', (event) => {
+            const target = event.target as HTMLElement | null;
+            if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement)) return;
+            markStarted();
+            window.setTimeout(markCompleted, 50);
+        });
+
+        calculatorPanel.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement | null;
+            const button = target?.closest('button');
+            if (!button) return;
+            const label = button.textContent?.trim() ?? '';
+            if (/計算|試算|更新|比較|分析|開始|送出/.test(label)) {
+                markStarted();
+                window.setTimeout(markCompleted, 50);
+            }
+        });
+
+        const observer = new MutationObserver(() => {
+            window.setTimeout(markCompleted, 80);
+        });
+        observer.observe(calculatorPanel, { subtree: true, childList: true, characterData: true });
+    }
 }
 </script>

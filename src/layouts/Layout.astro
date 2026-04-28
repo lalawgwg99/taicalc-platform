@@ -140,6 +140,73 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             </div>
         )}
 
+    <script>
+    // ── Analytics Bridge (GA4) ─────────────────────────────────────
+    (function () {
+        type TrackParams = Record<string, string | number | boolean>;
+        type TrackFn = (eventName: string, params?: TrackParams) => void;
+
+        const track: TrackFn = (eventName, params = {}) => {
+            if (typeof window === 'undefined') return;
+            try {
+                const payload = { page_path: window.location.pathname, ...params };
+                const gtagFn = (window as any).gtag;
+                if (typeof gtagFn === 'function') {
+                    gtagFn('event', eventName, payload);
+                    return;
+                }
+                const dataLayer = (window as any).dataLayer;
+                if (Array.isArray(dataLayer)) {
+                    dataLayer.push({ event: eventName, ...payload });
+                }
+            } catch (_) {
+                // Ignore analytics errors to avoid affecting user flows.
+            }
+        };
+
+        (window as any).taicalcTrackEvent = track;
+
+        document.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement | null;
+            const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
+            if (!anchor) return;
+            const href = anchor.getAttribute('href') ?? '';
+            if (!href.startsWith('/tools/')) return;
+            track('tool_click', {
+                tool_path: href,
+                source_path: window.location.pathname,
+                label: anchor.textContent?.trim() ?? '',
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement | null;
+            const button = target?.closest('button');
+            if (!button) return;
+            const label = button.textContent?.trim() ?? '';
+            if (!/複製|copy/i.test(label)) return;
+            track('result_copy', {
+                source_path: window.location.pathname,
+                label,
+            });
+        });
+
+        const originalWriteText = navigator.clipboard?.writeText?.bind(navigator.clipboard);
+        if (originalWriteText) {
+            try {
+                navigator.clipboard.writeText = async (text: string) => {
+                    track('result_copy', {
+                        char_count: text.length,
+                    });
+                    return originalWriteText(text);
+                };
+            } catch (_) {
+                // Some browsers block overriding clipboard APIs.
+            }
+        }
+    })();
+    </script>
+
     <!-- ── 浮動 AI 助理 (FAB) ─────────────────────────────────────── -->
     <div id="taicalc-fab" class="support-fab">
         <div id="fab-panel" class="support-panel animate-fade-in-up">
@@ -229,6 +296,9 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 
         const openPanel = () => {
             panel.classList.remove('hidden');
+            (window as any).taicalcTrackEvent?.('ai_open', {
+                trigger: 'fab_toggle',
+            });
             input?.focus();
         };
         const closePanel = () => panel.classList.add('hidden');
