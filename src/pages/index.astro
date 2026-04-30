@@ -5,7 +5,7 @@ import { platformGovernance } from '../data/regulatoryMetadata';
 import { getCoreTools, getSupportTools, toolCatalog } from '../data/toolCatalog';
 
 const title = "TaiCalc 台灣財務計算平台｜薪資、所得稅、房貸三大核心試算";
-const description = "聚焦台灣三大核心財務決策：薪資實拿、綜合所得稅、房貸負擔。提供年度版本、更新日期與官方來源，所有計算皆在本地完成。";
+const description = "台灣薪資、報稅、房貸三大試算。標示資料年度與官方來源，本地完成計算。";
 const keywords = "台灣薪資計算機,所得稅試算,房貸試算,新青安,勞健保級距,台灣財務計算,本地計算";
 
 const latestPosts = (await getCollection('blog'))
@@ -34,13 +34,13 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <h1 class="mt-5 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:mt-6 lg:text-[3.5rem]">
                         先算三件事：薪資、所得稅、房貸
                     </h1>
-                    <p class="mt-4 max-w-xl text-sm leading-relaxed text-ink-500 sm:text-base md:text-lg">
-                        只做三個核心入口：薪資、所得稅、房貸。每個工具都標示年度版本、更新日期與官方來源。
+                    <p class="mt-4 max-w-lg text-sm leading-7 text-ink-500 sm:text-base">
+                        選一個情境，直接得到答案。
                     </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">先算薪資</a>
-                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">看輔助工具</a>
+                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">開始試算</a>
+                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">更多工具</a>
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-2 text-xs text-ink-500">
@@ -53,8 +53,8 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <div class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-widest text-ink-500">Quick Access</p>
-                            <p class="text-lg font-medium text-ink-700 mt-1">從情境直接進入</p>
+                            <p class="text-xs uppercase tracking-widest text-ink-500">Start Here</p>
+                            <p class="text-lg font-medium text-ink-700 mt-1">你現在要算什麼？</p>
                         </div>
                         <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
                     </div>
@@ -63,7 +63,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="text" placeholder="搜尋工具…例如「薪資」「房貸」" class="input-clean pl-10 pr-4 text-sm" />
+                        <input id="tool-search" type="text" placeholder="搜尋：薪資、報稅、房貸" class="input-clean pl-10 pr-4 text-sm" />
                         <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                     </div>
 
@@ -95,22 +95,22 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl md:text-2xl font-medium text-ink-700">接著算</h2>
-                            <p class="text-sm text-ink-500 mt-1">最近使用與常用入口。</p>
+                            <p class="text-sm text-ink-500 mt-1">回來不用重找。</p>
                         </div>
                         <span class="data-pill">本地保存</span>
                     </div>
                     <div id="recent-tools" class="mt-5 space-y-3">
                         <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-100 p-4">
-                            <p class="text-sm font-medium text-ink-700">第一次使用？先從三大核心開始。</p>
+                            <p class="text-sm font-medium text-ink-700">先選上方三大入口。</p>
                         </div>
                     </div>
                     <div id="pinned-tools" class="mt-4 flex flex-wrap gap-2">
-                        <span class="text-xs text-ink-500">常用工具會顯示在這裡。</span>
+                        <span class="text-xs text-ink-500">常用工具會出現在這裡。</span>
                     </div>
                 </div>
 
                 <div class="card-surface p-5 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">為什麼可信</h2>
+                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">可信來源</h2>
                     <div class="mt-4 flex flex-wrap gap-2">
                         <span class="data-pill">版本 {platformGovernance.version}</span>
                         <span class="data-pill">官方來源</span>
@@ -137,7 +137,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <div>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700">更多工具</h2>
                 </div>
-                <p class="text-sm text-ink-500 leading-relaxed max-w-xl">需要時再打開，不干擾三大主流程。</p>
+                <p class="text-sm text-ink-500 leading-6 max-w-xl">用得到再打開。</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -177,7 +177,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         </div>
                         <h3 class="text-sm font-medium text-ink-600 group-hover:text-ink-800 transition-colors leading-snug line-clamp-3 flex-1">{post.data.title}</h3>
                         <div class="tool-spotlight-footer pt-0 border-0">
-                            <span>把規則看成可行動的答案</span>
+                            <span>短讀懂規則</span>
                             <span class="inline-flex items-center gap-1 text-brand">
                                 讀這篇
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -193,15 +193,15 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-8 md:gap-12">
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                本地計算，資料不上傳
+                本地計算
             </div>
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                版本化治理：{platformGovernance.version}
+                版本 {platformGovernance.version}
             </div>
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                AI 僅導引，不替代試算
+                AI 只導引
             </div>
         </div>
     </section>

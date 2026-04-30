@@ -22,7 +22,7 @@ const {
   category = "工具",
   faqs = [],
   keywords,
-  kicker = "把複雜規則轉成可操作的答案",
+  kicker = "先算，再看細節",
   dataVersion = platformGovernance.version,
   dataYear = platformGovernance.dataYear,
   lastUpdated = platformGovernance.updatedAt,
@@ -96,9 +96,9 @@ const relatedTools = getRelatedTools(currentPath);
                         <span class="surface-badge">資料 {dataYear}</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
-                    <p class="text-sm md:text-base text-ink-500 leading-relaxed max-w-2xl">{description}</p>
+                    <p class="text-sm md:text-base text-ink-500 leading-7 max-w-xl">{description}</p>
                     <div class="mt-5 flex flex-wrap gap-2">
-                        <a href="#calculator-panel" class="action-link" data-sfx="accent">直接開始試算</a>
+                        <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
                         <button
                             id="favorite-tool-toggle"
                             type="button"
@@ -117,14 +117,14 @@ const relatedTools = getRelatedTools(currentPath);
                 <div>
                     <h2 class="text-xl font-semibold text-ink-700">輸入條件</h2>
                 </div>
-                <p class="section-heading-copy">先看答案，再決定要不要展開規則。</p>
+                <p class="section-heading-copy">先得到答案。</p>
             </div>
             <slot name="tool" />
         </main>
 
         <section class="max-w-3xl mb-12">
             <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源與 AI 使用邊界</summary>
+                <summary class="cursor-pointer text-sm font-semibold text-ink-700">來源與 AI 邊界</summary>
                 <div class="mt-5 grid gap-4 md:grid-cols-3">
                     <div class="meta-tile">
                         <p class="meta-tile-label">Version</p>
@@ -154,11 +154,11 @@ const relatedTools = getRelatedTools(currentPath);
                         </ul>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-ink-700">AI 只做導引</p>
+                        <p class="text-sm font-medium text-ink-700">AI 邊界</p>
                         <ul class="signal-list mt-3">
-                            <li><span class="signal-dot"></span><span>最終數字以本頁計算結果為準。</span></li>
-                            <li><span class="signal-dot"></span><span>不提供投資建議。</span></li>
-                            <li><span class="signal-dot"></span><span>請勿輸入個資。</span></li>
+                            <li><span class="signal-dot"></span><span>頁面結果為準。</span></li>
+                            <li><span class="signal-dot"></span><span>不做投資建議。</span></li>
+                            <li><span class="signal-dot"></span><span>不輸入個資。</span></li>
                         </ul>
                     </div>
                 </div>
@@ -169,9 +169,9 @@ const relatedTools = getRelatedTools(currentPath);
             <div class="section-heading not-prose mb-6 border-t border-paper-300 pt-10">
                 <div>
                     <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">Guide</p>
-                    <h2 class="text-xl font-semibold text-ink-700 mt-2">再讀這頁的規則與判斷邏輯</h2>
+                    <h2 class="text-xl font-semibold text-ink-700 mt-2">規則說明</h2>
                 </div>
-                <p class="section-heading-copy">這一段不是拿來取代試算，而是幫你理解結果為什麼長這樣，避免只看單一數字做錯決策。</p>
+                <p class="section-heading-copy">需要時再讀。</p>
             </div>
             <slot name="article" />
         </article>
@@ -207,9 +207,9 @@ const relatedTools = getRelatedTools(currentPath);
             <div class="section-heading mb-6">
                 <div>
                     <h3 class="text-sm font-medium text-ink-400 uppercase tracking-widest">更多工具</h3>
-                    <p class="text-lg font-semibold text-ink-700 mt-2">做完這一步，通常下一頁會是這些</p>
+                    <p class="text-lg font-semibold text-ink-700 mt-2">下一步</p>
                 </div>
-                <p class="section-heading-copy">把下一個最相關的工具直接排好，減少你在全站重新找入口的成本。</p>
+                <p class="section-heading-copy">直接接續。</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {relatedTools.map((tool) => (
