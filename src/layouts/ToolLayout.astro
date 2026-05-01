@@ -91,12 +91,11 @@ const relatedTools = getRelatedTools(currentPath);
                         <span class="text-ink-300">/</span>
                         <span class="text-xs text-ink-400">{category}</span>
                     </div>
-                    <div class="flex flex-wrap items-center gap-2 mb-4">
-                        <div class="data-pill">{kicker}</div>
-                        <span class="surface-badge">資料 {dataYear}</span>
+                    <div class="mb-4 flex flex-wrap items-center gap-2">
+                        <span class="data-pill">{dataYear}</span>
+                        <span class="surface-badge">{category}</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
-                    <p class="text-sm md:text-base text-ink-500 leading-7 max-w-xl">{description}</p>
                     <div class="mt-5 flex flex-wrap gap-2">
                         <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
                         <button
@@ -117,7 +116,6 @@ const relatedTools = getRelatedTools(currentPath);
                 <div>
                     <h2 class="text-xl font-semibold text-ink-700">輸入條件</h2>
                 </div>
-                <p class="section-heading-copy">先得到答案。</p>
             </div>
             <slot name="tool" />
         </main>
@@ -165,16 +163,12 @@ const relatedTools = getRelatedTools(currentPath);
             </details>
         </section>
 
-        <article id="guide-panel" class="prose prose-gray max-w-3xl mb-16 text-sm">
-            <div class="section-heading not-prose mb-6 border-t border-paper-300 pt-10">
-                <div>
-                    <p class="text-[11px] font-semibold text-brand uppercase tracking-[0.2em]">Guide</p>
-                    <h2 class="text-xl font-semibold text-ink-700 mt-2">規則說明</h2>
-                </div>
-                <p class="section-heading-copy">需要時再讀。</p>
-            </div>
-            <slot name="article" />
-        </article>
+        <details id="guide-panel" class="mb-12 max-w-3xl rounded-2xl border border-paper-300 bg-paper-200 p-5">
+            <summary class="cursor-pointer text-sm font-semibold text-ink-700">規則說明</summary>
+            <article class="prose prose-gray mt-5 text-sm">
+                <slot name="article" />
+            </article>
+        </details>
 
         {faqs.length > 0 && (
             <section class="mb-16 max-w-3xl">

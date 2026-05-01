@@ -1,16 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
 import { getCoreTools, getSupportTools, toolCatalog } from '../data/toolCatalog';
 
 const title = "TaiCalc 台灣財務計算平台｜薪資、所得稅、房貸三大核心試算";
 const description = "台灣薪資、報稅、房貸三大試算。標示資料年度與官方來源，本地完成計算。";
 const keywords = "台灣薪資計算機,所得稅試算,房貸試算,新青安,勞健保級距,台灣財務計算,本地計算";
-
-const latestPosts = (await getCollection('blog'))
-    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-    .slice(0, 6);
 
 const coreTools = getCoreTools();
 const supportTools = getSupportTools();
@@ -29,23 +24,18 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="grid gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 items-center">
                 <div class="animate-fade-in-up reveal" data-reveal>
-                    <div class="hermes-label">Taiwan Rules Engine · {platformGovernance.version}</div>
-
                     <h1 class="mt-5 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:mt-6 lg:text-[3.5rem]">
-                        先算三件事：薪資、所得稅、房貸
+                        你要算什麼？
                     </h1>
-                    <p class="mt-4 max-w-lg text-sm leading-7 text-ink-500 sm:text-base">
-                        選一個情境，直接得到答案。
-                    </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">開始試算</a>
-                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">更多工具</a>
+                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">薪資</a>
+                        <a href="/tools/income-tax-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">報稅</a>
+                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">房貸</a>
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-2 text-xs text-ink-500">
-                        <span class="data-pill">資料年度 {platformGovernance.dataYear}</span>
-                        <span class="data-pill">更新 {platformGovernance.updatedAt}</span>
+                        <span class="data-pill">{platformGovernance.dataYear}</span>
                         <span class="data-pill">本地計算</span>
                     </div>
                 </div>
@@ -53,8 +43,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <div class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-widest text-ink-500">Start Here</p>
-                            <p class="text-lg font-medium text-ink-700 mt-1">你現在要算什麼？</p>
+                            <p class="text-lg font-medium text-ink-700">快速開始</p>
                         </div>
                         <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
                     </div>
@@ -76,7 +65,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                             >
                                 <div>
                                     <p class="text-sm font-medium text-ink-700">{tool.label}</p>
-                                    <p class="text-xs text-ink-500 mt-0.5">{tool.desc}</p>
+                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario}</p>
                                 </div>
                                 <svg class="text-ink-500 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>
@@ -95,9 +84,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl md:text-2xl font-medium text-ink-700">接著算</h2>
-                            <p class="text-sm text-ink-500 mt-1">回來不用重找。</p>
                         </div>
-                        <span class="data-pill">本地保存</span>
                     </div>
                     <div id="recent-tools" class="mt-5 space-y-3">
                         <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-100 p-4">
@@ -105,16 +92,15 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         </div>
                     </div>
                     <div id="pinned-tools" class="mt-4 flex flex-wrap gap-2">
-                        <span class="text-xs text-ink-500">常用工具會出現在這裡。</span>
+                        <span class="text-xs text-ink-500">常用工具</span>
                     </div>
                 </div>
 
                 <div class="card-surface p-5 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">可信來源</h2>
+                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">可信</h2>
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="data-pill">版本 {platformGovernance.version}</span>
+                        <span class="data-pill">{platformGovernance.version}</span>
                         <span class="data-pill">官方來源</span>
-                        <span class="data-pill">不傳個資</span>
                     </div>
                     <details class="mt-5 rounded-2xl border border-paper-300 bg-paper-100 p-4">
                         <summary class="cursor-pointer text-sm font-medium text-ink-700">查看資料來源</summary>
@@ -137,7 +123,6 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 <div>
                     <h2 class="text-2xl md:text-3xl font-medium text-ink-700">更多工具</h2>
                 </div>
-                <p class="text-sm text-ink-500 leading-6 max-w-xl">用得到再打開。</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -148,41 +133,6 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                             <p class="text-xs text-ink-500 mt-1">{tool.desc}</p>
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
-                    </a>
-                ))}
-            </div>
-        </div>
-    </section>
-
-    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex items-center justify-between mb-10">
-                <div>
-                    <span class="text-[11px] text-ink-400 uppercase tracking-[0.2em]">Knowledge Base</span>
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">最新專欄</h2>
-                </div>
-                <a href="/blog" class="text-xs text-ink-400 hover:text-ink-700 transition-colors inline-flex items-center gap-1 group">
-                    查看全部
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {latestPosts.map((post) => (
-                    <a href={`/blog/${post.slug}`} class="group story-card min-h-[150px]" data-sfx="tap">
-                        <div class="flex items-center gap-2 mb-3">
-                            {post.data.category && (
-                                <span class="surface-badge !px-2.5 !py-0.5 !text-[10px]">{post.data.category}</span>
-                            )}
-                            <span class="text-[10px] text-ink-400">{post.data.date}</span>
-                        </div>
-                        <h3 class="text-sm font-medium text-ink-600 group-hover:text-ink-800 transition-colors leading-snug line-clamp-3 flex-1">{post.data.title}</h3>
-                        <div class="tool-spotlight-footer pt-0 border-0">
-                            <span>短讀懂規則</span>
-                            <span class="inline-flex items-center gap-1 text-brand">
-                                讀這篇
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                            </span>
-                        </div>
                     </a>
                 ))}
             </div>
