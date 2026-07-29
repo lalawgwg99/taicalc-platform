@@ -1,21 +1,54 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
 import { getCoreTools, getSupportTools, toolCatalog } from '../data/toolCatalog';
 
-const title = "TaiCalc 台灣財務計算平台｜薪資、所得稅、房貸三大核心試算";
-const description = "台灣薪資、報稅、房貸三大試算。標示資料年度與官方來源，本地完成計算。";
+const title = "TaiCalc 台灣財務計算機｜2026 薪資、所得稅、房貸免費試算";
+const description = "免費試算 2026 台灣薪資實拿、綜合所得稅、房貸月付金，以及勞健保、加班費、退休金等 13 種工具。免登入、本地運算，附官方資料來源。";
 const keywords = "台灣薪資計算機,所得稅試算,房貸試算,新青安,勞健保級距,台灣財務計算,本地計算";
 
 const coreTools = getCoreTools();
 const supportTools = getSupportTools();
+const supportCategories = Array.from(new Set(supportTools.map((tool) => tool.category))).map((category) => ({
+    category,
+    tools: supportTools.filter((tool) => tool.category === category),
+}));
 
 const quickLinks = coreTools;
 const toolCatalogJson = JSON.stringify(toolCatalog);
+const allPosts = await getCollection('blog');
+const latestPosts = allPosts
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 3);
+const homeFaqs = [
+    {
+        q: 'TaiCalc 的計算結果會儲存我的薪資或財務資料嗎？',
+        a: '不會。主要計算都在你的瀏覽器本地完成，不需要註冊帳號，也不會把輸入的薪資、房貸或稅務數字上傳。',
+    },
+    {
+        q: '計算器使用哪一年度的台灣法規資料？',
+        a: `目前標示為 ${platformGovernance.dataYear}、版本 ${platformGovernance.version}，各工具頁也會列出更新日期與官方來源。`,
+    },
+    {
+        q: '試算結果可以當作報稅或貸款的正式金額嗎？',
+        a: '試算適合用來比較方案與預估現金流；正式金額仍應以主管機關、銀行、雇主或專業人士提供的資料為準。',
+    },
+];
+const homeFaqSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.q,
+        acceptedAnswer: { '@type': 'Answer', text: faq.a },
+    })),
+});
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
-    <section class="relative overflow-hidden pt-14 pb-12 sm:pt-16 sm:pb-14 md:pt-28 md:pb-24">
+    <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
+    <section class="relative overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-24 md:pb-24">
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[860px] h-[860px] bg-brand/10 blur-3xl animate-float-slow"></div>
             <div class="absolute top-10 right-[-140px] w-[420px] h-[420px] bg-ink-800/5 blur-3xl"></div>
@@ -24,26 +57,31 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="grid gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 items-center">
                 <div class="animate-fade-in-up reveal" data-reveal>
-                    <h1 class="mt-5 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:mt-6 lg:text-[3.5rem]">
-                        你要算什麼？
+                    <p class="hermes-label">2026 台灣財務決策工具</p>
+                    <h1 class="mt-5 max-w-2xl text-[2.55rem] leading-[1.08] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:text-[3.65rem]">
+                        你的錢，<br class="hidden sm:block" />先算清楚再決定
                     </h1>
+                    <p class="mt-5 max-w-xl text-base leading-8 text-ink-500 sm:text-lg">
+                        從月薪實拿、五月報稅到買房月付，一次看懂真正會進出帳戶的數字。
+                    </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">薪資</a>
-                        <a href="/tools/income-tax-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">報稅</a>
-                        <a href="/tools/mortgage-calculator" class="btn-ghost border border-paper-300" data-sfx="tap">房貸</a>
+                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">算我的薪資實拿</a>
+                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">瀏覽 13 種免費工具</a>
                     </div>
 
-                    <div class="mt-8 flex flex-wrap gap-2 text-xs text-ink-500">
-                        <span class="data-pill">{platformGovernance.dataYear}</span>
-                        <span class="data-pill">本地計算</span>
+                    <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-500">
+                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>免註冊</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-brand"></span>本地計算</span>
+                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-violet-400"></span>{platformGovernance.dataYear}</span>
                     </div>
                 </div>
 
                 <div class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-lg font-medium text-ink-700">快速開始</p>
+                            <p class="text-lg font-medium text-ink-700">現在最想解決什麼？</p>
+                            <p class="mt-1 text-xs text-ink-500">選一個情境，約 30 秒看到結果</p>
                         </div>
                         <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
                     </div>
@@ -52,7 +90,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="text" placeholder="搜尋：薪資、報稅、房貸" class="input-clean pl-10 pr-4 text-sm" />
+                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有財務工具" placeholder="搜尋所有工具，例如：加班費" class="input-clean pl-10 pr-4 text-sm" />
                         <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                     </div>
 
@@ -65,7 +103,7 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                             >
                                 <div>
                                     <p class="text-sm font-medium text-ink-700">{tool.label}</p>
-                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario}</p>
+                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario} · {tool.cta}</p>
                                 </div>
                                 <svg class="text-ink-500 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>
@@ -77,18 +115,65 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         </div>
     </section>
 
+    <section class="border-y border-paper-300 bg-paper-200/30">
+        <div class="max-w-6xl mx-auto grid grid-cols-3 divide-x divide-paper-300 px-4 md:px-6">
+            <div class="py-5 text-center sm:py-6">
+                <p class="text-xl font-semibold tabular-nums text-ink-700 sm:text-2xl">{toolCatalog.length}</p>
+                <p class="mt-1 text-[10px] text-ink-500 sm:text-xs">種免費工具</p>
+            </div>
+            <div class="py-5 text-center sm:py-6">
+                <p class="text-xl font-semibold tabular-nums text-ink-700 sm:text-2xl">{allPosts.length}</p>
+                <p class="mt-1 text-[10px] text-ink-500 sm:text-xs">篇實用指南</p>
+            </div>
+            <div class="py-5 text-center sm:py-6">
+                <p class="text-xl font-semibold tabular-nums text-ink-700 sm:text-2xl">100%</p>
+                <p class="mt-1 text-[10px] text-ink-500 sm:text-xs">主要計算在本機</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="mb-7">
+                <p class="hermes-label">POPULAR PATHS</p>
+                <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">從你正在面對的問題開始</h2>
+            </div>
+            <div class="grid gap-4 md:grid-cols-3">
+                <a href="/tools/salary-calculator" class="group card-surface-hover p-5" data-sfx="tap">
+                    <span class="text-xs text-brand">01 · 工作</span>
+                    <h3 class="mt-4 text-lg font-semibold text-ink-700">拿到 Offer，實拿有多少？</h3>
+                    <p class="mt-2 text-sm leading-6 text-ink-500">算勞健保、勞退與年終，還能直接比較兩份工作。</p>
+                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始算薪資 →</span>
+                </a>
+                <a href="/tools/income-tax-calculator" class="group card-surface-hover p-5" data-sfx="tap" data-season="tax">
+                    <span class="text-xs text-brand">02 · 報稅</span>
+                    <h3 class="mt-4 text-lg font-semibold text-ink-700">今年要補稅還是退稅？</h3>
+                    <p class="mt-2 text-sm leading-6 text-ink-500">比較單身、夫妻與扶養情境，先抓出五月現金需求。</p>
+                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始估稅額 →</span>
+                </a>
+                <a href="/tools/mortgage-calculator" class="group card-surface-hover p-5" data-sfx="tap">
+                    <span class="text-xs text-brand">03 · 買房</span>
+                    <h3 class="mt-4 text-lg font-semibold text-ink-700">這間房，月付扛得住嗎？</h3>
+                    <p class="mt-2 text-sm leading-6 text-ink-500">比較利率、寬限期與總利息，先看最壞情境。</p>
+                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始算房貸 →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section class="border-t border-paper-300 py-12 sm:py-14 md:py-18 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
                 <div id="retention-shell" data-tool-catalog={toolCatalogJson} class="card-surface p-5 md:p-6">
                     <div class="flex items-center justify-between gap-4">
                         <div>
-                            <h2 class="text-xl md:text-2xl font-medium text-ink-700">接著算</h2>
+                            <h2 class="text-xl md:text-2xl font-medium text-ink-700">你的常用工具</h2>
+                            <p class="mt-1 text-xs text-ink-500">最近使用會保留在這台裝置</p>
                         </div>
                     </div>
                     <div id="recent-tools" class="mt-5 space-y-3">
                         <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-100 p-4">
-                            <p class="text-sm font-medium text-ink-700">先選上方三大入口。</p>
+                            <p class="text-sm font-medium text-ink-700">還沒有使用紀錄，先從下方熱門工具開始。</p>
                         </div>
                     </div>
                     <div id="pinned-tools" class="mt-4 flex flex-wrap gap-2">
@@ -97,7 +182,8 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
                 </div>
 
                 <div class="card-surface p-5 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">可信</h2>
+                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">每個數字都有依據</h2>
+                    <p class="mt-2 text-sm leading-6 text-ink-500">清楚標示資料年度、版本與主管機關來源，不讓過期級距混進結果。</p>
                     <div class="mt-4 flex flex-wrap gap-2">
                         <span class="data-pill">{platformGovernance.version}</span>
                         <span class="data-pill">官方來源</span>
@@ -121,19 +207,78 @@ const toolCatalogJson = JSON.stringify(toolCatalog);
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-medium text-ink-700">更多工具</h2>
+                    <p class="hermes-label">ALL CALCULATORS</p>
+                    <h2 class="mt-3 text-2xl md:text-3xl font-medium text-ink-700">13 種台灣生活計算器</h2>
+                    <p class="mt-2 text-sm text-ink-500">從收入、居住到投資退休，免費、不用登入。</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {supportTools.map((tool) => (
-                    <a href={tool.href} class="group flex items-center justify-between p-4 card-surface-hover" data-sfx="tap">
-                        <div>
-                            <p class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</p>
-                            <p class="text-xs text-ink-500 mt-1">{tool.desc}</p>
+            <div class="grid gap-5 lg:grid-cols-2">
+                {supportCategories.map((group) => (
+                    <section class="card-surface p-4 sm:p-5" aria-labelledby={`category-${group.category}`}>
+                        <div class="mb-3 flex items-center justify-between border-b border-paper-300 pb-3">
+                            <h3 id={`category-${group.category}`} class="text-sm font-semibold text-ink-700">{group.category}</h3>
+                            <span class="text-[10px] text-ink-500">{group.tools.length} 個工具</span>
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
+                        <div class="grid gap-1">
+                            {group.tools.map((tool) => (
+                                <a href={tool.href} class="group flex items-center justify-between rounded-xl px-3 py-3 hover:bg-paper-100 transition-colors" data-sfx="tap">
+                                    <div>
+                                        <p class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</p>
+                                        <p class="text-xs text-ink-500 mt-1">{tool.desc}</p>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="hermes-label">LATEST GUIDES</p>
+                    <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">算完，接著看懂規則</h2>
+                </div>
+                <a href="/blog" class="text-sm text-brand hover:text-brand-400">查看全部文章 →</a>
+            </div>
+            <div class="grid gap-4 md:grid-cols-3">
+                {latestPosts.map((post) => (
+                    <a href={`/blog/${post.slug}`} class="group card-surface-hover overflow-hidden">
+                        {post.data.coverImage && (
+                            <div class="aspect-[16/9] overflow-hidden border-b border-paper-300">
+                                <img src={post.data.coverImage} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+                            </div>
+                        )}
+                        <div class="p-5">
+                            <div class="flex items-center gap-2 text-[11px] text-ink-500">
+                                <span>{post.data.category}</span><span>·</span><time datetime={post.data.date}>{post.data.date}</time>
+                            </div>
+                            <h3 class="mt-3 text-base font-semibold leading-6 text-ink-700 group-hover:text-brand transition-colors">{post.data.title}</h3>
+                            <p class="mt-2 line-clamp-2 text-xs leading-6 text-ink-500">{post.data.excerpt}</p>
+                        </div>
                     </a>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+        <div class="max-w-3xl mx-auto px-4 md:px-6">
+            <p class="hermes-label">FAQ</p>
+            <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">使用前常見問題</h2>
+            <div class="mt-7 space-y-3">
+                {homeFaqs.map((faq) => (
+                    <details class="group rounded-2xl border border-paper-300 bg-paper-200/70 p-5">
+                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-ink-700">
+                            {faq.q}<span class="text-brand transition-transform group-open:rotate-45">＋</span>
+                        </summary>
+                        <p class="mt-4 border-t border-paper-300 pt-4 text-sm leading-7 text-ink-500">{faq.a}</p>
+                    </details>
                 ))}
             </div>
         </div>

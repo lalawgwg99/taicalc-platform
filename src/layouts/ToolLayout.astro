@@ -106,6 +106,14 @@ const relatedTools = getRelatedTools(currentPath);
                         >
                             加入常用
                         </button>
+                        <button
+                            id="share-tool"
+                            type="button"
+                            class="action-link"
+                            data-share-title={cleanTitle}
+                        >
+                            分享工具
+                        </button>
                     </div>
                 </div>
             </div>
@@ -222,6 +230,34 @@ const relatedTools = getRelatedTools(currentPath);
 
 <script>
 const favoriteToggle = document.getElementById('favorite-tool-toggle') as HTMLButtonElement | null;
+const shareToolButton = document.getElementById('share-tool') as HTMLButtonElement | null;
+
+shareToolButton?.addEventListener('click', async () => {
+    const shareTitle = shareToolButton.dataset.shareTitle || document.title;
+    const shareData = {
+        title: shareTitle,
+        text: `用 TaiCalc 免費試算：${shareTitle}`,
+        url: window.location.href,
+    };
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+            (window as any).taicalcTrackEvent?.('tool_share', { method: 'native' });
+            return;
+        }
+        await navigator.clipboard.writeText(window.location.href);
+        const originalLabel = shareToolButton.textContent;
+        shareToolButton.textContent = '連結已複製';
+        (window as any).taicalcTrackEvent?.('tool_share', { method: 'clipboard' });
+        window.setTimeout(() => {
+            shareToolButton.textContent = originalLabel;
+        }, 1800);
+    } catch (error) {
+        if ((error as DOMException)?.name !== 'AbortError') {
+            shareToolButton.textContent = '請複製網址分享';
+        }
+    }
+});
 
 if (favoriteToggle) {
     const storageKey = 'taicalc-tool-state-v1';
