@@ -1,7 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import { platformGovernance, type SourceLink } from '../data/regulatoryMetadata';
-import { getRelatedTools, getToolByHref, normalizeToolPath } from '../data/toolCatalog';
+import { getRelatedTools, normalizeToolPath } from '../data/toolCatalog';
 
 interface Props {
   title: string;
@@ -43,12 +43,14 @@ const faqSchema = faqs.length > 0 ? JSON.stringify({
   }))
 }) : null;
 
+const currentPath = normalizeToolPath(Astro.url.pathname);
+
 const webAppSchema = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, ''),
   "description": description,
-  "url": `https://taicalc.com/tools/${Astro.url.pathname.split('/').pop()}`,
+  "url": `https://taicalc.com${currentPath}`,
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "All",
   "offers": {
@@ -61,16 +63,8 @@ const webAppSchema = JSON.stringify({
   "keywords": keywords || "台灣,財務計算,免費工具"
 });
 
-const currentPath = normalizeToolPath(Astro.url.pathname);
 const fallbackTitle = title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, '');
 const cleanTitle = fallbackTitle;
-const currentTool = getToolByHref(currentPath) ?? {
-  href: currentPath,
-  label: fallbackTitle,
-  desc: description,
-  category,
-};
-const currentToolJson = JSON.stringify(currentTool);
 const relatedTools = getRelatedTools(currentPath);
 ---
 
@@ -96,16 +90,9 @@ const relatedTools = getRelatedTools(currentPath);
                         <span class="surface-badge">{category}</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
+                    <p class="max-w-2xl text-sm leading-relaxed text-ink-500">{kicker}</p>
                     <div class="mt-5 flex flex-wrap gap-2">
                         <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
-                        <button
-                            id="favorite-tool-toggle"
-                            type="button"
-                            class="action-link"
-                            data-tool={currentToolJson}
-                        >
-                            加入常用
-                        </button>
                         <button
                             id="share-tool"
                             type="button"
@@ -130,7 +117,7 @@ const relatedTools = getRelatedTools(currentPath);
 
         <section class="max-w-3xl mb-12">
             <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-                <summary class="cursor-pointer text-sm font-semibold text-ink-700">來源與 AI 邊界</summary>
+                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源與使用提醒</summary>
                 <div class="mt-5 grid gap-4 md:grid-cols-3">
                     <div class="meta-tile">
                         <p class="meta-tile-label">Version</p>
@@ -160,11 +147,11 @@ const relatedTools = getRelatedTools(currentPath);
                         </ul>
                     </div>
                     <div>
-                        <p class="text-sm font-medium text-ink-700">AI 邊界</p>
+                        <p class="text-sm font-medium text-ink-700">使用提醒</p>
                         <ul class="signal-list mt-3">
-                            <li><span class="signal-dot"></span><span>頁面結果為準。</span></li>
-                            <li><span class="signal-dot"></span><span>不做投資建議。</span></li>
-                            <li><span class="signal-dot"></span><span>不輸入個資。</span></li>
+                            <li><span class="signal-dot"></span><span>結果僅供估算比較。</span></li>
+                            <li><span class="signal-dot"></span><span>正式金額以主管機關為準。</span></li>
+                            <li><span class="signal-dot"></span><span>主要計算在瀏覽器完成。</span></li>
                         </ul>
                     </div>
                 </div>
@@ -229,7 +216,6 @@ const relatedTools = getRelatedTools(currentPath);
 </Layout>
 
 <script>
-const favoriteToggle = document.getElementById('favorite-tool-toggle') as HTMLButtonElement | null;
 const shareToolButton = document.getElementById('share-tool') as HTMLButtonElement | null;
 
 shareToolButton?.addEventListener('click', async () => {
@@ -259,55 +245,9 @@ shareToolButton?.addEventListener('click', async () => {
     }
 });
 
-if (favoriteToggle) {
-    const storageKey = 'taicalc-tool-state-v1';
-    const currentTool = JSON.parse(favoriteToggle.dataset.tool || '{}');
-
-    const readState = () => {
-        try {
-            const raw = localStorage.getItem(storageKey);
-            return raw ? JSON.parse(raw) : { recent: [], pinned: [] };
-        } catch {
-            return { recent: [], pinned: [] };
-        }
-    };
-
-    const writeState = (state: { recent: any[]; pinned: any[] }) => {
-        localStorage.setItem(storageKey, JSON.stringify(state));
-    };
-    const track = (window as any).taicalcTrackEvent as ((eventName: string, params?: Record<string, string | number | boolean>) => void) | undefined;
-
-    const syncButton = () => {
-        const state = readState();
-        const isPinned = state.pinned.some((item: { href: string }) => item.href === currentTool.href);
-        favoriteToggle.textContent = isPinned ? '已加入常用' : '加入常用';
-        favoriteToggle.classList.toggle('border-brand', isPinned);
-        favoriteToggle.classList.toggle('text-ink-700', isPinned);
-    };
-
-    const trackVisit = () => {
-        const state = readState();
-        const timestamp = new Date().toISOString();
-        const nextItem = { ...currentTool, lastVisitedAt: timestamp };
-        state.recent = [nextItem, ...state.recent.filter((item: { href: string }) => item.href !== currentTool.href)].slice(0, 6);
-        writeState(state);
-    };
-
-    favoriteToggle.addEventListener('click', () => {
-        const state = readState();
-        const exists = state.pinned.some((item: { href: string }) => item.href === currentTool.href);
-        state.pinned = exists
-            ? state.pinned.filter((item: { href: string }) => item.href !== currentTool.href)
-            : [{ ...currentTool, pinnedAt: new Date().toISOString() }, ...state.pinned].slice(0, 6);
-        writeState(state);
-        syncButton();
-    });
-
-    trackVisit();
-    syncButton();
-
-    const calculatorPanel = document.getElementById('calculator-panel');
-    if (calculatorPanel) {
+const track = (window as any).taicalcTrackEvent as ((eventName: string, params?: Record<string, string | number | boolean>) => void) | undefined;
+const calculatorPanel = document.getElementById('calculator-panel');
+if (calculatorPanel) {
         const toolPath = window.location.pathname;
         let started = false;
         let lastCompletionAt = 0;
@@ -373,6 +313,5 @@ if (favoriteToggle) {
             window.setTimeout(markCompleted, 80);
         });
         observer.observe(calculatorPanel, { subtree: true, childList: true, characterData: true });
-    }
 }
 </script>

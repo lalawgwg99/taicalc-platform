@@ -18,14 +18,11 @@ body {
     @apply bg-paper-100 text-ink-700 antialiased;
     line-height: 1.7;
     letter-spacing: 0.01em;
-    background-color: #090f1f;
+    background-color: #f6f8f5;
     background-image:
-        radial-gradient(820px 460px at 12% -10%, rgba(34, 211, 238, 0.2), transparent 62%),
-        radial-gradient(760px 420px at 88% 0%, rgba(129, 140, 248, 0.18), transparent 64%),
-        radial-gradient(700px 520px at 50% 110%, rgba(20, 184, 166, 0.1), transparent 70%),
-        linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
-    background-size: auto, auto, auto, 42px 42px, 42px 42px;
+        radial-gradient(820px 460px at 12% -10%, rgba(19, 155, 121, 0.11), transparent 62%),
+        radial-gradient(760px 420px at 88% 0%, rgba(59, 130, 246, 0.07), transparent 64%);
+    background-size: auto, auto;
     background-attachment: fixed;
 }
 
@@ -36,8 +33,8 @@ body::before {
     z-index: -1;
     pointer-events: none;
     background:
-        linear-gradient(120deg, transparent 0%, rgba(34, 211, 238, 0.06) 32%, transparent 54%),
-        radial-gradient(circle at 50% 0%, rgba(248, 250, 252, 0.08), transparent 34%);
+        linear-gradient(120deg, transparent 0%, rgba(19, 155, 121, 0.03) 32%, transparent 54%),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.75), transparent 34%);
     mask-image: linear-gradient(to bottom, black, transparent 72%);
 }
 
@@ -97,10 +94,9 @@ body::before {
 
     /* Surface card — 升級版卡片設計 */
     .card-surface {
-        @apply bg-paper-200/80 border border-paper-300/80 rounded-2xl shadow-card backdrop-blur-xl;
+        @apply bg-paper-200 border border-paper-300 rounded-2xl shadow-card;
         background-image:
-            linear-gradient(180deg, rgba(248, 250, 252, 0.075), rgba(248, 250, 252, 0.018)),
-            radial-gradient(520px 180px at 18% 0%, rgba(34, 211, 238, 0.08), transparent 70%);
+            linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(250, 252, 250, 0.96));
     }
 
     .card-surface-hover {
@@ -109,7 +105,7 @@ body::before {
 
     .hermes-label {
         @apply inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-brand-600;
-        text-shadow: 0 0 22px rgba(34, 211, 238, 0.32);
+        text-shadow: none;
     }
 
     .hermes-rule {
@@ -123,9 +119,9 @@ body::before {
 
     /* Input fields — 統一輸入框 */
     .input-clean {
-        @apply w-full bg-paper-200/80 border border-paper-300/90 text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-400 focus:outline-none focus:bg-paper-100/95 focus:border-brand-500 focus:shadow-input;
+        @apply w-full bg-white border border-paper-300 text-ink-700 rounded-xl px-4 py-3 text-base transition-all duration-200 placeholder:text-ink-400 focus:outline-none focus:bg-white focus:border-brand-500 focus:shadow-input;
         font-weight: 400;
-        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.045);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .input-clean:hover {
@@ -138,8 +134,8 @@ body::before {
 
     /* Primary Button — 主按鈕 */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600 text-paper-50 font-semibold px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none active:scale-[0.98] shadow-card;
-        box-shadow: 0 16px 40px -20px rgba(34, 211, 238, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+        @apply inline-flex items-center justify-center gap-2 bg-brand-600 text-white font-semibold px-6 py-3 rounded-full transition-all duration-200 cursor-pointer select-none active:scale-[0.98] shadow-card;
+        box-shadow: 0 12px 28px -18px rgba(11, 124, 98, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     }
 
     .btn-primary:hover {
@@ -167,14 +163,6 @@ body::before {
     /* Ghost Button — 透明按鈕 */
     .btn-ghost {
         @apply inline-flex items-center justify-center gap-2 bg-paper-200/35 text-ink-500 font-normal px-4 py-2 rounded-lg border border-transparent transition-all duration-200 cursor-pointer hover:bg-paper-200/80 hover:border-brand-400/50 hover:text-ink-700;
-    }
-
-    .sound-toggle {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-paper-300/80 text-[11px] uppercase tracking-[0.2em] text-ink-400 bg-paper-200/80 backdrop-blur-xl transition-all duration-200;
-    }
-
-    .sound-toggle.is-on {
-        @apply border-brand-200 text-brand bg-brand-50;
     }
 
     /* Segmented Control (tab selector) */
@@ -308,25 +296,23 @@ body::before {
 
     .section-wash {
         background-image:
-            radial-gradient(760px 300px at 10% 0%, rgba(34, 211, 238, 0.14), transparent 60%),
-            radial-gradient(700px 260px at 95% 10%, rgba(129, 140, 248, 0.14), transparent 62%);
+            radial-gradient(760px 300px at 10% 0%, rgba(19, 155, 121, 0.09), transparent 60%),
+            radial-gradient(700px 260px at 95% 10%, rgba(59, 130, 246, 0.07), transparent 62%);
     }
 
     .hero-sheen {
         background-image:
-            radial-gradient(560px 280px at 20% 8%, rgba(34, 211, 238, 0.22), transparent 70%),
-            radial-gradient(460px 240px at 92% 0%, rgba(167, 139, 250, 0.18), transparent 70%),
-            linear-gradient(135deg, rgba(248, 250, 252, 0.08), rgba(248, 250, 252, 0));
+            radial-gradient(560px 280px at 20% 8%, rgba(19, 155, 121, 0.12), transparent 70%),
+            radial-gradient(460px 240px at 92% 0%, rgba(59, 130, 246, 0.08), transparent 70%),
+            linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(246, 248, 245, 0.45));
     }
 
     .glass-panel {
-        @apply bg-paper-200/80 backdrop-blur-xl border border-paper-300/80 shadow-card rounded-3xl;
-        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.08), 0 24px 70px -42px rgba(0, 0, 0, 0.9);
+        @apply bg-white border border-paper-300/80 shadow-card rounded-3xl;
     }
 
     .data-pill {
-        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper-200/75 border border-paper-300/80 text-xs text-ink-500 backdrop-blur-xl;
-        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
+        @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-paper-300/80 text-xs text-ink-500;
     }
 
     .ink-panel {
@@ -334,7 +320,7 @@ body::before {
     }
 
     .portal-card {
-        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-400/60;
+        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-white p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:border-brand-400/60;
     }
 
     .portal-card::before {
@@ -344,12 +330,12 @@ body::before {
         width: 140px;
         height: 140px;
         border-radius: 9999px;
-        background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 68%);
+        background: radial-gradient(circle, rgba(19, 155, 121, 0.1), transparent 68%);
         pointer-events: none;
     }
 
     .flow-card {
-        @apply relative rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl;
+        @apply relative rounded-3xl border border-paper-300/80 bg-white p-5 shadow-card;
     }
 
     .flow-card::after {
@@ -359,7 +345,7 @@ body::before {
         right: -28px;
         width: 56px;
         height: 1px;
-        background: linear-gradient(90deg, rgba(34, 211, 238, 0.42), rgba(34, 211, 238, 0));
+        background: linear-gradient(90deg, rgba(19, 155, 121, 0.32), rgba(19, 155, 121, 0));
         display: none;
     }
 
@@ -384,7 +370,7 @@ body::before {
     }
 
     .command-card {
-        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl;
+        @apply relative overflow-hidden rounded-3xl border border-paper-300/80 bg-white p-5 shadow-card;
     }
 
     .command-card::before {
@@ -394,7 +380,7 @@ body::before {
         width: 180px;
         height: 180px;
         border-radius: 9999px;
-        background: radial-gradient(circle, rgba(34, 211, 238, 0.12), transparent 68%);
+        background: radial-gradient(circle, rgba(19, 155, 121, 0.08), transparent 68%);
         pointer-events: none;
     }
 
@@ -433,7 +419,7 @@ body::before {
 
     .signal-dot {
         @apply mt-1.5 h-1.5 w-1.5 rounded-full bg-brand-500 shrink-0;
-        box-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+        box-shadow: 0 0 10px rgba(19, 155, 121, 0.3);
     }
 
     .flow-card-emphasis {
@@ -461,14 +447,14 @@ body::before {
     }
 
     .story-card {
-        @apply relative flex flex-col gap-4 overflow-hidden rounded-3xl border border-paper-300/80 bg-paper-200/80 p-5 shadow-card backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-brand-400/60 hover:shadow-card-hover;
+        @apply relative flex flex-col gap-4 overflow-hidden rounded-3xl border border-paper-300/80 bg-white p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:border-brand-400/60 hover:shadow-card-hover;
     }
 
     .story-card::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(135deg, rgba(34, 211, 238, 0.04), transparent 48%);
+        background: linear-gradient(135deg, rgba(19, 155, 121, 0.035), transparent 48%);
         pointer-events: none;
     }
 
@@ -485,12 +471,10 @@ body::before {
     }
 
     .calculator-card-accent {
-        @apply relative overflow-hidden rounded-3xl border border-brand-400/30 p-5 shadow-card backdrop-blur-xl;
+        @apply relative overflow-hidden rounded-3xl border border-brand-400/30 bg-white p-5 shadow-card;
         background-image:
-            radial-gradient(240px 140px at 88% 0%, rgba(34, 211, 238, 0.16), transparent 72%),
-            linear-gradient(180deg, rgba(248, 250, 252, 0.1), rgba(248, 250, 252, 0.03)),
-            linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(148, 163, 184, 0.04));
-        background-color: rgba(15, 23, 42, 0.3);
+            radial-gradient(240px 140px at 88% 0%, rgba(19, 155, 121, 0.1), transparent 72%),
+            linear-gradient(135deg, rgba(19, 155, 121, 0.035), rgba(59, 130, 246, 0.025));
     }
 
     .calculator-card-warm {
@@ -525,7 +509,7 @@ body::before {
     .calculator-section-title::before {
         content: "";
         @apply h-4 w-1 rounded-full bg-brand-500;
-        box-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+        box-shadow: 0 0 18px rgba(19, 155, 121, 0.24);
     }
 
     .calculator-label {
@@ -593,7 +577,7 @@ body::before {
     }
 
     .calculator-shell .bg-stone-50 {
-        background-color: rgba(248, 250, 252, 0.82);
+        background-color: rgba(246, 248, 245, 0.82);
     }
 
     .calculator-shell .bg-stone-100,
@@ -601,16 +585,16 @@ body::before {
     .calculator-shell .bg-white\/50,
     .calculator-shell .bg-white\/60,
     .calculator-shell .bg-white\/80 {
-        background-color: rgba(226, 232, 240, 0.72);
+        background-color: rgba(241, 245, 242, 0.82);
     }
 
     .calculator-shell .bg-white {
-        background-color: rgba(248, 250, 252, 0.88);
+        background-color: rgba(255, 255, 255, 0.94);
     }
 
     .calculator-shell .border-stone-200,
     .calculator-shell .border-stone-100 {
-        border-color: rgba(148, 163, 184, 0.32);
+        border-color: rgba(165, 181, 170, 0.42);
     }
 
     .calculator-shell .text-stone-900,
@@ -642,116 +626,20 @@ body::before {
     .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
     .calculator-shell select,
     .calculator-shell textarea {
-        color: rgb(15 23 42 / 1);
-        border-color: rgba(148, 163, 184, 0.34);
-        background-color: rgba(248, 250, 252, 0.88);
-        box-shadow: inset 0 1px 0 rgba(248, 250, 252, 0.06);
+        color: rgb(25 46 33 / 1);
+        border-color: rgba(165, 181, 170, 0.5);
+        background-color: rgba(255, 255, 255, 0.96);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus,
     .calculator-shell select:focus,
     .calculator-shell textarea:focus {
         outline: none;
-        border-color: rgba(34, 211, 238, 0.7);
-        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+        border-color: rgba(19, 155, 121, 0.75);
+        box-shadow: 0 0 0 3px rgba(19, 155, 121, 0.14);
     }
 
-    .support-fab {
-        @apply fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-5;
-    }
-
-    .support-panel {
-        @apply relative overflow-hidden rounded-[28px] border border-paper-300/80 bg-paper-200/90 shadow-card-hover backdrop-blur-2xl;
-        width: min(24rem, calc(100vw - 1.5rem));
-        box-shadow: 0 28px 80px -44px rgba(0, 0, 0, 0.9);
-    }
-
-    .support-panel::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-            radial-gradient(220px 120px at 100% 0%, rgba(34, 211, 238, 0.16), transparent 70%),
-            linear-gradient(180deg, rgba(248, 250, 252, 0.08), transparent 30%);
-        pointer-events: none;
-    }
-
-    .support-panel-shell {
-        @apply relative;
-    }
-
-    .support-header {
-        @apply relative border-b border-paper-300/80 px-4 py-4 sm:px-5;
-        background: linear-gradient(135deg, rgba(248, 250, 252, 0.1), rgba(248, 250, 252, 0.02));
-    }
-
-    .support-status {
-        @apply inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-500;
-    }
-
-    .support-status::before {
-        content: "";
-        @apply h-1.5 w-1.5 rounded-full bg-brand-500;
-        box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
-    }
-
-    .support-quick-asks {
-        @apply flex gap-2 overflow-x-auto pb-1 no-scrollbar;
-    }
-
-    .support-chip {
-        @apply shrink-0 rounded-full border border-paper-300/80 bg-paper-100/80 px-3 py-1.5 text-[11px] font-medium text-ink-500 transition-all duration-200 hover:border-brand-400/60 hover:text-ink-700;
-    }
-
-    .support-messages {
-        @apply space-y-3 overflow-y-auto bg-paper-100/70 px-4 py-4 no-scrollbar sm:px-5;
-        max-height: min(24rem, 55vh);
-    }
-
-    .support-bubble-ai {
-        @apply mr-8 rounded-[20px] rounded-tl-md border border-paper-300/80 bg-paper-200/90 px-3.5 py-3 text-sm leading-relaxed text-ink-600;
-    }
-
-    .support-bubble-user {
-        @apply ml-8 rounded-[20px] rounded-tr-md border border-brand-400/30 bg-gradient-to-r from-brand-500 to-azure-500 px-3.5 py-3 text-sm leading-relaxed text-paper-50 shadow-card;
-    }
-
-    .support-bubble-note {
-        @apply rounded-2xl border border-paper-300/80 bg-paper-200/80 px-3 py-2 text-xs text-ink-500;
-    }
-
-    .support-input-shell {
-        @apply border-t border-paper-300/80 bg-paper-200/85 px-4 py-4 sm:px-5;
-    }
-
-    .support-input-row {
-        @apply flex items-end gap-2;
-    }
-
-    .support-input {
-        @apply input-clean min-h-[46px] flex-1 resize-none rounded-2xl py-3 text-sm;
-    }
-
-    .support-toggle {
-        @apply flex items-center gap-3 rounded-full bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600 px-3.5 py-2.5 text-paper-50 shadow-glow-brand transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110 active:scale-[0.98];
-    }
-
-    .support-toggle-badge {
-        @apply flex h-9 w-9 items-center justify-center rounded-full bg-paper-50/20;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    }
-
-    .support-toggle-caption {
-        @apply flex flex-col items-start leading-none;
-    }
-
-    .support-toggle-caption span:first-child {
-        @apply text-[10px] uppercase tracking-[0.2em] text-paper-50/70;
-    }
-
-    .support-toggle-caption span:last-child {
-        @apply mt-1 text-sm font-semibold;
-    }
 }
 
 /* ─── Utilities ───────────────────────────────────────────────── */
@@ -777,7 +665,7 @@ body::before {
 
     /* 陰影增強 */
     .shadow-brand {
-        box-shadow: 0 4px 24px rgba(34, 211, 238, 0.28);
+        box-shadow: 0 4px 24px rgba(19, 155, 121, 0.24);
     }
 
     .shadow-primary {

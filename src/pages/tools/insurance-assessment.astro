@@ -7,7 +7,7 @@ const description = "試算保單 IRR、保障缺口與建議保額。";
 const keywords = "保險IRR,儲蓄險報酬率,壽險需求,保險效益,IRR計算機,家庭責任缺口,保額計算,儲蓄險比較,保單報酬率,保險試算";
 ---
 
-<ToolLayout title={title} description={description} category="理財規劃">
+<ToolLayout title={title} description={description} keywords={keywords} category="理財規劃">
     <InsuranceAssessment client:only="vue" slot="tool" />  
 
     <div slot="article">
@@ -19,7 +19,7 @@ const keywords = "保險IRR,儲蓄險報酬率,壽險需求,保險效益,IRR計�
         
         <h4>IRR 判讀標準：</h4>
         <ul>
-            <li><strong>IRR < 定存利率 (約 1.6%)：</strong> 不如放定存，流動性還比較好。</li>
+            <li><strong>IRR &lt; 定存利率 (約 1.6%)：</strong> 不如放定存，流動性還比較好。</li>
             <li><strong>IRR > 定存利率：</strong> 可考慮作為長期保守資產配置。</li>
             <li><strong>負值：</strong> 代表提前解約會虧損本金（儲蓄險常見閉鎖期）。</li>
         </ul>

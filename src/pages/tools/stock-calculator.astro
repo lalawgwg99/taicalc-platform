@@ -30,7 +30,7 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} category="理財規劃" faqs={faqs}>
+<ToolLayout title={title} description={description} keywords={keywords} category="理財規劃" faqs={faqs}>
     <StockCalculator client:only="vue" slot="tool" />
 
     <div slot="article">

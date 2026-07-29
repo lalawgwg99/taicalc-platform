@@ -77,7 +77,7 @@ const homeFaqSchema = JSON.stringify({
                     </div>
                 </div>
 
-                <div class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
+                <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-lg font-medium text-ink-700">現在最想解決什麼？</p>
@@ -161,44 +161,24 @@ const homeFaqSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-12 sm:py-14 md:py-18 reveal" data-reveal>
+    <section class="border-t border-paper-300 py-10 sm:py-12 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                <div id="retention-shell" data-tool-catalog={toolCatalogJson} class="card-surface p-5 md:p-6">
-                    <div class="flex items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-xl md:text-2xl font-medium text-ink-700">你的常用工具</h2>
-                            <p class="mt-1 text-xs text-ink-500">最近使用會保留在這台裝置</p>
-                        </div>
-                    </div>
-                    <div id="recent-tools" class="mt-5 space-y-3">
-                        <div class="rounded-2xl border border-dashed border-paper-300 bg-paper-100 p-4">
-                            <p class="text-sm font-medium text-ink-700">還沒有使用紀錄，先從下方熱門工具開始。</p>
-                        </div>
-                    </div>
-                    <div id="pinned-tools" class="mt-4 flex flex-wrap gap-2">
-                        <span class="text-xs text-ink-500">常用工具</span>
-                    </div>
+            <div class="flex flex-col gap-5 rounded-3xl border border-brand-200 bg-brand-50/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                <div>
+                    <p class="text-xs font-semibold tracking-[0.18em] text-brand-700">資料透明</p>
+                    <h2 class="mt-2 text-xl font-semibold text-ink-800">每個數字都有官方依據</h2>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-500">標示資料年度、版本與主管機關來源，避免過期級距混進結果。</p>
                 </div>
-
-                <div class="card-surface p-5 md:p-6">
-                    <h2 class="text-xl md:text-2xl font-medium text-ink-700">每個數字都有依據</h2>
-                    <p class="mt-2 text-sm leading-6 text-ink-500">清楚標示資料年度、版本與主管機關來源，不讓過期級距混進結果。</p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="data-pill">{platformGovernance.version}</span>
-                        <span class="data-pill">官方來源</span>
-                    </div>
-                    <details class="mt-5 rounded-2xl border border-paper-300 bg-paper-100 p-4">
-                        <summary class="cursor-pointer text-sm font-medium text-ink-700">查看資料來源</summary>
-                        <ul class="mt-4 space-y-2">
-                            {platformGovernance.sources.map((source) => (
-                                <li>
-                                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-ink-500 hover:text-brand transition-colors">{source.label}</a>
-                                </li>
-                            ))}
-                        </ul>
-                    </details>
-                </div>
+                <details class="shrink-0 rounded-2xl border border-brand-200 bg-white p-4">
+                    <summary class="cursor-pointer text-sm font-medium text-ink-700">查看資料來源</summary>
+                    <ul class="mt-4 space-y-2">
+                        {platformGovernance.sources.map((source) => (
+                            <li>
+                                <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-ink-500 hover:text-brand transition-colors">{source.label}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </details>
             </div>
         </div>
     </section>
@@ -248,7 +228,7 @@ const homeFaqSchema = JSON.stringify({
             </div>
             <div class="grid gap-4 md:grid-cols-3">
                 {latestPosts.map((post) => (
-                    <a href={`/blog/${post.slug}`} class="group card-surface-hover overflow-hidden">
+                    <a href={`/blog/${post.id}`} class="group card-surface-hover overflow-hidden">
                         {post.data.coverImage && (
                             <div class="aspect-[16/9] overflow-hidden border-b border-paper-300">
                                 <img src={post.data.coverImage} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
@@ -295,13 +275,11 @@ const homeFaqSchema = JSON.stringify({
                 版本 {platformGovernance.version}
             </div>
             <div class="flex items-center gap-2.5 text-xs text-ink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-                AI 只導引
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+                免註冊使用
             </div>
         </div>
     </section>
-</Layout>
-
 <script>
 const month = new Date().getMonth() + 1;
 const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
@@ -324,7 +302,7 @@ const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>
 
 const searchInput = document.getElementById('tool-search') as HTMLInputElement | null;
 const searchResults = document.getElementById('search-results');
-const toolCatalogData = document.getElementById('retention-shell')?.dataset.toolCatalog || '[]';
+const toolCatalogData = document.getElementById('tool-discovery')?.dataset.toolCatalog || '[]';
 const searchTools = JSON.parse(toolCatalogData) as Array<{
     href: string;
     label: string;
@@ -333,14 +311,6 @@ const searchTools = JSON.parse(toolCatalogData) as Array<{
     tags?: string[];
     isCore?: boolean;
 }>;
-const toolByHref = new Map(searchTools.map((tool) => [tool.href, tool]));
-
-const resolveCatalogTool = (tool: { href?: string; lastVisitedAt?: string }) => {
-    if (!tool.href) return null;
-    const catalogTool = toolByHref.get(tool.href);
-    return catalogTool ? { ...catalogTool, lastVisitedAt: tool.lastVisitedAt } : null;
-};
-
 searchInput?.addEventListener('input', (e) => {
     const q = (e.target as HTMLInputElement).value.trim();
     if (!q) {
@@ -378,69 +348,5 @@ document.addEventListener('click', (e) => {
         searchResults?.classList.add('hidden');
     }
 });
-
-const readRetentionState = () => {
-    try {
-        const raw = localStorage.getItem('taicalc-tool-state-v1');
-        return raw ? JSON.parse(raw) : { recent: [], pinned: [] };
-    } catch {
-        return { recent: [], pinned: [] };
-    }
-};
-
-const relativeTime = (iso?: string) => {
-    if (!iso) return '剛剛';
-    const diffMs = Date.now() - new Date(iso).getTime();
-    const diffHours = Math.floor(diffMs / 3600000);
-    if (diffHours < 1) return '1 小時內';
-    if (diffHours < 24) return `${diffHours} 小時前`;
-    const diffDays = Math.floor(diffHours / 24);
-    return `${diffDays} 天前`;
-};
-
-const renderRetention = () => {
-    const retentionShell = document.getElementById('retention-shell');
-    const recentRoot = document.getElementById('recent-tools');
-    const pinnedRoot = document.getElementById('pinned-tools');
-    if (!recentRoot || !pinnedRoot || !retentionShell) return;
-
-    const state = readRetentionState();
-    const recent = state.recent.map(resolveCatalogTool).filter(Boolean).slice(0, 3);
-    const pinned = state.pinned.map(resolveCatalogTool).filter(Boolean).slice(0, 6);
-
-    if (recent.length) {
-        recentRoot.innerHTML = recent.map((tool: { href: string; label: string; desc: string; category: string; lastVisitedAt?: string }, index: number) => `
-            <a href="${escapeHtml(tool.href)}" class="flex items-start justify-between gap-4 rounded-2xl border border-paper-300 bg-paper-200 px-4 py-3 hover:border-brand hover:bg-paper-100 transition-colors" data-sfx="tap">
-                <div>
-                    <p class="text-[11px] uppercase tracking-[0.18em] text-ink-400">${index === 0 ? '上次使用' : '最近使用'}</p>
-                    <p class="text-sm font-medium text-ink-700 mt-1">${escapeHtml(tool.label)}</p>
-                    <p class="text-xs text-ink-400 mt-1">${escapeHtml(tool.desc || tool.category)}</p>
-                </div>
-                <div class="text-right shrink-0">
-                    <p class="text-[11px] text-ink-400">${relativeTime(tool.lastVisitedAt)}</p>
-                    <p class="text-[11px] text-brand mt-2">繼續試算</p>
-                </div>
-            </a>
-        `).join('');
-    }
-
-    if (pinned.length) {
-        pinnedRoot.innerHTML = pinned.map((tool: { href: string; label: string }) => `
-            <a href="${escapeHtml(tool.href)}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
-                <span class="text-brand">●</span>
-                <span>${escapeHtml(tool.label)}</span>
-            </a>
-        `).join('');
-        return;
-    }
-
-    const defaults = searchTools.filter((tool) => tool.isCore).slice(0, 3);
-    pinnedRoot.innerHTML = defaults.map((tool: { href: string; label: string }) => `
-        <a href="${escapeHtml(tool.href)}" class="inline-flex items-center gap-2 px-3 py-2 rounded-full border border-paper-300 bg-paper-200 text-sm text-ink-600 hover:border-brand hover:text-ink-700 transition-colors" data-sfx="tap">
-            <span>${escapeHtml(tool.label)}</span>
-        </a>
-    `).join('');
-};
-
-renderRetention();
 </script>
+</Layout>

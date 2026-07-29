@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import vue from '@astrojs/vue';
-import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
@@ -13,7 +12,7 @@ export default defineConfig({
   security: {
     checkOrigin: true,
   },
-  integrations: [vue(), tailwind(), react()],
+  integrations: [vue(), react()],
   vite: {
     plugins: [
       ViteImageOptimizer({
@@ -35,15 +34,6 @@ export default defineConfig({
       }),
     ],
     build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            vendor: ['vue', 'react', 'react-dom'],
-            charts: ['chart.js'],
-            utils: ['decimal.js'],
-          },
-        },
-      },
       chunkSizeWarningLimit: 1000,
     },
   },

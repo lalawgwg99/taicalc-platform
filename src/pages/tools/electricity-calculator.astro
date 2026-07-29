@@ -34,7 +34,7 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} category="生活計算" faqs={faqs}>
+<ToolLayout title={title} description={description} keywords={keywords} category="生活計算" faqs={faqs}>
     <ElectricityCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
