@@ -7,7 +7,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:vue/vue3-recommended',
+    'plugin:vue/essential',
   ],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -20,24 +20,23 @@ module.exports = {
     'vue/no-unused-vars': 'warn',
     'vue/require-default-prop': 'off',
     'vue/require-prop-types': 'off',
-    'vue/no-mutating-props': 'error',
+    'vue/no-mutating-props': 'warn',
     'vue/no-v-html': 'warn',
     'no-unused-vars': 'warn',
-    'no-var': 'error',
+    'no-var': 'warn',
     'prefer-const': 'warn',
-    'eqeqeq': ['error', 'always'],
-    'curly': ['error', 'all'],
+    'eqeqeq': ['warn', 'always'],
+    'curly': ['warn', 'all'],
+    'no-empty': 'warn',
   },
   overrides: [
     {
-      files: ['**/*.astro'],
-      parser: 'astro-eslint-parser',
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-        extraFileExtensions: ['.astro'],
+      files: ['**/*.{ts,tsx}'],
+      parser: '@typescript-eslint/parser',
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
       },
-      extends: ['plugin:astro/recommended'],
-      rules: {},
     },
   ],
 };

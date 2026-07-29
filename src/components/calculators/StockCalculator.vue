@@ -507,9 +507,6 @@ const result = computed(() => {
     totalSellRevenue: realTotalSellRevenue,
     totalFee: buyFee + realSellFee,
     tax: realSellTax,
-    totalDividend: totalCashDiv, // Display cash dividend part mainly or combining is fine.
-    // The original logic included stock div value in profit but displayed cash+stock value.
-    // Simplifying display for now as per original code structure.
     totalDividend: totalCashDiv + newShares * sp,
   };
 });

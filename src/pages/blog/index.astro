@@ -35,7 +35,7 @@ const categoryColor: Record<string, string> = {
                 const cat = post.data.category ?? '';
                 const colorClass = categoryColor[cat] ?? 'text-ink-500 bg-paper-200';
                 return (
-                    <a href={`/blog/${post.slug}`}
+                    <a href={`/blog/${post.id}`}
                        class="flex items-start gap-4 py-4 px-4 bg-paper-200/50 rounded-xl border border-transparent hover:bg-paper-200 hover:border-paper-300 transition-all group">
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2 mb-1.5">

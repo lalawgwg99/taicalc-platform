@@ -30,7 +30,7 @@ export const GET: APIRoute = async () => {
       lastmod: today,
     })),
     ...posts.map((post) => ({
-      path: `/blog/${post.slug}`,
+      path: `/blog/${post.id}`,
       priority: '0.7',
       changefreq: 'monthly',
       lastmod: post.data.date,

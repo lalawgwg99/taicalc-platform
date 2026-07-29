@@ -30,7 +30,7 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} category="退休理財" faqs={faqs}>
+<ToolLayout title={title} description={description} keywords={keywords} category="退休理財" faqs={faqs}>
     <FIRECalculator client:only="vue" slot="tool" />
 
     <div slot="article">

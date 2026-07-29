@@ -1,19 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import ToolLayout from '../../layouts/ToolLayout.astro';
 
 // 1. Generate Static Paths
 export async function getStaticPaths() {
   const tools = await getCollection('tools');
   return tools.map(entry => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
 
 // 2. Props Access
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 
 // 3. Dynamic Component Import
 // Map functionality to React components efficiently
@@ -25,12 +25,12 @@ import TaxIncomeCalculator from '../../components/calculators/TaxIncomeCalculato
 // import TaxFreelanceCalculator from '../../components/calculators/TaxFreelanceCalculator.tsx';
 // ... other imports
 
-const componentMap = {
+const componentMap: Record<string, typeof TaxIncomeCalculator> = {
   'tax-income': TaxIncomeCalculator,
   // 'tax-freelance': TaxFreelanceCalculator,
 };
 
-const CalculatorComponent = componentMap[entry.slug];
+const CalculatorComponent = componentMap[entry.id];
 ---
 
 <ToolLayout title={entry.data.title} description={entry.data.description} category={entry.data.category}>
@@ -40,7 +40,7 @@ const CalculatorComponent = componentMap[entry.slug];
           <CalculatorComponent client:load />
       ) : (
           <div class="p-4 text-center text-stone-500 bg-stone-100 rounded">
-            🚧 Calculator Component Not Found: {entry.slug}
+            🚧 Calculator Component Not Found: {entry.id}
           </div>
       )}
   </div>
