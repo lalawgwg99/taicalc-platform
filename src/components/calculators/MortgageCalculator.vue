@@ -37,7 +37,7 @@
                 <p class="text-sm font-medium text-ink-600">利率設定</p>
                 <button @click="twoStageMode = !twoStageMode"
                     class="text-xs text-azure hover:underline transition-colors">
-                    {{ twoStageMode ? '切換單一利率' : '啟用分段利率（補貼退場）' }}
+                    {{ twoStageMode ? '切換單一利率' : '啟用自訂分段利率' }}
                 </button>
             </div>
             <div class="grid grid-cols-2 gap-3">
@@ -173,7 +173,7 @@
         <!-- 月付房租比 -->
         <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
-            <p class="mt-1">採本息平均攤還法計算。新青安試算：前 {{ stage1Months }} 個月利率較低，之後回復一般利率。</p>
+            <p class="mt-1">採本息平均攤還法計算。新青安 3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
         </div>
 
         <!-- 分享列 -->
@@ -206,9 +206,9 @@ const amountWan    = ref(1000)
 const years        = ref(40)
 const graceYears   = ref(5)
 const rate1        = ref(1.775)
-const rate2        = ref(2.15)
+const rate2        = ref(2.299)
 const twoStageMode = ref(false)  // 預設關閉，避免初次用戶困惑
-const stage1Months = ref(7)
+const stage1Months = ref(12)
 const preset       = ref('newYouth')
 const monthlyIncomeRef = ref(0)
 
@@ -245,9 +245,9 @@ const applyPreset = (type) => {
         years.value        = 40
         graceYears.value   = 5
         rate1.value        = 1.775
-        rate2.value        = 2.15
-        twoStageMode.value = true
-        stage1Months.value = 7
+        rate2.value        = 2.299
+        twoStageMode.value = false
+        stage1Months.value = 12
     } else {
         amountWan.value    = 1200
         years.value        = 30

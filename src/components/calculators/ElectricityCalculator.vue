@@ -449,7 +449,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-stone-500">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> 非夏月：其他月份</div>
-        <div class="md:col-span-2">住宅累進級距採台電 2024-04-01 起實施費率，高用電級距已更新為夏月 $6.24 / $8.46、非夏月 $5.66 / $6.71。</div>
+        <div class="md:col-span-2">住宅累進級距採台電 2025-10-01 起實施費率：夏月 $1.78–$8.86、非夏月 $1.78–$7.03。</div>
         <div class="md:col-span-2">已納入 2025-09-12 公告後之每月最低計收 $100 規則；冷氣 BTU/h、CSPF 換算為平均估算值，仍以設備銘板與實際帳單為準。</div>
       </div>
     </footer>

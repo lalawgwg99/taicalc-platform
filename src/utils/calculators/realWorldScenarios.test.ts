@@ -79,22 +79,22 @@ describe('real-world calculator scenarios', () => {
     }).toMatchInlineSnapshot(`
       {
         "electricity": {
-          "energyCharge": 591,
+          "energyCharge": 621,
           "tierCount": 2,
-          "totalCost": 591,
+          "totalCost": 621,
         },
         "incomeTax": {
-          "afterTaxIncome": 972300,
-          "effectiveRate": 2.8,
+          "afterTaxIncome": 973200,
+          "effectiveRate": 2.7,
           "taxBracketLabel": "5%",
-          "taxableIncome": 554000,
-          "totalTax": 27700,
+          "taxableIncome": 536000,
+          "totalTax": 26800,
         },
         "insurance": {
-          "employerTotal": 9363,
+          "employerTotal": 9492,
           "healthBracket": 50600,
           "laborBracket": 45800,
-          "workerTotal": 1884,
+          "workerTotal": 1930,
         },
         "mortgage": {
           "afterGracePay": 36962,
@@ -104,11 +104,11 @@ describe('real-world calculator scenarios', () => {
         },
         "salary": {
           "annualSalaryIncome": 600000,
-          "employerCost": 9363,
+          "employerCost": 9493,
           "health": 785,
-          "labor": 1099,
-          "monthlyNet": 48116,
-          "yearlyNet": 577392,
+          "labor": 1145,
+          "monthlyNet": 48070,
+          "yearlyNet": 576840,
         },
       }
     `);

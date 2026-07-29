@@ -42,7 +42,7 @@
         </label>
         <input type="range" v-model.number="annualReturn" min="1" max="15" step="0.5"
           class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-azure" />
-        <!-- ETF 歷史報酬快速帶入 -->
+        <!-- 情境報酬快速帶入 -->
         <div class="flex flex-wrap gap-1.5 mt-2 items-center">
           <span class="text-[10px] text-ink-400">參考帶入：</span>
           <button v-for="p in returnPresets" :key="p.symbol"
@@ -55,7 +55,7 @@
             {{ p.label }} {{ p.rate }}%
           </button>
         </div>
-        <p class="text-[10px] text-ink-400 mt-1.5">保守 4–5%，積極 7–8%（扣除通膨後）</p>
+        <p class="text-[10px] text-ink-400 mt-1.5">這裡輸入名目報酬率，系統會再依下方通膨率換算實質報酬；預設僅供情境試算，不代表未來績效。</p>
       </div>
 
       <!-- 進階設定 -->
@@ -216,10 +216,9 @@ const coffeeMode      = ref(false);
 const liveCPI = ref(null);
 
 const returnPresets = [
-  { symbol: '0050', label: '0050',    rate: 10, note: '元大台灣50 2009–2024 含息年化 ~10%' },
-  { symbol: '0056', label: '0056',    rate:  8, note: '元大高股息 2008–2024 含息年化 ~8%' },
-  { symbol: 'MIX',  label: '股債均衡', rate:  6, note: '60/40 股債配置長期均值' },
-  { symbol: 'SAFE', label: '保守',    rate:  4, note: '保守估算（扣通膨後）' },
+  { symbol: 'GROWTH', label: '成長情境', rate: 8, note: '名目年化 8% 的情境假設，不代表特定商品績效' },
+  { symbol: 'BALANCED', label: '均衡情境', rate: 6, note: '名目年化 6% 的情境假設' },
+  { symbol: 'CAUTIOUS', label: '審慎情境', rate: 4, note: '名目年化 4% 的情境假設' },
 ];
 
 const fetchLiveCPI = async () => {

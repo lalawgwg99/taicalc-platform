@@ -9,11 +9,12 @@
                 <input id="salary" type="number" v-model.number="monthlySalary" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
             </div>
             <div>
-                <label for="hours" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">每月計算工時</label>
+                <label for="hours" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">時薪換算基準</label>
                 <div class="relative">
                     <input id="hours" type="number" v-model.number="monthlyHours" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
                     <span class="absolute right-4 top-3.5 text-stone-400 text-sm">小時/月</span>
                 </div>
+                <p class="mt-1 text-[10px] text-stone-400">月薪制通常以 240 小時換算；勞動契約另有約定時再調整。</p>
             </div>
         </div>
         <div class="mt-4 p-3 bg-stone-100/50 rounded-xl flex justify-between items-center border border-stone-200/50">
@@ -52,11 +53,11 @@
 
         <div v-if="selectedType === 'weekday'" class="grid grid-cols-2 gap-4">
             <div>
-                <label for="wd1" class="block text-xs text-stone-500 mb-2">前 2 小時 <span class="text-amber-600 font-bold">(1.34x)</span></label>
+                <label for="wd1" class="block text-xs text-stone-500 mb-2">前 2 小時 <span class="text-amber-600 font-bold">(4/3x)</span></label>
                 <input id="wd1" type="number" v-model.number="weekdayHours1" min="0" max="2" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
             <div>
-                <label for="wd2" class="block text-xs text-stone-500 mb-2">第 3~4 小時 <span class="text-amber-600 font-bold">(1.67x)</span></label>
+                <label for="wd2" class="block text-xs text-stone-500 mb-2">第 3~4 小時 <span class="text-amber-600 font-bold">(5/3x)</span></label>
                 <input id="wd2" type="number" v-model.number="weekdayHours2" min="0" max="2" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
         </div>
@@ -64,15 +65,15 @@
         <div v-else-if="selectedType === 'restday'" class="space-y-4">
             <div class="grid grid-cols-3 gap-3">
                 <div>
-                    <label for="rd1" class="block text-xs text-stone-500 mb-2 h-8">前 2 小時 <br><span class="text-amber-600 font-bold">(1.34x)</span></label>
+                    <label for="rd1" class="block text-xs text-stone-500 mb-2 h-8">前 2 小時 <br><span class="text-amber-600 font-bold">(4/3x)</span></label>
                     <input id="rd1" type="number" v-model.number="restdayHours1" min="0" max="2" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd2" class="block text-xs text-stone-500 mb-2 h-8">3~8 小時 <br><span class="text-amber-600 font-bold">(1.67x)</span></label>
+                    <label for="rd2" class="block text-xs text-stone-500 mb-2 h-8">3~8 小時 <br><span class="text-amber-600 font-bold">(5/3x)</span></label>
                     <input id="rd2" type="number" v-model.number="restdayHours2" min="0" max="6" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd3" class="block text-xs text-stone-500 mb-2 h-8">9~12 小時 <br><span class="text-amber-600 font-bold">(2.67x)</span></label>
+                    <label for="rd3" class="block text-xs text-stone-500 mb-2 h-8">9~12 小時 <br><span class="text-amber-600 font-bold">(8/3x)</span></label>
                     <input id="rd3" type="number" v-model.number="restdayHours3" min="0" max="4" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
@@ -81,11 +82,11 @@
         <div v-else class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label for="hol1" class="block text-xs text-stone-500 mb-2">8 小時內 <span class="text-amber-600 font-bold">(2x)</span></label>
+                    <label for="hol1" class="block text-xs text-stone-500 mb-2">8 小時內 <span class="text-amber-600 font-bold">加發 1 日工資</span></label>
                     <input id="hol1" type="number" v-model.number="holidayHours1" min="0" max="8" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="hol2" class="block text-xs text-stone-500 mb-2">超過 8 小時 <span class="text-amber-600 font-bold">(2.67x)</span></label>
+                    <label for="hol2" class="block text-xs text-stone-500 mb-2">超過 8 小時 <span class="text-amber-600 font-bold">(4/3、5/3x)</span></label>
                     <input id="hol2" type="number" v-model.number="holidayHours2" min="0" max="4" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
@@ -136,14 +137,14 @@
         </div>
     </section>
 
-    <!-- 週累計 -->
+    <!-- 月累計 -->
     <section class="calculator-card">
         <div class="flex items-center justify-between mb-5">
             <h2 class="text-sm font-bold text-stone-700 flex items-center gap-2">
-                <span class="text-base">📅</span> 週累計清單
+                <span class="text-base">📅</span> 本月累計清單
             </h2>
             <button @click="addToWeekly" class="text-xs px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-colors shadow-sm shadow-amber-200">
-                + 加入本週紀錄
+                + 加入本月紀錄
             </button>
         </div>
 
@@ -172,11 +173,11 @@
                         <span class="text-2xl font-bold tracking-tight" :class="weeklyTotalHours > 46 ? 'text-rose-600' : 'text-stone-800'">
                             {{ weeklyTotalHours }}
                         </span>
-                        <span class="text-xs text-stone-400">/ 月上限 46 參考</span>
+                <span class="text-xs text-stone-400">/ 月上限 46 小時參考</span>
                     </div>
                 </div>
                 <div class="text-right">
-                    <p class="text-xs text-stone-500 font-medium mb-1">本週加班總額</p>
+                    <p class="text-xs text-stone-500 font-medium mb-1">已記錄加班總額</p>
                     <p class="text-2xl font-bold text-brand-600 font-mono tracking-tight">+${{ weeklyTotalPay.toLocaleString()}}</p>
                 </div>
             </div>
@@ -203,15 +204,15 @@
         <div class="grid gap-2 text-xs text-stone-500">
             <div class="flex gap-2">
                 <span class="font-semibold text-blue-600 min-w-[3rem]">平日</span>
-                <span>前 2 小時 <b class="text-stone-700">1.34</b> 倍，後 2 小時 <b class="text-stone-700">1.67</b> 倍</span>
+                <span>前 2 小時 <b class="text-stone-700">4/3</b> 倍，後 2 小時 <b class="text-stone-700">5/3</b> 倍</span>
             </div>
             <div class="flex gap-2">
                 <span class="font-semibold text-amber-600 min-w-[3rem]">休息日</span>
-                <span>前 2 小時 <b class="text-stone-700">1.34</b> 倍，3~8 小時 <b class="text-stone-700">1.67</b> 倍，超過 <b class="text-stone-700">2.67</b> 倍</span>
+                <span>前 2 小時 <b class="text-stone-700">4/3</b> 倍，3~8 小時 <b class="text-stone-700">5/3</b> 倍，9~12 小時 <b class="text-stone-700">8/3</b> 倍</span>
             </div>
             <div class="flex gap-2">
-                <span class="font-semibold text-rose-600 min-w-[3rem]">例假日</span>
-                <span>8 小時內 <b class="text-stone-700">2</b> 倍 (含本薪)，超過 <b class="text-stone-700">2.67</b> 倍</span>
+                <span class="font-semibold text-rose-600 min-w-[3rem]">國定假日</span>
+                <span>月薪已含當日工資；出勤 8 小時內再加發 1 日工資，超過 8 小時依平日延時費率計。</span>
             </div>
         </div>
     </footer>
@@ -241,13 +242,13 @@ const baseHourlyRate = computed(() => Math.round((monthlySalary.value || 0) / (m
 const overtimeTypes = [
     { id: 'weekday', label: '平日', icon: '📅', activeClass: 'bg-blue-50 border-blue-200 text-blue-700 ring-2 ring-blue-500/20' },
     { id: 'restday', label: '休息日', icon: '🛋️', activeClass: 'bg-amber-50 border-amber-200 text-amber-700 ring-2 ring-amber-500/20' },
-    { id: 'holiday', label: '例假日', icon: '🎌', activeClass: 'bg-rose-50 border-rose-200 text-rose-700 ring-2 ring-rose-500/20' }
+    { id: 'holiday', label: '國定假日', icon: '🎌', activeClass: 'bg-rose-50 border-rose-200 text-rose-700 ring-2 ring-rose-500/20' }
 ];
 
 const typeInfo = {
     weekday: { title: '平日延長工時', desc: '正常上班日工作超過 8 小時後，或者是優於勞基法規定的工時後的加班。', infoClass: 'bg-blue-50 border-blue-100 text-blue-800' },
     restday: { title: '休息日出勤', desc: '每週約定的「休息日」(通常是週六)，出勤費率較高，且納入每月加班上限。', infoClass: 'bg-amber-50 border-amber-100 text-amber-800' },
-    holiday: { title: '例假日/國定假日', desc: '週日(例假)或國定假日。例假非天災事變不得出勤；國定假日出勤需給雙倍薪。', infoClass: 'bg-rose-50 border-rose-100 text-rose-800' }
+    holiday: { title: '國定假日或特別休假出勤', desc: '月薪已含原工資；經同意出勤時，8 小時內另加發一日工資。例假日非因天災、事變或突發事件原則上不得出勤。', infoClass: 'bg-rose-50 border-rose-100 text-rose-800' }
 };
 
 const currentType = computed(() => typeInfo[selectedType.value]);
@@ -255,11 +256,15 @@ const currentType = computed(() => typeInfo[selectedType.value]);
 const currentOvertimePay = computed(() => {
     const base = baseHourlyRate.value;
     if (selectedType.value === 'weekday') {
-        return Math.round(base * 1.34 * (weekdayHours1.value || 0) + base * 1.67 * (weekdayHours2.value || 0));
+        return Math.round(base * (4 / 3) * (weekdayHours1.value || 0) + base * (5 / 3) * (weekdayHours2.value || 0));
     } else if (selectedType.value === 'restday') {
-        return Math.round(base * 1.34 * (restdayHours1.value || 0) + base * 1.67 * (restdayHours2.value || 0) + base * 2.67 * (restdayHours3.value || 0));
+        return Math.round(base * (4 / 3) * (restdayHours1.value || 0) + base * (5 / 3) * (restdayHours2.value || 0) + base * (8 / 3) * (restdayHours3.value || 0));
     } else {
-        return Math.round(base * 2 * (holidayHours1.value || 0) + base * 2.67 * (holidayHours2.value || 0));
+        const regularHolidayPay = (holidayHours1.value || 0) > 0 ? base * 8 : 0;
+        const extraHours = Math.max(0, Math.min(4, holidayHours2.value || 0));
+        const extraPay = base * (4 / 3) * Math.min(2, extraHours)
+          + base * (5 / 3) * Math.max(0, extraHours - 2);
+        return Math.round(regularHolidayPay + extraPay);
     }
 });
 
@@ -274,7 +279,7 @@ const overtimeMultiple = computed(() => baseHourlyRate.value > 0 ? (effectiveRat
 
 const addToWeekly = () => {
     if (currentHours.value > 0) {
-        const typeLabel = selectedType.value === 'weekday' ? '平日' : selectedType.value === 'restday' ? '休息日' : '例假日';
+        const typeLabel = selectedType.value === 'weekday' ? '平日' : selectedType.value === 'restday' ? '休息日' : '國定假日';
         weeklyRecords.value.push({ type: typeLabel, hours: currentHours.value, pay: currentOvertimePay.value });
     }
 };

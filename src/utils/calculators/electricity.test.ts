@@ -12,22 +12,22 @@ describe('electricity calculator rules', () => {
   it('applies current non-summer tier pricing for 300 kWh', () => {
     const summary = calcElectricityCostSummary(300, NON_SUMMER_ELECTRICITY_RATES);
 
-    expect(summary.energyCharge).toBe(591);
+    expect(summary.energyCharge).toBe(621);
     expect(summary.minimumChargeApplied).toBe(0);
-    expect(summary.totalCost).toBe(591);
+    expect(summary.totalCost).toBe(621);
   });
 
   it('applies current summer tier pricing for 300 kWh', () => {
     const summary = calcElectricityCostSummary(300, SUMMER_ELECTRICITY_RATES);
 
-    expect(summary.totalCost).toBe(643);
+    expect(summary.totalCost).toBe(673);
   });
 
   it('enforces the monthly minimum charge for low usage', () => {
     const summary = calcElectricityCostSummary(30, NON_SUMMER_ELECTRICITY_RATES);
 
-    expect(summary.energyCharge).toBe(50);
-    expect(summary.minimumChargeApplied).toBe(50);
+    expect(summary.energyCharge).toBe(53);
+    expect(summary.minimumChargeApplied).toBe(47);
     expect(summary.totalCost).toBe(100);
   });
 
@@ -42,4 +42,3 @@ describe('electricity calculator rules', () => {
     expect(estimateAcMonthlyKwh(inputKw, 8)).toBe(211);
   });
 });
-

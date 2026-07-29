@@ -17,12 +17,6 @@
         >
           租金補貼查詢
         </button>
-        <button 
-          @click="activeTab = 'vs'"
-          :class="['seg-btn', activeTab === 'vs' ? 'seg-btn-active' : '']"
-        >
-          租屋 vs 買房
-        </button>
       </div>
 
       <!-- Tab: Basic Calculator -->
@@ -132,7 +126,7 @@
                  </div>
                  <div class="ml-3">
                      <p class="text-sm text-blue-700">
-                         根據 2026 最新「300億元中央擴大租金補貼專案」估算。實際金額以政府核定為準。
+                         根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算。實際資格與金額以政府核定為準。
                      </p>
                  </div>
              </div>
@@ -145,9 +139,9 @@
                      <option value="Taipei">台北市</option>
                      <option value="NewTaipei">新北市</option>
                      <option value="Taoyuan">桃園市</option>
-                     <option value="Taichung">台中市</option>
-                     <option value="Tainan">台南市</option>
-                     <option value="Kaohsiung">高雄市</option>
+                     <option value="Taichung">台中市主要行政區</option>
+                     <option value="Tainan">台南市主要行政區</option>
+                     <option value="Kaohsiung">高雄市主要行政區</option>
                      <option value="Hsinchu">新竹縣市</option>
                      <option value="Other">其他縣市</option>
                  </select>
@@ -157,10 +151,14 @@
                  <select v-model="subsidyStatus" class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
                      <option value="SingleL40">單身 (未滿40歲) [1.2倍]</option>
                      <option value="Single">單身 (40歲以上) [無加碼]</option>
-                     <option value="Newlywed">新婚 (2年內) [1.3倍]</option>
+                     <option value="Newlywed">2025 年底前結婚的新婚家庭 [1.3倍]</option>
+                     <option value="Newlywed2026">2026 年起結婚的新婚家庭 [1.5倍]</option>
                      <option value="Child1">育有未成年子女 (1人) [1.4倍]</option>
                      <option value="Child2">育有未成年子女 (2人) [1.6倍]</option>
                      <option value="Child3">育有未成年子女 (3人+) [1.8倍]</option>
+                     <option value="Baby2026_1">2026 年起新生兒 (1人) [2倍]</option>
+                     <option value="Baby2026_2">2026 年起新生兒 (2人) [2.5倍]</option>
+                     <option value="Baby2026_3">2026 年起新生兒 (3人) [3倍]</option>
                      <option value="LowIncome">中低收入戶 [1.4倍]</option>
                  </select>
              </div>
@@ -175,69 +173,6 @@
              <p class="text-xs text-stone-500">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>
       </div>
-
-       <!-- Tab: Rent vs Buy -->
-        <div v-else-if="activeTab === 'vs'" class="calculator-shell">
-            <h3 class="font-bold text-stone-800 text-lg">💡 10年期資產模擬</h3>
-            <p class="text-sm text-stone-500">若你有 <span class="text-brand-600 font-bold font-mono">NT$ {{ (monthlyRent * 40).toLocaleString() }}</span> (模擬頭期款)，該買房還是租房投資？</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Rent Scenario -->
-                <div class="calculator-subcard">
-                    <h4 class="font-bold text-stone-700 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        租房 + 投資 (ETF)
-                    </h4>
-                    <p class="text-xs text-stone-500 mb-4">假設頭期款與每月差額投入 6% 複利</p>
-                    <div class="space-y-2">
-                         <div class="flex justify-between text-sm">
-                            <span class="text-stone-500">總租金支出</span>
-                            <span class="font-mono text-rose-600">-{{ (totalCost10Year).toLocaleString() }}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-stone-500">投資獲利</span>
-                            <span class="font-mono text-brand-600">+{{ (investmentGain).toLocaleString() }}</span>
-                        </div>
-                         <div class="h-px bg-stone-200 my-2"></div>
-                        <div class="flex justify-between font-bold">
-                            <span class="text-stone-700">10年後資產</span>
-                            <span class="font-mono text-blue-600">{{ (rentScenarioNet).toLocaleString() }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                 <!-- Buy Scenario -->
-                <div class="calculator-subcard">
-                    <h4 class="font-bold text-stone-700 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-brand-500"></span>
-                        買房 (槓桿效應)
-                    </h4>
-                    <p class="text-xs text-stone-500 mb-4">假設房價年漲 2%，支付利息與稅金</p>
-                    <div class="space-y-2">
-                         <div class="flex justify-between text-sm">
-                            <span class="text-stone-500">利息與稅金</span>
-                            <span class="font-mono text-rose-600">-{{ (housingCost10Year).toLocaleString() }}</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-stone-500">房產增值</span>
-                            <span class="font-mono text-brand-600">+{{ (propertyGain).toLocaleString() }}</span>
-                        </div>
-                        <div class="h-px bg-stone-200 my-2"></div>
-                        <div class="flex justify-between font-bold">
-                            <span class="text-stone-700">10年後淨值</span>
-                            <span class="font-mono text-brand-600">{{ (buyScenarioNet).toLocaleString() }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-brand-50 rounded-xl border border-brand-100">
-                <p class="text-sm font-bold text-brand-800 text-center">
-                    結論：{{ buyScenarioNet > rentScenarioNet ? '買房勝出' : '租房投資勝出' }} 
-                    (差距 {{ Math.abs(buyScenarioNet - rentScenarioNet).toLocaleString() }})
-                </p>
-            </div>
-        </div>
 
     </div>
   </div>
@@ -261,7 +196,7 @@ const baseSubsidyMap = {
     Taipei: 3000,
     NewTaipei: 2400,
     Taoyuan: 2400,
-    Taichung: 2200,
+    Taichung: 2400,
     Tainan: 2200,
     Kaohsiung: 2200,
     Hsinchu: 2400,
@@ -272,9 +207,13 @@ const multiplierMap = {
     SingleL40: 1.2,
     Single: 1,
     Newlywed: 1.3,
+    Newlywed2026: 1.5,
     Child1: 1.4,
     Child2: 1.6,
     Child3: 1.8,
+    Baby2026_1: 2,
+    Baby2026_2: 2.5,
+    Baby2026_3: 3,
     LowIncome: 1.4
 };
 
@@ -297,73 +236,6 @@ const totalCost = computed(() => {
   const monthly = (monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0);
   return (monthly * (leaseMonths.value || 0)).toLocaleString();
 });
-
-// Rent vs Buy Calcs (Simplified)
-const initialCapital = computed(() => (monthlyRent.value || 0) * 40); // Approx. down payment equivalent
-const totalCost10Year = computed(() => {
-    const monthly = (monthlyRent.value || 0) + (managementFee.value || 0);
-    return monthly * 12 * 10;
-});
-// Scenario 1: Rent + Invest (6% return on capital + monthly savings vs mortgage) -> simplified: just capital growth + diff
-// Actually let's simplify: Compare Capital Growth vs Property Growth - Costs
-// Pure Capital Growth if rented:
-const investmentGain = computed(() => {
-    const capital = initialCapital.value;
-    // FV = PV * (1+r)^n
-    const fv = capital * Math.pow(1.06, 10);
-    return Math.round(fv - capital);
-});
-const rentScenarioNet = computed(() => {
-    // Assets: Capital + Gain
-    // Costs: Rent paid (sunk cost)
-    // Wait, usually comparison is: Capital (invested) vs House (equity)
-    // Let's use Net Worth approach.
-    // Rent Net Worth = Initial Capital * (1.06)^10 - Rent * 10 years (assuming rent paid from income, but here we compare usage of capital)
-    // Let's assume income covers rent. 
-    // This is a complex topic. Let's use a standard simplified model:
-    // Rent path: Keep Initial Capital, invest it. Pay Rent.
-    // Buy path: Use Initial Capital as Downpayment. Pay Mortgage Interest + Tax. House appreciates.
-    
-    // Rent Net Worth = (Initial Capital * 1.79) - (Rent * 120) ?? No, you pay rent from salary.
-    // Let's assume Salary covers "Mortgage P&I" or "Rent + Invest diff".
-    // If Mortgage > Rent, Rent path invests the diff.
-    // If Rent > Mortgage, Buy path invests the diff (rare).
-    // Let's assume Mortgage ~ Rent * 1.5 roughly.
-    
-    // Simplified logic for UI demonstrative purpose:
-    // Rent Path Asset = Initial Capital * 1.06^10
-    // Buy Path Asset = (House Value * 1.02^10) - (Mortgage Remaining)
-    
-    const fvCapital = initialCapital.value * Math.pow(1.06, 10);
-    return Math.round(fvCapital);
-});
-
-const housingCost10Year = computed(() => {
-    // Interest + Tax + Maintenance ~ 2% of House Value per year
-    // House Value ~ Initial Capital * 5 (20% down)
-    const houseValue = initialCapital.value * 5;
-    return Math.round(houseValue * 0.02 * 10); // 10 years cost
-});
-
-const propertyGain = computed(() => {
-    const houseValue = initialCapital.value * 5;
-    const fvHouse = houseValue * Math.pow(1.02, 10); // 2% appreciation
-    return Math.round(fvHouse - houseValue);
-});
-
-const buyScenarioNet = computed(() => {
-    const houseValue = initialCapital.value * 5;
-    const fvHouse = houseValue * Math.pow(1.02, 10);
-    // Mortgage Remaining?
-    // Start loan = 80% = houseValue * 0.8
-    // 10 years later (~30% paid off in 30y loan? no, mostly interest)
-    // Let's say principal reduced by 15%.
-    const loanStart = houseValue * 0.8;
-    const loanEnd = loanStart * 0.85; 
-    
-    return Math.round(fvHouse - loanEnd);
-});
-
 
 // Auto-save for Dashboard
 watch(actualMonthly, (newVal) => {

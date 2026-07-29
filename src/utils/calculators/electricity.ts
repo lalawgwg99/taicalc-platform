@@ -24,21 +24,21 @@ export const MINIMUM_MONTHLY_CHARGE = 100;
 export const BTU_PER_KW = 3412.142;
 
 export const SUMMER_ELECTRICITY_RATES: ElectricityRateTier[] = [
-  { limit: 120, rate: 1.68 },
-  { limit: 330, rate: 2.45 },
-  { limit: 500, rate: 3.7 },
-  { limit: 700, rate: 5.04 },
-  { limit: 1000, rate: 6.24 },
-  { limit: Infinity, rate: 8.46 }
+  { limit: 120, rate: 1.78 },
+  { limit: 330, rate: 2.55 },
+  { limit: 500, rate: 3.8 },
+  { limit: 700, rate: 5.14 },
+  { limit: 1000, rate: 6.44 },
+  { limit: Infinity, rate: 8.86 }
 ];
 
 export const NON_SUMMER_ELECTRICITY_RATES: ElectricityRateTier[] = [
-  { limit: 120, rate: 1.68 },
-  { limit: 330, rate: 2.16 },
-  { limit: 500, rate: 3.03 },
-  { limit: 700, rate: 4.14 },
-  { limit: 1000, rate: 5.66 },
-  { limit: Infinity, rate: 6.71 }
+  { limit: 120, rate: 1.78 },
+  { limit: 330, rate: 2.26 },
+  { limit: 500, rate: 3.13 },
+  { limit: 700, rate: 4.24 },
+  { limit: 1000, rate: 5.27 },
+  { limit: Infinity, rate: 7.03 }
 ];
 
 const clamp = (value: number, min: number, max: number): number => Math.min(max, Math.max(min, value));
@@ -114,4 +114,3 @@ export const estimateAcMonthlyKwh = (inputKw: number, hoursPerDay: number): numb
   const normalizedHours = clamp(Number(hoursPerDay) || 0, 0, 24);
   return Math.round(Math.max(0, inputKw) * normalizedHours * 30);
 };
-

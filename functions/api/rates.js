@@ -15,12 +15,12 @@ const CORS_HEADERS = {
     'Cache-Control':                'public, max-age=3600', // 1-hour client cache
 };
 
-// ── Fallback values (updated 2026 Q1) ────────────────────────────────
+// ── Fallback values (official releases available as of 2026-07-29) ──
 const FALLBACKS = {
     mortgage: {
-        rate:     2.18,
+        rate:     2.299,
         source:   '央行五大銀行新承做房貸加權平均利率',
-        period:   '2025 Q4',
+        period:   '2026 年 6 月',
         fallback: true,
     },
     cpi: {
@@ -31,12 +31,11 @@ const FALLBACKS = {
     },
 };
 
-// ── ETF 歷史報酬預設（教育性參考值）────────────────────────────────
+// ── 投資情境預設（教育性參考值，不代表特定商品績效）────────────────
 const ETF_PRESETS = [
-    { symbol: '0050', label: '元大台灣50',   rate: 10.2, note: '2009–2024 含息年化報酬' },
-    { symbol: '0056', label: '元大高股息',   rate:  8.4, note: '2008–2024 含息年化報酬' },
-    { symbol: 'MIX',  label: '台股大盤均值', rate:  9.0, note: '台灣加權指數長期均值' },
-    { symbol: 'SAFE', label: '保守混合配置', rate:  5.0, note: '60/40 股債配置均值（扣通膨）' },
+    { symbol: 'GROWTH',  label: '成長情境', rate: 8.0, note: '名目報酬情境，不代表未來績效' },
+    { symbol: 'BALANCED', label: '均衡情境', rate: 6.0, note: '名目報酬情境，不代表未來績效' },
+    { symbol: 'CAUTIOUS', label: '審慎情境', rate: 4.0, note: '名目報酬情境，不代表未來績效' },
 ];
 
 // ── Router ───────────────────────────────────────────────────────────
@@ -118,19 +117,6 @@ async function getCPIRate() {
 // ── TWSE ETF 數據 + 靜態歷史報酬預設 ─────────────────────────────────
 async function getETFData() {
     const presets = [...ETF_PRESETS];
-
-    // 嘗試從 TWSE 取得 0050 最新收盤價（豐富展示用）
-    try {
-        const rows = await safeFetch(
-            'https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG?stockNo=0050',
-            3000
-        );
-        if (Array.isArray(rows) && rows.length > 0) {
-            const latest = rows[rows.length - 1];
-            presets[0].latestPrice = latest?.ClosingPrice ?? null;
-            presets[0].tradeDate   = latest?.Date ?? null;
-        }
-    } catch (_) { /* TWSE optional — static presets still returned */ }
 
     return json({ presets });
 }

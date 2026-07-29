@@ -6,7 +6,8 @@ import {
   INSURANCE_DEDUCTION_PER_PERSON,
   LONG_TERM_CARE_PER_PERSON,
   MORTGAGE_INTEREST_DEDUCTION_MAX,
-  PRESCHOOL_DEDUCTION_PER_PERSON,
+  PRESCHOOL_ADDITIONAL_CHILD,
+  PRESCHOOL_FIRST_CHILD,
   RENT_DEDUCTION_MAX,
   SALARY_SPECIAL_MAX,
   SAVINGS_DEDUCTION_MAX,
@@ -55,6 +56,7 @@ export interface IncomeTaxCalculationResult {
   longTermCareDeduction: number;
   disabilityDeduction: number;
   preschoolDeduction: number;
+  rentSpecialDeduction: number;
   laborPensionSelfContribution: number;
   itemizedTotal: number;
   recommendation: DeductionType;
@@ -123,14 +125,17 @@ export const calculateIncomeTax = (
   const savingsDeduction = Math.min(interestIncome, SAVINGS_DEDUCTION_MAX);
   const longTermCareDeduction = normalizeCount(input.longTermCareEligibleCount) * LONG_TERM_CARE_PER_PERSON;
   const disabilityDeduction = normalizeCount(input.disabilityCount) * DISABILITY_DEDUCTION_PER_PERSON;
-  const preschoolDeduction = normalizeCount(input.preschoolCount) * PRESCHOOL_DEDUCTION_PER_PERSON;
+  const preschoolCount = normalizeCount(input.preschoolCount);
+  const preschoolDeduction = preschoolCount > 0
+    ? PRESCHOOL_FIRST_CHILD + Math.max(0, preschoolCount - 1) * PRESCHOOL_ADDITIONAL_CHILD
+    : 0;
+  const rentSpecialDeduction = Math.min(normalizeAmount(input.rentDeduction), RENT_DEDUCTION_MAX);
 
   const itemizedInsuranceCap = INSURANCE_DEDUCTION_PER_PERSON * totalExemptions;
   const itemizedTotal = normalizeAmount(input.donationDeduction)
     + Math.min(normalizeAmount(input.insuranceDeduction), itemizedInsuranceCap)
     + normalizeAmount(input.medicalDeduction)
     + Math.min(normalizeAmount(input.mortgageDeduction), MORTGAGE_INTEREST_DEDUCTION_MAX)
-    + Math.min(normalizeAmount(input.rentDeduction), RENT_DEDUCTION_MAX)
     + normalizeAmount(input.politicalDeduction);
 
   const recommendation: DeductionType = itemizedTotal > standardDeduction ? 'itemized' : 'standard';
@@ -146,6 +151,7 @@ export const calculateIncomeTax = (
       - longTermCareDeduction
       - disabilityDeduction
       - preschoolDeduction
+      - rentSpecialDeduction
       - laborPensionSelfContribution
   );
 
@@ -182,6 +188,7 @@ export const calculateIncomeTax = (
     longTermCareDeduction,
     disabilityDeduction,
     preschoolDeduction,
+    rentSpecialDeduction,
     laborPensionSelfContribution,
     itemizedTotal,
     recommendation,

@@ -83,12 +83,12 @@
         <div>
           <label class="block text-xs font-medium text-ink-400 mb-1.5">身心障礙人數</label>
           <input type="number" v-model.number="disabilityCount" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">每人 218,000</p>
+          <p class="text-[10px] text-ink-400 mt-1">每人 227,000</p>
         </div>
         <div>
           <label class="block text-xs font-medium text-ink-400 mb-1.5">學前幼兒人數</label>
           <input type="number" v-model.number="preschoolCount" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">每人 150,000</p>
+          <p class="text-[10px] text-ink-400 mt-1">第 1 人 150,000；第 2 人起每人 225,000</p>
         </div>
       </div>
 
@@ -152,15 +152,16 @@
             <p class="text-[10px] text-ink-400 mt-0.5">上限 300,000</p>
           </div>
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">房屋租金支出（NT$）</label>
-            <input type="number" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
-            <p class="text-[10px] text-ink-400 mt-0.5">上限 120,000（自住、非出租）</p>
-          </div>
-          <div>
             <label class="block text-xs font-medium text-ink-400 mb-1.5">政治捐獻（NT$）</label>
             <input type="number" v-model.number="politicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
           </div>
         </div>
+      </div>
+
+      <div class="border-t border-paper-300 pt-3">
+        <label class="block text-xs font-medium text-ink-400 mb-1.5">自住房屋租金支出特別扣除額（NT$）</label>
+        <input type="number" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+        <p class="text-[10px] text-ink-400 mt-1">每戶上限 180,000；須扣除租金補貼，並受自有房屋及排富規定限制。</p>
       </div>
     </div>
 
@@ -217,6 +218,10 @@
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">幼兒學前特別扣除額</span>
           <span class="tabular-nums text-red-500">− $ {{ fmt(preschoolDeduction) }}</span>
+        </div>
+        <div v-if="rentSpecialDeduction > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+          <span class="text-ink-400">房屋租金支出特別扣除額</span>
+          <span class="tabular-nums text-red-500">− $ {{ fmt(rentSpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">儲蓄投資特別扣除額</span>
@@ -295,7 +300,7 @@
 
     <!-- 稅率級距表 -->
     <div class="card-surface p-5">
-      <h3 class="text-sm font-medium text-ink-600 mb-3">2026 累進稅率級距</h3>
+      <h3 class="text-sm font-medium text-ink-600 mb-3">115 年度累進稅率級距（2027 年 5 月申報）</h3>
       <div class="space-y-1.5">
         <div v-for="bracket in TAX_BRACKETS" :key="bracket.rate"
           :class="['flex items-center justify-between text-xs px-3 py-2 rounded-lg transition-colors',
@@ -321,17 +326,18 @@
 
     <!-- 免稅說明 -->
     <div class="note-box space-y-1.5">
-      <p class="font-medium text-ink-500">2026 扣除標準（財政部公告）</p>
+      <p class="font-medium text-ink-500">115 年度扣除標準（財政部公告）</p>
       <div class="grid grid-cols-2 gap-2 mt-2 text-[11px]">
-        <div>• 每人免稅額：<strong>$97,000</strong></div>
-        <div>• 標準扣除（單身）：<strong>$131,000</strong></div>
-        <div>• 標準扣除（夫妻）：<strong>$262,000</strong></div>
-        <div>• 薪資特別扣除：<strong>$218,000</strong>（上限）</div>
+        <div>• 每人免稅額：<strong>$101,000</strong></div>
+        <div>• 標準扣除（單身）：<strong>$136,000</strong></div>
+        <div>• 標準扣除（夫妻）：<strong>$272,000</strong></div>
+        <div>• 薪資特別扣除：<strong>$227,000</strong>（上限）</div>
         <div>• 儲蓄投資特扣：<strong>$270,000</strong></div>
-        <div>• 身障特別扣除：<strong>$218,000</strong>/人</div>
-        <div>• 幼兒學前特扣：<strong>$150,000</strong>/人</div>
+        <div>• 身障特別扣除：<strong>$227,000</strong>/人</div>
+        <div>• 幼兒學前特扣：首名 <strong>$150,000</strong>、第二名起 $225,000</div>
         <div>• 長照特別扣除：<strong>$180,000</strong>/人</div>
       </div>
+      <p class="text-[10px] text-ink-400">115 年度每人基本生活費尚待財政部於年度結束後公告，暫未納入。</p>
     </div>
 
   </div>
@@ -403,6 +409,7 @@ const savingsDeduction = computed(() => taxResult.value.savingsDeduction);
 const longTermCareDeduction = computed(() => taxResult.value.longTermCareDeduction);
 const disabilityDeduction = computed(() => taxResult.value.disabilityDeduction);
 const preschoolDeduction = computed(() => taxResult.value.preschoolDeduction);
+const rentSpecialDeduction = computed(() => taxResult.value.rentSpecialDeduction);
 const itemizedTotal = computed(() => taxResult.value.itemizedTotal);
 const recommendation = computed(() => (
   deductionType.value === 'itemized' ? null : taxResult.value.recommendation

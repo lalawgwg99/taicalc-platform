@@ -98,11 +98,11 @@
                 v-model.number="taxRate"
                 class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 text-sm focus:outline-none appearance-none"
               >
-                <option :value="5">5% (年收 0-59萬)</option>
-                <option :value="12">12% (59-133萬)</option>
-                <option :value="20">20% (133-266萬)</option>
-                <option :value="30">30% (266-498萬)</option>
-                <option :value="40">40% (498萬以上)</option>
+                <option :value="5">5% (所得淨額 0-61萬)</option>
+                <option :value="12">12% (61-138萬)</option>
+                <option :value="20">20% (138-277萬)</option>
+                <option :value="30">30% (277-519萬)</option>
+                <option :value="40">40% (519萬以上)</option>
               </select>
             </div>
           </div>

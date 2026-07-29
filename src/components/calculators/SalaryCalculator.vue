@@ -165,7 +165,7 @@
                         <p class="text-base font-semibold text-ink-800 tabular-nums">$ {{ totalCost.toLocaleString() }}</p>
                     </div>
                 </div>
-                <p class="note-box mt-3">雇主每月額外負擔：勞保 70%、健保 60%（×1.58 眷屬係數）、勞退 6%。</p>
+                <p class="note-box mt-3">雇主每月額外負擔：勞保及就保 70%、健保 60%（×1.56 平均眷口係數）、勞退 6%。</p>
             </div>
 
         <!-- 可存金額與緊急預備金 -->
@@ -425,7 +425,7 @@
                 </div>
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
                     <p class="text-xs text-ink-400">勞保費率</p>
-                    <p class="text-sm font-bold text-ink-700 mt-0.5">12%</p>
+                    <p class="text-sm font-bold text-ink-700 mt-0.5">12.5%</p>
                     <p class="text-[10px] text-ink-300">含就保 1%</p>
                 </div>
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
