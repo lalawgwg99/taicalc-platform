@@ -215,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineComponent, h, reactive } from 'vue';
+import { computed, defineComponent, h, reactive, watch } from 'vue';
 import {
   calculateCarCost, calculateDebtConsolidation, calculateEstateTax, calculateHomeCost,
   calculateLaborPension, calculateParentalBenefits, calculateRealReturns, calculateSeparation,
@@ -249,6 +249,11 @@ const debtResult = computed(() => calculateDebtConsolidation(debts, debtPlan.rat
 const laborPension = reactive({ averageInsuredSalary: 45_800, insuredYears: 30, claimAge: 65, lumpSumEligible: true });
 const laborPensionResult = computed(() => calculateLaborPension(laborPension.averageInsuredSalary, laborPension.insuredYears, laborPension.claimAge, laborPension.lumpSumEligible));
 const tax = reactive({ type: 'estate' as 'estate' | 'gift', gross: 30_000_000, debts: 2_000_000, spouse: true, children: 2, parents: 0, disabled: 0, otherDeductions: 0 });
+watch(() => tax.type, (type) => {
+  tax.gross = type === 'gift' ? 3_000_000 : 30_000_000;
+  tax.debts = type === 'gift' ? 0 : 2_000_000;
+  tax.otherDeductions = 0;
+});
 const taxResult = computed(() => calculateEstateTax(tax));
 const parental = reactive({ insuredSalary: 40_000, parent1Months: 6, parent2Months: 6, childOrder: 1, allowanceMonths: 24, publicCare: false });
 const parentalResult = computed(() => calculateParentalBenefits(parental));
