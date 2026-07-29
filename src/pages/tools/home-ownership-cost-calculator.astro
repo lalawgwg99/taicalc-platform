@@ -1,0 +1,16 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+const sources = [
+  { label: '財政部｜房屋稅 2.0', href: 'https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/local/house-tax/5qYVKWW' },
+  { label: '財政部｜地價稅自用住宅稅率', href: 'https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-secret/3A3RBO0' },
+];
+const faqs = [
+  { q: '房屋稅是用成交價計算嗎？', a: '不是。房屋稅以房屋評定現值乘稅率；地價稅則以申報地價為基礎。' },
+  { q: '為什麼持有成本不等於現金流出？', a: '房貸本金償還是在累積房屋淨值，不列為財務成本；但它仍會從帳戶流出，所以工具另外顯示包含本金的現金流。' },
+];
+---
+<ToolLayout title="買房持有成本計算器｜房貸、房屋稅、地價稅" description="整合房屋稅、地價稅、管理費、維修、保險與房貸，分開看真正成本與現金流。" keywords="買房持有成本,房屋稅計算,地價稅,管理費,房貸月付,養房成本" category="居住與房產" kicker="買得起只是第一關，長期養得起才是答案。" faqs={faqs} dataVersion="2026.07-home-v1" dataYear="房屋稅 2.0" lastUpdated="2026-07-29" sources={sources}>
+  <DecisionCalculator type="home-cost" client:only="vue" slot="tool" />
+  <div slot="article"><h2>持有成本與現金流要分開</h2><p>利息、稅、管理、維修與保險是持有成本；房貸本金會轉為房屋淨值，但仍占用每月現金。因此結果同時呈現「每月持有成本」和「每年現金流出」。</p><p>房屋稅實際稅率會依自住要件、全國持有戶數與地方政府差別稅率而不同；一般用地地價稅另採累進稅率，本工具提供自填稅率以避免錯套。</p></div>
+</ToolLayout>

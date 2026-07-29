@@ -106,7 +106,7 @@ const relatedTools = getRelatedTools(currentPath);
             </div>
         </header>
 
-        <main id="calculator-panel" class="mb-10 max-w-3xl">
+        <main id="calculator-panel" class="mb-10 max-w-6xl">
             <div class="section-heading mb-5">
                 <div>
                     <h2 class="text-xl font-semibold text-ink-700">輸入條件</h2>
@@ -115,7 +115,7 @@ const relatedTools = getRelatedTools(currentPath);
             <slot name="tool" />
         </main>
 
-        <section class="max-w-3xl mb-12">
+        <section class="max-w-4xl mb-12">
             <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
                 <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源與使用提醒</summary>
                 <div class="mt-5 grid gap-4 md:grid-cols-3">
@@ -158,7 +158,7 @@ const relatedTools = getRelatedTools(currentPath);
             </details>
         </section>
 
-        <details id="guide-panel" class="mb-12 max-w-3xl rounded-2xl border border-paper-300 bg-paper-200 p-5">
+        <details id="guide-panel" class="mb-12 max-w-4xl rounded-2xl border border-paper-300 bg-paper-200 p-5">
             <summary class="cursor-pointer text-sm font-semibold text-ink-700">規則說明</summary>
             <article class="prose prose-gray mt-5 text-sm">
                 <slot name="article" />
@@ -166,7 +166,7 @@ const relatedTools = getRelatedTools(currentPath);
         </details>
 
         {faqs.length > 0 && (
-            <section class="mb-16 max-w-3xl">
+            <section class="mb-16 max-w-4xl">
                 <div class="flex items-center gap-3 mb-6 border-t border-paper-300 pt-10">
                     <div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
@@ -192,7 +192,7 @@ const relatedTools = getRelatedTools(currentPath);
             </section>
         )}
 
-        <section class="border-t border-paper-300 pt-10 mb-16 max-w-3xl">
+        <section class="border-t border-paper-300 pt-10 mb-16 max-w-4xl">
             <div class="section-heading mb-6">
                 <div>
                     <h3 class="text-sm font-medium text-ink-400 uppercase tracking-widest">更多工具</h3>

@@ -1,0 +1,17 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+const sources = [
+  { label: '財政部｜使用牌照稅', href: 'https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/local/vehicle-license-tax/2Jv5NBY' },
+  { label: '交通部公路局｜公路養管費（原汽燃費）', href: 'https://www.thb.gov.tw/cp.aspx?Create=1&n=224' },
+  { label: '財政部｜電動車免徵牌照稅延長至 2030', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=dbcf258b658c4a399c43c596709d09d4' },
+];
+const faqs = [
+  { q: '買車只看車貸月付夠嗎？', a: '不夠。真正成本還包括牌照稅、燃料使用費、保險、能源、保養、停車、貸款利息與折舊。' },
+  { q: '電動車目前要繳牌照稅嗎？', a: '完全以電能為動力的車輛免徵使用牌照稅優惠已延長至 2030 年底，仍以主管機關最新公告為準。' },
+];
+---
+<ToolLayout title="買車總成本計算器｜車貸、稅金、折舊一次算" description="整合車貸月付、牌照稅、公路養管費、保險、油電費、停車、保養與折舊，算出真正每月養車成本。" keywords="買車成本計算機,養車成本,車貸試算,牌照稅,公路養管費,汽車折舊" category="交通與購車" kicker="別只看月付，把 8 年後少掉的錢一次算完。" faqs={faqs} dataVersion="2026.07-car-v2" dataYear="2026 現行規則" lastUpdated="2026-07-29" sources={sources}>
+  <DecisionCalculator type="car" client:only="vue" slot="tool" />
+  <div slot="article"><h2>買車的真正成本</h2><p>本工具將購車價差、持有期間貸款利息與日常支出放在同一張帳上。2026 年起汽車燃料使用費已更名為「公路使用養護安全管理費」（公路養管費），費額表沿用排氣量與汽柴油分類。折舊以你設定的期末殘值估算，保險、維修與能源價格則是可調情境。</p><h3>結果怎麼看</h3><p>「每月總成本」適合拿來和大眾運輸、租車或不同車款比較；它不是每月實際扣款，而是把折舊等成本平均攤開。</p></div>
+</ToolLayout>

@@ -880,6 +880,147 @@ body::before {
     display: none;
 }
 
+/* ─── 2026 Decision-first redesign ───────────────────────────── */
+.decision-hero {
+    background:
+        radial-gradient(560px 320px at 14% 0%, rgba(54, 196, 155, .22), transparent 65%),
+        radial-gradient(420px 260px at 92% 85%, rgba(255, 127, 80, .12), transparent 68%);
+}
+
+.decision-hero-shell {
+    overflow: hidden;
+    border: 1px solid rgba(150, 168, 155, .28);
+    border-radius: 2rem;
+    background: #102419;
+    box-shadow: 0 36px 90px -54px rgba(7, 21, 13, .9);
+}
+
+.decision-hero-copy {
+    padding: clamp(1.6rem, 5vw, 4.5rem);
+}
+
+.decision-search {
+    margin: .45rem;
+    border-radius: 1.65rem;
+    background: #f8faf7;
+    box-shadow: inset 0 0 0 1px rgba(221, 229, 224, .9);
+}
+
+.decision-primary,
+.decision-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .8rem;
+    padding: .8rem 1.1rem;
+    font-size: .82rem;
+    font-weight: 700;
+    transition: transform .18s ease, background-color .18s ease;
+}
+
+.decision-primary {
+    background: #72dfba;
+    color: #07150d;
+}
+
+.decision-primary:hover {
+    background: #a9efd4;
+    transform: translateY(-1px);
+}
+
+.decision-secondary {
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #e4ebe6;
+}
+
+.decision-secondary:hover {
+    background: rgba(255, 255, 255, .08);
+}
+
+.decision-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .8rem;
+}
+
+.decision-card {
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #d8e1db;
+    border-radius: 1.35rem;
+    padding: 1.15rem;
+    background: rgba(255, 255, 255, .88);
+    box-shadow: 0 18px 50px -42px rgba(7, 21, 13, .5);
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.decision-card:hover {
+    transform: translateY(-3px);
+    border-color: #72dfba;
+    box-shadow: 0 24px 58px -38px rgba(11, 124, 98, .4);
+}
+
+.decision-card-wide {
+    background:
+        radial-gradient(220px 160px at 100% 0%, rgba(114, 223, 186, .18), transparent 72%),
+        #fff;
+}
+
+.decision-index {
+    font-size: .68rem;
+    font-weight: 700;
+    color: #687b6e;
+}
+
+.decision-arrow {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: #ecfdf7;
+    color: #0b7c62;
+    transition: transform .2s ease;
+}
+
+.decision-card:hover .decision-arrow {
+    transform: rotate(12deg);
+}
+
+.tool-hero-panel {
+    border-radius: 1.5rem;
+    border-left: 4px solid #139b79;
+}
+
+@media (min-width: 900px) {
+    .decision-card-wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 899px) {
+    .decision-card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .decision-hero-shell,
+    .decision-search {
+        border-radius: 1.35rem;
+    }
+
+    .decision-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .decision-card {
+        min-height: 175px;
+    }
+}
+
 /* ─── Scrollbar ───────────────────────────────────────────────── */
 ::-webkit-scrollbar {
     width: 6px;

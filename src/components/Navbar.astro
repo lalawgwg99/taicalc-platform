@@ -11,10 +11,10 @@ const isActive = (href: string) => {
 
         <div class="hidden md:flex items-center gap-4 text-[11px] uppercase tracking-[0.2em]">
             <a href="/" class={`px-2 py-1 rounded-full transition-all ${isActive('/') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>首頁</a>
-            <a href="/tools/salary-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/salary') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>薪資</a>
-            <a href="/tools/income-tax-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/income-tax') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>所得稅</a>
-            <a href="/tools/mortgage-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/mortgage') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>房貸</a>
-            <a href="/#support-tools" class={`px-2 py-1 rounded-full transition-all ${currentPath === '/' ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>輔助工具</a>
+            <a href="/#new-decisions" class="px-2 py-1 rounded-full text-ink-400 hover:text-ink-700 hover:bg-paper-200/70 transition-all">熱門決策</a>
+            <a href="/tools/car-cost-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/car-cost') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>買車</a>
+            <a href="/tools/home-ownership-cost-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/home-ownership') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>買房</a>
+            <a href="/#support-tools" class="px-2 py-1 rounded-full text-ink-400 hover:text-ink-700 hover:bg-paper-200/70 transition-all">所有工具</a>
             <a href="/blog" class={`px-2 py-1 rounded-full transition-all ${isActive('/blog') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>專欄</a>
         </div>
 
@@ -33,17 +33,14 @@ const isActive = (href: string) => {
 <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-paper-100/95 backdrop-blur-2xl pt-16">
     <div class="px-4 pt-6 pb-8 flex flex-col gap-1">
         <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200/80 transition-colors">首頁</a>
-        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">三大核心</p>
-        <a href="/tools/salary-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">薪資實拿計算</a>
-        <a href="/tools/income-tax-calculator" class="menu-link flex items-center justify-between px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">
-            <span>綜合所得稅試算</span>
-            <span class="text-[10px] font-bold text-brand bg-brand-50 px-1.5 py-0.5 rounded-full border border-brand-200">CORE</span>
-        </a>
-        <a href="/tools/mortgage-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">房貸試算</a>
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">熱門決策</p>
+        <a href="/tools/car-cost-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">買車總成本</a>
+        <a href="/tools/severance-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">離職結算</a>
+        <a href="/tools/home-ownership-cost-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">買房持有成本</a>
 
         <div class="h-px bg-paper-300 my-3"></div>
-        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">輔助入口</p>
-        <a href="/#support-tools" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">查看輔助工具</a>
+        <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">工具入口</p>
+        <a href="/#support-tools" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">查看所有計算器</a>
         <a href="/housing-toolbox" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">居住決策工具箱</a>
         <a href="/tax-season" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">報稅季攻略</a>
 

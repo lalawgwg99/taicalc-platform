@@ -2,20 +2,34 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
-import { getCoreTools, getSupportTools, toolCatalog } from '../data/toolCatalog';
+import { getSupportTools, getToolByHref, toolCatalog } from '../data/toolCatalog';
 
-const title = "TaiCalc 台灣財務計算機｜2026 薪資、所得稅、房貸免費試算";
-const description = "免費試算 2026 台灣薪資實拿、綜合所得稅、房貸月付金，以及勞健保、加班費、退休金等 13 種工具。免登入、本地運算，附官方資料來源。";
-const keywords = "台灣薪資計算機,所得稅試算,房貸試算,新青安,勞健保級距,台灣財務計算,本地計算";
+const title = "TaiCalc 台灣生活決策計算器｜工作、買車、買房、退休";
+const description = "把台灣人的工作、買車、買房、貸款、育兒、稅務與退休問題，整理成能直接比較的數字。免登入、主要計算在本機，法規型工具附官方來源。";
+const keywords = "台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,遺產稅,育兒津貼,買房成本,實質報酬";
 
-const coreTools = getCoreTools();
 const supportTools = getSupportTools();
 const supportCategories = Array.from(new Set(supportTools.map((tool) => tool.category))).map((category) => ({
     category,
     tools: supportTools.filter((tool) => tool.category === category),
 }));
 
-const quickLinks = coreTools;
+const quickLinks = [
+    '/tools/car-cost-calculator',
+    '/tools/severance-calculator',
+    '/tools/home-ownership-cost-calculator',
+    '/tools/debt-consolidation-calculator',
+].map((path) => getToolByHref(path)!);
+const featuredDecisions = [
+    '/tools/car-cost-calculator',
+    '/tools/severance-calculator',
+    '/tools/debt-consolidation-calculator',
+    '/tools/labor-insurance-pension-calculator',
+    '/tools/estate-gift-tax-calculator',
+    '/tools/parental-benefit-calculator',
+    '/tools/home-ownership-cost-calculator',
+    '/tools/real-return-calculator',
+].map((path) => getToolByHref(path)!);
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
 const latestPosts = allPosts
@@ -48,49 +62,42 @@ const homeFaqSchema = JSON.stringify({
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
-    <section class="relative overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-24 md:pb-24">
-        <div class="absolute inset-0 pointer-events-none">
-            <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[860px] h-[860px] bg-brand/10 blur-3xl animate-float-slow"></div>
-            <div class="absolute top-10 right-[-140px] w-[420px] h-[420px] bg-ink-800/5 blur-3xl"></div>
-        </div>
-
+    <section class="decision-hero relative overflow-hidden py-10 sm:py-14 md:py-20">
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
-            <div class="grid gap-7 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 items-center">
-                <div class="animate-fade-in-up reveal" data-reveal>
-                    <p class="hermes-label">2026 台灣財務決策工具</p>
-                    <h1 class="mt-5 max-w-2xl text-[2.55rem] leading-[1.08] font-semibold tracking-tight text-ink-800 sm:text-5xl lg:text-[3.65rem]">
-                        你的錢，<br class="hidden sm:block" />先算清楚再決定
+            <div class="decision-hero-shell grid gap-1 lg:grid-cols-[1.15fr_0.85fr]">
+                <div class="decision-hero-copy animate-fade-in-up reveal" data-reveal>
+                    <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-brand-300">Taiwan decision toolkit · 2026</p>
+                    <h1 class="mt-5 max-w-2xl text-[2.7rem] leading-[1.02] font-semibold tracking-[-.045em] text-white sm:text-5xl lg:text-[4rem]">
+                        人生很難選，<br />數字可以先算。
                     </h1>
-                    <p class="mt-5 max-w-xl text-base leading-8 text-ink-500 sm:text-lg">
-                        從月薪實拿、五月報稅到買房月付，一次看懂真正會進出帳戶的數字。
+                    <p class="mt-5 max-w-xl text-base leading-8 text-ink-200">
+                        離職該拿多少、這台車養不養得起、買房後每月還剩多少。把台灣規則翻成你能立刻比較的答案。
                     </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="/tools/salary-calculator" class="btn-primary animate-halo" data-sfx="accent">算我的薪資實拿</a>
-                        <a href="#support-tools" class="btn-ghost border border-paper-300" data-sfx="tap">瀏覽所有工具</a>
+                        <a href="#new-decisions" class="decision-primary" data-sfx="accent">選一個問題開始</a>
+                        <a href="#support-tools" class="decision-secondary" data-sfx="tap">看全部工具</a>
                     </div>
 
-                    <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-500">
-                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>免註冊</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-brand"></span>本地計算</span>
-                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-violet-400"></span>{platformGovernance.dataYear}</span>
+                    <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-200">
+                        <span>免註冊</span><span>主要計算不離開瀏覽器</span><span>標示資料年度</span>
                     </div>
                 </div>
 
-                <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="card-surface w-full p-5 sm:p-6 md:p-7 lg:max-w-md animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
+                <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="decision-search w-full p-5 sm:p-6 md:p-7 animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-lg font-medium text-ink-700">現在最想解決什麼？</p>
-                            <p class="mt-1 text-xs text-ink-500">選一個情境，約 30 秒看到結果</p>
+                            <p class="text-lg font-semibold text-ink-800">你現在卡在哪一題？</p>
+                            <p class="mt-1 text-xs text-ink-500">直接搜尋，或從常見決策開始</p>
                         </div>
-                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">CORE</span>
+                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">快速開始</span>
                     </div>
 
                     <div class="relative mt-4">
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有財務工具" placeholder="搜尋所有工具，例如：加班費" class="input-clean pl-10 pr-4 text-sm" />
+                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" placeholder="例如：資遣費、車貸、育兒津貼" class="input-clean pl-10 pr-4 text-sm" />
                         <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                     </div>
 
@@ -102,8 +109,8 @@ const homeFaqSchema = JSON.stringify({
                                 data-sfx="tap"
                             >
                                 <div>
-                                    <p class="text-sm font-medium text-ink-700">{tool.label}</p>
-                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario} · {tool.cta}</p>
+                                    <p class="text-sm font-semibold text-ink-700">{tool.label}</p>
+                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario}</p>
                                 </div>
                                 <svg class="text-ink-500 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                             </a>
@@ -115,31 +122,29 @@ const homeFaqSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+    <section id="new-decisions" class="py-14 sm:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="mb-7">
-                <p class="hermes-label">POPULAR PATHS</p>
-                <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">從你正在面對的問題開始</h2>
+            <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                    <p class="hermes-label">NEW DECISIONS</p>
+                    <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-4xl">這次，從真正的大支出開始</h2>
+                </div>
+                <p class="max-w-md text-sm leading-7 text-ink-500">不只算單一月付，改成比較整段人生決策的總成本、收入缺口與稅務影響。</p>
             </div>
-            <div class="grid gap-4 md:grid-cols-3">
-                <a href="/tools/salary-calculator" class="group card-surface-hover p-5" data-sfx="tap">
-                    <span class="text-xs text-brand">01 · 工作</span>
-                    <h3 class="mt-4 text-lg font-semibold text-ink-700">拿到 Offer，實拿有多少？</h3>
-                    <p class="mt-2 text-sm leading-6 text-ink-500">算勞健保、勞退與年終，還能直接比較兩份工作。</p>
-                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始算薪資 →</span>
-                </a>
-                <a href="/tools/income-tax-calculator" class="group card-surface-hover p-5" data-sfx="tap" data-season="tax">
-                    <span class="text-xs text-brand">02 · 報稅</span>
-                    <h3 class="mt-4 text-lg font-semibold text-ink-700">今年要補稅還是退稅？</h3>
-                    <p class="mt-2 text-sm leading-6 text-ink-500">比較單身、夫妻與扶養情境，先抓出五月現金需求。</p>
-                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始估稅額 →</span>
-                </a>
-                <a href="/tools/mortgage-calculator" class="group card-surface-hover p-5" data-sfx="tap">
-                    <span class="text-xs text-brand">03 · 買房</span>
-                    <h3 class="mt-4 text-lg font-semibold text-ink-700">這間房，月付扛得住嗎？</h3>
-                    <p class="mt-2 text-sm leading-6 text-ink-500">比較利率、寬限期與總利息，先看最壞情境。</p>
-                    <span class="mt-5 inline-flex text-sm font-medium text-brand group-hover:translate-x-1 transition-transform">開始算房貸 →</span>
-                </a>
+            <div class="decision-card-grid">
+                {featuredDecisions.map((tool, index) => (
+                    <a href={tool.href} class={`decision-card group ${index === 0 || index === 6 ? 'decision-card-wide' : ''}`} data-sfx="tap">
+                        <div class="flex items-start justify-between gap-4">
+                            <span class="decision-index">{String(index + 1).padStart(2, '0')}</span>
+                            <span class="decision-arrow">↗</span>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-semibold tracking-[.12em] text-brand-600">{tool.category}</p>
+                            <h3 class="mt-2 text-lg font-semibold text-ink-800">{tool.label}</h3>
+                            <p class="mt-2 text-sm leading-6 text-ink-500">{tool.desc}</p>
+                        </div>
+                    </a>
+                ))}
             </div>
         </div>
     </section>

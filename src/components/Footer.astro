@@ -3,11 +3,11 @@ import { platformGovernance } from '../data/regulatoryMetadata';
 
 const currentYear = new Date().getFullYear();
 const tools = [
-    { href: '/tools/salary-calculator', label: '薪資實拿（核心）' },
-    { href: '/tools/income-tax-calculator', label: '所得稅試算（核心）' },
-    { href: '/tools/mortgage-calculator', label: '房貸試算（核心）' },
-    { href: '/#support-tools', label: '輔助工具入口' },
-    { href: '/tax-season', label: '報稅季攻略' },
+    { href: '/tools/car-cost-calculator', label: '買車總成本' },
+    { href: '/tools/severance-calculator', label: '離職結算' },
+    { href: '/tools/home-ownership-cost-calculator', label: '買房持有成本' },
+    { href: '/tools/estate-gift-tax-calculator', label: '遺產／贈與稅' },
+    { href: '/#support-tools', label: '所有計算工具' },
     { href: '/blog', label: '專欄文章' },
 ];
 ---
@@ -16,8 +16,8 @@ const tools = [
         <div>
             <a href="/" class="text-base font-semibold text-ink-700 hover:text-ink-500 transition-colors">TaiCalc</a>
             <p class="text-xs text-ink-400 mt-2 leading-relaxed max-w-sm">
-                聚焦台灣三大核心試算：薪資、所得稅、房貸。<br>
-                每次更新都附資料版本與官方來源，所有計算均在本地執行。
+                為台灣人的工作、買車、買房、家庭與退休決策，把複雜規則整理成能比較的數字。<br>
+                法規型工具標示資料版本與官方來源，主要計算在瀏覽器完成。
             </p>
             <p class="text-xs text-ink-400 mt-2">版本 {platformGovernance.version} · 更新 {platformGovernance.updatedAt}</p>
         </div>
