@@ -208,7 +208,7 @@ const relatedTools = getRelatedTools(currentPath);
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {relatedTools.map((tool) => (
-                    <a href={tool.href} class="flex items-center justify-between p-4 rounded-2xl bg-paper-200 border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
+                    <a href={tool.href} data-next-tool class="flex items-center justify-between p-4 rounded-2xl bg-paper-200 border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
                         <div>
                             <div class="text-sm font-medium text-ink-700 transition-colors">{tool.label}</div>
                             <div class="text-xs text-ink-400 mt-0.5">{tool.desc}</div>
@@ -262,7 +262,7 @@ if (calculatorPanel) {
         const markStarted = () => {
             if (started) return;
             started = true;
-            track?.('input_start', {
+            track?.('calculation_start', {
                 tool_path: toolPath,
             });
         };
@@ -295,6 +295,7 @@ if (calculatorPanel) {
             const target = event.target as HTMLElement | null;
             if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement)) return;
             markStarted();
+            window.setTimeout(markCompleted, 650);
         });
 
         calculatorPanel.addEventListener('change', (event) => {

@@ -434,6 +434,7 @@ const copyResult = async () => {
 
   try {
     await navigator.clipboard.writeText(text);
+    window.taicalcTrackEvent?.('result_copy', { copy_method: 'income_tax_result' });
     copied.value = true;
     setTimeout(() => {
       copied.value = false;

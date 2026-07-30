@@ -242,6 +242,7 @@ const ResultPanel = defineComponent({
       const summary = `${p.label}：${p.value}\n判斷提示：${p.insight ?? ''}\n${window.location.href}`;
       try {
         await navigator.clipboard.writeText(summary);
+        window.taicalcTrackEvent?.('result_copy', { copy_method: 'decision_summary' });
         copied.value = true;
         window.setTimeout(() => { copied.value = false; }, 1600);
       } catch {

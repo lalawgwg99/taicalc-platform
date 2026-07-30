@@ -213,6 +213,7 @@ const copyResult = async () => {
 
     try {
         await navigator.clipboard.writeText(lines.join('\n'));
+        window.taicalcTrackEvent?.('result_copy', { copy_method: 'split_result' });
         copyStatus.value = 'copied';
         setTimeout(() => copyStatus.value = 'idle', 2000);
     } catch(e) {}

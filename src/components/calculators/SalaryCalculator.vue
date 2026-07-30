@@ -596,6 +596,7 @@ const shareResult = async () => {
     if (navigator.share) {
         try {
             await navigator.share({ title, text, url })
+            window.taicalcTrackEvent?.('result_share', { share_method: 'native' })
             return
         } catch (e) { console.log('分享取消或失敗。') }
     }
@@ -603,6 +604,7 @@ const shareResult = async () => {
     // Fallback 到剪貼簿複製
     try {
         await navigator.clipboard.writeText(`${title}\n${text}\n${url}`)
+        window.taicalcTrackEvent?.('result_copy', { copy_method: 'salary_share_fallback' })
         copied.value = true
         setTimeout(() => copied.value = false, 2500)
     } catch {}
