@@ -80,4 +80,10 @@ const isActive = (href: string) => {
 
     menuLinks.forEach(link => link.addEventListener('click', closeMenu));
     mobileMenu?.addEventListener('click', (e) => { if (e.target === mobileMenu) closeMenu(); });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !mobileMenu?.classList.contains('hidden')) {
+            closeMenu();
+            menuBtn?.focus();
+        }
+    });
 </script>

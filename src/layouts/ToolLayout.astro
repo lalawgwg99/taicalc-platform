@@ -107,10 +107,16 @@ const relatedTools = getRelatedTools(currentPath);
         </header>
 
         <main id="calculator-panel" class="mb-10 max-w-6xl">
-            <div class="section-heading mb-5">
-                <div>
-                    <h2 class="text-xl font-semibold text-ink-700">輸入條件</h2>
+            <div class="tool-process mb-5" aria-label="試算流程">
+                <div class="tool-process-title">
+                    <span class="data-pill">即時更新</span>
+                    <h2>開始試算</h2>
                 </div>
+                <ol>
+                    <li><span>1</span>輸入條件</li>
+                    <li><span>2</span>比較結果</li>
+                    <li><span>3</span>核對來源</li>
+                </ol>
             </div>
             <slot name="tool" />
         </main>

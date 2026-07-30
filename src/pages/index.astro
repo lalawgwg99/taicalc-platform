@@ -2,17 +2,17 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
-import { getSupportTools, getToolByHref, toolCatalog } from '../data/toolCatalog';
+import { getToolByHref, toolCatalog } from '../data/toolCatalog';
 
 const title = "TaiCalc 台灣生活決策計算器｜工作、買車、買房、退休";
 const description = "把台灣人的工作、買車、買房、貸款、育兒、稅務與退休問題，整理成能直接比較的數字。免登入、主要計算在本機，法規型工具附官方來源。";
 const keywords = "台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,遺產稅,育兒津貼,買房成本,實質報酬";
 
-const supportTools = getSupportTools();
-const supportCategories = Array.from(new Set(supportTools.map((tool) => tool.category))).map((category) => ({
+const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.category))).map((category) => ({
     category,
-    tools: supportTools.filter((tool) => tool.category === category),
+    tools: toolCatalog.filter((tool) => tool.category === category),
 }));
+const categoryNames = supportCategories.map((group) => group.category);
 
 const quickLinks = [
     '/tools/car-cost-calculator',
@@ -30,6 +30,32 @@ const featuredDecisions = [
     '/tools/home-ownership-cost-calculator',
     '/tools/real-return-calculator',
 ].map((path) => getToolByHref(path)!);
+const decisionJourneys = [
+    {
+        step: '01',
+        label: '工作變動',
+        desc: '先確認每月實拿，再核對離職時應領款項。',
+        links: [getToolByHref('/tools/salary-calculator')!, getToolByHref('/tools/severance-calculator')!],
+    },
+    {
+        step: '02',
+        label: '準備買車',
+        desc: '把車貸、稅費、能源與折舊放在同一張帳單。',
+        links: [getToolByHref('/tools/car-cost-calculator')!, getToolByHref('/tools/debt-consolidation-calculator')!],
+    },
+    {
+        step: '03',
+        label: '準備買房',
+        desc: '不只看房貸，也一起估算長期持有現金流。',
+        links: [getToolByHref('/tools/mortgage-calculator')!, getToolByHref('/tools/home-ownership-cost-calculator')!],
+    },
+    {
+        step: '04',
+        label: '規劃退休',
+        desc: '先掌握可領年金，再比較資產的實質購買力。',
+        links: [getToolByHref('/tools/labor-insurance-pension-calculator')!, getToolByHref('/tools/real-return-calculator')!],
+    },
+];
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
 const latestPosts = allPosts
@@ -58,10 +84,22 @@ const homeFaqSchema = JSON.stringify({
         acceptedAnswer: { '@type': 'Answer', text: faq.a },
     })),
 });
+const toolListSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'TaiCalc 台灣生活決策計算器',
+    itemListElement: toolCatalog.map((tool, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: tool.label,
+        url: `https://taicalc.com${tool.href}`,
+    })),
+});
 ---
 
 <Layout title={title} description={description} keywords={keywords} fullWidth>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
+    <script type="application/ld+json" set:html={toolListSchema} slot="head" />
     <section class="decision-hero relative overflow-hidden py-10 sm:py-14 md:py-20">
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="decision-hero-shell grid gap-1 lg:grid-cols-[1.15fr_0.85fr]">
@@ -97,8 +135,9 @@ const homeFaqSchema = JSON.stringify({
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" placeholder="例如：資遣費、車貸、育兒津貼" class="input-clean pl-10 pr-4 text-sm" />
-                        <div id="search-results" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
+                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：資遣費、車貸、育兒津貼" class="input-clean pl-10 pr-4 text-sm" />
+                        <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
+                        <p id="search-status" class="sr-only" aria-live="polite"></p>
                     </div>
 
                     <div class="mt-5 grid gap-2">
@@ -149,6 +188,39 @@ const homeFaqSchema = JSON.stringify({
         </div>
     </section>
 
+    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="mb-7 max-w-xl">
+                <p class="hermes-label">DECISION PATHS</p>
+                <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-3xl">不知道先算哪個？照情境走</h2>
+                <p class="mt-2 text-sm leading-7 text-ink-500">把同一個決策裡容易漏掉的兩張帳，按正確順序接起來。</p>
+            </div>
+            <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {decisionJourneys.map((journey) => (
+                    <article class="journey-card">
+                        <div class="flex items-center justify-between">
+                            <span class="journey-step">{journey.step}</span>
+                            <span class="text-[10px] font-semibold tracking-[.12em] text-brand-700">2 STEPS</span>
+                        </div>
+                        <h3 class="mt-5 text-lg font-semibold text-ink-800">{journey.label}</h3>
+                        <p class="mt-2 min-h-12 text-xs leading-6 text-ink-500">{journey.desc}</p>
+                        <ol class="mt-5 grid gap-2">
+                            {journey.links.map((tool, index) => (
+                                <li>
+                                    <a href={tool.href} class="journey-link">
+                                        <span>{index + 1}</span>
+                                        <strong>{tool.label}</strong>
+                                        <span aria-hidden="true">→</span>
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
     <section class="border-t border-paper-300 py-10 sm:py-12 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col gap-5 rounded-3xl border border-brand-200 bg-brand-50/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
@@ -181,12 +253,19 @@ const homeFaqSchema = JSON.stringify({
                 </div>
             </div>
 
-            <div class="grid gap-5 lg:grid-cols-2">
+            <div class="mb-7 flex gap-2 overflow-x-auto pb-2 no-scrollbar" role="group" aria-label="依類別篩選工具">
+                <button type="button" class="catalog-filter is-active" data-category-filter="all" aria-pressed="true">全部</button>
+                {categoryNames.map((category) => (
+                    <button type="button" class="catalog-filter" data-category-filter={category} aria-pressed="false">{category}</button>
+                ))}
+            </div>
+            <p id="catalog-status" class="sr-only" aria-live="polite"></p>
+
+            <div id="catalog-grid" class="grid gap-5 lg:grid-cols-2">
                 {supportCategories.map((group) => (
-                    <section class="card-surface p-4 sm:p-5" aria-labelledby={`category-${group.category}`}>
+                    <section class="catalog-group card-surface p-4 sm:p-5" data-category={group.category} aria-labelledby={`category-${group.category}`}>
                         <div class="mb-3 flex items-center justify-between border-b border-paper-300 pb-3">
                             <h3 id={`category-${group.category}`} class="text-sm font-semibold text-ink-700">{group.category}</h3>
-                            <span class="text-[10px] text-ink-500">{group.tools.length} 個工具</span>
                         </div>
                         <div class="grid gap-1">
                             {group.tools.map((tool) => (
@@ -269,17 +348,6 @@ const homeFaqSchema = JSON.stringify({
         </div>
     </section>
 <script>
-const month = new Date().getMonth() + 1;
-const taxBtn = document.querySelector<HTMLAnchorElement>('[data-season="tax"]');
-if (taxBtn && month >= 3 && month <= 5) {
-    taxBtn.classList.remove('bg-paper-100', 'border-paper-300', 'text-ink-400');
-    taxBtn.classList.add('bg-red-500/10', 'border-red-500/40', 'text-red-300', 'font-semibold');
-    const dot = document.createElement('span');
-    dot.className = 'w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0';
-    taxBtn.insertBefore(dot, taxBtn.firstChild);
-    taxBtn.parentElement?.insertBefore(taxBtn, taxBtn.parentElement.firstChild);
-}
-
 const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
     '&': '&amp;',
     '<': '&lt;',
@@ -290,6 +358,7 @@ const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>
 
 const searchInput = document.getElementById('tool-search') as HTMLInputElement | null;
 const searchResults = document.getElementById('search-results');
+const searchStatus = document.getElementById('search-status');
 const toolCatalogData = document.getElementById('tool-discovery')?.dataset.toolCatalog || '[]';
 const searchTools = JSON.parse(toolCatalogData) as Array<{
     href: string;
@@ -303,6 +372,8 @@ searchInput?.addEventListener('input', (e) => {
     const q = (e.target as HTMLInputElement).value.trim();
     if (!q) {
         searchResults?.classList.add('hidden');
+        searchInput?.setAttribute('aria-expanded', 'false');
+        if (searchStatus) searchStatus.textContent = '';
         return;
     }
 
@@ -318,7 +389,7 @@ searchInput?.addEventListener('input', (e) => {
             searchResults.innerHTML = `<p class="text-xs text-ink-400 px-3 py-2">找不到「${escapeHtml(q)}」的相關工具</p>`;
         } else {
             searchResults.innerHTML = hits.map((tool) => `
-                <a href="${escapeHtml(tool.href)}" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group" data-sfx="tap">
+                <a href="${escapeHtml(tool.href)}" role="option" class="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-paper-300 transition-colors group" data-sfx="tap">
                     <div>
                         <p class="text-sm font-medium text-ink-700">${escapeHtml(tool.label)}</p>
                         <p class="text-xs text-ink-400 mt-0.5">${escapeHtml(tool.desc)}</p>
@@ -328,13 +399,44 @@ searchInput?.addEventListener('input', (e) => {
             `).join('');
         }
         searchResults.classList.remove('hidden');
+        searchInput?.setAttribute('aria-expanded', 'true');
+        if (searchStatus) searchStatus.textContent = hits.length ? `找到 ${hits.length} 個相關工具` : '找不到相關工具';
     }
 });
 
 document.addEventListener('click', (e) => {
     if (!searchInput?.contains(e.target as Node) && !searchResults?.contains(e.target as Node)) {
         searchResults?.classList.add('hidden');
+        searchInput?.setAttribute('aria-expanded', 'false');
     }
+});
+
+searchInput?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    searchResults?.classList.add('hidden');
+    searchInput.setAttribute('aria-expanded', 'false');
+    searchInput.blur();
+});
+
+const catalogFilters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category-filter]'));
+const catalogGroups = Array.from(document.querySelectorAll<HTMLElement>('.catalog-group'));
+const catalogStatus = document.getElementById('catalog-status');
+
+catalogFilters.forEach((button) => {
+    button.addEventListener('click', () => {
+        const selected = button.dataset.categoryFilter || 'all';
+        catalogFilters.forEach((filter) => {
+            const active = filter === button;
+            filter.classList.toggle('is-active', active);
+            filter.setAttribute('aria-pressed', String(active));
+        });
+        catalogGroups.forEach((group) => {
+            group.hidden = selected !== 'all' && group.dataset.category !== selected;
+        });
+        if (catalogStatus) {
+            catalogStatus.textContent = selected === 'all' ? '已顯示所有工具類別' : `已顯示${selected}工具`;
+        }
+    });
 });
 </script>
 </Layout>

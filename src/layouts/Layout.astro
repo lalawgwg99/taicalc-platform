@@ -124,12 +124,13 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
             </>
         )}
         <slot name="head" />
-		</head>
+    </head>
     <body class="bg-paper-100 text-ink-700 min-h-screen flex flex-col font-sans antialiased selection:bg-brand selection:text-paper-50">
+        <a href="#main-content" class="skip-link">跳到主要內容</a>
         { !fullWidth ? (
             <div class="max-w-6xl mx-auto px-4 md:px-6 w-full flex-grow flex flex-col">
                 { !hideNav && <Navbar /> }
-                <main class="flex-grow">
+                <main id="main-content" class="flex-grow">
                     <slot />
                 </main>
                 { !hideFooter && <Footer /> }
@@ -137,7 +138,7 @@ const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
         ) : (
             <div class="w-full flex-grow flex flex-col">
                 { !hideNav && <div class="max-w-6xl mx-auto px-4 md:px-6 w-full"><Navbar /></div> }
-                <main class="flex-grow">
+                <main id="main-content" class="flex-grow">
                     <slot />
                 </main>
                 { !hideFooter && <div class="max-w-6xl mx-auto px-4 md:px-6 w-full"><Footer /></div> }

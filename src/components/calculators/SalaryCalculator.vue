@@ -5,8 +5,8 @@
         <div class="card-surface p-5">
             <!-- 模式切換 -->
             <div class="seg-control mb-5">
-                <button @click="mode = 'single'" :class="['seg-btn', mode === 'single' ? 'seg-btn-active' : '']">單一薪資</button>
-                <button @click="mode = 'compare'" :class="['seg-btn', mode === 'compare' ? 'seg-btn-active' : '']">比較 Offer</button>
+                <button type="button" :aria-pressed="mode === 'single'" @click="mode = 'single'" :class="['seg-btn', mode === 'single' ? 'seg-btn-active' : '']">單一薪資</button>
+                <button type="button" :aria-pressed="mode === 'compare'" @click="mode = 'compare'" :class="['seg-btn', mode === 'compare' ? 'seg-btn-active' : '']">比較 Offer</button>
             </div>
 
             <div class="grid gap-5" :class="mode === 'compare' ? 'grid-cols-1 sm:grid-cols-2' : ''">
@@ -94,31 +94,6 @@
                             </svg>
                             {{ copied ? '已複製 ✓' : '分享結果' }}
                         </button>
-                    </div>
-                </div>
-
-                <!-- 薪資百分位 (PR值) -->
-                <div class="mt-1 mb-6 p-4 bg-gradient-to-br from-azure-50 to-blue-50 rounded-xl border border-azure-100 flex items-center justify-between relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-5 pointer-events-none">
-                        <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20L12 2z"/></svg>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-1.5 mb-1">
-                            <p class="text-xs text-ink-500 font-medium">台灣同齡 (25-34歲) 薪資排名</p>
-                            <div class="group relative cursor-help">
-                                <svg class="text-ink-300 w-3 h-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                                <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-ink-800 text-white text-[10px] rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20 pointer-events-none">本推估基於行政院主計總處 112 年受僱員工薪資調查進行常態分佈精算。</div>
-                            </div>
-                        </div>
-                        <div class="flex items-baseline gap-1.5">
-                            <span class="text-sm font-medium text-ink-600">前</span>
-                            <span class="text-3xl font-bold tracking-tight text-azure">{{ prValue }}</span>
-                            <span class="text-sm font-medium text-ink-600">%</span>
-                        </div>
-                    </div>
-                    <div class="text-right relative z-10">
-                        <p class="text-[10px] text-ink-400 mb-0.5">大約贏過</p>
-                        <p class="text-base font-semibold text-ink-700 tabular-nums">{{ prBeatenCount }} 萬人</p>
                     </div>
                 </div>
 
@@ -582,30 +557,6 @@ const forecast = computed(() => {
     return rows
 })
 
-// ── 薪資排名與洞察 (主計處公開數據估算) ─────────────────────────────────
-// 主計處 25-34 歲受僱者月薪概況：PR25約3.2萬、PR50約4.1萬、PR75約5.4萬、PR90約7.2萬
-const prValue = computed(() => {
-    const s = salary.value || 0
-    let p = 1
-    if (s < 28000) p = 10 + ((s-27470)/530) * 10
-    else if (s < 32000) p = 20 + ((s-28000)/4000) * 5
-    else if (s < 41000) p = 25 + ((s-32000)/9000) * 25
-    else if (s < 54000) p = 50 + ((s-41000)/13000) * 25
-    else if (s < 72000) p = 75 + ((s-54000)/18000) * 15
-    else if (s < 90000) p = 90 + ((s-72000)/18000) * 5
-    else if (s < 120000) p = 95 + ((s-90000)/30000) * 4
-    else p = 99
-    
-    // 轉換為排名：前 {p}% (也就是 100 - 百分位)
-    return Math.max(1, Math.min(99, Math.round(100 - p)))
-})
-
-// 主計處數據：25-34歲受僱員工約 230 萬人
-const prBeatenCount = computed(() => {
-    const beatenPercent = 100 - prValue.value
-    return ((beatenPercent / 100) * 230).toFixed(1)
-})
-
 // ── 回本分析 ──────────────────────────────────────────────────
 const breakEvenMonths = computed(() => {
     const monthlyGap = monthlyNetB.value - monthlyNet.value
@@ -638,7 +589,7 @@ const threeYearsNetGap = computed(() => {
 // ── 分享卡片 ──────────────────────────────────────────────────
 const shareResult = async () => {
     const title = 'TaiCalc 薪資試算分析'
-    const text = `🎯 \n\n💰 名目月薪：$${(salary.value || 0).toLocaleString()}\n✨ 每月實拿：$${monthlyNet.value.toLocaleString()}\n🎉 年薪估算：$${yearlyNet.value.toLocaleString()}\n\n🏆 贏過了全台同齡（25-34歲）中 ${prValue.value}% 受僱者！\n（約嬴過 ${prBeatenCount.value} 萬人）\n\n👇 來算算你的隱藏薪資落點`
+    const text = `名目月薪：$${(salary.value || 0).toLocaleString()}\n每月實拿：$${monthlyNet.value.toLocaleString()}\n年薪估算：$${yearlyNet.value.toLocaleString()}\n\n用 TaiCalc 核對勞健保、勞退自提與每月可存金額。`
     const url = 'https://taicalc.com/tools/salary-calculator'
     
     // 優先使用 Native Share API (手機使用極佳體驗)
