@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
   { label: '財政部｜115 年遺產稅免稅額及扣除額', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=f2a148bdd1614850be9fa56df8cc9d5c' },
   { label: '財政部｜遺產及贈與稅課稅級距', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=9ba544f1016c4b85b54960b4346b5b75' },
@@ -13,5 +14,6 @@ const faqs = [
 ---
 <ToolLayout title="115 年遺產稅／贈與稅試算" description="套用 115 年遺產稅免稅額、扣除額與遺產贈與稅累進級距，快速估算應納稅額。" keywords="遺產稅試算,贈與稅試算,115年免稅額,遺產稅扣除額,贈與稅免稅額" category="稅務與傳承" kicker="先看課稅淨額，再決定是否需要更完整的傳承規劃。" faqs={faqs} dataVersion="115-estate-gift-v1" dataYear="民國 115 年" lastUpdated="2026-07-29" sources={sources}>
   <DecisionCalculator type="estate-tax" client:only="vue" slot="tool" />
+  <IntentPanel slot="after-tool" topic="遺產、贈與與傳承稅務更新" leadType="estate_tax_updates" source="estate-tax" partnerTitle="合法稅務與傳承專業服務合作" partnerDescription="只接受資格可核對、費用透明且不取代個案專業判斷的服務。" />
   <div slot="article"><h2>115 年試算基礎</h2><p>遺產稅免稅額為 1,333 萬元，另依配偶、直系卑親屬、父母、重度以上身心障礙與喪葬費等計算扣除額。贈與稅每位贈與人每年免稅額為 244 萬元。</p><p>工具採 10%、15%、20% 逐段累進計算。未成年子女加扣、農地、公共設施保留地、夫妻剩餘財產差額分配等特殊項目，請填入其他扣除額前先確認適用資格。</p></div>
 </ToolLayout>

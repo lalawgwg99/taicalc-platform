@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
   { label: '勞保局｜育嬰留職停薪津貼', href: 'https://www.bli.gov.tw/0101764.html' },
   { label: '勞動部｜2026 彈性育嬰留停', href: 'https://www.mol.gov.tw/1607/28162/28166/28284/48173/33616/post' },
@@ -13,5 +14,13 @@ const faqs = [
 ---
 <ToolLayout title="育兒津貼與育嬰留停收入試算" description="試算雙親育嬰留停給付、政府加發補助、0 至 2 歲育兒津貼與家庭收入缺口。" keywords="育兒津貼,育嬰留停津貼,育嬰假薪水,0到2歲育兒津貼,育嬰留停80%" category="家庭與育兒" kicker="兩位家長怎麼排，家庭現金流差多少，一次看懂。" faqs={faqs} dataVersion="2026.07-parental-v1" dataYear="2026 現行制度" lastUpdated="2026-07-29" sources={sources}>
   <DecisionCalculator type="parental" client:only="vue" slot="tool" />
+  <IntentPanel
+    slot="after-tool"
+    topic="育兒津貼、育嬰留停與家庭補助更新"
+    leadType="parental_updates"
+    source="parental"
+    partnerTitle="家庭、托育與親子服務合作"
+    partnerDescription="適合能幫助家庭安排托育、保障或生活支出的服務，合作內容會明確揭露。"
+  />
   <div slot="article"><h2>育嬰留停收入</h2><p>每位符合資格的家長，每名子女最多請領六個月，津貼與政府補助合計為平均月投保薪資 80%。2026 年未滿 30 日的育嬰留停可按日申請，每位家長最多 30 日；本工具先以整月比較家庭規劃。</p><h3>育兒津貼</h3><p>未滿 2 歲且未使用公共化或準公共托育者，第 1 名子女每月 5,000 元、第 2 名 6,000 元、第 3 名以上 7,000 元。</p></div>
 </ToolLayout>

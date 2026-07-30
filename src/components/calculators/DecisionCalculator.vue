@@ -1,5 +1,15 @@
 <template>
   <div class="calculator-shell decision-calculator">
+    <div v-if="type !== 'car'" class="scenario-toolbar">
+      <div>
+        <strong>保存這次試算</strong>
+        <span>只存在這台裝置，也可分享完整條件。</span>
+      </div>
+      <div>
+        <button type="button" @click="saveCurrentScenario">{{ scenarioSaved ? '已儲存' : '儲存條件' }}</button>
+        <button v-if="hasSavedScenario" type="button" @click="loadCurrentScenario">載入上次</button>
+      </div>
+    </div>
     <section v-if="type === 'car'" class="calc-grid">
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>車輛與貸款</h2><p>先填成交價，再補上日常使用習慣</p></div></div>
@@ -83,7 +93,7 @@
         </div>
         <p class="scope-note">若屬舊制年資、定期契約、退休或非資遣原因，請另依個案確認。</p>
       </div>
-      <ResultPanel eyebrow="應結算項目" label="預估結算總額" :value="currency(separationResult.total)" :insight="separationInsight">
+      <ResultPanel eyebrow="應結算項目" label="預估結算總額" :value="currency(separationResult.total)" :insight="separationInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="資遣費" :value="currency(separationResult.severance)" />
         <Metric label="預告工資" :value="currency(separationResult.noticePay)" />
         <Metric label="未休特休" :value="currency(separationResult.unusedLeavePay)" />
@@ -110,7 +120,7 @@
           <label>整合後每月多還<input v-model.number="debtPlan.extra" type="number" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight">
+      <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="目前月付合計" :value="currency(debtResult.currentPayment)" />
         <Metric label="整合本金" :value="currency(debtResult.balance)" />
         <Metric label="整合總利息＋費用" :value="currency(debtResult.newCosts)" />
@@ -135,7 +145,7 @@
           <label class="check-field"><input v-model="laborPension.lumpSumEligible" type="checkbox"> 2009/1/1 前已有勞保年資，可比較一次請領</label>
         </div>
       </div>
-      <ResultPanel eyebrow="退休現金流" label="預估每月年金" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight">
+      <ResultPanel eyebrow="退休現金流" label="預估每月年金" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="採用公式" :value="laborPensionResult.formula" />
         <Metric label="年領合計" :value="currency(laborPensionResult.annual)" />
         <Metric label="年齡增減給" :value="percent(laborPensionResult.ageAdjustment)" />
@@ -164,7 +174,7 @@
         </div>
         <p v-if="tax.type === 'estate'" class="scope-note">未滿 18 歲直系卑親屬依距成年年數可再增加扣除；本簡版先計每人基本扣除，額外金額請填入「其他依法扣除額」。</p>
       </div>
-      <ResultPanel eyebrow="115 年度" label="預估應納稅額" :value="currency(taxResult.tax)" :insight="taxInsight">
+      <ResultPanel eyebrow="115 年度" label="預估應納稅額" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="免稅額" :value="currency(taxResult.exemption)" />
         <Metric label="扣除額合計" :value="currency(taxResult.deductions)" />
         <Metric label="課稅淨額" :value="currency(taxResult.net)" />
@@ -184,7 +194,7 @@
           <label class="check-field"><input v-model="parental.publicCare" type="checkbox"> 使用公共化／準公共托育（不重複計育兒津貼）</label>
         </div>
       </div>
-      <ResultPanel eyebrow="家庭可領金額" label="合計估算" :value="currency(parentalResult.total)" :insight="parentalInsight">
+      <ResultPanel eyebrow="家庭可領金額" label="合計估算" :value="currency(parentalResult.total)" :insight="parentalInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="育嬰留停給付＋補助" :value="currency(parentalResult.leaveBenefit)" />
         <Metric label="每月育兒津貼" :value="currency(parentalResult.allowanceMonthly)" />
         <Metric label="育兒津貼合計" :value="currency(parentalResult.allowanceTotal)" />
@@ -214,7 +224,7 @@
           <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="number" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight">
+      <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <Metric label="房貸月付現金流" :value="currency(homeResult.mortgagePayment)" />
         <Metric label="每年房屋稅" :value="currency(homeResult.houseTax)" />
         <Metric label="每年地價稅" :value="currency(homeResult.landTax)" />
@@ -241,7 +251,7 @@
           <label>稅務耗損 %<input v-model.number="scenario.taxDrag" type="number" step="0.1" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight">
+      <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
         <div v-for="item in returnResults" :key="item.name" class="return-result">
           <div><strong>{{ item.name }}</strong><small>實質年報酬 {{ percent(item.realAnnualRate) }}</small></div>
           <div><span>{{ currency(item.realValue) }}</span><small>名目 {{ currency(item.nominalValue) }}</small></div>
@@ -260,7 +270,7 @@ import {
   calculateLaborPension, calculateParentalBenefits, calculateRealReturns, calculateSeparation,
 } from '../../utils/calculators/decisionTools';
 
-defineProps({
+const props = defineProps({
   type: {
     type: String,
     required: true,
@@ -535,6 +545,9 @@ const carInsight = computed(() => {
 });
 
 onMounted(() => {
+  if (props.type !== 'car') {
+    return;
+  }
   try {
     hasSavedCarScenario.value = Boolean(localStorage.getItem('taicalc_car_scenario'));
   } catch {
@@ -577,7 +590,7 @@ watch(() => tax.type, (type) => {
   tax.gross = type === 'gift' ? 3_000_000 : 30_000_000;
   tax.debts = type === 'gift' ? 0 : 2_000_000;
   tax.otherDeductions = 0;
-});
+}, { flush: 'sync' });
 const taxResult = computed(() => calculateEstateTax(tax));
 const taxInsight = computed(() => taxResult.value.tax > 0
   ? '已進入課稅範圍。財產評價、扣除資格與贈與時點都會改變結果，正式申報前宜逐項核對。'
@@ -600,12 +613,141 @@ const returnsInsight = computed(() => {
   const leader = [...returnResults.value].sort((a, b) => b.realValue - a.realValue)[0];
   return `${leader?.name ?? '最高情境'} 的實質期末價值最高，但報酬假設不是保證；請同時比較波動、流動性與可承受虧損。`;
 });
+
+const scenarioSaved = ref(false);
+const hasSavedScenario = ref(false);
+const scenarioStorageKey = computed(() => `taicalc_${props.type}_scenario`);
+const scenarioReportTitle = computed(() => ({
+  separation: '離職結算試算',
+  debt: '債務整合比較',
+  'labor-pension': '勞保老年年金試算',
+  'estate-tax': '遺產與贈與稅試算',
+  parental: '育兒與育嬰留停收入試算',
+  'home-cost': '買房持有成本試算',
+  'real-return': '通膨後實質報酬比較',
+})[props.type] || 'TaiCalc 決策試算');
+
+const cloneScenario = (value) => JSON.parse(JSON.stringify(value));
+const currentScenarioPayload = () => {
+  switch (props.type) {
+    case 'separation': return { separation: cloneScenario(separation) };
+    case 'debt': return { debts: cloneScenario(debts), debtPlan: cloneScenario(debtPlan) };
+    case 'labor-pension': return { laborPension: cloneScenario(laborPension) };
+    case 'estate-tax': return { tax: cloneScenario(tax) };
+    case 'parental': return { parental: cloneScenario(parental) };
+    case 'home-cost': return { home: cloneScenario(home) };
+    case 'real-return': return { returns: cloneScenario(returns) };
+    default: return {};
+  }
+};
+
+const assignKnown = (target, source) => {
+  if (!source || typeof source !== 'object') {
+    return;
+  }
+  Object.keys(target).forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(source, key) && typeof source[key] !== 'object') {
+      target[key] = source[key];
+    }
+  });
+};
+
+const applyScenarioPayload = (payload) => {
+  if (!payload || typeof payload !== 'object') {
+    return;
+  }
+  switch (props.type) {
+    case 'separation':
+      assignKnown(separation, payload.separation);
+      break;
+    case 'debt':
+      if (Array.isArray(payload.debts)) {
+        payload.debts.slice(0, 3).forEach((item, index) => assignKnown(debts[index], item));
+      }
+      assignKnown(debtPlan, payload.debtPlan);
+      break;
+    case 'labor-pension':
+      assignKnown(laborPension, payload.laborPension);
+      break;
+    case 'estate-tax':
+      assignKnown(tax, payload.tax);
+      break;
+    case 'parental':
+      assignKnown(parental, payload.parental);
+      break;
+    case 'home-cost':
+      assignKnown(home, payload.home);
+      break;
+    case 'real-return':
+      assignKnown(returns, payload.returns);
+      if (Array.isArray(payload.returns?.scenarios)) {
+        payload.returns.scenarios.slice(0, 3).forEach((item, index) => assignKnown(returns.scenarios[index], item));
+      }
+      break;
+  }
+};
+
+const scenarioShareUrl = computed(() => {
+  if (typeof window === 'undefined' || props.type === 'car') {
+    return '';
+  }
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('scenario', JSON.stringify(currentScenarioPayload()));
+  return url.toString();
+});
+
+const saveCurrentScenario = () => {
+  try {
+    localStorage.setItem(scenarioStorageKey.value, JSON.stringify({
+      values: currentScenarioPayload(),
+      savedAt: new Date().toISOString(),
+    }));
+    hasSavedScenario.value = true;
+    scenarioSaved.value = true;
+    window.taicalcTrackEvent?.('scenario_save', { scenario_type: props.type, storage: 'local' });
+    window.setTimeout(() => { scenarioSaved.value = false; }, 1600);
+  } catch {
+    scenarioSaved.value = false;
+  }
+};
+
+const loadCurrentScenario = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(scenarioStorageKey.value) || '{}');
+    applyScenarioPayload(saved.values);
+    window.taicalcTrackEvent?.('scenario_load', { scenario_type: props.type, storage: 'local' });
+  } catch {
+    hasSavedScenario.value = false;
+  }
+};
+
+onMounted(() => {
+  if (props.type === 'car') {
+    return;
+  }
+  try {
+    hasSavedScenario.value = Boolean(localStorage.getItem(scenarioStorageKey.value));
+  } catch {
+    hasSavedScenario.value = false;
+  }
+  const serialized = new URLSearchParams(window.location.search).get('scenario');
+  if (!serialized) {
+    return;
+  }
+  try {
+    applyScenarioPayload(JSON.parse(serialized));
+  } catch {
+    // Invalid shared state falls back to safe defaults.
+  }
+});
 </script>
 
 <style>
 .calc-grid{display:grid;gap:1rem;align-items:start}.input-panel,.result-panel{border:1px solid #d8e1db;background:rgba(255,255,255,.94);border-radius:1.35rem;padding:1.1rem;box-shadow:0 18px 48px -36px rgba(9,35,26,.4)}.panel-title{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1rem}.panel-title>span{display:grid;place-items:center;width:2rem;height:2rem;border-radius:.7rem;background:#102419;color:#fff;font-size:.68rem;font-weight:700}.panel-title h2{font-size:1rem;font-weight:700;color:#102419}.panel-title p{font-size:.75rem;color:#687b6e;margin-top:.15rem}.panel-title-secondary{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #e1e8e3}.preset-panel{margin-bottom:1rem;padding:1rem;border:1px solid #c9e9dc;border-radius:1rem;background:#f1fbf7}.preset-panel label{font-size:.72rem;font-weight:700;color:#234b3b}.preset-source{margin-top:.65rem;font-size:.68rem;line-height:1.55;color:#557064}.preset-source a{color:#08765d;text-decoration:underline;text-underline-offset:2px}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.field-grid label,.debt-row label,.scenario-row label{font-size:.72rem;font-weight:600;color:#45594b}.input-clean{margin-top:.35rem}.check-field{display:flex;align-items:center;gap:.55rem;grid-column:1/-1;padding:.8rem;border:1px solid #dde5e0;border-radius:.8rem;background:#f6f8f5}.check-field input{width:1rem;height:1rem;accent-color:#139b79}.scenario-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;margin-top:1rem;padding-top:1rem;border-top:1px solid #e1e8e3}.scenario-actions button{border:1px solid #b9cec3;border-radius:999px;padding:.45rem .75rem;color:#234b3b;background:#fff;font-size:.68rem;font-weight:700;transition:.18s ease}.scenario-actions button:hover{border-color:#139b79;background:#f1fbf7}.scenario-actions span{font-size:.65rem;color:#7a8b81}.scope-note,.result-callout{margin-top:1rem;border-radius:.8rem;background:#ecfdf7;color:#09634f;padding:.75rem;font-size:.72rem;line-height:1.6}.result-panel{position:sticky;top:5rem;background:#102419;color:#fff;border-color:#102419;overflow:hidden}.result-panel:before{content:"";position:absolute;width:12rem;height:12rem;border-radius:50%;background:rgba(54,196,155,.16);right:-4rem;top:-5rem}.result-heading{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.result-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.35rem}.result-eyebrow{color:#72dfba;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding-top:.4rem}.result-copy{border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:.35rem .65rem;color:#c8d4cb;font-size:.65rem;font-weight:600;transition:.18s ease}.result-copy:hover{border-color:#72dfba;color:#fff;background:rgba(114,223,186,.1)}.result-label{position:relative;display:block;color:#c8d4cb;font-size:.78rem;margin-top:1rem}.result-total{position:relative;display:block;font-size:clamp(1.75rem,5vw,2.65rem);line-height:1.15;margin:.3rem 0 1rem;letter-spacing:-.04em}.result-insight{position:relative;margin-bottom:1rem;border-left:2px solid #72dfba;background:rgba(114,223,186,.08);border-radius:0 .75rem .75rem 0;padding:.7rem .8rem}.result-insight span{display:block;color:#72dfba;font-size:.62rem;font-weight:700;letter-spacing:.08em}.result-insight p{margin-top:.25rem;color:#dce7df;font-size:.72rem;line-height:1.55}.result-metrics{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.metric{background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.09);border-radius:.8rem;padding:.75rem}.metric span,.metric strong{display:block}.metric span{color:#a5b5aa;font-size:.65rem}.metric strong{font-size:.86rem;margin-top:.25rem}.metric-good strong{color:#72dfba}.metric-bad strong{color:#fda4af}.cost-breakdown{grid-column:1/-1;margin-top:.35rem;padding:.85rem;border:1px solid rgba(255,255,255,.09);border-radius:.9rem;background:rgba(255,255,255,.055)}.breakdown-heading,.breakdown-row>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:1rem}.breakdown-heading{margin-bottom:.7rem}.breakdown-heading strong{font-size:.72rem}.breakdown-heading span{font-size:.62rem;color:#91a69a}.breakdown-row+.breakdown-row{margin-top:.55rem}.breakdown-row span{font-size:.64rem;color:#b8c8be}.breakdown-row strong{font-size:.64rem;color:#eef7f1}.breakdown-track{height:.28rem;margin-top:.25rem;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.09)}.breakdown-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#32c99c,#72dfba)}.result-panel .result-callout{grid-column:1/-1;background:rgba(114,223,186,.1);color:#a9efd4;border:1px solid rgba(114,223,186,.18)}.debt-row,.scenario-row{display:grid;grid-template-columns:5rem repeat(3,minmax(0,1fr));gap:.55rem;align-items:end;padding:.7rem 0;border-bottom:1px solid #e4ebe6}.debt-row strong,.scenario-row strong{font-size:.75rem;color:#192e21;padding-bottom:.75rem}.return-result{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.075);border-radius:.8rem;padding:.8rem}.return-result div:last-child{text-align:right}.return-result strong,.return-result span,.return-result small{display:block}.return-result small{color:#a5b5aa;font-size:.65rem}.return-result span{font-weight:700}
+.scenario-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem;padding:.8rem 1rem;border:1px solid #d8e1db;border-radius:1rem;background:#f6f8f5}.scenario-toolbar strong,.scenario-toolbar span{display:block}.scenario-toolbar strong{font-size:.72rem;color:#234b3b}.scenario-toolbar span{margin-top:.15rem;font-size:.65rem;color:#7a8b81}.scenario-toolbar>div:last-child{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}.scenario-toolbar button{border:1px solid #b9cec3;border-radius:999px;padding:.4rem .7rem;background:#fff;color:#234b3b;font-size:.66rem;font-weight:700}.scenario-toolbar button:hover{border-color:#139b79;background:#f1fbf7}
 @media(min-width:900px){.calc-grid{grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr)}.input-panel,.result-panel{padding:1.35rem}}
 @media(max-width:899px){.result-panel{position:relative;top:auto;order:-1}.calc-grid{gap:.8rem}}
-@media(max-width:640px){.field-grid{grid-template-columns:1fr}.debt-row,.scenario-row{grid-template-columns:1fr 1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1;padding-bottom:0}.result-metrics{grid-template-columns:1fr 1fr}.result-panel{border-radius:1.1rem}.result-total{font-size:2rem}}
-@media print{body *{visibility:hidden!important}.decision-calculator,.decision-calculator *{visibility:visible!important}.decision-calculator{position:absolute;inset:0;width:100%;background:#fff}.decision-calculator .input-panel{display:none}.decision-calculator .calc-grid{display:block}.decision-calculator .result-panel{position:static;background:#fff;color:#102419;border:1px solid #aebfb5;box-shadow:none}.decision-calculator .result-panel:before,.decision-calculator .result-actions{display:none}.decision-calculator .result-eyebrow,.decision-calculator .result-label,.decision-calculator .metric span,.decision-calculator .breakdown-row span,.decision-calculator .breakdown-heading span{color:#557064}.decision-calculator .result-insight,.decision-calculator .metric,.decision-calculator .cost-breakdown{background:#f6f8f5;border-color:#d8e1db;color:#102419}.decision-calculator .result-insight p,.decision-calculator .metric strong,.decision-calculator .breakdown-row strong{color:#102419}}
+@media(max-width:640px){.scenario-toolbar{align-items:flex-start;flex-direction:column}.scenario-toolbar>div:last-child{justify-content:flex-start}.field-grid{grid-template-columns:1fr}.debt-row,.scenario-row{grid-template-columns:1fr 1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1;padding-bottom:0}.result-metrics{grid-template-columns:1fr 1fr}.result-panel{border-radius:1.1rem}.result-total{font-size:2rem}}
+@media print{body *{visibility:hidden!important}.decision-calculator,.decision-calculator *{visibility:visible!important}.decision-calculator{position:absolute;inset:0;width:100%;background:#fff}.decision-calculator .input-panel,.decision-calculator .scenario-toolbar{display:none}.decision-calculator .calc-grid{display:block}.decision-calculator .result-panel{position:static;background:#fff;color:#102419;border:1px solid #aebfb5;box-shadow:none}.decision-calculator .result-panel:before,.decision-calculator .result-actions{display:none}.decision-calculator .result-eyebrow,.decision-calculator .result-label,.decision-calculator .metric span,.decision-calculator .breakdown-row span,.decision-calculator .breakdown-heading span{color:#557064}.decision-calculator .result-insight,.decision-calculator .metric,.decision-calculator .cost-breakdown{background:#f6f8f5;border-color:#d8e1db;color:#102419}.decision-calculator .result-insight p,.decision-calculator .metric strong,.decision-calculator .breakdown-row strong{color:#102419}}
 </style>

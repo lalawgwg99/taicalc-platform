@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import StockCalculator from '../../components/calculators/StockCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 
 const title = "股票損益計算機 (2026 版)｜TaiCalc";
 const description = "試算股票手續費、證交稅與損益平衡點。";
@@ -32,6 +33,14 @@ const faqs = [
 
 <ToolLayout title={title} description={description} keywords={keywords} category="理財規劃" faqs={faqs}>
     <StockCalculator client:only="vue" slot="tool" />
+    <IntentPanel
+        slot="after-tool"
+        topic="股票費用、ETF 與交易稅更新"
+        leadType="stock_updates"
+        source="stock"
+        partnerTitle="證券服務與投資教育合作"
+        partnerDescription="合作內容不得改變試算公式，並必須清楚標示風險與贊助關係。"
+    />
 
     <div slot="article">
         <h2>股票交易成本全解析：別讓手續費吃掉你的獲利</h2>

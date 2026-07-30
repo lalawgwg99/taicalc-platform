@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import IncomeTaxCalculator from '../../components/calculators/IncomeTaxCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
 const title = "2026 所得稅試算機｜TaiCalc";
@@ -45,6 +46,14 @@ const faqs = [
     sources={governance.sources}
 >
     <IncomeTaxCalculator client:only="vue" slot="tool" />
+    <IntentPanel
+        slot="after-tool"
+        topic="所得稅、扣除額與申報更新"
+        leadType="income_tax_updates"
+        source="income-tax"
+        partnerTitle="報稅、記帳與合法金融服務合作"
+        partnerDescription="合作資訊與官方規則分開呈現，正式稅額仍以申報系統為準。"
+    />
 
     <div slot="article">
         <h2>綜合所得稅怎麼計算？2026 年版詳解</h2>

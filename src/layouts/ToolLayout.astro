@@ -101,6 +101,9 @@ const relatedTools = getRelatedTools(currentPath);
                         >
                             分享工具
                         </button>
+                        <button id="print-tool-report" type="button" class="action-link">
+                            列印／存 PDF
+                        </button>
                     </div>
                 </div>
             </div>
@@ -224,6 +227,7 @@ const relatedTools = getRelatedTools(currentPath);
 
 <script>
 const shareToolButton = document.getElementById('share-tool') as HTMLButtonElement | null;
+const printToolButton = document.getElementById('print-tool-report') as HTMLButtonElement | null;
 
 shareToolButton?.addEventListener('click', async () => {
     const shareTitle = shareToolButton.dataset.shareTitle || document.title;
@@ -250,6 +254,19 @@ shareToolButton?.addEventListener('click', async () => {
             shareToolButton.textContent = '請複製網址分享';
         }
     }
+});
+
+printToolButton?.addEventListener('click', () => {
+    document.body.classList.add('print-tool-report');
+    (window as any).taicalcTrackEvent?.('report_print', {
+        report_type: 'tool_page',
+        tool_path: window.location.pathname,
+    });
+    window.print();
+});
+
+window.addEventListener('afterprint', () => {
+    document.body.classList.remove('print-tool-report');
 });
 
 const track = (window as any).taicalcTrackEvent as ((eventName: string, params?: Record<string, string | number | boolean>) => void) | undefined;
@@ -323,3 +340,26 @@ if (calculatorPanel) {
         observer.observe(calculatorPanel, { subtree: true, childList: true, characterData: true });
 }
 </script>
+
+<style is:global>
+@media print {
+    body.print-tool-report {
+        background: #fff !important;
+    }
+
+    body.print-tool-report nav,
+    body.print-tool-report footer,
+    body.print-tool-report header,
+    body.print-tool-report .tool-process,
+    body.print-tool-report .after-tool-content,
+    body.print-tool-report main#calculator-panel ~ section,
+    body.print-tool-report #guide-panel {
+        display: none !important;
+    }
+
+    body.print-tool-report main#calculator-panel {
+        margin: 0 !important;
+        max-width: none !important;
+    }
+}
+</style>

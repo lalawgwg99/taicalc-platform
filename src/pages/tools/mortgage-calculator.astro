@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
 const title = "2026 房貸試算 (新青安版)｜TaiCalc";
@@ -44,6 +45,14 @@ const faqs = [
     sources={governance.sources}
 >
     <MortgageCalculator client:only="vue" slot="tool" />
+    <IntentPanel
+        slot="after-tool"
+        topic="房貸利率、政策與壓力測試指南"
+        leadType="mortgage_updates"
+        source="mortgage"
+        partnerTitle="房貸、轉增貸與購屋服務合作"
+        partnerDescription="合作方案必須清楚揭露利率、費用、資格與合作關係。"
+    />
 
     <div slot="article">
         <h2>2026 房貸試算重點：新青安與寬限期策略</h2>

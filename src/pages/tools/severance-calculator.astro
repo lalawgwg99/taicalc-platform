@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
   { label: '勞動部｜勞退新制資遣費', href: 'https://www.mol.gov.tw/1607/28162/28540/28564/28568/30457/' },
   { label: '勞動基準法第 16 條｜預告期間', href: 'https://laws.mol.gov.tw/FLAW/FLAWDOC01.aspx?flno=16&id=FL014930' },
@@ -14,5 +15,13 @@ const faqs = [
 ---
 <ToolLayout title="離職結算計算器｜資遣費、預告工資、特休" description="一次估算勞退新制資遣費、預告期間工資、未休特休與最後薪資。" keywords="資遣費計算,離職結算,預告工資,未休特休,最後薪資" category="工作與收入" kicker="離開公司前，先把每一筆應結清的項目列出來。" faqs={faqs} dataVersion="2026.07-labor-v1" dataYear="現行勞動法規" lastUpdated="2026-07-29" sources={sources}>
   <DecisionCalculator type="separation" client:only="vue" slot="tool" />
+  <IntentPanel
+    slot="after-tool"
+    topic="離職權益、資遣與特休結算指南"
+    leadType="severance_updates"
+    source="severance"
+    partnerTitle="勞動權益與職涯服務合作"
+    partnerDescription="提供合法、透明且能協助使用者處理離職下一步的服務，可提出內容或工具合作。"
+  />
   <div slot="article"><h2>適用範圍</h2><p>資遣費採勞退新制：每滿一年發給二分之一個月平均工資，未滿一年按比例，最高六個月。預告工資依年資判斷 0、10、20 或 30 天，再扣除雇主已給的預告天數；一日工資取最近正常月薪除以 30 與日平均工資較高者。</p><p>舊制年資、職災、退休、定期契約或工資認定有爭議時，應帶薪資明細與契約向地方勞工主管機關確認。</p></div>
 </ToolLayout>

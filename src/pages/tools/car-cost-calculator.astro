@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
   { label: '財政部｜使用牌照稅', href: 'https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/local/vehicle-license-tax/2Jv5NBY' },
   { label: '交通部公路局｜公路養管費（原汽燃費）', href: 'https://www.thb.gov.tw/cp.aspx?Create=1&n=224' },
@@ -17,31 +18,14 @@ const faqs = [
 ---
 <ToolLayout title="買車總成本計算器｜RAV4、CR-V、Corolla Cross 養車成本" description="快速帶入 2026 RAV4、CR-V、Corolla Cross 原廠車價、排氣量與油耗，再整合車貸、稅費、保險、停車、保養和折舊，算出真正每月養車成本。" keywords="買車成本計算機,養車成本,RAV4養車成本,CRV養車成本,Corolla Cross養車成本,車貸試算,牌照稅,公路養管費,汽車折舊" category="交通與購車" kicker="先選熱門車款，再用自己的成交價與使用習慣算完整持有成本。" faqs={faqs} dataVersion="2026.07-car-v3" dataYear="2026 原廠規配與現行稅費" lastUpdated="2026-07-30" sources={sources}>
   <DecisionCalculator type="car" client:only="vue" slot="tool" />
-  <section slot="after-tool" class="mt-5 grid gap-3 md:grid-cols-2">
-    <div class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-      <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">免費更新</p>
-      <h2 class="mt-2 text-base font-semibold text-ink-700">收到車款、稅費與養車指南</h2>
-      <p class="mt-2 text-xs leading-6 text-ink-500">用自己的 Email 寄出訂閱要求；本站不會在背景收集你的試算內容。</p>
-      <a
-        href="mailto:laladoo99@gmail.com?subject=訂閱%20TaiCalc%20車款與稅費更新&body=我同意接收%20TaiCalc%20車款、稅費與養車指南。"
-        data-lead-type="car_updates"
-        data-lead-placement="car_result"
-        class="action-link mt-4"
-      >用 Email 訂閱</a>
-    </div>
-    <div class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-      <p class="text-xs font-semibold uppercase tracking-widest text-ink-400">合作夥伴</p>
-      <h2 class="mt-2 text-base font-semibold text-ink-700">車貸、車險與試乘服務合作</h2>
-      <p class="mt-2 text-xs leading-6 text-ink-500">TaiCalc 只接受資訊透明、可清楚揭露合作關係的方案。</p>
-      <a
-        href="/partnerships?from=car-cost"
-        data-partner-id="partnership-inquiry"
-        data-partner-placement="car_result"
-        data-offer-type="b2b"
-        class="action-link mt-4"
-      >查看合作方式</a>
-    </div>
-  </section>
+  <IntentPanel
+    slot="after-tool"
+    topic="車款、稅費與養車指南"
+    leadType="car_updates"
+    source="car-cost"
+    partnerTitle="車貸、車險與試乘服務合作"
+    partnerDescription="TaiCalc 只接受資訊透明、可清楚揭露合作關係的方案。"
+  />
   <div slot="article">
     <h2>買車的真正成本</h2>
     <p>本工具將購車價差、持有期間貸款利息與日常支出放在同一張帳上。2026 年起汽車燃料使用費已更名為「公路使用養護安全管理費」（公路養管費），費額表沿用排氣量與汽柴油分類。折舊以你設定的期末殘值估算，保險、維修與能源價格則是可調情境。</p>

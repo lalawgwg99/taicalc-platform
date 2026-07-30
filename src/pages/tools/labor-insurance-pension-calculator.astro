@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
   { label: '勞保局｜老年年金給付公式', href: 'https://www.bli.gov.tw/0019825.html' },
   { label: '勞保局｜法定請領年齡', href: 'https://www.bli.gov.tw/0109739.html' },
@@ -13,5 +14,13 @@ const faqs = [
 ---
 <ToolLayout title="勞保老年年金試算｜一次領與月領比較" description="依平均月投保薪資、勞保年資與請領年齡，試算老年年金並比較一次請領。" keywords="勞保老年年金試算,勞保退休金,一次領月領,退休年齡,平均投保薪資" category="退休與保障" kicker="把提早領、延後領和一次請領放到同一條時間軸。" faqs={faqs} dataVersion="2026.07-bli-v1" dataYear="2026 請領年齡" lastUpdated="2026-07-29" sources={sources}>
   <DecisionCalculator type="labor-pension" client:only="vue" slot="tool" />
+  <IntentPanel
+    slot="after-tool"
+    topic="勞保年金、退休年齡與請領更新"
+    leadType="labor_pension_updates"
+    source="labor-pension"
+    partnerTitle="退休與保障教育服務合作"
+    partnerDescription="適合提供退休規劃、保障教育或高齡生活資訊，所有合作都會清楚標示。"
+  />
   <div slot="article"><h2>月領公式</h2><p>老年年金按 A 式「平均月投保薪資 × 年資 × 0.775% + 3,000 元」與 B 式「平均月投保薪資 × 年資 × 1.55%」擇優。提早或延後請領再套用減給或增給比例。</p><h3>一次請領資格</h3><p>一次請領老年給付限 2009 年 1 月 1 日前已有勞保年資者選擇。工具以一般年資月數上限估算，特殊年資或 60 歲後年資請由勞保局個人資料確認。</p></div>
 </ToolLayout>

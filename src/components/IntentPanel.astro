@@ -1,0 +1,39 @@
+---
+interface Props {
+  topic: string;
+  leadType: string;
+  source: string;
+  partnerTitle: string;
+  partnerDescription: string;
+}
+
+const { topic, leadType, source, partnerTitle, partnerDescription } = Astro.props;
+const subscribeSubject = encodeURIComponent(`訂閱 TaiCalc ${topic}`);
+const subscribeBody = encodeURIComponent(`我同意接收 TaiCalc 的${topic}。`);
+---
+
+<section class="after-tool-content mt-5 grid gap-3 md:grid-cols-2">
+  <div class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
+    <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">免費更新</p>
+    <h2 class="mt-2 text-base font-semibold text-ink-700">收到{topic}</h2>
+    <p class="mt-2 text-xs leading-6 text-ink-500">用自己的 Email 寄出訂閱要求；本站不會在背景收集你的試算內容。</p>
+    <a
+      href={`mailto:laladoo99@gmail.com?subject=${subscribeSubject}&body=${subscribeBody}`}
+      data-lead-type={leadType}
+      data-lead-placement={`${source}_result`}
+      class="action-link mt-4"
+    >用 Email 訂閱</a>
+  </div>
+  <div class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
+    <p class="text-xs font-semibold uppercase tracking-widest text-ink-400">合作夥伴</p>
+    <h2 class="mt-2 text-base font-semibold text-ink-700">{partnerTitle}</h2>
+    <p class="mt-2 text-xs leading-6 text-ink-500">{partnerDescription}</p>
+    <a
+      href={`/partnerships?from=${source}`}
+      data-partner-id="partnership-inquiry"
+      data-partner-placement={`${source}_result`}
+      data-offer-type="b2b"
+      class="action-link mt-4"
+    >查看合作方式</a>
+  </div>
+</section>
