@@ -16,9 +16,38 @@ const { Content } = await render(post);
 // SEO Data
 const title = `${post.data.title}｜TaiCalc 專欄`;
 const description = post.data.excerpt;
+const keywords = post.data.tags.join(',');
+const articleURL = new URL(`/blog/${post.id}`, Astro.site);
+const coverImageURL = post.data.coverImage
+    ? new URL(post.data.coverImage, Astro.site).href
+    : 'https://taicalc.com/og-image-v2.png';
+const articleSchema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.data.title,
+    "description": post.data.excerpt,
+    "datePublished": post.data.date,
+    "dateModified": post.data.date,
+    "mainEntityOfPage": articleURL.href,
+    "image": coverImageURL,
+    "author": {
+        "@type": "Organization",
+        "name": post.data.author
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "TaiCalc",
+        "url": "https://taicalc.com",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://taicalc.com/favicon.svg"
+        }
+    }
+});
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} keywords={keywords} ogImage={coverImageURL} type="article">
+    <script is:inline type="application/ld+json" set:html={articleSchema} slot="head" />
     <!-- Breadcrumb -->
     <div class="text-sm text-ink-400 mb-8 flex items-center gap-2">
         <a href="/" class="hover:text-ink-700 transition-colors">首頁</a>
@@ -123,5 +152,37 @@ const description = post.data.excerpt;
     .prose-light strong {
         font-weight: 600;
         color: #1c1917;
+    }
+    .prose-light a {
+        color: #0f766e;
+        font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: #99f6e4;
+        text-underline-offset: 0.2em;
+    }
+    .prose-light a:hover {
+        color: #115e59;
+        text-decoration-color: #14b8a6;
+    }
+    .prose-light table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.925rem;
+    }
+    .prose-light th,
+    .prose-light td {
+        min-width: 9rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid #e7e5e4;
+        text-align: left;
+        white-space: normal;
+    }
+    .prose-light th {
+        background: #f5f5f4;
+        color: #292524;
+        font-weight: 600;
     }
 </style>
