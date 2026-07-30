@@ -23,6 +23,7 @@ export const GET: APIRoute = async () => {
     { path: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: today },
     { path: '/tax-season', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/partnerships', priority: '0.5', changefreq: 'monthly', lastmod: today },
     ...toolCatalog.map((tool) => ({
       path: tool.href,
       priority: tool.isCore ? '0.9' : '0.8',

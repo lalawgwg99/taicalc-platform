@@ -21,7 +21,7 @@ const FUEL_FEE = [
   [Infinity, 15720, 9432],
 ] as const;
 
-export function vehicleTaxes(cc: number, fuel: 'gasoline' | 'diesel' | 'electric') {
+export function vehicleTaxes(cc: number, fuel: 'gasoline' | 'hybrid' | 'diesel' | 'electric') {
   if (fuel === 'electric') return { licenseTax: 0, fuelFee: 0 };
   const licenseTax = LICENSE_TAX.find(([max]) => cc <= max)?.[1] ?? 0;
   const row = FUEL_FEE.find(([max]) => cc <= max);
@@ -30,7 +30,7 @@ export function vehicleTaxes(cc: number, fuel: 'gasoline' | 'diesel' | 'electric
 
 export function calculateCarCost(input: {
   price: number; downPayment: number; annualRate: number; loanYears: number;
-  years: number; cc: number; fuel: 'gasoline' | 'diesel' | 'electric';
+  years: number; cc: number; fuel: 'gasoline' | 'hybrid' | 'diesel' | 'electric';
   annualKm: number; efficiency: number; energyPrice: number; insuranceAnnual: number;
   maintenanceAnnual: number; parkingMonthly: number; resaleRate: number;
 }) {

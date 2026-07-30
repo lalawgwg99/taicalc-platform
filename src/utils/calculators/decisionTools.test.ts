@@ -13,6 +13,7 @@ describe('decision calculators', () => {
   it('uses Taiwan vehicle tax tables and EV exemption', () => {
     expect(vehicleTaxes(500, 'gasoline')).toEqual({ licenseTax: 1620, fuelFee: 2160 });
     expect(vehicleTaxes(1800, 'gasoline')).toEqual({ licenseTax: 7120, fuelFee: 4800 });
+    expect(vehicleTaxes(1800, 'hybrid')).toEqual({ licenseTax: 7120, fuelFee: 4800 });
     expect(vehicleTaxes(2000, 'diesel')).toEqual({ licenseTax: 11230, fuelFee: 3708 });
     expect(vehicleTaxes(0, 'electric')).toEqual({ licenseTax: 0, fuelFee: 0 });
   });

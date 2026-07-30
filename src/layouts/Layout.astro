@@ -263,6 +263,13 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
                 });
             }
 
+            if (anchor.dataset.leadType) {
+                track('lead_intent', {
+                    lead_type: anchor.dataset.leadType,
+                    lead_placement: anchor.dataset.leadPlacement || 'unspecified',
+                });
+            }
+
             if (anchor.hasAttribute('data-next-tool')) {
                 track('next_tool_click', {
                     next_tool_path: href,

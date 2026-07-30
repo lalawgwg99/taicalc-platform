@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const opportunities = [
+  {
+    label: '交通與購車',
+    title: '車貸、車險、試乘與售後服務',
+    intent: '使用者正在比較成交價、貸款、稅費與持有成本。',
+    paths: ['情境式服務推薦', '透明合作卡片', '完成試算後的下一步'],
+  },
+  {
+    label: '居住與房產',
+    title: '房貸、轉增貸、搬家與室內服務',
+    intent: '使用者正在評估買房、持有成本與每月現金流。',
+    paths: ['房貸方案導流', '自願索取服務資訊', '內容專題合作'],
+  },
+  {
+    label: '投資與理財',
+    title: '合法金融服務與教育內容',
+    intent: '使用者正在比較實質報酬、退休或資產配置。',
+    paths: ['開戶或產品資訊', '教育內容合作', '清楚標示贊助關係'],
+  },
+];
+
+const principles = [
+  '合作內容與一般試算結果清楚分開，不影響計算公式。',
+  '所有推薦都標示合作關係，不偽裝成官方或編輯評選。',
+  '未經使用者明確同意，不出售或轉交 Email 與試算資料。',
+  '不接受保證獲利、隱藏費用或無法核對資格的方案。',
+];
+---
+
+<Layout
+  title="TaiCalc 合作提案｜車貸、車險、房貸與理財服務"
+  description="TaiCalc 開放車貸、車險、房貸、搬家與合法理財服務合作，以透明揭露、情境相關與使用者主動同意為原則。"
+  keywords="TaiCalc合作,車貸導流,車險合作,房貸合作,聯盟行銷,金融服務合作"
+>
+  <div class="mx-auto max-w-5xl pb-20">
+    <header class="pt-8 pb-8">
+      <div class="tool-hero-panel hero-sheen relative overflow-hidden">
+        <div class="relative z-10 max-w-3xl">
+          <span class="data-pill">PARTNERSHIPS</span>
+          <h1 class="mt-5 text-3xl font-semibold tracking-tight text-ink-700 md:text-5xl">在真正需要服務的時刻出現</h1>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-ink-500">
+            TaiCalc 讓使用者先完成試算，再決定是否了解下一步服務。我們尋找資訊透明、條件可核對，並尊重使用者選擇權的合作夥伴。
+          </p>
+          <a
+            href="mailto:laladoo99@gmail.com?subject=TaiCalc%20合作提案&body=公司／品牌：%0A合作服務：%0A目標頁面：%0A計價方式：%0A聯絡人："
+            data-partner-id="partnership-email"
+            data-partner-placement="partnership-hero"
+            data-offer-type="b2b"
+            class="action-link mt-6"
+          >寄送合作提案</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid gap-4 md:grid-cols-3">
+        {opportunities.map((item, index) => (
+          <article class="rounded-2xl border border-paper-300 bg-white p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="surface-badge">{item.label}</span>
+              <span class="text-xs font-semibold tabular-nums text-ink-300">0{index + 1}</span>
+            </div>
+            <h2 class="mt-5 text-base font-semibold leading-6 text-ink-700">{item.title}</h2>
+            <p class="mt-3 text-xs leading-6 text-ink-500">{item.intent}</p>
+            <ul class="signal-list mt-5">
+              {item.paths.map((path) => <li><span class="signal-dot"></span><span>{path}</span></li>)}
+            </ul>
+          </article>
+        ))}
+      </section>
+
+      <section class="mt-10 grid gap-5 md:grid-cols-[1.05fr_0.95fr]">
+        <div class="rounded-2xl border border-paper-300 bg-paper-200 p-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">合作原則</p>
+          <h2 class="mt-3 text-xl font-semibold text-ink-700">信任先於轉換</h2>
+          <ul class="mt-5 space-y-3">
+            {principles.map((principle) => (
+              <li class="flex items-start gap-3 text-sm leading-6 text-ink-500">
+                <span class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-brand-500"></span>
+                <span>{principle}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-ink-700 bg-ink-700 p-6 text-white">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-200">提案請包含</p>
+          <h2 class="mt-3 text-xl font-semibold">讓我們能快速判斷是否適合</h2>
+          <ol class="mt-5 space-y-3 text-sm leading-6 text-ink-200">
+            <li>1. 公司／品牌與服務資格</li>
+            <li>2. 希望合作的工具或使用情境</li>
+            <li>3. 使用者可獲得的實際價值</li>
+            <li>4. 計價方式、追蹤方法與揭露要求</li>
+          </ol>
+          <a
+            href="mailto:laladoo99@gmail.com?subject=TaiCalc%20合作提案&body=公司／品牌：%0A合作服務：%0A目標頁面：%0A計價方式：%0A聯絡人："
+            data-partner-id="partnership-email"
+            data-partner-placement="partnership-detail"
+            data-offer-type="b2b"
+            class="mt-6 inline-flex rounded-full border border-white/20 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-brand-200 hover:bg-white/5"
+          >聯絡 TaiCalc</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</Layout>
