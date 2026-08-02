@@ -9,7 +9,7 @@ const isActive = (href: string) => {
     <div class="h-14 flex items-center justify-between">
         <a href="/" class="text-lg font-semibold tracking-tight text-ink-800 hover:text-brand-500 transition-colors">Tai<span class="text-brand-500">Calc</span></a>
 
-        <div class="hidden md:flex items-center gap-4 text-[11px] uppercase tracking-[0.2em]">
+        <div class="hidden items-center gap-4 text-xs tracking-[0.06em] md:flex">
             <a href="/" class={`px-2 py-1 rounded-full transition-all ${isActive('/') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>首頁</a>
             <a href="/#new-decisions" class="px-2 py-1 rounded-full text-ink-400 hover:text-ink-700 hover:bg-paper-200/70 transition-all">熱門決策</a>
             <a href="/tools/car-cost-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/car-cost') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>買車</a>

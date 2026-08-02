@@ -30,32 +30,6 @@ const featuredDecisions = [
     '/tools/home-ownership-cost-calculator',
     '/tools/real-return-calculator',
 ].map((path) => getToolByHref(path)!);
-const decisionJourneys = [
-    {
-        step: '01',
-        label: '工作變動',
-        desc: '先確認每月實拿，再核對離職時應領款項。',
-        links: [getToolByHref('/tools/salary-calculator')!, getToolByHref('/tools/severance-calculator')!],
-    },
-    {
-        step: '02',
-        label: '準備買車',
-        desc: '把車貸、稅費、能源與折舊放在同一張帳單。',
-        links: [getToolByHref('/tools/car-cost-calculator')!, getToolByHref('/tools/debt-consolidation-calculator')!],
-    },
-    {
-        step: '03',
-        label: '準備買房',
-        desc: '不只看房貸，也一起估算長期持有現金流。',
-        links: [getToolByHref('/tools/mortgage-calculator')!, getToolByHref('/tools/home-ownership-cost-calculator')!],
-    },
-    {
-        step: '04',
-        label: '規劃退休',
-        desc: '先掌握可領年金，再比較資產的實質購買力。',
-        links: [getToolByHref('/tools/labor-insurance-pension-calculator')!, getToolByHref('/tools/real-return-calculator')!],
-    },
-];
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
 const latestPosts = allPosts
@@ -188,39 +162,6 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="mb-7 max-w-xl">
-                <p class="hermes-label">DECISION PATHS</p>
-                <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-3xl">不知道先算哪個？照情境走</h2>
-                <p class="mt-2 text-sm leading-7 text-ink-500">把同一個決策裡容易漏掉的兩張帳，按正確順序接起來。</p>
-            </div>
-            <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                {decisionJourneys.map((journey) => (
-                    <article class="journey-card">
-                        <div class="flex items-center justify-between">
-                            <span class="journey-step">{journey.step}</span>
-                            <span class="text-[10px] font-semibold tracking-[.12em] text-brand-700">2 STEPS</span>
-                        </div>
-                        <h3 class="mt-5 text-lg font-semibold text-ink-800">{journey.label}</h3>
-                        <p class="mt-2 min-h-12 text-xs leading-6 text-ink-500">{journey.desc}</p>
-                        <ol class="mt-5 grid gap-2">
-                            {journey.links.map((tool, index) => (
-                                <li>
-                                    <a href={tool.href} class="journey-link">
-                                        <span>{index + 1}</span>
-                                        <strong>{tool.label}</strong>
-                                        <span aria-hidden="true">→</span>
-                                    </a>
-                                </li>
-                            ))}
-                        </ol>
-                    </article>
-                ))}
-            </div>
-        </div>
-    </section>
-
     <section class="border-t border-paper-300 py-10 sm:py-12 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="flex flex-col gap-5 rounded-3xl border border-brand-200 bg-brand-50/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
@@ -331,22 +272,6 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="py-12 border-t border-paper-300 reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-wrap justify-center gap-8 md:gap-12">
-            <div class="flex items-center gap-2.5 text-xs text-ink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                本地計算
-            </div>
-            <div class="flex items-center gap-2.5 text-xs text-ink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                版本 {platformGovernance.version}
-            </div>
-            <div class="flex items-center gap-2.5 text-xs text-ink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
-                免註冊使用
-            </div>
-        </div>
-    </section>
 <script>
 const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
     '&': '&amp;',

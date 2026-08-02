@@ -354,7 +354,11 @@ body::before {
     }
 
     .tool-hero-panel {
-        @apply glass-panel p-6 md:p-7;
+        @apply glass-panel p-5 md:p-6;
+    }
+
+    .tool-hero-actions .action-link {
+        @apply px-3 py-2 text-xs;
     }
 
     .section-heading {
@@ -998,55 +1002,6 @@ body::before {
 
 .skip-link:focus {
     transform: translateY(0);
-}
-
-.journey-card {
-    border: 1px solid #d8e1db;
-    border-radius: 1.25rem;
-    background: rgba(255, 255, 255, .82);
-    padding: 1rem;
-    box-shadow: 0 18px 50px -44px rgba(7, 21, 13, .5);
-}
-
-.journey-step {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: .7rem;
-    background: #102419;
-    color: #72dfba;
-    font-size: .65rem;
-    font-weight: 700;
-}
-
-.journey-link {
-    display: grid;
-    grid-template-columns: 1.4rem minmax(0, 1fr) auto;
-    align-items: center;
-    gap: .55rem;
-    border-radius: .75rem;
-    background: #f1f5f2;
-    padding: .65rem .7rem;
-    color: #45594b;
-    font-size: .72rem;
-    transition: background-color .18s ease, color .18s ease, transform .18s ease;
-}
-
-.journey-link:hover {
-    transform: translateX(2px);
-    background: #ecfdf7;
-    color: #0b7c62;
-}
-
-.journey-link > span:first-child {
-    display: grid;
-    place-items: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 999px;
-    border: 1px solid #c8d4cb;
-    font-size: .6rem;
 }
 
 .catalog-filter {

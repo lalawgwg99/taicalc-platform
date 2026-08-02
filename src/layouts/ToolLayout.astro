@@ -71,34 +71,33 @@ const relatedTools = getRelatedTools(currentPath);
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <div class="max-w-6xl mx-auto px-4 md:px-0">
-        <header class="pt-6 pb-6">
+        <header class="pt-4 pb-5">
             <div class="tool-hero-panel hero-sheen relative overflow-hidden">
                 <div class="relative z-10">
-                    <div class="flex items-center gap-2 mb-3">
+                    <div class="mb-3 flex items-center justify-between gap-3">
                         <a href="/" class="inline-flex items-center gap-1.5 text-xs text-ink-400 hover:text-ink-700 transition-colors group">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
                                 <path d="M19 12H5M12 19l-7-7 7-7"/>
                             </svg>
                             所有工具
                         </a>
+                        <span class="data-pill !px-2.5 !py-1">{dataYear}</span>
                     </div>
-                    <div class="mb-3 flex flex-wrap items-center gap-2">
-                        <span class="data-pill">{dataYear}</span>
-                    </div>
-                    <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
+                    <h1 class="mb-2 text-2xl font-semibold text-ink-700 md:text-4xl">{cleanTitle}</h1>
                     <p class="max-w-2xl text-sm leading-relaxed text-ink-500">{kicker}</p>
-                    <div class="mt-5 flex flex-wrap gap-2">
+                    <div class="tool-hero-actions mt-4 flex flex-wrap gap-2">
                         <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
                         <button
                             id="share-tool"
                             type="button"
                             class="action-link"
                             data-share-title={cleanTitle}
+                            aria-label="分享這個工具"
                         >
-                            分享工具
+                            分享
                         </button>
-                        <button id="print-tool-report" type="button" class="action-link">
-                            列印／存 PDF
+                        <button id="print-tool-report" type="button" class="action-link" aria-label="列印或儲存 PDF">
+                            PDF
                         </button>
                     </div>
                 </div>
