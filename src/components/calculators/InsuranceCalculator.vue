@@ -101,6 +101,41 @@
           </div>
         </div>
       </div>
+
+      <figure
+        class="premium-chart"
+        role="img"
+        :aria-label="premiumChartLabel"
+      >
+        <figcaption class="premium-chart-heading">
+          <div>
+            <strong>每月保費分攤</strong>
+            <span>同一投保級距下的實際負擔</span>
+          </div>
+          <small>元／月</small>
+        </figcaption>
+        <div v-for="row in premiumChart" :key="row.label" class="premium-chart-row">
+          <div class="premium-chart-meta">
+            <span>{{ row.label }}</span>
+            <strong>{{ fmt(row.total) }}</strong>
+          </div>
+          <div class="premium-chart-scale" aria-hidden="true">
+            <div class="premium-chart-total" :style="{ width: `${row.scale}%` }">
+              <i
+                v-for="segment in row.segments"
+                :key="segment.label"
+                :style="{ width: `${segment.percent}%`, background: segment.color }"
+                :title="`${segment.label} ${fmt(segment.value)} 元`"
+              ></i>
+            </div>
+          </div>
+        </div>
+        <div class="premium-chart-legend" aria-hidden="true">
+          <span><i class="premium-dot premium-dot-labor"></i>勞保</span>
+          <span><i class="premium-dot premium-dot-health"></i>健保</span>
+          <span v-if="currentRole === 'employee'"><i class="premium-dot premium-dot-pension"></i>勞退</span>
+        </div>
+      </figure>
     </div>
   </div>
 </template>
@@ -131,4 +166,40 @@ const result = computed(() => {
 });
 
 const matchedBracket = computed(() => result.value.laborBracket);
+const premiumChart = computed(() => {
+  const rows = [{
+    label: '個人負擔',
+    total: result.value.workerTotal,
+    segments: [
+      { label: '勞保', value: result.value.workerLabor, color: '#32c99c' },
+      { label: '健保', value: result.value.workerHealth, color: '#72dfba' },
+    ],
+  }];
+  if (currentRole.value === 'employee') {
+    rows.push({
+      label: '雇主負擔',
+      total: result.value.employerTotal,
+      segments: [
+        { label: '勞保', value: result.value.employerLabor, color: '#32c99c' },
+        { label: '健保', value: result.value.employerHealth, color: '#72dfba' },
+        { label: '勞退', value: result.value.employerPension, color: '#e8b26f' },
+      ],
+    });
+  }
+  const maximum = Math.max(1, ...rows.map((row) => row.total));
+  return rows.map((row) => ({
+    ...row,
+    scale: Math.max(3, row.total / maximum * 100),
+    segments: row.segments.map((segment) => ({
+      ...segment,
+      percent: row.total > 0 ? segment.value / row.total * 100 : 0,
+    })),
+  }));
+});
+const premiumChartLabel = computed(() => `每月保費分攤：${premiumChart.value.map((row) => `${row.label} ${fmt(row.total)} 元`).join('、')}`);
 </script>
+
+<style scoped>
+.premium-chart{border:1px solid #d8e1db;border-radius:1.15rem;background:linear-gradient(145deg,#102419,#173528);padding:1rem;color:#fff;box-shadow:0 18px 44px -34px rgba(9,35,26,.55)}
+.premium-chart-heading,.premium-chart-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}.premium-chart-heading{margin-bottom:1rem}.premium-chart-heading strong,.premium-chart-heading span{display:block}.premium-chart-heading strong{font-size:.82rem}.premium-chart-heading span{margin-top:.18rem;color:#91a69a;font-size:.65rem}.premium-chart-heading small{color:#72dfba;font-size:.62rem}.premium-chart-row+.premium-chart-row{margin-top:.85rem}.premium-chart-meta span{color:#b8c8be;font-size:.68rem}.premium-chart-meta strong{font-size:.78rem}.premium-chart-scale{height:.7rem;margin-top:.35rem;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.075)}.premium-chart-total{display:flex;height:100%;min-width:3px;overflow:hidden;border-radius:inherit;transition:width .25s ease}.premium-chart-total i{display:block;height:100%;min-width:1px;transition:width .25s ease}.premium-chart-total i+i{border-left:2px solid #102419}.premium-chart-legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.9rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.08)}.premium-chart-legend span{display:flex;align-items:center;gap:.3rem;color:#a5b5aa;font-size:.62rem}.premium-dot{width:.42rem;height:.42rem;border-radius:999px}.premium-dot-labor{background:#32c99c}.premium-dot-health{background:#72dfba}.premium-dot-pension{background:#e8b26f}
+</style>

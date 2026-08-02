@@ -66,16 +66,7 @@
         <Metric label="每年能源費" :value="currency(carResult.energyAnnual)" />
         <Metric label="折舊成本" :value="currency(carResult.depreciation)" />
         <Metric label="貸款總利息" :value="currency(carResult.loanInterest)" />
-        <div class="cost-breakdown" aria-label="持有期成本組成">
-          <div class="breakdown-heading">
-            <strong>成本組成</strong>
-            <span>持有期占比</span>
-          </div>
-          <div v-for="item in carCostBreakdown" :key="item.label" class="breakdown-row">
-            <div><span>{{ item.label }}</span><strong>{{ currency(item.value) }}</strong></div>
-            <div class="breakdown-track" aria-hidden="true"><i :style="{ width: `${item.percent}%` }"></i></div>
-          </div>
-        </div>
+        <DecisionChart title="持有期成本組成" caption="每一元花在哪裡" kind="stack" :items="carChartItems" />
       </ResultPanel>
     </section>
 
@@ -92,11 +83,12 @@
         </div>
         <p class="scope-note">若屬舊制年資、定期契約、退休或非資遣原因，請另依個案確認。</p>
       </div>
-      <ResultPanel eyebrow="應結算項目" label="預估結算總額" :value="currency(separationResult.total)" :insight="separationInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="應結算項目" label="預估結算總額" :value="currency(separationResult.total)" :insight="separationInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: separationChartItems }">
         <Metric label="資遣費" :value="currency(separationResult.severance)" />
         <Metric label="預告工資" :value="currency(separationResult.noticePay)" />
         <Metric label="未休特休" :value="currency(separationResult.unusedLeavePay)" />
         <Metric label="最後薪資" :value="currency(separationResult.finalSalary)" />
+        <DecisionChart title="結算金額組成" caption="各項占總額比例" kind="stack" :items="separationChartItems" />
         <div class="result-callout">法定預告期：{{ separationResult.statutoryNoticeDays }} 天</div>
       </ResultPanel>
     </section>
@@ -119,13 +111,14 @@
           <label>整合後每月多還<input v-model.number="debtPlan.extra" type="number" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: debtChartItems }">
         <Metric label="目前月付合計" :value="currency(debtResult.currentPayment)" />
         <Metric label="整合本金" :value="currency(debtResult.balance)" />
         <Metric label="整合總利息＋費用" :value="currency(debtResult.newCosts)" />
         <Metric v-if="debtResult.currentPayoffPossible" label="相較目前省下" :value="currency(debtResult.savings)" :tone="debtResult.savings >= 0 ? 'good' : 'bad'" />
         <Metric v-if="debtPlan.extra > 0" label="多還後清償時間" :value="duration(debtResult.extraMonths)" />
         <Metric v-if="debtPlan.extra > 0" label="多還可省利息" :value="currency(debtResult.extraSavings)" tone="good" />
+        <DecisionChart title="每月還款比較" caption="越短代表現金流壓力越低" kind="columns" :items="debtChartItems" />
         <div v-if="!debtResult.currentPayoffPossible" class="result-callout">目前至少一筆月付不高於月利息，本金不會下降，無法計算原方案總利息。</div>
       </ResultPanel>
     </section>
@@ -144,12 +137,13 @@
           <label class="check-field"><input v-model="laborPension.lumpSumEligible" type="checkbox"> 2009/1/1 前已有勞保年資，可比較一次請領</label>
         </div>
       </div>
-      <ResultPanel eyebrow="退休現金流" label="預估每月年金" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="退休現金流" label="預估每月年金" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: pensionChartItems }">
         <Metric label="採用公式" :value="laborPensionResult.formula" />
         <Metric label="年領合計" :value="currency(laborPensionResult.annual)" />
         <Metric label="年齡增減給" :value="percent(laborPensionResult.ageAdjustment)" />
         <Metric v-if="laborPension.lumpSumEligible" label="一次請領估算" :value="currency(laborPensionResult.lumpSum)" />
         <Metric v-if="laborPension.lumpSumEligible" label="月領損益兩平" :value="`${laborPensionResult.breakEvenYears.toFixed(1)} 年`" />
+        <DecisionChart title="月領累積進度" caption="未計時間價值，顯示長期現金流" kind="columns" :items="pensionChartItems" />
       </ResultPanel>
     </section>
 
@@ -173,10 +167,11 @@
         </div>
         <p v-if="tax.type === 'estate'" class="scope-note">未滿 18 歲直系卑親屬依距成年年數可再增加扣除；本簡版先計每人基本扣除，額外金額請填入「其他依法扣除額」。</p>
       </div>
-      <ResultPanel eyebrow="115 年度" label="預估應納稅額" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="115 年度" label="預估應納稅額" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: taxChartItems }">
         <Metric label="免稅額" :value="currency(taxResult.exemption)" />
         <Metric label="扣除額合計" :value="currency(taxResult.deductions)" />
         <Metric label="課稅淨額" :value="currency(taxResult.net)" />
+        <DecisionChart title="申報金額拆解" caption="從財產總額看到應納稅額" kind="columns" :items="taxChartItems" />
         <div class="result-callout">採 10%／15%／20% 累進稅率逐段計算</div>
       </ResultPanel>
     </section>
@@ -193,11 +188,12 @@
           <label class="check-field"><input v-model="parental.publicCare" type="checkbox"> 使用公共化／準公共托育（不重複計育兒津貼）</label>
         </div>
       </div>
-      <ResultPanel eyebrow="家庭可領金額" label="合計估算" :value="currency(parentalResult.total)" :insight="parentalInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="家庭可領金額" label="合計估算" :value="currency(parentalResult.total)" :insight="parentalInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: parentalChartItems }">
         <Metric label="育嬰留停給付＋補助" :value="currency(parentalResult.leaveBenefit)" />
         <Metric label="每月育兒津貼" :value="currency(parentalResult.allowanceMonthly)" />
         <Metric label="育兒津貼合計" :value="currency(parentalResult.allowanceTotal)" />
         <Metric label="留停期間收入缺口" :value="currency(parentalResult.incomeGap)" />
+        <DecisionChart title="家庭現金流比較" caption="補助與仍需準備的缺口" kind="columns" :items="parentalChartItems" />
       </ResultPanel>
     </section>
 
@@ -223,13 +219,14 @@
           <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="number" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }">
         <Metric label="房貸月付現金流" :value="currency(homeResult.mortgagePayment)" />
         <Metric label="每年房屋稅" :value="currency(homeResult.houseTax)" />
         <Metric label="每年地價稅" :value="currency(homeResult.landTax)" />
         <Metric label="首年房貸利息" :value="currency(homeResult.firstYearInterest)" />
         <Metric label="每年持有成本" :value="currency(homeResult.annualCost)" />
         <Metric label="每年現金流出" :value="currency(homeResult.annualCashOutflow)" />
+        <DecisionChart title="首年持有成本組成" caption="不含房貸本金" kind="stack" :items="homeChartItems" />
         <div class="result-callout">成本排除償還本金；現金流出則包含完整房貸月付。</div>
       </ResultPanel>
     </section>
@@ -250,11 +247,12 @@
           <label>稅務耗損 %<input v-model.number="scenario.taxDrag" type="number" step="0.1" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle">
+      <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: returnChartItems }">
         <div v-for="item in returnResults" :key="item.name" class="return-result">
           <div><strong>{{ item.name }}</strong><small>實質年報酬 {{ percent(item.realAnnualRate) }}</small></div>
           <div><span>{{ currency(item.realValue) }}</span><small>名目 {{ currency(item.nominalValue) }}</small></div>
         </div>
+        <DecisionChart title="通膨後購買力" caption="相同本金與投入期間比較" kind="columns" :items="returnChartItems" />
         <div class="result-callout">預設值只是比較情境，不代表未來績效或特定商品報酬。</div>
       </ResultPanel>
     </section>
@@ -279,6 +277,61 @@ const props = defineProps({
 const Metric = defineComponent({
   props: { label: String, value: [String, Number], tone: String },
   setup(p) { return () => h('div', { class: ['metric', p.tone && `metric-${p.tone}`] }, [h('span', p.label), h('strong', String(p.value))]); },
+});
+const chartPalette = ['#72dfba', '#32c99c', '#2a9b7e', '#b8c8be', '#e8b26f', '#e1806c', '#91a69a'];
+const DecisionChart = defineComponent({
+  props: {
+    title: String,
+    caption: String,
+    kind: { type: String, default: 'columns' },
+    items: { type: Array, default: () => [] },
+  },
+  setup(p) {
+    return () => {
+      const items = p.items
+        .map((item, index) => ({
+          ...item,
+          value: Math.max(0, Number(item.value) || 0),
+          color: item.color || chartPalette[index % chartPalette.length],
+        }))
+        .filter((item) => item.value > 0);
+      if (!items.length) {
+        return null;
+      }
+      const total = Math.max(1, items.reduce((sum, item) => sum + item.value, 0));
+      const maximum = Math.max(1, ...items.map((item) => item.value));
+      const ariaLabel = `${p.title}：${items.map((item) => `${item.label} ${item.displayValue}`).join('、')}`;
+      const header = h('figcaption', { class: 'decision-chart-heading' }, [
+        h('strong', p.title),
+        h('span', p.caption),
+      ]);
+      if (p.kind === 'stack') {
+        return h('figure', { class: 'decision-chart', role: 'img', 'aria-label': ariaLabel }, [
+          header,
+          h('div', { class: 'chart-stack', 'aria-hidden': 'true' }, items.map((item) => h('i', {
+            key: item.label,
+            style: { width: `${Math.max(1.5, item.value / total * 100)}%`, background: item.color },
+            title: `${item.label} ${item.displayValue}`,
+          }))),
+          h('div', { class: 'chart-legend' }, items.map((item) => h('div', { key: item.label, class: 'chart-legend-item' }, [
+            h('i', { style: { background: item.color }, 'aria-hidden': 'true' }),
+            h('span', item.label),
+            h('strong', item.displayValue),
+          ]))),
+        ]);
+      }
+      return h('figure', { class: 'decision-chart', role: 'img', 'aria-label': ariaLabel }, [
+        header,
+        h('div', { class: 'chart-columns' }, items.map((item) => h('div', { key: item.label, class: 'chart-column' }, [
+          h('strong', { class: 'chart-column-value' }, item.displayValue),
+          h('div', { class: 'chart-column-track', 'aria-hidden': 'true' }, [h('i', {
+            style: { height: `${Math.max(7, item.value / maximum * 100)}%`, background: item.color },
+          })]),
+          h('span', { class: 'chart-column-label' }, item.label),
+        ]))),
+      ]);
+    };
+  },
 });
 const ResultPanel = defineComponent({
   props: {
@@ -353,10 +406,10 @@ const ResultPanel = defineComponent({
 
       context.fillStyle = '#72dfba';
       context.font = '700 24px Arial, sans-serif';
-      context.fillText('TAICALC · 買車決策報告', 102, 108);
+      context.fillText('TAICALC · 決策試算報告', 102, 108);
       context.fillStyle = '#ffffff';
       context.font = '700 46px Arial, sans-serif';
-      context.fillText(p.reportTitle || '養車成本試算', 102, 172);
+      context.fillText(p.reportTitle || 'TaiCalc 試算結果', 102, 172);
       context.fillStyle = '#b8c8be';
       context.font = '24px Arial, sans-serif';
       context.fillText(p.label || '平均每月總成本', 102, 222);
@@ -381,7 +434,7 @@ const ResultPanel = defineComponent({
 
       context.fillStyle = '#91a69a';
       context.font = '20px Arial, sans-serif';
-      context.fillText('先算總成本，再決定要不要買', 870, 520);
+      context.fillText('把複雜規則，算成清楚選擇', 830, 520);
       context.fillStyle = '#72dfba';
       context.font = '700 24px Arial, sans-serif';
       context.fillText('taicalc.com', 932, 554);
@@ -393,7 +446,7 @@ const ResultPanel = defineComponent({
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
         anchor.href = url;
-        anchor.download = 'taicalc-car-cost.png';
+        anchor.download = 'taicalc-result.png';
         document.body.appendChild(anchor);
         anchor.click();
         anchor.remove();
@@ -423,6 +476,7 @@ const ResultPanel = defineComponent({
 });
 
 const currency = (value) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', maximumFractionDigits: 0 }).format(Number.isFinite(value) ? value : 0);
+const compactCurrency = (value) => new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD', notation: 'compact', maximumFractionDigits: 1 }).format(Number.isFinite(value) ? value : 0);
 const percent = (value) => `${value >= 0 ? '+' : ''}${(value * 100).toFixed(1)}%`;
 const duration = (months) => !Number.isFinite(months) ? '無法清償' : `${Math.floor(months / 12)} 年 ${months % 12} 月`;
 
@@ -528,12 +582,12 @@ const carCostBreakdown = computed(() => {
     .map((item) => ({ ...item, percent: Math.max(2, Math.round(item.value / total * 100)) }))
     .sort((a, b) => b.value - a.value);
 });
+const carChartItems = computed(() => carCostBreakdown.value.map((item) => ({
+  ...item,
+  displayValue: compactCurrency(item.value),
+})));
 const carShareImageData = computed(() => ({
-  breakdown: carCostBreakdown.value.map((item) => ({
-    label: item.label,
-    value: item.value,
-    displayValue: currency(item.value),
-  })),
+  breakdown: carChartItems.value,
 }));
 const carInsight = computed(() => {
   const yearly = carResult.value.monthlyTrueCost * 12;
@@ -568,12 +622,23 @@ onMounted(() => {
 });
 const separation = reactive({ averageMonthlyWage: 50_000, regularMonthlyWage: 50_000, serviceYears: 3, noticeDaysGiven: 0, unusedLeaveDays: 7, workedDays: 15 });
 const separationResult = computed(() => calculateSeparation(separation));
+const separationChartItems = computed(() => [
+  { label: '資遣費', value: separationResult.value.severance },
+  { label: '預告工資', value: separationResult.value.noticePay },
+  { label: '未休特休', value: separationResult.value.unusedLeavePay },
+  { label: '最後薪資', value: separationResult.value.finalSalary },
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const separationInsight = computed(() => separationResult.value.severance > 0
   ? '先用薪資單與出勤紀錄逐項核對；資遣費、預告工資與未休特休應分開列明。'
   : '目前資遣費為 0，請先確認離職原因；自願離職與資遣的法定給付不同。');
 const debts = reactive([{ balance: 180_000, rate: 12, payment: 7_000 }, { balance: 300_000, rate: 8, payment: 10_000 }, { balance: 0, rate: 6, payment: 0 }]);
 const debtPlan = reactive({ rate: 5, years: 5, fee: 5_000, penalty: 0, extra: 2_000 });
 const debtResult = computed(() => calculateDebtConsolidation(debts, debtPlan.rate, debtPlan.years, debtPlan.fee, debtPlan.penalty, debtPlan.extra));
+const debtChartItems = computed(() => [
+  { label: '目前月付', value: debtResult.value.currentPayment },
+  { label: '整合後', value: debtResult.value.newPayment },
+  ...(debtPlan.extra > 0 ? [{ label: '加速還款', value: debtResult.value.newPayment + debtPlan.extra, color: '#e8b26f' }] : []),
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const debtInsight = computed(() => !debtResult.value.currentPayoffPossible
   ? '目前付款不足以穩定降低本金，應先停止新增債務並向銀行確認可行還款方案。'
   : debtResult.value.savings > 0
@@ -581,6 +646,12 @@ const debtInsight = computed(() => !debtResult.value.currentPayoffPossible
     : '整合雖可能降低月付，但總成本沒有變少。不要只看月付，期限與費用更關鍵。');
 const laborPension = reactive({ averageInsuredSalary: 45_800, insuredYears: 30, claimAge: 65, lumpSumEligible: true });
 const laborPensionResult = computed(() => calculateLaborPension(laborPension.averageInsuredSalary, laborPension.insuredYears, laborPension.claimAge, laborPension.lumpSumEligible));
+const pensionChartItems = computed(() => [
+  { label: '月領 1 年', value: laborPensionResult.value.annual },
+  { label: '月領 5 年', value: laborPensionResult.value.annual * 5 },
+  { label: '月領 10 年', value: laborPensionResult.value.annual * 10 },
+  ...(laborPension.lumpSumEligible ? [{ label: '一次領', value: laborPensionResult.value.lumpSum, color: '#e8b26f' }] : []),
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const pensionInsight = computed(() => laborPension.claimAge < 65
   ? '提前請領會永久減額；若現金流允許，可把延後請領後的終身月領差額一起比較。'
   : '月領適合規劃長期現金流；一次請領資格與實際金額仍須由勞保局個人資料確認。');
@@ -591,16 +662,34 @@ watch(() => tax.type, (type) => {
   tax.otherDeductions = 0;
 }, { flush: 'sync' });
 const taxResult = computed(() => calculateEstateTax(tax));
+const taxChartItems = computed(() => [
+  { label: tax.type === 'estate' ? '遺產總額' : '贈與總額', value: tax.gross },
+  { label: '課稅淨額', value: taxResult.value.net },
+  { label: '應納稅額', value: taxResult.value.tax, color: '#e8b26f' },
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const taxInsight = computed(() => taxResult.value.tax > 0
   ? '已進入課稅範圍。財產評價、扣除資格與贈與時點都會改變結果，正式申報前宜逐項核對。'
   : '目前試算未達課稅淨額，但仍要保留財產價值與扣除額證明，並留意同年度累計贈與。');
 const parental = reactive({ insuredSalary: 40_000, parent1Months: 6, parent2Months: 6, childOrder: 1, allowanceMonths: 24, publicCare: false });
 const parentalResult = computed(() => calculateParentalBenefits(parental));
+const parentalChartItems = computed(() => [
+  { label: '留停給付', value: parentalResult.value.leaveBenefit },
+  { label: '育兒津貼', value: parentalResult.value.allowanceTotal },
+  { label: '收入缺口', value: parentalResult.value.incomeGap, color: '#e8b26f' },
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const parentalInsight = computed(() => parental.publicCare
   ? '使用公共化或準公共托育時，補助採不同制度；請以孩子實際送托類型核對可領項目。'
   : '留停期間仍有收入缺口，建議把這個差額加入至少 6 個月的家庭預備金規劃。');
 const home = reactive({ assessedHouseValue: 2_000_000, houseTaxRate: 1.2, declaredLandValue: 1_500_000, landTaxRate: 0.2, mortgageBalance: 10_000_000, mortgageRate: 2.3, mortgageYears: 30, managementMonthly: 3_000, repairAnnual: 50_000, insuranceAnnual: 5_000 });
 const homeResult = computed(() => calculateHomeCost(home));
+const homeChartItems = computed(() => [
+  { label: '首年利息', value: homeResult.value.firstYearInterest },
+  { label: '管理費', value: home.managementMonthly * 12 },
+  { label: '維修準備', value: home.repairAnnual },
+  { label: '房屋稅', value: homeResult.value.houseTax },
+  { label: '地價稅', value: homeResult.value.landTax },
+  { label: '住宅保險', value: home.insuranceAnnual },
+].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const homeInsight = computed(() => `除房貸外，每月還有約 ${currency(homeResult.value.monthlyCost)} 的持有成本；看屋時應把它和家庭固定支出一起壓力測試。`);
 const returns = reactive({ principal: 500_000, years: 10, monthlyContribution: 10_000, inflation: 2, scenarios: [
   { name: '定存', nominalRate: 1.7, feeRate: 0, taxDrag: 0.15 },
@@ -608,6 +697,11 @@ const returns = reactive({ principal: 500_000, years: 10, monthlyContribution: 1
   { name: 'ETF', nominalRate: 7, feeRate: 0.4, taxDrag: 0.3 },
 ] });
 const returnResults = computed(() => calculateRealReturns(returns.principal, returns.years, returns.inflation, returns.monthlyContribution, returns.scenarios));
+const returnChartItems = computed(() => returnResults.value.map((item) => ({
+  label: item.name,
+  value: item.realValue,
+  displayValue: compactCurrency(item.realValue),
+})));
 const returnsInsight = computed(() => {
   const leader = [...returnResults.value].sort((a, b) => b.realValue - a.realValue)[0];
   return `${leader?.name ?? '最高情境'} 的實質期末價值最高，但報酬假設不是保證；請同時比較波動、流動性與可承受虧損。`;
@@ -745,8 +839,10 @@ onMounted(() => {
 <style>
 .calc-grid{display:grid;gap:1rem;align-items:start}.input-panel,.result-panel{border:1px solid #d8e1db;background:rgba(255,255,255,.94);border-radius:1.35rem;padding:1.1rem;box-shadow:0 18px 48px -36px rgba(9,35,26,.4)}.panel-title{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1rem}.panel-title>span{display:grid;place-items:center;width:2rem;height:2rem;border-radius:.7rem;background:#102419;color:#fff;font-size:.68rem;font-weight:700}.panel-title h2{font-size:1rem;font-weight:700;color:#102419}.panel-title p{font-size:.75rem;color:#687b6e;margin-top:.15rem}.panel-title-secondary{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #e1e8e3}.preset-panel{margin-bottom:1rem;padding:1rem;border:1px solid #c9e9dc;border-radius:1rem;background:#f1fbf7}.preset-panel label{font-size:.72rem;font-weight:700;color:#234b3b}.preset-source{margin-top:.65rem;font-size:.68rem;line-height:1.55;color:#557064}.preset-source a{color:#08765d;text-decoration:underline;text-underline-offset:2px}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.field-grid label,.debt-row label,.scenario-row label{font-size:.72rem;font-weight:600;color:#45594b}.input-clean{margin-top:.35rem}.check-field{display:flex;align-items:center;gap:.55rem;grid-column:1/-1;padding:.8rem;border:1px solid #dde5e0;border-radius:.8rem;background:#f6f8f5}.check-field input{width:1rem;height:1rem;accent-color:#139b79}.scenario-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.55rem;margin-top:1rem;padding-top:1rem;border-top:1px solid #e1e8e3}.scenario-actions button{border:1px solid #b9cec3;border-radius:999px;padding:.45rem .75rem;color:#234b3b;background:#fff;font-size:.68rem;font-weight:700;transition:.18s ease}.scenario-actions button:hover{border-color:#139b79;background:#f1fbf7}.scenario-actions span{font-size:.65rem;color:#7a8b81}.scope-note,.result-callout{margin-top:1rem;border-radius:.8rem;background:#ecfdf7;color:#09634f;padding:.75rem;font-size:.72rem;line-height:1.6}.result-panel{position:sticky;top:5rem;background:#102419;color:#fff;border-color:#102419;overflow:hidden}.result-panel:before{content:"";position:absolute;width:12rem;height:12rem;border-radius:50%;background:rgba(54,196,155,.16);right:-4rem;top:-5rem}.result-heading{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.result-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.35rem}.result-eyebrow{color:#72dfba;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding-top:.4rem}.result-copy{border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:.35rem .65rem;color:#c8d4cb;font-size:.65rem;font-weight:600;transition:.18s ease}.result-copy:hover{border-color:#72dfba;color:#fff;background:rgba(114,223,186,.1)}.result-label{position:relative;display:block;color:#c8d4cb;font-size:.78rem;margin-top:1rem}.result-total{position:relative;display:block;font-size:clamp(1.75rem,5vw,2.65rem);line-height:1.15;margin:.3rem 0 1rem;letter-spacing:-.04em}.result-insight{position:relative;margin-bottom:1rem;border-left:2px solid #72dfba;background:rgba(114,223,186,.08);border-radius:0 .75rem .75rem 0;padding:.7rem .8rem}.result-insight span{display:block;color:#72dfba;font-size:.62rem;font-weight:700;letter-spacing:.08em}.result-insight p{margin-top:.25rem;color:#dce7df;font-size:.72rem;line-height:1.55}.result-metrics{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.metric{background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.09);border-radius:.8rem;padding:.75rem}.metric span,.metric strong{display:block}.metric span{color:#a5b5aa;font-size:.65rem}.metric strong{font-size:.86rem;margin-top:.25rem}.metric-good strong{color:#72dfba}.metric-bad strong{color:#fda4af}.cost-breakdown{grid-column:1/-1;margin-top:.35rem;padding:.85rem;border:1px solid rgba(255,255,255,.09);border-radius:.9rem;background:rgba(255,255,255,.055)}.breakdown-heading,.breakdown-row>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:1rem}.breakdown-heading{margin-bottom:.7rem}.breakdown-heading strong{font-size:.72rem}.breakdown-heading span{font-size:.62rem;color:#91a69a}.breakdown-row+.breakdown-row{margin-top:.55rem}.breakdown-row span{font-size:.64rem;color:#b8c8be}.breakdown-row strong{font-size:.64rem;color:#eef7f1}.breakdown-track{height:.28rem;margin-top:.25rem;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.09)}.breakdown-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#32c99c,#72dfba)}.result-panel .result-callout{grid-column:1/-1;background:rgba(114,223,186,.1);color:#a9efd4;border:1px solid rgba(114,223,186,.18)}.debt-row,.scenario-row{display:grid;grid-template-columns:5rem repeat(3,minmax(0,1fr));gap:.55rem;align-items:end;padding:.7rem 0;border-bottom:1px solid #e4ebe6}.debt-row strong,.scenario-row strong{font-size:.75rem;color:#192e21;padding-bottom:.75rem}.return-result{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.075);border-radius:.8rem;padding:.8rem}.return-result div:last-child{text-align:right}.return-result strong,.return-result span,.return-result small{display:block}.return-result small{color:#a5b5aa;font-size:.65rem}.return-result span{font-weight:700}
 .scenario-toolbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem;padding:.8rem 1rem;border:1px solid #d8e1db;border-radius:1rem;background:#f6f8f5}.scenario-toolbar strong,.scenario-toolbar span{display:block}.scenario-toolbar strong{font-size:.72rem;color:#234b3b}.scenario-toolbar span{margin-top:.15rem;font-size:.65rem;color:#7a8b81}.scenario-toolbar>div:last-child{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}.scenario-toolbar button{border:1px solid #b9cec3;border-radius:999px;padding:.4rem .7rem;background:#fff;color:#234b3b;font-size:.66rem;font-weight:700}.scenario-toolbar button:hover{border-color:#139b79;background:#f1fbf7}
+.decision-chart{grid-column:1/-1;margin-top:.35rem;padding:.9rem;border:1px solid rgba(255,255,255,.1);border-radius:1rem;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.035));overflow:hidden}.decision-chart-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:.85rem}.decision-chart-heading strong{font-size:.72rem;color:#eef7f1}.decision-chart-heading span{font-size:.6rem;color:#91a69a;text-align:right}.chart-stack{display:flex;width:100%;height:.7rem;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08);box-shadow:inset 0 1px 2px rgba(0,0,0,.16)}.chart-stack i{display:block;height:100%;min-width:2px;transition:width .25s ease}.chart-stack i+i{border-left:2px solid #102419}.chart-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem .7rem;margin-top:.75rem}.chart-legend-item{display:grid;grid-template-columns:.45rem minmax(0,1fr) auto;align-items:center;gap:.4rem;min-width:0}.chart-legend-item>i{width:.42rem;height:.42rem;border-radius:999px}.chart-legend-item span{overflow:hidden;color:#b8c8be;font-size:.61rem;text-overflow:ellipsis;white-space:nowrap}.chart-legend-item strong{color:#eef7f1;font-size:.62rem}.chart-columns{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:.5rem;align-items:end;min-height:8.5rem}.chart-column{display:grid;grid-template-rows:auto 5.8rem auto;gap:.35rem;min-width:0;text-align:center}.chart-column-value{overflow:hidden;color:#eef7f1;font-size:.61rem;text-overflow:ellipsis;white-space:nowrap}.chart-column-track{position:relative;display:flex;align-items:flex-end;overflow:hidden;border-radius:.55rem .55rem .25rem .25rem;background:rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}.chart-column-track i{display:block;width:100%;border-radius:.5rem .5rem .2rem .2rem;box-shadow:0 -8px 24px rgba(50,201,156,.14);transition:height .25s ease}.chart-column-label{overflow:hidden;color:#a5b5aa;font-size:.6rem;line-height:1.25;text-overflow:ellipsis;white-space:nowrap}
 @media(min-width:900px){.calc-grid{grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr)}.input-panel,.result-panel{padding:1.35rem}}
 @media(max-width:899px){.result-panel{position:relative;top:auto}.calc-grid{gap:.8rem}}
 @media(max-width:640px){.scenario-toolbar{align-items:flex-start;flex-direction:column}.scenario-toolbar>div:last-child{justify-content:flex-start}.field-grid{grid-template-columns:1fr}.debt-row,.scenario-row{grid-template-columns:1fr 1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1;padding-bottom:0}.result-heading{display:block}.result-actions{justify-content:flex-start;margin-top:.65rem}.result-eyebrow{padding-top:0;white-space:nowrap}.result-metrics{grid-template-columns:1fr 1fr}.result-panel{border-radius:1.1rem}.result-total{font-size:2rem}}
 @media print{body *{visibility:hidden!important}.decision-calculator,.decision-calculator *{visibility:visible!important}.decision-calculator{position:absolute;inset:0;width:100%;background:#fff}.decision-calculator .input-panel,.decision-calculator .scenario-toolbar{display:none}.decision-calculator .calc-grid{display:block}.decision-calculator .result-panel{position:static;background:#fff;color:#102419;border:1px solid #aebfb5;box-shadow:none}.decision-calculator .result-panel:before,.decision-calculator .result-actions{display:none}.decision-calculator .result-eyebrow,.decision-calculator .result-label,.decision-calculator .metric span,.decision-calculator .breakdown-row span,.decision-calculator .breakdown-heading span{color:#557064}.decision-calculator .result-insight,.decision-calculator .metric,.decision-calculator .cost-breakdown{background:#f6f8f5;border-color:#d8e1db;color:#102419}.decision-calculator .result-insight p,.decision-calculator .metric strong,.decision-calculator .breakdown-row strong{color:#102419}}
+@media print{.decision-calculator .decision-chart{background:#f6f8f5;border-color:#d8e1db}.decision-calculator .decision-chart-heading strong,.decision-calculator .chart-legend-item strong,.decision-calculator .chart-column-value{color:#102419}.decision-calculator .decision-chart-heading span,.decision-calculator .chart-legend-item span,.decision-calculator .chart-column-label{color:#557064}.decision-calculator .chart-stack i+i{border-color:#f6f8f5}.decision-calculator .chart-column-track{background:#e1e8e3}}
 </style>
