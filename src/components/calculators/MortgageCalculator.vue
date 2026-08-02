@@ -150,6 +150,21 @@
                 </div>
             </div>
 
+            <figure class="mt-4 rounded-xl border border-paper-300 bg-ink-700 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
+                <figcaption class="mb-3 flex items-end justify-between gap-3">
+                    <span><strong class="block text-xs">本息總額組成</strong><small class="mt-0.5 block text-[10px] text-paper-300">本金與利息一眼比較</small></span>
+                    <small class="text-[10px] text-brand-300">完整貸款期間</small>
+                </figcaption>
+                <div class="flex h-3 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+                    <i class="block h-full bg-brand-400 transition-all" :style="{ width: `${mortgagePrincipalShare}%` }"></i>
+                    <i class="block h-full border-l-2 border-ink-700 bg-amber-400 transition-all" :style="{ width: `${mortgageInterestShare}%` }"></i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-3 text-[10px]">
+                    <div class="flex items-center justify-between gap-2 text-paper-300"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-brand-400"></i>本金</span><strong class="text-white">$ {{ fmt(mortgagePrincipal) }}</strong></div>
+                    <div class="flex items-center justify-between gap-2 text-paper-300"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-amber-400"></i>利息</span><strong class="text-white">$ {{ fmt(results.totalInterest) }}</strong></div>
+                </div>
+            </figure>
+
             <!-- 提前還款效益 -->
             <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
                 class="mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
@@ -283,6 +298,11 @@ const results = computed(() => calculateMortgageResults({
     extraLump: extraLump.value,
     lumpYear: lumpYear.value,
 }))
+const mortgagePrincipal = computed(() => Math.max(0, amountWan.value * 10000))
+const mortgageBreakdownTotal = computed(() => Math.max(1, mortgagePrincipal.value + Math.max(0, results.value.totalInterest)))
+const mortgagePrincipalShare = computed(() => mortgagePrincipal.value / mortgageBreakdownTotal.value * 100)
+const mortgageInterestShare = computed(() => Math.max(0, results.value.totalInterest) / mortgageBreakdownTotal.value * 100)
+const mortgageBreakdownLabel = computed(() => `本息總額組成：本金 ${fmt(mortgagePrincipal.value)} 元、利息 ${fmt(results.value.totalInterest)} 元`)
 const homeCostTransferUrl = computed(() => {
     const scenario = {
         home: {

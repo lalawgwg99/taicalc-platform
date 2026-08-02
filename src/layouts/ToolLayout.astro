@@ -19,6 +19,7 @@ interface Props {
 const {
   title,
   description,
+  category = "台灣生活財務",
   faqs = [],
   keywords,
   kicker = "先算，再看細節",
@@ -37,7 +38,7 @@ const faqSchema = faqs.length > 0 ? JSON.stringify({
     "acceptedAnswer": {
       "@type": "Answer",
       "text": f.a,
-      "dateCreated": new Date().toISOString().split('T')[0]
+      "dateCreated": lastUpdated
     }
   }))
 }) : null;
@@ -51,25 +52,53 @@ const webAppSchema = JSON.stringify({
   "description": description,
   "url": `https://taicalc.com${currentPath}`,
   "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": category,
   "operatingSystem": "All",
+  "inLanguage": "zh-TW",
+  "isAccessibleForFree": true,
+  "dateModified": lastUpdated,
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "TWD"
   },
   "browserRequirements": "Requires JavaScript",
-  "softwareVersion": "2026",
-  "keywords": keywords || "台灣,財務計算,免費工具"
+  "softwareVersion": dataVersion,
+  "keywords": keywords || "台灣,財務計算,免費工具",
+  "citation": sources.map(source => source.href),
+  "featureList": ["即時試算", "本機運算", "結果分享", "方案比較"]
 });
 
 const fallbackTitle = title.replace(/｜TaiCalc$/, '').replace(/\｜.*$/, '');
 const cleanTitle = fallbackTitle;
 const relatedTools = getRelatedTools(currentPath);
+const immediateTools = relatedTools.slice(0, 2);
+const breadcrumbSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "TaiCalc", "item": "https://taicalc.com/" },
+    { "@type": "ListItem", "position": 2, "name": cleanTitle, "item": `https://taicalc.com${currentPath}` }
+  ]
+});
+const relatedToolsSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `${cleanTitle}相關工具`,
+  "itemListElement": relatedTools.map((tool, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": tool.label,
+    "url": `https://taicalc.com${tool.href}`
+  }))
+});
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
+    <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />
+    <script type="application/ld+json" set:html={relatedToolsSchema} slot="head" />
     <div class="max-w-6xl mx-auto px-4 md:px-0">
         <header class="pt-4 pb-5">
             <div class="tool-hero-panel hero-sheen relative overflow-hidden">
@@ -107,11 +136,30 @@ const relatedTools = getRelatedTools(currentPath);
         <main id="calculator-panel" class="mb-10 max-w-6xl">
             <slot name="tool" />
             <slot name="after-tool" />
+            <nav aria-label="下一步試算" class="after-tool-content mt-4 rounded-2xl border border-paper-300 bg-white/75 p-3 shadow-[0_18px_45px_-40px_rgba(9,35,26,.45)]">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <p class="shrink-0 px-2 text-[10px] font-semibold tracking-[.12em] text-ink-400">下一步</p>
+                    <div class="grid flex-1 gap-2 sm:grid-cols-2">
+                        {immediateTools.map((tool) => (
+                            <a href={tool.href} data-next-tool class="group flex items-center justify-between gap-3 rounded-xl bg-paper-200 px-3 py-2.5 transition hover:bg-brand-50">
+                                <span class="min-w-0">
+                                    <strong class="block truncate text-xs font-semibold text-ink-700">{tool.label}</strong>
+                                    <small class="mt-0.5 block truncate text-[10px] text-ink-400">{tool.desc}</small>
+                                </span>
+                                <span aria-hidden="true" class="shrink-0 text-brand-600 transition group-hover:translate-x-0.5">→</span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </nav>
         </main>
 
         <section class="max-w-4xl mb-12">
             <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源 · 更新 {lastUpdated}</summary>
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ink-700">
+                    <span class="inline-flex items-center gap-2"><i class="h-2 w-2 rounded-full bg-brand-500"></i>資料版本與來源</span>
+                    <span class="text-[10px] font-medium text-ink-400">更新 {lastUpdated}</span>
+                </summary>
                 <ul class="mt-4 grid gap-2">
                     {sources.map((source) => (
                         <li>
@@ -160,20 +208,6 @@ const relatedTools = getRelatedTools(currentPath);
             </section>
         )}
 
-        <section class="border-t border-paper-300 pt-10 mb-16 max-w-4xl">
-            <h2 class="mb-5 text-base font-semibold text-ink-700">接著試算</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {relatedTools.map((tool) => (
-                    <a href={tool.href} data-next-tool class="flex items-center justify-between p-4 rounded-2xl bg-paper-200 border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
-                        <div>
-                            <div class="text-sm font-medium text-ink-700 transition-colors">{tool.label}</div>
-                            <div class="text-xs text-ink-400 mt-0.5">{tool.desc}</div>
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all flex-shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </a>
-                ))}
-            </div>
-        </section>
     </div>
 </Layout>
 
