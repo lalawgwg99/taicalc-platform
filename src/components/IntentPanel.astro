@@ -1,29 +1,13 @@
 ---
 interface Props {
-  topic: string;
-  leadType: string;
   source: string;
   partnerTitle: string;
 }
 
-const { topic, leadType, source, partnerTitle } = Astro.props;
-const subscribeSubject = encodeURIComponent(`訂閱 TaiCalc ${topic}`);
-const subscribeBody = encodeURIComponent(`我同意接收 TaiCalc 的${topic}。`);
+const { source, partnerTitle } = Astro.props;
 ---
 
-<section class="after-tool-content mt-4 grid gap-2 md:grid-cols-2">
-  <div class="flex items-center justify-between gap-3 rounded-xl border border-paper-300 bg-paper-200 px-4 py-3">
-    <div class="min-w-0">
-      <p class="text-[10px] font-semibold tracking-widest text-brand-600">更新</p>
-      <h2 class="mt-1 truncate text-sm font-semibold text-ink-700">{topic}</h2>
-    </div>
-    <a
-      href={`mailto:Lalawgwg99@gmail.com?subject=${subscribeSubject}&body=${subscribeBody}`}
-      data-lead-type={leadType}
-      data-lead-placement={`${source}_result`}
-      class="action-link shrink-0 !px-3 !py-2 !text-xs"
-    >訂閱</a>
-  </div>
+<section class="after-tool-content mt-4">
   <div class="flex items-center justify-between gap-3 rounded-xl border border-paper-300 bg-paper-200 px-4 py-3">
     <div class="min-w-0">
       <p class="text-[10px] font-semibold tracking-widest text-ink-400">合作</p>
