@@ -9,6 +9,6 @@ const faqs = [
 ---
 <ToolLayout title="定存、債券、ETF 實質報酬比較" description="同時比較定存、債券與 ETF 在費用、稅務耗損及通膨後的實質年報酬與期末購買力。" keywords="實質報酬計算,通膨計算,定存債券ETF比較,複利試算,ETF報酬" category="投資與退休" kicker="帳面數字變大，不一定代表購買力真的增加。" faqs={faqs} dataVersion="2026.07-return-v1" dataYear="自訂情境" lastUpdated="2026-07-29" sources={[{ label: '中央銀行｜物價與統計資料', href: 'https://www.cbc.gov.tw/' }]}>
   <DecisionCalculator type="real-return" client:only="vue" slot="tool" />
-  <IntentPanel slot="after-tool" topic="通膨、定存、債券與 ETF 比較指南" leadType="real_return_updates" source="real-return" partnerTitle="合法金融服務與理財教育合作" partnerDescription="不接受保證報酬或以廣告偽裝成試算結論的內容。" />
+  <IntentPanel slot="after-tool" topic="通膨、定存、債券與 ETF 比較指南" leadType="real_return_updates" source="real-return" partnerTitle="合法金融服務與理財教育合作" />
   <div slot="article"><h2>用購買力比較</h2><p>工具先從名目報酬扣除年費用與稅務耗損，再以通膨折算今天購買力。定存、債券與 ETF 的預設報酬都是情境輸入，不是即時利率、歷史回測或未來保證。</p><h3>風險沒有放進單一數字</h3><p>期末價值無法完整代表價格波動、匯率、信用風險與流動性。比較時應搭配資金用途與可承受虧損，而非只選最高報酬。</p></div>
 </ToolLayout>

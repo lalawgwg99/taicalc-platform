@@ -19,7 +19,6 @@ interface Props {
 const {
   title,
   description,
-  category = "工具",
   faqs = [],
   keywords,
   kicker = "先算，再看細節",
@@ -82,12 +81,9 @@ const relatedTools = getRelatedTools(currentPath);
                             </svg>
                             所有工具
                         </a>
-                        <span class="text-ink-300">/</span>
-                        <span class="text-xs text-ink-400">{category}</span>
                     </div>
-                    <div class="mb-4 flex flex-wrap items-center gap-2">
+                    <div class="mb-3 flex flex-wrap items-center gap-2">
                         <span class="data-pill">{dataYear}</span>
-                        <span class="surface-badge">{category}</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-semibold text-ink-700 mb-3">{cleanTitle}</h1>
                     <p class="max-w-2xl text-sm leading-relaxed text-ink-500">{kicker}</p>
@@ -110,61 +106,24 @@ const relatedTools = getRelatedTools(currentPath);
         </header>
 
         <main id="calculator-panel" class="mb-10 max-w-6xl">
-            <div class="tool-process mb-5" aria-label="試算流程">
-                <div class="tool-process-title">
-                    <span class="data-pill">即時更新</span>
-                    <h2>開始試算</h2>
-                </div>
-                <ol>
-                    <li><span>1</span>輸入條件</li>
-                    <li><span>2</span>比較結果</li>
-                    <li><span>3</span>核對來源</li>
-                </ol>
-            </div>
             <slot name="tool" />
             <slot name="after-tool" />
         </main>
 
         <section class="max-w-4xl mb-12">
             <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
-                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源與使用提醒</summary>
-                <div class="mt-5 grid gap-4 md:grid-cols-3">
-                    <div class="meta-tile">
-                        <p class="meta-tile-label">Version</p>
-                        <p class="meta-tile-value">{dataVersion}</p>
-                    </div>
-                    <div class="meta-tile">
-                        <p class="meta-tile-label">Data Year</p>
-                        <p class="meta-tile-value">{dataYear}</p>
-                    </div>
-                    <div class="meta-tile">
-                        <p class="meta-tile-label">Updated</p>
-                        <p class="meta-tile-value">{lastUpdated}</p>
-                    </div>
-                </div>
-                <div class="mt-5 grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
-                    <div>
-                        <p class="text-sm font-medium text-ink-700">官方來源</p>
-                        <ul class="mt-3 grid gap-2">
-                            {sources.map((source) => (
-                                <li>
-                                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="action-link w-full justify-between !text-xs">
-                                        <span>{source.label}</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-ink-700">使用提醒</p>
-                        <ul class="signal-list mt-3">
-                            <li><span class="signal-dot"></span><span>結果僅供估算比較。</span></li>
-                            <li><span class="signal-dot"></span><span>正式金額以主管機關為準。</span></li>
-                            <li><span class="signal-dot"></span><span>主要計算在瀏覽器完成。</span></li>
-                        </ul>
-                    </div>
-                </div>
+                <summary class="cursor-pointer text-sm font-semibold text-ink-700">資料來源 · 更新 {lastUpdated}</summary>
+                <ul class="mt-4 grid gap-2">
+                    {sources.map((source) => (
+                        <li>
+                            <a href={source.href} target="_blank" rel="noopener noreferrer" class="action-link w-full justify-between !text-xs">
+                                <span>{source.label}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+                <p class="mt-4 text-xs leading-5 text-ink-400">版本 {dataVersion} · 結果供估算，正式金額以主管機關為準。</p>
             </details>
         </section>
 
@@ -203,13 +162,7 @@ const relatedTools = getRelatedTools(currentPath);
         )}
 
         <section class="border-t border-paper-300 pt-10 mb-16 max-w-4xl">
-            <div class="section-heading mb-6">
-                <div>
-                    <h3 class="text-sm font-medium text-ink-400 uppercase tracking-widest">更多工具</h3>
-                    <p class="text-lg font-semibold text-ink-700 mt-2">下一步</p>
-                </div>
-                <p class="section-heading-copy">直接接續。</p>
-            </div>
+            <h2 class="mb-5 text-base font-semibold text-ink-700">接著試算</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {relatedTools.map((tool) => (
                     <a href={tool.href} data-next-tool class="flex items-center justify-between p-4 rounded-2xl bg-paper-200 border border-paper-300 hover:border-brand-200 hover:shadow-card transition-all group">
@@ -350,7 +303,6 @@ if (calculatorPanel) {
     body.print-tool-report nav,
     body.print-tool-report footer,
     body.print-tool-report header,
-    body.print-tool-report .tool-process,
     body.print-tool-report .after-tool-content,
     body.print-tool-report main#calculator-panel ~ section,
     body.print-tool-report #guide-panel {

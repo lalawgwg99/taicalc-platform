@@ -2,8 +2,7 @@
   <div class="calculator-shell decision-calculator">
     <div v-if="type !== 'car'" class="scenario-toolbar">
       <div>
-        <strong>保存這次試算</strong>
-        <span>只存在這台裝置，也可分享完整條件。</span>
+        <strong>保存試算</strong>
       </div>
       <div>
         <button type="button" @click="saveCurrentScenario">{{ scenarioSaved ? '已儲存' : '儲存條件' }}</button>
