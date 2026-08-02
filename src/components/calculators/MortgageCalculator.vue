@@ -170,6 +170,15 @@
             </div>
         </div>
 
+        <a
+            :href="homeCostTransferUrl"
+            data-next-tool
+            class="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100"
+        >
+            <span><small class="block text-[10px] font-medium text-brand-600/70">下一步</small>把房貸帶入買房持有成本</span>
+            <span aria-hidden="true">→</span>
+        </a>
+
         <!-- 月付房租比 -->
         <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
@@ -274,6 +283,16 @@ const results = computed(() => calculateMortgageResults({
     extraLump: extraLump.value,
     lumpYear: lumpYear.value,
 }))
+const homeCostTransferUrl = computed(() => {
+    const scenario = {
+        home: {
+            mortgageBalance: Math.max(0, amountWan.value * 10000),
+            mortgageRate: Math.max(0, rate1.value),
+            mortgageYears: Math.max(1, years.value),
+        },
+    }
+    return `/tools/home-ownership-cost-calculator?scenario=${encodeURIComponent(JSON.stringify(scenario))}`
+})
 
 // ── 驗證 ───────────────────────────────────────────────────────
 const validate = () => {
