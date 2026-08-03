@@ -1,4 +1,79 @@
+# TaiCalc (https://taicalc.com) - Robots.txt
+# Open for search engines, AI search bots, and LLM crawlers for indexing & citations
+
 User-agent: *
 Allow: /
 
+# OpenAI Crawlers & ChatGPT Web Search
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OIMG-User
+Allow: /
+
+# Anthropic Claude Crawlers
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity AI Search Bot
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+
+# Google AI & Search Crawlers
+User-agent: Googlebot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: GoogleOther
+Allow: /
+User-agent: GoogleOther-Image
+Allow: /
+
+# Meta & Facebook AI Crawlers
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: Meta-ExternalFetcher
+Allow: /
+User-agent: facebookexternalhit
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+# ByteDance / Doubao / Lark
+User-agent: Bytespider
+Allow: /
+
+# DeepSeek Bot
+User-agent: DeepSeekBot
+Allow: /
+
+# Common Crawl (LLM Datasets)
+User-agent: CCBot
+Allow: /
+
+# Other AI Search Engines
+User-agent: YouBot
+Allow: /
+User-agent: Cohere-ai
+Allow: /
+User-agent: Search1api
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: Diffbot
+Allow: /
+
+# Sitemaps and LLM Documentation Interfaces
 Sitemap: https://taicalc.com/sitemap.xml
+Sitemap: https://taicalc.com/sitemap.json

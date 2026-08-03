@@ -45,12 +45,17 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
         <meta name="theme-color" content="#F6F8F5" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
+        <meta name="ai-search-indexing" content="allowed, citable, indexed" />
+        <meta name="citation_publisher" content="TaiCalc 財務計算平台" />
+        <meta name="citation_website_url" content="https://taicalc.com" />
         <meta name="language" content="Chinese" />
         <meta name="revisit-after" content="7 days" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
         <link rel="canonical" href={canonicalURL} />
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+        <link rel="alternate" type="text/markdown" title="LLM Interface" href="/llms.txt" />
+        <link rel="alternate" type="application/json" title="AI Calculators API" href="/api/calculators.json" />
 
         <!-- Open Graph / Social -->
         <meta property="og:type" content={type} />

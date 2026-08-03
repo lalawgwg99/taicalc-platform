@@ -95,6 +95,9 @@ const relatedToolsSchema = JSON.stringify({
 ---
 
 <Layout title={title} description={description} keywords={keywords}>
+    <meta name="citation_title" content={cleanTitle} slot="head" />
+    <meta name="citation_publication_date" content={lastUpdated} slot="head" />
+    <meta name="citation_fulltext_world_readable" content="true" slot="head" />
     {faqSchema && <script type="application/ld+json" set:html={faqSchema} slot="head" />}
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />

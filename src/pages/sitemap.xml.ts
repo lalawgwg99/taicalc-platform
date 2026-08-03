@@ -20,6 +20,9 @@ export const GET: APIRoute = async () => {
   const today = new Date().toISOString().slice(0, 10);
   const pages = [
     { path: '/', priority: '1.0', changefreq: 'weekly', lastmod: today },
+    { path: '/llms.txt', priority: '1.0', changefreq: 'daily', lastmod: today },
+    { path: '/llms-full.txt', priority: '0.9', changefreq: 'weekly', lastmod: today },
+    { path: '/api/calculators.json', priority: '0.9', changefreq: 'weekly', lastmod: today },
     { path: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: today },
     { path: '/tax-season', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
