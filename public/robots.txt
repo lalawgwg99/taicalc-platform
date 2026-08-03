@@ -7,6 +7,8 @@ Allow: /
 # OpenAI Crawlers & ChatGPT Web Search
 User-agent: GPTBot
 Allow: /
+User-agent: OAI-SearchBot
+Allow: /
 User-agent: ChatGPT-User
 Allow: /
 User-agent: OIMG-User
@@ -42,6 +44,8 @@ Allow: /
 User-agent: Meta-ExternalFetcher
 Allow: /
 User-agent: facebookexternalhit
+Allow: /
+User-agent: FacebookBot
 Allow: /
 
 # Apple Intelligence
