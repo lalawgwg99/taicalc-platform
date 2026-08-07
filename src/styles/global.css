@@ -40,7 +40,22 @@ body::before {
 @media (max-width: 768px) {
     body {
         background-attachment: scroll;
+        padding-bottom: env(safe-area-inset-bottom);
     }
+
+    /* Prevent iOS Safari auto-zooming into inputs with font-size < 16px */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+button, a, input, select, textarea {
+    touch-action: manipulation;
 }
 
 /* ─── Component Layer ─────────────────────────────────────────── */
