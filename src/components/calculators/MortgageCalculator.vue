@@ -185,6 +185,41 @@
             </div>
         </div>
 
+        <!-- 競品優勢：方案對照與年度明細展延卡 -->
+        <div class="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider">📊 方案與試算明細</h3>
+            <button 
+              @click="showSchedule = !showSchedule" 
+              class="text-xs text-blue-600 font-semibold hover:bg-blue-50 px-2.5 py-1 rounded-lg transition-colors"
+            >
+              {{ showSchedule ? '收起年度明細 ▲' : '展開 480 期年度還款明細 ▼' }}
+            </button>
+          </div>
+
+          <!-- 480期/年度還款明細表 -->
+          <div v-if="showSchedule" class="mt-3 border-t border-stone-200/60 pt-3 max-h-72 overflow-y-auto font-mono text-xs">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-stone-200 text-stone-400 font-sans">
+                  <th class="py-1.5">年度</th>
+                  <th class="py-1.5 text-right">年度本金</th>
+                  <th class="py-1.5 text-right">年度利息</th>
+                  <th class="py-1.5 text-right">期末剩餘本金</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-stone-100">
+                <tr v-for="item in yearlySchedule" :key="item.year" class="hover:bg-stone-50">
+                  <td class="py-1.5 font-semibold text-stone-700">第 {{ item.year }} 年</td>
+                  <td class="py-1.5 text-right text-stone-900">${{ item.yearPrincipal.toLocaleString() }}</td>
+                  <td class="py-1.5 text-right text-amber-600">${{ item.yearInterest.toLocaleString() }}</td>
+                  <td class="py-1.5 text-right text-stone-500">${{ item.remainingBalance.toLocaleString() }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <a
             :href="homeCostTransferUrl"
             data-next-tool
@@ -235,6 +270,47 @@ const twoStageMode = ref(false)  // 預設關閉，避免初次用戶困惑
 const stage1Months = ref(12)
 const preset       = ref('newYouth')
 const monthlyIncomeRef = ref(0)
+
+const showSchedule = ref(false)
+const yearlySchedule = computed(() => {
+  const list = []
+  const P = (amountWan.value || 0) * 10000
+  const Y = Math.max(1, years.value || 0)
+  const G = Math.max(0, graceYears.value || 0)
+  const r = (rate1.value || 0) / 100 / 12
+  if (P <= 0 || Y <= 0) return []
+
+  let balance = P
+  for (let year = 1; year <= Y; year++) {
+    let yearPrincipal = 0
+    let yearInterest = 0
+    for (let month = 1; month <= 12; month++) {
+      const currentMonthIndex = (year - 1) * 12 + month
+      let monthInterest = balance * r
+      let monthPrincipal = 0
+      if (currentMonthIndex <= G * 12) {
+        monthPrincipal = 0
+      } else {
+        const remainingMonths = Y * 12 - G * 12
+        if (remainingMonths > 0) {
+          const power = Math.pow(1 + r, remainingMonths)
+          const monthlyPayment = (P * r * power) / (power - 1)
+          monthPrincipal = Math.min(balance, monthlyPayment - monthInterest)
+        }
+      }
+      yearInterest += monthInterest
+      yearPrincipal += monthPrincipal
+      balance = Math.max(0, balance - monthPrincipal)
+    }
+    list.push({
+      year,
+      yearPrincipal: Math.round(yearPrincipal),
+      yearInterest: Math.round(yearInterest),
+      remainingBalance: Math.round(balance)
+    })
+  }
+  return list
+})
 
 // ── 央行即時利率 ──────────────────────────────────────────────────────
 const liveRate  = ref(null)
