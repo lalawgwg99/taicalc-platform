@@ -38,11 +38,15 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
 <html lang="zh-TW">
 	<head>
 		<meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="author" content="TaiCalc" />
-        <meta name="theme-color" content="#F6F8F5" />
+        <meta name="theme-color" content="#F2F2F7" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="TaiCalc" />
+        <meta name="format-detection" content="telephone=no" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
         <meta name="ai-search-indexing" content="allowed, citable, indexed" />
@@ -306,6 +310,18 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
         }, { threshold: 0.15 });
 
         revealItems.forEach(el => observer.observe(el));
+    })();
+
+    // ── Apple Web Haptic Feedback ─────────────────────────────────
+    (function () {
+        document.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target instanceof Element && (target.closest('button') || target.closest('a') || target.closest('[role="button"]'))) {
+                if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+                    try { navigator.vibrate(12); } catch (_) {}
+                }
+            }
+        }, { passive: true });
     })();
     </script>
 

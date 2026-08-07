@@ -1,113 +1,149 @@
 <template>
-  <div class="calculator-shell max-w-2xl mx-auto">
+  <div class="calculator-shell max-w-2xl mx-auto space-y-5">
     
-    <!-- 1. 總額設定 -->
-    <div class="calculator-card">
-         <div class="mb-6 text-center">
-             <label class="block text-xs font-bold text-stone-400 mb-2 uppercase tracking-wide">總消費金額 (Total)</label>
-             <div class="relative max-w-xs mx-auto">
+    <!-- 快速預設情境 (Apple Chip Selector) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <span class="text-xs font-semibold text-stone-400 flex-shrink-0">快速情境：</span>
+      <button 
+        v-for="p in presets" 
+        :key="p.title"
+        @click="applyPreset(p)"
+        class="text-xs font-medium bg-white hover:bg-stone-100 text-stone-700 border border-stone-200/80 px-3 py-1.5 rounded-full transition-all flex-shrink-0 active:scale-95 shadow-sm"
+      >
+        {{ p.title }} (${{ p.total.toLocaleString() }})
+      </button>
+    </div>
 
-                 <input 
-                    v-model.number="totalAmount" 
+    <!-- 1. 總額設定與成員名單 (Apple Inset Grouped Form) -->
+    <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5">
+      <div class="mb-6 text-center">
+        <label class="block text-xs font-semibold text-stone-400 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
+        <div class="relative max-w-xs mx-auto flex items-center justify-center">
+          <span class="text-2xl font-semibold text-stone-400 mr-1">$</span>
+          <input 
+            v-model.number="totalAmount" 
+            type="number" 
+            class="w-full text-center text-4xl font-bold font-mono text-stone-900 border-b-2 border-stone-200 focus:border-blue-500 outline-none py-1.5 transition-colors bg-transparent"
+            placeholder="0"
+          />
+        </div>
+      </div>
+
+      <!-- 模式切換 (iOS Segmented Control) -->
+      <div class="grid grid-cols-2 p-1 bg-[#EFEFF4] rounded-xl mb-6">
+        <button 
+          @click="mode = 'even'" 
+          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'even' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800']"
+        >
+          ⚖️ 平均分攤
+        </button>
+        <button 
+          @click="mode = 'weighted'" 
+          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'weighted' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800']"
+        >
+          📊 權重 / 自訂
+        </button>
+      </div>
+
+      <!-- 成員名單 -->
+      <div>
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider">成員名單 ({{ members.length }} 人)</h3>
+          <button @click="addMember" class="text-xs text-blue-600 font-semibold hover:bg-blue-50 px-2.5 py-1 rounded-lg transition-colors active:scale-95">
+            + 新增成員
+          </button>
+        </div>
+        
+        <div class="space-y-2.5">
+          <div 
+            v-for="(m, idx) in members" 
+            :key="m.id" 
+            class="flex items-center gap-3 p-2.5 bg-[#F9F9FB] rounded-xl border border-stone-200/60 transition-all hover:border-stone-300"
+          >
+            <div class="w-7 h-7 flex items-center justify-center bg-white rounded-full border border-stone-200 text-xs font-semibold text-stone-500 flex-shrink-0 shadow-2xs">
+              {{ idx + 1 }}
+            </div>
+            <input 
+              v-model="m.name" 
+              class="flex-1 bg-transparent font-medium text-stone-900 text-sm outline-none placeholder-stone-400" 
+              placeholder="名字"
+            />
+            
+            <div class="flex items-center gap-2">
+              <div class="flex flex-col items-end">
+                <span class="text-[10px] text-stone-400 font-medium">已先付 (Paid)</span>
+                <div class="flex items-center">
+                  <span class="text-xs text-stone-400 mr-0.5">$</span>
+                  <input 
+                    v-model.number="m.paid" 
                     type="number" 
-                    class="w-full text-center text-4xl font-bold font-mono text-stone-800 border-b-2 border-stone-100 focus:border-brand-500 outline-none py-2"
+                    class="w-20 text-right text-xs font-semibold font-mono bg-white border border-stone-200 rounded-md px-2 py-1 outline-none focus:border-blue-500" 
                     placeholder="0"
-                 />
-             </div>
-         </div>
-
-         <!-- 人員設定 -->
-         <div>
-             <div class="flex justify-between items-center mb-4">
-                 <h3 class="font-bold text-stone-700">成員名單 ({{ members.length }}人)</h3>
-                 <button @click="addMember" class="text-sm text-brand-600 font-bold hover:bg-brand-50 px-3 py-1 rounded-lg transition-colors">+ 新增成員</button>
-             </div>
-             
-             <div class="space-y-3">
-                 <div v-for="(m, idx) in members" :key="m.id" class="calculator-subcard flex items-center gap-3 p-2">
-                     <div class="w-8 h-8 flex items-center justify-center bg-white rounded-full border border-stone-200 text-xs font-bold text-stone-400">
-                        {{ idx + 1 }}
-                     </div>
-                     <input 
-                        v-model="m.name" 
-                        class="flex-1 bg-transparent font-medium text-stone-800 outline-none placeholder-stone-400" 
-                        placeholder="名字"
-                     />
-                     
-                     <!-- 切換模式開關 -->
-                     <div class="flex items-center gap-2">
-                         <div class="flex flex-col items-end">
-                             <span class="text-[10px] text-stone-400 uppercase tracking-wide">先付 (Paid)</span>
-                             <input 
-                                v-model.number="m.paid" 
-                                type="number" 
-                                class="w-20 text-right text-sm font-mono bg-white border border-stone-200 rounded px-1.5 py-0.5" 
-                                placeholder="0"
-                            />
-                         </div>
-                         <div class="flex flex-col items-end" v-if="mode === 'weighted'">
-                             <span class="text-[10px] text-stone-400 uppercase tracking-wide">權重 (份)</span>
-                             <input 
-                                v-model.number="m.weight" 
-                                type="number" 
-                                class="w-12 text-center text-sm font-bold bg-white border border-stone-200 rounded px-1 py-0.5" 
-                            />
-                         </div>
-                     </div>
-                     
-                     <button @click="removeMember(idx)" class="text-stone-300 hover:text-rose-500 px-1" v-if="members.length > 2">×</button>
-                 </div>
-             </div>
-         </div>
+                  />
+                </div>
+              </div>
+              <div class="flex flex-col items-end" v-if="mode === 'weighted'">
+                <span class="text-[10px] text-stone-400 font-medium">權重 (份)</span>
+                <input 
+                  v-model.number="m.weight" 
+                  type="number" 
+                  class="w-12 text-center text-xs font-semibold font-mono bg-white border border-stone-200 rounded-md px-1.5 py-1 outline-none focus:border-blue-500" 
+                />
+              </div>
+            </div>
+            
+            <button @click="removeMember(idx)" class="text-stone-400 hover:text-red-500 px-1 text-sm transition-colors" v-if="members.length > 2" title="刪除">
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- 模式切換 -->
-    <div class="seg-control">
-        <button 
-            @click="mode = 'even'" 
-            :class="['seg-btn', mode === 'even' ? 'seg-btn-active' : '']"
-        >
-            ⚖️ 平均分攤
-        </button>
-        <button 
-             @click="mode = 'weighted'" 
-             :class="['seg-btn', mode === 'weighted' ? 'seg-btn-active' : '']"
-        >
-            📊 權重分攤
-        </button>
-    </div>
+    <!-- 2. 結算結果 (Apple Native Settlement Card) -->
+    <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-blue-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold text-stone-800 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-blue-500"></span> 最佳轉帳清算建議
+        </h2>
+        <span class="text-xs text-stone-400 font-mono">Minimal Transfers</span>
+      </div>
 
-    <!-- 結果 -->
-    <div class="calculator-card-accent">
-         <div class="absolute -right-6 -top-6 w-32 h-32 bg-brand-200 rounded-full opacity-30 blur-2xl"></div>
-         
-         <h2 class="text-lg font-bold text-brand-900 mb-4 text-center font-mono">結算清單 (Settlement)</h2>
-         
-         <!-- 轉帳建議 -->
-         <div v-if="transactions.length > 0" class="space-y-3 relative z-10">
-             <div v-for="(tx, i) in transactions" :key="i" class="calculator-subcard flex items-center justify-between p-3">
-                 <div class="flex items-center gap-2">
-                     <span class="font-bold text-stone-700">{{ tx.from }}</span>
-                     <span class="text-xs text-stone-400">給</span>
-                     <span class="font-bold text-brand-700">{{ tx.to }}</span>
-                 </div>
-                 <div class="font-mono font-bold text-lg text-brand-600">${{ tx.amount }}</div>
-             </div>
-         </div>
-         <div v-else class="calculator-empty text-center">
-             🎉 目前無人互欠 (完美平帳)
-         </div>
-         
-         <div class="mt-6 pt-4 border-t border-brand-200/50 flex flex-wrap items-center justify-center gap-2">
-             <button @click="copyResult" class="text-sm font-bold text-brand-700 flex items-center justify-center gap-2 hover:bg-brand-100/50 py-2 px-4 rounded-full transition-colors">
-                 <span v-if="copyStatus === 'idle'">📋 複製分帳結果</span>
-                 <span v-else>✓ 已複製</span>
-             </button>
-             <button @click="copyShareLink" class="text-sm font-bold text-stone-600 flex items-center justify-center gap-2 hover:bg-white/60 py-2 px-4 rounded-full transition-colors border border-brand-200">
-                 <span v-if="!shareCopied">🔗 複製分享連結</span>
-                 <span v-else>✓ 連結已複製</span>
-             </button>
-         </div>
+      <div v-if="transactions.length > 0" class="space-y-2.5">
+        <div 
+          v-for="(tx, i) in transactions" 
+          :key="i" 
+          class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-2xs"
+        >
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-bold text-stone-900">{{ tx.from }}</span>
+            <span class="text-xs text-stone-400 font-medium">轉給</span>
+            <span class="font-bold text-blue-600">{{ tx.to }}</span>
+          </div>
+          <div class="font-mono font-bold text-base text-stone-900">${{ tx.amount.toLocaleString() }}</div>
+        </div>
+      </div>
+      <div v-else class="py-6 text-center text-stone-500 text-sm bg-white rounded-xl border border-stone-200/60">
+        🎉 目前無人互欠 (完美結清)
+      </div>
+
+      <!-- 操作按鈕 -->
+      <div class="mt-5 pt-4 border-t border-stone-200/60 flex flex-wrap items-center justify-center gap-3">
+        <button 
+          @click="copyResult" 
+          class="text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+        >
+          <span v-if="copyStatus === 'idle'">📋 複製分帳文字 (LINE/iMessage)</span>
+          <span v-else>✓ 已複製到剪貼簿</span>
+        </button>
+        <button 
+          @click="copyShareLink" 
+          class="text-xs font-semibold text-stone-700 bg-white hover:bg-stone-100 border border-stone-200 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+        >
+          <span v-if="!shareCopied">🔗 複製分享連結</span>
+          <span v-else>✓ 連結已複製</span>
+        </button>
+      </div>
     </div>
 
   </div>
@@ -116,13 +152,30 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 
-const totalAmount = ref(1000);
+const totalAmount = ref(1200);
 const mode = ref('even'); // 'even' | 'weighted'
 const members = ref([
-    { id: 1, name: 'Alice', paid: 1000, weight: 1 },
-    { id: 2, name: 'Bob', paid: 0, weight: 1 },
-    { id: 3, name: 'Charlie', paid: 0, weight: 1 }
+    { id: 1, name: '小明', paid: 1200, weight: 1 },
+    { id: 2, name: '小華', paid: 0, weight: 1 },
+    { id: 3, name: '小美', paid: 0, weight: 1 }
 ]);
+
+const presets = [
+  { title: '雙人約會', total: 1500, members: [{ name: '小明', paid: 1500 }, { name: '小華', paid: 0 }] },
+  { title: '熱炒聚餐', total: 3200, members: [{ name: '小明', paid: 3200 }, { name: '小華', paid: 0 }, { name: '小美', paid: 0 }, { name: '阿強', paid: 0 }] },
+  { title: '包車旅遊', total: 8000, members: [{ name: '小明', paid: 4000 }, { name: '小華', paid: 4000 }, { name: '小美', paid: 0 }, { name: '阿強', paid: 0 }] }
+];
+
+const applyPreset = (preset) => {
+  totalAmount.value = preset.total;
+  mode.value = 'even';
+  members.value = preset.members.map((m, i) => ({
+    id: Date.now() + i,
+    name: m.name,
+    paid: m.paid,
+    weight: 1
+  }));
+};
 
 const copyStatus = ref('idle');
 
