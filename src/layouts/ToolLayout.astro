@@ -117,8 +117,21 @@ const relatedToolsSchema = JSON.stringify({
                     </div>
                     <h1 class="mb-2 text-2xl font-semibold text-ink-700 md:text-4xl">{cleanTitle}</h1>
                     <p class="max-w-2xl text-sm leading-relaxed text-ink-500">{kicker}</p>
-                    <div class="tool-hero-actions mt-4 flex flex-wrap gap-2">
+                    <div class="tool-hero-actions mt-4 flex flex-wrap items-center gap-2">
                         <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
+                        <a
+                            id="line-share-link"
+                            href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://taicalc.com${currentPath}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="action-link !bg-[#06C755] !text-white !border-0 hover:!bg-[#05B34C] transition-all active:scale-95 shadow-xs flex items-center gap-1.5 font-semibold"
+                            aria-label="用 LINE 分享"
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 5.86 2 10.62c0 4.25 3.52 7.82 8.27 8.52.32.07.76.21.87.49.1.25.07.64.03.9-.06.39-.28 1.48-.31 1.79-.05.47.22.92.74.5 3.86-3.08 6.44-5.32 8.87-7.69C22.25 13.3 22 10.62 22 10.62 22 5.86 17.52 2 12 2z"/>
+                            </svg>
+                            LINE 分享
+                        </a>
                         <button
                             id="share-tool"
                             type="button"
@@ -126,10 +139,10 @@ const relatedToolsSchema = JSON.stringify({
                             data-share-title={cleanTitle}
                             aria-label="分享這個工具"
                         >
-                            分享
+                            🔗 複製連結
                         </button>
                         <button id="print-tool-report" type="button" class="action-link" aria-label="列印或儲存 PDF">
-                            PDF
+                            📄 PDF
                         </button>
                     </div>
                 </div>
