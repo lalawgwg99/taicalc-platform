@@ -5,25 +5,29 @@ const isActive = (href: string) => {
     return currentPath.startsWith(href);
 };
 ---
-<nav class="sticky top-0 z-50 bg-paper-100/80 backdrop-blur-2xl border-b border-paper-300/70 shadow-[0_12px_40px_-30px_rgba(19,155,121,0.32)]">
-    <div class="h-14 flex items-center justify-between">
-        <a href="/" class="text-lg font-semibold tracking-tight text-ink-800 hover:text-brand-500 transition-colors">Tai<span class="text-brand-500">Calc</span></a>
+<nav class="sticky top-0 z-50 bg-white/75 backdrop-blur-xl border-b border-black/[0.04] shadow-[0_2px_16px_rgba(0,0,0,0.02)] transition-all">
+    <div class="h-14 flex items-center justify-between px-4 md:px-6 max-w-6xl mx-auto">
+        <a href="/" class="text-base font-bold tracking-tight text-stone-900 hover:text-blue-600 transition-colors flex items-center gap-1.5 active:scale-95">
+            <span class="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-mono font-bold shadow-xs">∑</span>
+            <span>Tai<span class="text-blue-600">Calc</span></span>
+        </a>
 
-        <div class="hidden items-center gap-4 text-xs tracking-[0.06em] md:flex">
-            <a href="/" class={`px-2 py-1 rounded-full transition-all ${isActive('/') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>首頁</a>
-            <a href="/#new-decisions" class="px-2 py-1 rounded-full text-ink-400 hover:text-ink-700 hover:bg-paper-200/70 transition-all">熱門決策</a>
-            <a href="/tools/car-cost-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/car-cost') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>買車</a>
-            <a href="/tools/home-ownership-cost-calculator" class={`px-2 py-1 rounded-full transition-all ${isActive('/tools/home-ownership') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>買房</a>
-            <a href="/#support-tools" class="px-2 py-1 rounded-full text-ink-400 hover:text-ink-700 hover:bg-paper-200/70 transition-all">所有工具</a>
-            <a href="/blog" class={`px-2 py-1 rounded-full transition-all ${isActive('/blog') ? 'text-brand-500 bg-brand-50/70 border border-brand-300/50' : 'text-ink-400 hover:text-ink-700 hover:bg-paper-200/70'}`}>專欄</a>
+        <div class="hidden items-center gap-1 text-xs tracking-tight md:flex font-medium">
+            <a href="/" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>首頁</a>
+            <a href="/#new-decisions" class="px-3 py-1.5 rounded-full text-stone-600 hover:text-stone-900 hover:bg-stone-100/70 transition-all">熱門決策</a>
+            <a href="/tools/mortgage-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/mortgage') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>🏠 房貸</a>
+            <a href="/tools/electricity-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/electricity') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>⚡ 電費冷氣</a>
+            <a href="/tools/split-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/split') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>⚖️ AA分帳</a>
+            <a href="/#support-tools" class="px-3 py-1.5 rounded-full text-stone-600 hover:text-stone-900 hover:bg-stone-100/70 transition-all">所有工具</a>
+            <a href="/blog" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/blog') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>專欄</a>
         </div>
 
-        <button id="menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-lg text-ink-400 hover:text-ink-700 hover:bg-paper-200/80 transition-colors" aria-label="開啟選單" aria-controls="mobile-menu" aria-expanded="false" data-sfx="tap">
-            <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="8" x2="21" y2="8"></line>
-                <line x1="3" y1="16" x2="21" y2="16"></line>
+        <button id="menu-btn" class="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-stone-100/80 text-stone-700 hover:bg-stone-200 transition-colors active:scale-95" aria-label="開啟選單" aria-controls="mobile-menu" aria-expanded="false" data-sfx="tap">
+            <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="8" x2="20" y2="8"></line>
+                <line x1="4" y1="16" x2="20" y2="16"></line>
             </svg>
-            <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
             </svg>
         </button>
