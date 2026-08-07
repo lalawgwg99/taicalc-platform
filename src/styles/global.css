@@ -14,7 +14,10 @@ html {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
-    @apply bg-[#F2F2F7] text-[#1C1C1E] antialiased;
+    background-color: #F2F2F7;
+    color: #1C1C1E;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     letter-spacing: -0.011em;
     background-color: #F2F2F7;
