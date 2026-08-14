@@ -401,14 +401,14 @@ const ResultPanel = defineComponent({
         : [];
       const maxValue = Math.max(1, ...breakdown.map((item) => Number(item.value) || 0));
 
-      context.fillStyle = '#f6f8f5';
+      context.fillStyle = '#f6f0e4';
       context.fillRect(0, 0, 1200, 630);
-      context.fillStyle = '#102419';
+      context.fillStyle = '#171714';
       context.fillRect(52, 48, 1096, 534);
-      context.fillStyle = '#32c99c';
+      context.fillStyle = '#f2c230';
       context.fillRect(52, 48, 12, 534);
 
-      context.fillStyle = '#72dfba';
+      context.fillStyle = '#f2c230';
       context.font = '700 24px Arial, sans-serif';
       context.fillText('TAICALC · 決策試算報告', 102, 108);
       context.fillStyle = '#ffffff';
@@ -428,7 +428,7 @@ const ResultPanel = defineComponent({
         context.fillStyle = '#b8c8be';
         context.font = '20px Arial, sans-serif';
         context.fillText(String(item.label), 102, y);
-        context.fillStyle = '#32c99c';
+        context.fillStyle = '#2f7550';
         context.fillRect(260, y - 17, width, 16);
         context.fillStyle = '#eef7f1';
         context.font = '700 18px Arial, sans-serif';
@@ -439,7 +439,7 @@ const ResultPanel = defineComponent({
       context.fillStyle = '#91a69a';
       context.font = '20px Arial, sans-serif';
       context.fillText('把複雜規則，算成清楚選擇', 830, 520);
-      context.fillStyle = '#72dfba';
+      context.fillStyle = '#f2c230';
       context.font = '700 24px Arial, sans-serif';
       context.fillText('taicalc.com', 932, 554);
 
@@ -939,4 +939,48 @@ onMounted(() => {
 @media(max-width:640px){.scenario-toolbar{align-items:flex-start;flex-direction:column}.scenario-toolbar>div:last-child{justify-content:flex-start}.field-grid{grid-template-columns:1fr}.debt-row,.scenario-row{grid-template-columns:1fr 1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1;padding-bottom:0}.result-heading{display:block}.result-actions{justify-content:flex-start;margin-top:.65rem}.result-eyebrow{padding-top:0;white-space:nowrap}.result-metrics{grid-template-columns:1fr 1fr}.result-panel{border-radius:1.1rem}.result-total{font-size:2rem}}
 @media print{body *{visibility:hidden!important}.decision-calculator,.decision-calculator *{visibility:visible!important}.decision-calculator{position:absolute;inset:0;width:100%;background:#fff}.decision-calculator .input-panel,.decision-calculator .scenario-toolbar{display:none}.decision-calculator .calc-grid{display:block}.decision-calculator .result-panel{position:static;background:#fff;color:#102419;border:1px solid #aebfb5;box-shadow:none}.decision-calculator .result-panel:before,.decision-calculator .result-actions{display:none}.decision-calculator .result-eyebrow,.decision-calculator .result-label,.decision-calculator .metric span,.decision-calculator .breakdown-row span,.decision-calculator .breakdown-heading span{color:#557064}.decision-calculator .result-insight,.decision-calculator .metric,.decision-calculator .cost-breakdown{background:#f6f8f5;border-color:#d8e1db;color:#102419}.decision-calculator .result-insight p,.decision-calculator .metric strong,.decision-calculator .breakdown-row strong{color:#102419}}
 @media print{.decision-calculator .decision-chart{background:#f6f8f5;border-color:#d8e1db}.decision-calculator .decision-chart-heading strong,.decision-calculator .chart-legend-item strong,.decision-calculator .chart-column-value{color:#102419}.decision-calculator .decision-chart-heading span,.decision-calculator .chart-legend-item span,.decision-calculator .chart-column-label{color:#557064}.decision-calculator .chart-stack i+i{border-color:#f6f8f5}.decision-calculator .chart-column-track{background:#e1e8e3}}
+
+/* TaiCalc ledger: keep dense calculators readable on wide displays. */
+@media screen {
+  .calc-grid{gap:.85rem}
+  .scenario-toolbar{border:1.5px solid #171714;border-radius:.45rem;background:#fffdf7;box-shadow:3px 4px 0 rgba(23,23,20,.07)}
+  .scenario-toolbar strong{color:#171714}
+  .scenario-toolbar button{border:1.5px solid #171714;border-radius:.35rem;background:#f2c230;color:#171714}
+  .scenario-toolbar button:hover{border-color:#171714;background:#ffd94d}
+  .input-panel{border:1.5px solid #171714;border-radius:.55rem;background:#fffdf7;box-shadow:4px 5px 0 rgba(23,23,20,.08)}
+  .panel-title>span{border-radius:.25rem;background:#171714;color:#f2c230}
+  .panel-title h2{color:#171714}
+  .panel-title p{color:#6c6457}
+  .panel-title-secondary{border-color:#cfc3ad}
+  .field-grid label,.debt-row label,.scenario-row label{color:#4f493f}
+  .input-clean{min-height:2.9rem;border:1.5px solid #9f927c;border-radius:.35rem;background:#fffdf7;padding:.68rem .8rem}
+  .input-clean:focus{border-color:#171714;box-shadow:0 0 0 3px rgba(242,194,48,.28)}
+  .debt-row,.scenario-row{grid-template-columns:4.4rem repeat(3,minmax(0,1fr));border-color:#d6ccba;padding:.65rem 0}
+  .debt-row strong,.scenario-row strong{color:#171714}
+  .check-field,.preset-panel{border-radius:.35rem;background:#f6f0e4}
+  .scenario-actions button{border-radius:.35rem}
+  .result-panel{border:2px solid #171714;border-radius:.55rem;background:#171714;box-shadow:5px 6px 0 rgba(23,23,20,.13)}
+  .result-panel:before{display:none}
+  .result-eyebrow{color:#f2c230}
+  .result-copy{border-color:#6f695d;border-radius:.3rem;color:#f3ede1}
+  .result-copy:hover{border-color:#f2c230;background:rgba(242,194,48,.1)}
+  .result-label{margin-top:.8rem;color:#c9c1b3}
+  .result-total{font-size:clamp(2rem,4vw,3.1rem);margin:.25rem 0 .85rem}
+  .result-insight{margin-bottom:.8rem;border-left-color:#f2c230;border-radius:0 .35rem .35rem 0;background:rgba(242,194,48,.08);padding:.65rem .75rem}
+  .result-insight span{color:#f2c230}
+  .result-insight p{color:#eee8dc}
+  .result-metrics{gap:.45rem}
+  .metric{border-color:#4b4841;border-radius:.35rem;background:#272722;padding:.65rem}
+  .metric span{color:#aaa396}
+  .metric-good strong{color:#79d3a0}
+  .metric-bad strong{color:#ef8b81}
+  .decision-chart{margin-top:.25rem;border-color:#4b4841;border-radius:.35rem;background:#22221e;padding:.75rem}
+  .chart-columns{min-height:7.2rem}
+  .chart-column{grid-template-rows:auto 4.8rem auto}
+  .chart-column-track{border-radius:.25rem;background:#34342f}
+  .chart-column-track i{border-radius:.2rem .2rem 0 0}
+  .result-transfer{border-radius:.35rem}
+}
+@media screen and (min-width:1200px){.calc-grid{grid-template-columns:minmax(0,1.42fr) minmax(300px,.68fr)}.input-panel,.result-panel{padding:1.15rem}}
+@media screen and (max-width:640px){.debt-row,.scenario-row{grid-template-columns:1fr 1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1}.input-clean{min-height:2.75rem}.result-metrics{grid-template-columns:1fr 1fr}}
 </style>
