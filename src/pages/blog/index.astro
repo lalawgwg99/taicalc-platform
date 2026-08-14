@@ -30,7 +30,7 @@ const categoryColor: Record<string, string> = {
             <p class="text-sm text-ink-400 leading-relaxed">薪資稅務、房產買租、投資退休的深度攻略，{posts.length} 篇實用文章。</p>
         </header>
 
-        <div class="space-y-3 reveal" data-reveal>
+        <div class="space-y-3">
             {posts.map((post) => {
                 const cat = post.data.category ?? '';
                 const colorClass = categoryColor[cat] ?? 'text-ink-500 bg-paper-200';
