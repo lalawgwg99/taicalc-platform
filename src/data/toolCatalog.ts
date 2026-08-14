@@ -12,6 +12,17 @@ export interface ToolCatalogItem {
 
 export const toolCatalog: ToolCatalogItem[] = [
   {
+    href: '/tools/life-simulator',
+    label: '台灣人生模擬器',
+    desc: '買房、買車、育兒、投資與退休，一次走完不同人生路線。',
+    category: '人生規劃',
+    isCore: true,
+    scenario: '想先看看每個大選擇會把人生帶去哪裡',
+    cta: '開始模擬另一種人生',
+    icon: '<path d="M3 12h4l3-8 4 16 3-8h4"/><path d="M3 20h18"/>',
+    tags: ['人生模擬器', '人生遊戲', '財務模擬器', '人生規劃', '退休', '買房', '買車'],
+  },
+  {
     href: '/tools/salary-calculator',
     label: '薪資實拿計算',
     desc: '月薪實拿、勞健保、可存金額。',

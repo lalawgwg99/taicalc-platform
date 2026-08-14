@@ -14,7 +14,7 @@ const isActive = (href: string) => {
 
         <div class="hidden items-center gap-1 text-xs tracking-tight md:flex font-medium">
             <a href="/" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>首頁</a>
-            <a href="/#new-decisions" class="px-3 py-1.5 rounded-full text-stone-600 hover:text-stone-900 hover:bg-stone-100/70 transition-all">熱門決策</a>
+            <a href="/tools/life-simulator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/life-simulator') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>🎮 人生模擬</a>
             <a href="/tools/mortgage-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/mortgage') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>🏠 房貸</a>
             <a href="/tools/electricity-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/electricity') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>⚡ 電費冷氣</a>
             <a href="/tools/split-calculator" class={`px-3 py-1.5 rounded-full transition-all ${isActive('/tools/split') ? 'text-blue-600 bg-blue-50 font-semibold shadow-2xs' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'}`}>⚖️ AA分帳</a>
@@ -38,6 +38,7 @@ const isActive = (href: string) => {
     <div class="px-4 pt-6 pb-8 flex flex-col gap-1">
         <a href="/" class="menu-link flex items-center gap-3 px-4 py-3 rounded-xl text-lg font-medium text-ink-700 hover:bg-paper-200/80 transition-colors">首頁</a>
         <p class="px-4 text-xs font-medium text-ink-400 uppercase tracking-widest mb-1">熱門決策</p>
+        <a href="/tools/life-simulator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">人生模擬器</a>
         <a href="/tools/car-cost-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">買車總成本</a>
         <a href="/tools/severance-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">離職結算</a>
         <a href="/tools/home-ownership-cost-calculator" class="menu-link flex items-center gap-3 px-4 py-2.5 rounded-xl text-ink-600 hover:bg-paper-200/80 transition-colors">買房持有成本</a>

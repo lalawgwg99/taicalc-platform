@@ -4,9 +4,9 @@ import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
 import { getToolByHref, toolCatalog } from '../data/toolCatalog';
 
-const title = "TaiCalc 台灣生活決策計算器｜工作、買車、買房、退休";
-const description = "把台灣人的工作、買車、買房、貸款、育兒、稅務與退休問題，整理成能直接比較的數字。免登入、主要計算在本機，法規型工具附官方來源。";
-const keywords = "台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,遺產稅,育兒津貼,買房成本,實質報酬";
+const title = "TaiCalc 台灣生活決策計算器｜人生模擬、工作、買車、買房";
+const description = "用台灣人生模擬器先走一次買車、買房、育兒、投資與退休，也能試算工作、貸款、稅務與生活成本。免登入，主要計算在本機。";
+const keywords = "人生模擬器,台灣人生模擬器,人生遊戲,台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,育兒津貼,買房成本";
 
 const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.category))).map((category) => ({
     category,
@@ -15,12 +15,13 @@ const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.cate
 const categoryNames = supportCategories.map((group) => group.category);
 
 const quickLinks = [
+    '/tools/life-simulator',
     '/tools/car-cost-calculator',
-    '/tools/severance-calculator',
     '/tools/home-ownership-cost-calculator',
     '/tools/debt-consolidation-calculator',
 ].map((path) => getToolByHref(path)!);
 const featuredDecisions = [
+    '/tools/life-simulator',
     '/tools/car-cost-calculator',
     '/tools/severance-calculator',
     '/tools/debt-consolidation-calculator',
@@ -109,7 +110,7 @@ const toolListSchema = JSON.stringify({
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：資遣費、車貸、育兒津貼" class="input-clean pl-10 pr-4 text-sm" />
+                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="input-clean pl-10 pr-4 text-sm" />
                         <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                         <p id="search-status" class="sr-only" aria-live="polite"></p>
                     </div>
