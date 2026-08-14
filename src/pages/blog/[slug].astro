@@ -49,7 +49,7 @@ const articleSchema = JSON.stringify({
 <Layout title={title} description={description} keywords={keywords} ogImage={coverImageURL} type="article">
     <script is:inline type="application/ld+json" set:html={articleSchema} slot="head" />
     <!-- Breadcrumb -->
-    <div class="text-sm text-ink-400 mb-8 flex items-center gap-2">
+    <div class="article-breadcrumb text-sm text-ink-400 mb-8 flex items-center gap-2">
         <a href="/" class="hover:text-ink-700 transition-colors">首頁</a>
         <span>/</span>
         <a href="/blog" class="hover:text-ink-700 transition-colors">專欄文章</a>
@@ -57,9 +57,9 @@ const articleSchema = JSON.stringify({
         <span class="text-ink-700 font-medium truncate max-w-[200px]">{post.data.title}</span>
     </div>
 
-    <article class="max-w-3xl mx-auto">
+    <article class="editorial-article max-w-3xl mx-auto">
         <!-- Header -->
-        <header class="mb-10 text-center">
+        <header class="editorial-article-header mb-10 text-center">
             <div class="flex items-center justify-center gap-2 mb-4">
                 <span class="px-3 py-1 bg-brand-50 text-brand text-xs font-bold rounded-full border border-brand-200">
                     {post.data.category}
@@ -86,7 +86,7 @@ const articleSchema = JSON.stringify({
         </header>
 
         <!-- Content (MDX/Markdown) -->
-        <div class="prose prose-light prose-lg max-w-none mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100">
+        <div class="article-paper prose prose-light prose-lg max-w-none mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-stone-100">
             <Content />
         </div>
         

@@ -13,28 +13,29 @@ const tools = [
     { href: '/partnerships', label: '合作提案' },
 ];
 ---
-<footer class="border-t border-paper-300 pt-10 pb-8 mt-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-        <div>
-            <a href="/" class="text-base font-semibold text-ink-700 hover:text-ink-500 transition-colors">TaiCalc</a>
-            <p class="text-xs text-ink-400 mt-2 leading-relaxed max-w-sm">
+<footer class="site-footer">
+    <div class="site-footer-grid">
+        <div class="site-footer-intro">
+            <p class="site-footer-index">TAIWAN DECISION TOOLKIT · 2026</p>
+            <a href="/" class="site-footer-title">TaiCalc</a>
+            <p class="site-footer-copy">
                 把台灣生活裡的複雜規則，整理成能直接比較的數字。
             </p>
-            <p class="mt-2 text-xs text-ink-400">{platformGovernance.version} · {platformGovernance.updatedAt}</p>
+            <p class="site-footer-version">{platformGovernance.version} · {platformGovernance.updatedAt}</p>
         </div>
 
-        <div>
-            <p class="text-xs font-medium text-ink-400 uppercase tracking-widest mb-3">快速入口</p>
-            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
-                {tools.map(t => (
-                    <a href={t.href} class="text-xs text-ink-400 hover:text-ink-700 transition-colors">{t.label}</a>
+        <div class="site-footer-directory">
+            <p class="site-footer-index">INDEX / 快速入口</p>
+            <div class="site-footer-links">
+                {tools.map((t, index) => (
+                    <a href={t.href}><span>{String(index + 1).padStart(2, '0')}</span>{t.label}</a>
                 ))}
             </div>
         </div>
     </div>
 
-    <div class="flex items-center justify-between border-t border-paper-300 pt-6">
-        <p class="text-xs text-ink-400">© {currentYear} TaiCalc</p>
-        <a href="mailto:Lalawgwg99@gmail.com?subject=TaiCalc%20聯絡或問題回報" class="text-xs text-ink-400 hover:text-ink-600 transition-colors">聯絡／回報問題</a>
+    <div class="site-footer-bottom">
+        <p>© {currentYear} TaiCalc</p>
+        <a href="mailto:Lalawgwg99@gmail.com?subject=TaiCalc%20聯絡或問題回報">聯絡／回報問題 →</a>
     </div>
 </footer>

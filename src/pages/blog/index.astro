@@ -20,23 +20,27 @@ const categoryColor: Record<string, string> = {
 ---
 
 <Layout title={title} description={description}>
-    <main class="py-12 md:py-16 max-w-3xl mx-auto">
-        <header class="mb-10 reveal" data-reveal>
-            <div class="flex items-center gap-2 mb-4">
-                <span class="w-1.5 h-1.5 bg-azure rounded-full"></span>
-                <span class="text-xs font-medium text-ink-400 tracking-widest uppercase">財務知識庫</span>
+    <main class="editorial-blog py-12 md:py-16 max-w-4xl mx-auto">
+        <header class="editorial-blog-header reveal" data-reveal>
+            <div>
+                <p class="editorial-kicker">EDITORIAL / 財務知識庫</p>
+                <h1>TaiCalc<br />生活決策專欄</h1>
             </div>
-            <h1 class="text-3xl md:text-4xl font-medium text-ink-700 tracking-tight mb-3">TaiCalc 專欄</h1>
-            <p class="text-sm text-ink-400 leading-relaxed">薪資稅務、房產買租、投資退休的深度攻略，{posts.length} 篇實用文章。</p>
+            <div class="editorial-blog-count">
+                <strong>{posts.length}</strong>
+                <span>篇實用文章</span>
+                <p>薪資稅務、房產買租、投資退休，整理成可以採取行動的答案。</p>
+            </div>
         </header>
 
-        <div class="space-y-3">
-            {posts.map((post) => {
+        <div class="editorial-blog-list">
+            {posts.map((post, index) => {
                 const cat = post.data.category ?? '';
                 const colorClass = categoryColor[cat] ?? 'text-ink-500 bg-paper-200';
                 return (
                     <a href={`/blog/${post.id}`}
-                       class="flex items-start gap-4 py-4 px-4 bg-paper-200/50 rounded-xl border border-transparent hover:bg-paper-200 hover:border-paper-300 transition-all group">
+                       class="editorial-story group">
+                        <span class="editorial-story-number">{String(index + 1).padStart(2, '0')}</span>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2 mb-1.5">
                                 {cat && <span class={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${colorClass}`}>{cat}</span>}
@@ -47,7 +51,7 @@ const categoryColor: Record<string, string> = {
                                 <p class="text-xs text-ink-400 mt-1 leading-relaxed line-clamp-2">{post.data.excerpt}</p>
                             )}
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-300 group-hover:text-ink-500 group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="editorial-story-arrow">
                             <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
                         </svg>
                     </a>
