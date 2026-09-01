@@ -1678,3 +1678,46 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 700px) {
     .editorial-blog-header { grid-template-columns: 1.4fr .6fr; padding: 2rem; }
 }
+
+/* ── TaiCalc 設計系統 v2：帳本語彙（2026.09） ─────────────────── */
+:root {
+  --tone-brand: #0F766E;
+  --tone-tax: #B45309;
+  --tone-growth: #047857;
+  --tone-neutral: #6B7280;
+}
+.font-display,
+h1,
+h2 {
+  font-family: "Noto Serif TC", "Source Serif 4", "PingFang TC", "Noto Sans TC", serif;
+  letter-spacing: -0.01em;
+}
+.tone-brand { color: var(--tone-brand); }
+.tone-tax { color: var(--tone-tax); }
+.tone-growth { color: var(--tone-growth); }
+.tone-neutral { color: var(--tone-neutral); }
+
+/* 收據式結果卡（簽名元素） */
+.receipt-card {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  padding: 1.25rem;
+}
+.receipt-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+.receipt-title { font-family: "Noto Serif TC", serif; font-weight: 700; font-size: 1.05rem; color: #1C1C1E; }
+.receipt-subtitle { margin-top: 0.15rem; font-size: 0.7rem; color: #6B7280; }
+.receipt-divider { margin: 0.9rem 0; border: 0; border-top: 1px dashed #D6D3D1; }
+.receipt-main { text-align: center; }
+.receipt-main-label { font-size: 0.7rem; color: #6B7280; }
+.receipt-main-value { margin-top: 0.2rem; font-size: 1.9rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.receipt-secondary-label { margin-top: 0.6rem; font-size: 0.65rem; color: #9CA3AF; }
+.receipt-secondary-value { font-size: 1rem; font-weight: 600; color: #374151; font-variant-numeric: tabular-nums; }
+.receipt-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+.receipt-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; }
+.receipt-row-label { color: #6B7280; }
+.receipt-row-value { font-weight: 600; color: #1F2937; font-variant-numeric: tabular-nums; }
+.receipt-footer { margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid #F3F4F6; font-size: 0.65rem; color: #9CA3AF; }

@@ -1,0 +1,51 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { glossary, glossaryCategories } from '../../data/glossary';
+
+const title = "財務詞典｜稅務、勞保、房貸、投資術語一次看懂 | TaiCalc";
+const description = "台灣財務術語詞典：綜合所得稅、免稅額、新青安、寬限期、勞保老年年金、FIRE、當沖等 60+ 條定義，每條附相關計算工具，直接看懂再算。";
+const keywords = "財務詞典,稅務術語,勞保術語,房貸術語,投資術語,免稅額,寬限期,新青安,勞保老年年金,FIRE,複利";
+
+const listSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'TaiCalc 財務詞典',
+  itemListElement: glossary.map((entry, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: entry.term,
+    url: `https://taicalc.com/glossary/${entry.slug}`,
+  })),
+});
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <script type="application/ld+json" set:html={listSchema} slot="head" />
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Glossary</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">財務詞典</h1>
+        <p class="mt-2 text-sm text-ink-500">看懂台灣財務與稅務術語，再搭配計算工具直接算。共 {glossary.length} 條，依主題分類。</p>
+
+        {glossaryCategories.map((category) => {
+            const entries = glossary.filter((entry) => entry.category === category);
+            return (
+                <section class="mt-8">
+                    <h2 class="text-lg font-semibold border-b border-paper-300 pb-2">{category}（{entries.length}）</h2>
+                    <ul class="mt-3 grid gap-2 sm:grid-cols-2">
+                        {entries.map((entry) => (
+                            <li>
+                                <a href={`/glossary/${entry.slug}`}
+                                    class="flex items-center justify-between gap-2 rounded-xl border border-paper-300 bg-white px-4 py-3 text-sm font-medium text-ink-600 transition-all hover:border-brand-200 hover:text-brand-700">
+                                    {entry.term}
+                                    <span aria-hidden="true" class="text-brand-400">→</span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            );
+        })}
+
+        <p class="mt-10 text-xs text-ink-400">定義以台灣現行制度為準，金額與級距請以主管機關最新公告為準。找不到的術語？可先到 <a href="/blog" class="text-brand-700 hover:underline">知識庫文章</a> 或使用上方計算工具試算。</p>
+    </div>
+</Layout>

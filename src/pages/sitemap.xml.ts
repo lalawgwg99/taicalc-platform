@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { toolCatalog } from '../data/toolCatalog';
+import { taxYears } from '../data/taxYears';
+import { glossary } from '../data/glossary';
 
 export const prerender = true;
 
@@ -22,12 +24,37 @@ export const GET: APIRoute = async () => {
     { path: '/compare/xin-qing-an-vs-general-mortgage', priority: '0.85', changefreq: 'monthly' },
   ];
 
+  const taxYearPages = taxYears.map((taxYear) => ({
+    path: `/tax-year/${taxYear.year}`,
+    priority: taxYear.isLatest ? '0.9' : '0.6',
+    changefreq: 'yearly',
+  }));
+
+  const glossaryPages = glossary.map((entry) => ({
+    path: `/glossary/${entry.slug}`,
+    priority: '0.6',
+    changefreq: 'yearly',
+  }));
+
   const pages = [
     { path: '/', priority: '1.0', changefreq: 'weekly', lastmod: today },
+    { path: '/glossary', priority: '0.7', changefreq: 'monthly', lastmod: today },
     ...comparePages.map((comparePage) => ({
       path: comparePage.path,
       priority: comparePage.priority,
       changefreq: comparePage.changefreq,
+      lastmod: today,
+    })),
+    ...taxYearPages.map((page) => ({
+      path: page.path,
+      priority: page.priority,
+      changefreq: page.changefreq,
+      lastmod: today,
+    })),
+    ...glossaryPages.map((page) => ({
+      path: page.path,
+      priority: page.priority,
+      changefreq: page.changefreq,
       lastmod: today,
     })),
     { path: '/llms.txt', priority: '1.0', changefreq: 'daily', lastmod: today },

@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getTaxYear, latestTaxYear } from '../../data/taxYears';
+
+export async function getStaticPaths() {
+  const { taxYears } = await import('../../data/taxYears');
+  return taxYears.map((entry) => ({ params: { year: entry.year }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const isLatest = entry.isLatest;
+
+const title = `${entry.year} 年免稅額與扣除額速查｜${entry.incomeYear}｜TaiCalc`;
+const description = `${entry.year} 年（${entry.incomeYear}）綜合所得稅免稅額 ${entry.exemption.toLocaleString('zh-TW')} 元、單身標準扣除額 ${entry.stdSingle.toLocaleString('zh-TW')} 元、薪資特別扣除額 ${entry.salarySpecial.toLocaleString('zh-TW')} 元。含課稅級距與試算範例。`;
+
+const fmt = (n: number) => n.toLocaleString('zh-TW');
+
+// 單身受薪族範例試算（僅在有級距資料時顯示）
+const exampleIncome = 1200000;
+const taxableExample = entry.brackets
+  ? Math.max(0, exampleIncome - entry.exemption - entry.stdSingle - entry.salarySpecial)
+  : 0;
+const taxExample = entry.brackets
+  ? (() => {
+      const bracket = entry.brackets.find((b) => taxableExample <= b.max) ?? entry.brackets[entry.brackets.length - 1];
+      return Math.max(0, Math.round(taxableExample * bracket.rate - bracket.subtract));
+    })()
+  : 0;
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: `${entry.year} 年免稅額是多少？`,
+      acceptedAnswer: { '@type': 'Answer', text: `${entry.year} 年一般免稅額為 ${fmt(entry.exemption)} 元，滿 70 歲為 ${fmt(entry.exemption70)} 元。` },
+    },
+    {
+      '@type': 'Question',
+      name: `${entry.year} 年標準扣除額是多少？`,
+      acceptedAnswer: { '@type': 'Answer', text: `${entry.year} 年標準扣除額單身為 ${fmt(entry.stdSingle)} 元、有配偶合併申報為 ${fmt(entry.stdMarried)} 元。` },
+    },
+  ],
+});
+---
+
+<Layout title={title} description={description} keywords={`${entry.year}年免稅額,${entry.year}年扣除額,${entry.year}所得稅,綜合所得稅,標準扣除額,薪資特別扣除額,課稅級距`} canonical={`/tax-year/${latestTaxYear.year}/`}>
+    <script type="application/ld+json" set:html={faqSchema} slot="head" />
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> ›
+            <a href="/tax-season" class="hover:text-ink-700">報稅專區</a> ›
+            <span class="text-ink-600">{entry.year} 年度速查</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Tax year · {entry.year}</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">{entry.year} 年免稅額與扣除額速查</h1>
+        <p class="mt-2 text-sm text-ink-500">{entry.filingNote}</p>
+
+        {!isLatest && (
+            <p class="mt-4 rounded-xl border border-paper-300 bg-paper-100 px-4 py-3 text-xs text-ink-500">
+                此為歷史年度。最新年度請見 <a href="/tax-year/{latestTaxYear.year}/" class="font-semibold text-brand-700 hover:underline">{latestTaxYear.year} 年度速查</a>。
+            </p>
+        )}
+
+        <h2 class="mt-8 text-lg font-semibold">主要扣除額一覽</h2>
+        <table class="mt-3 w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">項目</th>
+                    <th class="py-2 text-right font-medium">金額（元）</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600">
+                <tr><td class="py-2 pr-3">一般免稅額</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.exemption)}</td></tr>
+                <tr><td class="py-2 pr-3">70 歲以上免稅額</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.exemption70)}</td></tr>
+                <tr><td class="py-2 pr-3">標準扣除額（單身）</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.stdSingle)}</td></tr>
+                <tr><td class="py-2 pr-3">標準扣除額（有配偶）</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.stdMarried)}</td></tr>
+                <tr><td class="py-2 pr-3">薪資所得特別扣除額</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.salarySpecial)}</td></tr>
+            </tbody>
+        </table>
+
+        {entry.brackets && (
+            <>
+                <h2 class="mt-8 text-lg font-semibold">課稅級距</h2>
+                <table class="mt-3 w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b border-paper-300 text-left text-ink-400">
+                            <th class="py-2 pr-3 font-medium">所得淨額級距</th>
+                            <th class="py-2 pr-3 font-medium">稅率</th>
+                            <th class="py-2 text-right font-medium">累進差額</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-paper-200 text-ink-600">
+                        {entry.brackets.map((bracket) => (
+                            <tr>
+                                <td class="py-2 pr-3">{bracket.max === Number.POSITIVE_INFINITY ? `${fmt(bracket.min)} 元以上` : `${fmt(bracket.min)}～${fmt(bracket.max)} 元`}</td>
+                                <td class="py-2 pr-3 font-semibold tabular-nums">{Math.round(bracket.rate * 100)}%</td>
+                                <td class="py-2 text-right tabular-nums">{fmt(bracket.subtract)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                <h2 class="mt-8 text-lg font-semibold">試算範例：單身受薪族年薪 {fmt(exampleIncome)} 元</h2>
+                <ul class="mt-3 space-y-1 text-sm text-ink-600">
+                    <li>所得淨額 ＝ {fmt(exampleIncome)} − {fmt(entry.exemption)}（免稅額）− {fmt(entry.stdSingle)}（標準扣除額）− {fmt(entry.salarySpecial)}（薪資特別扣除額）＝ <strong class="text-ink-700">{fmt(taxableExample)} 元</strong></li>
+                    <li>應納稅額（未含扣繳與其他扣除）約 <strong class="tone-tax">{fmt(taxExample)} 元</strong></li>
+                </ul>
+            </>
+        )}
+
+        {!entry.brackets && (
+            <p class="mt-6 rounded-xl border border-paper-300 bg-paper-100 px-4 py-3 text-xs text-ink-500">
+                本歷史年度的課稅級距以財政部當期公告為準；此頁僅列已確認之免稅額與扣除額。
+            </p>
+        )}
+
+        <div class="mt-8 grid gap-3 sm:grid-cols-2">
+            <a href="/tools/income-tax-calculator" class="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
+                用綜合所得稅試算器估稅額 →
+            </a>
+            <a href="/tools/salary-calculator" class="rounded-xl border border-paper-300 bg-white px-4 py-3 text-sm font-semibold text-ink-600 transition-all hover:border-brand-200 hover:text-brand-600">
+                先算薪資實拿 →
+            </a>
+        </div>
+
+        <p class="mt-8 text-xs text-ink-400">
+            數字來源：財政部公告（{entry.year} 年度）。試算僅供參考，實際申報以財政部申報系統與個人扣除資料為準。
+        </p>
+    </div>
+</Layout>

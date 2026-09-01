@@ -44,36 +44,23 @@
             </div>
         </div>
 
-        <!-- 結果對照 -->
-        <div class="grid gap-3 md:grid-cols-[1fr_auto_1fr] items-stretch">
-            <div v-for="side in sides" :key="side.key" class="card-surface p-5">
-                <p class="stat-label text-center mb-1">{{ side.label }}</p>
-                <p class="text-center text-[11px] text-ink-400 mb-3">
-                    {{ side.years }} 年 / {{ side.rate }}% / 寬限 {{ side.grace }} 年
-                </p>
-                <template v-if="side.grace > 0">
-                    <div class="text-center mb-3">
-                        <p class="text-xs text-ink-400 mb-1">寬限期內月付（僅利息）</p>
-                        <p class="stat-value-md text-brand-600">$ {{ fmt(side.res.gracePay) }}</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-xs text-ink-400 mb-1">寬限期後月付</p>
-                        <p class="stat-value-lg text-ink-700">$ {{ fmt(side.res.pay) }}</p>
-                    </div>
-                </template>
-                <p v-else class="stat-value-lg text-ink-700 text-center">$ {{ fmt(side.res.pay) }}</p>
-                <div class="h-px bg-paper-300 w-16 mx-auto my-3"></div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-paper-200/60 rounded-lg p-2.5 text-center">
-                        <p class="text-[10px] text-ink-400 mb-0.5">總利息</p>
-                        <p class="text-sm font-semibold text-ink-700 tabular-nums">$ {{ fmt(side.res.totalInterest) }}</p>
-                    </div>
-                    <div class="bg-paper-200/60 rounded-lg p-2.5 text-center">
-                        <p class="text-[10px] text-ink-400 mb-0.5">本息總額</p>
-                        <p class="text-sm font-semibold text-ink-700 tabular-nums">$ {{ fmt(side.res.totalPayment) }}</p>
-                    </div>
-                </div>
-            </div>
+        <!-- 結果對照（收據式結果卡） -->
+        <div class="grid gap-3 md:grid-cols-2 items-stretch">
+            <ResultReceipt
+                v-for="side in sides"
+                :key="side.key"
+                :title="side.label"
+                :subtitle="`${side.years} 年 / ${side.rate}% / 寬限 ${side.grace} 年`"
+                :main-label="side.grace > 0 ? '寬限期後月付' : '每月還款'"
+                :main-value="`$ ${fmt(side.res.pay)}`"
+                :main-tone="side.key === 'a' ? 'brand' : 'neutral'"
+                :secondary-label="side.grace > 0 ? '寬限期內月付（僅利息）' : ''"
+                :secondary-value="side.grace > 0 ? `$ ${fmt(side.res.gracePay)}` : ''"
+                :rows="[
+                { label: '總利息', value: `$ ${fmt(side.res.totalInterest)}`, tone: 'tax' },
+                { label: '本息總額', value: `$ ${fmt(side.res.totalPayment)}` },
+                ]"
+            />
         </div>
 
         <!-- 差異摘要 -->
@@ -117,6 +104,7 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
+import ResultReceipt from '../ResultReceipt.vue';
 
 // ── 狀態 ───────────────────────────────────────────────────────
 const amountWan = ref(1000)
