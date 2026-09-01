@@ -80,7 +80,7 @@
                     </p>
                 </div>
             </div>
-            <p class="text-[11px] leading-relaxed text-ink-400">{{ insight }}</p>
+            <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">採本息平均攤還法估算，四捨五入至元。寬限期後月付以剩餘期數重新攤還本金計算。</p>
         </div>
 

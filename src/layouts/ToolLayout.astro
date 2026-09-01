@@ -118,7 +118,7 @@ const relatedToolsSchema = JSON.stringify({
                     <h1 class="mb-2 text-2xl font-semibold text-ink-700 md:text-4xl">{cleanTitle}</h1>
                     <p class="max-w-2xl text-sm leading-relaxed text-ink-500">{kicker}</p>
                     <div class="tool-hero-actions mt-4 flex flex-wrap items-center gap-2">
-                        <a href="#calculator-panel" class="action-link" data-sfx="accent">開始試算</a>
+                        <a href="#calculator-panel" data-sfx="accent" class="action-link !bg-brand-600 !text-white !border-0 hover:!bg-brand-700 font-semibold shadow-sm">開始試算</a>
                         <a
                             id="line-share-link"
                             href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://taicalc.com${currentPath}`)}`}
@@ -210,10 +210,10 @@ const relatedToolsSchema = JSON.stringify({
                 <dl class="space-y-3">
                     {faqs.map((faq) => (
                         <details class="group bg-paper-200 border border-paper-300 rounded-xl overflow-hidden hover:border-brand-200 transition-colors">
-                            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none">
+                            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none transition-colors hover:bg-paper-100">
                                 <dt class="text-sm font-medium text-ink-700 pr-4">{faq.q}</dt>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="text-ink-400 flex-shrink-0 transition-transform duration-200 group-open:rotate-180">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="text-brand-600 flex-shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
                                     <path d="m6 9 6 6 6-6"/>
                                 </svg>
                             </summary>
