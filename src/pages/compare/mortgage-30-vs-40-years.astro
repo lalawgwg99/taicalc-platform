@@ -1,0 +1,97 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import MortgageTermCompare from '../../components/calculators/MortgageTermCompare.vue';
+import { coreToolGovernance } from '../../data/regulatoryMetadata';
+
+const title = "房貸 30 年 vs 40 年：月付與總利息差多少？｜互動比較 | TaiCalc";
+const description = "輸入貸款金額與利率，即時比較 30 年與 40 年房貸的月付金、總利息與本息總額。附 1,000 萬試算範例與年限選擇建議，決定前先算清楚。";
+const keywords = "房貸30年vs40年,房貸年限比較,30年房貸,40年房貸,房貸月付,房貸總利息,房貸試算,還款年限";
+const governance = coreToolGovernance.mortgage;
+
+const faqs = [
+    {
+        q: "房貸 30 年和 40 年，總利息差多少？",
+        a: "以貸款 1,000 萬元、利率 2% 為例試算：30 年月付約 3.70 萬元、總利息約 331 萬元；40 年月付約 3.03 萬元、總利息約 454 萬元。月付少約 6,700 元，但 40 年總利息多約 123 萬元。"
+    },
+    {
+        q: "選 40 年房貸划算嗎？",
+        a: "40 年房貸的優點是月付較低、現金流壓力小，適合收入成長期或首購負擔較重者；缺點是總利息明顯增加，且年齡較長者可能不符合銀行年限限制（通常貸款年限＋年齡上限約 75 歲）。"
+    },
+    {
+        q: "想省利息，該縮短年限還是提前還款？",
+        a: "兩者都能省利息。縮短年限是「結構性」省息，月付固定變高；提前還款則保有彈性。建議先確認銀行提前還款違約金條款，再比較兩者對現金流的影響。"
+    },
+    {
+        q: "銀行會讓所有人貸 40 年嗎？",
+        a: "不會。40 年房貸通常有屋齡、借款人年齡與收入負擔比等限制，且各銀行政策不同。以 30 年為基準試算較保守，40 年作為壓力測試的彈性選項。"
+    },
+];
+
+const policyRange = governance.sources.map(source => `[${source.label}](${source.href})`).join(' · ');
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="房產居家"
+    faqs={faqs}
+    dataVersion={governance.version}
+    dataYear={governance.dataYear}
+    lastUpdated={governance.updatedAt}
+    sources={governance.sources}
+>
+    <MortgageTermCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>30 年 vs 40 年：用年限換現金流，還是用利息換彈性？</h2>
+        <p>同樣一筆貸款，年限越長月付越低、總利息越高。這是房貸決策最核心的取捨。用上方比較器輸入自己的金額與利率，先看數字再決定。</p>
+
+        <h3>1,000 萬元試算情境（利率 2%）</h3>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">項目</th>
+                    <th class="py-2 pr-3 font-medium text-brand-700">30 年</th>
+                    <th class="py-2 font-medium text-ink-600">40 年</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
+                <tr>
+                    <td class="py-2 pr-3">每月還款</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 3.70 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 3.03 萬元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">總利息</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 331 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 454 萬元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">本息總額</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 1,331 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 1,454 萬元</td>
+                </tr>
+            </tbody>
+        </table>
+        <blockquote>
+            <strong>關鍵數字：</strong>40 年每月少付約 6,700 元，但 30 年下來總利息多約 123 萬元——這筆錢足以再買一輛車或當作頭期款。月付壓力與總利息是魚與熊掌。
+        </blockquote>
+
+        <h3>什麼情況適合 40 年？</h3>
+        <ul>
+            <li>首購、自備款有限，需要壓低月付才能通過銀行負擔比審核。</li>
+            <li>預期收入成長，未來可提前還款縮短實際年限。</li>
+            <li>利率處於相對低檔，長期鎖定低月付。</li>
+        </ul>
+
+        <h3>什麼情況選 30 年更好？</h3>
+        <ul>
+            <li>貸款金額較高，總利息差距被放大。</li>
+            <li>想降低總利息、加快累積資產，或接近退休年齡。</li>
+            <li>銀行對 40 年房貸有屋齡／年齡限制，無法申請。</li>
+        </ul>
+
+        <p class="note-box">數字為本頁比較器採本息平均攤還法產生，四捨五入至萬元級；實際利率與年限以承貸銀行核貸為準（{policyRange}）。</p>
+    </div>
+</ToolLayout>

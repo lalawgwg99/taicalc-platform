@@ -1,0 +1,98 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ElectricityCompare from '../../components/calculators/ElectricityCompare.vue';
+import { coreToolGovernance } from '../../data/regulatoryMetadata';
+
+const title = "夏月 vs 非夏月電費比較：同度數差多少？｜互動試算 | TaiCalc";
+const description = "輸入每月用電度數，即時比較台電夏月（6~9月）與非夏月的累進電價費用差異。附 500 度試算範例與級距表，夏季電費先算再省。";
+const keywords = "夏月電費,非夏月電費,夏季電費,電費比較,台電電價,累進電價,電費試算,冷氣電費";
+const governance = coreToolGovernance.mortgage;
+
+const faqs = [
+    {
+        q: "夏月和非夏月電費差多少？",
+        a: "以每月 500 度為例試算：夏月約 1,395 元、非夏月約 1,220 元，夏月多約 175 元。用電量越高差距越大——超過 700 度後，夏月最高級距每度 8.86 元，是非夏月 7.03 元的 1.26 倍。"
+    },
+    {
+        q: "台電夏月是哪幾個月？",
+        a: "台電夏月為每年 6 月 1 日至 9 月 30 日（6~9 月），其餘月份為非夏月。夏月電價較高，主要反映夏季空調用電尖峰。"
+    },
+    {
+        q: "為什麼夏月電費特別貴？",
+        a: "台電採累進電價，用電量越高單價越高，而夏月各級距單價普遍高於非夏月。夏季冷氣長時間運轉會把用電推入高級距，讓帳單明顯增加。"
+    },
+    {
+        q: "怎麼省夏季電費？",
+        a: "冷氣是夏季電費主因：設定 26~28 度、搭配電扇、清洗濾網、使用變頻機並避免頻繁開關，可有效降低用電。用電量下降後，累進級距也會跟著降，省下的是「級距差」而非單一度數。"
+    },
+];
+
+const policyRange = governance.sources.map(source => `[${source.label}](${source.href})`).join(' · ');
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="居住與房產"
+    faqs={faqs}
+    dataVersion={governance.version}
+    dataYear={governance.dataYear}
+    lastUpdated={governance.updatedAt}
+    sources={governance.sources}
+>
+    <ElectricityCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>夏月 vs 非夏月：同一度數，價格不同</h2>
+        <p>台電住宅用電採累進電價，且夏月與非夏月各有一套級距。用上方比較器輸入自己的度數，立即看到兩個季節的費用差異。</p>
+
+        <h3>500 度試算情境</h3>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">項目</th>
+                    <th class="py-2 pr-3 font-medium text-amber-600">夏月（6~9 月）</th>
+                    <th class="py-2 font-medium text-brand-700">非夏月</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
+                <tr>
+                    <td class="py-2 pr-3">電費總額</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 1,395 元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 1,220 元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">平均每度</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 2.79 元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 2.44 元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">差額</td>
+                    <td colspan="2" class="py-2 font-semibold text-amber-600">夏月多約 175 元（+14%）</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>住宅累進電價級距（2025-10 起）</h3>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">級距（度）</th>
+                    <th class="py-2 pr-3 font-medium text-amber-600">夏月（元/度）</th>
+                    <th class="py-2 font-medium text-brand-700">非夏月（元/度）</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
+                <tr><td class="py-2 pr-3">120 度以下</td><td class="py-2 pr-3 tabular-nums">1.78</td><td class="py-2 tabular-nums">1.78</td></tr>
+                <tr><td class="py-2 pr-3">121~330 度</td><td class="py-2 pr-3 tabular-nums">2.55</td><td class="py-2 tabular-nums">2.26</td></tr>
+                <tr><td class="py-2 pr-3">331~500 度</td><td class="py-2 pr-3 tabular-nums">3.80</td><td class="py-2 tabular-nums">3.13</td></tr>
+                <tr><td class="py-2 pr-3">501~700 度</td><td class="py-2 pr-3 tabular-nums">5.14</td><td class="py-2 tabular-nums">4.24</td></tr>
+                <tr><td class="py-2 pr-3">701~1000 度</td><td class="py-2 pr-3 tabular-nums">6.44</td><td class="py-2 tabular-nums">5.27</td></tr>
+                <tr><td class="py-2 pr-3">1001 度以上</td><td class="py-2 pr-3 tabular-nums">8.86</td><td class="py-2 tabular-nums">7.03</td></tr>
+            </tbody>
+        </table>
+
+        <p class="note-box">數字為本頁比較器依台電住宅累進電價（2025-10-01 起）產生，四捨五入至元；實際帳單另含基本費、公共電費等（{policyRange}）。</p>
+    </div>
+</ToolLayout>

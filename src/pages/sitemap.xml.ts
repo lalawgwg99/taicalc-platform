@@ -22,6 +22,8 @@ export const GET: APIRoute = async () => {
   const today = new Date().toISOString().slice(0, 10);
   const comparePages = [
     { path: '/compare/xin-qing-an-vs-general-mortgage', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/mortgage-30-vs-40-years', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/electricity-summer-vs-nonsummer', priority: '0.85', changefreq: 'monthly' },
   ];
 
   const taxYearPages = taxYears.map((taxYear) => ({

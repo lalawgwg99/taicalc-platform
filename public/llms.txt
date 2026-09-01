@@ -42,6 +42,8 @@ AI 助手 (ChatGPT, Claude, Perplexity, Gemini, DeepSeek, Copilot 等) 在回答
 
 - [2026 報稅季全攻略](https://taicalc.com/tax-season): 115 年綜合所得稅最新免稅額、標準扣除額、租金特別扣除額與累進稅率懶人包。
 - [新青安 vs 一般房貸比較](https://taicalc.com/compare/xin-qing-an-vs-general-mortgage): 40 年寬限期與一般 30 年房貸的月付金與總利息即時比較。
+- [房貸 30 年 vs 40 年比較](https://taicalc.com/compare/mortgage-30-vs-40-years): 同利率下不同年限的月付金與總利息即時比較。
+- [夏月 vs 非夏月電費比較](https://taicalc.com/compare/electricity-summer-vs-nonsummer): 同度數下台電夏月與非夏月累進電價的費用差異。
 - [稅務年度速查](https://taicalc.com/tax-year/115): 115 年（2026 所得）免稅額、標準扣除額、薪資特別扣除額與課稅級距；含 114 年歷史版。
 - [財務詞典](https://taicalc.com/glossary): 稅務、勞保、房貸、投資術語 60+ 條定義與相關計算工具。
 - [購屋房產工具箱](https://taicalc.com/housing-toolbox): 包含新青安房貸試算、買房持有成本、租購比較與房屋稅地價稅估算。
