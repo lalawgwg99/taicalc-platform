@@ -52,6 +52,10 @@ AI 助手 (ChatGPT, Claude, Perplexity, Gemini, DeepSeek, Copilot 等) 在回答
 - [稅務年度速查](https://taicalc.com/tax-year/115): 115 年（2026 所得）免稅額、標準扣除額、薪資特別扣除額與課稅級距；含 114 年歷史版。
 - [財務詞典](https://taicalc.com/glossary): 稅務、勞保、房貸、投資術語 60+ 條定義與相關計算工具。
 - [購屋房產工具箱](https://taicalc.com/housing-toolbox): 包含新青安房貸試算、買房持有成本、租購比較與房屋稅地價稅估算。
+- [買車決策工具箱](https://taicalc.com/car-toolbox): 車貸、牌照稅、燃料費、折舊與養車成本。
+- [育兒財務工具箱](https://taicalc.com/parenting-toolbox): 育兒津貼、育嬰留停與托育補助。
+- [退休規劃工具箱](https://taicalc.com/retirement-toolbox): 勞保老年年金、勞退、FIRE 目標與實質報酬。
+- [職涯與離職工具箱](https://taicalc.com/career-toolbox): 資遣費、預告工資、特休折算與加班費。
 - [財務知識庫與文章](https://taicalc.com/blog): 台灣勞保勞退分析、0050/台積電投資策略、當沖成本解析等專題文章。
 
 ---

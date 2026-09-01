@@ -70,6 +70,10 @@ export const GET: APIRoute = async () => {
     { path: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: today },
     { path: '/tax-season', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/car-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/parenting-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/retirement-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/career-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/partnerships', priority: '0.5', changefreq: 'monthly', lastmod: today },
     ...toolCatalog.map((tool) => ({
       path: tool.href,

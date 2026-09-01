@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "職涯與離職工具箱｜TaiCalc";
+const description = "離職、被資遣、轉職前先算清楚：資遣費、預告工資、特休折算與加班費，保障自己的權益。";
+
+const steps = [
+    {
+        title: "算離職應領金額",
+        desc: "資遣費、預告工資、特休折算與最後薪資一次算清。",
+        href: "/tools/severance-calculator",
+        cta: "離職結算",
+    },
+    {
+        title: "核對加班費",
+        desc: "平日、休息日、國定假日加班費是否符合勞基法。",
+        href: "/tools/overtime-calculator",
+        cta: "加班費試算",
+    },
+    {
+        title: "算下一份收入",
+        desc: "換工作或轉職，用薪資實拿與外送收入比較選項。",
+        href: "/tools/salary-calculator",
+        cta: "薪資實拿",
+    },
+];
+
+const comparePoints = [
+    { title: "資遣費 vs 自願離職", desc: "被資遣的權益與自願離職的差異？" },
+    { title: "正職 vs 接案", desc: "收入穩定性與自由度如何取捨？" },
+    { title: "外送 vs 正職", desc: "淨收入扣除成本後誰比較划算？" },
+];
+---
+
+<Layout title={title} description={description} fullWidth>
+    <section class="pt-16 pb-20 md:pt-24 md:pb-28 hero-sheen relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 md:px-6 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full mb-6">
+                <span class="text-xs font-medium text-brand-600">離職前先算權益</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-ink-700 tracking-tight leading-[1.2] mb-5">
+                離職不是衝動<br class="md:hidden">權益要算清楚
+            </h1>
+            <p class="text-base md:text-lg text-ink-400 leading-relaxed max-w-2xl mx-auto mb-8">
+                資遣費、預告工資、特休折算、加班費——離職前把該拿的算清楚，別讓權益睡著。
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a href="/tools/severance-calculator" class="btn-primary rounded-xl px-5 py-3 text-sm">先算離職結算</a>
+                <a href="/tools/overtime-calculator" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white border border-paper-300 text-ink-100 text-sm font-medium hover:border-brand hover:text-brand transition-colors">先算加班費</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-white section-wash">
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="max-w-xl mb-10 md:mb-14">
+                <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">三步驟</span>
+                <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">用 3 個計算完成職涯決策</h2>
+            </div>
+            <div class="grid gap-4 md:grid-cols-3">
+                {steps.map((step) => (
+                    <a href={step.href} class="group rounded-2xl border border-paper-300 bg-paper-100 p-5 transition-all hover:border-brand-300 hover:bg-paper-50">
+                        <p class="text-sm font-semibold text-ink-700 group-hover:text-brand transition-colors">{step.title}</p>
+                        <p class="mt-2 text-sm text-ink-500 leading-relaxed">{step.desc}</p>
+                        <p class="mt-4 text-sm font-semibold text-brand">{step.cta} →</p>
+                    </a>
+                ))}
+            </div>
+
+            <div class="mt-12 grid gap-4 md:grid-cols-3">
+                {comparePoints.map((point) => (
+                    <div class="rounded-2xl border border-paper-300 bg-white p-5">
+                        <p class="text-sm font-semibold text-ink-700">{point.title}</p>
+                        <p class="mt-2 text-sm text-ink-500 leading-relaxed">{point.desc}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div class="mt-12 rounded-2xl border border-paper-300 bg-paper-100 p-6">
+                <h2 class="text-base font-semibold text-ink-700">延伸閱讀</h2>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <a href="/blog/2026-severance-pay-notice-unused-leave-taiwan" class="rounded-full border border-paper-300 bg-white px-4 py-1.5 text-sm text-ink-600 hover:border-brand-300 hover:text-brand transition-colors">2026 資遣費與特休</a>
+                    <a href="/blog/overtime-pay-responsibility-system-myth" class="rounded-full border border-paper-300 bg-white px-4 py-1.5 text-sm text-ink-600 hover:border-brand-300 hover:text-brand transition-colors">加班費責任制迷思</a>
+                    <a href="/blog/solopreneur-vs-9to5-employee-which-is-better" class="rounded-full border border-paper-300 bg-white px-4 py-1.5 text-sm text-ink-600 hover:border-brand-300 hover:text-brand transition-colors">接案 vs 上班族</a>
+                    <a href="/glossary/severance-pay" class="rounded-full border border-paper-300 bg-white px-4 py-1.5 text-sm text-ink-600 hover:border-brand-300 hover:text-brand transition-colors">資遣費</a>
+                    <a href="/glossary/advance-notice-wage" class="rounded-full border border-paper-300 bg-white px-4 py-1.5 text-sm text-ink-600 hover:border-brand-300 hover:text-brand transition-colors">預告工資</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
