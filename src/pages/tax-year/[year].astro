@@ -72,7 +72,7 @@ const faqSchema = JSON.stringify({
                     <th class="py-2 text-right font-medium">金額（元）</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-paper-200 text-ink-600">
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
                 <tr><td class="py-2 pr-3">一般免稅額</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.exemption)}</td></tr>
                 <tr><td class="py-2 pr-3">70 歲以上免稅額</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.exemption70)}</td></tr>
                 <tr><td class="py-2 pr-3">標準扣除額（單身）</td><td class="py-2 text-right font-semibold tabular-nums text-ink-700">{fmt(entry.stdSingle)}</td></tr>
@@ -92,7 +92,7 @@ const faqSchema = JSON.stringify({
                             <th class="py-2 text-right font-medium">累進差額</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-paper-200 text-ink-600">
+                    <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
                         {entry.brackets.map((bracket) => (
                             <tr>
                                 <td class="py-2 pr-3">{bracket.max === Number.POSITIVE_INFINITY ? `${fmt(bracket.min)} 元以上` : `${fmt(bracket.min)}～${fmt(bracket.max)} 元`}</td>
@@ -104,10 +104,12 @@ const faqSchema = JSON.stringify({
                 </table>
 
                 <h2 class="mt-8 text-lg font-semibold">試算範例：單身受薪族年薪 {fmt(exampleIncome)} 元</h2>
-                <ul class="mt-3 space-y-1 text-sm text-ink-600">
+                <div class="mt-3 rounded-xl border border-paper-300 bg-paper-100/70 p-4">
+                <ul class="space-y-1 text-sm text-ink-600">
                     <li>所得淨額 ＝ {fmt(exampleIncome)} − {fmt(entry.exemption)}（免稅額）− {fmt(entry.stdSingle)}（標準扣除額）− {fmt(entry.salarySpecial)}（薪資特別扣除額）＝ <strong class="text-ink-700">{fmt(taxableExample)} 元</strong></li>
                     <li>應納稅額（未含扣繳與其他扣除）約 <strong class="tone-tax">{fmt(taxExample)} 元</strong></li>
                 </ul>
+                </div>
             </>
         )}
 

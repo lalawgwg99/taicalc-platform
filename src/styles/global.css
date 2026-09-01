@@ -14,16 +14,16 @@ html {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
-    background-color: #F2F2F7;
+    background-color: #F5F1E6;
     color: #1C1C1E;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
     letter-spacing: -0.011em;
-    background-color: #F2F2F7;
+    background-color: #F5F1E6;
     background-image:
-        radial-gradient(1000px 500px at 50% -10%, rgba(0, 122, 255, 0.06), transparent 70%),
-        radial-gradient(800px 400px at 80% 100%, rgba(52, 199, 89, 0.04), transparent 60%);
+        radial-gradient(1000px 500px at 50% -10%, rgba(15, 118, 110, 0.07), transparent 70%),
+        radial-gradient(800px 400px at 80% 100%, rgba(176, 58, 46, 0.05), transparent 60%);
     background-size: auto, auto;
     background-attachment: fixed;
 }
@@ -35,8 +35,8 @@ body::before {
     z-index: -1;
     pointer-events: none;
     background:
-        linear-gradient(120deg, transparent 0%, rgba(19, 155, 121, 0.03) 32%, transparent 54%),
-        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.75), transparent 34%);
+        linear-gradient(120deg, transparent 0%, rgba(19, 155, 121, 0.015) 32%, transparent 54%),
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.7), transparent 34%);
     mask-image: linear-gradient(to bottom, black, transparent 72%);
 }
 
@@ -1407,17 +1407,17 @@ h1, h2, h3, h4, h5, h6 {
 .decision-hero-shell {
     gap: 0 !important;
     overflow: hidden;
-    border: 3px solid var(--ledger-line);
-    border-radius: .55rem;
+    border: 1px solid var(--ledger-line);
+    border-radius: .75rem;
     background: var(--ledger-sheet);
-    box-shadow: 7px 8px 0 rgba(23, 23, 20, .1);
+    box-shadow: 0 2px 10px rgba(23, 23, 20, .08);
 }
 
 .decision-hero-copy {
     position: relative;
     background:
-        linear-gradient(rgba(23, 23, 20, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(23, 23, 20, .035) 1px, transparent 1px),
+        linear-gradient(rgba(23, 23, 20, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 23, 20, .018) 1px, transparent 1px),
         var(--ledger-paper);
     background-size: 28px 28px;
 }
@@ -1690,6 +1690,7 @@ h1, h2, h3, h4, h5, h6 {
 h1,
 h2 {
   font-family: "Noto Serif TC", "Source Serif 4", "PingFang TC", "Noto Sans TC", serif;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 .tone-brand { color: var(--tone-brand); }
@@ -1721,3 +1722,21 @@ h2 {
 .receipt-row-label { color: #6B7280; }
 .receipt-row-value { font-weight: 600; color: #1F2937; font-variant-numeric: tabular-nums; }
 .receipt-footer { margin-top: 0.9rem; padding-top: 0.75rem; border-top: 1px solid #F3F4F6; font-size: 0.65rem; color: #9CA3AF; }
+
+/* ── 設計系統 v2.1：帳本紙色與朱砂印章（2026.09） ─────────────── */
+:root {
+  --paper-warm: #F5F1E6;
+  --seal-red: #B03A2E;
+}
+.card-surface {
+  background-color: #FDFBF4;
+  border-color: rgba(120, 110, 85, 0.22);
+  box-shadow: 0 1px 3px rgba(60, 50, 30, 0.06);
+}
+.receipt-card {
+  background-color: #FDFBF4;
+  border-color: rgba(120, 110, 85, 0.16);
+}
+.recect-divider,
+.receipt-divider { border-top-color: #C9C2B0; }
+.tone-seal { color: var(--seal-red); }

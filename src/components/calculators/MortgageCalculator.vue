@@ -108,9 +108,13 @@
             </div>
         </div>
 
-        <!-- ── 結果 ── -->
-        <div class="card-surface p-5">
-            <p class="stat-label text-center mb-1">預估月付金</p>
+        <!-- ── 結果（帳本收據式） ── -->
+        <div class="receipt-card">
+            <div class="receipt-head">
+                <p class="receipt-title">預估月付金</p>
+                <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">本息平均攤還</span>
+            </div>
+            <hr class="receipt-divider" />
 
             <!-- 有寬限期 -->
             <div v-if="graceYears > 0" class="text-center">
