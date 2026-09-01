@@ -70,11 +70,15 @@
 
         <!-- ── 單一模式結果 ── -->
         <div v-if="mode === 'single'" class="space-y-4">
-            <!-- 主要數字 -->
-            <div class="card-surface p-5">
+            <!-- 主要數字（收據式） -->
+            <div class="receipt-card">
+                <div class="receipt-head">
+                    <p class="receipt-title">每月實拿</p>
+                    <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">月薪實拿</span>
+                </div>
+                <hr class="receipt-divider" />
                 <div class="flex items-start justify-between mb-5">
                     <div>
-                        <p class="stat-label">每月實拿</p>
                         <p class="stat-value-lg">
                             <span class="text-2xl text-ink-400 font-light mr-1">$</span>{{ monthlyNet.toLocaleString() }}
                         </p>

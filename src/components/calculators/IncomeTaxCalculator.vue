@@ -165,11 +165,15 @@
       </div>
     </div>
 
-    <!-- ── 計算結果 ── -->
-    <div class="card-surface p-5">
+    <!-- ── 計算結果（收據式） ── -->
+    <div class="receipt-card">
+      <div class="receipt-head">
+        <p class="receipt-title">估算應納所得稅</p>
+        <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">綜合所得稅</span>
+      </div>
+      <hr class="receipt-divider" />
       <div class="flex items-start justify-between mb-5">
         <div>
-          <p class="stat-label">估算應納所得稅</p>
           <p class="stat-value-lg" :class="totalTax > 0 ? 'text-ink-700' : 'text-green-600'">
             {{ totalTax > 0 ? '$' + fmt(totalTax) : '免稅 ✓' }}
           </p>

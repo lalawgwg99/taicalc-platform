@@ -48,7 +48,12 @@
       </div>
     </section>
 
-    <section class="calculator-card">
+    <section class="receipt-card">
+      <div class="receipt-head">
+        <p class="receipt-title">預估電費</p>
+        <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">台電累進電價</span>
+      </div>
+      <hr class="receipt-divider" />
       <div class="flex items-end justify-between mb-6 pb-6 border-b border-stone-100">
         <div>
           <p class="text-xs text-stone-500 font-semibold uppercase tracking-wider mb-1">預估電費</p>
