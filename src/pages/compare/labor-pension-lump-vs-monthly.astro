@@ -1,0 +1,60 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import LaborPensionLumpVsMonthly from '../../components/calculators/LaborPensionLumpVsMonthly.vue';
+
+const title = "勞保老年年金：一次領 vs 月領，哪個划算？｜互動比較 | TaiCalc";
+const description = "輸入平均月投保薪資與年資，即時比較勞保老年年金一次請領與月領的差異、回本年限與選擇建議。附 45,800 元試算範例。";
+const keywords = "勞保一次領,勞保月領,老年年金,一次請領,月領年金,勞保給付,勞保退休金,回本年限";
+
+const faqs = [
+    {
+        q: "勞保老年年金月領怎麼算？",
+        a: "月領金額＝平均月投保薪資 × 年資 × 1.55%。以平均投保薪資 45,800 元、年資 30 年為例，每月約 21,297 元。"
+    },
+    {
+        q: "一次請領怎麼算？",
+        a: "一次領金額＝平均月投保薪資 × 給付月數。前 15 年年資每年 1 個月、第 16 年起每年 2 個月，上限 50 個月。以 45,800 元、30 年為例，約 137.4 萬元。"
+    },
+    {
+        q: "月領要多久才能超過一次領？",
+        a: "以 45,800 元、30 年為例：一次領約 137.4 萬元，月領每月約 2.13 萬元，約 5.4 年累計即可超過一次領。預期領取超過 5~6 年者，月領通常較有利。"
+    },
+    {
+        q: "可以同時領一次領和月領嗎？",
+        a: "不行。勞保老年給付的月領與一次請領只能擇一，請領時需確認。提前或延後請領會增減月領金額（每提前/延後 1 年增減 4%）。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="投資與退休"
+    faqs={faqs}
+>
+    <LaborPensionLumpVsMonthly client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>一次領還是月領？先算回本年限</h2>
+        <p>勞保老年年金是台灣退休金三大支柱之一，請領時最常糾結「一次領」還是「月領」。關鍵在於：<strong>月領多久能累計超過一次領總額</strong>。</p>
+
+        <h3>45,800 元、30 年試算情境</h3>
+        <ul>
+            <li><strong>月領</strong>：45,800 × 30 × 1.55% ≈ <strong>21,297 元／月</strong></li>
+            <li><strong>一次領</strong>：45,800 × 30 個月（前 15 年 15 個月＋後 15 年 30 個月）≈ <strong>137.4 萬元</strong></li>
+            <li><strong>回本年限</strong>：137.4 萬 ÷ 21,297 ÷ 12 ≈ <strong>5.4 年</strong></li>
+        </ul>
+        <blockquote>
+            <strong>判斷原則：</strong>預期領取超過回本年限者，月領通常較有利（且月領隨物價調整）；資金有立即需求、或預期壽命較短者，可考慮一次領。
+        </blockquote>
+
+        <h3>注意事項</h3>
+        <ul>
+            <li>提前 5 年或延後 5 年請領，每 1 年增減 4% 給付。</li>
+            <li>實際給付以勞保局核定為準，本頁為概算。</li>
+            <li>月領年金設有「展延」機制，延後請領可提高月領金額。</li>
+        </ul>
+        <p class="note-box">數字為本頁比較器依勞保老年給付規則概算，四捨五入；實際金額以勞保局核定為準。</p>
+    </div>
+</ToolLayout>

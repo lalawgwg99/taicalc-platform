@@ -1,0 +1,54 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import PensionContributionCompare from '../../components/calculators/PensionContributionCompare.vue';
+
+const title = "勞退自提 6% 划算嗎？0% vs 6% 比較｜互動試算 | TaiCalc";
+const description = "比較勞退新制自提 6%（享節稅）與不自提（6% 薪資自行投資）的長期差異。含節稅金額與複利估算，決定要不要自提前先算清楚。";
+const keywords = "勞退自提,自提6%,勞退自提划算嗎,勞退節稅,勞工退休金,自願提繳,退休金比較";
+
+const faqs = [
+    {
+        q: "勞退自提 6% 是什麼？",
+        a: "勞工在雇主 6% 提撥之外，自願每月再提繳 1%~6% 薪資至勞退個人專戶。自提金額可自當年度所得總額中扣除，享節稅優惠。"
+    },
+    {
+        q: "自提 6% 能節多少稅？",
+        a: "以月薪 45,000 元、稅率 12% 為例：每月自提 2,700 元，每年節稅約 3,888 元。稅率越高，自提節稅效益越大。"
+    },
+    {
+        q: "自提和不自提，長期差多少？",
+        a: "兩者投入金額相同、報酬率相同時，差異來自節稅：自提的節稅金額若同率投資，30 年可額外累積可觀金額。但勞退專戶資金須待法定年齡才能領取。"
+    },
+    {
+        q: "誰適合自提？誰不適合？",
+        a: "高稅率、想強迫儲蓄、退休資金不足者適合自提；低稅率、需要資金彈性、或自信投資報酬遠高於勞退者，可評估後再決定。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="投資與退休"
+    faqs={faqs}
+>
+    <PensionContributionCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>自提 6%：用節稅換退休確定性</h2>
+        <p>勞退新制除了雇主強制提撥 6%，勞工還可自願額外提繳 1%~6%。自提的最大誘因是<strong>節稅</strong>——自提金額免計入當年度所得。</p>
+
+        <h3>月薪 45,000、30 年、報酬 5%、稅率 12% 試算情境</h3>
+        <ul>
+            <li><strong>每月自提 6%</strong>：2,700 元／月，30 年累積約 <strong>224 萬元</strong>（複利）</li>
+            <li><strong>每年節稅</strong>：約 3,888 元，30 年累積節稅約 <strong>11.7 萬元</strong>（若同率投資再增值）</li>
+            <li>自提 vs 不自提的長期差異，主要來自節稅效益</li>
+        </ul>
+        <blockquote>
+            <strong>重點：</strong>自提是「強迫儲蓄＋節稅」的組合。稅率越高越划算；但資金鎖在專戶、須待法定年齡領取，需權衡彈性。
+        </blockquote>
+
+        <p class="note-box">數字為本頁比較器複利估算；勞退專戶具保證收益下限（2 年期定存利率），實際收益以勞保局公布為準。</p>
+    </div>
+</ToolLayout>

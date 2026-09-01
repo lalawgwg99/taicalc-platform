@@ -24,6 +24,11 @@ export const GET: APIRoute = async () => {
     { path: '/compare/xin-qing-an-vs-general-mortgage', priority: '0.85', changefreq: 'monthly' },
     { path: '/compare/mortgage-30-vs-40-years', priority: '0.85', changefreq: 'monthly' },
     { path: '/compare/electricity-summer-vs-nonsummer', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/labor-pension-lump-vs-monthly', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/etf-0050-vs-0056-vs-006208', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/asset-real-return', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/rent-vs-buy', priority: '0.85', changefreq: 'monthly' },
+    { path: '/compare/pension-contribution-0-vs-6', priority: '0.85', changefreq: 'monthly' },
   ];
 
   const taxYearPages = taxYears.map((taxYear) => ({

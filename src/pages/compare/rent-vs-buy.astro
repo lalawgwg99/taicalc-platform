@@ -1,0 +1,54 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import RentVsBuy from '../../components/calculators/RentVsBuy.vue';
+
+const title = "買房 vs 租屋：10 年後哪個比較划算？｜互動比較 | TaiCalc";
+const description = "輸入房價、頭期款、房貸利率與月租金，比較買房與租屋的每月支出與期末淨資產。含房價/租金漲幅與投資報酬假設。";
+const keywords = "買房vs租屋,買房划算,租屋划算,租購比較,買房成本,租屋成本,房貸,自備款";
+
+const faqs = [
+    {
+        q: "買房一定比租屋划算嗎？",
+        a: "不一定。買房划算與否取決於房價漲幅、租金水準與頭期款的投資報酬。房價漲幅高於投資報酬時買房較佳；反之租屋＋投資可能更划算。"
+    },
+    {
+        q: "買房的真實成本有哪些？",
+        a: "除月付金外，還有房屋稅、地價稅、管理費、維修、裝潢與交易成本（仲介、契稅、代書）。本頁以每年約房價 1% 估算持有成本。"
+    },
+    {
+        q: "頭期款拿去投資，報酬率該設多少？",
+        a: "保守可用 4~5%（股債配置），積極 7%。報酬率越高，租屋＋投資越有利。本頁預設 5%。"
+    },
+    {
+        q: "這比較忽略了什麼？",
+        a: "未計裝潢、搬家、心理安定感、學區與生活品質等非財務因素。買房的「穩定感」與租屋的「彈性」各有價值，無法量化。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="居住與房產"
+    faqs={faqs}
+>
+    <RentVsBuy client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>買房 vs 租屋：不是二分法，是財務算術</h2>
+        <p>「買房好還是租屋好」沒有標準答案，關鍵在三個數字：<strong>房價漲幅、租金水準、頭期款的投資報酬</strong>。用上方比較器輸入自己的條件，看 10 年後的淨資產差異。</p>
+
+        <h3>1,200 萬房、頭期 300 萬、租金 2.5 萬試算情境</h3>
+        <ul>
+            <li><strong>買房</strong>：月付約 3.7 萬＋持有成本，10 年後淨資產約 <strong>1,000 萬+</strong>（含房價漲幅 3%）</li>
+            <li><strong>租屋</strong>：月租 2.5 萬（年漲 2%），頭期 300 萬投資（5%），10 年後淨資產約 <strong>489 萬</strong></li>
+            <li>房價持續上漲時，買房累積資產的速度通常勝過租屋</li>
+        </ul>
+        <blockquote>
+            <strong>判斷原則：</strong>房價漲幅高、租金貴、且你打算長住 → 買房；房價漲幅低、投資報酬高、或你重視彈性 → 租屋＋投資。
+        </blockquote>
+
+        <p class="note-box">本比較為估算，未計裝潢/仲介/搬家等成本；房價與租金漲幅假設會大幅影響結果。</p>
+    </div>
+</ToolLayout>

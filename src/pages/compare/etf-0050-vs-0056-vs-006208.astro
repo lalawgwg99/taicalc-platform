@@ -1,0 +1,54 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import EtfCompare from '../../components/calculators/EtfCompare.vue';
+
+const title = "0050 vs 0056 vs 006208：定期定額 20 年差多少？｜互動比較 | TaiCalc";
+const description = "輸入每月投入金額與年數，比較 0050、006208（市值型）與 0056（高股息）定期定額的期末價值與累積收益。附歷史年化報酬概估。";
+const keywords = "0050,0056,006208,ETF比較,定期定額,市值型ETF,高股息ETF,ETF報酬,台股ETF";
+
+const faqs = [
+    {
+        q: "0050 和 006208 有什麼不同？",
+        a: "兩者都追蹤台灣 50 指數（市值型），差異在費用率：006208 的經理費率較低，長期累積的內扣費用差異會反映在報酬上。本頁以相同年化報酬概估。"
+    },
+    {
+        q: "0056 高股息和 0050 市值型哪個好？",
+        a: "0056 追求高現金配息，適合需要現金流者；0050/006208 追求總報酬（含價差），長期累積資產通常較高。高股息不代表高總報酬——配息可能來自本金或侵蝕成長。"
+    },
+    {
+        q: "定期定額要選哪一檔？",
+        a: "看目標：累積退休資產選市值型（0050/006208）長期總報酬較佳；需要每月現金流選高股息（0056）。也可兩者搭配。"
+    },
+    {
+        q: "年化報酬 8% 是保證的嗎？",
+        a: "不是。8% 為台灣 50 指數長期歷史年化報酬的概估值，實際報酬波動大（單年度可能 ±30%）。長期投資才能平滑波動。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="投資與退休"
+    faqs={faqs}
+>
+    <EtfCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>市值型 vs 高股息：你要資產成長，還是每月配息？</h2>
+        <p>0050、006208 追蹤台灣 50（市值型），0056 追蹤高股息指數。三檔都是台股 ETF 的熱門選擇，但投資目標不同，長期結果也不同。</p>
+
+        <h3>每月 1 萬元、20 年試算情境</h3>
+        <ul>
+            <li><strong>0050 / 006208（市值型）</strong>：年化 8% 概估，期末約 <strong>588 萬元</strong>（投入 240 萬）</li>
+            <li><strong>0056（高股息）</strong>：年化 6.5% 概估，期末約 <strong>498 萬元</strong></li>
+            <li>市值型比高股息多約 <strong>90 萬元</strong>（總報酬角度）</li>
+        </ul>
+        <blockquote>
+            <strong>關鍵：</strong>高股息 ETF 的「高殖利率」常被誤解為高報酬。長期來看，市值型 ETF 的總報酬通常優於高股息——除非你真的需要每月現金流。
+        </blockquote>
+
+        <p class="note-box">年化報酬為歷史長期概估（含息），非保證報酬；未計手續費與稅。投資前請詳閱公開說明書。</p>
+    </div>
+</ToolLayout>

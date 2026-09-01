@@ -1,0 +1,54 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import AssetCompare from '../../components/calculators/AssetCompare.vue';
+
+const title = "定存 vs 債券 vs ETF：通膨後實質報酬比較｜互動試算 | TaiCalc";
+const description = "輸入投入金額、年數與通膨率，比較台幣定存、債券型 ETF 與股票型 ETF 的名目與實質報酬（扣除通膨後的購買力）。";
+const keywords = "定存利率,債券ETF,股票ETF,實質報酬,通膨,購買力,資產配置,投資比較";
+
+const faqs = [
+    {
+        q: "為什麼要看實質報酬？",
+        a: "名目報酬未扣除通膨。若定存 1.5%、通膨 2%，實質報酬為負——錢的購買力反而縮水。長期投資應以實質報酬衡量。"
+    },
+    {
+        q: "定存 1.5%、債券 3.5%、ETF 7% 是怎麼來的？",
+        a: "為歷史長期年化報酬的概估值：台幣定存約 1.5%、債券型 ETF 約 3.5%、股票型 ETF 約 7%。實際報酬波動大，僅供比較參考。"
+    },
+    {
+        q: "高報酬一定比較好嗎？",
+        a: "不一定。股票型 ETF 報酬高但波動大，短期可能虧損；定存保本但購買力被通膨侵蝕。應依風險承受度與投資期間配置。"
+    },
+    {
+        q: "100 萬放 10 年，實質價值差多少？",
+        a: "以通膨 2% 為例：定存（1.5%）10 年後實質價值約 95 萬元（縮水），股票型 ETF（7%）約 170 萬元。差距可達 75 萬元。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="投資與退休"
+    faqs={faqs}
+>
+    <AssetCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>通膨是資產的隱形殺手</h2>
+        <p>同樣 100 萬元，放在定存、債券或股票型 ETF，10 年後的購買力天差地遠。關鍵不是名目數字，而是<strong>扣除通膨後的實質價值</strong>。</p>
+
+        <h3>100 萬、10 年、通膨 2% 試算情境</h3>
+        <ul>
+            <li><strong>台幣定存</strong>（1.5%）：名目約 116 萬，實質約 <strong>95 萬</strong>（購買力縮水）</li>
+            <li><strong>債券型 ETF</strong>（3.5%）：名目約 141 萬，實質約 <strong>116 萬</strong></li>
+            <li><strong>股票型 ETF</strong>（7%）：名目約 197 萬，實質約 <strong>162 萬</strong></li>
+        </ul>
+        <blockquote>
+            <strong>重點：</strong>定存看似安全，實質購買力卻逐年縮水。退休與長期資金，至少要讓報酬率跑贏通膨。
+        </blockquote>
+
+        <p class="note-box">年化報酬為歷史概估，非保證；未計稅與費用。資產配置請依個人風險承受度決定。</p>
+    </div>
+</ToolLayout>
