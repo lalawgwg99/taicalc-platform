@@ -69,7 +69,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import ResultReceipt from '../ResultReceipt.vue';
-import cities from '../../../data/cities.json';
+import cities from '../../data/cities.json';
 
 const cityA = ref('taipei')
 const cityB = ref('osaka')
