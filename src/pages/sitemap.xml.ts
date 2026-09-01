@@ -18,8 +18,18 @@ const escapeXml = (value: string) =>
 export const GET: APIRoute = async () => {
   const posts = await getCollection('blog');
   const today = new Date().toISOString().slice(0, 10);
+  const comparePages = [
+    { path: '/compare/xin-qing-an-vs-general-mortgage', priority: '0.85', changefreq: 'monthly' },
+  ];
+
   const pages = [
     { path: '/', priority: '1.0', changefreq: 'weekly', lastmod: today },
+    ...comparePages.map((comparePage) => ({
+      path: comparePage.path,
+      priority: comparePage.priority,
+      changefreq: comparePage.changefreq,
+      lastmod: today,
+    })),
     { path: '/llms.txt', priority: '1.0', changefreq: 'daily', lastmod: today },
     { path: '/llms-full.txt', priority: '0.9', changefreq: 'weekly', lastmod: today },
     { path: '/api/calculators.json', priority: '0.9', changefreq: 'weekly', lastmod: today },
