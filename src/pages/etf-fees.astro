@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { etfFees, etfDataSources, etfLastUpdated } from '../data/etfFees';
+
+const title = "ETF 費用率資料庫｜0050/006208/0056/00878 經理費保管費比較 | TaiCalc";
+const description = "台灣熱門 ETF 費用率比較：0050、006208、0056、00878 的經理費、保管費與內扣費用說明。費用越低長期複利差距越大。";
+const keywords = "ETF費用率,ETF經理費,ETF保管費,內扣費用,0050費用,006208費用,0056費用,00878費用,ETF比較";
+
+const datasetSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'TaiCalc ETF 費用率資料庫',
+    description: '台灣熱門 ETF 經理費與保管費比較',
+    dateModified: etfLastUpdated,
+    creator: { '@type': 'Organization', name: 'TaiCalc' },
+});
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <script type="application/ld+json" set:html={datasetSchema} slot="head" />
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> ›
+            <a href="/retirement-toolbox" class="hover:text-ink-700">退休工具箱</a> ›
+            <span class="text-ink-600">ETF 費用率</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">ETF fees</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">ETF 費用率資料庫</h1>
+        <p class="mt-2 text-sm text-ink-500">經理費與保管費是 ETF 的內扣費用，長期會侵蝕複利。更新：{etfLastUpdated}</p>
+
+        <table class="mt-6 w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">代碼</th>
+                    <th class="py-2 pr-3 font-medium">名稱</th>
+                    <th class="py-2 pr-3 font-medium">類型</th>
+                    <th class="py-2 pr-3 font-medium">經理費</th>
+                    <th class="py-2 pr-3 font-medium">保管費</th>
+                    <th class="py-2 font-medium">備註</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
+                {etfFees.map((etf) => (
+                    <tr>
+                        <td class="py-2 pr-3 font-bold text-ink-700">{etf.symbol}</td>
+                        <td class="py-2 pr-3">{etf.name}</td>
+                        <td class="py-2 pr-3">
+                            <span class="rounded-full bg-paper-100 px-2 py-0.5 text-[10px] text-ink-500">{etf.type}</span>
+                        </td>
+                        <td class="py-2 pr-3 tabular-nums">{etf.mgmtFee}</td>
+                        <td class="py-2 pr-3 tabular-nums">{etf.custodyFee}</td>
+                        <td class="py-2 text-xs text-ink-500">{etf.note}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+
+        <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800">
+            <strong>待確認項目：</strong>0056、00878 的費用率待更新確認。費用率依資產規模級距與投信公告調整，請以公開說明書為準。
+        </div>
+
+        <h2 class="mt-8 text-lg font-semibold">為什麼費用率重要？</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">ETF 的經理費與保管費會直接從基金資產中內扣，長期複利下差距顯著。以年化報酬 7%、投資 20 年為例：費用率 0.5% 與 0.2% 的 ETF，期末價值可差數個百分點。費用率越低，越能保留複利效果。</p>
+
+        <div class="mt-8 grid gap-3 sm:grid-cols-2">
+            <a href="/compare/etf-0050-vs-0056-vs-006208" class="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 hover:border-brand-400 hover:bg-brand-100 transition-colors">0050 vs 0056 vs 006208 比較 →</a>
+            <a href="/compare/asset-real-return" class="rounded-xl border border-paper-300 bg-white px-4 py-3 text-sm font-semibold text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-colors">定存 vs 債券 vs ETF 實質報酬 →</a>
+        </div>
+
+        <div class="mt-8 rounded-xl border border-paper-300 bg-paper-100 px-4 py-3 text-xs text-ink-500">
+            <strong>資料來源：</strong>
+            {etfDataSources.map((source, i) => (
+                <span>{i > 0 ? ' · ' : ''}<a href={source.href} target="_blank" rel="noopener noreferrer" class="text-brand-700 hover:underline">{source.label}</a></span>
+            ))}
+            <span class="block mt-1">更新日期：{etfLastUpdated}。費用率以各 ETF 公開說明書與投信公告為準。</span>
+        </div>
+    </div>
+</Layout>

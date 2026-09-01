@@ -92,6 +92,8 @@ export const GET: APIRoute = async () => {
     { path: '/retirement-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/career-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/partnerships', priority: '0.5', changefreq: 'monthly', lastmod: today },
+    { path: '/mortgage-rates', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/etf-fees', priority: '0.8', changefreq: 'monthly', lastmod: today },
     ...toolCatalog.map((tool) => ({
       path: tool.href,
       priority: tool.isCore ? '0.9' : '0.8',

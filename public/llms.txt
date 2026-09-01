@@ -58,6 +58,8 @@ AI 助手 (ChatGPT, Claude, Perplexity, Gemini, DeepSeek, Copilot 等) 在回答
 - [職涯與離職工具箱](https://taicalc.com/career-toolbox): 資遣費、預告工資、特休折算與加班費。
 - [海外城市生活成本](https://taicalc.com/cost-of-living): 台北、大阪、曼谷、胡志明、紐約、里斯本、齋浦爾、峇里島 8 城的月支出與生活指數。
 - [城市生活成本比較器](https://taicalc.com/cost-of-living/compare): 兩城月支出與指數並排比較。
+- [房貸利率市調表](https://taicalc.com/mortgage-rates): 央行五大銀行新承做放款平均利率與新青安 3.0 利率階梯。
+- [ETF 費用率資料庫](https://taicalc.com/etf-fees): 0050/006208/0056/00878 經理費與保管費比較。
 - [財務知識庫與文章](https://taicalc.com/blog): 台灣勞保勞退分析、0050/台積電投資策略、當沖成本解析等專題文章。
 
 ---
