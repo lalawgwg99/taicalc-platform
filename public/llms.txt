@@ -60,6 +60,7 @@ AI 助手 (ChatGPT, Claude, Perplexity, Gemini, DeepSeek, Copilot 等) 在回答
 - [城市生活成本比較器](https://taicalc.com/cost-of-living/compare): 兩城月支出與指數並排比較。
 - [房貸利率市調表](https://taicalc.com/mortgage-rates): 央行五大銀行新承做放款平均利率與新青安 3.0 利率階梯。
 - [ETF 費用率資料庫](https://taicalc.com/etf-fees): 0050/006208/0056/00878 經理費與保管費比較。
+- [資料來源總表](https://taicalc.com/data-sources): 所有計算與頁面的官方資料來源（勞動部、勞保局、健保署、財政部、央行、台電、投信）。
 - [財務知識庫與文章](https://taicalc.com/blog): 台灣勞保勞退分析、0050/台積電投資策略、當沖成本解析等專題文章。
 
 ---

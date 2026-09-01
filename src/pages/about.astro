@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { platformGovernance } from '../data/regulatoryMetadata';
+
+const title = "關於 TaiCalc｜台灣生活決策計算機 | TaiCalc";
+const description = "TaiCalc 是專為台灣人設計的免費財務計算機平台。所有計算邏輯依據政府最新法規，主要運算在瀏覽器本機完成，資料不外傳。";
+const keywords = "關於TaiCalc,TaiCalc,台灣計算機,財務計算平台,免費工具";
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> › <span class="text-ink-600">關於</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">About</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">關於 TaiCalc</h1>
+
+        <h2 class="mt-8 text-lg font-semibold">我們在做什麼</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            TaiCalc 把台灣生活裡的複雜規則——薪資、稅務、勞健保、房貸、退休——整理成能直接比較的數字。
+            我們相信「人生很難選，數字可以先算」：在買房、買車、換工作、生小孩這些重大決策前，先用免費、準確、本機運算的工具把帳算清楚。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">資料治理原則</h2>
+        <ul class="mt-3 space-y-2 text-sm text-ink-600">
+            <li><strong>法規級距中央化</strong>：所有稅率、級距、費率集中於單一資料層（版本 {platformGovernance.version}），避免各工具數字不一致。</li>
+            <li><strong>來源可追溯</strong>：每個計算機頁標示資料來源與更新日期，完整清單見<a href="/data-sources" class="text-brand-700 hover:underline">資料來源頁</a>。</li>
+            <li><strong>本機運算</strong>：主要計算在瀏覽器完成，輸入的薪資、房貸、稅務數字不會上傳。</li>
+            <li><strong>定期更新</strong>：依政府公告更新年度級距與政策（目前 {platformGovernance.dataYear} 年度）。</li>
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">使用與限制</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            TaiCalc 是免費工具，試算結果用於比較方案與預估現金流，<strong>不等於正式金額</strong>。
+            報稅、貸款、保險等正式結果，仍應以主管機關、銀行、雇主或專業人士提供的資料為準。詳見<a href="/disclaimer" class="text-brand-700 hover:underline">免責聲明</a>。
+        </p>
+
+        <div class="mt-8 rounded-xl border border-paper-300 bg-paper-100 px-4 py-3 text-sm text-ink-600">
+            有任何問題或建議？歡迎 <a href="mailto:Lalawgwg99@gmail.com?subject=TaiCalc%20聯絡或問題回報" class="text-brand-700 hover:underline">聯絡我們</a>。
+        </div>
+    </div>
+</Layout>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "隱私權政策｜TaiCalc";
+const description = "TaiCalc 隱私權政策：主要計算在瀏覽器本機完成，輸入的薪資、房貸、稅務數字不會上傳。僅使用 Google Analytics 統計頁面瀏覽。";
+const keywords = "TaiCalc隱私權,隱私政策,本地計算,資料不外傳";
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> › <span class="text-ink-600">隱私權政策</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Privacy</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">隱私權政策</h1>
+        <p class="mt-2 text-xs text-ink-400">更新日期：2026-09-01</p>
+
+        <h2 class="mt-8 text-lg font-semibold">1. 我們收集什麼</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            TaiCalc 主要計算在您的瀏覽器本機完成。<strong>您輸入的薪資、房貸、稅務、資產等財務數字不會上傳至我們的伺服器。</strong>
+            我們僅透過 Google Analytics（GA4）收集匿名化的頁面瀏覽統計（頁面路徑、事件類型），用於了解使用情況與改善服務。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">2. 我們不收集什麼</h2>
+        <ul class="mt-3 space-y-1 text-sm text-ink-600">
+            <li>您輸入到計算機的任何財務數字（薪資、貸款、稅額、資產等）</li>
+            <li>可識別個人身分的資料（姓名、身分證字號、帳號）</li>
+            <li>跨站追蹤您的瀏覽行為</li>
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">3. 第三方服務</h2>
+        <ul class="mt-3 space-y-1 text-sm text-ink-600">
+            <li><strong>Google Analytics</strong>：頁面瀏覽統計，遵循 Google 隱私政策。</li>
+            <li><strong>Google Fonts</strong>：載入字型，可能傳輸您的 IP。</li>
+            <li><strong>LINE 分享</strong>：僅在您主動點擊分享時，將頁面網址傳給 LINE。</li>
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">4. 本機儲存</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            部分計算機會在您的瀏覽器 localStorage 儲存「上次輸入的參數」以方便您繼續使用，這些資料僅存在您的裝置上，可隨時清除。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">5. 聯絡</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            隱私相關問題請來信 <a href="mailto:Lalawgwg99@gmail.com" class="text-brand-700 hover:underline">Lalawgwg99@gmail.com</a>。
+        </p>
+    </div>
+</Layout>

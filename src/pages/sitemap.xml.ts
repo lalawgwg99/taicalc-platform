@@ -92,6 +92,10 @@ export const GET: APIRoute = async () => {
     { path: '/retirement-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/career-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/partnerships', priority: '0.5', changefreq: 'monthly', lastmod: today },
+    { path: '/about', priority: '0.5', changefreq: 'monthly', lastmod: today },
+    { path: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: today },
+    { path: '/disclaimer', priority: '0.3', changefreq: 'yearly', lastmod: today },
+    { path: '/data-sources', priority: '0.6', changefreq: 'monthly', lastmod: today },
     { path: '/mortgage-rates', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/etf-fees', priority: '0.8', changefreq: 'monthly', lastmod: today },
     ...toolCatalog.map((tool) => ({

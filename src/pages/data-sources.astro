@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { platformGovernance } from '../data/regulatoryMetadata';
+import { mortgageDataSources, mortgageLastUpdated } from '../data/mortgageRates';
+import { etfDataSources, etfLastUpdated } from '../data/etfFees';
+
+const title = "資料來源總表｜TaiCalc 資料治理與更新機制 | TaiCalc";
+const description = "TaiCalc 所有計算與頁面的官方資料來源總表：勞動部、勞保局、健保署、財政部、中央銀行、台電、投信等。含更新日期與治理原則。";
+const keywords = "TaiCalc資料來源,法規來源,資料治理,更新機制,央行利率,財政部,勞保局";
+
+const datasetSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'TaiCalc 資料來源總表',
+    description: 'TaiCalc 計算與頁面的官方資料來源',
+    dateModified: platformGovernance.updatedAt,
+    creator: { '@type': 'Organization', name: 'TaiCalc' },
+});
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <script type="application/ld+json" set:html={datasetSchema} slot="head" />
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> › <span class="text-ink-600">資料來源</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Data sources</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">資料來源總表</h1>
+        <p class="mt-2 text-sm text-ink-500">TaiCalc 所有計算與頁面的官方資料來源。平台版本 {platformGovernance.version}，資料年度 {platformGovernance.dataYear}，更新 {platformGovernance.updatedAt}。</p>
+
+        <h2 class="mt-8 text-lg font-semibold">平台治理來源（{platformGovernance.sources.length}）</h2>
+        <ul class="mt-3 space-y-2">
+            {platformGovernance.sources.map((source) => (
+                <li>
+                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-brand-700 hover:underline">{source.label}</a>
+                </li>
+            ))}
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">房貸利率市調表（更新 {mortgageLastUpdated}）</h2>
+        <ul class="mt-3 space-y-2">
+            {mortgageDataSources.map((source) => (
+                <li>
+                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-brand-700 hover:underline">{source.label}</a>
+                </li>
+            ))}
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">ETF 費用率資料庫（更新 {etfLastUpdated}）</h2>
+        <ul class="mt-3 space-y-2">
+            {etfDataSources.map((source) => (
+                <li>
+                    <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-brand-700 hover:underline">{source.label}</a>
+                </li>
+            ))}
+        </ul>
+
+        <h2 class="mt-8 text-lg font-semibold">更新機制</h2>
+        <ul class="mt-3 space-y-1 text-sm text-ink-600">
+            <li>法規級距（稅率、投保薪資、電價）集中於單一資料層，依政府公告年度更新。</li>
+            <li>市調型資料（房貸利率、ETF 費用）標示更新日期，定期刷新。</li>
+            <li>每個計算機頁面亦標示其資料版本與來源。</li>
+        </ul>
+
+        <p class="mt-8 text-xs text-ink-400">若您發現資料有誤或過時，歡迎 <a href="mailto:Lalawgwg99@gmail.com" class="text-brand-700 hover:underline">來信告知</a>。</p>
+    </div>
+</Layout>

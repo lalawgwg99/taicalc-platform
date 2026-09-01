@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "免責聲明｜TaiCalc";
+const description = "TaiCalc 免責聲明：試算結果僅供比較與估算，不等於正式金額；投資報酬為歷史概估非保證；正式結果以主管機關、銀行與專業人士為準。";
+const keywords = "TaiCalc免責,免責聲明,試算僅供參考,投資非保證";
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> › <span class="text-ink-600">免責聲明</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Disclaimer</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">免責聲明</h1>
+        <p class="mt-2 text-xs text-ink-400">更新日期：2026-09-01</p>
+
+        <h2 class="mt-8 text-lg font-semibold">1. 試算結果僅供參考</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            TaiCalc 所有計算結果僅用於<strong>比較方案與預估現金流</strong>，不等於正式金額。
+            報稅、貸款核貸、保險給付、退休金等正式結果，應以財政部、勞保局、健保署、銀行、雇主或專業人士提供的資料為準。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">2. 投資相關</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            本站涉及投資的試算（ETF 比較、實質報酬、FIRE 等）所使用之年化報酬率皆為<strong>歷史概估，非保證報酬</strong>。
+            實際投資報酬波動大，可能虧損。本站不提供投資建議，投資決策請自行判斷或諮詢專業人士。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">3. 資料正確性</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            本站盡力依政府最新公告維護法規級距與費率（見<a href="/data-sources" class="text-brand-700 hover:underline">資料來源頁</a>），
+            但法規與市場利率隨時可能變動，本站不保證資料即時與完全正確。請以主管機關最新公告為準。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">4. 不構成專業建議</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            本站內容不構成稅務、法律、保險或投資之專業建議。重大財務決策（買房、投資、報稅、簽約）請諮詢合格專業人士。
+        </p>
+
+        <h2 class="mt-8 text-lg font-semibold">5. 責任限制</h2>
+        <p class="mt-2 text-sm leading-7 text-ink-600">
+            因使用本站工具或內容所生之任何直接或間接損失，本站不負賠償責任。使用本站即表示同意本聲明。
+        </p>
+    </div>
+</Layout>
