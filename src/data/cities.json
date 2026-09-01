@@ -1,0 +1,274 @@
+[
+    {
+        "id": "chiang_mai",
+        "slug": "chiang-mai",
+        "name": {
+            "zh-TW": "清邁, 泰國",
+            "en": "Chiang Mai, Thailand"
+        },
+        "country": {
+            "zh-TW": "泰國",
+            "en": "Thailand"
+        },
+        "region": "Asia",
+        "currency": "THB",
+        "costs_usd": {
+            "survival": 600,
+            "comfort": 1000,
+            "luxury": 2500
+        },
+        "indices": {
+            "safety": 85,
+            "internet": 50,
+            "weather": 90
+        },
+        "tags": [
+            "Digital Nomad",
+            "Foodie",
+            "Nature"
+        ],
+        "image": "/images/cities/city_chiang_mai_thumbnail_1768274099394.png",
+        "description": {
+            "zh-TW": "數位遊牧聖地，低成本高享受。",
+            "en": "The Digital Nomad capital of the world."
+        }
+    },
+    {
+        "id": "lisbon",
+        "slug": "lisbon",
+        "name": {
+            "zh-TW": "里斯本, 葡萄牙",
+            "en": "Lisbon, Portugal"
+        },
+        "country": {
+            "zh-TW": "葡萄牙",
+            "en": "Portugal"
+        },
+        "region": "Europe",
+        "currency": "EUR",
+        "costs_usd": {
+            "survival": 1200,
+            "comfort": 2200,
+            "luxury": 4500
+        },
+        "indices": {
+            "safety": 90,
+            "internet": 80,
+            "weather": 95
+        },
+        "tags": [
+            "Beach",
+            "Culture",
+            "Safety"
+        ],
+        "image": "/images/cities/city_lisbon_thumbnail_1768274113632.png",
+        "description": {
+            "zh-TW": "歐洲陽光之都，最適合移居的歐洲城市。",
+            "en": "The sunniest capital in Europe."
+        }
+    },
+    {
+        "id": "jaipur",
+        "slug": "jaipur",
+        "name": {
+            "zh-TW": "齋浦爾, 印度",
+            "en": "Jaipur, India"
+        },
+        "country": {
+            "zh-TW": "印度",
+            "en": "India"
+        },
+        "region": "Asia",
+        "currency": "INR",
+        "costs_usd": {
+            "survival": 350,
+            "comfort": 700,
+            "luxury": 1500
+        },
+        "indices": {
+            "safety": 60,
+            "internet": 30,
+            "weather": 70
+        },
+        "tags": [
+            "History",
+            "Low Cost",
+            "Chaos"
+        ],
+        "image": "/images/cities/city_jaipur_thumbnail_1768274129569.png",
+        "description": {
+            "zh-TW": "粉紅城市，極致的低成本奢華體驗。",
+            "en": "The Pink City, ultra low cost luxury."
+        }
+    },
+    {
+        "id": "taipei",
+        "slug": "taipei",
+        "name": {
+            "zh-TW": "台北, 台灣",
+            "en": "Taipei, Taiwan"
+        },
+        "country": {
+            "zh-TW": "台灣",
+            "en": "Taiwan"
+        },
+        "region": "Asia",
+        "currency": "TWD",
+        "costs_usd": {
+            "survival": 1000,
+            "comfort": 1800,
+            "luxury": 4000
+        },
+        "indices": {
+            "safety": 98,
+            "internet": 95,
+            "weather": 60
+        },
+        "tags": [
+            "Convenience",
+            "Healthcare",
+            "Food"
+        ],
+        "image": "/images/cities/city_taipei_thumbnail_1768274152964.png",
+        "description": {
+            "zh-TW": "便利超商與頂級醫療的完美結合。",
+            "en": "World-class healthcare and convenience."
+        }
+    },
+    {
+        "id": "osaka",
+        "slug": "osaka",
+        "name": {
+            "zh-TW": "大阪, 日本",
+            "en": "Osaka, Japan"
+        },
+        "country": {
+            "zh-TW": "日本",
+            "en": "Japan"
+        },
+        "region": "Asia",
+        "currency": "JPY",
+        "costs_usd": {
+            "survival": 1100,
+            "comfort": 2000,
+            "luxury": 4200
+        },
+        "indices": {
+            "safety": 95,
+            "internet": 90,
+            "weather": 80
+        },
+        "tags": [
+            "Foodie",
+            "Urban",
+            "Transport"
+        ],
+        "image": "/images/cities/city_osaka_thumbnail_1768274167362.png",
+        "description": {
+            "zh-TW": "日本的廚房，比東京更友善的物價。",
+            "en": "The Kitchen of Japan, friendlier than Tokyo."
+        }
+    },
+    {
+        "id": "new_york",
+        "slug": "new-york",
+        "name": {
+            "zh-TW": "紐約, 美國",
+            "en": "New York, USA"
+        },
+        "country": {
+            "zh-TW": "美國",
+            "en": "USA"
+        },
+        "region": "Americas",
+        "currency": "USD",
+        "costs_usd": {
+            "survival": 3000,
+            "comfort": 6000,
+            "luxury": 15000
+        },
+        "indices": {
+            "safety": 65,
+            "internet": 90,
+            "weather": 50
+        },
+        "tags": [
+            "Career",
+            "Culture",
+            "Hustle"
+        ],
+        "image": "/images/cities/city_new_york_thumbnail_1768274185933.png",
+        "description": {
+            "zh-TW": "世界的中心，夢想與金錢的燃燒之地。",
+            "en": "The concrete jungle where dreams are made."
+        }
+    },
+    {
+        "id": "bali",
+        "slug": "bali",
+        "name": {
+            "zh-TW": "峇里島, 印尼",
+            "en": "Bali, Indonesia"
+        },
+        "country": {
+            "zh-TW": "印尼",
+            "en": "Indonesia"
+        },
+        "region": "Asia",
+        "currency": "IDR",
+        "costs_usd": {
+            "survival": 700,
+            "comfort": 1500,
+            "luxury": 3500
+        },
+        "indices": {
+            "safety": 75,
+            "internet": 60,
+            "weather": 90
+        },
+        "tags": [
+            "Beach",
+            "Yoga",
+            "Party"
+        ],
+        "image": "/images/cities/city_bali_thumbnail_1768274663408.png",
+        "description": {
+            "zh-TW": "全球最熱門的島嶼生活，數位遊牧熱點。",
+            "en": "Island paradise for digital nomads."
+        }
+    },
+    {
+        "id": "ho_chi_minh",
+        "slug": "ho-chi-minh",
+        "name": {
+            "zh-TW": "胡志明市, 越南",
+            "en": "Ho Chi Minh City, Vietnam"
+        },
+        "country": {
+            "zh-TW": "越南",
+            "en": "Vietnam"
+        },
+        "region": "Asia",
+        "currency": "VND",
+        "costs_usd": {
+            "survival": 500,
+            "comfort": 900,
+            "luxury": 2000
+        },
+        "indices": {
+            "safety": 70,
+            "internet": 75,
+            "weather": 80
+        },
+        "tags": [
+            "Growth",
+            "Food",
+            "Energy"
+        ],
+        "image": "/images/cities/city_ho_chi_minh_thumbnail_1768274681460.png",
+        "description": {
+            "zh-TW": "充滿活力的高速發展城市，物價極低。",
+            "en": "High energy city with incredible food and value."
+        }
+    }
+]

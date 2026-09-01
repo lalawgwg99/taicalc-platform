@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { toolCatalog } from '../data/toolCatalog';
 import { taxYears } from '../data/taxYears';
 import { glossary } from '../data/glossary';
-import cities from '../../public/data/cities.json';
+import cities from '../../data/cities.json';
 
 export const prerender = true;
 

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import cities from '../../public/data/cities.json';
+import cities from '../../data/cities.json';
 
 export async function getStaticPaths() {
     return cities.map((city) => ({ params: { city: city.slug }, props: { city } }));
