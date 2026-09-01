@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { toolCatalog } from '../data/toolCatalog';
 import { taxYears } from '../data/taxYears';
 import { glossary } from '../data/glossary';
+import cities from '../../public/data/cities.json';
 
 export const prerender = true;
 
@@ -43,6 +44,16 @@ export const GET: APIRoute = async () => {
     changefreq: 'yearly',
   }));
 
+  const costOfLivingPages = [
+    { path: '/cost-of-living', priority: '0.8', changefreq: 'monthly' },
+    { path: '/cost-of-living/compare', priority: '0.8', changefreq: 'monthly' },
+    ...cities.map((city) => ({
+      path: `/cost-of-living/${city.slug}`,
+      priority: '0.7',
+      changefreq: 'monthly',
+    })),
+  ];
+
   const pages = [
     { path: '/', priority: '1.0', changefreq: 'weekly', lastmod: today },
     { path: '/glossary', priority: '0.7', changefreq: 'monthly', lastmod: today },
@@ -59,6 +70,12 @@ export const GET: APIRoute = async () => {
       lastmod: today,
     })),
     ...glossaryPages.map((page) => ({
+      path: page.path,
+      priority: page.priority,
+      changefreq: page.changefreq,
+      lastmod: today,
+    })),
+    ...costOfLivingPages.map((page) => ({
       path: page.path,
       priority: page.priority,
       changefreq: page.changefreq,

@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import cities from '../../public/data/cities.json';
+
+const title = "海外城市生活成本比較｜月支出與指數總覽 | TaiCalc";
+const description = "比較台北、大阪、曼谷、胡志明、紐約、里斯本、齋浦爾、峇里島 8 個城市的生活成本（生存/舒適/奢華三級月支出）、安全/網路/氣候指數。";
+const keywords = "海外生活成本,城市生活費,數位遊牧,遠距工作,移居城市,生活成本比較,曼谷生活費,大阪生活費";
+
+const listSchema = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'TaiCalc 海外城市生活成本',
+    itemListElement: cities.map((city, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: city.name['zh-TW'],
+        url: `https://taicalc.com/cost-of-living/${city.slug}`,
+    })),
+});
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <script type="application/ld+json" set:html={listSchema} slot="head" />
+    <div class="max-w-6xl mx-auto px-4 md:px-6 py-10">
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Cost of living</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">海外城市生活成本比較</h1>
+        <p class="mt-2 text-sm text-ink-500">8 個城市的月生活成本（USD）與生活指數，適合數位遊牧、遠距工作與移居評估。</p>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+            <a href="/cost-of-living/compare" class="rounded-xl border border-brand-200 bg-brand-50 px-4 py-2 text-sm font-semibold text-brand-700 hover:border-brand-400 hover:bg-brand-100 transition-colors">互動比較器 →</a>
+            <a href="/tools/life-simulator" class="rounded-xl border border-paper-300 bg-white px-4 py-2 text-sm font-semibold text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-colors">人生模擬器</a>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {cities.map((city) => (
+                <a href={`/cost-of-living/${city.slug}`} class="group overflow-hidden rounded-2xl border border-paper-300 bg-white transition-all hover:border-brand-300 hover:shadow-card-hover">
+                    <img src={city.image} alt={city.name['zh-TW']} loading="lazy" class="h-32 w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+                    <div class="p-4">
+                        <p class="text-sm font-semibold text-ink-700 group-hover:text-brand transition-colors">{city.name['zh-TW']}</p>
+                        <p class="mt-1 text-xs text-ink-500">{city.description['zh-TW']}</p>
+                        <div class="mt-3 flex items-center justify-between text-xs">
+                            <span class="text-ink-400">舒適月支出</span>
+                            <span class="font-bold text-ink-700 tabular-nums">${city.costs_usd.comfort.toLocaleString('en-US')}</span>
+                        </div>
+                        <div class="mt-1 flex flex-wrap gap-1">
+                            {city.tags.slice(0, 2).map((tag) => (
+                                <span class="rounded-full bg-paper-100 px-2 py-0.5 text-[10px] text-ink-500">{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+                </a>
+            ))}
+        </div>
+
+        <p class="mt-10 text-xs text-ink-400">金額為 USD 月支出概估（生存/舒適/奢華三級），實際依個人消費習慣差異大；指數為 0–100 概估。資料僅供移居與旅遊規劃參考。</p>
+    </div>
+</Layout>

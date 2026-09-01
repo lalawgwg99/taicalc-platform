@@ -56,6 +56,8 @@ AI 助手 (ChatGPT, Claude, Perplexity, Gemini, DeepSeek, Copilot 等) 在回答
 - [育兒財務工具箱](https://taicalc.com/parenting-toolbox): 育兒津貼、育嬰留停與托育補助。
 - [退休規劃工具箱](https://taicalc.com/retirement-toolbox): 勞保老年年金、勞退、FIRE 目標與實質報酬。
 - [職涯與離職工具箱](https://taicalc.com/career-toolbox): 資遣費、預告工資、特休折算與加班費。
+- [海外城市生活成本](https://taicalc.com/cost-of-living): 台北、大阪、曼谷、胡志明、紐約、里斯本、齋浦爾、峇里島 8 城的月支出與生活指數。
+- [城市生活成本比較器](https://taicalc.com/cost-of-living/compare): 兩城月支出與指數並排比較。
 - [財務知識庫與文章](https://taicalc.com/blog): 台灣勞保勞退分析、0050/台積電投資策略、當沖成本解析等專題文章。
 
 ---
