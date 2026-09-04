@@ -8,6 +8,7 @@ export interface LifeProfile {
   annualIncomeGrowth: number;
   annualInvestmentReturn: number;
   inflation: number;
+  eventIntensity?: 'steady' | 'balanced' | 'dynamic';
   seed?: number;
 }
 
@@ -37,6 +38,11 @@ export interface LifeEvent {
   label: string;
   detail: string;
   cashImpact: number;
+  incomeRateDelta?: number;
+  monthlyCostDelta?: number;
+  happinessDelta?: number;
+  stressDelta?: number;
+  icon?: string;
 }
 
 export interface LifeState {
@@ -50,6 +56,7 @@ export interface LifeState {
   incomeGrowth: number;
   investmentReturn: number;
   inflation: number;
+  eventIntensity: 'steady' | 'balanced' | 'dynamic';
   happiness: number;
   stress: number;
   owned: Record<string, number>;
@@ -92,6 +99,7 @@ export function createLifeState(profile: LifeProfile): LifeState {
     incomeGrowth: clamp(profile.annualIncomeGrowth, -20, 30),
     investmentReturn: clamp(profile.annualInvestmentReturn, -50, 50),
     inflation: clamp(profile.inflation, -10, 20),
+    eventIntensity: profile.eventIntensity ?? 'balanced',
     happiness: 60,
     stress: 35,
     owned: {},
@@ -158,17 +166,29 @@ const nextRandom = (seed: number): { seed: number; value: number } => {
   return { seed: nextSeed, value: nextSeed / 4294967296 };
 };
 
-const yearlyEvent = (seed: number): { seed: number; event: LifeEvent } => {
-  const random = nextRandom(seed);
+const yearlyEvent = (state: LifeState): { seed: number; event: LifeEvent | null } => {
+  const occurrence = nextRandom(state.seed);
+  const probability = state.eventIntensity === 'steady' ? 0.35 : state.eventIntensity === 'dynamic' ? 0.85 : 0.6;
+  if (occurrence.value > probability) {
+    return { seed: occurrence.seed, event: null };
+  }
+
+  const draw = nextRandom(occurrence.seed);
+  const monthlyBase = Math.max(20_000, state.monthlyLivingCost);
   const events: LifeEvent[] = [
-    { label: '平穩的一年', detail: '沒有額外的大筆收入或支出。', cashImpact: 0 },
-    { label: '工作獎金', detail: '專案完成，獲得一筆情境獎金。', cashImpact: 60_000 },
-    { label: '設備維修', detail: '家電與交通工具臨時維修。', cashImpact: -35_000 },
-    { label: '健康休養', detail: '安排檢查與休息，支出增加。', cashImpact: -50_000 },
-    { label: '斜槓收入', detail: '額外完成一個小型專案。', cashImpact: 90_000 },
+    { label: '工作獎金', detail: '專案告一段落，多了一筆獎金。', cashImpact: rounded(state.monthlyIncome * 1.2), happinessDelta: 3, stressDelta: -2, icon: 'workspace_premium' },
+    { label: '轉職機會', detail: '換到新的工作環境，收入與壓力都改變了。', cashImpact: -rounded(monthlyBase * 0.5), incomeRateDelta: 12, happinessDelta: 5, stressDelta: 5, icon: 'work_history' },
+    { label: '短暫待業', detail: '工作出現空窗，靠準備金度過這段時間。', cashImpact: -rounded(state.monthlyIncome * 2.5), incomeRateDelta: -4, happinessDelta: -5, stressDelta: 12, icon: 'work_off' },
+    { label: '家中需要你', detail: '家人需要照顧，時間與支出一起增加。', cashImpact: -rounded(monthlyBase * 1.5), monthlyCostDelta: 3_000, happinessDelta: 2, stressDelta: 9, icon: 'family_restroom' },
+    { label: '健康休養', detail: '暫時放慢腳步，支付檢查與休養費用。', cashImpact: -rounded(monthlyBase * 1.8), happinessDelta: -2, stressDelta: -4, icon: 'health_and_safety' },
+    { label: '住處變動', detail: '搬家或租約變動，生活成本重新調整。', cashImpact: -rounded(monthlyBase), monthlyCostDelta: draw.value > 0.5 ? 2_500 : -2_000, happinessDelta: 3, stressDelta: 4, icon: 'moving' },
+    { label: '斜槓開始有收入', detail: '長期累積的能力，帶來新的收入來源。', cashImpact: rounded(state.monthlyIncome), incomeRateDelta: 6, happinessDelta: 5, stressDelta: 4, icon: 'add_business' },
+    { label: '市場回檔', detail: '投資價格波動，帳面資產暫時下降。', cashImpact: 0, happinessDelta: -3, stressDelta: 8, icon: 'trending_down' },
+    { label: '生活設備更新', detail: '必要設備故障，臨時支出增加。', cashImpact: -rounded(monthlyBase * 0.9), stressDelta: 4, icon: 'build' },
+    { label: '意外的小確幸', detail: '生活出現一件沒有財務代價的好事。', cashImpact: 0, happinessDelta: 8, stressDelta: -5, icon: 'celebration' },
   ];
-  const index = Math.min(events.length - 1, Math.floor(random.value * events.length));
-  return { seed: random.seed, event: events[index] };
+  const index = Math.min(events.length - 1, Math.floor(draw.value * events.length));
+  return { seed: draw.seed, event: events[index] };
 };
 
 export function advanceLifeYear(state: LifeState): LifeState {
@@ -177,24 +197,26 @@ export function advanceLifeYear(state: LifeState): LifeState {
   }
   const annualSurplus = getAnnualSurplus(state);
   const investmentGain = state.investments * state.investmentReturn / 100;
-  const eventResult = yearlyEvent(state.seed);
+  const eventResult = yearlyEvent(state);
+  const event = eventResult.event;
   const nextAge = state.age + 1;
-  const cashBeforeCoverage = state.cash + annualSurplus + eventResult.event.cashImpact;
-  const investmentsWithReturn = Math.max(0, state.investments + investmentGain);
+  const cashBeforeCoverage = state.cash + annualSurplus + (event?.cashImpact ?? 0);
+  const marketMultiplier = event?.label === '市場回檔' ? 0.88 : 1;
+  const investmentsWithReturn = Math.max(0, (state.investments + investmentGain) * marketMultiplier);
   const coverage = cashBeforeCoverage < 0 ? Math.min(investmentsWithReturn, -cashBeforeCoverage) : 0;
   const nextBase: Omit<LifeState, 'history'> = {
     ...state,
     age: nextAge,
     cash: rounded(cashBeforeCoverage + coverage),
     investments: rounded(investmentsWithReturn - coverage),
-    monthlyIncome: rounded(state.monthlyIncome * (1 + state.incomeGrowth / 100)),
-    monthlyLivingCost: rounded(state.monthlyLivingCost * (1 + state.inflation / 100)),
+    monthlyIncome: rounded(state.monthlyIncome * (1 + state.incomeGrowth / 100) * (1 + (event?.incomeRateDelta ?? 0) / 100)),
+    monthlyLivingCost: Math.max(0, rounded(state.monthlyLivingCost * (1 + state.inflation / 100) + (event?.monthlyCostDelta ?? 0))),
     annualCommitments: rounded(state.annualCommitments * (1 + state.inflation / 100)),
-    happiness: clamp(state.happiness - 1 + (eventResult.event.cashImpact > 0 ? 2 : eventResult.event.cashImpact < 0 ? -2 : 0), 0, 100),
-    stress: clamp(state.stress + (annualSurplus < 0 ? 5 : -2) + (eventResult.event.cashImpact < 0 ? 3 : 0), 0, 100),
+    happiness: clamp(state.happiness - 1 + (event?.happinessDelta ?? 0), 0, 100),
+    stress: clamp(state.stress + (annualSurplus < 0 ? 5 : -2) + (event?.stressDelta ?? 0), 0, 100),
     owned: { ...state.owned },
     seed: eventResult.seed,
-    latestEvent: eventResult.event,
+    latestEvent: event,
   };
   return { ...nextBase, history: [...state.history, snapshot(nextBase)] };
 }

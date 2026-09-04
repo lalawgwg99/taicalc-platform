@@ -61,8 +61,9 @@ describe('life simulator', () => {
     const next = advanceLifeYear(initial);
     expect(next.age).toBe(31);
     expect(next.monthlyIncome).toBe(61_200);
-    expect(next.monthlyLivingCost).toBe(30_600);
+    expect(next.monthlyLivingCost).toBe(33_600);
     expect(next.investments).toBe(210_000);
+    expect(next.latestEvent?.label).toBe('家中需要你');
     expect(next.history).toHaveLength(2);
     expect(next.latestEvent).not.toBeNull();
   });

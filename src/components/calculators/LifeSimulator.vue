@@ -3,7 +3,7 @@
     <section v-if="showWelcome" class="overflow-hidden rounded-3xl border border-brand-200 bg-white shadow-card">
       <div class="grid lg:grid-cols-[.8fr_1.2fr]">
         <div class="bg-ink-800 p-6 text-white sm:p-8">
-          <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">WELCOME TO YOUR LIFE</p>
+          <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">設定起點</p>
           <h2 class="mt-4 text-3xl font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
           <p class="mt-4 text-sm leading-7 text-ink-300">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
           <ol class="mt-8 space-y-4 text-xs text-ink-200">
@@ -27,10 +27,27 @@
               :class="selectedPreset === preset.id ? 'border-brand-400 bg-brand-50 ring-2 ring-brand-100' : 'border-paper-300 bg-paper-100 hover:border-brand-200'"
               @click="applyPreset(preset)"
             >
-              <span class="text-xl">{{ preset.icon }}</span>
+              <span class="life-icon material-symbols-outlined">{{ preset.icon }}</span>
               <strong class="mt-2 block text-xs text-ink-700">{{ preset.label }}</strong>
               <small class="mt-1 block leading-5 text-ink-400">{{ preset.note }}</small>
             </button>
+          </div>
+
+          <div class="mt-5">
+            <p class="text-xs font-semibold text-ink-600">人生變動程度</p>
+            <div class="mt-2 grid grid-cols-3 gap-2">
+              <button
+                v-for="mode in scenarioModes"
+                :key="mode.id"
+                type="button"
+                class="rounded-xl border px-3 py-2 text-left transition"
+                :class="profile.eventIntensity === mode.id ? 'border-brand-400 bg-brand-50 text-brand-800' : 'border-paper-300 bg-white text-ink-500 hover:border-brand-200'"
+                @click="profile.eventIntensity = mode.id"
+              >
+                <strong class="block text-xs">{{ mode.label }}</strong>
+                <small class="mt-0.5 block text-[9px] leading-4 opacity-75">{{ mode.note }}</small>
+              </button>
+            </div>
           </div>
 
           <div class="mt-5 grid grid-cols-2 gap-3">
@@ -108,24 +125,24 @@
     </section>
 
     <section v-if="state.latestEvent" class="flex items-start gap-3 rounded-2xl border p-4" :class="state.latestEvent.cashImpact < 0 ? 'border-amber-200 bg-amber-50' : state.latestEvent.cashImpact > 0 ? 'border-brand-200 bg-brand-50' : 'border-paper-300 bg-paper-200'">
-      <span class="text-xl">{{ state.latestEvent.cashImpact < 0 ? '🌧️' : state.latestEvent.cashImpact > 0 ? '✨' : '🌤️' }}</span>
+      <span class="life-icon material-symbols-outlined">{{ state.latestEvent.icon || 'change_circle' }}</span>
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <p class="text-sm font-semibold text-ink-700">今年事件：{{ state.latestEvent.label }}</p>
-          <p class="text-sm font-semibold tabular-nums" :class="state.latestEvent.cashImpact < 0 ? 'text-amber-700' : 'text-brand-700'">{{ formatSigned(state.latestEvent.cashImpact) }}</p>
+          <p class="text-sm font-semibold tabular-nums" :class="state.latestEvent.cashImpact < 0 ? 'text-amber-700' : 'text-brand-700'">{{ eventImpactLabel(state.latestEvent) }}</p>
         </div>
         <p class="mt-1 text-xs text-ink-500">{{ state.latestEvent.detail }}</p>
       </div>
     </section>
 
     <section v-if="feedback" class="flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3" aria-live="polite">
-      <div class="flex min-w-0 items-center gap-3"><span class="text-lg">{{ feedback.icon }}</span><p class="text-xs leading-5 text-ink-600">{{ feedback.message }}</p></div>
+      <div class="flex min-w-0 items-center gap-3"><span class="life-icon material-symbols-outlined">{{ feedback.icon }}</span><p class="text-xs leading-5 text-ink-600">{{ feedback.message }}</p></div>
       <button type="button" class="shrink-0 text-xs font-semibold text-brand-700" @click="undo">復原</button>
     </section>
 
     <section class="rounded-2xl border border-paper-300 bg-white p-4 sm:p-5">
       <div class="flex items-start gap-3">
-        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-50 text-xl">{{ coach.icon }}</span>
+        <span class="life-icon material-symbols-outlined flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-50">{{ coach.icon }}</span>
         <div>
           <p class="text-[10px] font-semibold tracking-[.12em] text-brand-600">現在的你，可以先這樣做</p>
           <h2 class="mt-1 text-sm font-semibold text-ink-700">{{ coach.title }}</h2>
@@ -158,11 +175,31 @@
           >{{ filter.label }}</button>
         </div>
 
+        <details class="mt-4 rounded-2xl border border-dashed border-brand-200 bg-brand-50/40 p-4">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold text-brand-800">
+            <span class="flex items-center gap-2"><span class="life-icon material-symbols-outlined">add_circle</span>加入你自己的人生選擇</span>
+            <span class="text-brand-500">＋</span>
+          </summary>
+          <div class="mt-4 grid gap-3 sm:grid-cols-2">
+            <label class="field-label sm:col-span-2">這件事叫什麼？<input v-model="customDraft.label" type="text" maxlength="28" class="input-clean-sm mt-1" placeholder="例如：回家陪家人一年" /></label>
+            <label class="field-label">一次支出<input v-model.number="customDraft.cost" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月增加支出<input v-model.number="customDraft.monthlyCost" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label sm:col-span-2">它帶來的感受
+              <select v-model="customDraft.tone" class="input-clean-sm mt-1">
+                <option value="meaningful">值得，但需要一些力氣</option>
+                <option value="restorative">讓生活鬆一口氣</option>
+                <option value="demanding">重要，但壓力不小</option>
+              </select>
+            </label>
+          </div>
+          <button type="button" class="mt-3 rounded-xl bg-brand-600 px-4 py-2 text-xs font-semibold text-white disabled:opacity-40" :disabled="!customDraft.label.trim()" @click="addCustomChoice">加入選擇</button>
+        </details>
+
         <div class="mt-5 grid gap-3 sm:grid-cols-2">
           <article v-for="choice in filteredChoices" :key="choice.id" class="group rounded-2xl border bg-paper-100 p-4 transition hover:border-brand-200 hover:shadow-card" :class="coach.choiceId === choice.id ? 'border-brand-300 ring-2 ring-brand-100' : 'border-paper-300'">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3">
-                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-paper-200 text-xl">{{ choice.icon }}</span>
+                <span class="life-icon material-symbols-outlined flex h-10 w-10 items-center justify-center rounded-xl bg-paper-200">{{ choice.icon }}</span>
                 <div>
                   <h3 class="text-sm font-semibold text-ink-700">{{ choice.label }}</h3>
                   <p class="mt-0.5 text-[10px] text-ink-400">{{ choice.effect }}</p>
@@ -202,7 +239,7 @@
       <aside class="space-y-4">
         <div class="card-surface p-4 sm:p-5">
           <div class="flex items-center justify-between gap-3">
-            <div><p class="text-[10px] font-semibold tracking-[.14em] text-azure-600">TRAJECTORY</p><h2 class="mt-1 text-sm font-semibold text-ink-700">人生資產軌跡</h2></div>
+            <div><p class="text-[10px] font-semibold tracking-[.14em] text-azure-600">資產變化</p><h2 class="mt-1 text-sm font-semibold text-ink-700">人生資產軌跡</h2></div>
             <span class="text-[10px] text-ink-400">{{ profile.startAge }} → {{ state.targetAge }} 歲</span>
           </div>
           <svg class="mt-4 h-44 w-full overflow-visible" viewBox="0 0 640 180" role="img" aria-label="人生資產變化折線圖">
@@ -238,7 +275,7 @@
     </section>
 
     <section v-if="finished" class="rounded-3xl border border-brand-200 bg-brand-50 p-6 text-center sm:p-8">
-      <p class="text-[10px] font-semibold tracking-[.18em] text-brand-700">YOUR ENDING</p>
+      <p class="text-[10px] font-semibold tracking-[.18em] text-brand-700">這次的人生路線</p>
       <h2 class="mt-3 text-2xl font-semibold text-ink-800">{{ state.targetAge }} 歲的你：{{ result.rank }}</h2>
       <p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-ink-500">人生分數 {{ result.score }} 分，淨資產 {{ formatMoney(result.netWorth) }}，退休目標完成 {{ Math.round(result.retirementProgress) }}%。換一組選擇，再看看另一條人生路線。</p>
       <div class="mt-5 flex flex-wrap justify-center gap-2"><button type="button" class="btn-secondary" @click="restart">再玩一次</button><button type="button" class="btn-primary" @click="shareResult">分享這個結局</button></div>
@@ -271,13 +308,19 @@ const defaultProfile = {
   annualIncomeGrowth: 2,
   annualInvestmentReturn: 5,
   inflation: 2,
+  eventIntensity: 'balanced',
   seed: Date.now() % 4_294_967_295,
 };
 
 const profilePresets = [
-  { id: 'starter', icon: '🌱', label: '剛開始累積', note: '28 歲・月收 4.8 萬', values: { ...defaultProfile } },
-  { id: 'steady', icon: '🧭', label: '工作漸穩定', note: '35 歲・月收 6.5 萬', values: { ...defaultProfile, startAge: 35, monthlyIncome: 65_000, monthlyLivingCost: 36_000, initialCash: 600_000, initialInvestments: 600_000 } },
-  { id: 'family', icon: '🏡', label: '準備成家', note: '32 歲・月收 8 萬', values: { ...defaultProfile, startAge: 32, monthlyIncome: 80_000, monthlyLivingCost: 45_000, initialCash: 1_200_000, initialInvestments: 500_000 } },
+  { id: 'starter', icon: 'sprout', label: '剛開始累積', note: '28 歲・月收 4.8 萬', values: { ...defaultProfile } },
+  { id: 'steady', icon: 'explore', label: '工作漸穩定', note: '35 歲・月收 6.5 萬', values: { ...defaultProfile, startAge: 35, monthlyIncome: 65_000, monthlyLivingCost: 36_000, initialCash: 600_000, initialInvestments: 600_000 } },
+  { id: 'family', icon: 'home', label: '準備成家', note: '32 歲・月收 8 萬', values: { ...defaultProfile, startAge: 32, monthlyIncome: 80_000, monthlyLivingCost: 45_000, initialCash: 1_200_000, initialInvestments: 500_000 } },
+];
+const scenarioModes = [
+  { id: 'steady', label: '平穩', note: '較少突發變化' },
+  { id: 'balanced', label: '真實', note: '工作與生活都會轉彎' },
+  { id: 'dynamic', label: '多變', note: '更常遇到意外與機會' },
 ];
 const choiceFilters = [
   { id: 'all', label: '全部' },
@@ -295,42 +338,45 @@ const selectedPreset = ref('starter');
 const activeFilter = ref('all');
 const feedback = ref(null);
 const hasSavedJourney = ref(false);
+const customChoices = ref([]);
+const customDraft = ref({ label: '', cost: 0, monthlyCost: 0, tone: 'meaningful' });
 
 const choices = [
-  { id: 'course', category: 'growth', label: '職涯進修', icon: '🎓', effect: '收入情境 +8%', cost: 80_000, annualCost: 0, incomeRateDelta: 8, happiness: 5, stress: 3, maxCount: 2 },
-  { id: 'travel', category: 'growth', label: '長途旅行', icon: '✈️', effect: '幸福感 +12', cost: 45_000, annualCost: 0, happiness: 12, stress: -8, maxCount: 12 },
-  { id: 'scooter', category: 'assets', label: '買一台機車', icon: '🛵', effect: '通勤更自由', cost: 100_000, annualCost: 30_000, happiness: 6, stress: 2, sellbackRate: 0.55, maxCount: 1 },
-  { id: 'car', category: 'assets', label: '擁有一台車', icon: '🚗', effect: '便利，也開始養車', cost: 900_000, annualCost: 180_000, happiness: 9, stress: 7, sellbackRate: 0.6, maxCount: 1 },
-  { id: 'wedding', category: 'family', label: '舉辦婚禮', icon: '💍', effect: '一段重要回憶', cost: 500_000, annualCost: 0, happiness: 18, stress: 6, maxCount: 1 },
-  { id: 'child', category: 'family', label: '迎接一個孩子', icon: '🍼', effect: '家庭新成員', cost: 200_000, annualCost: 180_000, happiness: 20, stress: 12, maxCount: 3 },
-  { id: 'home', category: 'family', label: '準備買房', icon: '🏠', effect: '頭期款＋房貸情境', cost: 2_000_000, annualCost: 360_000, happiness: 15, stress: 15, sellbackRate: 0.85, maxCount: 1 },
-  { id: 'sabbatical', category: 'growth', label: '休息充電一年', icon: '🌿', effect: '降低壓力', cost: 300_000, annualCost: 0, happiness: 18, stress: -22, maxCount: 2 },
-  { id: 'business', category: 'assets', label: '嘗試一人創業', icon: '🚀', effect: '收入情境 +20%', cost: 500_000, annualCost: 60_000, incomeRateDelta: 20, happiness: 10, stress: 18, maxCount: 1 },
+  { id: 'course', category: 'growth', label: '職涯進修', icon: 'school', effect: '收入情境 +8%', cost: 80_000, annualCost: 0, incomeRateDelta: 8, happiness: 5, stress: 3, maxCount: 2 },
+  { id: 'travel', category: 'growth', label: '長途旅行', icon: 'flight', effect: '幸福感 +12', cost: 45_000, annualCost: 0, happiness: 12, stress: -8, maxCount: 12 },
+  { id: 'scooter', category: 'assets', label: '買一台機車', icon: 'two_wheeler', effect: '通勤更自由', cost: 100_000, annualCost: 30_000, happiness: 6, stress: 2, sellbackRate: 0.55, maxCount: 1 },
+  { id: 'car', category: 'assets', label: '擁有一台車', icon: 'directions_car', effect: '便利，也開始養車', cost: 900_000, annualCost: 180_000, happiness: 9, stress: 7, sellbackRate: 0.6, maxCount: 1 },
+  { id: 'wedding', category: 'family', label: '舉辦婚禮', icon: 'diamond', effect: '一段重要回憶', cost: 500_000, annualCost: 0, happiness: 18, stress: 6, maxCount: 1 },
+  { id: 'child', category: 'family', label: '迎接一個孩子', icon: 'child_care', effect: '家庭新成員', cost: 200_000, annualCost: 180_000, happiness: 20, stress: 12, maxCount: 3 },
+  { id: 'home', category: 'family', label: '準備買房', icon: 'home', effect: '頭期款＋房貸情境', cost: 2_000_000, annualCost: 360_000, happiness: 15, stress: 15, sellbackRate: 0.85, maxCount: 1 },
+  { id: 'sabbatical', category: 'growth', label: '休息充電一年', icon: 'spa', effect: '降低壓力', cost: 300_000, annualCost: 0, happiness: 18, stress: -22, maxCount: 2 },
+  { id: 'business', category: 'assets', label: '嘗試一人創業', icon: 'rocket_launch', effect: '收入情境 +20%', cost: 500_000, annualCost: 60_000, incomeRateDelta: 20, happiness: 10, stress: 18, maxCount: 1 },
 ];
 
 const investmentAmounts = [50_000, 100_000, 300_000];
 const annualSurplus = computed(() => Math.round(getAnnualSurplus(state.value)));
 const result = computed(() => getLifeResult(state.value));
 const finished = computed(() => state.value.age >= state.value.targetAge);
+const allChoices = computed(() => [...choices, ...customChoices.value]);
 const filteredChoices = computed(() => activeFilter.value === 'all'
-  ? choices
-  : choices.filter(choice => choice.category === activeFilter.value));
+  ? allChoices.value
+  : allChoices.value.filter(choice => choice.category === activeFilter.value));
 const coach = computed(() => {
   const emergencyBuffer = state.value.monthlyLivingCost * 3;
   if (annualSurplus.value < 0) {
-    return { icon: '🛟', title: '先別急著增加固定負擔', detail: `你每年約少 ${formatCompact(Math.abs(annualSurplus.value))}。可以先提高收入或降低生活費，再考慮買車、買房。`, choiceId: canApplyChoice(state.value, choices[0]) ? 'course' : null };
+    return { icon: 'savings', title: '先別急著增加固定負擔', detail: `你每年約少 ${formatCompact(Math.abs(annualSurplus.value))}。可以先提高收入或降低生活費，再考慮買車、買房。`, choiceId: canApplyChoice(state.value, choices[0]) ? 'course' : null };
   }
   if (state.value.cash < emergencyBuffer) {
-    return { icon: '☂️', title: '先留一把現金雨傘', detail: `建議先保留約 ${formatCompact(emergencyBuffer)} 的三個月生活費；現在距離這個緩衝還差 ${formatCompact(emergencyBuffer - state.value.cash)}。`, choiceId: null };
+    return { icon: 'umbrella', title: '先留一把現金雨傘', detail: `建議先保留約 ${formatCompact(emergencyBuffer)} 的三個月生活費；現在距離這個緩衝還差 ${formatCompact(emergencyBuffer - state.value.cash)}。`, choiceId: null };
   }
   if (state.value.stress >= 60) {
     const restChoice = state.value.cash >= choices[1].cost ? 'travel' : null;
-    return { icon: '🌿', title: '你的壓力已經偏高', detail: '今年不一定要追求更多資產。安排休息或旅行，也是一種有價值的人生選擇。', choiceId: restChoice };
+    return { icon: 'spa', title: '你的壓力已經偏高', detail: '今年不一定要追求更多資產。安排休息或旅行，也是一種有價值的人生選擇。', choiceId: restChoice };
   }
   if (result.value.retirementProgress < 20 && state.value.cash >= emergencyBuffer + 50_000) {
-    return { icon: '🌱', title: '安全墊有了，可以讓時間幫你', detail: `保留三個月生活費後，可考慮把部分現金投入投資帳戶。目前退休進度約 ${Math.round(result.value.retirementProgress)}%。`, choiceId: null };
+    return { icon: 'trending_up', title: '安全墊有了，可以讓時間幫你', detail: `保留三個月生活費後，可考慮把部分現金投入投資帳戶。目前退休進度約 ${Math.round(result.value.retirementProgress)}%。`, choiceId: null };
   }
-  return { icon: '🧭', title: '你有空間做一個真正想要的選擇', detail: `今年預估可留下 ${formatCompact(annualSurplus.value)}，可從成長、家庭或資產三類挑一件事試試看。`, choiceId: 'course' };
+  return { icon: 'explore', title: '你有空間做一個真正想要的選擇', detail: `今年預估可留下 ${formatCompact(annualSurplus.value)}，可從成長、家庭或資產三類挑一件事試試看。`, choiceId: 'course' };
 });
 
 const chartDots = computed(() => {
@@ -391,6 +437,36 @@ const choiceButtonLabel = choice => {
   }
   return '選擇這條路';
 };
+const eventImpactLabel = event => {
+  if (event.cashImpact) return formatSigned(event.cashImpact);
+  if (event.incomeRateDelta) return `收入 ${event.incomeRateDelta > 0 ? '+' : ''}${event.incomeRateDelta}%`;
+  if (event.monthlyCostDelta) return `月支出 ${event.monthlyCostDelta > 0 ? '+' : ''}${formatCompact(event.monthlyCostDelta)}`;
+  return '生活狀態改變';
+};
+const addCustomChoice = () => {
+  const label = customDraft.value.label.trim();
+  if (!label) return;
+  const toneMap = {
+    meaningful: { happiness: 12, stress: 5, icon: 'favorite' },
+    restorative: { happiness: 16, stress: -12, icon: 'self_improvement' },
+    demanding: { happiness: 8, stress: 14, icon: 'flag' },
+  };
+  const tone = toneMap[customDraft.value.tone] ?? toneMap.meaningful;
+  customChoices.value.push({
+    id: `custom-${Date.now()}`,
+    category: 'growth',
+    label,
+    icon: tone.icon,
+    effect: '你的自訂選擇',
+    cost: Math.max(0, Number(customDraft.value.cost) || 0),
+    annualCost: Math.max(0, Number(customDraft.value.monthlyCost) || 0) * 12,
+    happiness: tone.happiness,
+    stress: tone.stress,
+    maxCount: 1,
+  });
+  customDraft.value = { label: '', cost: 0, monthlyCost: 0, tone: 'meaningful' };
+  activeFilter.value = 'all';
+};
 
 const buy = choice => {
   remember();
@@ -404,20 +480,20 @@ const buy = choice => {
 const sell = choice => {
   remember();
   state.value = sellLifeChoice(state.value, choice);
-  feedback.value = { icon: '↩️', message: `已出售「${choice.label}」，現金回到 ${formatCompact(state.value.cash)}。` };
+  feedback.value = { icon: 'undo', message: `已出售「${choice.label}」，現金回到 ${formatCompact(state.value.cash)}。` };
   track('life_choice_sell', { choice_id: choice.id });
 };
 const invest = amount => {
   remember();
   state.value = investCash(state.value, amount);
-  feedback.value = { icon: '🌱', message: `已把 ${formatCompact(amount)} 從現金移到投資帳戶；總資產沒有立刻改變。` };
+  feedback.value = { icon: 'trending_up', message: `已把 ${formatCompact(amount)} 從現金移到投資帳戶；總資產沒有立刻改變。` };
   track('life_invest', { amount });
 };
 const advanceYear = () => {
   remember();
   state.value = advanceLifeYear(state.value);
   feedback.value = state.value.latestEvent
-    ? { icon: state.value.latestEvent.cashImpact < 0 ? '🌧️' : '✨', message: `${state.value.age} 歲發生「${state.value.latestEvent.label}」。上方數字已更新，看看今年想做什麼。` }
+    ? { icon: state.value.latestEvent.icon || 'change_circle', message: `${state.value.age} 歲遇到「${state.value.latestEvent.label}」。上方數字已更新，看看接下來想怎麼走。` }
     : null;
   track('life_year_advance', { net_worth: result.value.netWorth });
   if (finished.value) {
@@ -483,6 +559,9 @@ onMounted(() => {
     if (parsed.profile && parsed.state) {
       profile.value = parsed.profile;
       state.value = parsed.state;
+      profile.value.eventIntensity ||= 'balanced';
+      state.value.eventIntensity ||= profile.value.eventIntensity;
+      customChoices.value = Array.isArray(parsed.customChoices) ? parsed.customChoices : [];
       hasSavedJourney.value = true;
     }
   } catch {
@@ -490,12 +569,12 @@ onMounted(() => {
   }
 });
 
-watch([profile, state], () => {
+watch([profile, state, customChoices], () => {
   if (showWelcome.value) {
     return;
   }
   try {
-    localStorage.setItem(storageKey, JSON.stringify({ profile: profile.value, state: state.value }));
+    localStorage.setItem(storageKey, JSON.stringify({ profile: profile.value, state: state.value, customChoices: customChoices.value }));
   } catch {
     // 隱私模式禁用儲存時，模擬器仍可繼續使用。
   }
@@ -504,5 +583,6 @@ watch([profile, state], () => {
 
 <style scoped>
 .field-label { font-size: .65rem; font-weight: 600; color: #78716c; }
+.life-icon { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; line-height: 1; }
 button:disabled { box-shadow: none; }
 </style>
