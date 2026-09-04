@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
+    "check:blog-links": "node scripts/check-blog-links.mjs",
     "format": "prettier --write .",
     "lint": "eslint \"src/**/*.{js,ts,tsx,vue}\" \"functions/**/*.js\"",
     "type-check": "tsc --noEmit",
