@@ -1,0 +1,31 @@
+export const toolHelp: Record<string, [string, string, string]> = {
+  '/tools/life-simulator': ['先填現在年齡、每月收入與基本支出', '現金和投資不知道精確值，可填目前大約餘額', '選擇是探索不同人生，不是預測命運'],
+  '/tools/salary-calculator': ['方案 A 填目前工作，方案 B 填新工作', '年終填月數，例如 2 個月就填 2', '不確定自提比例，可先維持 0%'],
+  '/tools/income-tax-calculator': ['先填全年薪資，不是每月薪資', '沒有股利、利息或租金就填 0', '列舉扣除不確定，可先用標準扣除額'],
+  '/tools/mortgage-calculator': ['貸款總額以「萬元」輸入', '先填年限與銀行提供的利率', '不懂寬限期或提前還款可先保持 0'],
+  '/tools/electricity-calculator': ['有帳單就直接填本期用電度數', '估冷氣電費時選電器、功率與每日時數', '不知道功率，可先選常見電器預設'],
+  '/tools/split-calculator': ['先填總金額與參與者', '有人多付時，再填各自已付款', '結果會整理成誰應轉給誰'],
+  '/tools/delivery-income-calculator': ['填平台顯示的總收入', '再填總工時與總里程', '油價與油耗不知道，可先用畫面預設'],
+  '/tools/car-cost-calculator': ['先填車價、頭期款與預計持有年數', '油耗可查原廠資料，不確定先用接近車型', '保險、維修與殘值是估算，可稍後調整'],
+  '/tools/severance-calculator': ['平均工資看離職前 6 個月工資總額', '年資可填小數，例如 3 年 6 個月填 3.5', '不是資遣或有舊制年資，需另外確認'],
+  '/tools/debt-consolidation-calculator': ['每筆填剩餘本金、利率與目前月付', '新方案填銀行提供的利率與期數', '開辦費和違約金沒有就填 0'],
+  '/tools/labor-insurance-pension-calculator': ['填勞保年資，不是勞退年資', '平均投保薪資可先參考投保紀錄', '請領年齡不同，月領金額也會改變'],
+  '/tools/estate-gift-tax-calculator': ['先選遺產或贈與情境', '填財產總額，再填符合條件的扣除額', '不知道可扣項目時不要自行猜測'],
+  '/tools/parental-benefit-calculator': ['先填投保薪資與預計留停月數', '選擇父母各自可能請領期間', '地方補助不同，結果仍需向所在地確認'],
+  '/tools/home-ownership-cost-calculator': ['先填房價、頭期款和貸款條件', '管理費填每月；稅與維修填每年', '房價漲跌是假設，不確定可先填 0'],
+  '/tools/real-return-calculator': ['先填本金、每月投入與年限', '報酬率是自行假設，不是保證', '費用與通膨不確定可先用預設情境比較'],
+  '/tools/long-term-investing-calculator': ['只要先填目前金額、每月投入與年限', '報酬不知道就選保守、中性或成長估算', '費用、通膨和持股換算都在進階設定'],
+  '/tools/stock-calculator': ['填實際買進價、股數與預計賣出價', '一張台股通常是 1,000 股', '股利沒有或不計入時填 0'],
+  '/tools/overtime-calculator': ['先填月薪', '依平日、休息日或國定假日填加班時數', '不確定假別時，先看出勤紀錄或公司行事曆'],
+  '/tools/insurance-calculator': ['先選受僱、自營或其他投保身分', '填月薪，工具會對應投保級距', '眷口只填依附在你名下的人數'],
+  '/tools/labor-pension-calculator': ['填目前月薪、年齡與退休年齡', '自提不知道可先比較 0% 與 6%', '報酬與稅率是估算，可先保留預設'],
+  '/tools/insurance-assessment': ['保單比較先填年繳保費與繳費年期', '解約金請查保單年度價值表', '保障缺口再填負債、家庭支出與現有資產'],
+  '/tools/rent-cost-calculator': ['先填月租、押金與預計租期', '管理費與水電填每月估計', '租金補貼資格與金額仍以審核為準'],
+  '/tools/fire-calculator': ['先填年齡、現有資產與每月投入', '退休月支出請用今天的生活水準估算', '報酬、通膨與提領率不確定可先保留預設'],
+};
+
+export const defaultToolHelp: [string, string, string] = [
+  '先填你確定的金額與期間',
+  '有預設的欄位可先保留；沒有的加計項目通常可填 0',
+  '看結果旁的提醒，再決定是否調整進階條件',
+];
