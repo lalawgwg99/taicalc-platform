@@ -20,16 +20,16 @@ const tools = [
 <footer class="site-footer">
     <div class="site-footer-grid">
         <div class="site-footer-intro">
-            <p class="site-footer-index">TAIWAN DECISION TOOLKIT · 2026</p>
+            <p class="site-footer-index">台灣生活計算工具</p>
             <a href="/" class="site-footer-title">TaiCalc</a>
             <p class="site-footer-copy">
-                把台灣生活裡的複雜規則，整理成能直接比較的數字。
+                把台灣生活裡的數字，算得更清楚。
             </p>
             <p class="site-footer-version">{platformGovernance.version} · {platformGovernance.updatedAt}</p>
         </div>
 
         <div class="site-footer-directory">
-            <p class="site-footer-index">INDEX / 快速入口</p>
+            <p class="site-footer-index">常用工具</p>
             <div class="site-footer-links">
                 {tools.map((t, index) => (
                     <a href={t.href}><span>{String(index + 1).padStart(2, '0')}</span>{t.label}</a>

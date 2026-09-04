@@ -5,7 +5,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 // 1. Generate Static Paths
 export async function getStaticPaths() {
   const tools = await getCollection('tools');
-  return tools.map(entry => ({
+  return tools.filter((entry) => !['example', 'template'].includes(entry.id)).map(entry => ({
     params: { slug: entry.id },
     props: { entry },
   }));

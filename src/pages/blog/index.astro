@@ -20,16 +20,16 @@ const categoryColor: Record<string, string> = {
 ---
 
 <Layout title={title} description={description}>
-    <main class="editorial-blog py-12 md:py-16 max-w-4xl mx-auto">
+    <section class="editorial-blog py-12 md:py-16 max-w-4xl mx-auto" aria-label="專欄文章">
         <header class="editorial-blog-header reveal" data-reveal>
             <div>
-                <p class="editorial-kicker">EDITORIAL / 財務知識庫</p>
-                <h1>TaiCalc<br />生活決策專欄</h1>
+                <p class="editorial-kicker">專欄文章</p>
+                <h1>TaiCalc<br />生活與財務</h1>
             </div>
             <div class="editorial-blog-count">
                 <strong>{posts.length}</strong>
-                <span>篇實用文章</span>
-                <p>薪資稅務、房產買租、投資退休，整理成可以採取行動的答案。</p>
+                <span>篇文章</span>
+                <p>薪資、稅務、居住與退休。</p>
             </div>
         </header>
 
@@ -58,5 +58,5 @@ const categoryColor: Record<string, string> = {
                 );
             })}
         </div>
-    </main>
+    </section>
 </Layout>

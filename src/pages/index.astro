@@ -4,8 +4,8 @@ import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
 import { getToolByHref, toolCatalog } from '../data/toolCatalog';
 
-const title = "TaiCalc 台灣生活決策計算器｜人生模擬、工作、買車、買房";
-const description = "用台灣人生模擬器先走一次買車、買房、育兒、投資與退休，也能試算工作、貸款、稅務與生活成本。免登入，主要計算在本機。";
+const title = "TaiCalc｜台灣生活計算工具";
+const description = "薪資、房貸、買車、稅務與生活成本試算工具；資料年度與來源清楚標示。";
 const keywords = "人生模擬器,台灣人生模擬器,人生遊戲,台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,育兒津貼,買房成本";
 
 const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.category))).map((category) => ({
@@ -62,7 +62,7 @@ const homeFaqSchema = JSON.stringify({
 const toolListSchema = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'TaiCalc 台灣生活決策計算器',
+    name: 'TaiCalc 台灣生活計算工具',
     itemListElement: toolCatalog.map((tool, index) => ({
         '@type': 'ListItem',
         position: index + 1,
@@ -79,38 +79,36 @@ const toolListSchema = JSON.stringify({
         <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
             <div class="decision-hero-shell grid gap-1 lg:grid-cols-[1.15fr_0.85fr]">
                 <div class="decision-hero-copy animate-fade-in-up reveal" data-reveal>
-                    <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-brand-300">Taiwan decision toolkit · 2026</p>
+                    <p class="text-[11px] font-semibold tracking-[.2em] text-brand-300">台灣生活計算工具</p>
                     <h1 class="mt-5 max-w-2xl text-[2.7rem] leading-[1.02] font-semibold tracking-[-.045em] text-white sm:text-5xl lg:text-[4rem]">
                         人生很難選，<br />數字可以先算。
                     </h1>
                     <p class="mt-5 max-w-xl text-base leading-8 text-ink-200">
-                        離職該拿多少、這台車養不養得起、買房後每月還剩多少。把台灣規則翻成你能立刻比較的答案。
+                        把薪資、房貸、買車與稅務算清楚，再做決定。
                     </p>
 
                     <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="#new-decisions" class="decision-primary" data-sfx="accent">選一個問題開始</a>
-                        <a href="#support-tools" class="decision-secondary" data-sfx="tap">看全部工具</a>
+                        <a href="#new-decisions" class="decision-primary" data-sfx="accent">找工具</a>
+                        <a href="#support-tools" class="decision-secondary" data-sfx="tap">全部工具</a>
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-200">
-                        <span>免註冊</span><span>主要計算不離開瀏覽器</span><span>標示資料年度</span>
+                        <span>免註冊</span><span>資料年度與來源</span>
                     </div>
                 </div>
 
                 <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="decision-search w-full p-5 sm:p-6 md:p-7 animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-lg font-semibold text-ink-800">你現在卡在哪一題？</p>
-                            <p class="mt-1 text-xs text-ink-500">直接搜尋，或從常見決策開始</p>
+                            <p class="text-lg font-semibold text-ink-800">找計算器</p>
                         </div>
-                        <span class="text-[10px] text-brand bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-full">快速開始</span>
                     </div>
 
                     <div class="relative mt-4">
                         <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                         </svg>
-                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有生活決策工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="input-clean pl-10 pr-4 text-sm" />
+                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="input-clean pl-10 pr-4 text-sm" />
                         <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                         <p id="search-status" class="sr-only" aria-live="polite"></p>
                     </div>
@@ -140,10 +138,9 @@ const toolListSchema = JSON.stringify({
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <p class="hermes-label">NEW DECISIONS</p>
-                    <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-4xl">這次，從真正的大支出開始</h2>
+                    <p class="hermes-label">熱門工具</p>
+                    <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-4xl">先算最常遇到的事</h2>
                 </div>
-                <p class="max-w-md text-sm leading-7 text-ink-500">不只算單一月付，改成比較整段人生決策的總成本、收入缺口與稅務影響。</p>
             </div>
             <div class="decision-card-grid">
                 {featuredDecisions.map((tool, index) => (
@@ -163,35 +160,12 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-10 sm:py-12 reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="flex flex-col gap-5 rounded-3xl border border-brand-200 bg-brand-50/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
-                <div>
-                    <p class="text-xs font-semibold tracking-[0.18em] text-brand-700">資料透明</p>
-                    <h2 class="mt-2 text-xl font-semibold text-ink-800">每個數字都有官方依據</h2>
-                    <p class="mt-2 max-w-2xl text-sm leading-6 text-ink-500">標示資料年度、版本與主管機關來源，避免過期級距混進結果。</p>
-                </div>
-                <details class="shrink-0 rounded-2xl border border-brand-200 bg-white p-4">
-                    <summary class="cursor-pointer text-sm font-medium text-ink-700">查看資料來源</summary>
-                    <ul class="mt-4 space-y-2">
-                        {platformGovernance.sources.map((source) => (
-                            <li>
-                                <a href={source.href} target="_blank" rel="noopener noreferrer" class="text-sm text-ink-500 hover:text-brand transition-colors">{source.label}</a>
-                            </li>
-                        ))}
-                    </ul>
-                </details>
-            </div>
-        </div>
-    </section>
-
     <section id="support-tools" class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <p class="hermes-label">ALL CALCULATORS</p>
-                    <h2 class="mt-3 text-2xl md:text-3xl font-medium text-ink-700">台灣生活計算器</h2>
-                    <p class="mt-2 text-sm text-ink-500">從收入、居住到投資退休，免費、不用登入。</p>
+                    <p class="hermes-label">所有工具</p>
+                    <h2 class="mt-3 text-2xl md:text-3xl font-medium text-ink-700">生活計算器</h2>
                 </div>
             </div>
 
@@ -230,8 +204,8 @@ const toolListSchema = JSON.stringify({
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <p class="hermes-label">LATEST GUIDES</p>
-                    <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">算完，接著看懂規則</h2>
+                    <p class="hermes-label">專欄文章</p>
+                    <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">需要時再看說明</h2>
                 </div>
                 <a href="/blog" class="text-sm text-brand hover:text-brand-400">查看全部文章 →</a>
             </div>

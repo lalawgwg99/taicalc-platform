@@ -17,7 +17,7 @@ interface Props {
 
 const {
     title,
-    description = "TaiCalc 專業財務計算平台｜台灣人專用免費線上工具。2026 最新薪資稅額、勞健保級距、新青安房貸試算、FIRE 退休規劃、股票當沖手續費計算。完全本地運算，資料不外傳。",
+    description = "TaiCalc 提供台灣薪資、稅務、房貸、電費與生活成本試算工具；各工具頁標示資料年度與來源。",
     fullWidth = false,
     hideNav = false,
     hideFooter = false,
@@ -31,7 +31,7 @@ const canonicalPath = Astro.url.pathname
     .replace(/\/index\.html$/, '/')
     .replace(/\.html$/, '');
 const canonicalURL = new URL(canonical ?? canonicalPath, Astro.site);
-const siteName = "TaiCalc 財務計算平台";
+const siteName = "TaiCalc 生活計算工具";
 const fullTitle = title.includes("TaiCalc") ? title : `${title} | TaiCalc`;
 const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
 ---
@@ -51,17 +51,13 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
         <meta name="format-detection" content="telephone=no" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow" />
-        <meta name="ai-search-indexing" content="allowed, citable, indexed" />
-        <meta name="citation_publisher" content="TaiCalc 財務計算平台" />
-        <meta name="citation_website_url" content="https://taicalc.com" />
         <meta name="language" content="Chinese" />
         <meta name="revisit-after" content="7 days" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
         <link rel="canonical" href={canonicalURL} />
         <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-        <link rel="alternate" type="text/markdown" title="LLM Interface" href="/llms.txt" />
-        <link rel="alternate" type="application/json" title="AI Calculators API" href="/api/calculators.json" />
+        <link rel="alternate" type="application/json" title="計算工具目錄" href="/api/calculators.json" />
 
         <!-- Open Graph / Social -->
         <meta property="og:type" content={type} />
@@ -86,7 +82,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
             "@context": "https://schema.org",
             "@type": "WebSite",
             "name": siteName,
-            "alternateName": "台灣財務計算機",
+            "alternateName": "台灣生活計算工具",
             "url": "https://taicalc.com",
             "description": description,
             "keywords": keywords,
@@ -107,7 +103,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
             "name": "TaiCalc",
             "url": "https://taicalc.com",
             "logo": "https://taicalc.com/favicon.svg",
-            "description": "專為台灣人設計的免費財務計算機平台",
+            "description": "提供台灣生活與財務試算工具",
             "sameAs": [
                 "https://github.com/lalawgwg99/taicalc-platform"
             ],
