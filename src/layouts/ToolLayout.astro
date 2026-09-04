@@ -104,7 +104,7 @@ const relatedToolsSchema = JSON.stringify({
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />
     <script type="application/ld+json" set:html={relatedToolsSchema} slot="head" />
-    <div class="max-w-6xl mx-auto px-4 md:px-0">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 xl:px-0">
         <header class="pt-4 pb-5">
             <div class="tool-hero-panel hero-sheen relative overflow-hidden">
                 <div class="relative z-10">
@@ -126,11 +126,11 @@ const relatedToolsSchema = JSON.stringify({
             </div>
         </header>
 
-        <section id="calculator-panel" class="mb-10 max-w-6xl" aria-label="計算器">
-            <details class="mb-3 max-w-4xl rounded-xl border border-paper-300 bg-paper-100 px-4 py-3">
-                <summary class="cursor-pointer text-xs font-semibold text-ink-600">第一次使用？30 秒知道怎麼填</summary>
-                <div class="mt-3 grid gap-2 text-xs leading-5 text-ink-500 sm:grid-cols-3">
-                    {currentHelp.map((help, index) => <p><strong class="text-ink-700">{index + 1}</strong><br />{help}</p>)}
+        <section id="calculator-panel" class="mb-10 max-w-none" aria-label="計算器">
+            <details class="mb-4 px-1 py-2">
+                <summary class="cursor-pointer text-xs font-semibold text-ink-500 hover:text-ink-700">第一次使用？30 秒知道怎麼填</summary>
+                <div class="mt-3 grid gap-x-8 gap-y-2 border-l-2 border-brand-200 pl-4 text-xs leading-5 text-ink-500 sm:grid-cols-3">
+                    {currentHelp.map((help, index) => <p><strong class="text-ink-700">{index + 1}.</strong> {help}</p>)}
                 </div>
             </details>
             <slot name="tool" />
