@@ -8,7 +8,7 @@ export async function getStaticPaths() {
 
 const { city } = Astro.props;
 const usdToTwd = 32;
-const fmt = (n) => n.toLocaleString('zh-TW');
+const fmt = (n: number) => n.toLocaleString('zh-TW');
 const costRows = [
     { label: '生存水準 Survival', usd: city.costs_usd.survival },
     { label: '舒適水準 Comfort', usd: city.costs_usd.comfort },

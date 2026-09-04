@@ -28,7 +28,7 @@ const faqs = [
 ];
 
 const policyRange = governance.sources
-    .map(source => `[${source.label ?? source.name ?? '官方來源'}](${source.href})`)
+    .map(source => `[${source.label || '官方來源'}](${source.href})`)
     .join(' · ');
 ---
 

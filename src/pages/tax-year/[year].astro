@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getTaxYear, latestTaxYear } from '../../data/taxYears';
+import { latestTaxYear } from '../../data/taxYears';
 
 export async function getStaticPaths() {
   const { taxYears } = await import('../../data/taxYears');
