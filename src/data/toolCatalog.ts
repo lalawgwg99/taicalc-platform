@@ -150,6 +150,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['定存', '債券', 'ETF', '通膨', '實質報酬', '複利'],
   },
   {
+    href: '/tools/long-term-investing-calculator',
+    label: '長期投資與資產配置',
+    desc: '投入、成本、通膨與下跌情境一次檢視。',
+    category: '投資與退休',
+    isCore: true,
+    scenario: '開始定期投入、調整資產配置前',
+    cta: '檢視長期投資計畫',
+    tags: ['長期投資', '指數投資', '資產配置', '複利', 'ETF', '投資紀律'],
+  },
+  {
     href: '/tools/stock-calculator',
     label: '股票損益試算',
     desc: '手續費、證交稅、當沖與損益平衡價。',

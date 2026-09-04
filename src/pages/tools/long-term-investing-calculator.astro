@@ -1,0 +1,12 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import LongTermInvesting from '../../components/calculators/LongTermInvesting.vue';
+const faqs = [
+  { q: '這是報酬預測嗎？', a: '不是。使用者自行輸入年化報酬、費用與通膨情境；結果只呈現這些假設下的複利計算。' },
+  { q: '為什麼不提供選股與買賣訊號？', a: '本工具聚焦可控制的投入、成本、分散與持有紀律，不提供個股推薦、進出場訊號或保證報酬。' },
+];
+---
+<ToolLayout title="長期投資與資產配置試算" description="用投入、成本、通膨與下跌情境，檢視長期投資計畫的購買力與續航力。" keywords="長期投資試算,指數投資,資產配置,複利,ETF,通膨後報酬" category="投資與退休" kicker="先看能否長期做到，再談可能的報酬。" dataVersion="2026.09-investing-v1" dataYear="自訂情境" lastUpdated="2026-09-05" sources={[{ label: '天下文化｜周冠男談指數化投資', href: 'https://bookzone.cwgv.com.tw/article/35704' }, { label: '初日會客室｜闕又上談阿甘投資法', href: 'https://www.youtube.com/watch?v=4qpBzE19WRs' }] } faqs={faqs}>
+  <LongTermInvesting client:only="vue" slot="tool" />
+  <div slot="article"><h2>方法，不是代言</h2><p>此頁整理公開可查的長期投資、低成本分散與紀律投入觀點，並以一般複利公式呈現情境。TaiCalc 為獨立製作，未經周冠男教授或闕又上老師審閱、合作或背書。</p><h3>怎麼使用</h3><p>先填入自己能持續的月投入與保守報酬假設，再把費用、通膨及下跌情境納入。需要比較不同商品購買力，可接著使用<a href="/tools/real-return-calculator">通膨後實質報酬比較</a>；規劃退休現金流，使用<a href="/tools/labor-pension-calculator">勞退試算</a>。</p></div>
+</ToolLayout>
