@@ -4,6 +4,8 @@ import LongTermInvesting from '../../components/calculators/LongTermInvesting.vu
 const faqs = [
   { q: '這是報酬預測嗎？', a: '不是。使用者自行輸入年化報酬、費用與通膨情境；結果只呈現這些假設下的複利計算。' },
   { q: '為什麼不提供選股與買賣訊號？', a: '本工具聚焦可控制的投入、成本、分散與持有紀律，不提供個股推薦、進出場訊號或保證報酬。' },
+  { q: '這個工具算單利還是複利？', a: '主要結果採月複利並把每月投入加入後續計算；頁面也提供單利對照，讓使用者看見長期差額。' },
+  { q: '標的價格會自動更新嗎？', a: '不會。快速換算只提供常見代號與幣別，價格及美元匯率由使用者自行輸入，避免把延遲報價當成即時成交資訊。' },
 ];
 ---
 <ToolLayout title="長期投資與資產配置試算" description="用投入、成本、通膨與下跌情境，檢視長期投資計畫的購買力與續航力。" keywords="長期投資試算,指數投資,資產配置,複利,ETF,通膨後報酬" category="投資與退休" kicker="先看能否長期做到，再談可能的報酬。" dataVersion="2026.09-investing-v1" dataYear="自訂情境" lastUpdated="2026-09-05" sources={[{ label: '天下文化｜周冠男談指數化投資', href: 'https://bookzone.cwgv.com.tw/article/35704' }, { label: '初日會客室｜闕又上談阿甘投資法', href: 'https://www.youtube.com/watch?v=4qpBzE19WRs' }] } faqs={faqs}>
