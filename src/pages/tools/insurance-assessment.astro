@@ -5,9 +5,28 @@ import InsuranceAssessment from '../../components/calculators/InsuranceAssessmen
 const title = "保險效益評估 (IRR/需求試算)｜TaiCalc";
 const description = "試算保單 IRR、保障缺口與建議保額。";
 const keywords = "保險IRR,儲蓄險報酬率,壽險需求,保險效益,IRR計算機,家庭責任缺口,保額計算,儲蓄險比較,保單報酬率,保險試算";
+
+const faqs = [
+    {
+        q: "什麼是保單 IRR？為什麼比宣告利率重要？",
+        a: "IRR（內部報酬率）是把你每一期繳的保費和未來領回的金額，考慮金錢時間價值後換算出的「真實年化報酬率」。宣告利率只是保險公司用來計算保單價值準備金的利率，還沒扣除業務佣金與行政成本，所以宣告利率 2.5% 的保單，IRR 可能只有 1% 出頭。比較儲蓄險一律看 IRR。"
+    },
+    {
+        q: "儲蓄險 IRR 多少才算划算？",
+        a: "一個簡單的判讀標準：IRR 若低於銀行定存利率（近年約 1.5% 上下），代表同樣的錢放定存報酬更高、流動性還更好，就不值得買。若 IRR 明顯高於定存，且你確定這筆錢 6 到 10 年內不會動用，才值得考慮。注意提前解約通常會虧損本金。"
+    },
+    {
+        q: "壽險保額要買多少才夠？",
+        a: "先算「家庭責任缺口」：房貸餘額＋子女教育費到成年＋父母奉養費，減去既有存款、投資與已有保額，缺口就是你需要的保額。雙十原則（保額為年收入 10 倍、保費不超過年收入 1/10）可當快速估算，但有房貸或幼兒的家庭通常需要更高。用本站計算機把缺口具體算出來再決定。"
+    },
+    {
+        q: "什麼時候該做保單健檢？",
+        a: "人生階段轉換時：結婚、生子、買房、轉職加薪、接近退休。每個階段的責任缺口都不同，保單也要跟著調整。健檢重點有三：保障是否足夠（缺口）、儲蓄險 IRR 是否合理、有沒有重複或用不到的附約。"
+    },
+];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="理財規劃">
+<ToolLayout title={title} description={description} keywords={keywords} category="理財規劃" faqs={faqs}>
     <InsuranceAssessment client:only="vue" slot="tool" />  
 
     <div slot="article">
