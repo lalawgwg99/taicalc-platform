@@ -211,6 +211,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['保險', 'IRR', '保單', '保障缺口', '保險效益'],
   },
   {
+    href: '/tools/fire-calculator',
+    label: 'FIRE 退休規劃',
+    desc: '財務自由數字、儲蓄率與提早退休年齡試算。',
+    category: '投資與退休',
+    isCore: true,
+    scenario: '想知道幾歲能財務自由前',
+    cta: '算你的 FIRE 數字',
+    tags: ['FIRE', '財務自由', '提早退休', '4%法則', '退休規劃', '儲蓄率'],
+  },
+  {
     href: '/tools/rent-cost-calculator',
     label: '租金解析',
     desc: '房租、押金與月支出明細。',
