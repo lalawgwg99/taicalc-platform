@@ -227,6 +227,26 @@ export const toolCatalog: ToolCatalogItem[] = [
     category: '居住與房產',
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
+  {
+    href: '/tools/etf-dividend-calculator',
+    label: 'ETF 配息試算',
+    desc: '配息總額、補充保費 2.11% 與年化配息率。',
+    category: '投資與退休',
+    isCore: true,
+    scenario: '除息前確認實拿配息',
+    cta: '算 ETF 配息實拿',
+    tags: ['ETF配息', '0050配息', '0056配息', '配息率', '補充保費', '股利'],
+  },
+  {
+    href: '/tools/year-end-bonus-calculator',
+    label: '年終獎金試算',
+    desc: '5% 預扣稅、補充保費與實拿金額。',
+    category: '工作與收入',
+    isCore: true,
+    scenario: '年終發放前先看實拿',
+    cta: '算年終實拿',
+    tags: ['年終獎金', '年終扣稅', '年終試算', '預扣稅', '年終實拿'],
+  },
 ];
 
 export const toolCatalogMap = Object.fromEntries(
