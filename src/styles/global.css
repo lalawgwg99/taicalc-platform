@@ -13,7 +13,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "PingFang TC", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang TC", "Microsoft JhengHei", "Helvetica Neue", Arial, sans-serif;
     background-color: #F5F1E6;
     color: #1C1C1E;
     -webkit-font-smoothing: antialiased;
@@ -1170,10 +1170,10 @@ h1, h2, h3, h4, h5, h6 {
     top: .75rem;
     z-index: 50;
     margin-top: .75rem;
-    border: 2px solid var(--ledger-line);
+    border: 1px solid rgba(39, 38, 32, .16);
     background: rgba(255, 253, 247, .94);
     backdrop-filter: blur(16px);
-    box-shadow: 4px 5px 0 rgba(23, 23, 20, .08);
+    box-shadow: 0 10px 30px -18px rgba(23, 23, 20, .25);
 }
 
 .site-nav-inner {
@@ -1740,3 +1740,93 @@ h2 {
 .recect-divider,
 .receipt-divider { border-top-color: #C9C2B0; }
 .tone-seal { color: var(--seal-red); }
+
+/* ============================================================
+   TaiCalc Design Language v2 (2026-10-05)
+   統一色票 / 字體 / 間距。新增的 class 以 v2- 為前綴，
+   舊 class 保留相容，頁面遷移時逐步替換。
+   ============================================================ */
+:root {
+    --v2-paper: #FFFDF7;
+    --v2-paper-deep: #F6F0E4;
+    --v2-ink: #1A1815;
+    --v2-ink-soft: #4A463C;
+    --v2-ink-mute: #8A8474;
+    --v2-brand: #2F7550;
+    --v2-brand-deep: #1D4B34;
+    --v2-brand-ink: #123626;
+    --v2-accent: #F2C230;
+    --v2-line: rgba(26, 24, 21, .12);
+    --v2-card: #FFFFFF;
+    --v2-radius: 1.1rem;
+    --v2-font-ui: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --v2-font-display: "Space Grotesk", "Noto Sans TC", sans-serif;
+}
+
+.v2-section { padding: 3.5rem 0; }
+@media (min-width: 640px) { .v2-section { padding: 5rem 0; } }
+
+.v2-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    color: var(--v2-brand);
+}
+
+.v2-h2 {
+    margin-top: .75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    color: var(--v2-ink);
+    text-wrap: balance;
+}
+@media (min-width: 768px) { .v2-h2 { font-size: 2rem; } }
+
+.v2-card {
+    background: var(--v2-card);
+    border: 1px solid var(--v2-line);
+    border-radius: var(--v2-radius);
+    transition: transform .18s ease, box-shadow .18s ease;
+}
+a.v2-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px -20px rgba(26, 24, 21, .35);
+}
+
+.v2-num {
+    font-family: var(--v2-font-display);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.01em;
+}
+
+.v2-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: .9rem;
+    padding: .9rem 1.6rem;
+    font-size: .95rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--v2-brand);
+    transition: transform .18s ease, background-color .18s ease;
+}
+.v2-btn-primary:hover { background: var(--v2-brand-deep); transform: translateY(-1px); }
+
+.v2-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: .9rem;
+    padding: .9rem 1.6rem;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--v2-ink);
+    border: 1px solid var(--v2-line);
+    background: transparent;
+    transition: background-color .18s ease;
+}
+.v2-btn-ghost:hover { background: rgba(26, 24, 21, .05); }

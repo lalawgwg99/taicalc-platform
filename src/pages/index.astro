@@ -15,21 +15,21 @@ const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.cate
 const categoryNames = supportCategories.map((group) => group.category);
 
 const quickLinks = [
-    '/tools/life-simulator',
-    '/tools/car-cost-calculator',
-    '/tools/home-ownership-cost-calculator',
-    '/tools/debt-consolidation-calculator',
+    '/tools/delivery-income-calculator',
+    '/tools/split-calculator',
+    '/tools/electricity-calculator',
+    '/tools/salary-calculator',
 ].map((path) => getToolByHref(path)!);
 const featuredDecisions = [
+    '/tools/delivery-income-calculator',
+    '/tools/split-calculator',
+    '/tools/electricity-calculator',
+    '/tools/salary-calculator',
     '/tools/life-simulator',
-    '/tools/car-cost-calculator',
-    '/tools/severance-calculator',
-    '/tools/debt-consolidation-calculator',
     '/tools/labor-insurance-pension-calculator',
-    '/tools/estate-gift-tax-calculator',
-    '/tools/parental-benefit-calculator',
-    '/tools/home-ownership-cost-calculator',
-    '/tools/real-return-calculator',
+    '/tools/labor-pension-calculator',
+    '/tools/mortgage-calculator',
+    '/tools/income-tax-calculator',
 ].map((path) => getToolByHref(path)!);
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
@@ -80,19 +80,19 @@ const toolListSchema = JSON.stringify({
             <div class="decision-hero-shell grid gap-1 lg:grid-cols-[1.15fr_0.85fr]">
                 <div class="decision-hero-copy animate-fade-in-up reveal" data-reveal>
                     <p class="text-[11px] font-semibold tracking-[.2em] text-brand-300">台灣生活計算工具</p>
-                    <h1 class="mt-5 max-w-2xl text-[2.7rem] leading-[1.02] font-semibold tracking-[-.045em] text-white sm:text-5xl lg:text-[4rem]">
+                    <h1 class="mt-4 max-w-2xl text-[2.15rem] leading-[1.1] font-semibold tracking-[-.02em] text-white sm:text-5xl lg:text-[4rem] lg:tracking-[-.045em] lg:leading-[1.02]">
                         人生很難選，<br />數字可以先算。
                     </h1>
-                    <p class="mt-5 max-w-xl text-base leading-8 text-ink-200">
+                    <p class="mt-4 max-w-xl text-[15px] leading-7 text-ink-200">
                         把薪資、房貸、買車與稅務算清楚，再做決定。
                     </p>
 
-                    <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="#new-decisions" class="decision-primary" data-sfx="accent">找工具</a>
+                    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                        <a href="#tool-discovery" class="decision-primary" data-sfx="accent">找工具</a>
                         <a href="#support-tools" class="decision-secondary" data-sfx="tap">全部工具</a>
                     </div>
 
-                    <div class="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-200">
+                    <div class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-200">
                         <span>免註冊</span><span>資料年度與來源</span>
                     </div>
                 </div>
@@ -134,12 +134,12 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section id="new-decisions" class="py-14 sm:py-20 reveal" data-reveal>
+    <section id="new-decisions" class="v2-section reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <p class="hermes-label">熱門工具</p>
-                    <h2 class="mt-3 text-2xl font-semibold text-ink-800 md:text-4xl">先算最常遇到的事</h2>
+                    <p class="v2-kicker">熱門工具</p>
+                    <h2 class="v2-h2">先算最常遇到的事</h2>
                 </div>
             </div>
             <div class="decision-card-grid">
@@ -160,12 +160,12 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section id="support-tools" class="border-t border-paper-300 py-12 sm:py-14 md:py-20 reveal" data-reveal>
+    <section id="support-tools" class="border-t border-paper-300 v2-section reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                    <p class="hermes-label">所有工具</p>
-                    <h2 class="mt-3 text-2xl md:text-3xl font-medium text-ink-700">生活計算器</h2>
+                    <p class="v2-kicker">所有工具</p>
+                    <h2 class="v2-h2">生活計算器</h2>
                 </div>
             </div>
 
@@ -200,12 +200,12 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                    <p class="hermes-label">專欄文章</p>
-                    <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">需要時再看說明</h2>
+                    <p class="v2-kicker">專欄文章</p>
+                    <h2 class="v2-h2">需要時再看說明</h2>
                 </div>
                 <a href="/blog" class="text-sm text-brand hover:text-brand-400">查看全部文章 →</a>
             </div>
@@ -230,10 +230,10 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 py-12 sm:py-16 reveal" data-reveal>
+    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
         <div class="max-w-3xl mx-auto px-4 md:px-6">
-            <p class="hermes-label">FAQ</p>
-            <h2 class="mt-3 text-2xl font-medium text-ink-700 md:text-3xl">使用前常見問題</h2>
+            <p class="v2-kicker">FAQ</p>
+            <h2 class="v2-h2">使用前常見問題</h2>
             <div class="mt-7 space-y-3">
                 {homeFaqs.map((faq) => (
                     <details class="group rounded-2xl border border-paper-300 bg-paper-200/70 p-5">

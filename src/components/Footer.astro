@@ -3,18 +3,18 @@ import { platformGovernance } from '../data/regulatoryMetadata';
 
 const currentYear = new Date().getFullYear();
 const tools = [
-    { href: '/tools/life-simulator', label: '人生模擬器' },
-    { href: '/tools/car-cost-calculator', label: '買車總成本' },
-    { href: '/tools/severance-calculator', label: '離職結算' },
-    { href: '/tools/home-ownership-cost-calculator', label: '買房持有成本' },
-    { href: '/tools/estate-gift-tax-calculator', label: '遺產／贈與稅' },
+    { href: '/tools/delivery-income-calculator', label: '外送收入計算' },
+    { href: '/tools/split-calculator', label: '分帳計算機' },
+    { href: '/tools/electricity-calculator', label: '電費計算機' },
+    { href: '/tools/salary-calculator', label: '薪資實拿計算' },
+    { href: '/tools/life-simulator', label: '台灣人生模擬器' },
+    { href: '/tools/labor-insurance-pension-calculator', label: '勞保老年年金' },
+    { href: '/tools/labor-pension-calculator', label: '勞退試算' },
+    { href: '/tools/fire-calculator', label: 'FIRE 退休規劃' },
     { href: '/#support-tools', label: '所有計算工具' },
     { href: '/blog', label: '專欄文章' },
-    { href: '/partnerships', label: '合作提案' },
-    { href: '/about', label: '關於我們' },
     { href: '/data-sources', label: '資料來源' },
-    { href: '/privacy', label: '隱私權政策' },
-    { href: '/disclaimer', label: '免責聲明' },
+    { href: '/about', label: '關於我們' },
 ];
 ---
 <footer class="site-footer">
@@ -40,6 +40,10 @@ const tools = [
 
     <div class="site-footer-bottom">
         <p>© {currentYear} TaiCalc</p>
-        <a href="mailto:Lalawgwg99@gmail.com?subject=TaiCalc%20聯絡或問題回報">聯絡／回報問題 →</a>
+        <div class="site-footer-legal">
+            <a href="/privacy">隱私權政策</a>
+            <a href="/disclaimer">免責聲明</a>
+            <a href="mailto:Lalawgwg99@gmail.com?subject=TaiCalc%20聯絡或問題回報">聯絡／回報問題 →</a>
+        </div>
     </div>
 </footer>
