@@ -6,7 +6,7 @@
       :class="{ 'opacity-100': showSettings, 'opacity-70': !showSettings }"
     >
       <div class="flex items-center justify-between cursor-pointer" @click="showSettings = !showSettings">
-        <h2 class="text-sm font-bold text-stone-600 flex items-center gap-2">
+        <h2 class="text-sm font-bold text-ink-500 flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -25,30 +25,30 @@
           </svg>
           交易設定 (手續費折扣)
         </h2>
-        <span class="text-xs text-stone-400 transform transition-transform" :class="{ 'rotate-180': showSettings }"
+        <span class="text-xs text-ink-300 transform transition-transform" :class="{ 'rotate-180': showSettings }"
           >▼</span
         >
       </div>
 
-      <div v-show="showSettings" class="mt-4 grid grid-cols-2 gap-4 border-t border-stone-100 pt-4">
+      <div v-show="showSettings" class="mt-4 grid grid-cols-2 gap-4 border-t border-paper-100 pt-4">
         <div>
-          <label class="block text-xs font-semibold text-stone-500 mb-1">券商折扣 (折)</label>
+          <label class="block text-xs font-semibold text-ink-400 mb-1">券商折扣 (折)</label>
           <input
             type="number"
             v-model.number="settings.discount"
             step="0.1"
             aria-label="券商折扣"
-            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+            class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
           />
-          <p class="text-[10px] text-stone-400 mt-1">例：2.8折 輸入 2.8</p>
+          <p class="text-[10px] text-ink-300 mt-1">例：2.8折 輸入 2.8</p>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-stone-500 mb-1">最低手續費 ($)</label>
+          <label class="block text-xs font-semibold text-ink-400 mb-1">最低手續費 ($)</label>
           <input
             type="number"
             v-model.number="settings.minFee"
             aria-label="最低手續費"
-            class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+            class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
           />
         </div>
       </div>
@@ -56,7 +56,7 @@
 
     <!-- 股票代碼查詢 -->
     <div class="calculator-card-tight">
-      <h2 class="text-sm font-bold text-stone-600 mb-3 flex items-center gap-2">
+      <h2 class="text-sm font-bold text-ink-500 mb-3 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         即時報價查詢
       </h2>
@@ -68,15 +68,15 @@
           maxlength="6"
           placeholder="輸入股票代碼，例如 2330"
           aria-label="股票代碼"
-          class="flex-1 bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
+          class="flex-1 bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
         />
         <button
           @click="fetchStockPrice"
           :disabled="stockLoading || !stockQuery.trim()"
           class="px-4 py-2 text-sm font-bold rounded-lg border transition-all"
           :class="stockLoading || !stockQuery.trim()
-            ? 'bg-stone-100 text-stone-400 border-stone-200 cursor-not-allowed'
-            : 'bg-stone-800 text-white border-stone-800 hover:bg-stone-700'"
+            ? 'bg-paper-100 text-ink-300 border-ink-100 cursor-not-allowed'
+            : 'bg-ink-800 text-white border-ink-800 hover:bg-ink-600'"
         >
           {{ stockLoading ? '查詢中…' : '查詢' }}
         </button>
@@ -86,16 +86,16 @@
       <p v-if="stockError" class="mt-2 text-xs text-red-500">{{ stockError }}</p>
 
       <!-- 查詢結果 -->
-      <div v-if="stockResult" class="mt-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
+      <div v-if="stockResult" class="mt-3 p-3 bg-paper-50 rounded-xl border border-ink-100">
         <div class="flex items-start justify-between mb-2">
           <div>
-            <span class="text-sm font-bold text-stone-800">{{ stockResult.name }}</span>
-            <span class="text-xs text-stone-400 ml-1.5">({{ stockResult.code }})</span>
+            <span class="text-sm font-bold text-ink-800">{{ stockResult.name }}</span>
+            <span class="text-xs text-ink-300 ml-1.5">({{ stockResult.code }})</span>
           </div>
-          <span v-if="!stockResult.isMarketOpen" class="text-[10px] text-stone-400 bg-stone-200 rounded px-1.5 py-0.5">收盤</span>
+          <span v-if="!stockResult.isMarketOpen" class="text-[10px] text-ink-300 bg-ink-100 rounded px-1.5 py-0.5">收盤</span>
         </div>
         <div class="flex items-baseline gap-3">
-          <span class="text-xl font-bold tabular-nums text-stone-800">${{ stockResult.price.toFixed(2) }}</span>
+          <span class="text-xl font-bold tabular-nums text-ink-800">${{ stockResult.price.toFixed(2) }}</span>
           <span
             class="text-sm font-medium tabular-nums"
             :class="stockResult.change >= 0 ? 'text-red-500' : 'text-green-600'"
@@ -105,15 +105,15 @@
             ({{ stockResult.changePercent >= 0 ? '+' : '' }}{{ stockResult.changePercent.toFixed(2) }}%)
           </span>
         </div>
-        <p class="text-[10px] text-stone-400 mt-1">昨收 ${{ stockResult.yesterday.toFixed(2) }}</p>
+        <p class="text-[10px] text-ink-300 mt-1">昨收 ${{ stockResult.yesterday.toFixed(2) }}</p>
         <div class="flex gap-2 mt-3">
           <button
             @click="buyPrice = stockResult.price; mode = 'profit'"
-            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-stone-800 text-white hover:bg-stone-700 transition-all"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-ink-800 text-white hover:bg-ink-600 transition-all"
           >套用為買入價</button>
           <button
             @click="sellPrice = stockResult.price; mode = 'profit'"
-            class="flex-1 py-1.5 text-xs font-bold rounded-lg border border-stone-300 text-stone-600 hover:bg-stone-50 transition-all"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg border border-ink-200 text-ink-500 hover:bg-paper-50 transition-all"
           >套用為賣出價</button>
         </div>
       </div>
@@ -155,8 +155,8 @@
               class="flex-1 py-2 text-xs font-bold rounded-lg border transition-all"
               :class="
                 stockType === type.id
-                  ? 'bg-stone-800 text-white border-stone-800'
-                  : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'
+                  ? 'bg-ink-800 text-white border-ink-800'
+                  : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
               "
             >
               {{ type.label }} <span class="text-[10px] opacity-70">({{ type.tax * 1000 }}‰)</span>
@@ -165,45 +165,45 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-stone-500 mb-1">買進價格</label>
+              <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
               <input
                 type="number"
                 v-model.number="buyPrice"
                 step="0.1"
                 aria-label="買進價格"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-stone-500 mb-1">股數 (1張=1000)</label>
+              <label class="block text-xs font-semibold text-ink-400 mb-1">股數 (1張=1000)</label>
               <input
                 type="number"
                 v-model.number="qty"
                 step="1000"
                 aria-label="股數"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
               />
             </div>
           </div>
 
           <div v-show="mode === 'profit'">
-            <label class="block text-xs font-semibold text-stone-500 mb-1">賣出價格</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">賣出價格</label>
             <input
               type="number"
               v-model.number="sellPrice"
               step="0.1"
               aria-label="賣出價格"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+              class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
             />
           </div>
 
           <!-- Dividend Section (Optional) -->
-          <div v-show="mode === 'profit'" class="border-t border-stone-100 pt-4">
+          <div v-show="mode === 'profit'" class="border-t border-paper-100 pt-4">
             <div
               class="flex items-center justify-between cursor-pointer mb-3"
               @click="showDividends = !showDividends"
             >
-              <span class="text-sm font-bold text-stone-600 flex items-center gap-2">
+              <span class="text-sm font-bold text-ink-500 flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -220,44 +220,44 @@
                 </svg>
                 進階：股利/股息 (選填)
               </span>
-              <span class="text-xs text-stone-400 transform transition-transform" :class="{ 'rotate-180': showDividends }"
+              <span class="text-xs text-ink-300 transform transition-transform" :class="{ 'rotate-180': showDividends }"
                 >▼</span
               >
             </div>
 
             <div v-show="showDividends" class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-stone-500 mb-1">現金股利 (元/股)</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">現金股利 (元/股)</label>
                 <input
                   type="number"
                   v-model.number="cashDividend"
                   step="0.1"
                   placeholder="0"
-                  class="w-full bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                  class="w-full bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-stone-500 mb-1">股票股利 (元/股)</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">股票股利 (元/股)</label>
                 <input
                   type="number"
                   v-model.number="stockDividend"
                   step="0.1"
                   placeholder="0"
-                  class="w-full bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500"
+                  class="w-full bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 />
-                <p class="text-[10px] text-stone-400 mt-1">例如配 1元 = 每張配 100股</p>
+                <p class="text-[10px] text-ink-300 mt-1">例如配 1元 = 每張配 100股</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Single Trade Results -->
-        <div v-if="mode === 'profit'" class="pt-4 border-t border-stone-100">
+        <div v-if="mode === 'profit'" class="pt-4 border-t border-paper-100">
           <div
-            class="bg-stone-50 rounded-xl p-6 text-center border overflow-hidden relative"
+            class="bg-paper-50 rounded-xl p-6 text-center border overflow-hidden relative"
             :class="result.profit >= 0 ? 'border-red-200 bg-red-50/30' : 'border-green-200 bg-green-50/30'"
           >
-            <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">預估淨損益</p>
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">預估淨損益</p>
             <p
               class="text-3xl font-bold font-mono tracking-tight"
               :class="result.profit >= 0 ? 'text-red-500' : 'text-green-500'"
@@ -269,22 +269,22 @@
             </p>
 
             <!-- Detailed Breakdown -->
-            <div class="mt-6 grid grid-cols-2 gap-4 text-left text-xs text-stone-500 bg-white/60 p-3 rounded-lg">
+            <div class="mt-6 grid grid-cols-2 gap-4 text-left text-xs text-ink-400 bg-white/60 p-3 rounded-lg">
               <div>
                 <span class="block">買進總成本</span>
-                <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalBuyCost) }}</span>
+                <span class="font-bold text-ink-600 font-mono">{{ fmt(result.totalBuyCost) }}</span>
               </div>
               <div>
                 <span class="block">賣出總收入</span>
-                <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalSellRevenue) }}</span>
+                <span class="font-bold text-ink-600 font-mono">{{ fmt(result.totalSellRevenue) }}</span>
               </div>
               <div>
                 <span class="block">手續費 (買+賣)</span>
-                <span class="font-bold text-stone-700 font-mono">{{ fmt(result.totalFee) }}</span>
+                <span class="font-bold text-ink-600 font-mono">{{ fmt(result.totalFee) }}</span>
               </div>
               <div>
                 <span class="block">交易稅</span>
-                <span class="font-bold text-stone-700 font-mono">{{ fmt(result.tax) }}</span>
+                <span class="font-bold text-ink-600 font-mono">{{ fmt(result.tax) }}</span>
               </div>
               <div
                 v-if="result.totalDividend > 0"
@@ -297,13 +297,13 @@
           </div>
         </div>
 
-        <div v-else-if="mode === 'breakeven'" class="pt-4 border-t border-stone-100">
-          <div class="bg-stone-50 rounded-xl p-6 text-center border border-indigo-100 bg-indigo-50/30">
-            <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">損益平衡價</p>
+        <div v-else-if="mode === 'breakeven'" class="pt-4 border-t border-paper-100">
+          <div class="bg-paper-50 rounded-xl p-6 text-center border border-indigo-100 bg-indigo-50/30">
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">損益平衡價</p>
             <p class="text-3xl font-bold font-mono tracking-tight text-indigo-900">
               {{ fmt(breakevenPrice) }}
             </p>
-            <p class="text-sm text-stone-500 mt-2">
+            <p class="text-sm text-ink-400 mt-2">
               高於此價格賣出即獲利<br />
               <span class="text-xs opacity-70">(已含買賣手續費與交易稅)</span>
             </p>
@@ -312,7 +312,7 @@
 
         <!-- DCA / Avg Cost Mode -->
         <div v-else-if="mode === 'avg'" class="space-y-4">
-          <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex gap-3 text-sm text-blue-700">
+          <div class="bg-brand-50 p-4 rounded-xl border border-brand-100 flex gap-3 text-sm text-brand-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
@@ -335,26 +335,26 @@
           <div class="space-y-3">
             <div v-for="(rec, idx) in dcaRecords" :key="idx" class="flex gap-2 items-end">
               <div class="flex-1">
-                <label class="block text-xs font-semibold text-stone-500 mb-1">買進價格</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
                 <input
                   type="number"
                   v-model.number="rec.price"
                   placeholder="價格"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-brand-500"
                 />
               </div>
               <div class="flex-1">
-                <label class="block text-xs font-semibold text-stone-500 mb-1">股數</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">股數</label>
                 <input
                   type="number"
                   v-model.number="rec.qty"
                   placeholder="股數"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 text-stone-800 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-brand-500"
                 />
               </div>
               <button
                 @click="removeRecord(idx)"
-                class="mb-1 p-2 text-stone-400 hover:text-red-500"
+                class="mb-1 p-2 text-ink-300 hover:text-red-500"
                 title="刪除"
               >
                 <svg
@@ -375,24 +375,24 @@
             </div>
             <button
               @click="addRecord"
-              class="w-full py-2 border border-dashed border-stone-300 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-700 font-medium text-sm transition-colors"
+              class="w-full py-2 border border-dashed border-ink-200 rounded-lg text-ink-400 hover:bg-paper-50 hover:text-ink-600 font-medium text-sm transition-colors"
             >
               + 新增買入紀錄
             </button>
           </div>
 
-          <div class="pt-4 border-t border-stone-100 grid grid-cols-2 gap-4">
-            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-              <span class="block text-stone-500 text-xs mb-1">加權平均價</span>
-              <span class="block text-2xl font-bold text-blue-800 font-mono">{{ fmt(dcaResult.avgPrice) }}</span>
+          <div class="pt-4 border-t border-paper-100 grid grid-cols-2 gap-4">
+            <div class="bg-brand-50/50 p-4 rounded-xl border border-brand-100">
+              <span class="block text-ink-400 text-xs mb-1">加權平均價</span>
+              <span class="block text-2xl font-bold text-brand-800 font-mono">{{ fmt(dcaResult.avgPrice) }}</span>
             </div>
             <div class="calculator-subcard">
-              <span class="block text-stone-500 text-xs mb-1">累積總股數</span>
-              <span class="block text-2xl font-bold text-stone-700 font-mono">{{ fmt(dcaResult.totalQty) }}</span>
+              <span class="block text-ink-400 text-xs mb-1">累積總股數</span>
+              <span class="block text-2xl font-bold text-ink-600 font-mono">{{ fmt(dcaResult.totalQty) }}</span>
             </div>
             <div class="calculator-subcard">
-              <span class="block text-stone-500 text-xs mb-1">總投入成本</span>
-              <span class="block text-lg font-bold text-stone-700 font-mono">{{ fmt(dcaResult.totalCost) }}</span>
+              <span class="block text-ink-400 text-xs mb-1">總投入成本</span>
+              <span class="block text-lg font-bold text-ink-600 font-mono">{{ fmt(dcaResult.totalCost) }}</span>
             </div>
             <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
               <span class="block text-indigo-600/80 text-xs mb-1">損益平衡價</span>

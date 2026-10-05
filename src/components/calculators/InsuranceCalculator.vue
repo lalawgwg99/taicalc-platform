@@ -3,7 +3,7 @@
     <div class="calculator-card space-y-6">
       <!-- Identity Selection -->
       <div>
-        <label class="block text-xs font-semibold text-stone-500 mb-2">投保身分</label>
+        <label class="block text-xs font-semibold text-ink-400 mb-2">投保身分</label>
         <div class="grid grid-cols-3 gap-2">
           <button
             v-for="role in roles"
@@ -13,7 +13,7 @@
             :class="
               currentRole === role.id
                 ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
-                : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'
+                : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
             "
           >
             {{ role.label }}
@@ -23,24 +23,24 @@
 
       <!-- Salary Input -->
       <div>
-        <label class="block text-xs font-semibold text-stone-500 mb-2">月薪收入</label>
+        <label class="block text-xs font-semibold text-ink-400 mb-2">月薪收入</label>
         <div class="relative">
           <input
             type="number"
             v-model.number="salary"
-            class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
             placeholder="請輸入月薪"
           />
         </div>
-        <p class="text-xs text-stone-400 mt-2">
-          對應投保級距：<span class="font-bold text-stone-600">{{ fmt(matchedBracket) }}</span> 元
+        <p class="text-xs text-ink-300 mt-2">
+          對應投保級距：<span class="font-bold text-ink-500">{{ fmt(matchedBracket) }}</span> 元
           <span v-if="salary < MINIMUM_WAGE" class="text-red-500 ml-1">(低於基本工資 29,500)</span>
         </p>
       </div>
 
       <!-- Dependents -->
       <div>
-        <label class="block text-xs font-semibold text-stone-500 mb-2">健保依附眷口數</label>
+        <label class="block text-xs font-semibold text-ink-400 mb-2">健保依附眷口數</label>
         <div class="flex items-center gap-2">
           <button
             v-for="n in 5"
@@ -50,24 +50,24 @@
             :class="
               dependents === n - 1
                 ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
-                : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-50'
+                : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
             "
           >
             {{ n - 1 }}
           </button>
         </div>
-        <p class="text-[10px] text-stone-400 mt-1">健保超過 3 口以 3 口計算；勞保不受眷口數影響。</p>
+        <p class="text-[10px] text-ink-300 mt-1">健保超過 3 口以 3 口計算；勞保不受眷口數影響。</p>
       </div>
 
       <!-- Results -->
-      <div class="pt-6 border-t border-stone-100 grid gap-4">
+      <div class="pt-6 border-t border-paper-100 grid gap-4">
         <!-- Worker Cost -->
         <div class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
-            <h3 class="text-sm font-bold text-stone-700">個人負擔</h3>
-            <span class="text-2xl font-bold font-mono text-blue-600">{{ fmt(result.workerTotal) }}</span>
+            <h3 class="text-sm font-bold text-ink-600">個人負擔</h3>
+            <span class="text-2xl font-bold font-mono text-brand-600">{{ fmt(result.workerTotal) }}</span>
           </div>
-          <div class="space-y-1 text-xs text-stone-500">
+          <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
               <span>勞保費</span>
               <span>{{ fmt(result.workerLabor) }}</span>
@@ -82,10 +82,10 @@
         <!-- Company Cost -->
         <div v-if="currentRole === 'employee'" class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
-            <h3 class="text-sm font-bold text-stone-700">雇主負擔</h3>
-            <span class="text-2xl font-bold font-mono text-stone-600">{{ fmt(result.employerTotal) }}</span>
+            <h3 class="text-sm font-bold text-ink-600">雇主負擔</h3>
+            <span class="text-2xl font-bold font-mono text-ink-500">{{ fmt(result.employerTotal) }}</span>
           </div>
-          <div class="space-y-1 text-xs text-stone-500">
+          <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
               <span>勞保費</span>
               <span>{{ fmt(result.employerLabor) }}</span>

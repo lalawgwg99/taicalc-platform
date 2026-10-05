@@ -41,7 +41,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">重點</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">重點</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">單筆投入、複利估算，未計稅與費用。高報酬伴隨高波動，請依風險承受度配置。</p>
         </div>

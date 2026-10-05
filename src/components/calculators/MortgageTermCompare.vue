@@ -50,7 +50,7 @@
 
         <!-- 差異摘要 -->
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">兩年限差多少</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">兩年限差多少</p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <p class="text-[11px] text-ink-400">月付差額</p>

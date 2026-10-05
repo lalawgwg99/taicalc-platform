@@ -34,7 +34,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">差異解讀</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">定期定額、月投入、複利估算，未計手續費與稅；0056 配息率較高但長期總報酬通常低於市值型。</p>
         </div>

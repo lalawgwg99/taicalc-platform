@@ -3,12 +3,12 @@
     
     <!-- 快速預設情境 (Apple Chip Selector) -->
     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-      <span class="text-xs font-semibold text-stone-400 flex-shrink-0">快速情境：</span>
+      <span class="text-xs font-semibold text-ink-300 flex-shrink-0">快速情境：</span>
       <button 
         v-for="p in presets" 
         :key="p.title"
         @click="applyPreset(p)"
-        class="text-xs font-medium bg-white hover:bg-stone-100 text-stone-700 border border-stone-200/80 px-3 py-1.5 rounded-full transition-all flex-shrink-0 active:scale-95 shadow-sm"
+        class="text-xs font-medium bg-white hover:bg-paper-100 text-ink-600 border border-ink-100/80 px-3 py-1.5 rounded-full transition-all flex-shrink-0 active:scale-95 shadow-sm"
       >
         {{ p.title }} (${{ p.total.toLocaleString() }})
       </button>
@@ -17,13 +17,13 @@
     <!-- 1. 總額設定與成員名單 (Apple Inset Grouped Form) -->
     <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5">
       <div class="mb-6 text-center">
-        <label class="block text-xs font-semibold text-stone-400 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
+        <label class="block text-xs font-semibold text-ink-300 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
         <div class="relative max-w-xs mx-auto flex items-center justify-center">
-          <span class="text-2xl font-semibold text-stone-400 mr-1">$</span>
+          <span class="text-2xl font-semibold text-ink-300 mr-1">$</span>
           <input 
             v-model.number="totalAmount" 
             type="number" 
-            class="w-full text-center text-4xl font-bold font-mono text-stone-900 border-b-2 border-stone-200 focus:border-blue-500 outline-none py-1.5 transition-colors bg-transparent"
+            class="w-full text-center text-4xl font-bold font-mono text-ink-900 border-b-2 border-ink-100 focus:border-brand-500 outline-none py-1.5 transition-colors bg-transparent"
             placeholder="0"
           />
         </div>
@@ -33,13 +33,13 @@
       <div class="grid grid-cols-2 p-1 bg-[#EFEFF4] rounded-xl mb-6">
         <button 
           @click="mode = 'even'" 
-          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'even' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800']"
+          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'even' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
         >
           ⚖️ 平均分攤
         </button>
         <button 
           @click="mode = 'weighted'" 
-          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'weighted' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800']"
+          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'weighted' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
         >
           📊 權重 / 自訂
         </button>
@@ -48,8 +48,8 @@
       <!-- 成員名單 -->
       <div>
         <div class="flex justify-between items-center mb-3">
-          <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider">成員名單 ({{ members.length }} 人)</h3>
-          <button @click="addMember" class="text-xs text-blue-600 font-semibold hover:bg-blue-50 px-2.5 py-1 rounded-lg transition-colors active:scale-95">
+          <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">成員名單 ({{ members.length }} 人)</h3>
+          <button @click="addMember" class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors active:scale-95">
             + 新增成員
           </button>
         </div>
@@ -58,41 +58,41 @@
           <div 
             v-for="(m, idx) in members" 
             :key="m.id" 
-            class="flex items-center gap-3 p-2.5 bg-[#F9F9FB] rounded-xl border border-stone-200/60 transition-all hover:border-stone-300"
+            class="flex items-center gap-3 p-2.5 bg-[#F9F9FB] rounded-xl border border-ink-100/60 transition-all hover:border-ink-200"
           >
-            <div class="w-7 h-7 flex items-center justify-center bg-white rounded-full border border-stone-200 text-xs font-semibold text-stone-500 flex-shrink-0 shadow-2xs">
+            <div class="w-7 h-7 flex items-center justify-center bg-white rounded-full border border-ink-100 text-xs font-semibold text-ink-400 flex-shrink-0 shadow-2xs">
               {{ idx + 1 }}
             </div>
             <input 
               v-model="m.name" 
-              class="flex-1 bg-transparent font-medium text-stone-900 text-sm outline-none placeholder-stone-400" 
+              class="flex-1 bg-transparent font-medium text-ink-900 text-sm outline-none placeholder-ink-300" 
               placeholder="名字"
             />
             
             <div class="flex items-center gap-2">
               <div class="flex flex-col items-end">
-                <span class="text-[10px] text-stone-400 font-medium">已先付 (Paid)</span>
+                <span class="text-[10px] text-ink-300 font-medium">已先付 (Paid)</span>
                 <div class="flex items-center">
-                  <span class="text-xs text-stone-400 mr-0.5">$</span>
+                  <span class="text-xs text-ink-300 mr-0.5">$</span>
                   <input 
                     v-model.number="m.paid" 
                     type="number" 
-                    class="w-20 text-right text-xs font-semibold font-mono bg-white border border-stone-200 rounded-md px-2 py-1 outline-none focus:border-blue-500" 
+                    class="w-20 text-right text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-2 py-1 outline-none focus:border-brand-500" 
                     placeholder="0"
                   />
                 </div>
               </div>
               <div class="flex flex-col items-end" v-if="mode === 'weighted'">
-                <span class="text-[10px] text-stone-400 font-medium">權重 (份)</span>
+                <span class="text-[10px] text-ink-300 font-medium">權重 (份)</span>
                 <input 
                   v-model.number="m.weight" 
                   type="number" 
-                  class="w-12 text-center text-xs font-semibold font-mono bg-white border border-stone-200 rounded-md px-1.5 py-1 outline-none focus:border-blue-500" 
+                  class="w-12 text-center text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-1.5 py-1 outline-none focus:border-brand-500" 
                 />
               </div>
             </div>
             
-            <button @click="removeMember(idx)" class="text-stone-400 hover:text-red-500 px-1 text-sm transition-colors" v-if="members.length > 2" title="刪除">
+            <button @click="removeMember(idx)" class="text-ink-300 hover:text-red-500 px-1 text-sm transition-colors" v-if="members.length > 2" title="刪除">
               ✕
             </button>
           </div>
@@ -101,44 +101,44 @@
     </div>
 
     <!-- 2. 結算結果 (Apple Native Settlement Card) -->
-    <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-blue-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
+    <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-brand-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-sm font-semibold text-stone-800 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-blue-500"></span> 最佳轉帳清算建議
+        <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-brand-500"></span> 最佳轉帳清算建議
         </h2>
-        <span class="text-xs text-stone-400 font-mono">Minimal Transfers</span>
+        <span class="text-xs text-ink-300 font-mono">Minimal Transfers</span>
       </div>
 
       <div v-if="transactions.length > 0" class="space-y-2.5">
         <div 
           v-for="(tx, i) in transactions" 
           :key="i" 
-          class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-stone-200/80 shadow-2xs"
+          class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-ink-100/80 shadow-2xs"
         >
           <div class="flex items-center gap-2 text-sm">
-            <span class="font-bold text-stone-900">{{ tx.from }}</span>
-            <span class="text-xs text-stone-400 font-medium">轉給</span>
-            <span class="font-bold text-blue-600">{{ tx.to }}</span>
+            <span class="font-bold text-ink-900">{{ tx.from }}</span>
+            <span class="text-xs text-ink-300 font-medium">轉給</span>
+            <span class="font-bold text-brand-600">{{ tx.to }}</span>
           </div>
-          <div class="font-mono font-bold text-base text-stone-900">${{ tx.amount.toLocaleString() }}</div>
+          <div class="font-mono font-bold text-base text-ink-900">${{ tx.amount.toLocaleString() }}</div>
         </div>
       </div>
-      <div v-else class="py-6 text-center text-stone-500 text-sm bg-white rounded-xl border border-stone-200/60">
+      <div v-else class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
         🎉 目前無人互欠 (完美結清)
       </div>
 
       <!-- 操作按鈕 -->
-      <div class="mt-5 pt-4 border-t border-stone-200/60 flex flex-wrap items-center justify-center gap-3">
+      <div class="mt-5 pt-4 border-t border-ink-100/60 flex flex-wrap items-center justify-center gap-3">
         <button 
           @click="copyResult" 
-          class="text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+          class="text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
         >
           <span v-if="copyStatus === 'idle'">📋 複製分帳文字 (LINE/iMessage)</span>
           <span v-else>✓ 已複製到剪貼簿</span>
         </button>
         <button 
           @click="copyShareLink" 
-          class="text-xs font-semibold text-stone-700 bg-white hover:bg-stone-100 border border-stone-200 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+          class="text-xs font-semibold text-ink-600 bg-white hover:bg-paper-100 border border-ink-100 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
         >
           <span v-if="!shareCopied">🔗 複製分享連結</span>
           <span v-else>✓ 連結已複製</span>

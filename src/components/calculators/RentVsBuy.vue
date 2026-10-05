@@ -87,7 +87,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">哪個划算</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">哪個划算</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">本比較未計裝潢、仲介、搬家與心理因素；房價與租金漲幅假設會大幅影響結果。</p>
         </div>

@@ -3,21 +3,21 @@
     <!-- 輸入區塊 -->
     <div class="grid lg:grid-cols-2 gap-6">
       <section class="calculator-card">
-        <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
+        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
         <div class="space-y-4">
           <div>
-            <label for="baseIncome" class="block text-xs font-medium text-stone-500 mb-1"
+            <label for="baseIncome" class="block text-xs font-medium text-ink-400 mb-1"
               >基礎跑單收入 (不含獎勵)</label
             >
             <input
               id="baseIncome"
               type="number"
               v-model.number="baseIncome"
-              class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
+              class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
           </div>
           <div>
-            <label for="incentive" class="block text-xs font-medium text-stone-500 mb-1"
+            <label for="incentive" class="block text-xs font-medium text-ink-400 mb-1"
               >平台獎勵/加碼 (趟次達標)</label
             >
             <input
@@ -30,21 +30,21 @@
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="kilometers" class="block text-xs font-medium text-stone-500 mb-1">總里程 (KM)</label>
+              <label for="kilometers" class="block text-xs font-medium text-ink-400 mb-1">總里程 (KM)</label>
               <input
                 id="kilometers"
                 type="number"
                 v-model.number="kilometers"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-brand-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-semibold focus:outline-none focus:border-brand-500"
               />
             </div>
             <div>
-              <label for="workHours" class="block text-xs font-medium text-stone-500 mb-1">總工時 (H)</label>
+              <label for="workHours" class="block text-xs font-medium text-ink-400 mb-1">總工時 (H)</label>
               <input
                 id="workHours"
                 type="number"
                 v-model.number="workHours"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 font-semibold focus:outline-none focus:border-brand-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-semibold focus:outline-none focus:border-brand-500"
               />
             </div>
           </div>
@@ -52,31 +52,31 @@
       </section>
 
       <section class="calculator-card">
-        <h2 class="text-lg font-bold text-stone-800 mb-4 flex items-center gap-2">🛵 車輛與隱性成本</h2>
+        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">🛵 車輛與隱性成本</h2>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="gasPrice" class="block text-xs font-medium text-stone-500 mb-1">油價 ($/L)</label>
+              <label for="gasPrice" class="block text-xs font-medium text-ink-400 mb-1">油價 ($/L)</label>
               <input
                 id="gasPrice"
                 type="number"
                 v-model.number="gasPrice"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
               />
             </div>
             <div>
-              <label for="kmPerLiter" class="block text-xs font-medium text-stone-500 mb-1">油耗 (KM/L)</label>
+              <label for="kmPerLiter" class="block text-xs font-medium text-ink-400 mb-1">油耗 (KM/L)</label>
               <input
                 id="kmPerLiter"
                 type="number"
                 v-model.number="kmPerLiter"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
               />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="maintenancePerKm" class="block text-xs font-medium text-stone-500 mb-1"
+              <label for="maintenancePerKm" class="block text-xs font-medium text-ink-400 mb-1"
                 >每公里保養攤提</label
               >
               <div class="relative">
@@ -85,12 +85,12 @@
                   type="number"
                   v-model.number="maintenancePerKm"
                   step="0.1"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
                 />
               </div>
             </div>
             <div>
-              <label for="insuranceMonthly" class="block text-xs font-medium text-stone-500 mb-1"
+              <label for="insuranceMonthly" class="block text-xs font-medium text-ink-400 mb-1"
                 >商用保險/折舊</label
               >
               <div class="relative">
@@ -98,7 +98,7 @@
                   id="insuranceMonthly"
                   type="number"
                   v-model.number="insuranceMonthly"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 focus:outline-none focus:border-brand-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
                 />
               </div>
             </div>
@@ -141,26 +141,26 @@
       <!-- 成本結構圖表 -->
       <section class="calculator-card flex items-center">
         <div class="w-1/2">
-          <h3 class="text-sm font-bold text-stone-700 mb-4">支出明細</h3>
+          <h3 class="text-sm font-bold text-ink-600 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">
             <li class="flex justify-between">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span>油錢</span>
-              <span class="font-mono text-stone-600">${{ gasCost }}</span>
+              <span class="font-mono text-ink-500">${{ gasCost }}</span>
             </li>
             <li class="flex justify-between">
               <span class="flex items-center gap-1"
                 ><span class="w-2 h-2 rounded-full bg-orange-400"></span>保養</span
               >
-              <span class="font-mono text-stone-600">${{ maintenanceTotal }}</span>
+              <span class="font-mono text-ink-500">${{ maintenanceTotal }}</span>
             </li>
             <li class="flex justify-between">
               <span class="flex items-center gap-1"
                 ><span class="w-2 h-2 rounded-full bg-gray-400"></span>保險/其他</span
               >
-              <span class="font-mono text-stone-600">${{ insuranceMonthlyDisplay }}</span>
+              <span class="font-mono text-ink-500">${{ insuranceMonthlyDisplay }}</span>
             </li>
-            <li class="mt-2 flex justify-between border-t border-dashed border-stone-100 pt-2 font-bold">
-              <span class="text-stone-700">總成本</span>
+            <li class="mt-2 flex justify-between border-t border-dashed border-paper-100 pt-2 font-bold">
+              <span class="text-ink-600">總成本</span>
               <span class="text-rose-500">-${{ totalCost }}</span>
             </li>
           </ul>

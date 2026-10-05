@@ -44,7 +44,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">差異解讀</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費以「全年累計獎金」比較投保金額 4 倍，本試算以本次年終單筆估算，實際以投保單位核算為準。</p>
         </div>

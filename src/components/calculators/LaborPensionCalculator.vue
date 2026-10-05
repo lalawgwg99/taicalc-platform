@@ -4,51 +4,51 @@
       <!-- 左側：輸入 -->
       <div class="space-y-6 lg:col-span-1">
         <section class="calculator-card">
-          <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
+          <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
             <span>🐢</span> 基礎設定
           </h2>
           <div class="space-y-4">
             <div>
-              <label for="salary" class="block text-xs font-medium text-stone-500 mb-1">月薪 (NT$)</label>
+              <label for="salary" class="block text-xs font-medium text-ink-400 mb-1">月薪 (NT$)</label>
               <input
                 id="salary"
                 type="number"
                 v-model.number="salary"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
             <div>
-              <label for="currentAge" class="block text-xs font-medium text-stone-500 mb-1">目前年齡</label>
+              <label for="currentAge" class="block text-xs font-medium text-ink-400 mb-1">目前年齡</label>
               <input
                 id="currentAge"
                 type="number"
                 v-model.number="currentAge"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
             <div>
-              <label for="retireAge" class="block text-xs font-medium text-stone-500 mb-1">預計退休年齡</label>
+              <label for="retireAge" class="block text-xs font-medium text-ink-400 mb-1">預計退休年齡</label>
               <input
                 id="retireAge"
                 type="number"
                 v-model.number="retireAge"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2.5 px-3 text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
           </div>
         </section>
 
         <section class="calculator-card">
-          <h2 class="text-sm font-bold text-stone-700 mb-4 flex items-center gap-2">
+          <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
             <span>📈</span> 投資與節稅
           </h2>
           <div class="space-y-4">
             <div>
-              <label class="block text-xs font-medium text-stone-500 mb-2">自提比例 (0-6%)</label>
+              <label class="block text-xs font-medium text-ink-400 mb-2">自提比例 (0-6%)</label>
               <div class="flex gap-1">
                 <button v-for="rate in [0, 3, 6]" :key="rate" @click="selfRate = rate"
                                 :class="['flex-1 py-2 rounded-lg text-sm font-medium transition-all group',
-                                         selfRate === rate ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white shadow-md' : 'bg-white/50 text-stone-600 hover:bg-white border border-stone-100']">
+                                         selfRate === rate ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white shadow-md' : 'bg-white/50 text-ink-500 hover:bg-white border border-paper-100']">
                                 {{ rate }}%
                             </button>
                 <input
@@ -57,28 +57,28 @@
                   v-model.number="selfRate"
                   min="0"
                   max="6"
-                  class="w-12 bg-stone-50 border border-stone-200 rounded-lg text-center text-stone-800 text-sm focus:outline-none focus:border-amber-500"
+                  class="w-12 bg-paper-50 border border-ink-100 rounded-lg text-center text-ink-800 text-sm focus:outline-none focus:border-amber-500"
                 />
               </div>
             </div>
             <div>
-              <label for="roiInput" class="block text-xs font-medium text-stone-500 mb-2">預估年報酬率</label>
+              <label for="roiInput" class="block text-xs font-medium text-ink-400 mb-2">預估年報酬率</label>
               <div class="flex gap-1 mb-2">
                 <button
                   @click="roi = 3"
-                  class="flex-1 py-1 rounded bg-stone-100 text-stone-500 text-xs hover:bg-stone-200 transition-colors"
+                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
                 >
                   保守 3%
                 </button>
                 <button
                   @click="roi = 5"
-                  class="flex-1 py-1 rounded bg-stone-100 text-stone-500 text-xs hover:bg-stone-200 transition-colors"
+                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
                 >
                   穩健 5%
                 </button>
                 <button
                   @click="roi = 8"
-                  class="flex-1 py-1 rounded bg-stone-100 text-stone-500 text-xs hover:bg-stone-200 transition-colors"
+                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
                 >
                   積極 8%
                 </button>
@@ -88,15 +88,15 @@
                 type="number"
                 v-model.number="roi"
                 step="0.5"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 text-sm focus:outline-none focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 text-sm focus:outline-none focus:border-amber-500"
               />
             </div>
             <div>
-              <label for="taxRateSelect" class="block text-xs font-medium text-stone-500 mb-2">所得稅率 (計算節稅)</label>
+              <label for="taxRateSelect" class="block text-xs font-medium text-ink-400 mb-2">所得稅率 (計算節稅)</label>
               <select
                 id="taxRateSelect"
                 v-model.number="taxRate"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-2 px-3 text-stone-800 text-sm focus:outline-none appearance-none"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 text-sm focus:outline-none appearance-none"
               >
                 <option :value="5">5% (所得淨額 0-61萬)</option>
                 <option :value="12">12% (61-138萬)</option>
@@ -115,16 +115,16 @@
         <section class="calculator-card">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
             <div>
-              <p class="text-xs text-stone-500 uppercase tracking-wider mb-1">
+              <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">
                 預估累積總額 ({{ retireAge - currentAge }} 年)
               </p>
               <p class="text-4xl font-bold stat-value text-amber-600">
-                <span class="text-2xl text-stone-400 mr-1">$</span>{{ totalAmount.toLocaleString() }}
+                <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalAmount.toLocaleString() }}
               </p>
             </div>
             <div class="text-left sm:text-right">
-              <p class="text-xs text-stone-500 mb-1">預估月領 (20年年金)</p>
-              <p class="text-xl font-semibold text-stone-700 stat-value">${{ monthlyPension.toLocaleString() }}</p>
+              <p class="text-xs text-ink-400 mb-1">預估月領 (20年年金)</p>
+              <p class="text-xl font-semibold text-ink-600 stat-value">${{ monthlyPension.toLocaleString() }}</p>
             </div>
           </div>
 
@@ -138,24 +138,24 @@
         <div class="grid sm:grid-cols-2 gap-4">
           <!-- 資金結構 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-stone-700 mb-4">💰 資金結構 (本金 vs 複利)</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">💰 資金結構 (本金 vs 複利)</h3>
             <div class="space-y-4">
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-stone-500">投資收益({{ interestPercent }}%)</span>
+                  <span class="text-ink-400">投資收益({{ interestPercent }}%)</span>
                   <span class="text-amber-600 font-bold">+${{ totalInterest.toLocaleString() }}</span>
                 </div>
-                <div class="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
                   <div class="bg-amber-500 h-full" :style="{ width: interestPercent + '%' }"></div>
                 </div>
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-stone-500">本金投入({{ principalPercent }}%)</span>
-                  <span class="text-stone-700 font-bold">${{ totalPrincipal.toLocaleString() }}</span>
+                  <span class="text-ink-400">本金投入({{ principalPercent }}%)</span>
+                  <span class="text-ink-600 font-bold">${{ totalPrincipal.toLocaleString() }}</span>
                 </div>
-                <div class="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
-                  <div class="bg-stone-500 h-full" :style="{ width: principalPercent + '%' }"></div>
+                <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
+                  <div class="bg-ink-400 h-full" :style="{ width: principalPercent + '%' }"></div>
                 </div>
               </div>
             </div>
@@ -163,23 +163,23 @@
 
           <!-- 節稅 & 月提 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-stone-700 mb-4">🎁 節稅效益</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">🎁 節稅效益</h3>
             <div class="relative z-10">
                 <div class="text-center mb-6">
-                    <p class="text-stone-500 text-sm mb-1 uppercase tracking-wider">每年預估省稅</p>
+                    <p class="text-ink-400 text-sm mb-1 uppercase tracking-wider">每年預估省稅</p>
                     <p class="text-4xl md:text-5xl font-bold text-brand-600">
                         <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
-                    <p class="text-xs text-stone-400 mt-2">根據您的稅率 {{ taxRate }}% 計算</p>
+                    <p class="text-xs text-ink-300 mt-2">根據您的稅率 {{ taxRate }}% 計算</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
-                    <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-400 mb-1">自提總投入</p>
-                        <p class="text-lg font-bold text-stone-700">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
+                    <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
+                        <p class="text-xs text-ink-300 mb-1">自提總投入</p>
+                        <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
                     </div>
-                    <div class="bg-white/50 rounded-xl p-3 text-center border border-stone-100">
-                        <p class="text-xs text-stone-400 mb-1">累計省稅</p>
+                    <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
+                        <p class="text-xs text-ink-300 mb-1">累計省稅</p>
                         <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
                     </div>
                 </div>
@@ -188,8 +188,8 @@
         </div>
 
         <!-- 說明 -->
-        <div class="p-5 rounded-xl border border-stone-200 bg-stone-50 text-xs text-stone-500 space-y-2 leading-relaxed">
-          <p class="font-bold text-stone-700">ℹ️ 極致使用技巧：</p>
+        <div class="p-5 rounded-xl border border-ink-100 bg-paper-50 text-xs text-ink-400 space-y-2 leading-relaxed">
+          <p class="font-bold text-ink-600">ℹ️ 極致使用技巧：</p>
           <ul class="list-disc pl-4 space-y-1">
             <li>
               <strong>為什麼要自提？</strong>
@@ -334,7 +334,7 @@ const updateChart = () => {
         {
           label: '僅雇主提撥(6%)',
           data: projection.value.map((d) => d.balanceBasic),
-          borderColor: '#a8a29e', // stone-400
+          borderColor: '#a8a29e', // ink-300
           borderDash: [5, 5],
           borderWidth: 2,
           pointRadius: 0,

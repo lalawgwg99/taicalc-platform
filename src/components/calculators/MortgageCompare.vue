@@ -18,7 +18,7 @@
                     <p class="text-sm font-semibold text-ink-600">{{ side.label }}</p>
                     <span v-if="side.key === 'a'"
                         class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">優惠補貼</span>
-                    <span v-else class="data-pill !px-2.5 !py-1 text-stone-600 bg-stone-100 border-stone-200">一般市場</span>
+                    <span v-else class="data-pill !px-2.5 !py-1 text-ink-500 bg-paper-100 border-ink-100">一般市場</span>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
@@ -65,7 +65,7 @@
 
         <!-- 差異摘要 -->
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">兩案差多少</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">兩案差多少</p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <p class="text-[11px] text-ink-400">月付差額（寬限期後）</p>

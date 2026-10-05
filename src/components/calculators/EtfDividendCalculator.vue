@@ -60,7 +60,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">差異解讀</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">試算為估算值。配息所得可選擇併入綜合所得稅（8.5% 可抵減稅額，上限 8 萬元）或按 28% 分開計稅，實際稅負請以報稅結果為準。</p>
         </div>

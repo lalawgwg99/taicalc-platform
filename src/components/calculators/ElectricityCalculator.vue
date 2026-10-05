@@ -5,21 +5,21 @@
         <button
           @click="isSummer = true"
           :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
-          isSummer ? 'bg-orange-500 text-white border-orange-600 shadow-md shadow-orange-200' : 'bg-stone-50 text-stone-500 border-stone-200 hover:bg-stone-100']"
+          isSummer ? 'bg-orange-500 text-white border-orange-600 shadow-md shadow-orange-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
         >
           <span>🌞</span> 夏月 (6-9月)
         </button>
         <button
           @click="isSummer = false"
           :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
-          !isSummer ? 'bg-blue-500 text-white border-blue-600 shadow-md shadow-blue-200' : 'bg-stone-50 text-stone-500 border-stone-200 hover:bg-stone-100']"
+          !isSummer ? 'bg-brand-500 text-white border-brand-600 shadow-md shadow-brand-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
         >
           <span>❄️</span> 非夏月
         </button>
       </div>
 
       <div>
-        <label for="kwhInput" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+        <label for="kwhInput" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
           每月用電度數 (度)
         </label>
         <div class="relative">
@@ -27,9 +27,9 @@
             id="kwhInput"
             type="number"
             v-model.number="kwh"
-            class="w-full bg-white border border-stone-200 rounded-xl py-3 px-4 text-gray-900 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder-stone-400"
+            class="w-full bg-white border border-ink-100 rounded-xl py-3 px-4 text-gray-900 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder-ink-300"
           />
-          <span class="absolute right-4 top-4 text-stone-400 font-medium">kWh</span>
+          <span class="absolute right-4 top-4 text-ink-300 font-medium">kWh</span>
         </div>
 
         <label for="kwhRange" class="sr-only">調整度數</label>
@@ -42,7 +42,7 @@
           step="10"
           class="w-full mt-6 accent-amber-500 cursor-pointer"
         />
-        <div class="flex justify-between text-[10px] text-stone-400 mt-1 font-mono">
+        <div class="flex justify-between text-[10px] text-ink-300 mt-1 font-mono">
           <span>0</span><span>500</span><span>1000</span><span>1500</span><span>2000</span>
         </div>
       </div>
@@ -54,44 +54,44 @@
         <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">台電累進電價</span>
       </div>
       <hr class="receipt-divider" />
-      <div class="flex items-end justify-between mb-6 pb-6 border-b border-stone-100">
+      <div class="flex items-end justify-between mb-6 pb-6 border-b border-paper-100">
         <div>
-          <p class="text-xs text-stone-500 font-semibold uppercase tracking-wider mb-1">預估電費</p>
+          <p class="text-xs text-ink-400 font-semibold uppercase tracking-wider mb-1">預估電費</p>
           <p
             class="text-4xl sm:text-5xl font-bold font-mono tracking-tight"
-            :class="isSummer ? 'text-orange-600' : 'text-blue-600'"
+            :class="isSummer ? 'text-orange-600' : 'text-brand-600'"
           >
-            <span class="text-2xl text-stone-400 mr-1">$</span>{{ totalCost.toLocaleString() }}
+            <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalCost.toLocaleString() }}
           </p>
-          <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-stone-500">
+          <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-ink-400">
             已含每月最低計收 $100，補足 ${{ minimumChargeApplied }}
           </p>
         </div>
         <div class="text-right">
-          <p class="text-xs text-stone-500 mb-1">平均每度</p>
-          <p class="text-xl font-bold text-stone-700 font-mono">${{ avgRate }}</p>
+          <p class="text-xs text-ink-400 mb-1">平均每度</p>
+          <p class="text-xl font-bold text-ink-600 font-mono">${{ avgRate }}</p>
         </div>
       </div>
 
       <div class="space-y-3 mb-6">
         <div v-for="(tier, i) in breakdown" :key="i" class="relative">
-          <div class="flex justify-between text-xs text-stone-500 mb-1 font-medium">
+          <div class="flex justify-between text-xs text-ink-400 mb-1 font-medium">
             <span>{{ tier.label }}</span>
             <span>
-              {{ tier.kwh }}度 × ${{ tier.rate }} = <span class="font-bold text-stone-700">${{ tier.cost }}</span>
+              {{ tier.kwh }}度 × ${{ tier.rate }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
             </span>
           </div>
-          <div class="h-2.5 bg-stone-100 rounded-full overflow-hidden border border-stone-200">
+          <div class="h-2.5 bg-paper-100 rounded-full overflow-hidden border border-ink-100">
             <div
               class="h-full rounded-full transition-all duration-500"
-              :class="i === breakdown.length - 1 && breakdown.length > 1 ? 'bg-red-500' : (isSummer ? 'bg-orange-400' : 'bg-blue-400')"
+              :class="i === breakdown.length - 1 && breakdown.length > 1 ? 'bg-red-500' : (isSummer ? 'bg-orange-400' : 'bg-brand-400')"
               :style="{ width: (tier.cost / Math.max(1, energyCharge) * 100) + '%' }"
             ></div>
           </div>
         </div>
-        <div v-if="minimumChargeApplied > 0" class="flex justify-between text-xs text-stone-500 pt-2 border-t border-stone-100">
+        <div v-if="minimumChargeApplied > 0" class="flex justify-between text-xs text-ink-400 pt-2 border-t border-paper-100">
           <span>每月最低計收補足</span>
-          <span class="font-bold text-stone-700">+$ {{ minimumChargeApplied }}</span>
+          <span class="font-bold text-ink-600">+$ {{ minimumChargeApplied }}</span>
         </div>
       </div>
 
@@ -107,9 +107,9 @@
     </section>
 
     <section class="calculator-card">
-      <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
+      <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
         <span class="text-lg">💡</span> 省電模擬
-        <span class="text-stone-400 font-normal text-xs ml-auto">如果每月少用...</span>
+        <span class="text-ink-300 font-normal text-xs ml-auto">如果每月少用...</span>
       </h2>
 
       <div class="grid grid-cols-3 gap-3">
@@ -117,10 +117,10 @@
           v-for="n in [30, 50, 100]"
           :key="n"
           @click="simulateSave(n)"
-          class="bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl p-3 text-center transition-all group active:scale-95"
+          class="bg-paper-50 hover:bg-paper-100 border border-ink-100 rounded-xl p-3 text-center transition-all group active:scale-95"
         >
-          <p class="text-lg font-bold text-stone-700 group-hover:text-brand-600">-{{ n }} 度</p>
-          <p class="text-xs text-stone-500 mt-1">省 ${{ getSaving(n) }}</p>
+          <p class="text-lg font-bold text-ink-600 group-hover:text-brand-600">-{{ n }} 度</p>
+          <p class="text-xs text-ink-400 mt-1">省 ${{ getSaving(n) }}</p>
         </button>
       </div>
 
@@ -138,48 +138,48 @@
     </section>
 
     <section class="calculator-card">
-      <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
+      <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
         <span class="text-lg">👻</span> 耗電怪獸分析
       </h2>
 
-      <div class="bg-stone-50 rounded-xl p-4 mb-6 border border-stone-200">
+      <div class="bg-paper-50 rounded-xl p-4 mb-6 border border-ink-100">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-1">
-            <label class="block text-xs font-semibold text-stone-500 mb-1">選擇電器</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">選擇電器</label>
             <select
               v-model="newAppliance.preset"
               @change="applyPreset"
               title="選擇電器"
-              class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+              class="w-full bg-white border border-ink-100 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
             >
               <option value="" disabled>--- 請選擇 ---</option>
               <option v-for="item in appliancePresets" :key="item.name" :value="item">{{ item.name }}</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-stone-500 mb-1">功率 (瓦特 W)</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">功率 (瓦特 W)</label>
             <input
               type="number"
               v-model.number="newAppliance.watts"
               placeholder="W"
-              class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+              class="w-full bg-white border border-ink-100 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
             />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-stone-500 mb-1">每日時數 (hr)</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">每日時數 (hr)</label>
             <input
               type="number"
               v-model.number="newAppliance.hours"
               placeholder="hr"
               min="0"
               max="24"
-              class="w-full bg-white border border-stone-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+              class="w-full bg-white border border-ink-100 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
             />
           </div>
         </div>
         <button
           @click="addAppliance"
-          class="mt-3 w-full py-2 bg-stone-800 text-white rounded-lg text-sm font-bold hover:bg-stone-700 transition-colors"
+          class="mt-3 w-full py-2 bg-ink-800 text-white rounded-lg text-sm font-bold hover:bg-ink-600 transition-colors"
         >
           + 加入清單
         </button>
@@ -190,20 +190,20 @@
           <div
             v-for="(app, idx) in userAppliances"
             :key="idx"
-            class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100"
+            class="flex items-center justify-between p-3 bg-paper-50 rounded-xl border border-paper-100"
           >
             <div>
-              <p class="font-bold text-stone-700 text-sm">{{ app.name }}</p>
-              <p class="text-xs text-stone-500">{{ app.watts }}W × {{ app.hours }}hr/日</p>
+              <p class="font-bold text-ink-600 text-sm">{{ app.name }}</p>
+              <p class="text-xs text-ink-400">{{ app.watts }}W × {{ app.hours }}hr/日</p>
             </div>
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <p class="font-bold text-stone-800 text-sm">{{ Math.round(app.monthlyKwh) }}度</p>
-                <p class="text-xs text-stone-400">約 ${{ Math.round(app.monthlyCost) }}</p>
+                <p class="font-bold text-ink-800 text-sm">{{ Math.round(app.monthlyKwh) }}度</p>
+                <p class="text-xs text-ink-300">約 ${{ Math.round(app.monthlyCost) }}</p>
               </div>
               <button
                 @click="removeAppliance(idx)"
-                class="text-stone-300 hover:text-red-500"
+                class="text-ink-200 hover:text-red-500"
                 title="移除"
                 aria-label="移除電器"
               >
@@ -224,17 +224,17 @@
               </button>
             </div>
           </div>
-          <div class="pt-3 border-t border-stone-100 flex justify-between items-center text-sm">
-            <span class="text-stone-500">分析總計</span>
-            <span class="font-bold text-stone-800">{{ totalGhostKwh }} 度 ({{ ghostCoverage }}%)</span>
+          <div class="pt-3 border-t border-paper-100 flex justify-between items-center text-sm">
+            <span class="text-ink-400">分析總計</span>
+            <span class="font-bold text-ink-800">{{ totalGhostKwh }} 度 ({{ ghostCoverage }}%)</span>
           </div>
         </div>
 
-        <div class="flex flex-col items-center justify-center bg-stone-50 rounded-xl p-4 border border-stone-100">
+        <div class="flex flex-col items-center justify-center bg-paper-50 rounded-xl p-4 border border-paper-100">
           <div class="w-full h-[200px] relative">
             <canvas id="ghostChart"></canvas>
           </div>
-          <p class="text-xs text-stone-400 mt-2 text-center" v-if="ghostCoverage < 100">
+          <p class="text-xs text-ink-300 mt-2 text-center" v-if="ghostCoverage < 100">
             還有 {{ 100 - ghostCoverage }}% 用電未被分析到
           </p>
         </div>
@@ -242,7 +242,7 @@
     </section>
 
     <section class="calculator-card">
-      <h2 class="text-sm font-bold text-stone-800 mb-4 flex items-center gap-2">
+      <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
         <span class="text-lg">🌡️</span> 冷氣耗電估算
       </h2>
 
@@ -254,8 +254,8 @@
           :class="[
             'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
             acInputMode === mode.id
-              ? 'border-blue-500 bg-blue-50 text-blue-700'
-              : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+              ? 'border-brand-500 bg-brand-50 text-brand-700'
+              : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
           ]"
         >
           {{ mode.label }}
@@ -264,7 +264,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div v-if="acInputMode === 'kw'">
-          <label for="acPower" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+          <label for="acPower" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             電功率
           </label>
           <input
@@ -275,7 +275,7 @@
             max="20"
             step="0.1"
             aria-label="冷氣電功率"
-            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
           <div class="mt-2 flex flex-wrap gap-2">
             <button
@@ -283,16 +283,16 @@
               :key="preset"
               type="button"
               @click="acPower = preset"
-              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
             >
               {{ preset }} kW
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-stone-400">直接輸入銘板上的消耗功率，適合已知實際耗電規格時使用。</p>
+          <p class="mt-2 text-[11px] text-ink-300">直接輸入銘板上的消耗功率，適合已知實際耗電規格時使用。</p>
         </div>
 
         <div v-else-if="acInputMode === 'btu'">
-          <label for="acBtu" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+          <label for="acBtu" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             冷房能力
           </label>
           <input
@@ -303,7 +303,7 @@
             max="120000"
             step="500"
             aria-label="冷房能力 BTU/h"
-            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
           <div class="mt-2 flex flex-wrap gap-2">
             <button
@@ -311,16 +311,16 @@
               :key="preset"
               type="button"
               @click="acBtu = preset"
-              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
             >
               {{ preset.toLocaleString() }}
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-stone-400">BTU/h 是冷房能力，不是耗電功率，仍需搭配 COP 或 CSPF 估算輸入功率。</p>
+          <p class="mt-2 text-[11px] text-ink-300">BTU/h 是冷房能力，不是耗電功率，仍需搭配 COP 或 CSPF 估算輸入功率。</p>
         </div>
 
         <div v-else>
-          <label for="acCapacityKw" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+          <label for="acCapacityKw" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             冷房能力
           </label>
           <input
@@ -331,7 +331,7 @@
             max="35"
             step="0.1"
             aria-label="冷房能力 kW"
-            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
           <div class="mt-2 flex flex-wrap gap-2">
             <button
@@ -339,16 +339,16 @@
               :key="preset"
               type="button"
               @click="acCapacityKw = preset"
-              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
             >
               {{ preset }} kW
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-stone-400">若銘板標示為冷房能力 kW，可在這裡直接搭配 COP 或 CSPF 換算。</p>
+          <p class="mt-2 text-[11px] text-ink-300">若銘板標示為冷房能力 kW，可在這裡直接搭配 COP 或 CSPF 換算。</p>
         </div>
 
         <div>
-          <label for="acHours" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+          <label for="acHours" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             每日時數
           </label>
           <input
@@ -357,23 +357,23 @@
             v-model.number="acHours"
             min="0"
             max="24"
-            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
-          <p class="mt-2 text-[11px] text-stone-400">依每天平均運轉時數估算，變頻機實際耗電仍會受室外溫度與設定溫度影響。</p>
+          <p class="mt-2 text-[11px] text-ink-300">依每天平均運轉時數估算，變頻機實際耗電仍會受室外溫度與設定溫度影響。</p>
         </div>
       </div>
 
       <div v-if="acInputMode !== 'kw'" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">效能指標</label>
+          <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">效能指標</label>
           <div class="grid grid-cols-2 gap-2">
             <button
               @click="acEfficiencyType = 'cop'"
               :class="[
                 'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
                 acEfficiencyType === 'cop'
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
               ]"
             >
               COP
@@ -383,19 +383,19 @@
               :class="[
                 'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
                 acEfficiencyType === 'cspf'
-                  ? 'border-blue-500 bg-blue-50 text-blue-700'
-                  : 'border-stone-200 bg-stone-50 text-stone-500 hover:bg-stone-100'
+                  ? 'border-brand-500 bg-brand-50 text-brand-700'
+                  : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
               ]"
             >
               CSPF
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-stone-400">
+          <p class="mt-2 text-[11px] text-ink-300">
             COP 可近似即時效率；CSPF 是季節效率，本工具以平均值粗估輸入功率。
           </p>
         </div>
         <div>
-          <label for="acEfficiencyValue" class="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wide">
+          <label for="acEfficiencyValue" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             {{ acEfficiencyType.toUpperCase() }} 數值
           </label>
           <input
@@ -406,7 +406,7 @@
             max="8"
             step="0.1"
             aria-label="效能值"
-            class="w-full bg-white border border-stone-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
           <div class="mt-2 flex flex-wrap gap-2">
             <button
@@ -414,7 +414,7 @@
               :key="preset"
               type="button"
               @click="acEfficiencyValue = preset"
-              class="px-2.5 py-1 rounded-full border border-stone-200 bg-stone-50 text-xs text-stone-600 hover:border-blue-300 hover:text-blue-700 transition-colors"
+              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
             >
               {{ preset }}
             </button>
@@ -422,38 +422,38 @@
         </div>
       </div>
 
-      <div class="mt-4 p-4 bg-stone-100/50 rounded-xl border border-stone-100">
+      <div class="mt-4 p-4 bg-paper-100/50 rounded-xl border border-paper-100">
         <div class="flex flex-col gap-1 text-center">
-          <p class="text-stone-500 text-xs font-medium">冷氣每月預估</p>
+          <p class="text-ink-400 text-xs font-medium">冷氣每月預估</p>
           <div class="flex items-center justify-center gap-2 mt-1">
-            <p class="text-2xl font-bold text-stone-800 font-mono">
-              {{ acMonthlyKwh }} <span class="text-sm font-sans text-stone-500 font-normal">度</span>
+            <p class="text-2xl font-bold text-ink-800 font-mono">
+              {{ acMonthlyKwh }} <span class="text-sm font-sans text-ink-400 font-normal">度</span>
             </p>
-            <span class="text-stone-300">|</span>
-            <p class="text-sm text-stone-500">約 ${{ acMonthlyCost }}</p>
+            <span class="text-ink-200">|</span>
+            <p class="text-sm text-ink-400">約 ${{ acMonthlyCost }}</p>
           </div>
-          <p class="text-xs text-stone-500 mt-1">
+          <p class="text-xs text-ink-400 mt-1">
             {{ acEstimateLabel }}
           </p>
-          <p v-if="acInputMode !== 'kw'" class="text-[11px] text-stone-400">
+          <p v-if="acInputMode !== 'kw'" class="text-[11px] text-ink-300">
             冷房能力 {{ acCoolingCapacityKw.toFixed(2) }} kW
             <span class="mx-1">≈</span>
             {{ acCoolingCapacityBtu.toLocaleString() }} BTU/h
             <span class="mx-1">→</span>
             推估輸入功率 {{ acEstimatedInputKw.toFixed(2) }} kW
           </p>
-          <button @click="addAcToGhost" class="mt-2 text-xs text-blue-600 hover:underline">
+          <button @click="addAcToGhost" class="mt-2 text-xs text-brand-600 hover:underline">
             + 加入到耗電怪獸分析
           </button>
         </div>
       </div>
     </section>
 
-    <footer class="bg-stone-50 border border-stone-200 rounded-xl p-4 text-xs text-stone-500">
-      <p class="font-bold text-stone-600 mb-2">📌 資料版本與說明</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-stone-500">
+    <footer class="bg-paper-50 border border-ink-100 rounded-xl p-4 text-xs text-ink-400">
+      <p class="font-bold text-ink-500 mb-2">📌 資料版本與說明</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-ink-400">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
-        <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400"></span> 非夏月：其他月份</div>
+        <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-400"></span> 非夏月：其他月份</div>
         <div class="md:col-span-2">住宅累進級距採台電 2025-10-01 起實施費率：夏月 $1.78–$8.86、非夏月 $1.78–$7.03。</div>
         <div class="md:col-span-2">已納入 2025-09-12 公告後之每月最低計收 $100 規則；冷氣 BTU/h、CSPF 換算為平均估算值，仍以設備銘板與實際帳單為準。</div>
       </div>

@@ -57,7 +57,7 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">節稅效益</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">節稅效益</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-300">自提 6% 每年節稅約 $ {{ fmt(yearlyTaxSaving) }}。勞退專戶具保證收益下限，但提領受法定年齡限制。</p>
         </div>

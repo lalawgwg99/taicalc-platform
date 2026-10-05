@@ -192,32 +192,32 @@
         <!-- 競品優勢：方案對照與年度明細展延卡 -->
         <div class="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs font-semibold text-stone-500 uppercase tracking-wider">📊 方案與試算明細</h3>
+            <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">📊 方案與試算明細</h3>
             <button 
               @click="showSchedule = !showSchedule" 
-              class="text-xs text-blue-600 font-semibold hover:bg-blue-50 px-2.5 py-1 rounded-lg transition-colors"
+              class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"
             >
               {{ showSchedule ? '收起年度明細 ▲' : '展開 480 期年度還款明細 ▼' }}
             </button>
           </div>
 
           <!-- 480期/年度還款明細表 -->
-          <div v-if="showSchedule" class="mt-3 border-t border-stone-200/60 pt-3 max-h-72 overflow-y-auto font-mono text-xs">
+          <div v-if="showSchedule" class="mt-3 border-t border-ink-100/60 pt-3 max-h-72 overflow-y-auto font-mono text-xs">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-stone-200 text-stone-400 font-sans">
+                <tr class="border-b border-ink-100 text-ink-300 font-sans">
                   <th class="py-1.5">年度</th>
                   <th class="py-1.5 text-right">年度本金</th>
                   <th class="py-1.5 text-right">年度利息</th>
                   <th class="py-1.5 text-right">期末剩餘本金</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-stone-100">
-                <tr v-for="item in yearlySchedule" :key="item.year" class="hover:bg-stone-50">
-                  <td class="py-1.5 font-semibold text-stone-700">第 {{ item.year }} 年</td>
-                  <td class="py-1.5 text-right text-stone-900">${{ item.yearPrincipal.toLocaleString() }}</td>
+              <tbody class="divide-y divide-paper-100">
+                <tr v-for="item in yearlySchedule" :key="item.year" class="hover:bg-paper-50">
+                  <td class="py-1.5 font-semibold text-ink-600">第 {{ item.year }} 年</td>
+                  <td class="py-1.5 text-right text-ink-900">${{ item.yearPrincipal.toLocaleString() }}</td>
                   <td class="py-1.5 text-right text-amber-600">${{ item.yearInterest.toLocaleString() }}</td>
-                  <td class="py-1.5 text-right text-stone-500">${{ item.remainingBalance.toLocaleString() }}</td>
+                  <td class="py-1.5 text-right text-ink-400">${{ item.remainingBalance.toLocaleString() }}</td>
                 </tr>
               </tbody>
             </table>

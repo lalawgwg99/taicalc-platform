@@ -22,51 +22,51 @@
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-stone-500 mb-1">繳費年期 (年)</label>
+              <label class="block text-xs font-semibold text-ink-400 mb-1">繳費年期 (年)</label>
               <input
                 type="number"
                 v-model.number="irr.years"
                 aria-label="繳費年期"
                 placeholder="6"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-stone-500 mb-1">年繳保費</label>
+              <label class="block text-xs font-semibold text-ink-400 mb-1">年繳保費</label>
               <input
                 type="number"
                 v-model.number="irr.premium"
                 aria-label="年繳保費"
                 placeholder="100000"
-                class="w-full bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-stone-500 mb-1">期滿解約/領回金額 (第N年末)</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">期滿解約/領回金額 (第N年末)</label>
             <div class="flex gap-2">
               <input
                 type="number"
                 v-model.number="irr.endYear"
                 aria-label="領回年度"
                 placeholder="第幾年領回? (如: 6)"
-                class="w-24 bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-24 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
               <input
                 type="number"
                 v-model.number="irr.cashValue"
                 aria-label="領回金額"
                 placeholder="解約金金額"
-                class="flex-1 bg-stone-50 border border-stone-200 rounded-xl py-3 px-4 text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="flex-1 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
-            <p class="text-[10px] text-stone-400 mt-1">請輸入您預計在哪一年解約或滿期領回，以及當時的「年度末解約金」。</p>
+            <p class="text-[10px] text-ink-300 mt-1">請輸入您預計在哪一年解約或滿期領回，以及當時的「年度末解約金」。</p>
           </div>
         </div>
 
         <!-- Result -->
-        <div class="pt-4 border-t border-stone-100">
+        <div class="pt-4 border-t border-paper-100">
           <div
             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 text-center border border-amber-100"
           >
@@ -81,7 +81,7 @@
               <span v-else class="font-bold text-red-500">低於定存</span>
             </p>
           </div>
-          <div class="mt-4 text-xs text-stone-400">
+          <div class="mt-4 text-xs text-ink-300">
             <p>計算說明：假設保費於每年年初繳納，解約金於該年度末領回。</p>
           </div>
         </div>
@@ -91,33 +91,33 @@
       <div v-if="mode === 'needs'" class="calculator-shell">
         <!-- Liabilities -->
         <div class="space-y-3">
-          <h3 class="text-sm font-bold text-stone-700 border-l-4 border-blue-500 pl-2">1. 家庭責任 (負債與開銷)</h3>
+          <h3 class="text-sm font-bold text-ink-600 border-l-4 border-brand-500 pl-2">1. 家庭責任 (負債與開銷)</h3>
           <div class="grid grid-cols-1 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-stone-500 mb-1">房貸與其他負債餘額</label>
+              <label class="block text-xs font-semibold text-ink-400 mb-1">房貸與其他負債餘額</label>
               <input
                 type="number"
                 v-model.number="needs.debt"
                 aria-label="負債餘額"
-                class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
               />
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold text-stone-500 mb-1">家庭年支出 (不含房貸)</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">家庭年支出 (不含房貸)</label>
                 <input
                   type="number"
                   v-model.number="needs.expenses"
                   aria-label="家庭年支出"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-stone-500 mb-1">預留年數</label>
+                <label class="block text-xs font-semibold text-ink-400 mb-1">預留年數</label>
                 <select
                   v-model.number="needs.years"
                   aria-label="預留年數"
-                  class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 >
                   <option value="5">5年 (緩衝期)</option>
                   <option value="10">10年 (子女成年前)</option>
@@ -130,29 +130,29 @@
 
         <!-- Assets -->
         <div class="space-y-3">
-          <h3 class="text-sm font-bold text-stone-700 border-l-4 border-green-500 pl-2">2. 現有資產</h3>
+          <h3 class="text-sm font-bold text-ink-600 border-l-4 border-green-500 pl-2">2. 現有資產</h3>
           <div>
-            <label class="block text-xs font-semibold text-stone-500 mb-1">存款與投資總額</label>
+            <label class="block text-xs font-semibold text-ink-400 mb-1">存款與投資總額</label>
             <input
               type="number"
               v-model.number="needs.assets"
               aria-label="現有資產"
-              class="w-full bg-stone-50 border border-stone-200 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-green-500"
+              class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-green-500"
             />
           </div>
         </div>
 
         <!-- Result -->
-        <div class="pt-4 border-t border-stone-100">
-          <div class="bg-stone-50 rounded-xl p-6 border border-stone-200 text-center">
-            <p class="text-xs text-stone-500 uppercase tracking-wide mb-1">建議壽險保額 (責任缺口)</p>
+        <div class="pt-4 border-t border-paper-100">
+          <div class="bg-paper-50 rounded-xl p-6 border border-ink-100 text-center">
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">建議壽險保額 (責任缺口)</p>
             <p
               class="text-3xl font-bold font-mono tracking-tight"
-              :class="needsResult > 0 ? 'text-blue-600' : 'text-green-600'"
+              :class="needsResult > 0 ? 'text-brand-600' : 'text-green-600'"
             >
               {{ needsResult > 0 ? '$' + fmt(needsResult) : '資產已足夠' }}
             </p>
-            <p class="text-sm text-stone-500 mt-2" v-if="needsResult > 0">
+            <p class="text-sm text-ink-400 mt-2" v-if="needsResult > 0">
               (負債 + 家庭支出) - 現有資產 = 需補足的保障
             </p>
           </div>
