@@ -14,12 +14,6 @@ const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.cate
 }));
 const categoryNames = supportCategories.map((group) => group.category);
 
-const quickLinks = [
-    '/tools/delivery-income-calculator',
-    '/tools/split-calculator',
-    '/tools/electricity-calculator',
-    '/tools/salary-calculator',
-].map((path) => getToolByHref(path)!);
 const featuredDecisions = [
     '/tools/delivery-income-calculator',
     '/tools/split-calculator',
@@ -30,6 +24,9 @@ const featuredDecisions = [
     '/tools/labor-pension-calculator',
     '/tools/mortgage-calculator',
     '/tools/income-tax-calculator',
+    '/tools/fire-calculator',
+    '/tools/etf-dividend-calculator',
+    '/tools/car-cost-calculator',
 ].map((path) => getToolByHref(path)!);
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
@@ -75,61 +72,42 @@ const toolListSchema = JSON.stringify({
 <Layout title={title} description={description} keywords={keywords} fullWidth>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
     <script type="application/ld+json" set:html={toolListSchema} slot="head" />
-    <section class="decision-hero relative overflow-hidden py-10 sm:py-14 md:py-20">
-        <div class="max-w-6xl mx-auto px-4 md:px-6 relative">
-            <div class="decision-hero-shell grid gap-1 lg:grid-cols-[1.15fr_0.85fr]">
-                <div class="decision-hero-copy animate-fade-in-up reveal" data-reveal>
-                    <p class="text-[11px] font-semibold tracking-[.2em] text-brand-300">台灣生活計算工具</p>
-                    <h1 class="mt-4 max-w-2xl text-[2.15rem] leading-[1.1] font-semibold tracking-[-.02em] text-white sm:text-5xl lg:text-[4rem] lg:tracking-[-.045em] lg:leading-[1.02]">
-                        人生很難選，<br />數字可以先算。
-                    </h1>
-                    <p class="mt-4 max-w-xl text-[15px] leading-7 text-ink-200">
-                        把薪資、房貸、買車與稅務算清楚，再做決定。
-                    </p>
+    <section class="v2-hero relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 md:px-6 relative py-12 sm:py-16 md:py-24">
+            <p class="v2-hero-kicker">台灣生活計算工具</p>
+            <h1 class="v2-hero-h1">
+                人生很難選，<br />數字可以先算。
+            </h1>
+            <p class="v2-hero-sub">
+                把薪資、房貸、買車與稅務算清楚，再做決定。
+            </p>
 
-                    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                        <a href="#tool-discovery" class="decision-primary" data-sfx="accent">找工具</a>
-                        <a href="#support-tools" class="decision-secondary" data-sfx="tap">全部工具</a>
-                    </div>
-
-                    <div class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-ink-200">
-                        <span>免註冊</span><span>資料年度與來源</span>
-                    </div>
+            <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="v2-hero-search reveal" data-reveal>
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="v2-search-input" />
+                    <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
+                    <p id="search-status" class="sr-only" aria-live="polite"></p>
                 </div>
 
-                <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="decision-search w-full p-5 sm:p-6 md:p-7 animate-fade-in-up reveal" data-reveal style="animation-delay: 120ms;">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-lg font-semibold text-ink-800">找計算器</p>
-                        </div>
-                    </div>
-
-                    <div class="relative mt-4">
-                        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                        </svg>
-                        <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="input-clean pl-10 pr-4 text-sm" />
-                        <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
-                        <p id="search-status" class="sr-only" aria-live="polite"></p>
-                    </div>
-
-                    <div class="mt-5 grid gap-2">
-                        {quickLinks.map(tool => (
-                            <a
-                                href={tool.href}
-                                class="group flex items-center justify-between gap-3 rounded-xl border border-paper-300 bg-paper-100 px-3 py-2.5 hover:bg-paper-200 transition-colors"
-                                data-sfx="tap"
-                            >
-                                <div>
-                                    <p class="text-sm font-semibold text-ink-700">{tool.label}</p>
-                                    <p class="text-xs text-ink-500 mt-0.5">{tool.scenario}</p>
-                                </div>
-                                <svg class="text-ink-500 group-hover:text-brand transition-colors shrink-0" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                            </a>
-                        ))}
-                    </div>
-
+                <div class="v2-scenarios" role="group" aria-label="情境快速入口">
+                    <button type="button" data-scenario-keyword="外送">外送跑單</button>
+                    <button type="button" data-scenario-category="居住與房產">買房</button>
+                    <button type="button" data-scenario-category="交通與購車">買車</button>
+                    <button type="button" data-scenario-keyword="薪資">轉職談薪</button>
+                    <button type="button" data-scenario-category="投資與退休">退休規劃</button>
+                    <button type="button" data-scenario-category="薪資與稅務">報稅</button>
                 </div>
+            </div>
+
+            <div class="mt-7 reveal" data-reveal>
+                <a href="#support-tools" class="v2-btn-mustard" data-sfx="accent">瀏覽全部工具</a>
+            </div>
+
+            <div class="v2-hero-trust">
+                <span>免註冊</span><span>在地法規資料</span><span>試算不留個資</span>
             </div>
         </div>
     </section>
@@ -156,6 +134,34 @@ const toolListSchema = JSON.stringify({
                         </div>
                     </a>
                 ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <div class="v2-trust-grid">
+                <div class="v2-trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    <div>
+                        <p class="v2-trust-title">免註冊</p>
+                        <p class="v2-trust-desc">試算都在你的瀏覽器完成，不用登入</p>
+                    </div>
+                </div>
+                <div class="v2-trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                    <div>
+                        <p class="v2-trust-title">在地法規</p>
+                        <p class="v2-trust-desc">標示資料年度、版本與官方來源</p>
+                    </div>
+                </div>
+                <div class="v2-trust-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <div>
+                        <p class="v2-trust-title">不留個資</p>
+                        <p class="v2-trust-desc">薪資財務數字不上傳、不儲存</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -316,6 +322,26 @@ searchInput?.addEventListener('keydown', (event) => {
     searchResults?.classList.add('hidden');
     searchInput.setAttribute('aria-expanded', 'false');
     searchInput.blur();
+});
+
+document.querySelectorAll('[data-scenario-keyword]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+        if (!searchInput) return;
+        searchInput.value = chip.dataset.scenarioKeyword || '';
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        searchInput.focus();
+        document.getElementById('tool-discovery')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+});
+
+document.querySelectorAll('[data-scenario-category]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+        const target = document.querySelector(`[data-category-filter="${chip.dataset.scenarioCategory}"]`);
+        if (target instanceof HTMLButtonElement) {
+            target.click();
+        }
+        document.getElementById('support-tools')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 });
 
 const catalogFilters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category-filter]'));
