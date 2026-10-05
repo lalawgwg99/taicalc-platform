@@ -2,32 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
-import { getToolByHref, toolCatalog } from '../data/toolCatalog';
+import { toolCatalog } from '../data/toolCatalog';
 
 const title = "TaiCalc｜台灣生活計算工具";
 const description = "薪資、房貸、買車、稅務與生活成本試算工具；資料年度與來源清楚標示。";
 const keywords = "人生模擬器,台灣人生模擬器,人生遊戲,台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,育兒津貼,買房成本";
 
-const supportCategories = Array.from(new Set(toolCatalog.map((tool) => tool.category))).map((category) => ({
-    category,
-    tools: toolCatalog.filter((tool) => tool.category === category),
-}));
-const categoryNames = supportCategories.map((group) => group.category);
+const categoryNames = Array.from(new Set(toolCatalog.map((tool) => tool.category)));
 
-const featuredDecisions = [
+const hotHrefs = new Set([
     '/tools/delivery-income-calculator',
     '/tools/split-calculator',
     '/tools/electricity-calculator',
     '/tools/salary-calculator',
-    '/tools/life-simulator',
-    '/tools/labor-insurance-pension-calculator',
-    '/tools/labor-pension-calculator',
-    '/tools/mortgage-calculator',
-    '/tools/income-tax-calculator',
-    '/tools/fire-calculator',
-    '/tools/etf-dividend-calculator',
-    '/tools/car-cost-calculator',
-].map((path) => getToolByHref(path)!);
+]);
+const defaultIcon = '<circle cx="12" cy="12" r="9"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>';
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
 const latestPosts = allPosts
@@ -72,135 +61,73 @@ const toolListSchema = JSON.stringify({
 <Layout title={title} description={description} keywords={keywords} fullWidth>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
     <script type="application/ld+json" set:html={toolListSchema} slot="head" />
-    <section class="v2-hero relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 md:px-6 relative py-12 sm:py-16 md:py-24">
-            <p class="v2-hero-kicker">台灣生活計算工具</p>
-            <h1 class="v2-hero-h1">
-                人生很難選，<br />數字可以先算。
+    <div class="proto-banner">
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <span class="proto-banner-dot"></span>{platformGovernance.dataYear}制度參數已更新
+        </div>
+    </div>
+
+    <section class="proto-hero proto-grid-bg">
+        <div class="max-w-6xl mx-auto px-4 md:px-6">
+            <p class="proto-kicker"><span class="proto-kicker-dash"></span>台灣生活計算工具</p>
+            <h1 class="proto-h1">
+                生活裡的數字，<br /><span class="proto-hl">算得更明白。</span>
             </h1>
-            <p class="v2-hero-sub">
-                把薪資、房貸、買車與稅務算清楚，再做決定。
+            <p class="proto-sub">
+                薪資、電費、分帳、房貸到退休規劃。少填一點、快懂一步，讓每個結果都有清楚依據。
             </p>
 
-            <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="v2-hero-search reveal" data-reveal>
+            <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="proto-search-card reveal" data-reveal>
+                <span class="proto-tape" aria-hidden="true"></span>
+                <p class="proto-search-title">今天想算什麼？</p>
                 <div class="relative">
                     <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                     </svg>
-                    <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：人生模擬器、資遣費、車貸" class="v2-search-input" />
+                    <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：薪資、房貸、退休" class="proto-search-input" />
+                    <button type="button" id="search-focus-btn" class="proto-kbd" aria-label="聚焦搜尋框">/</button>
                     <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
                     <p id="search-status" class="sr-only" aria-live="polite"></p>
                 </div>
-
-                <div class="v2-scenarios" role="group" aria-label="情境快速入口">
-                    <button type="button" data-scenario-keyword="外送">外送跑單</button>
-                    <button type="button" data-scenario-category="居住與房產">買房</button>
-                    <button type="button" data-scenario-category="交通與購車">買車</button>
-                    <button type="button" data-scenario-keyword="薪資">轉職談薪</button>
-                    <button type="button" data-scenario-category="投資與退休">退休規劃</button>
-                    <button type="button" data-scenario-category="薪資與稅務">報稅</button>
-                </div>
-            </div>
-
-            <div class="mt-7 reveal" data-reveal>
-                <a href="#support-tools" class="v2-btn-mustard" data-sfx="accent">瀏覽全部工具</a>
-            </div>
-
-            <div class="v2-hero-trust">
-                <span>免註冊</span><span>在地法規資料</span><span>試算不留個資</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="new-decisions" class="v2-section reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                <div>
-                    <p class="v2-kicker">熱門工具</p>
-                    <h2 class="v2-h2">先算最常遇到的事</h2>
-                </div>
-            </div>
-            <div class="decision-card-grid">
-                {featuredDecisions.map((tool, index) => (
-                    <a href={tool.href} class={`decision-card group ${index === 0 || index === 6 ? 'decision-card-wide' : ''}`} data-sfx="tap">
-                        <div class="flex items-start justify-between gap-4">
-                            <span class="decision-index">{String(index + 1).padStart(2, '0')}</span>
-                            <span class="decision-arrow">↗</span>
-                        </div>
-                        <div>
-                            <p class="text-[11px] font-semibold tracking-[.12em] text-brand-600">{tool.category}</p>
-                            <h3 class="mt-2 text-lg font-semibold text-ink-800">{tool.label}</h3>
-                            <p class="mt-2 text-sm leading-6 text-ink-500">{tool.desc}</p>
-                        </div>
-                    </a>
-                ))}
-            </div>
-        </div>
-    </section>
-
-    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
-        <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="v2-trust-grid">
-                <div class="v2-trust-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                    <div>
-                        <p class="v2-trust-title">免註冊</p>
-                        <p class="v2-trust-desc">試算都在你的瀏覽器完成，不用登入</p>
-                    </div>
-                </div>
-                <div class="v2-trust-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-                    <div>
-                        <p class="v2-trust-title">在地法規</p>
-                        <p class="v2-trust-desc">標示資料年度、版本與官方來源</p>
-                    </div>
-                </div>
-                <div class="v2-trust-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    <div>
-                        <p class="v2-trust-title">不留個資</p>
-                        <p class="v2-trust-desc">薪資財務數字不上傳、不儲存</p>
-                    </div>
+                <div class="proto-quick">
+                    <a href="/tools/salary-calculator" data-sfx="tap">算薪資實拿<span>→</span></a>
+                    <a href="/tools/electricity-calculator" data-sfx="tap">估這期電費<span>→</span></a>
+                    <a href="/tools/delivery-income-calculator" data-sfx="tap">算外送收入<span>→</span></a>
+                    <a href="/tools/fire-calculator" data-sfx="tap">看看退休缺口<span>→</span></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="support-tools" class="border-t border-paper-300 v2-section reveal" data-reveal>
+    <section id="tools" class="proto-tools proto-grid-bg reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <div class="mb-8 flex flex-col gap-4 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                    <p class="v2-kicker">所有工具</p>
-                    <h2 class="v2-h2">生活計算器</h2>
-                </div>
-            </div>
+            <h2 class="proto-h2">從一個問題開始</h2>
+            <p class="proto-tools-sub">不先要求你理解名詞；先選生活情境，再逐步帶你得到可解讀的結果。</p>
 
-            <div class="mb-7 flex gap-2 overflow-x-auto pb-2 no-scrollbar" role="group" aria-label="依類別篩選工具">
-                <button type="button" class="catalog-filter is-active" data-category-filter="all" aria-pressed="true">全部</button>
+            <div class="proto-pills" role="group" aria-label="依情境篩選工具">
+                <button type="button" class="is-active" data-category-filter="all" aria-pressed="true">全部</button>
                 {categoryNames.map((category) => (
-                    <button type="button" class="catalog-filter" data-category-filter={category} aria-pressed="false">{category}</button>
+                    <button type="button" data-category-filter={category} aria-pressed="false">{category}</button>
                 ))}
             </div>
             <p id="catalog-status" class="sr-only" aria-live="polite"></p>
 
-            <div id="catalog-grid" class="grid gap-5 lg:grid-cols-2">
-                {supportCategories.map((group) => (
-                    <section class="catalog-group card-surface p-4 sm:p-5" data-category={group.category} aria-labelledby={`category-${group.category}`}>
-                        <div class="mb-3 flex items-center justify-between border-b border-paper-300 pb-3">
-                            <h3 id={`category-${group.category}`} class="text-sm font-semibold text-ink-700">{group.category}</h3>
+            <div id="catalog-grid" class="proto-cards">
+                {toolCatalog.map((tool) => (
+                    <a href={tool.href} class="proto-card group" data-category={tool.category} data-sfx="tap">
+                        <div class="proto-card-top">
+                            <span class="proto-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon ?? defaultIcon} />
+                            </span>
+                            {hotHrefs.has(tool.href) && <span class="proto-hot">熱門</span>}
                         </div>
-                        <div class="grid gap-1">
-                            {group.tools.map((tool) => (
-                                <a href={tool.href} class="group flex items-center justify-between rounded-xl px-3 py-3 hover:bg-paper-100 transition-colors" data-sfx="tap">
-                                    <div>
-                                        <p class="text-sm font-medium text-ink-700 group-hover:text-brand transition-colors">{tool.label}</p>
-                                        <p class="text-xs text-ink-500 mt-1">{tool.desc}</p>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-500 group-hover:text-brand group-hover:translate-x-0.5 transition-all"><path d="m9 18 6-6-6-6"/></svg>
-                                </a>
-                            ))}
+                        <h3>{tool.label.split(' | ')[0].split(' (')[0]}</h3>
+                        <p class="proto-card-desc">{tool.desc}</p>
+                        <div class="proto-card-foot">
+                            <span>{tool.category}</span>
+                            <span class="proto-go">開始試算 →</span>
                         </div>
-                    </section>
+                    </a>
                 ))}
             </div>
         </div>
@@ -324,28 +251,18 @@ searchInput?.addEventListener('keydown', (event) => {
     searchInput.blur();
 });
 
-document.querySelectorAll('[data-scenario-keyword]').forEach((chip) => {
-    chip.addEventListener('click', () => {
-        if (!searchInput) return;
-        searchInput.value = chip.dataset.scenarioKeyword || '';
-        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        searchInput.focus();
-        document.getElementById('tool-discovery')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-});
+document.getElementById('search-focus-btn')?.addEventListener('click', () => searchInput?.focus());
 
-document.querySelectorAll('[data-scenario-category]').forEach((chip) => {
-    chip.addEventListener('click', () => {
-        const target = document.querySelector(`[data-category-filter="${chip.dataset.scenarioCategory}"]`);
-        if (target instanceof HTMLButtonElement) {
-            target.click();
-        }
-        document.getElementById('support-tools')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+document.addEventListener('keydown', (event) => {
+    if (event.key !== '/') return;
+    const tag = (document.activeElement?.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    event.preventDefault();
+    searchInput?.focus();
 });
 
 const catalogFilters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category-filter]'));
-const catalogGroups = Array.from(document.querySelectorAll<HTMLElement>('.catalog-group'));
+const catalogCards = Array.from(document.querySelectorAll<HTMLElement>('.proto-card'));
 const catalogStatus = document.getElementById('catalog-status');
 
 catalogFilters.forEach((button) => {
@@ -356,8 +273,8 @@ catalogFilters.forEach((button) => {
             filter.classList.toggle('is-active', active);
             filter.setAttribute('aria-pressed', String(active));
         });
-        catalogGroups.forEach((group) => {
-            group.hidden = selected !== 'all' && group.dataset.category !== selected;
+        catalogCards.forEach((card) => {
+            card.hidden = selected !== 'all' && card.dataset.category !== selected;
         });
         if (catalogStatus) {
             catalogStatus.textContent = selected === 'all' ? '已顯示所有工具類別' : `已顯示${selected}工具`;
