@@ -6,12 +6,12 @@
         <div class="card-surface p-5 space-y-3">
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金總額（元）</label>
-                <input type="number" v-model.number="bonus" aria-label="年終獎金總額" placeholder="100000"
+                <input type="text" inputmode="decimal" v-model.number="bonus" aria-label="年終獎金總額" placeholder="100000"
                     class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">健保投保金額（元）</label>
-                <input type="number" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="45800"
+                <input type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="45800"
                     class="input-clean font-semibold tabular-nums">
             </div>
             <p class="text-[11px] text-ink-400">115 年度（2026）起扣點為 90,501 元；全年獎金超過當月投保金額 4 倍，超過部分扣 2.11% 補充保費。</p>

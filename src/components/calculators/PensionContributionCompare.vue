@@ -7,24 +7,24 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">月薪（元）</label>
-                    <input type="number" v-model.number="salary" aria-label="月薪" placeholder="45000"
+                    <input type="text" inputmode="decimal" v-model.number="salary" aria-label="月薪" placeholder="45000"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">年資（年）</label>
-                    <input type="number" v-model.number="years" min="1" max="40" aria-label="年資"
+                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="年資"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
-                    <input type="number" v-model.number="roi" step="0.5" aria-label="投資報酬率"
+                    <input type="text" inputmode="decimal" v-model.number="roi" step="0.5" aria-label="投資報酬率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">所得稅率（%）</label>
-                    <input type="number" v-model.number="taxRate" step="1" aria-label="所得稅率"
+                    <input type="text" inputmode="decimal" v-model.number="taxRate" step="1" aria-label="所得稅率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>

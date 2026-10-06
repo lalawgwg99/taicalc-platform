@@ -6,12 +6,12 @@
         <div class="grid sm:grid-cols-2 gap-4">
             <div>
                 <label for="salary" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">月薪 (NT$)</label>
-                <input id="salary" type="number" v-model.number="monthlySalary" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
+                <input id="salary" type="text" inputmode="decimal" v-model.number="monthlySalary" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
             </div>
             <div>
                 <label for="hours" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">時薪換算基準</label>
                 <div class="relative">
-                    <input id="hours" type="number" v-model.number="monthlyHours" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
+                    <input id="hours" type="text" inputmode="decimal" v-model.number="monthlyHours" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
                     <span class="absolute right-4 top-3.5 text-ink-300 text-sm">小時/月</span>
                 </div>
                 <p class="mt-1 text-[10px] text-ink-300">月薪制通常以 240 小時換算；勞動契約另有約定時再調整。</p>
@@ -54,11 +54,11 @@
         <div v-if="selectedType === 'weekday'" class="grid grid-cols-2 gap-4">
             <div>
                 <label for="wd1" class="block text-xs text-ink-400 mb-2">前 2 小時 <span class="text-amber-600 font-bold">(4/3x)</span></label>
-                <input id="wd1" type="number" v-model.number="weekdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
+                <input id="wd1" type="text" inputmode="decimal" v-model.number="weekdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
             <div>
                 <label for="wd2" class="block text-xs text-ink-400 mb-2">第 3~4 小時 <span class="text-amber-600 font-bold">(5/3x)</span></label>
-                <input id="wd2" type="number" v-model.number="weekdayHours2" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
+                <input id="wd2" type="text" inputmode="decimal" v-model.number="weekdayHours2" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
         </div>
 
@@ -66,15 +66,15 @@
             <div class="grid grid-cols-3 gap-3">
                 <div>
                     <label for="rd1" class="block text-xs text-ink-400 mb-2 h-8">前 2 小時 <br><span class="text-amber-600 font-bold">(4/3x)</span></label>
-                    <input id="rd1" type="number" v-model.number="restdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
+                    <input id="rd1" type="text" inputmode="decimal" v-model.number="restdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label for="rd2" class="block text-xs text-ink-400 mb-2 h-8">3~8 小時 <br><span class="text-amber-600 font-bold">(5/3x)</span></label>
-                    <input id="rd2" type="number" v-model.number="restdayHours2" min="0" max="6" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
+                    <input id="rd2" type="text" inputmode="decimal" v-model.number="restdayHours2" min="0" max="6" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label for="rd3" class="block text-xs text-ink-400 mb-2 h-8">9~12 小時 <br><span class="text-amber-600 font-bold">(8/3x)</span></label>
-                    <input id="rd3" type="number" v-model.number="restdayHours3" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
+                    <input id="rd3" type="text" inputmode="decimal" v-model.number="restdayHours3" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
         </div>
@@ -83,11 +83,11 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label for="hol1" class="block text-xs text-ink-400 mb-2">8 小時內 <span class="text-amber-600 font-bold">加發 1 日工資</span></label>
-                    <input id="hol1" type="number" v-model.number="holidayHours1" min="0" max="8" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
+                    <input id="hol1" type="text" inputmode="decimal" v-model.number="holidayHours1" min="0" max="8" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
                     <label for="hol2" class="block text-xs text-ink-400 mb-2">超過 8 小時 <span class="text-amber-600 font-bold">(4/3、5/3x)</span></label>
-                    <input id="hol2" type="number" v-model.number="holidayHours2" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
+                    <input id="hol2" type="text" inputmode="decimal" v-model.number="holidayHours2" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
         </div>

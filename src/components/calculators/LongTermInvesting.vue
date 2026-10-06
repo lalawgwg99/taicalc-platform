@@ -6,9 +6,9 @@
         <div><h2 class="text-lg font-semibold text-ink-700">你的長期投入計畫</h2><p class="mt-1 text-sm text-ink-500">所有數字都是假設；先用保守條件看自己能否持續。</p></div>
       </div>
       <div class="grid gap-4 sm:grid-cols-3">
-        <label>現在已投入多少（元）<input v-model.number="principal" type="number" min="0" class="input-clean" /><small>沒有就填 0</small></label>
-        <label>每月願意投入（元）<input v-model.number="monthly" type="number" min="0" class="input-clean" /><small>填扣除生活費後仍可持續的金額</small></label>
-        <label>預計投資幾年<input v-model.number="years" type="number" min="1" max="60" class="input-clean" /><small>例如：退休前剩 20 年</small></label>
+        <label>現在已投入多少（元）<input v-model.number="principal" type="text" inputmode="decimal" min="0" class="input-clean" /><small>沒有就填 0</small></label>
+        <label>每月願意投入（元）<input v-model.number="monthly" type="text" inputmode="decimal" min="0" class="input-clean" /><small>填扣除生活費後仍可持續的金額</small></label>
+        <label>預計投資幾年<input v-model.number="years" type="text" inputmode="decimal" min="1" max="60" class="input-clean" /><small>例如：退休前剩 20 年</small></label>
       </div>
       <div class="mt-6 rounded-2xl bg-brand-50 p-4">
         <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><div><strong class="text-sm text-ink-700">不知道報酬要填多少？</strong><p class="mt-1 text-xs text-ink-500">先選一個估算情境，之後隨時可以修改。</p></div><div class="grid grid-cols-3 gap-2"><button v-for="preset in plans" :key="preset.id" type="button" @click="applyPlan(preset.id)" :class="selectedPlan === preset.id ? 'bg-brand-700 text-white' : 'bg-white text-ink-600'" class="rounded-xl px-3 py-2 text-xs font-semibold shadow-sm">{{ preset.label }}</button></div></div>
@@ -18,17 +18,17 @@
         <summary class="cursor-pointer text-sm font-semibold text-ink-700">進階設定：報酬、費用、通膨與既有持股</summary>
         <p class="mt-2 text-xs leading-5 text-ink-500">若你不確定，保持目前情境即可；所有數字都可日後再調整。</p>
         <div class="mt-4 grid gap-4 sm:grid-cols-3">
-          <label>年化報酬假設（%）<input v-model.number="returnRate" type="number" step="0.1" class="input-clean" /></label>
-          <label>每年總費用率（%）<input v-model.number="feeRate" type="number" min="0" step="0.01" class="input-clean" /></label>
-          <label>年通膨率（%）<input v-model.number="inflation" type="number" min="0" step="0.1" class="input-clean" /></label>
+          <label>年化報酬假設（%）<input v-model.number="returnRate" type="text" inputmode="decimal" step="0.1" class="input-clean" /></label>
+          <label>每年總費用率（%）<input v-model.number="feeRate" type="text" inputmode="decimal" min="0" step="0.01" class="input-clean" /></label>
+          <label>年通膨率（%）<input v-model.number="inflation" type="text" inputmode="decimal" min="0" step="0.1" class="input-clean" /></label>
         </div>
         <div class="mt-5 rounded-2xl border border-paper-300 bg-white p-4">
         <div class="flex items-center justify-between gap-3"><div><strong class="text-sm text-ink-700">持有標的快速換算</strong><p class="mt-1 text-xs text-ink-500">輸入成交價與股數，換算為起始資金；不抓即時報價。</p></div><span class="rounded-full bg-white px-2 py-1 text-[10px] font-semibold text-ink-400">非推薦</span></div>
         <div class="mt-3 grid gap-3 sm:grid-cols-4">
           <label>標的<select v-model="selectedAsset" class="input-clean" @change="applyAsset"><option v-for="asset in assets" :key="asset.id" :value="asset.id">{{ asset.label }}</option></select></label>
-          <label>每股價格（{{ activeAsset.currency }}）<input v-model.number="unitPrice" type="number" min="0" step="0.01" class="input-clean" /></label>
-          <label>持有股數<input v-model.number="shares" type="number" min="0" step="1" class="input-clean" /></label>
-          <label v-if="activeAsset.currency === 'USD'">美元匯率<input v-model.number="exchangeRate" type="number" min="0" step="0.01" class="input-clean" /></label>
+          <label>每股價格（{{ activeAsset.currency }}）<input v-model.number="unitPrice" type="text" inputmode="decimal" min="0" step="0.01" class="input-clean" /></label>
+          <label>持有股數<input v-model.number="shares" type="text" inputmode="decimal" min="0" step="1" class="input-clean" /></label>
+          <label v-if="activeAsset.currency === 'USD'">美元匯率<input v-model.number="exchangeRate" type="text" inputmode="decimal" min="0" step="0.01" class="input-clean" /></label>
         </div>
         <button type="button" class="mt-3 rounded-xl bg-ink-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-ink-800" @click="useHoldingValue">帶入起始資金 {{ money(holdingValue) }}</button>
         </div>
@@ -55,7 +55,7 @@
       <div class="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4">
         <p class="text-xs font-semibold text-brand-100">下跌時的行為壓力測試</p>
         <p class="mt-2 text-sm leading-6 text-ink-100">若第 {{ shockYear }} 年帳面下跌 {{ drawdown }}%，持續投入的情境約為 <strong>{{ money(shockResult) }}</strong>。這是固定假設的數學結果，不代表市場路徑。</p>
-        <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">下跌年<input v-model.number="shockYear" type="number" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌幅 %<input v-model.number="drawdown" type="number" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
+        <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">下跌年<input v-model.number="shockYear" type="text" inputmode="decimal" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌幅 %<input v-model.number="drawdown" type="text" inputmode="decimal" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
       </div>
     </aside>
   </section>

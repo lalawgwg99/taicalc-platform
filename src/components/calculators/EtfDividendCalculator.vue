@@ -7,12 +7,12 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">持有股數（股）</label>
-                    <input type="number" v-model.number="shares" aria-label="持有股數" placeholder="1000"
+                    <input type="text" inputmode="decimal" v-model.number="shares" aria-label="持有股數" placeholder="1000"
                         class="input-clean text-lg font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">每股配息（元）</label>
-                    <input type="number" v-model.number="dividendPerShare" step="0.01" aria-label="每股配息" placeholder="1.5"
+                    <input type="text" inputmode="decimal" v-model.number="dividendPerShare" step="0.01" aria-label="每股配息" placeholder="1.5"
                         class="input-clean text-lg font-semibold tabular-nums">
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">目前股價（元，選填）</label>
-                    <input type="number" v-model.number="price" step="0.01" aria-label="目前股價" placeholder="用於算配息率"
+                    <input type="text" inputmode="decimal" v-model.number="price" step="0.01" aria-label="目前股價" placeholder="用於算配息率"
                         class="input-clean font-semibold tabular-nums">
                 </div>
             </div>

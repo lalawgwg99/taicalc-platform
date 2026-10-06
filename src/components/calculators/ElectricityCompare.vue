@@ -6,7 +6,7 @@
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
             <label class="block text-xs font-medium text-ink-400 mb-1.5">每月用電度數（度）</label>
-            <input type="number" v-model.number="kwh" aria-label="每月用電度數" placeholder="500"
+            <input type="text" inputmode="decimal" v-model.number="kwh" aria-label="每月用電度數" placeholder="500"
                 class="input-clean text-xl font-semibold tabular-nums">
             <p class="mt-2 text-[11px] text-ink-400">同一用電量，左右比較夏月與非夏月的電費差異（台電 2025-10 起費率）</p>
         </div>

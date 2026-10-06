@@ -7,53 +7,53 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">房價（萬）</label>
-                    <input type="number" v-model.number="homePriceWan" aria-label="房價" placeholder="1200"
+                    <input type="text" inputmode="decimal" v-model.number="homePriceWan" aria-label="房價" placeholder="1200"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">頭期款（萬）</label>
-                    <input type="number" v-model.number="downWan" aria-label="頭期款" placeholder="300"
+                    <input type="text" inputmode="decimal" v-model.number="downWan" aria-label="頭期款" placeholder="300"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">房貸利率（%）</label>
-                    <input type="number" v-model.number="rate" step="0.05" aria-label="房貸利率"
+                    <input type="text" inputmode="decimal" v-model.number="rate" step="0.05" aria-label="房貸利率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">房貸年限</label>
-                    <input type="number" v-model.number="loanYears" min="10" max="40" aria-label="房貸年限"
+                    <input type="text" inputmode="decimal" v-model.number="loanYears" min="10" max="40" aria-label="房貸年限"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">月租金（元）</label>
-                    <input type="number" v-model.number="monthlyRent" aria-label="月租金" placeholder="25000"
+                    <input type="text" inputmode="decimal" v-model.number="monthlyRent" aria-label="月租金" placeholder="25000"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">持有/租期（年）</label>
-                    <input type="number" v-model.number="years" min="1" max="40" aria-label="持有年數"
+                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="持有年數"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-3 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">房價年漲幅（%）</label>
-                    <input type="number" v-model.number="homeAppr" step="0.5" aria-label="房價年漲幅"
+                    <input type="text" inputmode="decimal" v-model.number="homeAppr" step="0.5" aria-label="房價年漲幅"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">租金年漲幅（%）</label>
-                    <input type="number" v-model.number="rentAppr" step="0.5" aria-label="租金年漲幅"
+                    <input type="text" inputmode="decimal" v-model.number="rentAppr" step="0.5" aria-label="租金年漲幅"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
-                    <input type="number" v-model.number="investRate" step="0.5" aria-label="投資報酬率"
+                    <input type="text" inputmode="decimal" v-model.number="investRate" step="0.5" aria-label="投資報酬率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>

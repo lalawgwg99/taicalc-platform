@@ -6,18 +6,18 @@
         <div class="card-surface p-5 space-y-3">
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">投入金額（萬）</label>
-                <input type="number" v-model.number="amountWan" aria-label="投入金額" placeholder="100"
+                <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="投入金額" placeholder="100"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">投資年數</label>
-                    <input type="number" v-model.number="years" min="1" max="40" aria-label="投資年數"
+                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                     class="input-clean font-semibold">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">年通膨率（%）</label>
-                    <input type="number" v-model.number="inflation" step="0.1" aria-label="年通膨率"
+                    <input type="text" inputmode="decimal" v-model.number="inflation" step="0.1" aria-label="年通膨率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>

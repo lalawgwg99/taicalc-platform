@@ -6,7 +6,7 @@
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
             <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-            <input type="number" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+            <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
                 class="input-clean text-xl font-semibold tabular-nums">
             <p class="mt-2 text-[11px] text-ink-400">同一筆貸款金額，左右兩案即時對照</p>
         </div>
@@ -22,14 +22,14 @@
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
-                    <input type="number" v-model.number="side.rate" step="0.005" :aria-label="side.label + '利率'"
+                    <input type="text" inputmode="decimal" v-model.number="side.rate" step="0.005" :aria-label="side.label + '利率'"
                         class="input-clean font-semibold tabular-nums">
                     <p v-if="side.key === 'a'" class="mt-1 text-[10px] text-brand-600/70">預設為 2026 新青安優惠利率（補貼期間）</p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                        <input type="number" v-model.number="side.years" :aria-label="side.label + '年限'"
+                        <input type="text" inputmode="decimal" v-model.number="side.years" :aria-label="side.label + '年限'"
                             class="input-clean font-semibold">
                     </div>
                     <div>

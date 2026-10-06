@@ -6,12 +6,12 @@
         <div class="card-surface p-5 space-y-3">
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">平均月投保薪資（元）</label>
-                <input type="number" v-model.number="avgWage" aria-label="平均月投保薪資" placeholder="45800"
+                <input type="text" inputmode="decimal" v-model.number="avgWage" aria-label="平均月投保薪資" placeholder="45800"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">勞保年資（年）</label>
-                <input type="number" v-model.number="years" min="1" max="50" aria-label="勞保年資"
+                <input type="text" inputmode="decimal" v-model.number="years" min="1" max="50" aria-label="勞保年資"
                 class="input-clean font-semibold">
             </div>
             <p class="text-[11px] text-ink-400">依勞保老年給付規則概算：月領年資給付率 1.55%/年；一次領前 15 年每年 1 個月、第 16 年起每年 2 個月（上限 50 個月）。</p>

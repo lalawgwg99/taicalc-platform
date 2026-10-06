@@ -25,7 +25,7 @@
         <div class="relative">
           <input
             id="kwhInput"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="kwh"
             class="w-full bg-white border border-ink-100 rounded-xl py-3 px-4 text-gray-900 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder-ink-300"
           />
@@ -159,7 +159,7 @@
           <div>
             <label class="block text-xs font-semibold text-ink-400 mb-1">功率 (瓦特 W)</label>
             <input
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="newAppliance.watts"
               placeholder="W"
               class="w-full bg-white border border-ink-100 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
@@ -168,7 +168,7 @@
           <div>
             <label class="block text-xs font-semibold text-ink-400 mb-1">每日時數 (hr)</label>
             <input
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="newAppliance.hours"
               placeholder="hr"
               min="0"
@@ -269,7 +269,7 @@
           </label>
           <input
             id="acPower"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="acPower"
             min="0.1"
             max="20"
@@ -297,7 +297,7 @@
           </label>
           <input
             id="acBtu"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="acBtu"
             min="3000"
             max="120000"
@@ -325,7 +325,7 @@
           </label>
           <input
             id="acCapacityKw"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="acCapacityKw"
             min="0.8"
             max="35"
@@ -353,7 +353,7 @@
           </label>
           <input
             id="acHours"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="acHours"
             min="0"
             max="24"
@@ -400,7 +400,7 @@
           </label>
           <input
             id="acEfficiencyValue"
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="acEfficiencyValue"
             min="1"
             max="8"

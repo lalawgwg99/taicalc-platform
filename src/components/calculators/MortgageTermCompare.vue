@@ -6,11 +6,11 @@
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
             <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-            <input type="number" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+            <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
                 class="input-clean text-xl font-semibold tabular-nums">
             <div class="mt-3">
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
-                <input type="number" v-model.number="rate" step="0.005" aria-label="年利率"
+                <input type="text" inputmode="decimal" v-model.number="rate" step="0.005" aria-label="年利率"
                     class="input-clean font-semibold tabular-nums">
             </div>
             <p class="mt-2 text-[11px] text-ink-400">同一筆貸款與利率，左右比較不同年限的真實負擔</p>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="mt-3">
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                    <input type="number" v-model.number="side.years" min="10" max="50" :aria-label="side.label + '年限'"
+                    <input type="text" inputmode="decimal" v-model.number="side.years" min="10" max="50" :aria-label="side.label + '年限'"
                         class="input-clean font-semibold">
                 </div>
             </div>

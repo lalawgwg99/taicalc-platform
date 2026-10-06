@@ -28,7 +28,7 @@
           <div class="relative">
             <input
               id="monthlyRent"
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="monthlyRent"
               class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
             />
@@ -40,7 +40,7 @@
             <label for="depositMonths" class="block text-xs font-semibold text-ink-400 mb-2">押金 (月)</label>
             <input
               id="depositMonths"
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="depositMonths"
               class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
@@ -49,7 +49,7 @@
             <label for="leaseMonths" class="block text-xs font-semibold text-ink-400 mb-2">預計租期 (月)</label>
             <input
               id="leaseMonths"
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="leaseMonths"
               class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
@@ -62,7 +62,7 @@
             <div class="relative">
               <input
                 id="managementFee"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="managementFee"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               />
@@ -73,7 +73,7 @@
             <div class="relative">
               <input
                 id="electricityFee"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="electricityFee"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               />

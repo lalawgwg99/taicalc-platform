@@ -26,7 +26,7 @@
         <label class="block text-xs font-semibold text-ink-400 mb-2">月薪收入</label>
         <div class="relative">
           <input
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="salary"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
             placeholder="請輸入月薪"

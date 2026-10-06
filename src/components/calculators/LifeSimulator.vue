@@ -51,12 +51,12 @@
           </div>
 
           <div class="mt-5 grid grid-cols-2 gap-3">
-            <label class="field-label">現在幾歲？<input v-model.number="profile.startAge" type="number" min="18" max="75" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">想看到幾歲？<input v-model.number="profile.targetAge" type="number" min="30" max="90" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">每月收入<input v-model.number="profile.monthlyIncome" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">每月基本支出<input v-model.number="profile.monthlyLivingCost" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">目前現金<input v-model.number="profile.initialCash" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">目前投資<input v-model.number="profile.initialInvestments" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">現在幾歲？<input v-model.number="profile.startAge" type="text" inputmode="decimal" min="18" max="75" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">想看到幾歲？<input v-model.number="profile.targetAge" type="text" inputmode="decimal" min="30" max="90" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月收入<input v-model.number="profile.monthlyIncome" type="text" inputmode="decimal" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月基本支出<input v-model.number="profile.monthlyLivingCost" type="text" inputmode="decimal" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">目前現金<input v-model.number="profile.initialCash" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">目前投資<input v-model.number="profile.initialInvestments" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
           </div>
 
           <p v-if="profile.monthlyLivingCost > profile.monthlyIncome" class="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-700">目前支出高於收入也沒關係，模擬器會幫你看見現金壓力。</p>
@@ -182,8 +182,8 @@
           </summary>
           <div class="mt-4 grid gap-3 sm:grid-cols-2">
             <label class="field-label sm:col-span-2">這件事叫什麼？<input v-model="customDraft.label" type="text" maxlength="28" class="input-clean-sm mt-1" placeholder="例如：回家陪家人一年" /></label>
-            <label class="field-label">一次支出<input v-model.number="customDraft.cost" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">每月增加支出<input v-model.number="customDraft.monthlyCost" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">一次支出<input v-model.number="customDraft.cost" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月增加支出<input v-model.number="customDraft.monthlyCost" type="text" inputmode="decimal" min="0" step="1000" class="input-clean-sm mt-1" /></label>
             <label class="field-label sm:col-span-2">它帶來的感受
               <select v-model="customDraft.tone" class="input-clean-sm mt-1">
                 <option value="meaningful">值得，但需要一些力氣</option>
@@ -258,15 +258,15 @@
         <details class="card-surface p-4 sm:p-5">
           <summary class="cursor-pointer list-none text-sm font-semibold text-ink-700">想讓結果更像你？調整設定 <span class="float-right text-brand">＋</span></summary>
           <div class="mt-4 grid grid-cols-2 gap-3">
-            <label class="field-label">現在年齡<input v-model.number="profile.startAge" type="number" min="18" max="75" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">模擬到幾歲<input v-model.number="profile.targetAge" type="number" min="30" max="90" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">每月可支配收入<input v-model.number="profile.monthlyIncome" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">每月基本生活費<input v-model.number="profile.monthlyLivingCost" type="number" min="0" step="1000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">起始現金<input v-model.number="profile.initialCash" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">起始投資<input v-model.number="profile.initialInvestments" type="number" min="0" step="10000" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">年收入成長 %<input v-model.number="profile.annualIncomeGrowth" type="number" min="-20" max="30" step="0.5" class="input-clean-sm mt-1" /></label>
-            <label class="field-label">投資年報酬 %<input v-model.number="profile.annualInvestmentReturn" type="number" min="-50" max="50" step="0.5" class="input-clean-sm mt-1" /></label>
-            <label class="field-label col-span-2">年通膨情境 %<input v-model.number="profile.inflation" type="number" min="-10" max="20" step="0.5" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">現在年齡<input v-model.number="profile.startAge" type="text" inputmode="decimal" min="18" max="75" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">模擬到幾歲<input v-model.number="profile.targetAge" type="text" inputmode="decimal" min="30" max="90" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月可支配收入<input v-model.number="profile.monthlyIncome" type="text" inputmode="decimal" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">每月基本生活費<input v-model.number="profile.monthlyLivingCost" type="text" inputmode="decimal" min="0" step="1000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">起始現金<input v-model.number="profile.initialCash" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">起始投資<input v-model.number="profile.initialInvestments" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">年收入成長 %<input v-model.number="profile.annualIncomeGrowth" type="text" inputmode="decimal" min="-20" max="30" step="0.5" class="input-clean-sm mt-1" /></label>
+            <label class="field-label">投資年報酬 %<input v-model.number="profile.annualInvestmentReturn" type="text" inputmode="decimal" min="-50" max="50" step="0.5" class="input-clean-sm mt-1" /></label>
+            <label class="field-label col-span-2">年通膨情境 %<input v-model.number="profile.inflation" type="text" inputmode="decimal" min="-10" max="20" step="0.5" class="input-clean-sm mt-1" /></label>
           </div>
           <button type="button" class="mt-4 w-full rounded-xl bg-brand-500 px-4 py-3 text-xs font-semibold text-white hover:bg-brand-600" @click="restart">用新設定重新開始</button>
           <button type="button" class="mt-2 w-full rounded-xl px-4 py-2 text-xs font-medium text-ink-400 hover:bg-paper-200 hover:text-ink-600" @click="showWelcome = true">重新開啟快速引導</button>

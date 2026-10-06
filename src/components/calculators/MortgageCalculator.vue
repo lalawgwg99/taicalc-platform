@@ -11,13 +11,13 @@
         <div class="card-surface p-5 space-y-4">
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-                <input type="number" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+                <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
                     class="input-clean text-xl font-semibold tabular-nums">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                    <input type="number" v-model.number="years" aria-label="貸款年限"
+                    <input type="text" inputmode="decimal" v-model.number="years" aria-label="貸款年限"
                         class="input-clean font-semibold">
                 </div>
                 <div>
@@ -45,12 +45,12 @@
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">
                         {{ twoStageMode ? '第一段利率（%）' : '年利率（%）' }}
                     </label>
-                    <input type="number" v-model.number="rate1" step="0.005" aria-label="利率"
+                    <input type="text" inputmode="decimal" v-model.number="rate1" step="0.005" aria-label="利率"
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
                 <div v-if="twoStageMode">
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">第二段利率（%）</label>
-                    <input type="number" v-model.number="rate2" step="0.005" aria-label="第二段利率"
+                    <input type="text" inputmode="decimal" v-model.number="rate2" step="0.005" aria-label="第二段利率"
                         class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -71,7 +71,7 @@
         <div v-if="twoStageMode" class="animate-fade-in-up">
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">第一段期間（月）</label>
                 <div class="flex gap-2 items-center">
-                    <input type="number" v-model.number="stage1Months" placeholder="7"
+                    <input type="text" inputmode="decimal" v-model.number="stage1Months" placeholder="7"
                         class="input-clean w-24 text-center font-semibold">
                     <span class="text-xs text-ink-400">個月後變更利率</span>
                 </div>
@@ -91,12 +91,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">每月多還（元）</label>
-                        <input type="number" v-model.number="extraMonthly" placeholder="0"
+                        <input type="text" inputmode="decimal" v-model.number="extraMonthly" placeholder="0"
                             class="input-clean tabular-nums">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">單筆大額還款（萬）</label>
-                        <input type="number" v-model.number="extraLump" placeholder="0"
+                        <input type="text" inputmode="decimal" v-model.number="extraLump" placeholder="0"
                             class="input-clean tabular-nums">
                     </div>
                 </div>

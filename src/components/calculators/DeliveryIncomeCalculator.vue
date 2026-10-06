@@ -11,7 +11,7 @@
             >
             <input
               id="baseIncome"
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="baseIncome"
               class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
             />
@@ -22,7 +22,7 @@
             >
             <input
               id="incentive"
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="incentive"
               class="w-full bg-brand-50 border border-brand-200 rounded-xl py-2.5 px-3 text-brand-800 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
               placeholder="0"
@@ -33,7 +33,7 @@
               <label for="kilometers" class="block text-xs font-medium text-ink-400 mb-1">總里程 (KM)</label>
               <input
                 id="kilometers"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="kilometers"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-semibold focus:outline-none focus:border-brand-500"
               />
@@ -42,7 +42,7 @@
               <label for="workHours" class="block text-xs font-medium text-ink-400 mb-1">總工時 (H)</label>
               <input
                 id="workHours"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="workHours"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-semibold focus:outline-none focus:border-brand-500"
               />
@@ -59,7 +59,7 @@
               <label for="gasPrice" class="block text-xs font-medium text-ink-400 mb-1">油價 ($/L)</label>
               <input
                 id="gasPrice"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="gasPrice"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
               />
@@ -68,7 +68,7 @@
               <label for="kmPerLiter" class="block text-xs font-medium text-ink-400 mb-1">油耗 (KM/L)</label>
               <input
                 id="kmPerLiter"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="kmPerLiter"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
               />
@@ -82,7 +82,7 @@
               <div class="relative">
                 <input
                   id="maintenancePerKm"
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="maintenancePerKm"
                   step="0.1"
                   class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
@@ -96,7 +96,7 @@
               <div class="relative">
                 <input
                   id="insuranceMonthly"
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="insuranceMonthly"
                   class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 focus:outline-none focus:border-brand-500"
                 />

@@ -6,12 +6,12 @@
         <div class="card-surface p-5 space-y-3">
             <div>
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">每月投入金額（元）</label>
-                <input type="number" v-model.number="monthlyAmount" aria-label="每月投入金額" placeholder="10000"
+                <input type="text" inputmode="decimal" v-model.number="monthlyAmount" aria-label="每月投入金額" placeholder="10000"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
                 <label class="block text-xs font-medium text--ink-400 mb-1.5">投資年數</label>
-                <input type="number" v-model.number="years" min="1" max="40" aria-label="投資年數"
+                <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                 class="input-clean font-semibold">
             </div>
             <p class="text-[11px] text-ink-400">年化報酬為歷史長期概估值（含息），非保證報酬。0050/006208 追蹤台灣 50（市值型），0056 追蹤高股息指數。</p>

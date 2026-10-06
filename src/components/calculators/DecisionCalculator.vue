@@ -27,24 +27,24 @@
           </p>
         </div>
         <div class="field-grid">
-          <label>車價（元）<input v-model.number="car.price" type="number" class="input-clean"></label>
-          <label>頭期款（元）<input v-model.number="car.downPayment" type="number" class="input-clean"></label>
-          <label>車貸年利率（%）<input v-model.number="car.annualRate" type="number" step="0.1" class="input-clean"></label>
-          <label>貸款年限<input v-model.number="car.loanYears" type="number" class="input-clean"></label>
-          <label>持有年限<input v-model.number="car.years" type="number" class="input-clean"></label>
+          <label>車價（元）<input v-model.number="car.price" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>頭期款（元）<input v-model.number="car.downPayment" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>車貸年利率（%）<input v-model.number="car.annualRate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>貸款年限<input v-model.number="car.loanYears" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>持有年限<input v-model.number="car.years" type="text" inputmode="decimal" class="input-clean"></label>
           <label>動力
             <select v-model="car.fuel" class="input-clean">
               <option value="gasoline">汽油</option><option value="hybrid">油電（汽油稅制）</option><option value="diesel">柴油</option><option value="electric">純電</option>
             </select>
           </label>
-          <label v-if="car.fuel !== 'electric'">排氣量（cc）<input v-model.number="car.cc" type="number" class="input-clean"></label>
-          <label>每年里程（km）<input v-model.number="car.annualKm" type="number" class="input-clean"></label>
-          <label>{{ car.fuel === 'electric' ? '效率（km/kWh）' : '平均油耗（km/L）' }}<input v-model.number="car.efficiency" type="number" step="0.1" class="input-clean"></label>
-          <label>{{ car.fuel === 'electric' ? '每度電價' : '每公升油價' }}（元）<input v-model.number="car.energyPrice" type="number" step="0.1" class="input-clean"></label>
-          <label>每年保險<input v-model.number="car.insuranceAnnual" type="number" class="input-clean"></label>
-          <label>每年保養／維修<input v-model.number="car.maintenanceAnnual" type="number" class="input-clean"></label>
-          <label>每月停車<input v-model.number="car.parkingMonthly" type="number" class="input-clean"></label>
-          <label>持有期末殘值（%）<input v-model.number="car.resaleRate" type="number" class="input-clean"></label>
+          <label v-if="car.fuel !== 'electric'">排氣量（cc）<input v-model.number="car.cc" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每年里程（km）<input v-model.number="car.annualKm" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>{{ car.fuel === 'electric' ? '效率（km/kWh）' : '平均油耗（km/L）' }}<input v-model.number="car.efficiency" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>{{ car.fuel === 'electric' ? '每度電價' : '每公升油價' }}（元）<input v-model.number="car.energyPrice" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>每年保險<input v-model.number="car.insuranceAnnual" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每年保養／維修<input v-model.number="car.maintenanceAnnual" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每月停車<input v-model.number="car.parkingMonthly" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>持有期末殘值（%）<input v-model.number="car.resaleRate" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
         <div class="scenario-actions">
           <button type="button" @click="saveCarScenario">{{ carScenarioSaved ? '方案 A 已儲存' : hasSavedCarScenario ? '更新方案 A' : '儲存為方案 A' }}</button>
@@ -77,12 +77,12 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>離職結算條件</h2><p>適用勞退新制資遣費；自願離職通常沒有資遣費與預告工資</p></div></div>
         <div class="field-grid">
-          <label>離職前 6 個月平均工資<input v-model.number="separation.averageMonthlyWage" type="number" class="input-clean"></label>
-          <label>正常月薪<input v-model.number="separation.regularMonthlyWage" type="number" class="input-clean"></label>
-          <label>年資（年，可填小數）<input v-model.number="separation.serviceYears" type="number" step="0.1" class="input-clean"></label>
-          <label>雇主已預告天數<input v-model.number="separation.noticeDaysGiven" type="number" class="input-clean"></label>
-          <label>未休特休（天）<input v-model.number="separation.unusedLeaveDays" type="number" class="input-clean"></label>
-          <label>最後月份已工作天數<input v-model.number="separation.workedDays" type="number" class="input-clean"></label>
+          <label>離職前 6 個月平均工資<input v-model.number="separation.averageMonthlyWage" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>正常月薪<input v-model.number="separation.regularMonthlyWage" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>年資（年，可填小數）<input v-model.number="separation.serviceYears" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>雇主已預告天數<input v-model.number="separation.noticeDaysGiven" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>未休特休（天）<input v-model.number="separation.unusedLeaveDays" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>最後月份已工作天數<input v-model.number="separation.workedDays" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
         <p class="scope-note">若屬舊制年資、定期契約、退休或非資遣原因，請另依個案確認。</p>
       </div>
@@ -101,17 +101,17 @@
         <div class="panel-title"><span>01</span><div><h2>整合前債務</h2><p>最多先比較三筆；月付低於月利息時會顯示無法清償</p></div></div>
         <div v-for="(debt, index) in debts" :key="index" class="debt-row">
           <strong>債務 {{ index + 1 }}</strong>
-          <label>餘額<input v-model.number="debt.balance" type="number" class="input-clean"></label>
-          <label>年利率 %<input v-model.number="debt.rate" type="number" step="0.1" class="input-clean"></label>
-          <label>目前月付<input v-model.number="debt.payment" type="number" class="input-clean"></label>
+          <label>餘額<input v-model.number="debt.balance" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>年利率 %<input v-model.number="debt.rate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>目前月付<input v-model.number="debt.payment" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
         <div class="panel-title panel-title-secondary"><span>02</span><div><h2>整合方案</h2><p>費用與違約金也要算進去</p></div></div>
         <div class="field-grid">
-          <label>新年利率（%）<input v-model.number="debtPlan.rate" type="number" step="0.1" class="input-clean"></label>
-          <label>新期限（年）<input v-model.number="debtPlan.years" type="number" class="input-clean"></label>
-          <label>開辦費<input v-model.number="debtPlan.fee" type="number" class="input-clean"></label>
-          <label>提前清償違約金<input v-model.number="debtPlan.penalty" type="number" class="input-clean"></label>
-          <label>整合後每月多還<input v-model.number="debtPlan.extra" type="number" class="input-clean"></label>
+          <label>新年利率（%）<input v-model.number="debtPlan.rate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>新期限（年）<input v-model.number="debtPlan.years" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>開辦費<input v-model.number="debtPlan.fee" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>提前清償違約金<input v-model.number="debtPlan.penalty" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>整合後每月多還<input v-model.number="debtPlan.extra" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
       </div>
       <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: debtChartItems }" :comparison-items="scenarioComparisonItems">
@@ -130,8 +130,8 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>老年年金條件</h2><p>這是勞保老年給付，不是勞退個人專戶</p></div></div>
         <div class="field-grid">
-          <label>平均月投保薪資<input v-model.number="laborPension.averageInsuredSalary" type="number" class="input-clean"></label>
-          <label>勞保年資<input v-model.number="laborPension.insuredYears" type="number" step="0.1" class="input-clean"></label>
+          <label>平均月投保薪資<input v-model.number="laborPension.averageInsuredSalary" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>勞保年資<input v-model.number="laborPension.insuredYears" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
           <label>請領年齡
             <select v-model.number="laborPension.claimAge" class="input-clean">
               <option v-for="age in 11" :key="age" :value="age + 59">{{ age + 59 }} 歲</option>
@@ -158,15 +158,15 @@
         </div>
         <div class="panel-title"><span>01</span><div><h2>{{ tax.type === 'estate' ? '遺產總額與扣除額' : '本年度贈與總額' }}</h2><p>金額以申報認定價值為準</p></div></div>
         <div class="field-grid">
-          <label>{{ tax.type === 'estate' ? '遺產總額' : '贈與總額' }}<input v-model.number="tax.gross" type="number" class="input-clean"></label>
-          <label>{{ tax.type === 'estate' ? '債務及必要費用' : '可扣除負擔' }}<input v-model.number="tax.debts" type="number" class="input-clean"></label>
+          <label>{{ tax.type === 'estate' ? '遺產總額' : '贈與總額' }}<input v-model.number="tax.gross" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>{{ tax.type === 'estate' ? '債務及必要費用' : '可扣除負擔' }}<input v-model.number="tax.debts" type="text" inputmode="decimal" class="input-clean"></label>
           <template v-if="tax.type === 'estate'">
             <label class="check-field"><input v-model="tax.spouse" type="checkbox"> 有配偶</label>
-            <label>直系卑親屬人數<input v-model.number="tax.children" type="number" class="input-clean"></label>
-            <label>受扶養父母人數<input v-model.number="tax.parents" type="number" class="input-clean"></label>
-            <label>重度以上身心障礙人數<input v-model.number="tax.disabled" type="number" class="input-clean"></label>
+            <label>直系卑親屬人數<input v-model.number="tax.children" type="text" inputmode="decimal" class="input-clean"></label>
+            <label>受扶養父母人數<input v-model.number="tax.parents" type="text" inputmode="decimal" class="input-clean"></label>
+            <label>重度以上身心障礙人數<input v-model.number="tax.disabled" type="text" inputmode="decimal" class="input-clean"></label>
           </template>
-          <label>其他依法扣除額<input v-model.number="tax.otherDeductions" type="number" class="input-clean"></label>
+          <label>其他依法扣除額<input v-model.number="tax.otherDeductions" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
         <p v-if="tax.type === 'estate'" class="scope-note">未滿 18 歲直系卑親屬依距成年年數可再增加扣除；本簡版先計每人基本扣除，額外金額請填入「其他依法扣除額」。</p>
       </div>
@@ -183,11 +183,11 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>育嬰留停與津貼</h2><p>每位家長每名子女最多 6 個月，合計按平均月投保薪資 80%</p></div></div>
         <div class="field-grid">
-          <label>平均月投保薪資<input v-model.number="parental.insuredSalary" type="number" class="input-clean"></label>
-          <label>家長 A 請領月數<input v-model.number="parental.parent1Months" type="number" min="0" max="6" class="input-clean"></label>
-          <label>家長 B 請領月數<input v-model.number="parental.parent2Months" type="number" min="0" max="6" class="input-clean"></label>
-          <label>第幾名子女<input v-model.number="parental.childOrder" type="number" min="1" class="input-clean"></label>
-          <label>育兒津貼月數<input v-model.number="parental.allowanceMonths" type="number" min="0" max="24" class="input-clean"></label>
+          <label>平均月投保薪資<input v-model.number="parental.insuredSalary" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>家長 A 請領月數<input v-model.number="parental.parent1Months" type="text" inputmode="decimal" min="0" max="6" class="input-clean"></label>
+          <label>家長 B 請領月數<input v-model.number="parental.parent2Months" type="text" inputmode="decimal" min="0" max="6" class="input-clean"></label>
+          <label>第幾名子女<input v-model.number="parental.childOrder" type="text" inputmode="decimal" min="1" class="input-clean"></label>
+          <label>育兒津貼月數<input v-model.number="parental.allowanceMonths" type="text" inputmode="decimal" min="0" max="24" class="input-clean"></label>
           <label class="check-field"><input v-model="parental.publicCare" type="checkbox"> 使用公共化／準公共托育（不重複計育兒津貼）</label>
         </div>
       </div>
@@ -204,7 +204,7 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>房屋持有條件</h2><p>房屋稅用房屋評定現值，不是成交價</p></div></div>
         <div class="field-grid">
-          <label>房屋評定現值<input v-model.number="home.assessedHouseValue" type="number" class="input-clean"></label>
+          <label>房屋評定現值<input v-model.number="home.assessedHouseValue" type="text" inputmode="decimal" class="input-clean"></label>
           <label>房屋稅率
             <select v-model.number="home.houseTaxRate" class="input-clean">
               <option :value="1">全國單一自住 1%</option><option :value="1.2">一般自住 1.2%</option>
@@ -212,14 +212,14 @@
               <option :value="2.6">其他非自住（1 戶）2.6%</option><option :value="3.2">其他非自住（2–4 戶）3.2%</option><option :value="3.8">其他非自住（5–6 戶）3.8%</option><option :value="4.8">其他非自住（7 戶以上）4.8%</option>
             </select>
           </label>
-          <label>申報地價<input v-model.number="home.declaredLandValue" type="number" class="input-clean"></label>
-          <label>地價稅率（%）<input v-model.number="home.landTaxRate" type="number" step="0.1" class="input-clean"></label>
-          <label>房貸餘額<input v-model.number="home.mortgageBalance" type="number" class="input-clean"></label>
-          <label>房貸年利率（%）<input v-model.number="home.mortgageRate" type="number" step="0.01" class="input-clean"></label>
-          <label>剩餘年限<input v-model.number="home.mortgageYears" type="number" class="input-clean"></label>
-          <label>每月管理費<input v-model.number="home.managementMonthly" type="number" class="input-clean"></label>
-          <label>每年維修準備<input v-model.number="home.repairAnnual" type="number" class="input-clean"></label>
-          <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="number" class="input-clean"></label>
+          <label>申報地價<input v-model.number="home.declaredLandValue" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>地價稅率（%）<input v-model.number="home.landTaxRate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>房貸餘額<input v-model.number="home.mortgageBalance" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>房貸年利率（%）<input v-model.number="home.mortgageRate" type="text" inputmode="decimal" step="0.01" class="input-clean"></label>
+          <label>剩餘年限<input v-model.number="home.mortgageYears" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每月管理費<input v-model.number="home.managementMonthly" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每年維修準備<input v-model.number="home.repairAnnual" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
       </div>
       <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }" :comparison-items="scenarioComparisonItems">
@@ -238,16 +238,16 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>共同假設</h2><p>報酬率、費用與稅務耗損都可自行調整</p></div></div>
         <div class="field-grid">
-          <label>起始本金<input v-model.number="returns.principal" type="number" class="input-clean"></label>
-          <label>投資年數<input v-model.number="returns.years" type="number" class="input-clean"></label>
-          <label>每月投入<input v-model.number="returns.monthlyContribution" type="number" class="input-clean"></label>
-          <label>預期通膨（%）<input v-model.number="returns.inflation" type="number" step="0.1" class="input-clean"></label>
+          <label>起始本金<input v-model.number="returns.principal" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>投資年數<input v-model.number="returns.years" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每月投入<input v-model.number="returns.monthlyContribution" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>預期通膨（%）<input v-model.number="returns.inflation" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
         </div>
         <div v-for="scenario in returns.scenarios" :key="scenario.name" class="scenario-row">
           <strong>{{ scenario.name }}</strong>
-          <label>名目報酬 %<input v-model.number="scenario.nominalRate" type="number" step="0.1" class="input-clean"></label>
-          <label>年費用 %<input v-model.number="scenario.feeRate" type="number" step="0.1" class="input-clean"></label>
-          <label>稅務耗損 %<input v-model.number="scenario.taxDrag" type="number" step="0.1" class="input-clean"></label>
+          <label>名目報酬 %<input v-model.number="scenario.nominalRate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>年費用 %<input v-model.number="scenario.feeRate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>稅務耗損 %<input v-model.number="scenario.taxDrag" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
         </div>
       </div>
       <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: returnChartItems }" :comparison-items="scenarioComparisonItems">

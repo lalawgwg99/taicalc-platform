@@ -15,11 +15,11 @@
                     <div v-if="mode === 'compare'" class="text-xs font-medium text-ink-400 uppercase tracking-widest pb-1 border-b border-paper-300">方案 A（現職）</div>
                     <div>
                         <label for="salaryA" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（NT$）</label>
-                        <input id="salaryA" type="number" v-model.number="salary" class="input-clean text-xl font-semibold tabular-nums" placeholder="45,800">
+                        <input id="salaryA" type="text" inputmode="decimal" v-model.number="salary" class="input-clean text-xl font-semibold tabular-nums" placeholder="45,800">
                     </div>
                     <div>
                         <label for="bonusA" class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金（月數）</label>
-                        <input id="bonusA" type="number" v-model.number="bonus" step="0.5" min="0" max="12" class="input-clean" placeholder="2">
+                        <input id="bonusA" type="text" inputmode="decimal" v-model.number="bonus" step="0.5" min="0" max="12" class="input-clean" placeholder="2">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
@@ -40,11 +40,11 @@
                     <div class="text-xs font-medium text-azure uppercase tracking-widest pb-1 border-b border-paper-300">方案 B（新 Offer）</div>
                     <div>
                         <label for="salaryB" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（NT$）</label>
-                        <input id="salaryB" type="number" v-model.number="salaryB" class="input-clean text-xl font-semibold tabular-nums" placeholder="50,000">
+                        <input id="salaryB" type="text" inputmode="decimal" v-model.number="salaryB" class="input-clean text-xl font-semibold tabular-nums" placeholder="50,000">
                     </div>
                     <div>
                         <label for="bonusB" class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金（月數）</label>
-                        <input id="bonusB" type="number" v-model.number="bonusB" step="0.5" min="0" max="12" class="input-clean" placeholder="1">
+                        <input id="bonusB" type="text" inputmode="decimal" v-model.number="bonusB" step="0.5" min="0" max="12" class="input-clean" placeholder="1">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
@@ -63,7 +63,7 @@
 
             <div class="mt-5 pt-4 border-t border-paper-300">
                 <label for="monthlyExpense" class="block text-xs font-medium text-ink-400 mb-1.5">每月固定支出（NT$）</label>
-                <input id="monthlyExpense" type="number" v-model.number="monthlyExpense" class="input-clean" placeholder="20,000">
+                <input id="monthlyExpense" type="text" inputmode="decimal" v-model.number="monthlyExpense" class="input-clean" placeholder="20,000">
                 <p class="text-[10px] text-ink-400 mt-1.5">用來估算每月可存金額與緊急預備金目標。</p>
             </div>
         </div>
@@ -202,7 +202,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">扶養人數</label>
-                        <input type="number" v-model.number="taxDependents" class="input-clean-sm" min="0" max="10" />
+                        <input type="text" inputmode="decimal" v-model.number="taxDependents" class="input-clean-sm" min="0" max="10" />
                     </div>
                 </div>
 
@@ -234,12 +234,12 @@
                     <div class="flex items-center gap-3 text-xs text-ink-400">
                         <label class="flex items-center gap-1">
                             調薪
-                            <input type="number" v-model.number="raiseRate" step="0.5" aria-label="每年調薪幅度"
+                            <input type="text" inputmode="decimal" v-model.number="raiseRate" step="0.5" aria-label="每年調薪幅度"
                                 class="w-12 input-clean-sm text-center px-2 py-1 text-xs">%
                         </label>
                         <label class="flex items-center gap-1">
                             通膨
-                            <input type="number" v-model.number="inflationRate" step="0.5" aria-label="通膨率"
+                            <input type="text" inputmode="decimal" v-model.number="inflationRate" step="0.5" aria-label="通膨率"
                                 class="w-12 input-clean-sm text-center px-2 py-1 text-xs">%
                         </label>
                     </div>
@@ -361,7 +361,7 @@
             
             <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
                 <label class="block text-xs font-medium text-ink-400 mb-1.5">轉職沉沒成本 (NT$)</label>
-                <input type="number" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
+                <input type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
                 <p class="text-[10px] text-ink-400 mt-1.5">例如：放棄的未領年終、搬家租屋違約金、待業期空白成本</p>
             </div>
 

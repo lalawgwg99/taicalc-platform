@@ -12,7 +12,7 @@
               <label for="salary" class="block text-xs font-medium text-ink-400 mb-1">月薪 (NT$)</label>
               <input
                 id="salary"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="salary"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
@@ -21,7 +21,7 @@
               <label for="currentAge" class="block text-xs font-medium text-ink-400 mb-1">目前年齡</label>
               <input
                 id="currentAge"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="currentAge"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
@@ -30,7 +30,7 @@
               <label for="retireAge" class="block text-xs font-medium text-ink-400 mb-1">預計退休年齡</label>
               <input
                 id="retireAge"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="retireAge"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
@@ -53,7 +53,7 @@
                             </button>
                 <input
                   aria-label="自提比例"
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="selfRate"
                   min="0"
                   max="6"
@@ -85,7 +85,7 @@
               </div>
               <input
                 id="roiInput"
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="roi"
                 step="0.5"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 text-sm focus:outline-none focus:border-amber-500"

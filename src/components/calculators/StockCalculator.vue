@@ -34,7 +34,7 @@
         <div>
           <label class="block text-xs font-semibold text-ink-400 mb-1">券商折扣 (折)</label>
           <input
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="settings.discount"
             step="0.1"
             aria-label="券商折扣"
@@ -45,7 +45,7 @@
         <div>
           <label class="block text-xs font-semibold text-ink-400 mb-1">最低手續費 ($)</label>
           <input
-            type="number"
+            type="text" inputmode="decimal"
             v-model.number="settings.minFee"
             aria-label="最低手續費"
             class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -167,7 +167,7 @@
             <div>
               <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="buyPrice"
                 step="0.1"
                 aria-label="買進價格"
@@ -177,7 +177,7 @@
             <div>
               <label class="block text-xs font-semibold text-ink-400 mb-1">股數 (1張=1000)</label>
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="qty"
                 step="1000"
                 aria-label="股數"
@@ -189,7 +189,7 @@
           <div v-show="mode === 'profit'">
             <label class="block text-xs font-semibold text-ink-400 mb-1">賣出價格</label>
             <input
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="sellPrice"
               step="0.1"
               aria-label="賣出價格"
@@ -229,7 +229,7 @@
               <div>
                 <label class="block text-xs font-semibold text-ink-400 mb-1">現金股利 (元/股)</label>
                 <input
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="cashDividend"
                   step="0.1"
                   placeholder="0"
@@ -239,7 +239,7 @@
               <div>
                 <label class="block text-xs font-semibold text-ink-400 mb-1">股票股利 (元/股)</label>
                 <input
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="stockDividend"
                   step="0.1"
                   placeholder="0"
@@ -337,7 +337,7 @@
               <div class="flex-1">
                 <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
                 <input
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="rec.price"
                   placeholder="價格"
                   class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -346,7 +346,7 @@
               <div class="flex-1">
                 <label class="block text-xs font-semibold text-ink-400 mb-1">股數</label>
                 <input
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="rec.qty"
                   placeholder="股數"
                   class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-brand-500"

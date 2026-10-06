@@ -24,7 +24,7 @@
             <div>
               <label class="block text-xs font-semibold text-ink-400 mb-1">繳費年期 (年)</label>
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="irr.years"
                 aria-label="繳費年期"
                 placeholder="6"
@@ -34,7 +34,7 @@
             <div>
               <label class="block text-xs font-semibold text-ink-400 mb-1">年繳保費</label>
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="irr.premium"
                 aria-label="年繳保費"
                 placeholder="100000"
@@ -47,14 +47,14 @@
             <label class="block text-xs font-semibold text-ink-400 mb-1">期滿解約/領回金額 (第N年末)</label>
             <div class="flex gap-2">
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="irr.endYear"
                 aria-label="領回年度"
                 placeholder="第幾年領回? (如: 6)"
                 class="w-24 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="irr.cashValue"
                 aria-label="領回金額"
                 placeholder="解約金金額"
@@ -96,7 +96,7 @@
             <div>
               <label class="block text-xs font-semibold text-ink-400 mb-1">房貸與其他負債餘額</label>
               <input
-                type="number"
+                type="text" inputmode="decimal"
                 v-model.number="needs.debt"
                 aria-label="負債餘額"
                 class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -106,7 +106,7 @@
               <div>
                 <label class="block text-xs font-semibold text-ink-400 mb-1">家庭年支出 (不含房貸)</label>
                 <input
-                  type="number"
+                  type="text" inputmode="decimal"
                   v-model.number="needs.expenses"
                   aria-label="家庭年支出"
                   class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -134,7 +134,7 @@
           <div>
             <label class="block text-xs font-semibold text-ink-400 mb-1">存款與投資總額</label>
             <input
-              type="number"
+              type="text" inputmode="decimal"
               v-model.number="needs.assets"
               aria-label="現有資產"
               class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-green-500"

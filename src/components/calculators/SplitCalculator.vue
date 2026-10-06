@@ -22,7 +22,7 @@
           <span class="text-2xl font-semibold text-ink-300 mr-1">$</span>
           <input 
             v-model.number="totalAmount" 
-            type="number" 
+            type="text" inputmode="decimal" 
             class="w-full text-center text-4xl font-bold font-mono text-ink-900 border-b-2 border-ink-100 focus:border-brand-500 outline-none py-1.5 transition-colors bg-transparent"
             placeholder="0"
           />
@@ -76,7 +76,7 @@
                   <span class="text-xs text-ink-300 mr-0.5">$</span>
                   <input 
                     v-model.number="m.paid" 
-                    type="number" 
+                    type="text" inputmode="decimal" 
                     class="w-20 text-right text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-2 py-1 outline-none focus:border-brand-500" 
                     placeholder="0"
                   />
@@ -86,7 +86,7 @@
                 <span class="text-[10px] text-ink-300 font-medium">權重 (份)</span>
                 <input 
                   v-model.number="m.weight" 
-                  type="number" 
+                  type="text" inputmode="decimal" 
                   class="w-12 text-center text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-1.5 py-1 outline-none focus:border-brand-500" 
                 />
               </div>
