@@ -121,7 +121,7 @@
             <span class="text-2xl opacity-70">$</span>{{ netIncome }}
           </p>
           <div class="flex items-center gap-3 text-sm">
-            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">實薪 ${{ hourlyRate }}</span>
+            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">實薪 ${{ hourlyRate }}／小時</span>
             <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">${{ perKm }}/km</span>
           </div>
         </div>
@@ -161,7 +161,7 @@
             </li>
             <li class="mt-2 flex justify-between border-t border-dashed border-paper-100 pt-2 font-bold">
               <span class="text-ink-600">總成本</span>
-              <span class="text-rose-500">-${{ totalCost }}</span>
+              <span class="text-rose-500">{{ totalCostRaw > 0 ? '−$' : '$' }}{{ totalCost }}</span>
             </li>
           </ul>
         </div>

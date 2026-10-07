@@ -202,7 +202,7 @@
           </div>
 
           <!-- 480期/年度還款明細表 -->
-          <div v-if="showSchedule" class="mt-3 border-t border-ink-100/60 pt-3 max-h-72 overflow-y-auto font-mono text-xs">
+          <div v-if="showSchedule" class="mt-3 border-t border-ink-100/60 pt-3 max-h-72 overflow-y-auto overflow-x-auto font-mono text-xs">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-ink-100 text-ink-300 font-sans">

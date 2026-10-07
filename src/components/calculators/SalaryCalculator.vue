@@ -109,15 +109,15 @@
                 <!-- 明細 4 格 -->
                 <div class="grid grid-cols-2 gap-2">
                     <div class="bg-red-50 rounded-xl p-3">
-                        <p class="text-xs text-red-400 mb-0.5">勞保費（自付）</p>
+                        <p class="text-xs text-red-400 mb-0.5">勞保費（自付／月）</p>
                         <p class="text-base font-semibold text-red-600 tabular-nums">− {{ laborIns.toLocaleString() }}</p>
                     </div>
                     <div class="bg-red-50 rounded-xl p-3">
-                        <p class="text-xs text-red-400 mb-0.5">健保費（自付）</p>
+                        <p class="text-xs text-red-400 mb-0.5">健保費（自付／月）</p>
                         <p class="text-base font-semibold text-red-600 tabular-nums">− {{ healthIns.toLocaleString() }}</p>
                     </div>
                     <div class="bg-amber-50 rounded-xl p-3">
-                        <p class="text-xs text-amber-500 mb-0.5">勞退自提</p>
+                        <p class="text-xs text-amber-500 mb-0.5">勞退自提／月</p>
                         <p class="text-base font-semibold text-amber-600 tabular-nums">− {{ pensionSelf.toLocaleString() }}</p>
                     </div>
                     <div class="bg-green-50 rounded-xl p-3">
@@ -552,8 +552,8 @@ const forecast = computed(() => {
 
         let growth = '—'
         if (i > 0) {
-            const prevNominal = new Decimal(rows[0].nominal)
-            const g = real.div(prevNominal).minus(1).mul(100).round().toNumber()
+            const prevReal = new Decimal(rows[i - 1].real)
+            const g = real.div(prevReal).minus(1).mul(100).round().toNumber()
             growth = (g > 0 ? '+' : '') + g + '%'
         }
         rows.push({ nominal: nominal.toNumber(), real: real.toNumber(), growth })

@@ -1,5 +1,5 @@
 <template>
-  <div class="calculator-shell space-y-4">
+  <div class="calculator-shell space-y-4" :class="{ 'icons-ready': iconsReady }">
     <section v-if="showWelcome" class="overflow-hidden rounded-3xl border border-brand-200 bg-white shadow-card">
       <div class="grid lg:grid-cols-[.8fr_1.2fr]">
         <div class="bg-ink-800 p-6 text-white sm:p-8">
@@ -339,6 +339,7 @@ const activeFilter = ref('all');
 const feedback = ref(null);
 const hasSavedJourney = ref(false);
 const customChoices = ref([]);
+const iconsReady = ref(false);
 const customDraft = ref({ label: '', cost: 0, monthlyCost: 0, tone: 'meaningful' });
 
 const choices = [
@@ -549,6 +550,18 @@ const formatCompact = value => {
 const formatSigned = value => `${value >= 0 ? '+' : '-'} ${formatCompact(Math.abs(value))}`;
 
 onMounted(() => {
+  // 等圖示字型載入完成再顯示圖示，避免英文 ligature 文字閃現
+  const showIcons = () => { iconsReady.value = true; };
+  try {
+    if (document.fonts?.load) {
+      document.fonts.load('24px "Material Symbols Outlined"').then(showIcons, showIcons);
+      setTimeout(showIcons, 2000); // 保險：2 秒後無論如何顯示
+    } else {
+      showIcons();
+    }
+  } catch {
+    showIcons();
+  }
   try {
     const saved = localStorage.getItem(storageKey);
     if (!saved) {
@@ -584,5 +597,8 @@ watch([profile, state, customChoices], () => {
 <style scoped>
 .field-label { font-size: .65rem; font-weight: 600; color: #78716c; }
 .life-icon { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; line-height: 1; }
+/* 圖示字型載入前先隱藏，避免英文原文閃現；載入完成後由 .icons-ready 顯示 */
+.life-icon { visibility: hidden; }
+.icons-ready .life-icon { visibility: visible; }
 button:disabled { box-shadow: none; }
 </style>
