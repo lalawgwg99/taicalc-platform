@@ -43,7 +43,7 @@
                 :main-tone="side.key === 'a' ? 'brand' : 'neutral'"
                 :rows="[
                 { label: '總利息', value: `$ ${fmt(side.res.totalInterest)}`, tone: 'tax' },
-                { label: '本息總額', value: `$ ${fmt(side.res.totalPayment)}` },
+                { label: '總共要還', value: `$ ${fmt(side.res.totalPayment)}` },
                 ]"
             />
         </div>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">採本息平均攤還法估算，四捨五入至元。</p>
+            <p class="text-[10px] text-ink-300">用每月固定還款的方式估算，四捨五入到元。</p>
         </div>
 
         <!-- 分享 -->

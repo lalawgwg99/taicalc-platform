@@ -14,7 +14,7 @@
                 <input type="text" inputmode="decimal" v-model.number="years" min="1" max="50" aria-label="勞保年資"
                 class="input-clean font-semibold">
             </div>
-            <p class="text-[11px] text-ink-400">依勞保老年給付規則概算：月領年資給付率 1.55%/年；一次領前 15 年每年 1 個月、第 16 年起每年 2 個月（上限 50 個月）。</p>
+            <p class="text-[11px] text-ink-400">算法：月領每年資給 1.55%；一次領前 15 年每年給 1 個月，第 16 年起每年 2 個月（最多 50 個月）。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-2 items-stretch">
@@ -45,7 +45,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">怎麼選</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">月領約 {{ breakevenYears }} 年累計可超過一次領總額。實際給付仍以勞保局核定為準。</p>
+            <p class="text-[10px] text-ink-300">月領約 {{ breakevenYears }} 年，領的總額就會超過一次領。實際給付仍以勞保局核定為準。</p>
         </div>
 
         <div class="flex gap-2">

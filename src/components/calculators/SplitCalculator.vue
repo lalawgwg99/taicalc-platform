@@ -104,9 +104,9 @@
     <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-brand-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-brand-500"></span> 最佳轉帳清算建議
+          <span class="w-2 h-2 rounded-full bg-brand-500"></span> 誰該轉帳給誰
         </h2>
-        <span class="text-xs text-ink-300 font-mono">Minimal Transfers</span>
+        <span class="text-xs text-ink-300 font-mono">轉帳次數最少</span>
       </div>
 
       <div v-if="transactions.length > 0" class="space-y-2.5">
@@ -124,7 +124,7 @@
         </div>
       </div>
       <div v-else class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
-        🎉 目前無人互欠 (完美結清)
+        🎉 沒人欠誰，都結清了
       </div>
 
       <!-- 操作按鈕 -->
@@ -262,7 +262,7 @@ const copyResult = async () => {
         lines.push(`${tx.from} \t→ ${tx.to} \t$${tx.amount}`);
     });
 
-    if(transactions.value.length === 0) lines.push("無人互欠 (已結清)");
+    if(transactions.value.length === 0) lines.push("沒人欠誰（已結清）");
 
     try {
         await navigator.clipboard.writeText(lines.join('\n'));

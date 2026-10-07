@@ -21,7 +21,7 @@
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
-            <p class="text-[11px] text-ink-400">年化報酬為歷史概估：定存 1.5%、債券型 3.5%、股票型 ETF 7%。實質價值已扣除通膨。</p>
+            <p class="text-[11px] text-ink-400">年化報酬是拿歷史大概估的：定存 1.5%、債券型 3.5%、股票型 ETF 7%。下面的金額都已經扣掉通膨了。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-3 items-stretch">
@@ -30,12 +30,12 @@
                 :key="asset.key"
                 :title="asset.name"
                 :subtitle="`${asset.rate}% 年化概估`"
-                main-label="實質價值（扣通膨）"
+                main-label="扣掉通膨的實際價值"
                 :main-value="`$ ${fmt(asset.real)}`"
                 :main-tone="asset.key === 'c' ? 'brand' : 'neutral'"
                 :rows="[
-                { label: '名目價值', value: `$ ${fmt(asset.nominal)}` },
-                { label: '名目報酬', value: `$ ${fmt(asset.nominal - principal)}`, tone: 'growth' },
+                { label: '帳面總額', value: `$ ${fmt(asset.nominal)}` },
+                { label: '帳面賺的', value: `$ ${fmt(asset.nominal - principal)}`, tone: 'growth' },
                 ]"
             />
         </div>
@@ -43,7 +43,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">重點</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">單筆投入、複利估算，未計稅與費用。高報酬伴隨高波動，請依風險承受度配置。</p>
+            <p class="text-[10px] text-ink-300">單筆投入、複利大概估的，沒算稅跟手續費。報酬高的波動也大，照自己受得了的風險來配。</p>
         </div>
 
         <div class="flex gap-2">
@@ -53,7 +53,7 @@
             </button>
             <a href="/tools/real-return-calculator"
                 class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
-                進階：通膨後實質報酬試算
+                進階：看扣掉通膨真正賺多少
                 <span aria-hidden="true">→</span>
             </a>
         </div>
@@ -81,7 +81,7 @@ const insight = computed(() => {
     const a = assets.value[0].real, c = assets.value[2].real
     const diff = c - a
     return diff > 0
-        ? `投入 $ ${fmt(principal)}、${years} 年後：定存實質價值約 $ ${fmt(a)}，股票型 ETF 約 $ ${fmt(c)}，相差 $ ${fmt(diff)}。通膨 ${inflation}% 下，低報酬資產的購買力幾乎原地踏步。`
+        ? `同樣放 $ ${fmt(principal)}、放 ${years} 年：定存扣掉通膨後大概值 $ ${fmt(a)}，股票型 ETF 大概 $ ${fmt(c)}，差了 $ ${fmt(diff)}。通膨 ${inflation}% 的時候，報酬低的錢等於沒在長大。`
         : '請調整參數後再比較。'
 })
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

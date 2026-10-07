@@ -42,20 +42,20 @@
       </div>
     </div>
     <aside class="rounded-3xl bg-ink-800 p-5 text-white shadow-sm sm:p-7">
-      <p class="text-xs font-semibold tracking-[.12em] text-brand-200">通膨後的購買力</p>
+      <p class="text-xs font-semibold tracking-[.12em] text-brand-200">換算成今天的錢</p>
       <p class="mt-2 text-4xl font-semibold tracking-tight">{{ money(result.realValue) }}</p>
-      <p class="mt-2 text-sm leading-6 text-ink-200">以今天的購買力計算；不是未來帳戶保證金額。</p>
+      <p class="mt-2 text-sm leading-6 text-ink-200">用今天的錢來算；不是保證未來帳戶有這麼多。</p>
       <div class="mt-6 grid grid-cols-2 gap-3">
         <div v-for="item in metrics" :key="item.label" class="rounded-2xl border border-white/15 bg-white/5 p-4"><p class="text-xs text-ink-200">{{ item.label }}</p><strong class="mt-1 block text-lg text-white">{{ item.value }}</strong></div>
       </div>
       <div class="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-        <div class="flex items-end justify-between gap-4"><div><p class="text-xs text-ink-200">相同假設若只算單利</p><strong class="mt-1 block text-xl">{{ money(result.simpleValue) }}</strong></div><div class="text-right"><p class="text-xs text-ink-200">複利多出</p><strong class="mt-1 block text-lg text-brand-200">{{ money(result.compoundGain) }}</strong></div></div>
-        <p class="mt-2 text-[11px] leading-5 text-ink-200">單利比較：每筆本金只依剩餘持有時間計息，不把利息加入下一期本金；複利會將報酬繼續累積。</p>
+        <div class="flex items-end justify-between gap-4"><div><p class="text-xs text-ink-200">如果利息都沒有再投入</p><strong class="mt-1 block text-xl">{{ money(result.simpleValue) }}</strong></div><div class="text-right"><p class="text-xs text-ink-200">利息再投入，幫你多賺的</p><strong class="mt-1 block text-lg text-brand-200">{{ money(result.compoundGain) }}</strong></div></div>
+        <p class="mt-2 text-[11px] leading-5 text-ink-200">單利：利息不滾進本金；複利：利息繼續滾，越滾越多。</p>
       </div>
       <div class="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-        <p class="text-xs font-semibold text-brand-100">下跌時的行為壓力測試</p>
-        <p class="mt-2 text-sm leading-6 text-ink-100">若第 {{ shockYear }} 年帳面下跌 {{ drawdown }}%，持續投入的情境約為 <strong>{{ money(shockResult) }}</strong>。這是固定假設的數學結果，不代表市場路徑。</p>
-        <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">下跌年<input v-model.number="shockYear" type="text" inputmode="decimal" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌幅 %<input v-model.number="drawdown" type="text" inputmode="decimal" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
+        <p class="text-xs font-semibold text-brand-100">如果中間遇到大跌，會變怎樣</p>
+        <p class="mt-2 text-sm leading-6 text-ink-100">如果第 {{ shockYear }} 年大跌 {{ drawdown }}%，你照樣每個月投，最後大概是 <strong>{{ money(shockResult) }}</strong>。這只是照假設計算的，不是市場保證。</p>
+        <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">第幾年跌<input v-model.number="shockYear" type="text" inputmode="decimal" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌多少 %<input v-model.number="drawdown" type="text" inputmode="decimal" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
       </div>
     </aside>
   </section>
@@ -116,8 +116,8 @@ const money = (value: number) => new Intl.NumberFormat('zh-TW', { style: 'curren
 const percent = (value: number) => `${(value * 100).toFixed(2)}%`;
 const metrics = computed(() => [
   { label: '投入本金', value: money(result.value.contributions) },
-  { label: '名目期末值', value: money(result.value.nominalValue) },
-  { label: '扣除費用後年化', value: percent(result.value.netRate) },
-  { label: '費用差額', value: money(result.value.feeImpact) },
+  { label: '期滿時帳面總額', value: money(result.value.nominalValue) },
+  { label: '扣掉費用後，平均每年賺', value: percent(result.value.netRate) },
+  { label: '這些年手續費總共吃掉', value: money(result.value.feeImpact) },
 ]);
 </script>

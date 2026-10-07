@@ -168,7 +168,7 @@
     <!-- ── 計算結果（收據式） ── -->
     <div class="receipt-card">
       <div class="receipt-head">
-        <p class="receipt-title">估算應納所得稅</p>
+        <p class="receipt-title">預估要繳的稅</p>
         <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">綜合所得稅</span>
       </div>
       <hr class="receipt-divider" />
@@ -192,11 +192,11 @@
       <!-- 計算流程 -->
       <div class="space-y-2 text-sm mb-5">
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">全年綜合所得總額</span>
+          <span class="text-ink-400">全年總收入</span>
           <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(grossIncome) }}</span>
         </div>
         <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">股利所得（分離課稅）</span>
+          <span class="text-ink-400">股利（分開課稅）</span>
           <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(dividendIncome) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
@@ -232,34 +232,34 @@
           <span class="tabular-nums text-red-500">− $ {{ fmt(savingsDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200 font-medium">
-          <span class="text-ink-600">課稅所得淨額</span>
+          <span class="text-ink-600">真正要課稅的所得</span>
           <span class="tabular-nums text-ink-700">$ {{ fmt(Math.max(0, taxableIncome)) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">適用稅率</span>
+          <span class="text-ink-400">你的稅率</span>
           <span class="font-bold text-azure">{{ taxBracketLabel }}</span>
         </div>
         <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">股利可抵減稅額</span>
+          <span class="text-ink-400">股利可抵掉的稅</span>
           <span class="tabular-nums text-green-600">− $ {{ fmt(dividendCredit) }}</span>
         </div>
         <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">股利分離課稅</span>
+          <span class="text-ink-400">股利分開課的稅</span>
           <span class="tabular-nums text-ink-700">+ $ {{ fmt(dividendSeparateTax) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 font-semibold">
-          <span class="text-ink-700">估算應納稅額</span>
+          <span class="text-ink-700">總共要繳的稅</span>
           <span class="tabular-nums text-ink-800">$ {{ fmt(totalTax) }}</span>
         </div>
       </div>
 
         <div class="grid grid-cols-2 gap-3 text-center text-xs">
           <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
-            <p class="text-paper-200 mb-0.5">稅後年收入</p>
+            <p class="text-paper-200 mb-0.5">實際拿到的年收入</p>
             <p class="text-base font-semibold tabular-nums">$ {{ fmt(afterTaxIncome) }}</p>
           </div>
           <div class="bg-paper-200/60 rounded-xl p-3">
-            <p class="text-ink-400 mb-0.5">月平均稅後</p>
+            <p class="text-ink-400 mb-0.5">平均每月實拿</p>
             <p class="text-base font-bold text-ink-700 tabular-nums">$ {{ fmt(Math.round(afterTaxIncome / 12)) }}</p>
           </div>
         </div>
@@ -267,15 +267,15 @@
       <!-- 有效稅率 -->
       <div class="grid grid-cols-3 gap-2 text-center text-xs">
         <div class="bg-paper-200/60 rounded-xl p-3">
-          <p class="text-ink-400 mb-0.5">有效稅率</p>
+          <p class="text-ink-400 mb-0.5">實際稅率</p>
           <p class="text-base font-bold text-ink-700">{{ effectiveRate }}%</p>
         </div>
         <div class="bg-paper-200/60 rounded-xl p-3">
-          <p class="text-ink-400 mb-0.5">月繳估算</p>
+          <p class="text-ink-400 mb-0.5">平均每月繳</p>
           <p class="text-base font-bold text-ink-700 tabular-nums">$ {{ fmt(Math.round(totalTax / 12)) }}</p>
         </div>
         <div class="bg-paper-200/60 rounded-xl p-3">
-          <p class="text-ink-400 mb-0.5">所得後稅率</p>
+          <p class="text-ink-400 mb-0.5">實拿比例</p>
           <p class="text-base font-bold text-ink-700">{{ afterTaxRate }}%</p>
         </div>
       </div>

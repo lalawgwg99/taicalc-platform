@@ -51,7 +51,7 @@
     <section class="receipt-card">
       <div class="receipt-head">
         <p class="receipt-title">預估電費</p>
-        <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">台電累進電價</span>
+        <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">越用越貴</span>
       </div>
       <hr class="receipt-divider" />
       <div class="flex items-end justify-between mb-6 pb-6 border-b border-paper-100">
@@ -64,11 +64,11 @@
             <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalCost.toLocaleString() }}
           </p>
           <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-ink-400">
-            已含每月最低計收 $100，補足 ${{ minimumChargeApplied }}
+            已經含每月最低收 100 元，補了 ${{ minimumChargeApplied }}
           </p>
         </div>
         <div class="text-right">
-          <p class="text-xs text-ink-400 mb-1">平均每度</p>
+          <p class="text-xs text-ink-400 mb-1">平均一度</p>
           <p class="text-xl font-bold text-ink-600 font-mono">${{ avgRate }}</p>
         </div>
       </div>
@@ -90,7 +90,7 @@
           </div>
         </div>
         <div v-if="minimumChargeApplied > 0" class="flex justify-between text-xs text-ink-400 pt-2 border-t border-paper-100">
-          <span>每月最低計收補足</span>
+          <span>每月最低消費補的</span>
           <span class="font-bold text-ink-600">+$ {{ minimumChargeApplied }}</span>
         </div>
       </div>
@@ -101,7 +101,7 @@
       >
         <span>⚠️</span>
         <span>
-          高級距電費佔比 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級每度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
+          貴的級距佔了 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級一度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
         </span>
       </div>
     </section>
@@ -454,8 +454,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-ink-400">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-400"></span> 非夏月：其他月份</div>
-        <div class="md:col-span-2">住宅累進級距採台電 2025-10-01 起實施費率：夏月 $1.78–$8.86、非夏月 $1.78–$7.03。</div>
-        <div class="md:col-span-2">已納入 2025-09-12 公告後之每月最低計收 $100 規則；冷氣 BTU/h、CSPF 換算為平均估算值，仍以設備銘板與實際帳單為準。</div>
+        <div class="md:col-span-2">家用電價用台電 2025-10-01 開始的費率：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03。</div>
+        <div class="md:col-span-2">已經算進 2025-09-12 公告的每月最低收 100 元規則；冷氣 BTU/h、CSPF 換算只是大概估的，以機器上的銘板跟實際帳單為準。</div>
       </div>
     </footer>
   </div>

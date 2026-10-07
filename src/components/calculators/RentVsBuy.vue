@@ -68,9 +68,9 @@
                 :main-value="`$ ${fmt(buyMonthly)}`"
                 main-tone="brand"
                 :rows="[
-                { label: '期末房產價值', value: `$ ${fmt(homeValue)}` },
-                { label: '期末剩餘貸款', value: `− $ ${fmt(remainingLoan)}`, tone: 'tax' },
-                { label: '期末淨資產', value: `$ ${fmt(buyNetAsset)}` },
+                { label: '到時候房子值多少', value: `$ ${fmt(homeValue)}` },
+                { label: '到時候還欠多少', value: `− $ ${fmt(remainingLoan)}`, tone: 'tax' },
+                { label: '到時候淨賺多少', value: `$ ${fmt(buyNetAsset)}` },
                 ]"
             />
             <ResultReceipt
@@ -80,8 +80,8 @@
                 :main-value="`$ ${fmt(monthlyRent)}`"
                 main-tone="neutral"
                 :rows="[
-                { label: '頭期款投資增值', value: `$ ${fmt(downInvest)}` },
-                { label: '期末淨資產', value: `$ ${fmt(rentNetAsset)}` },
+                { label: '頭期款投資變多少', value: `$ ${fmt(downInvest)}` },
+                { label: '到時候淨賺多少', value: `$ ${fmt(rentNetAsset)}` },
                 ]"
             />
         </div>
@@ -159,9 +159,9 @@ const totalRentPaid = computed(() => {
 
 const insight = computed(() => {
     const diff = buyNetAsset.value - rentNetAsset.value
-    if (diff > 0) return `${years} 年後：買房期末淨資產約 $ ${fmt(buyNetAsset.value)}，租屋約 $ ${fmt(rentNetAsset.value)}，買房多 $ ${fmt(diff)}（含房價漲幅 ${homeAppr}% 假設）。`
-    if (diff < 0) return `${years} 年後：租屋期末淨資產約 $ ${fmt(rentNetAsset.value)}，買房約 $ ${fmt(buyNetAsset.value)}，租屋多 $ ${fmt(-diff)}——房價漲幅低於投資報酬時，租屋＋投資可能更划算。`
-    return '兩者淨資產相近，可依居住需求與穩定性決定。'
+    if (diff > 0) return `${years.value} 年後：買房到時候淨賺約 $ ${fmt(buyNetAsset.value)}，租屋約 $ ${fmt(rentNetAsset.value)}，買房多 $ ${fmt(diff)}（假設房價每年漲 ${homeAppr.value}%）。`
+    if (diff < 0) return `${years.value} 年後：租屋到時候淨賺約 $ ${fmt(rentNetAsset.value)}，買房約 $ ${fmt(buyNetAsset.value)}，租屋多 $ ${fmt(-diff)}——房價漲得比投資慢的時候，租屋＋投資可能更划算。`
+    return '兩個算下來差不多，看你想住得穩一點，還是保持彈性。'
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

@@ -85,7 +85,7 @@
                     </div>
                     <div class="flex flex-col items-end gap-2">
                         <div class="text-right">
-                            <p class="stat-label">年度總額</p>
+                            <p class="stat-label">整年總共</p>
                             <p class="stat-value-md text-ink-500">$ {{ yearlyNet.toLocaleString() }}</p>
                             <p class="text-xs text-ink-400 mt-0.5">≈ {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
                         </div>
@@ -136,20 +136,20 @@
                         <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ (salary || 0).toLocaleString() }}</p>
                     </div>
                     <div>
-                        <p class="stat-label">雇主額外</p>
+                        <p class="stat-label">公司多付的</p>
                         <p class="text-base font-semibold text-red-500 tabular-nums">+ {{ employerCost.toLocaleString() }}</p>
                     </div>
                     <div>
-                        <p class="stat-label">總人力成本</p>
+                        <p class="stat-label">公司每月總花費</p>
                         <p class="text-base font-semibold text-ink-800 tabular-nums">$ {{ totalCost.toLocaleString() }}</p>
                     </div>
                 </div>
-                <p class="note-box mt-3">雇主每月額外負擔：勞保及就保 70%、健保 60%（×1.56 平均眷口係數）、勞退 6%。</p>
+                <p class="note-box mt-3">雇主每月額外負擔：勞保＋就保 70%、健保 60%（以平均眷屬 1.56 人計）、勞退 6%。</p>
             </div>
 
         <!-- 可存金額與緊急預備金 -->
         <div class="card-surface p-5">
-            <h3 class="text-sm font-medium text-ink-600 mb-4">每月可存與安全墊</h3>
+            <h3 class="text-sm font-medium text-ink-600 mb-4">每月可存＋預備金</h3>
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-paper-100 rounded-xl p-3">
                         <p class="text-xs text-ink-400 mb-0.5">每月固定支出</p>
@@ -169,15 +169,15 @@
                 <div class="mt-4">
                     <div v-if="emergencyFund" class="grid grid-cols-3 gap-2 text-center text-xs">
                         <div class="bg-white border border-paper-300 rounded-lg py-2">
-                            <p class="text-ink-400">3 個月安全墊</p>
+                            <p class="text-ink-400">3 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m3 }} 個月</p>
                         </div>
                         <div class="bg-white border border-paper-300 rounded-lg py-2">
-                            <p class="text-ink-400">6 個月安全墊</p>
+                            <p class="text-ink-400">6 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m6 }} 個月</p>
                         </div>
                         <div class="bg-white border border-paper-300 rounded-lg py-2">
-                            <p class="text-ink-400">12 個月安全墊</p>
+                            <p class="text-ink-400">12 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m12 }} 個月</p>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
             <!-- 稅後年薪與目標 -->
             <div class="card-surface p-5">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-sm font-medium text-ink-600">稅後年薪與存款目標</h3>
+                    <h3 class="text-sm font-medium text-ink-600">扣稅後年薪與存錢目標</h3>
                     <span class="text-[10px] text-ink-400">以標準扣除估算</span>
                 </div>
 
@@ -208,12 +208,12 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-paper-100 rounded-xl p-3">
-                        <p class="text-xs text-ink-400 mb-0.5">估算稅後年薪</p>
+                        <p class="text-xs text-ink-400 mb-0.5">扣完稅一年領多少</p>
                         <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ estimatedAfterTaxAnnual.toLocaleString() }}</p>
-                        <p class="text-[10px] text-ink-400 mt-0.5">估算所得稅 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
+                        <p class="text-[10px] text-ink-400 mt-0.5">要繳的稅大概 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
                     </div>
                     <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
-                        <p class="text-xs text-paper-200 mb-0.5">稅後月平均</p>
+                        <p class="text-xs text-paper-200 mb-0.5">平均每月實拿</p>
                         <p class="text-base font-semibold tabular-nums">$ {{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
                     </div>
                 </div>
@@ -252,8 +252,8 @@
                         <thead>
                             <tr class="text-ink-400 border-b border-paper-300">
                                 <th class="text-left py-2 font-medium">年份</th>
-                                <th class="text-right py-2 font-medium">名目年薪</th>
-                                <th class="text-right py-2 font-medium">實質購買力</th>
+                                <th class="text-right py-2 font-medium">整年領到的薪水</th>
+                                <th class="text-right py-2 font-medium">換算成今天的錢</th>
                                 <th class="text-right py-2 font-medium">成長</th>
                             </tr>
                         </thead>
@@ -360,7 +360,7 @@
             </h3>
             
             <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">轉職沉沒成本 (NT$)</label>
+                <label class="block text-xs font-medium text-ink-400 mb-1.5">換工作的一次性花費 (NT$)</label>
                 <input type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
                 <p class="text-[10px] text-ink-400 mt-1.5">例如：放棄的未領年終、搬家租屋違約金、待業期空白成本</p>
             </div>
@@ -376,7 +376,7 @@
                     <p class="text-xs text-ink-400 mt-1">每月淨賺多 $ {{ Math.max(0, monthlyNetB - monthlyNet).toLocaleString() }}</p>
                 </template>
                 <template v-else-if="breakEvenMonths > 0">
-                    <p class="text-xs text-ink-500 mb-1">為了彌補沉沒成本，預計需要</p>
+                    <p class="text-xs text-ink-500 mb-1">要把換工作的花費賺回來，大概要</p>
                     <p class="text-3xl font-bold text-amber-600 my-1">{{ breakEvenMonths }} <span class="text-sm font-medium text-ink-500">個月</span></p>
                     <p class="text-xs text-ink-400">才能透過新工作的薪資差距回本</p>
                 </template>
@@ -387,7 +387,7 @@
             
             <!-- 3 年淨利基差 -->
             <div v-if="threeYearsNetGap" class="mt-4 flex justify-between items-center text-xs px-1">
-                <span class="text-ink-400">3 年後累計財富差距：</span>
+                <span class="text-ink-400">3 年後兩邊累計差多少：</span>
                 <span class="font-semibold tabular-nums" :class="threeYearsNetGap > 0 ? 'text-azure' : 'text-red-500'">
                     {{ threeYearsNetGap > 0 ? '+' : '' }}$ {{ threeYearsNetGap.toLocaleString() }}
                 </span>
@@ -664,7 +664,7 @@ const updateCharts = () => {
                 labels: ['2026', '2027', '2028', '2029', '2030'],
                 datasets: [
                     {
-                        label: '名目年薪',
+                        label: '整年領到的薪水',
                         data: forecast.value.map(r => r.nominal),
                         borderColor: CHART_COLORS.primary,
                         backgroundColor: 'rgba(59,147,247,0.07)',
@@ -674,7 +674,7 @@ const updateCharts = () => {
                         pointBackgroundColor: CHART_COLORS.primary,
                     },
                     {
-                        label: '實質購買力',
+                        label: '換算成今天的錢',
                         data: forecast.value.map(r => r.real),
                         borderColor: CHART_COLORS.amber,
                         borderDash: [4, 4],

@@ -18,30 +18,30 @@
                     </select>
                 </div>
             </div>
-            <p class="mt-2 text-[11px] text-ink-400">比較兩城的月生活成本（USD）與生活指數</p>
+            <p class="mt-2 text-[11px] text-ink-400">比比看兩個城市每個月要花多少美金</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-2 items-stretch">
             <ResultReceipt
                 :title="nameA"
-                subtitle="月生活成本"
-                main-label="舒適水準"
+                subtitle="每月大概花費"
+                main-label="舒服過"
                 :main-value="`$ ${fmt(comfortA)}`"
                 main-tone="brand"
                 :rows="[
-                { label: '生存水準', value: `$ ${fmt(survivalA)}` },
-                { label: '奢華水準', value: `$ ${fmt(luxuryA)}` },
+                { label: '省著過', value: `$ ${fmt(survivalA)}` },
+                { label: '爽爽過', value: `$ ${fmt(luxuryA)}` },
                 ]"
             />
             <ResultReceipt
                 :title="nameB"
-                subtitle="月生活成本"
-                main-label="舒適水準"
+                subtitle="每月大概花費"
+                main-label="舒服過"
                 :main-value="`$ ${fmt(comfortB)}`"
                 main-tone="neutral"
                 :rows="[
-                { label: '生存水準', value: `$ ${fmt(survivalB)}` },
-                { label: '奢華水準', value: `$ ${fmt(luxuryB)}` },
+                { label: '省著過', value: `$ ${fmt(survivalB)}` },
+                { label: '爽爽過', value: `$ ${fmt(luxuryB)}` },
                 ]"
             />
         </div>
@@ -49,7 +49,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">金額為 USD 月支出概估；指數為 0–100 概估。</p>
+            <p class="text-[10px] text-ink-300">金額是美金、每個月大概花的；指數 0–100 也是大概估的。</p>
         </div>
 
         <div class="flex gap-2">
@@ -90,8 +90,8 @@ const luxuryB = computed(() => cityBObj.value.costs_usd.luxury)
 
 const insight = computed(() => {
     const diff = comfortA.value - comfortB.value
-    if (diff > 0) return `${nameA.value}的舒適月支出比 ${nameB.value} 高約 $ ${fmt(diff)} USD——若追求低成本生活，${nameB.value} 較輕鬆。`
-    if (diff < 0) return `${nameB.value}的舒適月支出比 ${nameA.value} 高約 $ ${fmt(-diff)} USD——若追求低成本生活，${nameA.value} 較輕鬆。`
+    if (diff > 0) return `${nameA.value}一個月舒服過，要比${nameB.value}多花 $ ${fmt(diff)} USD，想省錢的話${nameB.value}比較輕鬆。`
+    if (diff < 0) return `${nameB.value}一個月舒服過，要比${nameA.value}多花 $ ${fmt(-diff)} USD，想省錢的話${nameA.value}比較輕鬆。`
     return '兩城舒水準支出相近，可再比較安全、網路與氣候指數。'
 })
 

@@ -27,7 +27,7 @@
         <div>
           <label class="block text-xs font-medium text-ink-400 mb-1.5">退休月支出（TWD）</label>
           <input type="text" inputmode="decimal" v-model.number="monthlyExpense" class="input-clean tabular-nums" placeholder="40,000" />
-          <p class="text-[10px] text-ink-400 mt-1">這決定了你的自由門檻</p>
+          <p class="text-[10px] text-ink-400 mt-1">這個數字決定你要存多少才自由</p>
         </div>
         <div>
           <label class="block text-xs font-medium text-ink-400 mb-1.5">每月投入（TWD）</label>
@@ -55,7 +55,7 @@
             {{ p.label }} {{ p.rate }}%
           </button>
         </div>
-        <p class="text-[10px] text-ink-400 mt-1.5">這裡輸入名目報酬率，系統會再依下方通膨率換算實質報酬；預設僅供情境試算，不代表未來績效。</p>
+        <p class="text-[10px] text-ink-400 mt-1.5">這裡填的是還沒扣通膨的報酬率，下面通膨率會再幫你換算；數字只是試算用，不代表以後真的賺這樣。</p>
       </div>
 
       <!-- 進階設定 -->
@@ -92,11 +92,11 @@
           </div>
           <div>
             <label class="block text-xs font-medium text-ink-400 mb-2">
-              安全提領率：<span class="text-ink-600 font-semibold">{{ withdrawalRate }}%</span>
+              每年拿出來花的比例：<span class="text-ink-600 font-semibold">{{ withdrawalRate }}%</span>
             </label>
             <input type="range" v-model.number="withdrawalRate" min="1" max="10" step="0.1"
               class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-azure" />
-            <p class="text-[10px] text-ink-400 mt-1">標準 4%，保守可設 3%</p>
+            <p class="text-[10px] text-ink-400 mt-1">一般抓 4%，保守一點設 3%</p>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <!-- FIRE 目標 -->
       <div class="card-surface p-5 bg-ink-700 border-ink-700">
-        <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">FIRE 目標資產</p>
+        <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">不用上班要存到</p>
         <p class="text-3xl font-bold tabular-nums text-azure-400 mb-4">
           ${{ fmt(fireNumber) }}
         </p>
@@ -131,11 +131,11 @@
         <div v-else-if="yearsToFreedom <= 0" class="flex flex-col items-center">
           <span class="text-4xl mb-2">🎉</span>
           <p class="text-base font-semibold text-ink-700">已達財務自由！</p>
-          <p class="text-xs text-ink-400 mt-1">4% 提領率已可覆蓋開銷</p>
+          <p class="text-xs text-ink-400 mt-1">用 4% 的速度花，已經夠你花了</p>
         </div>
         <div v-else class="flex flex-col items-center">
           <span class="text-4xl mb-2">🐢</span>
-          <p class="text-sm text-ink-500">請增加儲蓄或提高報酬率</p>
+          <p class="text-sm text-ink-500">多存一點，或找報酬高一點的標的</p>
         </div>
       </div>
     </div>
@@ -143,7 +143,7 @@
     <!-- 資產成長圖 -->
     <div class="card-surface p-5">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="text-sm font-medium text-ink-600">資產成長預測</h3>
+        <h3 class="text-sm font-medium text-ink-600">資產長大預測</h3>
         <span class="badge-neutral">考慮複利</span>
       </div>
       <div class="h-56 chart-wrap">
@@ -154,20 +154,20 @@
     <!-- 分析小卡 -->
     <div class="grid grid-cols-3 gap-3">
       <div class="card-surface p-3 text-center">
-        <p class="stat-label">目前被動收入</p>
+        <p class="stat-label">現在資產每個月生的錢</p>
         <p class="text-base font-semibold text-ink-700 tabular-nums">
           ${{ fmt(Math.floor((currentNetWorth * 0.04) / 12)) }}
         </p>
         <p class="text-[10px] text-ink-400 mt-0.5">月領</p>
       </div>
       <div class="card-surface p-3 text-center">
-        <p class="stat-label">加速因子</p>
+        <p class="stat-label">加速關鍵</p>
         <p class="text-sm font-semibold text-ink-700">
           {{ monthlySavings > monthlyExpense ? '儲蓄力強 🚀' : '複利效應 📈' }}
         </p>
       </div>
       <div class="card-surface p-3 text-center">
-        <p class="stat-label">多存 1 萬</p>
+        <p class="stat-label">每月多存 1 萬</p>
         <p class="text-base font-semibold text-azure tabular-nums">{{ saveMoreImpact }} 年</p>
         <p class="text-[10px] text-ink-400 mt-0.5">提早退休</p>
       </div>
@@ -189,7 +189,7 @@
         </label>
       </div>
       <div v-if="coffeeMode" class="bg-white/60 rounded-xl p-3 text-center animate-fade-in-up mt-3">
-        <p class="text-xs text-amber-700 mb-1">每月多存 $4,500，複利加速…</p>
+        <p class="text-xs text-amber-700 mb-1">一個月多存 $4,500，讓複利跑快一點…</p>
         <p class="text-xl font-bold text-amber-600">提早 {{ coffeeSavedYears }} 年！</p>
       </div>
     </div>
@@ -216,9 +216,9 @@ const coffeeMode      = ref(false);
 const liveCPI = ref(null);
 
 const returnPresets = [
-  { symbol: 'GROWTH', label: '成長情境', rate: 8, note: '名目年化 8% 的情境假設，不代表特定商品績效' },
-  { symbol: 'BALANCED', label: '均衡情境', rate: 6, note: '名目年化 6% 的情境假設' },
-  { symbol: 'CAUTIOUS', label: '審慎情境', rate: 4, note: '名目年化 4% 的情境假設' },
+  { symbol: 'GROWTH', label: '成長情境', rate: 8, note: '一年 8% 的假設，不是說某個商品真的賺 8%' },
+  { symbol: 'BALANCED', label: '均衡情境', rate: 6, note: '一年 6% 的假設' },
+  { symbol: 'CAUTIOUS', label: '審慎情境', rate: 4, note: '一年 4% 的假設' },
 ];
 
 const fetchLiveCPI = async () => {

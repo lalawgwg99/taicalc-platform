@@ -90,7 +90,7 @@
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ formatCompact(state.investments) }}</p>
             </div>
             <div class="rounded-2xl bg-white/8 p-3">
-              <p class="text-[10px] text-ink-300">年結餘</p>
+              <p class="text-[10px] text-ink-300">每年剩下</p>
               <p class="mt-1 text-sm font-semibold tabular-nums" :class="annualSurplus < 0 ? 'text-red-300' : 'text-brand-200'">
                 {{ formatSigned(annualSurplus) }}
               </p>

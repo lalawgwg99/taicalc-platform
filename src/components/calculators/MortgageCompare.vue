@@ -51,14 +51,14 @@
                 :key="side.key"
                 :title="side.label"
                 :subtitle="`${side.years} 年 / ${side.rate}% / 寬限 ${side.grace} 年`"
-                :main-label="side.grace > 0 ? '寬限期後月付' : '每月還款'"
+                :main-label="side.grace > 0 ? '寬限期後每月繳' : '每個月要繳'"
                 :main-value="`$ ${fmt(side.res.pay)}`"
                 :main-tone="side.key === 'a' ? 'brand' : 'neutral'"
-                :secondary-label="side.grace > 0 ? '寬限期內月付（僅利息）' : ''"
+                :secondary-label="side.grace > 0 ? '寬限期內每月繳（只繳利息）' : ''"
                 :secondary-value="side.grace > 0 ? `$ ${fmt(side.res.gracePay)}` : ''"
                 :rows="[
-                { label: '總利息', value: `$ ${fmt(side.res.totalInterest)}`, tone: 'tax' },
-                { label: '本息總額', value: `$ ${fmt(side.res.totalPayment)}` },
+                { label: '利息總共繳多少', value: `$ ${fmt(side.res.totalInterest)}`, tone: 'tax' },
+                { label: '全部總共要繳', value: `$ ${fmt(side.res.totalPayment)}` },
                 ]"
             />
         </div>
@@ -68,20 +68,20 @@
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">兩案差多少</p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <p class="text-[11px] text-ink-400">月付差額（寬限期後）</p>
+                    <p class="text-[11px] text-ink-400">每月差多少（寬限期後）</p>
                     <p class="text-lg font-bold tabular-nums" :class="diffMonthly >= 0 ? 'text-amber-600' : 'text-brand-700'">
                         {{ diffMonthly >= 0 ? '+' : '−' }}$ {{ fmt(Math.abs(diffMonthly)) }}
                     </p>
                 </div>
                 <div>
-                    <p class="text-[11px] text-ink-400">總利息差額</p>
+                    <p class="text-[11px] text-ink-400">利息總共差多少</p>
                     <p class="text-lg font-bold tabular-nums" :class="diffInterest <= 0 ? 'text-brand-700' : 'text-amber-600'">
                         {{ diffInterest <= 0 ? '−' : '+' }}$ {{ fmt(Math.abs(diffInterest)) }}
                     </p>
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">採本息平均攤還法估算，四捨五入至元。寬限期後月付以剩餘期數重新攤還本金計算。</p>
+            <p class="text-[10px] text-ink-300">用本息分期攤還法估算，四捨五入到元。寬限期後的月付，是用剩下的期數重新算的。</p>
         </div>
 
         <!-- 分享 -->

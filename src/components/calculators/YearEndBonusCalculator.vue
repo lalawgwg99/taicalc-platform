@@ -38,7 +38,7 @@
                 :rows="[
                     { label: '起扣點', value: '$ 90,501' },
                     { label: '補充保費門檻（投保金額 × 4）', value: `$ ${fmt(suppThreshold)}` },
-                    { label: '預扣稅率', value: '5%（按給付總額計算）' },
+                    { label: '預扣稅率', value: '5%（用全部年終來算）' },
                 ]"
             />
         </div>
@@ -46,7 +46,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費以「全年累計獎金」比較投保金額 4 倍，本試算以本次年終單筆估算，實際以投保單位核算為準。</p>
+            <p class="text-[10px] text-ink-300">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費看的是全年獎金有沒有超過投保金額 4 倍，這裡用這次年終單筆來估，實際以公司核算為準。</p>
         </div>
 
         <div class="flex gap-2">
@@ -97,7 +97,7 @@ const insight = computed(() => {
     const parts = []
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) {
-        parts.push(`年終達 90,501 元起扣點，公司須按「全額」預扣 5%（$ ${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,525 元。`)
+        parts.push(`年終達 90,501 元起扣點，公司會用全部年終扣 5%（$ ${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,525 元。`)
     } else {
         parts.push('未達起扣點，發放時免預扣，但年終仍須併入當年度薪資所得申報。')
     }

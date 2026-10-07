@@ -54,7 +54,7 @@
       </div>
       <ResultPanel
         eyebrow="真正的車價"
-        label="平均每月總成本"
+        label="平均每個月總共花"
         :value="currency(carResult.monthlyTrueCost)"
         :insight="carInsight"
         :share-url="carShareUrl"
@@ -62,12 +62,12 @@
         :share-image-data="carShareImageData"
         :comparison-items="carComparisonItems"
       >
-        <Metric label="持有期總成本" :value="currency(carResult.total)" />
-        <Metric label="車貸月付" :value="currency(carResult.payment)" />
-        <Metric label="牌照稅＋公路養管費" :value="currency(carResult.licenseTax + carResult.fuelFee)" />
-        <Metric label="每年能源費" :value="currency(carResult.energyAnnual)" />
-        <Metric label="折舊成本" :value="currency(carResult.depreciation)" />
-        <Metric label="貸款總利息" :value="currency(carResult.loanInterest)" />
+        <Metric label="這幾年總共花" :value="currency(carResult.total)" />
+        <Metric label="車貸每個月付" :value="currency(carResult.payment)" />
+        <Metric label="牌照稅＋燃料費" :value="currency(carResult.licenseTax + carResult.fuelFee)" />
+        <Metric label="一年油錢電費" :value="currency(carResult.energyAnnual)" />
+        <Metric label="折舊掉的錢" :value="currency(carResult.depreciation)" />
+        <Metric label="貸款利息總共" :value="currency(carResult.loanInterest)" />
         <DecisionChart title="持有期成本組成" caption="每一元花在哪裡" kind="stack" :items="carChartItems" />
         <a class="result-transfer" :href="carDebtTransferUrl" data-next-tool>把車貸條件帶到債務比較 <span>→</span></a>
       </ResultPanel>
@@ -86,13 +86,13 @@
         </div>
         <p class="scope-note">若屬舊制年資、定期契約、退休或非資遣原因，請另依個案確認。</p>
       </div>
-      <ResultPanel eyebrow="應結算項目" label="預估結算總額" :value="currency(separationResult.total)" :insight="separationInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: separationChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="該拿的項目" label="大概能拿到" :value="currency(separationResult.total)" :insight="separationInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: separationChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="資遣費" :value="currency(separationResult.severance)" />
         <Metric label="預告工資" :value="currency(separationResult.noticePay)" />
         <Metric label="未休特休" :value="currency(separationResult.unusedLeavePay)" />
         <Metric label="最後薪資" :value="currency(separationResult.finalSalary)" />
-        <DecisionChart title="結算金額組成" caption="各項占總額比例" kind="stack" :items="separationChartItems" />
-        <div class="result-callout">法定預告期：{{ separationResult.statutoryNoticeDays }} 天</div>
+        <DecisionChart title="結算金額怎麼組成" caption="每一項佔多少" kind="stack" :items="separationChartItems" />
+        <div class="result-callout">法律規定的預告期：{{ separationResult.statutoryNoticeDays }} 天</div>
       </ResultPanel>
     </section>
 
@@ -114,15 +114,15 @@
           <label>整合後每月多還<input v-model.number="debtPlan.extra" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="整合前後" label="整合後月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: debtChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="整合前跟整合後" label="整合後每個月付" :value="currency(debtResult.newPayment)" :insight="debtInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: debtChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="目前月付合計" :value="currency(debtResult.currentPayment)" />
         <Metric label="整合本金" :value="currency(debtResult.balance)" />
         <Metric label="整合總利息＋費用" :value="currency(debtResult.newCosts)" />
         <Metric v-if="debtResult.currentPayoffPossible" label="相較目前省下" :value="currency(debtResult.savings)" :tone="debtResult.savings >= 0 ? 'good' : 'bad'" />
-        <Metric v-if="debtPlan.extra > 0" label="多還後清償時間" :value="duration(debtResult.extraMonths)" />
+        <Metric v-if="debtPlan.extra > 0" label="多還幾時能還完" :value="duration(debtResult.extraMonths)" />
         <Metric v-if="debtPlan.extra > 0" label="多還可省利息" :value="currency(debtResult.extraSavings)" tone="good" />
-        <DecisionChart title="每月還款比較" caption="越短代表現金流壓力越低" kind="columns" :items="debtChartItems" />
-        <div v-if="!debtResult.currentPayoffPossible" class="result-callout">目前至少一筆月付不高於月利息，本金不會下降，無法計算原方案總利息。</div>
+        <DecisionChart title="每月還款比較" caption="柱子越短，每個月壓力越小" kind="columns" :items="debtChartItems" />
+        <div v-if="!debtResult.currentPayoffPossible" class="result-callout">現在每個月付的錢連利息都不夠，本金不會變少，所以算不出原本的總利息。</div>
       </ResultPanel>
     </section>
 
@@ -140,13 +140,13 @@
           <label class="check-field"><input v-model="laborPension.lumpSumEligible" type="checkbox"> 2009/1/1 前已有勞保年資，可比較一次請領</label>
         </div>
       </div>
-      <ResultPanel eyebrow="退休現金流" label="預估每月年金" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: pensionChartItems }" :comparison-items="scenarioComparisonItems">
-        <Metric label="採用公式" :value="laborPensionResult.formula" />
+      <ResultPanel eyebrow="退休現金流" label="每個月大概領" :value="currency(laborPensionResult.monthly)" :insight="pensionInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: pensionChartItems }" :comparison-items="scenarioComparisonItems">
+        <Metric label="用的公式" :value="laborPensionResult.formula" />
         <Metric label="年領合計" :value="currency(laborPensionResult.annual)" />
-        <Metric label="年齡增減給" :value="percent(laborPensionResult.ageAdjustment)" />
+        <Metric label="早領晚領的調整" :value="percent(laborPensionResult.ageAdjustment)" />
         <Metric v-if="laborPension.lumpSumEligible" label="一次請領估算" :value="currency(laborPensionResult.lumpSum)" />
-        <Metric v-if="laborPension.lumpSumEligible" label="月領損益兩平" :value="`${laborPensionResult.breakEvenYears.toFixed(1)} 年`" />
-        <DecisionChart title="月領累積進度" caption="未計時間價值，顯示長期現金流" kind="columns" :items="pensionChartItems" />
+        <Metric v-if="laborPension.lumpSumEligible" label="月領幾年打平" :value="`${laborPensionResult.breakEvenYears.toFixed(1)} 年`" />
+        <DecisionChart title="月領累積進度" caption="沒算通膨，單純看長期領多少" kind="columns" :items="pensionChartItems" />
       </ResultPanel>
     </section>
 
@@ -170,12 +170,12 @@
         </div>
         <p v-if="tax.type === 'estate'" class="scope-note">未滿 18 歲直系卑親屬依距成年年數可再增加扣除；本簡版先計每人基本扣除，額外金額請填入「其他依法扣除額」。</p>
       </div>
-      <ResultPanel eyebrow="115 年度" label="預估應納稅額" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: taxChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="115 年度" label="大概要繳的稅" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: taxChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="免稅額" :value="currency(taxResult.exemption)" />
         <Metric label="扣除額合計" :value="currency(taxResult.deductions)" />
-        <Metric label="課稅淨額" :value="currency(taxResult.net)" />
-        <DecisionChart title="申報金額拆解" caption="從財產總額看到應納稅額" kind="columns" :items="taxChartItems" />
-        <div class="result-callout">採 10%／15%／20% 累進稅率逐段計算</div>
+        <Metric label="要課稅的淨額" :value="currency(taxResult.net)" />
+        <DecisionChart title="金額怎麼拆" caption="從財產總額一路算到要繳的稅" kind="columns" :items="taxChartItems" />
+        <div class="result-callout">用 10%、15%、20% 的級距一段一段算</div>
       </ResultPanel>
     </section>
 
@@ -191,12 +191,12 @@
           <label class="check-field"><input v-model="parental.publicCare" type="checkbox"> 使用公共化／準公共托育（不重複計育兒津貼）</label>
         </div>
       </div>
-      <ResultPanel eyebrow="家庭可領金額" label="合計估算" :value="currency(parentalResult.total)" :insight="parentalInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: parentalChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="家裡總共能領" label="加起來大概" :value="currency(parentalResult.total)" :insight="parentalInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: parentalChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="育嬰留停給付＋補助" :value="currency(parentalResult.leaveBenefit)" />
         <Metric label="每月育兒津貼" :value="currency(parentalResult.allowanceMonthly)" />
         <Metric label="育兒津貼合計" :value="currency(parentalResult.allowanceTotal)" />
         <Metric label="留停期間收入缺口" :value="currency(parentalResult.incomeGap)" />
-        <DecisionChart title="家庭現金流比較" caption="補助與仍需準備的缺口" kind="columns" :items="parentalChartItems" />
+        <DecisionChart title="家庭現金流比較" caption="補助多少、還差多少" kind="columns" :items="parentalChartItems" />
       </ResultPanel>
     </section>
 
@@ -222,15 +222,15 @@
           <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="不只房貸" label="平均每月持有成本" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="不只房貸" label="平均每個月要花" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="房貸月付現金流" :value="currency(homeResult.mortgagePayment)" />
         <Metric label="每年房屋稅" :value="currency(homeResult.houseTax)" />
         <Metric label="每年地價稅" :value="currency(homeResult.landTax)" />
         <Metric label="首年房貸利息" :value="currency(homeResult.firstYearInterest)" />
         <Metric label="每年持有成本" :value="currency(homeResult.annualCost)" />
         <Metric label="每年現金流出" :value="currency(homeResult.annualCashOutflow)" />
-        <DecisionChart title="首年持有成本組成" caption="不含房貸本金" kind="stack" :items="homeChartItems" />
-        <div class="result-callout">成本排除償還本金；現金流出則包含完整房貸月付。</div>
+        <DecisionChart title="第一年持有成本有哪些" caption="沒算還掉的本金" kind="stack" :items="homeChartItems" />
+        <div class="result-callout">成本沒算你還掉的本金；但每個月實際掏出去的錢是含完整房貸的。</div>
       </ResultPanel>
     </section>
 
@@ -250,13 +250,13 @@
           <label>稅務耗損 %<input v-model.number="scenario.taxDrag" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
         </div>
       </div>
-      <ResultPanel eyebrow="購買力比較" label="最高實質期末價值" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: returnChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="比比看購買力" label="扣掉通膨後，誰最後最值錢" :value="currency(Math.max(...returnResults.map(item => item.realValue)))" :insight="returnsInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: returnChartItems }" :comparison-items="scenarioComparisonItems">
         <div v-for="item in returnResults" :key="item.name" class="return-result">
-          <div><strong>{{ item.name }}</strong><small>實質年報酬 {{ percent(item.realAnnualRate) }}</small></div>
-          <div><span>{{ currency(item.realValue) }}</span><small>名目 {{ currency(item.nominalValue) }}</small></div>
+          <div><strong>{{ item.name }}</strong><small>扣掉通膨年賺 {{ percent(item.realAnnualRate) }}</small></div>
+          <div><span>{{ currency(item.realValue) }}</span><small>帳面 {{ currency(item.nominalValue) }}</small></div>
         </div>
-        <DecisionChart title="通膨後購買力" caption="相同本金與投入期間比較" kind="columns" :items="returnChartItems" />
-        <div class="result-callout">預設值只是比較情境，不代表未來績效或特定商品報酬。</div>
+        <DecisionChart title="扣掉通膨後的購買力" caption="同樣本金、放同樣久來比" kind="columns" :items="returnChartItems" />
+        <div class="result-callout">這只是拿來比較的假設，不代表以後真的賺這麼多。</div>
       </ResultPanel>
     </section>
   </div>
@@ -630,8 +630,8 @@ const carInsight = computed(() => {
   const yearly = carResult.value.monthlyTrueCost * 12;
   const depreciation = carResult.value.depreciation / Math.max(car.years, 1);
   return depreciation > yearly * .35
-    ? '折舊是目前最大成本之一。比較車款時，殘值率通常比小幅油耗差更影響總成本。'
-    : '日常持有費用占比偏高。可先調整里程、停車與保險，確認每月現金流是否仍有餘裕。';
+    ? '折舊是你養車花最多的一塊。比車的時候，中古車還值多少，通常比油耗差一點點更影響總花費。'
+    : '平常養車的開銷佔比偏高。可以先從里程、停車、保險下手，看看每個月還剩多少能花。';
 });
 
 onMounted(() => {
@@ -668,8 +668,8 @@ const separationChartItems = computed(() => [
   { label: '最後薪資', value: separationResult.value.finalSalary },
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const separationInsight = computed(() => separationResult.value.severance > 0
-  ? '先用薪資單與出勤紀錄逐項核對；資遣費、預告工資與未休特休應分開列明。'
-  : '目前資遣費為 0，請先確認離職原因；自願離職與資遣的法定給付不同。');
+  ? '先拿薪資單跟出勤紀錄一項一項對；資遣費、預告工資、沒休完的特休要分開列。'
+  : '現在算出來資遣費是 0，先確認你是哪種離職；自己辭職跟被資遣，能拿的不一樣。');
 const debts = reactive([{ balance: 180_000, rate: 12, payment: 7_000 }, { balance: 300_000, rate: 8, payment: 10_000 }, { balance: 0, rate: 6, payment: 0 }]);
 const debtPlan = reactive({ rate: 5, years: 5, fee: 5_000, penalty: 0, extra: 2_000 });
 const debtResult = computed(() => calculateDebtConsolidation(debts, debtPlan.rate, debtPlan.years, debtPlan.fee, debtPlan.penalty, debtPlan.extra));
@@ -679,9 +679,9 @@ const debtChartItems = computed(() => [
   ...(debtPlan.extra > 0 ? [{ label: '加速還款', value: debtResult.value.newPayment + debtPlan.extra, color: '#e8b26f' }] : []),
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const debtInsight = computed(() => !debtResult.value.currentPayoffPossible
-  ? '目前付款不足以穩定降低本金，應先停止新增債務並向銀行確認可行還款方案。'
+  ? '現在付的錢不夠讓本金穩定下降，先別再借，跟銀行確認還得起的方案。'
   : debtResult.value.savings > 0
-    ? '整合後總成本較低；申辦前仍要確認綁約期、總費用年百分率與提前清償條款。'
+    ? '整合後總共付的比較少；但辦之前要看清楚綁約期、總費用年百分率跟提前還款的規定。'
     : '整合雖可能降低月付，但總成本沒有變少。不要只看月付，期限與費用更關鍵。');
 const laborPension = reactive({ averageInsuredSalary: 45_800, insuredYears: 30, claimAge: 65, lumpSumEligible: true });
 const laborPensionResult = computed(() => calculateLaborPension(laborPension.averageInsuredSalary, laborPension.insuredYears, laborPension.claimAge, laborPension.lumpSumEligible));
@@ -692,8 +692,8 @@ const pensionChartItems = computed(() => [
   ...(laborPension.lumpSumEligible ? [{ label: '一次領', value: laborPensionResult.value.lumpSum, color: '#e8b26f' }] : []),
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const pensionInsight = computed(() => laborPension.claimAge < 65
-  ? '提前請領會永久減額；若現金流允許，可把延後請領後的終身月領差額一起比較。'
-  : '月領適合規劃長期現金流；一次請領資格與實際金額仍須由勞保局個人資料確認。');
+  ? '提早領會永久打折；如果錢夠用，可以把延後領之後每個月多領的也一起比比看。'
+  : '月領適合拿來規劃長期生活費；能不能一次領、實際領多少，還是要查你勞保局的個人資料。');
 const tax = reactive({ type: 'estate', gross: 30_000_000, debts: 2_000_000, spouse: true, children: 2, parents: 0, disabled: 0, otherDeductions: 0 });
 watch(() => tax.type, (type) => {
   tax.gross = type === 'gift' ? 3_000_000 : 30_000_000;
@@ -703,12 +703,12 @@ watch(() => tax.type, (type) => {
 const taxResult = computed(() => calculateEstateTax(tax));
 const taxChartItems = computed(() => [
   { label: tax.type === 'estate' ? '遺產總額' : '贈與總額', value: tax.gross },
-  { label: '課稅淨額', value: taxResult.value.net },
-  { label: '應納稅額', value: taxResult.value.tax, color: '#e8b26f' },
+  { label: '要課稅的淨額', value: taxResult.value.net },
+  { label: '要繳的稅', value: taxResult.value.tax, color: '#e8b26f' },
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const taxInsight = computed(() => taxResult.value.tax > 0
-  ? '已進入課稅範圍。財產評價、扣除資格與贈與時點都會改變結果，正式申報前宜逐項核對。'
-  : '目前試算未達課稅淨額，但仍要保留財產價值與扣除額證明，並留意同年度累計贈與。');
+  ? '已經要課稅了。財產怎麼估、哪些能扣、什麼時候贈與都會影響結果，正式申報前一項一項對。'
+  : '現在算起來還不用繳稅，但財產價值跟扣除額的證明要留好，也要注意同一年累計贈與了多少。');
 const parental = reactive({ insuredSalary: 40_000, parent1Months: 6, parent2Months: 6, childOrder: 1, allowanceMonths: 24, publicCare: false });
 const parentalResult = computed(() => calculateParentalBenefits(parental));
 const parentalChartItems = computed(() => [
@@ -717,8 +717,8 @@ const parentalChartItems = computed(() => [
   { label: '收入缺口', value: parentalResult.value.incomeGap, color: '#e8b26f' },
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
 const parentalInsight = computed(() => parental.publicCare
-  ? '使用公共化或準公共托育時，補助採不同制度；請以孩子實際送托類型核對可領項目。'
-  : '留停期間仍有收入缺口，建議把這個差額加入至少 6 個月的家庭預備金規劃。');
+  ? '送公托或準公托的話，補助是另一套算法，要看你孩子實際送哪種去對能領的項目。'
+  : '留停那段時間收入還是不夠，建議把這個缺口算進至少 6 個月的家庭預備金。');
 const home = reactive({ assessedHouseValue: 2_000_000, houseTaxRate: 1.2, declaredLandValue: 1_500_000, landTaxRate: 0.2, mortgageBalance: 10_000_000, mortgageRate: 2.3, mortgageYears: 30, managementMonthly: 3_000, repairAnnual: 50_000, insuranceAnnual: 5_000 });
 const homeResult = computed(() => calculateHomeCost(home));
 const homeChartItems = computed(() => [
@@ -729,7 +729,7 @@ const homeChartItems = computed(() => [
   { label: '地價稅', value: homeResult.value.landTax },
   { label: '住宅保險', value: home.insuranceAnnual },
 ].map((item) => ({ ...item, displayValue: compactCurrency(item.value) })));
-const homeInsight = computed(() => `除房貸外，每月還有約 ${currency(homeResult.value.monthlyCost)} 的持有成本；看屋時應把它和家庭固定支出一起壓力測試。`);
+const homeInsight = computed(() => `房貸之外，每個月還要多花約 ${currency(homeResult.value.monthlyCost)} 在養房；看房子的時候，把它跟家裡固定開銷一起算算看撐不撐得住。`);
 const returns = reactive({ principal: 500_000, years: 10, monthlyContribution: 10_000, inflation: 2, scenarios: [
   { name: '定存', nominalRate: 1.7, feeRate: 0, taxDrag: 0.15 },
   { name: '債券', nominalRate: 3.5, feeRate: 0.3, taxDrag: 0.2 },
@@ -743,7 +743,7 @@ const returnChartItems = computed(() => returnResults.value.map((item) => ({
 })));
 const returnsInsight = computed(() => {
   const leader = [...returnResults.value].sort((a, b) => b.realValue - a.realValue)[0];
-  return `${leader?.name ?? '最高情境'} 的實質期末價值最高，但報酬假設不是保證；請同時比較波動、流動性與可承受虧損。`;
+  return `${leader?.name ?? '最高情境'} 扣掉通膨後最後最值錢，但報酬只是假設不是保證；也要看波動、好不好變現、賠多少你受得了。`;
 });
 
 const scenarioSaved = ref(false);

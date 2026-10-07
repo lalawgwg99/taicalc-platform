@@ -116,14 +116,14 @@
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
             <div>
               <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">
-                預估累積總額 ({{ retireAge - currentAge }} 年)
+                退休時大約存到 ({{ retireAge - currentAge }} 年後)
               </p>
               <p class="text-4xl font-bold stat-value text-amber-600">
                 <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalAmount.toLocaleString() }}
               </p>
             </div>
             <div class="text-left sm:text-right">
-              <p class="text-xs text-ink-400 mb-1">預估月領 (20年年金)</p>
+              <p class="text-xs text-ink-400 mb-1">每個月可領（領 20 年）</p>
               <p class="text-xl font-semibold text-ink-600 stat-value">${{ monthlyPension.toLocaleString() }}</p>
             </div>
           </div>
@@ -138,11 +138,11 @@
         <div class="grid sm:grid-cols-2 gap-4">
           <!-- 資金結構 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-ink-600 mb-4">💰 資金結構 (本金 vs 複利)</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">💰 錢是怎麼變多的</h3>
             <div class="space-y-4">
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-ink-400">投資收益({{ interestPercent }}%)</span>
+                  <span class="text-ink-400">投資賺的 ({{ interestPercent }}%)</span>
                   <span class="text-amber-600 font-bold">+${{ totalInterest.toLocaleString() }}</span>
                 </div>
                 <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
@@ -151,7 +151,7 @@
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-ink-400">本金投入({{ principalPercent }}%)</span>
+                  <span class="text-ink-400">自己投入的本金 ({{ principalPercent }}%)</span>
                   <span class="text-ink-600 font-bold">${{ totalPrincipal.toLocaleString() }}</span>
                 </div>
                 <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
@@ -163,23 +163,23 @@
 
           <!-- 節稅 & 月提 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-ink-600 mb-4">🎁 節稅效益</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">🎁 省稅效果</h3>
             <div class="relative z-10">
                 <div class="text-center mb-6">
-                    <p class="text-ink-400 text-sm mb-1 uppercase tracking-wider">每年預估省稅</p>
+                    <p class="text-ink-400 text-sm mb-1 uppercase tracking-wider">每年少繳的稅</p>
                     <p class="text-4xl md:text-5xl font-bold text-brand-600">
                         <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
-                    <p class="text-xs text-ink-300 mt-2">根據您的稅率 {{ taxRate }}% 計算</p>
+                    <p class="text-xs text-ink-300 mt-2">用你的稅率 {{ taxRate }}% 算的</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
-                        <p class="text-xs text-ink-300 mb-1">自提總投入</p>
+                        <p class="text-xs text-ink-300 mb-1">自己總共提撥</p>
                         <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
-                        <p class="text-xs text-ink-300 mb-1">累計省稅</p>
+                        <p class="text-xs text-ink-300 mb-1">總共省下的稅</p>
                         <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
                     </div>
                 </div>
@@ -193,15 +193,14 @@
           <ul class="list-disc pl-4 space-y-1">
             <li>
               <strong>為什麼要自提？</strong>
-              除了像存錢罐一樣強制儲蓄，最直接的效益是「節稅」。自提金額會從當年度「個人綜合所得總額」中全數扣除，直接降低您的稅基。
+              除了強迫存錢，最直接的好處是省稅：自提的錢當年不用繳稅，等於直接降低要課稅的所得。
             </li>
             <li>
-              <strong>複利的威力：</strong> 試著將報酬率從 3% 調整到 5%，即便是微小的差距，經過 30
-              年的時間複利滾存，退休金總額可能會翻倍！
+              <strong>複利很驚人：</strong> 報酬率從 3% 調到 5%，差一點點，30 年下來退休金可能差到快一倍！
             </li>
             <li>
-              <strong>本工具假設：</strong> 月領金額採「年金法」計算，並假設退休後資金繼續以 2%
-              保守報酬率滾存，摊提 20 年。
+              <strong>算法說明：</strong> 月領金額用年金法算，假設退休後錢繼續以 2%
+              滾存，分 20 年領完。
             </li>
           </ul>
         </div>
@@ -316,7 +315,7 @@ const updateChart = () => {
       labels: labels,
       datasets: [
         {
-          label: '總累積 (含自提)',
+          label: '總共存到（含自提）',
           data: projection.value.map((d) => d.balanceTotal),
           borderColor: '#d97706', // amber-600
           backgroundColor: (context) => {
@@ -332,7 +331,7 @@ const updateChart = () => {
           pointHoverRadius: 6,
         },
         {
-          label: '僅雇主提撥(6%)',
+          label: '只有老闆提撥 (6%)',
           data: projection.value.map((d) => d.balanceBasic),
           borderColor: '#a8a29e', // ink-300
           borderDash: [5, 5],

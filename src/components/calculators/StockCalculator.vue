@@ -133,7 +133,7 @@
           @click="mode = 'breakeven'"
           :class="['seg-btn', mode === 'breakeven' ? 'seg-btn-active' : '']"
         >
-          成本/損益平衡
+          多少賣才不賠
         </button>
         <button
           @click="mode = 'avg'"
@@ -299,7 +299,7 @@
 
         <div v-else-if="mode === 'breakeven'" class="pt-4 border-t border-paper-100">
           <div class="bg-paper-50 rounded-xl p-6 text-center border border-indigo-100 bg-indigo-50/30">
-            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">損益平衡價</p>
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">賣多少才不賠</p>
             <p class="text-3xl font-bold font-mono tracking-tight text-indigo-900">
               {{ fmt(breakevenPrice) }}
             </p>
@@ -329,7 +329,7 @@
               <line x1="12" x2="12" y1="16" y2="12" />
               <line x1="12" x2="12.01" y1="8" y2="8" />
             </svg>
-            <p>輸入多次買進紀錄，自動計算加權平均成本與損益平衡點。</p>
+            <p>分次買進的價格都填進來，自動幫你算平均成本跟賣多少才不賠。</p>
           </div>
 
           <div class="space-y-3">
@@ -383,7 +383,7 @@
 
           <div class="pt-4 border-t border-paper-100 grid grid-cols-2 gap-4">
             <div class="bg-brand-50/50 p-4 rounded-xl border border-brand-100">
-              <span class="block text-ink-400 text-xs mb-1">加權平均價</span>
+              <span class="block text-ink-400 text-xs mb-1">平均買進價</span>
               <span class="block text-2xl font-bold text-brand-800 font-mono">{{ fmt(dcaResult.avgPrice) }}</span>
             </div>
             <div class="calculator-subcard">
@@ -391,11 +391,11 @@
               <span class="block text-2xl font-bold text-ink-600 font-mono">{{ fmt(dcaResult.totalQty) }}</span>
             </div>
             <div class="calculator-subcard">
-              <span class="block text-ink-400 text-xs mb-1">總投入成本</span>
+              <span class="block text-ink-400 text-xs mb-1">總共花多少</span>
               <span class="block text-lg font-bold text-ink-600 font-mono">{{ fmt(dcaResult.totalCost) }}</span>
             </div>
             <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
-              <span class="block text-indigo-600/80 text-xs mb-1">損益平衡價</span>
+              <span class="block text-indigo-600/80 text-xs mb-1">賣多少才不賠</span>
               <span class="block text-lg font-bold text-indigo-800 font-mono">{{ fmt(dcaResult.breakeven) }}</span>
             </div>
           </div>

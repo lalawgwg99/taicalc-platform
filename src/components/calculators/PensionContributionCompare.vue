@@ -35,18 +35,18 @@
             <ResultReceipt
                 title="自提 6%（勞退專戶）"
                 subtitle="每月提撥 + 節稅"
-                main-label="期末帳戶價值"
+                main-label="最後帳戶有多少"
                 :main-value="`$ ${fmt(contributionFV)}`"
                 main-tone="brand"
                 :rows="[
-                { label: '每月提撥', value: `$ ${fmt(monthlyContribution)}` },
-                { label: '累積節稅', value: `$ ${fmt(totalTaxSaving)}`, tone: 'growth' },
+                { label: '每月存入', value: `$ ${fmt(monthlyContribution)}` },
+                { label: '累積省下的稅', value: `$ ${fmt(totalTaxSaving)}`, tone: 'growth' },
                 ]"
             />
             <ResultReceipt
                 title="不自提（一般投資）"
                 subtitle="6% 薪資自行投資"
-                main-label="期末投資價值"
+                main-label="最後投資有多少"
                 :main-value="`$ ${fmt(investFV)}`"
                 main-tone="neutral"
                 :rows="[
@@ -57,9 +57,9 @@
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">節稅效益</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">省稅效果</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">自提 6% 每年節稅約 $ {{ fmt(yearlyTaxSaving) }}。勞退專戶具保證收益下限，但提領受法定年齡限制。</p>
+            <p class="text-[10px] text-ink-300">自提 6% 每年大約省稅 $ {{ fmt(yearlyTaxSaving) }}。勞退專戶有保證收益，但要到法定年齡才能領出來。</p>
         </div>
 
         <div class="flex gap-2">
@@ -104,7 +104,7 @@ const totalTaxSaving = computed(() => Math.round(yearlyTaxSaving.value * years.v
 const insight = computed(() => {
     const diff = taxSavingFV.value
     if (diff <= 0) return '請輸入月薪與年資。'
-    return `自提 6% 的節稅金額若同率投資，${years} 年可額外累積約 $ ${fmt(diff)}。稅率越高、自提越划算；但勞退專戶資金須待法定年齡才能領取。`
+    return `自提 6% 省下的稅如果也拿去投資，${years.value} 年可多累積約 $ ${fmt(diff)}。稅率越高、自提越划算；但勞退的錢要到法定年齡才能領。`
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

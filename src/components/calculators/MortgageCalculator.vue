@@ -111,8 +111,8 @@
         <!-- ── 結果（帳本收據式） ── -->
         <div class="receipt-card">
             <div class="receipt-head">
-                <p class="receipt-title">預估月付金</p>
-                <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">本息平均攤還</span>
+                <p class="receipt-title">每個月要繳</p>
+                <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">本息分期攤還</span>
             </div>
             <hr class="receipt-divider" />
 
@@ -145,19 +145,19 @@
             <!-- 摘要統計 -->
             <div class="grid grid-cols-2 gap-3 mt-5">
                 <div class="bg-paper-200/60 rounded-xl p-3">
-                    <p class="text-xs text-ink-400 mb-0.5">利息總支出</p>
+                    <p class="text-xs text-ink-400 mb-0.5">利息總共繳多少</p>
                     <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ fmt(results.totalInterest) }}</p>
                 </div>
                 <div class="bg-paper-200/60 rounded-xl p-3">
-                    <p class="text-xs text-ink-400 mb-0.5">本息總額</p>
+                    <p class="text-xs text-ink-400 mb-0.5">全部總共要繳</p>
                     <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ fmt(results.totalPayment) }}</p>
                 </div>
             </div>
 
             <figure class="mt-4 rounded-xl border border-paper-300 bg-ink-700 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
                 <figcaption class="mb-3 flex items-end justify-between gap-3">
-                    <span><strong class="block text-xs">本息總額組成</strong><small class="mt-0.5 block text-[10px] text-paper-300">本金與利息一眼比較</small></span>
-                    <small class="text-[10px] text-brand-300">完整貸款期間</small>
+                    <span><strong class="block text-xs">總額裡面多少是本金、多少是利息</strong><small class="mt-0.5 block text-[10px] text-paper-300">一眼看出利息吃掉多少</small></span>
+                    <small class="text-[10px] text-brand-300">整個貸款期間</small>
                 </figcaption>
                 <div class="flex h-3 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
                     <i class="block h-full bg-brand-400 transition-all" :style="{ width: `${mortgagePrincipalShare}%` }"></i>
@@ -207,9 +207,9 @@
               <thead>
                 <tr class="border-b border-ink-100 text-ink-300 font-sans">
                   <th class="py-1.5">年度</th>
-                  <th class="py-1.5 text-right">年度本金</th>
-                  <th class="py-1.5 text-right">年度利息</th>
-                  <th class="py-1.5 text-right">期末剩餘本金</th>
+                  <th class="py-1.5 text-right">當年還本金</th>
+                  <th class="py-1.5 text-right">當年繳利息</th>
+                  <th class="py-1.5 text-right">年底還欠多少</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-paper-100">
@@ -236,7 +236,7 @@
         <!-- 月付房租比 -->
         <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
-            <p class="mt-1">採本息平均攤還法計算。新青安 3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
+            <p class="mt-1">用本息分期攤還法計算。新青安 3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
         </div>
 
         <!-- 分享列 -->
@@ -382,7 +382,7 @@ const mortgagePrincipal = computed(() => Math.max(0, amountWan.value * 10000))
 const mortgageBreakdownTotal = computed(() => Math.max(1, mortgagePrincipal.value + Math.max(0, results.value.totalInterest)))
 const mortgagePrincipalShare = computed(() => mortgagePrincipal.value / mortgageBreakdownTotal.value * 100)
 const mortgageInterestShare = computed(() => Math.max(0, results.value.totalInterest) / mortgageBreakdownTotal.value * 100)
-const mortgageBreakdownLabel = computed(() => `本息總額組成：本金 ${fmt(mortgagePrincipal.value)} 元、利息 ${fmt(results.value.totalInterest)} 元`)
+const mortgageBreakdownLabel = computed(() => `總共要繳：本金 ${fmt(mortgagePrincipal.value)} 元、利息 ${fmt(results.value.totalInterest)} 元`)
 const homeCostTransferUrl = computed(() => {
     const scenario = {
         home: {
@@ -494,7 +494,7 @@ const downloadCard = () => {
 
     // 主要數字
     const mainPay = results.value.gracePay || results.value.basePay
-    const mainLabel = graceYears.value > 0 ? `寬限期月付（${graceYears.value} 年）` : '每月還款'
+    const mainLabel = graceYears.value > 0 ? `寬限期每月繳（${graceYears.value} 年）` : '每月要繳'
     ctx.fillStyle = '#9B9890'
     ctx.font = '12px -apple-system, sans-serif'
     ctx.fillText(mainLabel, 64, 184)
@@ -506,7 +506,7 @@ const downloadCard = () => {
     if (graceYears.value > 0) {
         ctx.fillStyle = '#9B9890'
         ctx.font = '12px -apple-system, sans-serif'
-        ctx.fillText('寬限期後月付', 64, 266)
+        ctx.fillText('寬限期後每月繳', 64, 266)
         ctx.fillStyle = '#1A1A1A'
         ctx.font = 'bold 24px -apple-system, sans-serif'
         ctx.fillText(`$ ${fmt(results.value.afterGracePay)}`, 64, 293)
@@ -516,14 +516,14 @@ const downloadCard = () => {
     const rightX = 500
     ctx.fillStyle = '#9B9890'
     ctx.font = '12px -apple-system, sans-serif'
-    ctx.fillText('利息總支出', rightX, 184)
+    ctx.fillText('利息總共繳多少', rightX, 184)
     ctx.fillStyle = '#1A1A1A'
     ctx.font = 'bold 20px -apple-system, sans-serif'
     ctx.fillText(`$ ${fmt(results.value.totalInterest)}`, rightX, 210)
 
     ctx.fillStyle = '#9B9890'
     ctx.font = '12px -apple-system, sans-serif'
-    ctx.fillText('本息總額', rightX, 240)
+    ctx.fillText('總共要繳', rightX, 240)
     ctx.fillStyle = '#1A1A1A'
     ctx.font = 'bold 20px -apple-system, sans-serif'
     ctx.fillText(`$ ${fmt(results.value.totalPayment)}`, rightX, 266)

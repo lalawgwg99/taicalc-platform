@@ -116,23 +116,23 @@
         ></div>
 
         <div class="relative z-10">
-          <p class="text-sm font-bold text-brand-800 mb-1">實質淨收入 (Net Income)</p>
+          <p class="text-sm font-bold text-brand-800 mb-1">實際入袋</p>
           <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2">
             <span class="text-2xl opacity-70">$</span>{{ netIncome }}
           </p>
           <div class="flex items-center gap-3 text-sm">
-            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">實薪 ${{ hourlyRate }}／小時</span>
-            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">${{ perKm }}/km</span>
+            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">時薪約 ${{ hourlyRate }} 元</span>
+            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">每公里賺 ${{ perKm }}</span>
           </div>
         </div>
 
         <div class="relative z-10 pt-6 mt-6 border-t border-brand-200/60 grid grid-cols-2 gap-4">
           <div>
-            <p class="text-xs text-brand-600 mb-1">燃料成本占比</p>
+            <p class="text-xs text-brand-600 mb-1">油錢佔收入</p>
              <p class="text-lg font-bold text-rose-600">{{ fuelCostRatio }}%</p>
           </div>
           <div>
-            <p class="text-xs text-brand-600 mb-1">獲利能力 (Margin)</p>
+            <p class="text-xs text-brand-600 mb-1">真正賺的比例</p>
             <p class="text-lg font-bold text-brand-800">{{ profitMargin }}%</p>
           </div>
         </div>
@@ -174,7 +174,7 @@
     </div>
 
     <div class="calculator-footer-note text-center">
-      💡 建議：平台獎勵是各家業者的獲利關鍵，建議每週至少跑滿「達標趟次」才能有效拉高實薪。
+      💡 平台獎勵才是賺錢關鍵，每週盡量跑滿達標趟次，時薪才拉得起來。
     </div>
   </div>
 </template>

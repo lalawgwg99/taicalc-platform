@@ -14,7 +14,7 @@
                 <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                 class="input-clean font-semibold">
             </div>
-            <p class="text-[11px] text-ink-400">年化報酬為歷史長期概估值（含息），非保證報酬。0050/006208 追蹤台灣 50（市值型），0056 追蹤高股息指數。</p>
+            <p class="text-[11px] text-ink-400">年化報酬是拿歷史長期大概估的（含配息），不是保證賺。0050/006208 跟台灣 50（市值型），0056 跟高股息指數。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-3 items-stretch">
@@ -23,12 +23,12 @@
                 :key="etf.key"
                 :title="etf.name"
                 :subtitle="`${etf.rate}% 年化概估`"
-                main-label="期末價值"
+                main-label="期滿時帳面總額"
                 :main-value="`$ ${fmt(etf.fv)}`"
                 :main-tone="etf.key === 'a' ? 'brand' : 'neutral'"
                 :rows="[
-                { label: '投入總額', value: `$ ${fmt(totalContribution)}` },
-                { label: '累積收益', value: `$ ${fmt(etf.gain)}`, tone: 'growth' },
+                { label: '你總共投入', value: `$ ${fmt(totalContribution)}` },
+                { label: '賺到的', value: `$ ${fmt(etf.gain)}`, tone: 'growth' },
                 ]"
             />
         </div>
@@ -36,7 +36,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">定期定額、月投入、複利估算，未計手續費與稅；0056 配息率較高但長期總報酬通常低於市值型。</p>
+            <p class="text-[10px] text-ink-300">每月定期定額、複利估的，沒算手續費跟稅；0056 配息多，但長期總報酬通常輸市值型。</p>
         </div>
 
         <div class="flex gap-2">
@@ -46,7 +46,7 @@
             </button>
             <a href="/tools/real-return-calculator"
                 class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
-                看通膨後實質報酬
+                看扣掉通膨後真正賺多少
                 <span aria-hidden="true">→</span>
             </a>
         </div>
@@ -78,7 +78,7 @@ const insight = computed(() => {
     const a = fv(rates.a), c = fv(rates.c)
     const diff = a - c
     if (diff <= 0) return '三檔差異不大，可依配息需求選擇。'
-    return `長期定期定額下，市值型（0050/006208）期末價值約比高股息（0056）多 $ ${fmt(diff)}。市值型追求總報酬，高股息追求現金流——先想清楚你要的是「資產成長」還是「每月配息」。`
+    return `長期定期定額下來，市值型（0050/006208）最後大概比高股息（0056）多 $ ${fmt(diff)}。市值型拼的是總資產變大，高股息拼的是每月有錢領——先想清楚你要哪一種。`
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

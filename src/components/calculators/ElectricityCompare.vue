@@ -8,14 +8,14 @@
             <label class="block text-xs font-medium text-ink-400 mb-1.5">每月用電度數（度）</label>
             <input type="text" inputmode="decimal" v-model.number="kwh" aria-label="每月用電度數" placeholder="500"
                 class="input-clean text-xl font-semibold tabular-nums">
-            <p class="mt-2 text-[11px] text-ink-400">同一用電量，左右比較夏月與非夏月的電費差異（台電 2025-10 起費率）</p>
+            <p class="mt-2 text-[11px] text-ink-400">同樣用電度數，比較夏天跟其他月份的電費差多少（台電 2025-10 開始的費率）</p>
         </div>
 
         <!-- 結果對照（收據式） -->
         <div class="grid gap-3 md:grid-cols-2 items-stretch">
             <ResultReceipt
                 title="夏月（6~9 月）"
-                subtitle="累進電價"
+                subtitle="度數越高越貴"
                 main-label="電費總額"
                 :main-value="`$ ${fmt(summer.totalCost)}`"
                 :main-tone="'tax'"
@@ -23,7 +23,7 @@
             />
             <ResultReceipt
                 title="非夏月"
-                subtitle="累進電價"
+                subtitle="度數越高越貴"
                 main-label="電費總額"
                 :main-value="`$ ${fmt(winter.totalCost)}`"
                 :main-tone="'brand'"
@@ -33,19 +33,19 @@
 
         <!-- 差異摘要 -->
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
-            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">夏月比非夏月多多少</p>
+            <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">夏天比其他月份貴多少</p>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <p class="text-[11px] text-ink-400">電費差額</p>
+                    <p class="text-[11px] text-ink-400">貴了多少</p>
                     <p class="text-lg font-bold tabular-nums text-amber-600">+$ {{ fmt(diff) }}</p>
                 </div>
                 <div>
-                    <p class="text-[11px] text-ink-400">平均每度（夏月）</p>
+                    <p class="text-[11px] text-ink-400">夏月平均一度</p>
                     <p class="text-lg font-bold tabular-nums text-ink-700">$ {{ fmt(avgSummer) }}</p>
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">台電住宅累進電價：夏月 $1.78–$8.86、非夏月 $1.78–$7.03，採 2025-10-01 起實施費率。</p>
+            <p class="text-[10px] text-ink-300">台電家用電價：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03，用的是 2025-10-01 開始的費率。</p>
         </div>
 
         <!-- 分享 -->
@@ -88,7 +88,7 @@ const avgSummer = computed(() => kwh.value > 0 ? (summer.value.totalCost || 0) /
 const insight = computed(() => {
     if (kwh.value <= 0) return '請輸入用電度數。'
     if (kwh.value <= 120) return '用電量在基本級距內，夏月與非夏月費率相同，電費差異不大。'
-    return `用電 ${kwh.value} 度，夏月比非夏月多約 $ ${fmt(diff.value)} 元。用電量越高、夏月差距越大——夏季省電（尤其冷空調）最有效。`
+    return `用電 ${kwh.value} 度，夏天比其他月份貴約 $ ${fmt(diff.value)} 元。用越多差越多——夏天省電（尤其是冷氣）最有效。`
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

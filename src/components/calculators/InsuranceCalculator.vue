@@ -64,7 +64,7 @@
         <!-- Worker Cost -->
         <div class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
-            <h3 class="text-sm font-bold text-ink-600">個人負擔</h3>
+            <h3 class="text-sm font-bold text-ink-600">你每個月要繳</h3>
             <span class="text-2xl font-bold font-mono text-brand-600">{{ fmt(result.workerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
@@ -82,7 +82,7 @@
         <!-- Company Cost -->
         <div v-if="currentRole === 'employee'" class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
-            <h3 class="text-sm font-bold text-ink-600">雇主負擔</h3>
+            <h3 class="text-sm font-bold text-ink-600">老闆每個月要繳</h3>
             <span class="text-2xl font-bold font-mono text-ink-500">{{ fmt(result.employerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
@@ -109,8 +109,8 @@
       >
         <figcaption class="premium-chart-heading">
           <div>
-            <strong>每月保費分攤</strong>
-            <span>同一投保級距下的實際負擔</span>
+            <strong>每個月保費怎麼分</strong>
+            <span>同一個投保級距，實際各繳多少</span>
           </div>
           <small>元／月</small>
         </figcaption>
@@ -168,7 +168,7 @@ const result = computed(() => {
 const matchedBracket = computed(() => result.value.laborBracket);
 const premiumChart = computed(() => {
   const rows = [{
-    label: '個人負擔',
+    label: '你每個月要繳',
     total: result.value.workerTotal,
     segments: [
       { label: '勞保', value: result.value.workerLabor, color: '#32c99c' },
@@ -177,7 +177,7 @@ const premiumChart = computed(() => {
   }];
   if (currentRole.value === 'employee') {
     rows.push({
-      label: '雇主負擔',
+      label: '老闆每個月要繳',
       total: result.value.employerTotal,
       segments: [
         { label: '勞保', value: result.value.employerLabor, color: '#32c99c' },

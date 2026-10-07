@@ -70,7 +70,7 @@
           <div
             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 text-center border border-amber-100"
           >
-            <p class="text-xs text-amber-700 uppercase tracking-wide mb-1">內部報酬率 (IRR)</p>
+            <p class="text-xs text-amber-700 uppercase tracking-wide mb-1">實際年報酬率</p>
             <div class="flex items-baseline justify-center gap-2">
               <span class="text-4xl font-bold font-mono text-amber-700">{{ irrResult }}</span>
               <span class="text-sm font-bold text-amber-700">%</span>
@@ -82,7 +82,7 @@
             </p>
           </div>
           <div class="mt-4 text-xs text-ink-300">
-            <p>計算說明：假設保費於每年年初繳納，解約金於該年度末領回。</p>
+            <p>算法是這樣：保費每年年初繳，解約金年底領回。</p>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@
         <!-- Result -->
         <div class="pt-4 border-t border-paper-100">
           <div class="bg-paper-50 rounded-xl p-6 border border-ink-100 text-center">
-            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">建議壽險保額 (責任缺口)</p>
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">建議壽險保額</p>
             <p
               class="text-3xl font-bold font-mono tracking-tight"
               :class="needsResult > 0 ? 'text-brand-600' : 'text-green-600'"
@@ -153,7 +153,7 @@
               {{ needsResult > 0 ? '$' + fmt(needsResult) : '資產已足夠' }}
             </p>
             <p class="text-sm text-ink-400 mt-2" v-if="needsResult > 0">
-              (負債 + 家庭支出) - 現有資產 = 需補足的保障
+              (欠的錢 + 家人要花的) − 你現在有的資產 = 還缺的保障
             </p>
           </div>
         </div>

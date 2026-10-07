@@ -92,11 +92,11 @@
 
           <div class="grid grid-cols-2 gap-4 text-center pt-6 border-t border-ink-100">
             <div>
-              <p class="text-xs text-ink-400 mb-1">押金總額 (暫存)</p>
+              <p class="text-xs text-ink-400 mb-1">押金總額（會退回）</p>
               <p class="text-lg font-bold text-ink-600 font-mono">${{ depositTotal }}</p>
             </div>
             <div>
-              <p class="text-xs text-ink-400 mb-1">押金機會成本</p>
+              <p class="text-xs text-ink-400 mb-1">押金少賺的利息</p>
               <p class="text-lg font-bold text-amber-600 font-mono">
                 ${{ depositCost }}<span class="text-xs text-ink-300 font-normal">/年</span>
               </p>
@@ -110,7 +110,7 @@
         </div>
 
         <div class="text-center bg-amber-50 border border-amber-100 rounded-xl p-3">
-          <p class="text-sm text-amber-800 font-medium">💡 知識點：押金機會成本以年化 2% 計算</p>
+          <p class="text-sm text-amber-800 font-medium">💡 小知識：押金少賺的利息以年化 2% 計算</p>
           <p class="text-xs text-amber-600/70 mt-1">這筆錢如果拿去定存或投資，每年本應產生的收益。</p>
         </div>
       </div>
