@@ -2176,6 +2176,8 @@ a.v2-card:hover {
     padding: 1.4rem;
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
+/* 分類篩選用 hidden 屬性隱藏卡片，必須蓋過上面的 display:flex */
+.proto-card[hidden] { display: none; }
 .proto-card:hover {
     transform: translateY(-2px);
     border-color: rgba(47, 117, 80, .4);
