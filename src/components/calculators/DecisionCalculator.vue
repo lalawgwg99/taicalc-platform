@@ -147,6 +147,7 @@
         <Metric v-if="laborPension.lumpSumEligible" label="一次請領估算" :value="currency(laborPensionResult.lumpSum)" />
         <Metric v-if="laborPension.lumpSumEligible" label="月領幾年打平" :value="`${laborPensionResult.breakEvenYears.toFixed(1)} 年`" />
         <DecisionChart title="月領累積進度" caption="沒算通膨，單純看長期領多少" kind="columns" :items="pensionChartItems" />
+        <div class="result-callout">有國保年資的人，勞保和國保老年年金可以分開算、一起領，不是二選一</div>
       </ResultPanel>
     </section>
 
