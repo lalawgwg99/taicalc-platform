@@ -54,6 +54,26 @@ export const calculateSalaryBreakdown = (
   const bonusMonths = new Decimal(Number.isFinite(input.bonusMonths) ? Math.max(0, input.bonusMonths) : 0);
   const pensionRate = new Decimal(Number.isFinite(input.pensionRate) ? Math.max(0, input.pensionRate) : 0);
 
+  // 月薪為 0（或被清空成 NaN）時不應套用最低投保級距，否則會顯示負實拿。
+  if (salary.isZero()) {
+    return {
+      labor: 0,
+      health: 0,
+      penS: 0,
+      mNet: 0,
+      tSave: 0,
+      yNet: 0,
+      employerLabor: 0,
+      employerHealth: 0,
+      employerPension: 0,
+      empCost: 0,
+      tCost: 0,
+      laborGrade: 0,
+      healthGrade: 0,
+      pensionBasis: 0
+    };
+  }
+
   const laborGrade = new Decimal(
     getInsuredSalary(salary.toNumber(), LABOR_INSURANCE_GRADES, LABOR_INSURANCE_MAX)
   );
