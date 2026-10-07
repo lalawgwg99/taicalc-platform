@@ -187,7 +187,7 @@ const removeMember = (idx) => members.value.splice(idx, 1);
 
 // Logic
 const transactions = computed(() => {
-    let list = members.value.map(m => ({ ...m, paid: m.paid || 0, weight: m.weight || 1, name: m.name || `成員${m.id}` }));
+    let list = members.value.map((m, idx) => ({ ...m, paid: m.paid || 0, weight: m.weight || 1, name: m.name || `成員 ${idx + 1}` }));
     
     // 1. Calculate Fair Share per person
     let totalPaid = list.reduce((sum, m) => sum + m.paid, 0);

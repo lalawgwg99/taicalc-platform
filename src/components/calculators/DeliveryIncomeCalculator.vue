@@ -118,7 +118,7 @@
         <div class="relative z-10">
           <p class="text-sm font-bold text-brand-800 mb-1">實際入袋</p>
           <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2">
-            <span class="text-2xl opacity-70">$</span>{{ netIncome }}
+            <span class="text-2xl opacity-70">{{ netIncomeRaw < 0 ? '−$' : '$' }}</span>{{ netIncomeDisplay }}
           </p>
           <div class="flex items-center gap-3 text-sm">
             <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">時薪約 ${{ hourlyRate }} 元</span>
@@ -213,6 +213,8 @@ const totalCost = computed(() => Math.round(totalCostRaw.value).toLocaleString()
 
 const netIncomeRaw = computed(() => grossIncome.value - totalCostRaw.value);
 const netIncome = computed(() => Math.round(netIncomeRaw.value).toLocaleString());
+// 大字顯示用：負數時「−$」前綴，避免出現「$-3,314」這種 $ 在負號前的寫法
+const netIncomeDisplay = computed(() => Math.round(Math.abs(netIncomeRaw.value)).toLocaleString());
 
 const hourlyRate = computed(() =>
   workHours.value > 0 ? Math.round(netIncomeRaw.value / workHours.value) : 0
