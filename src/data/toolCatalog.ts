@@ -228,6 +228,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
   {
+    href: '/tools/rental-yield-calculator',
+    label: '租金報酬率計算',
+    desc: '包租投報率：租金扣掉稅費管理維修後的真實報酬。',
+    category: '居住與房產',
+    scenario: '買房收租、評估包租划不划算前',
+    cta: '算包租投報率',
+    icon: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 0-2-2V7Z"/><polyline points="9 22 9 12 15 12 15 22"/>',
+    tags: ['租金報酬率', '投報率', '包租', '收租', '租金投報率', '報酬率計算'],
+  },
+  {
     href: '/tools/etf-dividend-calculator',
     label: 'ETF 配息試算',
     desc: '配息總額、補充保費 2.11% 與年化配息率。',
