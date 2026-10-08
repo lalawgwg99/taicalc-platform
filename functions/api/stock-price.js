@@ -1,5 +1,5 @@
 // Cloudflare Pages Function - TWSE 股票即時報價代理
-// 路徑: /api/stock-price?code=2330
+// 路徑: /api/stock-price?code=2330 或 ?symbol=2330（兩者皆支援）
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -42,7 +42,8 @@ export async function onRequestGet(context) {
     }
 
     const url = new URL(request.url);
-    const code = url.searchParams.get('code')?.trim();
+    // 相容站內前端（?code=）與外部/巡檢呼叫（?symbol=）
+    const code = url.searchParams.get('code')?.trim() || url.searchParams.get('symbol')?.trim();
 
     // 驗證：4-6 位數字（台灣股票代碼）
     if (!code || !/^\d{4,6}$/.test(code)) {
