@@ -135,16 +135,19 @@ const toolListSchema = JSON.stringify({
 
     <section class="border-t border-paper-300 v2-section reveal" data-reveal>
         <div class="max-w-6xl mx-auto px-4 md:px-6">
-            <a href="/track" class="group flex flex-col gap-3 rounded-2xl border border-paper-300 bg-paper-100 p-6 sm:flex-row sm:items-center sm:justify-between hover:border-brand-300 transition-colors">
-                <div>
-                    <p class="v2-kicker">我的數字</p>
-                    <h2 class="mt-1 text-lg font-semibold text-ink-700">把試算存下來，隔一段時間回來看進步多少</h2>
-                    <p class="mt-1 text-xs leading-6 text-ink-500">資料只存在你的瀏覽器，不上傳。還能請 AI 幫你做一次財務體檢。</p>
+            <div class="rounded-3xl bg-paper-800 p-8 md:p-10 text-center relative overflow-hidden">
+                <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-brand-300">別家沒有的</p>
+                <h2 class="mt-2 text-xl md:text-2xl font-semibold text-white">算完不會忘，AI 幫你看出變化</h2>
+                <p class="mt-3 text-sm leading-7 text-paper-300 max-w-xl mx-auto">
+                    別家的計算機算完就沒了。在 TaiCalc 按下「存下這次試算」，你的數字會被記住；隔一段時間回來，AI 幫你看出進步了多少、哪裡可以更好。
+                </p>
+                <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a href="/track" class="inline-flex items-center justify-center rounded-xl bg-brand-400 px-6 py-3 text-sm font-semibold text-ink-900 shadow-sm transition hover:bg-brand-300">
+                        看我的數字 →
+                    </a>
+                    <span class="text-xs text-paper-400">資料只存在你的瀏覽器，不上傳</span>
                 </div>
-                <span class="inline-flex shrink-0 items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition group-hover:bg-brand-800">
-                    看我的數字 →
-                </span>
-            </a>
+            </div>
         </div>
     </section>
 
