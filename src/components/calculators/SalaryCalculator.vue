@@ -553,8 +553,10 @@ const forecast = computed(() => {
         let growth = '—'
         if (i > 0) {
             const prevReal = new Decimal(rows[i - 1].real)
-            const g = real.div(prevReal).minus(1).mul(100).round().toNumber()
-            growth = (g > 0 ? '+' : '') + g + '%'
+            if (!prevReal.isZero()) {
+                const g = real.div(prevReal).minus(1).mul(100).round().toNumber()
+                growth = (g > 0 ? '+' : '') + g + '%'
+            }
         }
         rows.push({ nominal: nominal.toNumber(), real: real.toNumber(), growth })
     }
