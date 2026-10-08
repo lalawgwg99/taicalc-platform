@@ -78,7 +78,7 @@
           <div class="flex justify-between text-xs text-ink-400 mb-1 font-medium">
             <span>{{ tier.label }}</span>
             <span>
-              {{ tier.kwh }}度 × ${{ tier.rate }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
+              {{ trimNum(tier.kwh) }}度 × ${{ tier.rate }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
             </span>
           </div>
           <div class="h-2.5 bg-paper-100 rounded-full overflow-hidden border border-ink-100">
@@ -500,6 +500,16 @@ const acCapacityPresets = [2.6, 3.5, 5, 7.1, 10, 14];
 const acEfficiencyPresets = [2.8, 3.2, 3.8, 4.5, 5.2, 6];
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+// 去掉浮點數尾巴：3.450000000000003 → 3.45
+const trimNum = (n) => {
+  const r = Math.round(Number(n) * 100) / 100;
+  return Number.isInteger(r) ? r.toString() : r.toFixed(2).replace(/0$/, '');
+};
+// 每日時數超過 24 自動收斂到 24，避免無聲封頂誤導
+watch(() => newAppliance.value.hours, (v) => {
+  if (typeof v === 'number' && v > 24) newAppliance.value.hours = 24;
+  if (typeof v === 'number' && v < 0) newAppliance.value.hours = 0;
+});
 
 const kwh = ref(400);
 const isSummer = ref(true);
