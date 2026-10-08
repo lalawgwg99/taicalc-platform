@@ -212,7 +212,7 @@
                         <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ estimatedAfterTaxAnnual.toLocaleString() }}</p>
                         <p class="text-[10px] text-ink-400 mt-0.5">要繳的稅大概 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
                     </div>
-                    <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
+                    <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
                         <p class="text-xs text-paper-200 mb-0.5">平均每月實拿</p>
                         <p class="text-base font-semibold tabular-nums">$ {{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
                     </div>

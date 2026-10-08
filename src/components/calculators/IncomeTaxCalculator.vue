@@ -254,7 +254,7 @@
       </div>
 
         <div class="grid grid-cols-2 gap-3 text-center text-xs">
-          <div class="bg-ink-700 text-paper-50 rounded-xl p-3">
+          <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
             <p class="text-paper-200 mb-0.5">實際拿到的年收入</p>
             <p class="text-base font-semibold tabular-nums">$ {{ fmt(afterTaxIncome) }}</p>
           </div>

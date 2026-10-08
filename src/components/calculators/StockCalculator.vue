@@ -76,7 +76,7 @@
           class="px-4 py-2 text-sm font-bold rounded-lg border transition-all"
           :class="stockLoading || !stockQuery.trim()
             ? 'bg-paper-100 text-ink-300 border-ink-100 cursor-not-allowed'
-            : 'bg-ink-800 text-white border-ink-800 hover:bg-ink-600'"
+            : 'bg-brand-700 text-white border-brand-700 hover:bg-brand-800'"
         >
           {{ stockLoading ? '查詢中…' : '查詢' }}
         </button>
@@ -109,7 +109,7 @@
         <div class="flex gap-2 mt-3">
           <button
             @click="buyPrice = stockResult.price; mode = 'profit'"
-            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-ink-800 text-white hover:bg-ink-600 transition-all"
+            class="flex-1 py-1.5 text-xs font-bold rounded-lg bg-brand-700 text-white hover:bg-brand-800 transition-all"
           >套用為買入價</button>
           <button
             @click="sellPrice = stockResult.price; mode = 'profit'"
@@ -155,7 +155,7 @@
               class="flex-1 py-2 text-xs font-bold rounded-lg border transition-all"
               :class="
                 stockType === type.id
-                  ? 'bg-ink-800 text-white border-ink-800'
+                  ? 'bg-brand-700 text-white border-brand-700'
                   : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
               "
             >

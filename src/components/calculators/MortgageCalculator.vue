@@ -154,7 +154,7 @@
                 </div>
             </div>
 
-            <figure class="mt-4 rounded-xl border border-paper-300 bg-ink-700 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
+            <figure class="mt-4 rounded-xl border border-paper-300 bg-paper-800 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
                 <figcaption class="mb-3 flex items-end justify-between gap-3">
                     <span><strong class="block text-xs">總額裡面多少是本金、多少是利息</strong><small class="mt-0.5 block text-[10px] text-paper-300">一眼看出利息吃掉多少</small></span>
                     <small class="text-[10px] text-brand-300">整個貸款期間</small>

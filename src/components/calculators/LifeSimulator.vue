@@ -2,7 +2,7 @@
   <div class="calculator-shell space-y-4" :class="{ 'icons-ready': iconsReady }">
     <section v-if="showWelcome" class="overflow-hidden rounded-3xl border border-brand-200 bg-white shadow-card">
       <div class="grid lg:grid-cols-[.8fr_1.2fr]">
-        <div class="bg-ink-800 p-6 text-white sm:p-8">
+        <div class="bg-paper-800 p-6 text-white sm:p-8">
           <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">設定起點</p>
           <h2 class="mt-4 text-3xl font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
           <p class="mt-4 text-sm leading-7 text-ink-300">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
@@ -68,7 +68,7 @@
     </section>
 
     <template v-else>
-    <section class="overflow-hidden rounded-3xl border border-ink-700 bg-ink-800 text-white shadow-card">
+    <section class="overflow-hidden rounded-3xl border border-paper-800 bg-paper-800 text-white shadow-card">
       <div class="relative p-5 sm:p-7">
         <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-400/15 blur-3xl"></div>
         <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -170,7 +170,7 @@
             :key="filter.id"
             type="button"
             class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition"
-            :class="activeFilter === filter.id ? 'border-ink-700 bg-ink-700 text-white' : 'border-paper-300 bg-white text-ink-500 hover:border-brand-200'"
+            :class="activeFilter === filter.id ? 'border-brand-700 bg-brand-700 text-white' : 'border-paper-300 bg-white text-ink-500 hover:border-brand-200'"
             @click="activeFilter = filter.id"
           >{{ filter.label }}</button>
         </div>
@@ -215,7 +215,7 @@
             <div class="mt-3 flex gap-2">
               <button
                 type="button"
-                class="flex-1 rounded-xl bg-ink-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-ink-800 disabled:cursor-not-allowed disabled:bg-paper-300 disabled:text-ink-400"
+                class="flex-1 rounded-xl bg-brand-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-paper-300 disabled:text-ink-400"
                 :disabled="finished || !canBuy(choice)"
                 @click="buy(choice)"
               >

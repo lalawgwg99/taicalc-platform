@@ -105,12 +105,12 @@
     <!-- 主要 KPI -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <!-- FIRE 目標 -->
-      <div class="card-surface p-5 bg-ink-700 border-ink-700">
+      <div class="card-surface p-5 bg-paper-800 border-paper-800">
         <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">不用上班要存到</p>
         <p class="text-3xl font-bold tabular-nums text-azure-400 mb-4">
           ${{ fmt(fireNumber) }}
         </p>
-        <div class="w-full bg-ink-800 h-1.5 rounded-full overflow-hidden">
+        <div class="w-full bg-paper-900 h-1.5 rounded-full overflow-hidden">
           <div class="bg-azure h-full rounded-full transition-all duration-700"
             :style="{ width: progressPercent + '%' }"></div>
         </div>

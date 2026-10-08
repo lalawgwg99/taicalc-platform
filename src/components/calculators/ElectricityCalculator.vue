@@ -179,7 +179,7 @@
         </div>
         <button
           @click="addAppliance"
-          class="mt-3 w-full py-2 bg-ink-800 text-white rounded-lg text-sm font-bold hover:bg-ink-600 transition-colors"
+          class="mt-3 w-full py-2 bg-brand-700 text-white rounded-lg text-sm font-bold hover:bg-brand-800 transition-colors"
         >
           + 加入清單
         </button>

@@ -30,7 +30,7 @@
           <label>持有股數<input v-model.number="shares" type="text" inputmode="decimal" min="0" step="1" class="input-clean" /></label>
           <label v-if="activeAsset.currency === 'USD'">美元匯率<input v-model.number="exchangeRate" type="text" inputmode="decimal" min="0" step="0.01" class="input-clean" /></label>
         </div>
-        <button type="button" class="mt-3 rounded-xl bg-ink-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-ink-800" @click="useHoldingValue">帶入起始資金 {{ money(holdingValue) }}</button>
+        <button type="button" class="mt-3 rounded-xl bg-brand-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-brand-800" @click="useHoldingValue">帶入起始資金 {{ money(holdingValue) }}</button>
         </div>
       </details>
       <div class="mt-6 rounded-2xl bg-paper-200 p-4">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    <aside class="rounded-3xl bg-ink-800 p-5 text-white shadow-sm sm:p-7">
+    <aside class="rounded-3xl bg-paper-800 p-5 text-white shadow-sm sm:p-7">
       <p class="text-xs font-semibold tracking-[.12em] text-brand-200">換算成今天的錢</p>
       <p class="mt-2 text-4xl font-semibold tracking-tight">{{ money(result.realValue) }}</p>
       <p class="mt-2 text-sm leading-6 text-ink-200">用今天的錢來算；不是保證未來帳戶有這麼多。</p>
