@@ -6,25 +6,25 @@
         <div class="card-surface p-5 space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">月薪（元）</label>
-                    <input type="text" inputmode="decimal" v-model.number="salary" aria-label="月薪" placeholder="45000"
+                    <label for="fld-03e1be7b" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（元）</label>
+                    <input id="fld-03e1be7b" type="text" inputmode="decimal" v-model.number="salary" aria-label="月薪" placeholder="45000"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">年資（年）</label>
-                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="年資"
+                    <label for="fld-174aa272" class="block text-xs font-medium text-ink-400 mb-1.5">年資（年）</label>
+                    <input id="fld-174aa272" type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="年資"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="roi" step="0.5" aria-label="投資報酬率"
+                    <label for="fld-6019840a" class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
+                    <input id="fld-6019840a" type="text" inputmode="decimal" v-model.number="roi" step="0.5" aria-label="投資報酬率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">所得稅率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="taxRate" step="1" aria-label="所得稅率"
+                    <label for="fld-bd1aed26" class="block text-xs font-medium text-ink-400 mb-1.5">所得稅率（%）</label>
+                    <input id="fld-bd1aed26" type="text" inputmode="decimal" v-model.number="taxRate" step="1" aria-label="所得稅率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -59,7 +59,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">省稅效果</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">自提 6% 每年大約省稅 $ {{ fmt(yearlyTaxSaving) }}。勞退專戶有保證收益，但要到法定年齡才能領出來。</p>
+            <p class="text-[10px] text-ink-400">自提 6% 每年大約省稅 $ {{ fmt(yearlyTaxSaving) }}。勞退專戶有保證收益，但要到法定年齡才能領出來。</p>
         </div>
 
         <div class="flex gap-2">

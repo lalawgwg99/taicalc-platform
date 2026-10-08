@@ -82,7 +82,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12l18-9-6 18-3.5-7.5L3 12z" fill="currentColor"/></svg>
             </button>
           </div>
-          <p class="mt-1.5 text-[10px] text-ink-300 text-center">AI 回答僅供參考，重要決策請再查證</p>
+          <p class="mt-1.5 text-[10px] text-ink-400 text-center">AI 回答僅供參考，重要決策請再查證</p>
         </div>
       </div>
     </transition>

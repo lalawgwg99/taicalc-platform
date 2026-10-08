@@ -29,7 +29,7 @@
             v-model.number="kwh"
             class="w-full bg-white border border-ink-100 rounded-xl py-3 px-4 text-gray-900 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder-ink-300"
           />
-          <span class="absolute right-4 top-4 text-ink-300 font-medium">kWh</span>
+          <span class="absolute right-4 top-4 text-ink-400 font-medium">kWh</span>
         </div>
 
         <label for="kwhRange" class="sr-only">調整度數</label>
@@ -42,7 +42,7 @@
           step="10"
           class="w-full mt-6 accent-amber-500 cursor-pointer"
         />
-        <div class="flex justify-between text-[10px] text-ink-300 mt-1 font-mono">
+        <div class="flex justify-between text-[10px] text-ink-400 mt-1 font-mono">
           <span>0</span><span>500</span><span>1000</span><span>1500</span><span>2000</span>
         </div>
       </div>
@@ -61,7 +61,7 @@
             class="text-4xl sm:text-5xl font-bold font-mono tracking-tight"
             :class="isSummer ? 'text-orange-600' : 'text-brand-600'"
           >
-            <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalCost.toLocaleString() }}
+            <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalCost.toLocaleString() }}
           </p>
           <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-ink-400">
             已經含每月最低收 100 元，補了 ${{ minimumChargeApplied }}
@@ -109,7 +109,7 @@
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
         <span class="text-lg">💡</span> 省電模擬
-        <span class="text-ink-300 font-normal text-xs ml-auto">如果每月少用...</span>
+        <span class="text-ink-400 font-normal text-xs ml-auto">如果每月少用...</span>
       </h2>
 
       <div class="grid grid-cols-3 gap-3">
@@ -145,8 +145,8 @@
       <div class="bg-paper-50 rounded-xl p-4 mb-6 border border-ink-100">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-1">
-            <label class="block text-xs font-semibold text-ink-400 mb-1">選擇電器</label>
-            <select
+            <label for="fld-81abd225" class="block text-xs font-semibold text-ink-400 mb-1">選擇電器</label>
+            <select id="fld-81abd225"
               v-model="newAppliance.preset"
               @change="applyPreset"
               title="選擇電器"
@@ -157,8 +157,8 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-ink-400 mb-1">功率 (瓦特 W)</label>
-            <input
+            <label for="fld-90f35e5f" class="block text-xs font-semibold text-ink-400 mb-1">功率 (瓦特 W)</label>
+            <input id="fld-90f35e5f"
               type="text" inputmode="decimal"
               v-model.number="newAppliance.watts"
               placeholder="W"
@@ -166,8 +166,8 @@
             />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-ink-400 mb-1">每日時數 (hr)</label>
-            <input
+            <label for="fld-25753b79" class="block text-xs font-semibold text-ink-400 mb-1">每日時數 (hr)</label>
+            <input id="fld-25753b79"
               type="text" inputmode="decimal"
               v-model.number="newAppliance.hours"
               placeholder="hr"
@@ -199,7 +199,7 @@
             <div class="flex items-center gap-3">
               <div class="text-right">
                 <p class="font-bold text-ink-800 text-sm">{{ Math.round(app.monthlyKwh) }}度</p>
-                <p class="text-xs text-ink-300">約 ${{ Math.round(app.monthlyCost) }}</p>
+                <p class="text-xs text-ink-400">約 ${{ Math.round(app.monthlyCost) }}</p>
               </div>
               <button
                 @click="removeAppliance(idx)"
@@ -234,7 +234,7 @@
           <div class="w-full h-[200px] relative">
             <canvas id="ghostChart"></canvas>
           </div>
-          <p class="text-xs text-ink-300 mt-2 text-center" v-if="ghostCoverage < 100">
+          <p class="text-xs text-ink-400 mt-2 text-center" v-if="ghostCoverage < 100">
             還有 {{ 100 - ghostCoverage }}% 用電未被分析到
           </p>
         </div>
@@ -288,7 +288,7 @@
               {{ preset }} kW
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-ink-300">直接輸入銘板上的消耗功率，適合已知實際耗電規格時使用。</p>
+          <p class="mt-2 text-[11px] text-ink-400">直接輸入銘板上的消耗功率，適合已知實際耗電規格時使用。</p>
         </div>
 
         <div v-else-if="acInputMode === 'btu'">
@@ -316,7 +316,7 @@
               {{ preset.toLocaleString() }}
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-ink-300">BTU/h 是冷房能力，不是耗電功率，仍需搭配 COP 或 CSPF 估算輸入功率。</p>
+          <p class="mt-2 text-[11px] text-ink-400">BTU/h 是冷房能力，不是耗電功率，仍需搭配 COP 或 CSPF 估算輸入功率。</p>
         </div>
 
         <div v-else>
@@ -344,7 +344,7 @@
               {{ preset }} kW
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-ink-300">若銘板標示為冷房能力 kW，可在這裡直接搭配 COP 或 CSPF 換算。</p>
+          <p class="mt-2 text-[11px] text-ink-400">若銘板標示為冷房能力 kW，可在這裡直接搭配 COP 或 CSPF 換算。</p>
         </div>
 
         <div>
@@ -359,7 +359,7 @@
             max="24"
             class="w-full bg-white border border-ink-100 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
-          <p class="mt-2 text-[11px] text-ink-300">依每天平均運轉時數估算，變頻機實際耗電仍會受室外溫度與設定溫度影響。</p>
+          <p class="mt-2 text-[11px] text-ink-400">依每天平均運轉時數估算，變頻機實際耗電仍會受室外溫度與設定溫度影響。</p>
         </div>
       </div>
 
@@ -390,7 +390,7 @@
               CSPF
             </button>
           </div>
-          <p class="mt-2 text-[11px] text-ink-300">
+          <p class="mt-2 text-[11px] text-ink-400">
             COP 可近似即時效率；CSPF 是季節效率，本工具以平均值粗估輸入功率。
           </p>
         </div>
@@ -435,7 +435,7 @@
           <p class="text-xs text-ink-400 mt-1">
             {{ acEstimateLabel }}
           </p>
-          <p v-if="acInputMode !== 'kw'" class="text-[11px] text-ink-300">
+          <p v-if="acInputMode !== 'kw'" class="text-[11px] text-ink-400">
             冷房能力 {{ acCoolingCapacityKw.toFixed(2) }} kW
             <span class="mx-1">≈</span>
             {{ acCoolingCapacityBtu.toLocaleString() }} BTU/h

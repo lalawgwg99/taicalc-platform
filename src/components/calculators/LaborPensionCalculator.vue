@@ -119,7 +119,7 @@
                 退休時大約存到 ({{ retireAge - currentAge }} 年後)
               </p>
               <p class="text-4xl font-bold stat-value text-amber-600">
-                <span class="text-2xl text-ink-300 mr-1">$</span>{{ totalAmount.toLocaleString() }}
+                <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalAmount.toLocaleString() }}
               </p>
             </div>
             <div class="text-left sm:text-right">
@@ -170,16 +170,16 @@
                     <p class="text-4xl md:text-5xl font-bold text-brand-600">
                         <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
-                    <p class="text-xs text-ink-300 mt-2">用你的稅率 {{ taxRate }}% 算的</p>
+                    <p class="text-xs text-ink-400 mt-2">用你的稅率 {{ taxRate }}% 算的</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
-                        <p class="text-xs text-ink-300 mb-1">自己總共提撥</p>
+                        <p class="text-xs text-ink-400 mb-1">自己總共提撥</p>
                         <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
-                        <p class="text-xs text-ink-300 mb-1">總共省下的稅</p>
+                        <p class="text-xs text-ink-400 mb-1">總共省下的稅</p>
                         <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
                     </div>
                 </div>

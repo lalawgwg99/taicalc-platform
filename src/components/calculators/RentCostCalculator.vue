@@ -86,7 +86,7 @@
           <div class="text-center mb-6">
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">實際每月支出</p>
             <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
-              <span class="text-2xl text-ink-300 align-top mr-1">$</span>{{ actualMonthly }}
+              <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ actualMonthly }}
             </p>
           </div>
 
@@ -98,7 +98,7 @@
             <div>
               <p class="text-xs text-ink-400 mb-1">押金少賺的利息</p>
               <p class="text-lg font-bold text-amber-600 font-mono">
-                ${{ depositCost }}<span class="text-xs text-ink-300 font-normal">/年</span>
+                ${{ depositCost }}<span class="text-xs text-ink-400 font-normal">/年</span>
               </p>
             </div>
           </div>
@@ -134,8 +134,8 @@
 
          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
              <div>
-                 <label class="block text-xs font-semibold text-ink-400 mb-2">居住縣市</label>
-                 <select v-model="subsidyLocation" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                 <label for="fld-dcb95277" class="block text-xs font-semibold text-ink-400 mb-2">居住縣市</label>
+                 <select id="fld-dcb95277" v-model="subsidyLocation" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
                      <option value="Taipei">台北市</option>
                      <option value="NewTaipei">新北市</option>
                      <option value="Taoyuan">桃園市</option>
@@ -147,8 +147,8 @@
                  </select>
              </div>
              <div>
-                 <label class="block text-xs font-semibold text-ink-400 mb-2">身分條件 (加碼倍數)</label>
-                 <select v-model="subsidyStatus" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
+                 <label for="fld-90c33dda" class="block text-xs font-semibold text-ink-400 mb-2">身分條件 (加碼倍數)</label>
+                 <select id="fld-90c33dda" v-model="subsidyStatus" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
                      <option value="SingleL40">單身 (未滿40歲) [1.2倍]</option>
                      <option value="Single">單身 (40歲以上) [無加碼]</option>
                      <option value="Newlywed">2025 年底前結婚的新婚家庭 [1.3倍]</option>
@@ -168,7 +168,7 @@
              <div class="absolute top-0 right-0 p-4 opacity-10">
                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
-             <p class="text-sm text-ink-300 mb-2">預估每月領取補貼</p>
+             <p class="text-sm text-ink-400 mb-2">預估每月領取補貼</p>
              <p class="text-4xl font-bold text-brand-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
              <p class="text-xs text-ink-400">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>

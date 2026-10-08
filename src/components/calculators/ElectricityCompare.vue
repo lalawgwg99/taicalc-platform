@@ -5,8 +5,8 @@
 
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">每月用電度數（度）</label>
-            <input type="text" inputmode="decimal" v-model.number="kwh" aria-label="每月用電度數" placeholder="500"
+            <label for="fld-822aae09" class="block text-xs font-medium text-ink-400 mb-1.5">每月用電度數（度）</label>
+            <input id="fld-822aae09" type="text" inputmode="decimal" v-model.number="kwh" aria-label="每月用電度數" placeholder="500"
                 class="input-clean text-xl font-semibold tabular-nums">
             <p class="mt-2 text-[11px] text-ink-400">同樣用電度數，比較夏天跟其他月份的電費差多少（台電 2025-10 開始的費率）</p>
         </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">台電家用電價：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03，用的是 2025-10-01 開始的費率。</p>
+            <p class="text-[10px] text-ink-400">台電家用電價：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03，用的是 2025-10-01 開始的費率。</p>
         </div>
 
         <!-- 分享 -->

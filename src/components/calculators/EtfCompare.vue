@@ -5,13 +5,13 @@
 
         <div class="card-surface p-5 space-y-3">
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">每月投入金額（元）</label>
-                <input type="text" inputmode="decimal" v-model.number="monthlyAmount" aria-label="每月投入金額" placeholder="10000"
+                <label for="fld-817c0f4e" class="block text-xs font-medium text-ink-400 mb-1.5">每月投入金額（元）</label>
+                <input id="fld-817c0f4e" type="text" inputmode="decimal" v-model.number="monthlyAmount" aria-label="每月投入金額" placeholder="10000"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
-                <label class="block text-xs font-medium text--ink-400 mb-1.5">投資年數</label>
-                <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
+                <label for="fld-6e7c6ae1" class="block text-xs font-medium text--ink-400 mb-1.5">投資年數</label>
+                <input id="fld-6e7c6ae1" type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                 class="input-clean font-semibold">
             </div>
             <p class="text-[11px] text-ink-400">年化報酬是拿歷史長期大概估的（含配息），不是保證賺。0050/006208 跟台灣 50（市值型），0056 跟高股息指數。</p>
@@ -36,7 +36,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">每月定期定額、複利估的，沒算手續費跟稅；0056 配息多，但長期總報酬通常輸市值型。</p>
+            <p class="text-[10px] text-ink-400">每月定期定額、複利估的，沒算手續費跟稅；0056 配息多，但長期總報酬通常輸市值型。</p>
         </div>
 
         <div class="flex gap-2">

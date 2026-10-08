@@ -79,16 +79,16 @@ button, a, input, select, textarea {
         @apply text-ink-500;
     }
 
-    .card .text-ink-300 {
+    .card .text-ink-400 {
         @apply text-ink-500;
     }
 
-    .card-surface .text-ink-300,
-    .card-surface-hover .text-ink-300 {
+    .card-surface .text-ink-400,
+    .card-surface-hover .text-ink-400 {
         @apply text-ink-500;
     }
 
-    .card .text-ink-300 {
+    .card .text-ink-400 {
         @apply text-ink-500;
     }
 
@@ -616,7 +616,7 @@ button, a, input, select, textarea {
     }
 
     .calculator-shell .text-ink-400,
-    .calculator-shell .text-ink-300 {
+    .calculator-shell .text-ink-400 {
         color: #5F594C;
     }
 
@@ -627,7 +627,7 @@ button, a, input, select, textarea {
     }
 
     .calculator-card-dark .text-ink-400,
-    .calculator-card-dark .text-ink-300 {
+    .calculator-card-dark .text-ink-400 {
         color: rgba(226, 232, 240, 0.8);
     }
 
@@ -1083,8 +1083,8 @@ button, a, input, select, textarea {
 .calculator-shell input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: #fff;
     border: 3px solid #1D4B34; /* brand-700 */

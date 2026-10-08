@@ -10,19 +10,19 @@
         <!-- 基本設定 -->
         <div class="card-surface p-5 space-y-4">
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-                <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+                <label for="fld-2093a6d1" class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
+                <input id="fld-2093a6d1" type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
                     class="input-clean text-xl font-semibold tabular-nums">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                    <input type="text" inputmode="decimal" v-model.number="years" aria-label="貸款年限"
+                    <label for="fld-cb5e11e0" class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
+                    <input id="fld-cb5e11e0" type="text" inputmode="decimal" v-model.number="years" aria-label="貸款年限"
                         class="input-clean font-semibold">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">寬限期（年）</label>
-                    <select v-model.number="graceYears" aria-label="寬限期"
+                    <label for="fld-1dced319" class="block text-xs font-medium text-ink-400 mb-1.5">寬限期（年）</label>
+                    <select id="fld-1dced319" v-model.number="graceYears" aria-label="寬限期"
                         class="input-clean font-medium">
                         <option :value="0">無寬限期</option>
                         <option v-for="y in 5" :key="y" :value="y">{{ y }} 年</option>
@@ -42,15 +42,15 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">
+                    <label for="fld-f18441ea" class="block text-xs font-medium text-ink-400 mb-1.5">
                         {{ twoStageMode ? '第一段利率（%）' : '年利率（%）' }}
                     </label>
-                    <input type="text" inputmode="decimal" v-model.number="rate1" step="0.005" aria-label="利率"
+                    <input id="fld-f18441ea" type="text" inputmode="decimal" v-model.number="rate1" step="0.005" aria-label="利率"
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
                 <div v-if="twoStageMode">
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">第二段利率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="rate2" step="0.005" aria-label="第二段利率"
+                    <label for="fld-7bb4ee94" class="block text-xs font-medium text-ink-400 mb-1.5">第二段利率（%）</label>
+                    <input id="fld-7bb4ee94" type="text" inputmode="decimal" v-model.number="rate2" step="0.005" aria-label="第二段利率"
                         class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -69,9 +69,9 @@
         </div>
 
         <div v-if="twoStageMode" class="animate-fade-in-up">
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">第一段期間（月）</label>
+                <label for="fld-2e96bf68" class="block text-xs font-medium text-ink-400 mb-1.5">第一段期間（月）</label>
                 <div class="flex gap-2 items-center">
-                    <input type="text" inputmode="decimal" v-model.number="stage1Months" placeholder="7"
+                    <input id="fld-2e96bf68" type="text" inputmode="decimal" v-model.number="stage1Months" placeholder="7"
                         class="input-clean w-24 text-center font-semibold">
                     <span class="text-xs text-ink-400">個月後變更利率</span>
                 </div>
@@ -90,19 +90,19 @@
             <div v-if="prepaymentMode" class="space-y-3 animate-fade-in-up">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">每月多還（元）</label>
-                        <input type="text" inputmode="decimal" v-model.number="extraMonthly" placeholder="0"
+                        <label for="fld-4409c558" class="block text-xs font-medium text-ink-400 mb-1.5">每月多還（元）</label>
+                        <input id="fld-4409c558" type="text" inputmode="decimal" v-model.number="extraMonthly" placeholder="0"
                             class="input-clean tabular-nums">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">單筆大額還款（萬）</label>
-                        <input type="text" inputmode="decimal" v-model.number="extraLump" placeholder="0"
+                        <label for="fld-31f5edce" class="block text-xs font-medium text-ink-400 mb-1.5">單筆大額還款（萬）</label>
+                        <input id="fld-31f5edce" type="text" inputmode="decimal" v-model.number="extraLump" placeholder="0"
                             class="input-clean tabular-nums">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">大額還款時間（第 {{ lumpYear }} 年）</label>
-                    <input type="range" v-model.number="lumpYear" min="1" :max="Math.max(1, years - 1)"
+                    <label for="fld-b1594c4f" class="block text-xs font-medium text-ink-400 mb-1.5">大額還款時間（第 {{ lumpYear }} 年）</label>
+                    <input id="fld-b1594c4f" type="range" v-model.number="lumpYear" min="1" :max="Math.max(1, years - 1)"
                         class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-azure-500">
                 </div>
             </div>
@@ -216,7 +216,7 @@
           <div v-if="showSchedule" class="mt-3 border-t border-ink-100/60 pt-3 max-h-72 overflow-y-auto overflow-x-auto font-mono text-xs">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-ink-100 text-ink-300 font-sans">
+                <tr class="border-b border-ink-100 text-ink-400 font-sans">
                   <th class="py-1.5">年度</th>
                   <th class="py-1.5 text-right">當年還本金</th>
                   <th class="py-1.5 text-right">當年繳利息</th>

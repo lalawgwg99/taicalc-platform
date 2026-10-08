@@ -22,8 +22,8 @@
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-ink-400 mb-1">繳費年期 (年)</label>
-              <input
+              <label for="fld-a6af5c55" class="block text-xs font-semibold text-ink-400 mb-1">繳費年期 (年)</label>
+              <input id="fld-a6af5c55"
                 type="text" inputmode="decimal"
                 v-model.number="irr.years"
                 aria-label="繳費年期"
@@ -32,8 +32,8 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-ink-400 mb-1">年繳保費</label>
-              <input
+              <label for="fld-7faa659b" class="block text-xs font-semibold text-ink-400 mb-1">年繳保費</label>
+              <input id="fld-7faa659b"
                 type="text" inputmode="decimal"
                 v-model.number="irr.premium"
                 aria-label="年繳保費"
@@ -61,7 +61,7 @@
                 class="flex-1 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
-            <p class="text-[10px] text-ink-300 mt-1">請輸入您預計在哪一年解約或滿期領回，以及當時的「年度末解約金」。</p>
+            <p class="text-[10px] text-ink-400 mt-1">請輸入您預計在哪一年解約或滿期領回，以及當時的「年度末解約金」。</p>
           </div>
         </div>
 
@@ -81,7 +81,7 @@
               <span v-else class="font-bold text-red-500">低於定存</span>
             </p>
           </div>
-          <div class="mt-4 text-xs text-ink-300">
+          <div class="mt-4 text-xs text-ink-400">
             <p>算法是這樣：保費每年年初繳，解約金年底領回。</p>
           </div>
         </div>
@@ -94,8 +94,8 @@
           <h3 class="text-sm font-bold text-ink-600 border-l-4 border-brand-500 pl-2">1. 家庭責任 (負債與開銷)</h3>
           <div class="grid grid-cols-1 gap-3">
             <div>
-              <label class="block text-xs font-semibold text-ink-400 mb-1">房貸與其他負債餘額</label>
-              <input
+              <label for="fld-20b610a3" class="block text-xs font-semibold text-ink-400 mb-1">房貸與其他負債餘額</label>
+              <input id="fld-20b610a3"
                 type="text" inputmode="decimal"
                 v-model.number="needs.debt"
                 aria-label="負債餘額"
@@ -104,8 +104,8 @@
             </div>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold text-ink-400 mb-1">家庭年支出 (不含房貸)</label>
-                <input
+                <label for="fld-64c70996" class="block text-xs font-semibold text-ink-400 mb-1">家庭年支出 (不含房貸)</label>
+                <input id="fld-64c70996"
                   type="text" inputmode="decimal"
                   v-model.number="needs.expenses"
                   aria-label="家庭年支出"
@@ -113,8 +113,8 @@
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-ink-400 mb-1">預留年數</label>
-                <select
+                <label for="fld-3d2c95c9" class="block text-xs font-semibold text-ink-400 mb-1">預留年數</label>
+                <select id="fld-3d2c95c9"
                   v-model.number="needs.years"
                   aria-label="預留年數"
                   class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -132,8 +132,8 @@
         <div class="space-y-3">
           <h3 class="text-sm font-bold text-ink-600 border-l-4 border-green-500 pl-2">2. 現有資產</h3>
           <div>
-            <label class="block text-xs font-semibold text-ink-400 mb-1">存款與投資總額</label>
-            <input
+            <label for="fld-df54c0a6" class="block text-xs font-semibold text-ink-400 mb-1">存款與投資總額</label>
+            <input id="fld-df54c0a6"
               type="text" inputmode="decimal"
               v-model.number="needs.assets"
               aria-label="現有資產"

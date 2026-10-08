@@ -3,7 +3,7 @@
     
     <!-- 快速預設情境 (Apple Chip Selector) -->
     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-      <span class="text-xs font-semibold text-ink-300 flex-shrink-0">快速情境：</span>
+      <span class="text-xs font-semibold text-ink-400 flex-shrink-0">快速情境：</span>
       <button 
         v-for="p in presets" 
         :key="p.title"
@@ -17,9 +17,9 @@
     <!-- 1. 總額設定與成員名單 (Apple Inset Grouped Form) -->
     <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5">
       <div class="mb-6 text-center">
-        <label class="block text-xs font-semibold text-ink-300 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
+        <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
         <div class="relative max-w-xs mx-auto flex items-center justify-center">
-          <span class="text-2xl font-semibold text-ink-300 mr-1">$</span>
+          <span class="text-2xl font-semibold text-ink-400 mr-1">$</span>
           <input 
             v-model.number="totalAmount" 
             type="text" inputmode="decimal" 
@@ -71,9 +71,9 @@
             
             <div class="flex items-center gap-2">
               <div class="flex flex-col items-end">
-                <span class="text-[10px] text-ink-300 font-medium">已先付 (Paid)</span>
+                <span class="text-[10px] text-ink-400 font-medium">已先付 (Paid)</span>
                 <div class="flex items-center">
-                  <span class="text-xs text-ink-300 mr-0.5">$</span>
+                  <span class="text-xs text-ink-400 mr-0.5">$</span>
                   <input 
                     v-model.number="m.paid" 
                     type="text" inputmode="decimal" 
@@ -83,7 +83,7 @@
                 </div>
               </div>
               <div class="flex flex-col items-end" v-if="mode === 'weighted'">
-                <span class="text-[10px] text-ink-300 font-medium">權重 (份)</span>
+                <span class="text-[10px] text-ink-400 font-medium">權重 (份)</span>
                 <input 
                   v-model.number="m.weight" 
                   type="text" inputmode="decimal" 
@@ -92,7 +92,7 @@
               </div>
             </div>
             
-            <button @click="removeMember(idx)" class="text-ink-300 hover:text-red-500 px-1 text-sm transition-colors" v-if="members.length > 2" title="刪除">
+            <button @click="removeMember(idx)" class="text-ink-400 hover:text-red-500 px-1 text-sm transition-colors" v-if="members.length > 2" title="刪除">
               ✕
             </button>
           </div>
@@ -106,7 +106,7 @@
         <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-brand-500"></span> 誰該轉帳給誰
         </h2>
-        <span class="text-xs text-ink-300 font-mono">轉帳次數最少</span>
+        <span class="text-xs text-ink-400 font-mono">轉帳次數最少</span>
       </div>
 
       <div v-if="transactions.length > 0" class="space-y-2.5">
@@ -117,7 +117,7 @@
         >
           <div class="flex items-center gap-2 text-sm">
             <span class="font-bold text-ink-900">{{ tx.from }}</span>
-            <span class="text-xs text-ink-300 font-medium">轉給</span>
+            <span class="text-xs text-ink-400 font-medium">轉給</span>
             <span class="font-bold text-brand-600">{{ tx.to }}</span>
           </div>
           <div class="font-mono font-bold text-base text-ink-900">${{ tx.amount.toLocaleString() }}</div>

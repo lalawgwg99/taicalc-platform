@@ -5,8 +5,8 @@
 
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-            <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
+            <label for="fld-9366803a" class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
+            <input id="fld-9366803a" type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
                 class="input-clean text-xl font-semibold tabular-nums">
             <p class="mt-2 text-[11px] text-ink-400">同一筆貸款金額，左右兩案即時對照</p>
         </div>
@@ -21,20 +21,20 @@
                     <span v-else class="data-pill !px-2.5 !py-1 text-ink-500 bg-paper-100 border-ink-100">一般市場</span>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="side.rate" step="0.005" :aria-label="side.label + '利率'"
+                    <label for="fld-49661c2a" class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
+                    <input id="fld-49661c2a" type="text" inputmode="decimal" v-model.number="side.rate" step="0.005" :aria-label="side.label + '利率'"
                         class="input-clean font-semibold tabular-nums">
                     <p v-if="side.key === 'a'" class="mt-1 text-[10px] text-brand-600/70">預設為 2026 新青安優惠利率（補貼期間）</p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                        <input type="text" inputmode="decimal" v-model.number="side.years" :aria-label="side.label + '年限'"
+                        <label for="fld-96f8563a" class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
+                        <input id="fld-96f8563a" type="text" inputmode="decimal" v-model.number="side.years" :aria-label="side.label + '年限'"
                             class="input-clean font-semibold">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">寬限期（年）</label>
-                        <select v-model.number="side.grace" :aria-label="side.label + '寬限期'"
+                        <label for="fld-33e7fec4" class="block text-xs font-medium text-ink-400 mb-1.5">寬限期（年）</label>
+                        <select id="fld-33e7fec4" v-model.number="side.grace" :aria-label="side.label + '寬限期'"
                             class="input-clean font-medium">
                             <option :value="0">無</option>
                             <option v-for="y in 5" :key="y" :value="y">{{ y }} 年</option>
@@ -81,7 +81,7 @@
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">用本息分期攤還法估算，四捨五入到元。寬限期後的月付，是用剩下的期數重新算的。</p>
+            <p class="text-[10px] text-ink-400">用本息分期攤還法估算，四捨五入到元。寬限期後的月付，是用剩下的期數重新算的。</p>
         </div>
 
         <!-- 分享 -->

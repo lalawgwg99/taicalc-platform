@@ -23,16 +23,16 @@
 
       <!-- Salary Input -->
       <div>
-        <label class="block text-xs font-semibold text-ink-400 mb-2">月薪收入</label>
+        <label for="fld-2ca33c24" class="block text-xs font-semibold text-ink-400 mb-2">月薪收入</label>
         <div class="relative">
-          <input
+          <input id="fld-2ca33c24"
             type="text" inputmode="decimal"
             v-model.number="salary"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
             placeholder="請輸入月薪"
           />
         </div>
-        <p class="text-xs text-ink-300 mt-2">
+        <p class="text-xs text-ink-400 mt-2">
           對應投保級距：<span class="font-bold text-ink-500">{{ fmt(matchedBracket) }}</span> 元
           <span v-if="salary < MINIMUM_WAGE" class="text-red-500 ml-1">(低於基本工資 29,500)</span>
         </p>
@@ -56,7 +56,7 @@
             {{ n - 1 }}
           </button>
         </div>
-        <p class="text-[10px] text-ink-300 mt-1">健保超過 3 口以 3 口計算；勞保不受眷口數影響。</p>
+        <p class="text-[10px] text-ink-400 mt-1">健保超過 3 口以 3 口計算；勞保不受眷口數影響。</p>
       </div>
 
       <!-- Results -->

@@ -12,9 +12,9 @@
                 <label for="hours" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">時薪換算基準</label>
                 <div class="relative">
                     <input id="hours" type="text" inputmode="decimal" v-model.number="monthlyHours" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all">
-                    <span class="absolute right-4 top-3.5 text-ink-300 text-sm">小時/月</span>
+                    <span class="absolute right-4 top-3.5 text-ink-400 text-sm">小時/月</span>
                 </div>
-                <p class="mt-1 text-[10px] text-ink-300">月薪制通常以 240 小時換算；勞動契約另有約定時再調整。</p>
+                <p class="mt-1 text-[10px] text-ink-400">月薪制通常以 240 小時換算；勞動契約另有約定時再調整。</p>
             </div>
         </div>
         <div class="mt-4 p-3 bg-paper-100/50 rounded-xl flex justify-between items-center border border-ink-100/50">
@@ -119,7 +119,7 @@
                     <div class="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner">
                         <div class="h-full bg-ink-300 rounded-full w-full"></div>
                     </div>
-                    <span class="text-xs font-bold text-ink-500 w-12 font-mono">${{ baseHourlyRate.toLocaleString() }}</span>
+                    <span class="text-xs font-bold text-ink-500 min-w-12 whitespace-nowrap font-mono text-right">${{ baseHourlyRate.toLocaleString() }}</span>
                 </div>
                 <!-- Overtime Rate -->
                 <div class="flex items-center gap-3">
@@ -153,11 +153,11 @@
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full" :class="r.type === '平日' ? 'bg-brand-400' : r.type === '休息日' ? 'bg-amber-400' : 'bg-red-400'"></span>
                     <span class="text-sm text-ink-500 font-medium">{{ r.type }}</span>
-                    <span class="text-xs text-ink-300 bg-ink-100 px-1.5 py-0.5 rounded">{{ r.hours }}hr</span>
+                    <span class="text-xs text-ink-400 bg-ink-100 px-1.5 py-0.5 rounded">{{ r.hours }}hr</span>
                 </div>
                 <div class="flex items-center gap-3">
                     <span class="text-sm font-mono font-bold text-ink-600">+${{ r.pay.toLocaleString() }}</span>
-                    <button @click="removeRecord(i)" class="text-ink-200 hover:text-red-500 w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors">✕</button>
+                    <button @click="removeRecord(i)" class="text-ink-200 hover:text-red-500 w-11 h-11 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors">✕</button>
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
                         <span class="text-2xl font-bold tracking-tight" :class="weeklyTotalHours > 46 ? 'text-rose-600' : 'text-ink-800'">
                             {{ weeklyTotalHours }}
                         </span>
-                <span class="text-xs text-ink-300">/ 月上限 46 小時參考</span>
+                <span class="text-xs text-ink-400">/ 月上限 46 小時參考</span>
                     </div>
                 </div>
                 <div class="text-right">
@@ -196,7 +196,7 @@
     <!-- 費率說明 -->
     <footer class="calculator-footer-note">
         <div class="flex items-center gap-2 mb-3">
-            <svg class="w-4 h-4 text-ink-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-ink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
             <p class="text-xs font-bold text-ink-500">勞基法加班費率速查 (2026)</p>

@@ -5,13 +5,13 @@
 
         <div class="card-surface p-5 space-y-3">
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">平均月投保薪資（元）</label>
-                <input type="text" inputmode="decimal" v-model.number="avgWage" aria-label="平均月投保薪資" placeholder="45800"
+                <label for="fld-bfc7e60b" class="block text-xs font-medium text-ink-400 mb-1.5">平均月投保薪資（元）</label>
+                <input id="fld-bfc7e60b" type="text" inputmode="decimal" v-model.number="avgWage" aria-label="平均月投保薪資" placeholder="45800"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">勞保年資（年）</label>
-                <input type="text" inputmode="decimal" v-model.number="years" min="1" max="50" aria-label="勞保年資"
+                <label for="fld-e4a511a1" class="block text-xs font-medium text-ink-400 mb-1.5">勞保年資（年）</label>
+                <input id="fld-e4a511a1" type="text" inputmode="decimal" v-model.number="years" min="1" max="50" aria-label="勞保年資"
                 class="input-clean font-semibold">
             </div>
             <p class="text-[11px] text-ink-400">算法：月領每年資給 1.55%；一次領前 15 年每年給 1 個月，第 16 年起每年 2 個月（最多 50 個月）。</p>
@@ -45,7 +45,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">怎麼選</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">月領約 {{ breakevenYears.toFixed(1) }} 年，累計總額就會超過一次領。實際給付仍以勞保局核定為準。</p>
+            <p class="text-[10px] text-ink-400">月領約 {{ breakevenYears.toFixed(1) }} 年，累計總額就會超過一次領。實際給付仍以勞保局核定為準。</p>
         </div>
 
         <div class="flex gap-2">

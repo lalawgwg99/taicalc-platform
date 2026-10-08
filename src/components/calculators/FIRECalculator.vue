@@ -11,12 +11,12 @@
       <!-- 年齡 & 淨資產 -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">現在年齡</label>
-          <input type="text" inputmode="decimal" v-model.number="currentAge" class="input-clean" placeholder="30" />
+          <label for="fld-d84008dc" class="block text-xs font-medium text-ink-400 mb-1.5">現在年齡</label>
+          <input id="fld-d84008dc" type="text" inputmode="decimal" v-model.number="currentAge" class="input-clean" placeholder="30" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">目前淨資產（TWD）</label>
-          <input type="text" inputmode="decimal" v-model.number="currentNetWorth" class="input-clean tabular-nums" placeholder="1,000,000" />
+          <label for="fld-f8090645" class="block text-xs font-medium text-ink-400 mb-1.5">目前淨資產（TWD）</label>
+          <input id="fld-f8090645" type="text" inputmode="decimal" v-model.number="currentNetWorth" class="input-clean tabular-nums" placeholder="1,000,000" />
         </div>
       </div>
 
@@ -25,13 +25,13 @@
       <!-- 月支出 & 月儲蓄 -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">退休月支出（TWD）</label>
-          <input type="text" inputmode="decimal" v-model.number="monthlyExpense" class="input-clean tabular-nums" placeholder="40,000" />
+          <label for="fld-fc2f5901" class="block text-xs font-medium text-ink-400 mb-1.5">退休月支出（TWD）</label>
+          <input id="fld-fc2f5901" type="text" inputmode="decimal" v-model.number="monthlyExpense" class="input-clean tabular-nums" placeholder="40,000" />
           <p class="text-[10px] text-ink-400 mt-1">這個數字決定你要存多少才自由</p>
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">每月投入（TWD）</label>
-          <input type="text" inputmode="decimal" v-model.number="monthlySavings" class="input-clean tabular-nums" placeholder="20,000" />
+          <label for="fld-47a31534" class="block text-xs font-medium text-ink-400 mb-1.5">每月投入（TWD）</label>
+          <input id="fld-47a31534" type="text" inputmode="decimal" v-model.number="monthlySavings" class="input-clean tabular-nums" placeholder="20,000" />
         </div>
       </div>
 

@@ -25,26 +25,26 @@
           </svg>
           交易設定 (手續費折扣)
         </h2>
-        <span class="text-xs text-ink-300 transform transition-transform" :class="{ 'rotate-180': showSettings }"
+        <span class="text-xs text-ink-400 transform transition-transform" :class="{ 'rotate-180': showSettings }"
           >▼</span
         >
       </div>
 
       <div v-show="showSettings" class="mt-4 grid grid-cols-2 gap-4 border-t border-paper-100 pt-4">
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-1">券商折扣 (折)</label>
-          <input
+          <label for="fld-264a73f6" class="block text-xs font-semibold text-ink-400 mb-1">券商折扣 (折)</label>
+          <input id="fld-264a73f6"
             type="text" inputmode="decimal"
             v-model.number="settings.discount"
             step="0.1"
             aria-label="券商折扣"
             class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 text-ink-800 text-sm focus:outline-none focus:ring-1 focus:ring-red-500"
           />
-          <p class="text-[10px] text-ink-300 mt-1">例：2.8折 輸入 2.8</p>
+          <p class="text-[10px] text-ink-400 mt-1">例：2.8折 輸入 2.8</p>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-1">最低手續費 ($)</label>
-          <input
+          <label for="fld-4b65b26b" class="block text-xs font-semibold text-ink-400 mb-1">最低手續費 ($)</label>
+          <input id="fld-4b65b26b"
             type="text" inputmode="decimal"
             v-model.number="settings.minFee"
             aria-label="最低手續費"
@@ -75,7 +75,7 @@
           :disabled="stockLoading || !stockQuery.trim()"
           class="px-4 py-2 text-sm font-bold rounded-lg border transition-all"
           :class="stockLoading || !stockQuery.trim()
-            ? 'bg-paper-100 text-ink-300 border-ink-100 cursor-not-allowed'
+            ? 'bg-paper-100 text-ink-400 border-ink-100 cursor-not-allowed'
             : 'bg-brand-700 text-white border-brand-700 hover:bg-brand-800'"
         >
           {{ stockLoading ? '查詢中…' : '查詢' }}
@@ -93,9 +93,9 @@
         <div class="flex items-start justify-between mb-2">
           <div>
             <span class="text-sm font-bold text-ink-800">{{ stockResult.name }}</span>
-            <span class="text-xs text-ink-300 ml-1.5">({{ stockResult.code }})</span>
+            <span class="text-xs text-ink-400 ml-1.5">({{ stockResult.code }})</span>
           </div>
-          <span v-if="!stockResult.isMarketOpen" class="text-[10px] text-ink-300 bg-ink-100 rounded px-1.5 py-0.5">收盤</span>
+          <span v-if="!stockResult.isMarketOpen" class="text-[10px] text-ink-400 bg-ink-100 rounded px-1.5 py-0.5">收盤</span>
         </div>
         <div class="flex items-baseline gap-3">
           <span class="text-xl font-bold tabular-nums text-ink-800">${{ stockResult.price.toFixed(2) }}</span>
@@ -108,7 +108,7 @@
             ({{ stockResult.changePercent >= 0 ? '+' : '' }}{{ stockResult.changePercent.toFixed(2) }}%)
           </span>
         </div>
-        <p class="text-[10px] text-ink-300 mt-1">昨收 ${{ stockResult.yesterday.toFixed(2) }}</p>
+        <p class="text-[10px] text-ink-400 mt-1">昨收 ${{ stockResult.yesterday.toFixed(2) }}</p>
         <div class="flex gap-2 mt-3">
           <button
             @click="buyPrice = stockResult.price; mode = 'profit'"
@@ -168,8 +168,8 @@
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
-              <input
+              <label for="fld-9d929244" class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
+              <input id="fld-9d929244"
                 type="text" inputmode="decimal"
                 v-model.number="buyPrice"
                 step="0.1"
@@ -178,8 +178,8 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-semibold text-ink-400 mb-1">股數 (1張=1000)</label>
-              <input
+              <label for="fld-55ad9018" class="block text-xs font-semibold text-ink-400 mb-1">股數 (1張=1000)</label>
+              <input id="fld-55ad9018"
                 type="text" inputmode="decimal"
                 v-model.number="qty"
                 step="1000"
@@ -190,8 +190,8 @@
           </div>
 
           <div v-show="mode === 'profit'">
-            <label class="block text-xs font-semibold text-ink-400 mb-1">賣出價格</label>
-            <input
+            <label for="fld-b0836417" class="block text-xs font-semibold text-ink-400 mb-1">賣出價格</label>
+            <input id="fld-b0836417"
               type="text" inputmode="decimal"
               v-model.number="sellPrice"
               step="0.1"
@@ -223,15 +223,15 @@
                 </svg>
                 進階：股利/股息 (選填)
               </span>
-              <span class="text-xs text-ink-300 transform transition-transform" :class="{ 'rotate-180': showDividends }"
+              <span class="text-xs text-ink-400 transform transition-transform" :class="{ 'rotate-180': showDividends }"
                 >▼</span
               >
             </div>
 
             <div v-show="showDividends" class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-semibold text-ink-400 mb-1">現金股利 (元/股)</label>
-                <input
+                <label for="fld-effeee3e" class="block text-xs font-semibold text-ink-400 mb-1">現金股利 (元/股)</label>
+                <input id="fld-effeee3e"
                   type="text" inputmode="decimal"
                   v-model.number="cashDividend"
                   step="0.1"
@@ -240,15 +240,15 @@
                 />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-ink-400 mb-1">股票股利 (元/股)</label>
-                <input
+                <label for="fld-a6b43aab" class="block text-xs font-semibold text-ink-400 mb-1">股票股利 (元/股)</label>
+                <input id="fld-a6b43aab"
                   type="text" inputmode="decimal"
                   v-model.number="stockDividend"
                   step="0.1"
                   placeholder="0"
                   class="w-full bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-3 text-ink-800 font-bold focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 />
-                <p class="text-[10px] text-ink-300 mt-1">例如配 1元 = 每張配 100股</p>
+                <p class="text-[10px] text-ink-400 mt-1">例如配 1元 = 每張配 100股</p>
               </div>
             </div>
           </div>
@@ -338,8 +338,8 @@
           <div class="space-y-3">
             <div v-for="(rec, idx) in dcaRecords" :key="idx" class="flex gap-2 items-end">
               <div class="flex-1">
-                <label class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
-                <input
+                <label for="fld-25e71ad5" class="block text-xs font-semibold text-ink-400 mb-1">買進價格</label>
+                <input id="fld-25e71ad5"
                   type="text" inputmode="decimal"
                   v-model.number="rec.price"
                   placeholder="價格"
@@ -347,8 +347,8 @@
                 />
               </div>
               <div class="flex-1">
-                <label class="block text-xs font-semibold text-ink-400 mb-1">股數</label>
-                <input
+                <label for="fld-010ab26b" class="block text-xs font-semibold text-ink-400 mb-1">股數</label>
+                <input id="fld-010ab26b"
                   type="text" inputmode="decimal"
                   v-model.number="rec.qty"
                   placeholder="股數"
@@ -357,7 +357,7 @@
               </div>
               <button
                 @click="removeRecord(idx)"
-                class="mb-1 p-2 text-ink-300 hover:text-red-500"
+                class="mb-1 p-2 text-ink-400 hover:text-red-500"
                 title="刪除"
               >
                 <svg

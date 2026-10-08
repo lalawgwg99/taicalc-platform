@@ -18,28 +18,28 @@
       </h2>
 
       <div>
-        <label class="block text-xs font-medium text-ink-400 mb-1.5">薪資所得（NT$）</label>
-        <input type="text" inputmode="decimal" v-model.number="salaryIncome" class="input-clean tabular-nums text-lg font-semibold"
+        <label for="fld-24912f32" class="block text-xs font-medium text-ink-400 mb-1.5">薪資所得（NT$）</label>
+        <input id="fld-24912f32" type="text" inputmode="decimal" v-model.number="salaryIncome" class="input-clean tabular-nums text-lg font-semibold"
           placeholder="600,000" />
         <p class="text-[10px] text-ink-400 mt-1">可填年薪或多份工作薪資合計</p>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">股利所得（NT$）</label>
-          <input type="text" inputmode="decimal" v-model.number="dividendIncome" class="input-clean tabular-nums" placeholder="0" />
+          <label for="fld-9d837868" class="block text-xs font-medium text-ink-400 mb-1.5">股利所得（NT$）</label>
+          <input id="fld-9d837868" type="text" inputmode="decimal" v-model.number="dividendIncome" class="input-clean tabular-nums" placeholder="0" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">利息所得（NT$）</label>
-          <input type="text" inputmode="decimal" v-model.number="interestIncome" class="input-clean tabular-nums" placeholder="0" />
+          <label for="fld-6a2cbc62" class="block text-xs font-medium text-ink-400 mb-1.5">利息所得（NT$）</label>
+          <input id="fld-6a2cbc62" type="text" inputmode="decimal" v-model.number="interestIncome" class="input-clean tabular-nums" placeholder="0" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">租金收入（NT$）</label>
-          <input type="text" inputmode="decimal" v-model.number="rentalIncome" class="input-clean tabular-nums" placeholder="0" />
+          <label for="fld-324e998f" class="block text-xs font-medium text-ink-400 mb-1.5">租金收入（NT$）</label>
+          <input id="fld-324e998f" type="text" inputmode="decimal" v-model.number="rentalIncome" class="input-clean tabular-nums" placeholder="0" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">其他所得（NT$）</label>
-          <input type="text" inputmode="decimal" v-model.number="otherIncome" class="input-clean tabular-nums" placeholder="0" />
+          <label for="fld-42b9b4d0" class="block text-xs font-medium text-ink-400 mb-1.5">其他所得（NT$）</label>
+          <input id="fld-42b9b4d0" type="text" inputmode="decimal" v-model.number="otherIncome" class="input-clean tabular-nums" placeholder="0" />
         </div>
       </div>
 
@@ -64,38 +64,38 @@
 
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">納稅義務人</label>
-          <select v-model="filingStatus" class="input-clean">
+          <label for="fld-0e27c24e" class="block text-xs font-medium text-ink-400 mb-1.5">納稅義務人</label>
+          <select id="fld-0e27c24e" v-model="filingStatus" class="input-clean">
             <option value="single">單身</option>
             <option value="married">已婚合併申報</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">扶養親屬人數</label>
-          <input type="text" inputmode="decimal" v-model.number="dependents" class="input-clean" placeholder="0" min="0" max="10" />
+          <label for="fld-adb87d5f" class="block text-xs font-medium text-ink-400 mb-1.5">扶養親屬人數</label>
+          <input id="fld-adb87d5f" type="text" inputmode="decimal" v-model.number="dependents" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">含子女、父母</p>
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>
-          <input type="text" inputmode="decimal" v-model.number="longTermCareEligibleCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <label for="fld-e9c47932" class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>
+          <input id="fld-e9c47932" type="text" inputmode="decimal" v-model.number="longTermCareEligibleCount" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">每人 180,000（需符合規定）</p>
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">身心障礙人數</label>
-          <input type="text" inputmode="decimal" v-model.number="disabilityCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <label for="fld-25cdc856" class="block text-xs font-medium text-ink-400 mb-1.5">身心障礙人數</label>
+          <input id="fld-25cdc856" type="text" inputmode="decimal" v-model.number="disabilityCount" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">每人 227,000</p>
         </div>
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">學前幼兒人數</label>
-          <input type="text" inputmode="decimal" v-model.number="preschoolCount" class="input-clean" placeholder="0" min="0" max="10" />
+          <label for="fld-675d6147" class="block text-xs font-medium text-ink-400 mb-1.5">學前幼兒人數</label>
+          <input id="fld-675d6147" type="text" inputmode="decimal" v-model.number="preschoolCount" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">第 1 人 150,000；第 2 人起每人 225,000</p>
         </div>
       </div>
 
       <!-- 配偶所得（合併申報） -->
       <div v-if="filingStatus === 'married'" class="animate-fade-in-up">
-        <label class="block text-xs font-medium text-ink-400 mb-1.5">配偶薪資所得（NT$）</label>
-        <input type="text" inputmode="decimal" v-model.number="spouseSalary" class="input-clean tabular-nums" placeholder="0" />
+        <label for="fld-20a3ac91" class="block text-xs font-medium text-ink-400 mb-1.5">配偶薪資所得（NT$）</label>
+        <input id="fld-20a3ac91" type="text" inputmode="decimal" v-model.number="spouseSalary" class="input-clean tabular-nums" placeholder="0" />
       </div>
     </div>
 
@@ -134,33 +134,33 @@
       <div v-if="deductionType === 'itemized'" class="space-y-3 animate-fade-in-up border-t border-paper-300 pt-3">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">捐贈支出（NT$）</label>
-            <input type="text" inputmode="decimal" v-model.number="donationDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+            <label for="fld-fa8b67f7" class="block text-xs font-medium text-ink-400 mb-1.5">捐贈支出（NT$）</label>
+            <input id="fld-fa8b67f7" type="text" inputmode="decimal" v-model.number="donationDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
           </div>
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">人身保險費（NT$）</label>
-            <input type="text" inputmode="decimal" v-model.number="insuranceDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+            <label for="fld-f3d951d7" class="block text-xs font-medium text-ink-400 mb-1.5">人身保險費（NT$）</label>
+            <input id="fld-f3d951d7" type="text" inputmode="decimal" v-model.number="insuranceDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
             <p class="text-[10px] text-ink-400 mt-0.5">上限 24,000/人</p>
           </div>
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">醫藥及生育費（NT$）</label>
-            <input type="text" inputmode="decimal" v-model.number="medicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+            <label for="fld-6fe7a47c" class="block text-xs font-medium text-ink-400 mb-1.5">醫藥及生育費（NT$）</label>
+            <input id="fld-6fe7a47c" type="text" inputmode="decimal" v-model.number="medicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
           </div>
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">自用住宅利息（NT$）</label>
-            <input type="text" inputmode="decimal" v-model.number="mortgageDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+            <label for="fld-65685693" class="block text-xs font-medium text-ink-400 mb-1.5">自用住宅利息（NT$）</label>
+            <input id="fld-65685693" type="text" inputmode="decimal" v-model.number="mortgageDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
             <p class="text-[10px] text-ink-400 mt-0.5">上限 300,000</p>
           </div>
           <div>
-            <label class="block text-xs font-medium text-ink-400 mb-1.5">政治捐獻（NT$）</label>
-            <input type="text" inputmode="decimal" v-model.number="politicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+            <label for="fld-95b82d3a" class="block text-xs font-medium text-ink-400 mb-1.5">政治捐獻（NT$）</label>
+            <input id="fld-95b82d3a" type="text" inputmode="decimal" v-model.number="politicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
           </div>
         </div>
       </div>
 
       <div class="border-t border-paper-300 pt-3">
-        <label class="block text-xs font-medium text-ink-400 mb-1.5">自住房屋租金支出特別扣除額（NT$）</label>
-        <input type="text" inputmode="decimal" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
+        <label for="fld-776deddd" class="block text-xs font-medium text-ink-400 mb-1.5">自住房屋租金支出特別扣除額（NT$）</label>
+        <input id="fld-776deddd" type="text" inputmode="decimal" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
         <p class="text-[10px] text-ink-400 mt-1">每戶上限 180,000；須扣除租金補貼，並受自有房屋及排富規定限制。</p>
       </div>
     </div>
@@ -286,8 +286,8 @@
       <h3 class="text-sm font-medium text-ink-600 mb-3">退稅 / 補繳估算</h3>
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-ink-400 mb-1.5">已扣繳稅額（NT$）</label>
-          <input type="text" inputmode="decimal" v-model.number="withholdingTax" class="input-clean tabular-nums" placeholder="0" />
+          <label for="fld-8f58d2cf" class="block text-xs font-medium text-ink-400 mb-1.5">已扣繳稅額（NT$）</label>
+          <input id="fld-8f58d2cf" type="text" inputmode="decimal" v-model.number="withholdingTax" class="input-clean tabular-nums" placeholder="0" />
           <p class="text-[10px] text-ink-400 mt-1">薪資單或扣繳憑單上的總額</p>
         </div>
         <div class="rounded-xl p-3 border border-paper-300 flex flex-col justify-center text-center"
@@ -320,7 +320,7 @@
             <span :class="['font-bold', isCurrentBracket(bracket) ? 'text-azure' : 'text-ink-500']">
               {{ bracket.rate * 100 }}%
             </span>
-            <span v-if="bracket.subtract > 0" class="text-ink-300 text-[10px]">
+            <span v-if="bracket.subtract > 0" class="text-ink-400 text-[10px]">
               累進差額 {{ fmt(bracket.subtract) }}
             </span>
           </div>

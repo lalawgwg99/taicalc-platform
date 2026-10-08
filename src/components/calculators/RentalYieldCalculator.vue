@@ -2,7 +2,7 @@
   <div class="calculator-shell">
     <!-- 快速預設情境 -->
     <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-      <span class="text-xs font-semibold text-ink-300 flex-shrink-0">快速情境：</span>
+      <span class="text-xs font-semibold text-ink-400 flex-shrink-0">快速情境：</span>
       <button
         v-for="p in presets"
         :key="p.title"
@@ -18,15 +18,15 @@
       <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider mb-4">購屋與租金</h3>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">房屋總價（萬元）</label>
-          <input
+          <label for="fld-ba0f95d1" class="block text-xs font-semibold text-ink-400 mb-2">房屋總價（萬元）</label>
+          <input id="fld-ba0f95d1"
             type="text" inputmode="decimal" v-model.number="totalPriceWan"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">每月租金（元）</label>
-          <input
+          <label for="fld-b6d67af7" class="block text-xs font-semibold text-ink-400 mb-2">每月租金（元）</label>
+          <input id="fld-b6d67af7"
             type="text" inputmode="decimal" v-model.number="monthlyRent"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
           />
@@ -39,33 +39,33 @@
       <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider mb-4">每年持有成本</h3>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">管理費（月/元）</label>
-          <input type="text" inputmode="decimal" v-model.number="mgmtMonthly"
+          <label for="fld-3cdd99ab" class="block text-xs font-semibold text-ink-400 mb-2">管理費（月/元）</label>
+          <input id="fld-3cdd99ab" type="text" inputmode="decimal" v-model.number="mgmtMonthly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">房屋稅（年/元）</label>
-          <input type="text" inputmode="decimal" v-model.number="houseTaxYearly"
+          <label for="fld-1ad3a797" class="block text-xs font-semibold text-ink-400 mb-2">房屋稅（年/元）</label>
+          <input id="fld-1ad3a797" type="text" inputmode="decimal" v-model.number="houseTaxYearly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">地價稅（年/元）</label>
-          <input type="text" inputmode="decimal" v-model.number="landTaxYearly"
+          <label for="fld-d2bc8447" class="block text-xs font-semibold text-ink-400 mb-2">地價稅（年/元）</label>
+          <input id="fld-d2bc8447" type="text" inputmode="decimal" v-model.number="landTaxYearly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">維修預算（年/元）</label>
-          <input type="text" inputmode="decimal" v-model.number="repairYearly"
+          <label for="fld-5c97bfa3" class="block text-xs font-semibold text-ink-400 mb-2">維修預算（年/元）</label>
+          <input id="fld-5c97bfa3" type="text" inputmode="decimal" v-model.number="repairYearly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">火險＋地震險（年/元）</label>
-          <input type="text" inputmode="decimal" v-model.number="insuranceYearly"
+          <label for="fld-bf79f8fd" class="block text-xs font-semibold text-ink-400 mb-2">火險＋地震險（年/元）</label>
+          <input id="fld-bf79f8fd" type="text" inputmode="decimal" v-model.number="insuranceYearly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">每年空租（月）</label>
-          <input type="text" inputmode="decimal" v-model.number="vacancyMonths"
+          <label for="fld-080a1d2b" class="block text-xs font-semibold text-ink-400 mb-2">每年空租（月）</label>
+          <input id="fld-080a1d2b" type="text" inputmode="decimal" v-model.number="vacancyMonths"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
       </div>
@@ -78,18 +78,18 @@
       </div>
       <div class="grid grid-cols-3 gap-4">
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">貸款金額（萬元）</label>
-          <input type="text" inputmode="decimal" v-model.number="loanWan"
+          <label for="fld-46b1790b" class="block text-xs font-semibold text-ink-400 mb-2">貸款金額（萬元）</label>
+          <input id="fld-46b1790b" type="text" inputmode="decimal" v-model.number="loanWan"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">年利率（%）</label>
-          <input type="text" inputmode="decimal" v-model.number="loanRate"
+          <label for="fld-f552ad1c" class="block text-xs font-semibold text-ink-400 mb-2">年利率（%）</label>
+          <input id="fld-f552ad1c" type="text" inputmode="decimal" v-model.number="loanRate"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-ink-400 mb-2">年限（年）</label>
-          <input type="text" inputmode="decimal" v-model.number="loanYears"
+          <label for="fld-8469f532" class="block text-xs font-semibold text-ink-400 mb-2">年限（年）</label>
+          <input id="fld-8469f532" type="text" inputmode="decimal" v-model.number="loanYears"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
       </div>
@@ -107,12 +107,12 @@
         <div class="p-4 bg-white rounded-xl border border-ink-100/80 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">毛報酬率</div>
           <div class="text-2xl font-bold font-mono text-ink-900">{{ grossYield }}%</div>
-          <div class="text-[11px] text-ink-300 mt-1">年租金 ÷ 房屋總價</div>
+          <div class="text-[11px] text-ink-400 mt-1">年租金 ÷ 房屋總價</div>
         </div>
         <div class="p-4 bg-white rounded-xl border border-brand-500/30 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">淨報酬率</div>
           <div class="text-2xl font-bold font-mono text-brand-600">{{ netYield }}%</div>
-          <div class="text-[11px] text-ink-300 mt-1">扣成本後 ÷ 房屋總價</div>
+          <div class="text-[11px] text-ink-400 mt-1">扣成本後 ÷ 房屋總價</div>
         </div>
       </div>
 
@@ -147,12 +147,12 @@
         </div>
       </div>
 
-      <p class="text-xs text-ink-300 leading-relaxed mt-4">
+      <p class="text-xs text-ink-400 leading-relaxed mt-4">
         {{ verdict }}
       </p>
     </div>
 
-    <p class="text-[11px] text-ink-300 leading-relaxed px-1">
+    <p class="text-[11px] text-ink-400 leading-relaxed px-1">
       僅供試算參考，不構成投資建議。房屋稅、地價稅實際金額依房屋評定現值、申報地價與各縣市稅率而定，出租中房屋不適用自住優惠稅率，精確數字請以稅單為準。
     </p>
   </div>

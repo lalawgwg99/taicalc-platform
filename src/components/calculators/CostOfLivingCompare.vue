@@ -6,14 +6,14 @@
         <div class="card-surface p-5">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">城市 A</label>
-                    <select v-model="cityA" class="input-clean font-medium">
+                    <label for="fld-31e47524" class="block text-xs font-medium text-ink-400 mb-1.5">城市 A</label>
+                    <select id="fld-31e47524" v-model="cityA" class="input-clean font-medium">
                         <option v-for="c in cities" :key="c.id" :value="c.id">{{ c.name['zh-TW'] }}</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">城市 B</label>
-                    <select v-model="cityB" class="input-clean font-medium">
+                    <label for="fld-16ceacb2" class="block text-xs font-medium text-ink-400 mb-1.5">城市 B</label>
+                    <select id="fld-16ceacb2" v-model="cityB" class="input-clean font-medium">
                         <option v-for="c in cities" :key="c.id" :value="c.id">{{ c.name['zh-TW'] }}</option>
                     </select>
                 </div>
@@ -49,7 +49,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">金額是美金、每個月大概花的；指數 0–100 也是大概估的。</p>
+            <p class="text-[10px] text-ink-400">金額是美金、每個月大概花的；指數 0–100 也是大概估的。</p>
         </div>
 
         <div class="flex gap-2">

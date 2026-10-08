@@ -205,15 +205,15 @@
 
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">報稅狀態</label>
-                        <select v-model="taxFilingStatus" class="input-clean-sm">
+                        <label for="fld-da8c6ae3" class="block text-xs font-medium text-ink-400 mb-1.5">報稅狀態</label>
+                        <select id="fld-da8c6ae3" v-model="taxFilingStatus" class="input-clean-sm">
                             <option value="single">單身</option>
                             <option value="married">已婚合併</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-ink-400 mb-1.5">扶養人數</label>
-                        <input type="text" inputmode="decimal" v-model.number="taxDependents" class="input-clean-sm" min="0" max="10" />
+                        <label for="fld-3aaf1fbd" class="block text-xs font-medium text-ink-400 mb-1.5">扶養人數</label>
+                        <input id="fld-3aaf1fbd" type="text" inputmode="decimal" v-model.number="taxDependents" class="input-clean-sm" min="0" max="10" />
                     </div>
                 </div>
 
@@ -371,8 +371,8 @@
             </h3>
             
             <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">換工作的一次性花費 (NT$)</label>
-                <input type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
+                <label for="fld-3178e1bd" class="block text-xs font-medium text-ink-400 mb-1.5">換工作的一次性花費 (NT$)</label>
+                <input id="fld-3178e1bd" type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
                 <p class="text-[10px] text-ink-400 mt-1.5">例如：放棄的未領年終、搬家租屋違約金、待業期空白成本</p>
             </div>
 
@@ -416,7 +416,7 @@
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
                     <p class="text-xs text-ink-400">勞保費率</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">12.5%</p>
-                    <p class="text-[10px] text-ink-300">含就保 1%</p>
+                    <p class="text-[10px] text-ink-400">含就保 1%</p>
                 </div>
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
                     <p class="text-xs text-ink-400">健保費率</p>
@@ -425,7 +425,7 @@
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
                     <p class="text-xs text-ink-400">勞退提撥</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">6%</p>
-                    <p class="text-[10px] text-ink-300">雇主全額</p>
+                    <p class="text-[10px] text-ink-400">雇主全額</p>
                 </div>
             </div>
             <p class="text-[11px] text-ink-400 mt-2">
@@ -458,6 +458,11 @@ const pensionB = ref(0)
 
 const raiseRate     = ref(3)
 const inflationRate = ref(2)
+
+// 金額不接受負數：負值自動歸零，避免出現負實領
+for (const r of [salary, bonus, salaryB, bonusB]) {
+    watch(r, (v) => { if (typeof v === 'number' && v < 0) r.value = 0 })
+}
 
 const relocationCost = ref(0)
 const copied = ref(false)

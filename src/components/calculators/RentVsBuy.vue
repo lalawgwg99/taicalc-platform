@@ -6,54 +6,54 @@
         <div class="card-surface p-5 space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">房價（萬）</label>
-                    <input type="text" inputmode="decimal" v-model.number="homePriceWan" aria-label="房價" placeholder="1200"
+                    <label for="fld-041a3b61" class="block text-xs font-medium text-ink-400 mb-1.5">房價（萬）</label>
+                    <input id="fld-041a3b61" type="text" inputmode="decimal" v-model.number="homePriceWan" aria-label="房價" placeholder="1200"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">頭期款（萬）</label>
-                    <input type="text" inputmode="decimal" v-model.number="downWan" aria-label="頭期款" placeholder="300"
+                    <label for="fld-3729ba11" class="block text-xs font-medium text-ink-400 mb-1.5">頭期款（萬）</label>
+                    <input id="fld-3729ba11" type="text" inputmode="decimal" v-model.number="downWan" aria-label="頭期款" placeholder="300"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">房貸利率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="rate" step="0.05" aria-label="房貸利率"
+                    <label for="fld-c46be16f" class="block text-xs font-medium text-ink-400 mb-1.5">房貸利率（%）</label>
+                    <input id="fld-c46be16f" type="text" inputmode="decimal" v-model.number="rate" step="0.05" aria-label="房貸利率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">房貸年限</label>
-                    <input type="text" inputmode="decimal" v-model.number="loanYears" min="10" max="40" aria-label="房貸年限"
+                    <label for="fld-a521baf6" class="block text-xs font-medium text-ink-400 mb-1.5">房貸年限</label>
+                    <input id="fld-a521baf6" type="text" inputmode="decimal" v-model.number="loanYears" min="10" max="40" aria-label="房貸年限"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">月租金（元）</label>
-                    <input type="text" inputmode="decimal" v-model.number="monthlyRent" aria-label="月租金" placeholder="25000"
+                    <label for="fld-083cc2cd" class="block text-xs font-medium text-ink-400 mb-1.5">月租金（元）</label>
+                    <input id="fld-083cc2cd" type="text" inputmode="decimal" v-model.number="monthlyRent" aria-label="月租金" placeholder="25000"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">持有/租期（年）</label>
-                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="持有年數"
+                    <label for="fld-85e4d918" class="block text-xs font-medium text-ink-400 mb-1.5">持有/租期（年）</label>
+                    <input id="fld-85e4d918" type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="持有年數"
                     class="input-clean font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-3 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">房價年漲幅（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="homeAppr" step="0.5" aria-label="房價年漲幅"
+                    <label for="fld-a6eeb518" class="block text-xs font-medium text-ink-400 mb-1.5">房價年漲幅（%）</label>
+                    <input id="fld-a6eeb518" type="text" inputmode="decimal" v-model.number="homeAppr" step="0.5" aria-label="房價年漲幅"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">租金年漲幅（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="rentAppr" step="0.5" aria-label="租金年漲幅"
+                    <label for="fld-099c1238" class="block text-xs font-medium text-ink-400 mb-1.5">租金年漲幅（%）</label>
+                    <input id="fld-099c1238" type="text" inputmode="decimal" v-model.number="rentAppr" step="0.5" aria-label="租金年漲幅"
                     class="input-clean font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="investRate" step="0.5" aria-label="投資報酬率"
+                    <label for="fld-3c352a53" class="block text-xs font-medium text-ink-400 mb-1.5">投資報酬率（%）</label>
+                    <input id="fld-3c352a53" type="text" inputmode="decimal" v-model.number="investRate" step="0.5" aria-label="投資報酬率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -89,7 +89,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">哪個划算</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">本比較未計裝潢、仲介、搬家與心理因素；房價與租金漲幅假設會大幅影響結果。</p>
+            <p class="text-[10px] text-ink-400">本比較未計裝潢、仲介、搬家與心理因素；房價與租金漲幅假設會大幅影響結果。</p>
         </div>
 
         <div class="flex gap-2">

@@ -5,7 +5,7 @@
         <div class="bg-paper-800 p-6 text-white sm:p-8">
           <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">設定起點</p>
           <h2 class="mt-4 text-3xl font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
-          <p class="mt-4 text-sm leading-7 text-ink-300">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
+          <p class="mt-4 text-sm leading-7 text-ink-400">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
           <ol class="mt-8 space-y-4 text-xs text-ink-200">
             <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">1</span><span>選一個接近你的範例</span></li>
             <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">2</span><span>微調收入、支出與資產</span></li>
@@ -76,27 +76,27 @@
             <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">你的第 {{ state.age }} 歲</p>
             <p class="mt-2 text-sm text-ink-200">目前淨資產</p>
             <p class="mt-1 text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">{{ formatMoney(result.netWorth) }}</p>
-            <p class="mt-3 max-w-xl text-xs leading-6 text-ink-300">
+            <p class="mt-3 max-w-xl text-xs leading-6 text-ink-400">
               這是可重玩的財務情境，不是人生預測。每個選擇會改變現金、固定負擔、幸福感與退休進度。
             </p>
           </div>
           <div class="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[480px]">
             <div class="rounded-2xl bg-white/8 p-3">
-              <p class="text-[10px] text-ink-300">現金</p>
+              <p class="text-[10px] text-ink-400">現金</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ formatCompact(state.cash) }}</p>
             </div>
             <div class="rounded-2xl bg-white/8 p-3">
-              <p class="text-[10px] text-ink-300">投資</p>
+              <p class="text-[10px] text-ink-400">投資</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ formatCompact(state.investments) }}</p>
             </div>
             <div class="rounded-2xl bg-white/8 p-3">
-              <p class="text-[10px] text-ink-300">每年剩下</p>
+              <p class="text-[10px] text-ink-400">每年剩下</p>
               <p class="mt-1 text-sm font-semibold tabular-nums" :class="annualSurplus < 0 ? 'text-red-300' : 'text-brand-200'">
                 {{ formatSigned(annualSurplus) }}
               </p>
             </div>
             <div class="rounded-2xl bg-white/8 p-3">
-              <p class="text-[10px] text-ink-300">退休進度</p>
+              <p class="text-[10px] text-ink-400">退休進度</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ Math.round(result.retirementProgress) }}%</p>
             </div>
           </div>
@@ -105,11 +105,11 @@
       <div class="grid border-t border-white/10 sm:grid-cols-[1fr_auto]">
         <div class="grid grid-cols-2 gap-4 px-5 py-4 sm:px-7">
           <div>
-            <div class="flex justify-between text-[10px] text-ink-300"><span>幸福感</span><span>{{ Math.round(state.happiness) }}</span></div>
+            <div class="flex justify-between text-[10px] text-ink-400"><span>幸福感</span><span>{{ Math.round(state.happiness) }}</span></div>
             <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-brand-300 transition-all" :style="{ width: `${state.happiness}%` }"></div></div>
           </div>
           <div>
-            <div class="flex justify-between text-[10px] text-ink-300"><span>壓力</span><span>{{ Math.round(state.stress) }}</span></div>
+            <div class="flex justify-between text-[10px] text-ink-400"><span>壓力</span><span>{{ Math.round(state.stress) }}</span></div>
             <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-amber-300 transition-all" :style="{ width: `${state.stress}%` }"></div></div>
           </div>
         </div>

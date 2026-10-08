@@ -6,20 +6,20 @@
         <div class="card-surface p-5 space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">持有股數（股）</label>
-                    <input type="text" inputmode="decimal" v-model.number="shares" aria-label="持有股數" placeholder="1000"
+                    <label for="fld-74414bd8" class="block text-xs font-medium text-ink-400 mb-1.5">持有股數（股）</label>
+                    <input id="fld-74414bd8" type="text" inputmode="decimal" v-model.number="shares" aria-label="持有股數" placeholder="1000"
                         class="input-clean text-lg font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">每股配息（元）</label>
-                    <input type="text" inputmode="decimal" v-model.number="dividendPerShare" step="0.01" aria-label="每股配息" placeholder="1.5"
+                    <label for="fld-e2f97d4a" class="block text-xs font-medium text-ink-400 mb-1.5">每股配息（元）</label>
+                    <input id="fld-e2f97d4a" type="text" inputmode="decimal" v-model.number="dividendPerShare" step="0.01" aria-label="每股配息" placeholder="1.5"
                         class="input-clean text-lg font-semibold tabular-nums">
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">每年配息次數</label>
-                    <select v-model.number="frequency" aria-label="每年配息次數" class="input-clean font-semibold">
+                    <label for="fld-3a5a9b32" class="block text-xs font-medium text-ink-400 mb-1.5">每年配息次數</label>
+                    <select id="fld-3a5a9b32" v-model.number="frequency" aria-label="每年配息次數" class="input-clean font-semibold">
                         <option :value="1">年配（1 次）</option>
                         <option :value="2">半年配（2 次）</option>
                         <option :value="4">季配（4 次）</option>
@@ -27,8 +27,8 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">目前股價（元，選填）</label>
-                    <input type="text" inputmode="decimal" v-model.number="price" step="0.01" aria-label="目前股價" placeholder="用於算配息率"
+                    <label for="fld-adf0f14b" class="block text-xs font-medium text-ink-400 mb-1.5">目前股價（元，選填）</label>
+                    <input id="fld-adf0f14b" type="text" inputmode="decimal" v-model.number="price" step="0.01" aria-label="目前股價" placeholder="用於算配息率"
                         class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -62,7 +62,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">這是大概估的。配息可以併進綜合所得稅（8.5% 抵稅、上限 8 萬）或選 28% 分開算，實際繳多少以報稅結果為準。</p>
+            <p class="text-[10px] text-ink-400">這是大概估的。配息可以併進綜合所得稅（8.5% 抵稅、上限 8 萬）或選 28% 分開算，實際繳多少以報稅結果為準。</p>
         </div>
 
         <div class="flex gap-2">

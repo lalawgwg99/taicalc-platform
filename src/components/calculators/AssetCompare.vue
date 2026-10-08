@@ -5,19 +5,19 @@
 
         <div class="card-surface p-5 space-y-3">
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">投入金額（萬）</label>
-                <input type="text" inputmode="decimal" v-model.number="amountWan" aria-label="投入金額" placeholder="100"
+                <label for="fld-64fa56f8" class="block text-xs font-medium text-ink-400 mb-1.5">投入金額（萬）</label>
+                <input id="fld-64fa56f8" type="text" inputmode="decimal" v-model.number="amountWan" aria-label="投入金額" placeholder="100"
                 class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">投資年數</label>
-                    <input type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
+                    <label for="fld-ac74cf26" class="block text-xs font-medium text-ink-400 mb-1.5">投資年數</label>
+                    <input id="fld-ac74cf26" type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                     class="input-clean font-semibold">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">年通膨率（%）</label>
-                    <input type="text" inputmode="decimal" v-model.number="inflation" step="0.1" aria-label="年通膨率"
+                    <label for="fld-2edc9fc8" class="block text-xs font-medium text-ink-400 mb-1.5">年通膨率（%）</label>
+                    <input id="fld-2edc9fc8" type="text" inputmode="decimal" v-model.number="inflation" step="0.1" aria-label="年通膨率"
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
@@ -43,7 +43,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">重點</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">單筆投入、複利大概估的，沒算稅跟手續費。報酬高的波動也大，照自己受得了的風險來配。</p>
+            <p class="text-[10px] text-ink-400">單筆投入、複利大概估的，沒算稅跟手續費。報酬高的波動也大，照自己受得了的風險來配。</p>
         </div>
 
         <div class="flex gap-2">

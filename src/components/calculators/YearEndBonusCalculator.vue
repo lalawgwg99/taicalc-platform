@@ -5,13 +5,13 @@
 
         <div class="card-surface p-5 space-y-3">
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金總額（元）</label>
-                <input type="text" inputmode="decimal" v-model.number="bonus" aria-label="年終獎金總額" placeholder="100000"
+                <label for="fld-452f2a5a" class="block text-xs font-medium text-ink-400 mb-1.5">年終獎金總額（元）</label>
+                <input id="fld-452f2a5a" type="text" inputmode="decimal" v-model.number="bonus" aria-label="年終獎金總額" placeholder="100000"
                     class="input-clean text-lg font-semibold tabular-nums">
             </div>
             <div>
-                <label class="block text-xs font-medium text-ink-400 mb-1.5">健保投保金額（元）</label>
-                <input type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="45800"
+                <label for="fld-00d1059e" class="block text-xs font-medium text-ink-400 mb-1.5">健保投保金額（元）</label>
+                <input id="fld-00d1059e" type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="45800"
                     class="input-clean font-semibold tabular-nums">
             </div>
             <p class="text-[11px] text-ink-400">115 年度（2026）起扣點為 90,501 元；全年獎金超過當月投保金額 4 倍，超過部分扣 2.11% 補充保費。</p>
@@ -46,7 +46,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費看的是全年獎金有沒有超過投保金額 4 倍，這裡用這次年終單筆來估，實際以公司核算為準。</p>
+            <p class="text-[10px] text-ink-400">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費看的是全年獎金有沒有超過投保金額 4 倍，這裡用這次年終單筆來估，實際以公司核算為準。</p>
         </div>
 
         <div class="flex gap-2">
