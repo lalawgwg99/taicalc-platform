@@ -35,6 +35,16 @@ describe('decision calculators', () => {
     expect(result.monthly).toBe(17_038);
   });
 
+  it('returns zero when labor pension salary or years is empty/zero/negative', () => {
+    // 0 年資或 0 薪資不應顯示 A 式的 3,000 元加給（曾經誤顯示月領 3,000）
+    expect(calculateLaborPension(0, 0, 65, true).monthly).toBe(0);
+    expect(calculateLaborPension(0, 30, 65, false).monthly).toBe(0);
+    expect(calculateLaborPension(45_800, 0, 65, false).monthly).toBe(0);
+    expect(calculateLaborPension(NaN, NaN, 65, true).monthly).toBe(0);
+    expect(calculateLaborPension(-1000, -5, 65, false).monthly).toBe(0);
+    expect(calculateLaborPension(0, 0, 65, true).annual).toBe(0);
+  });
+
   it('applies 2026 estate and gift exemptions progressively', () => {
     expect(calculateEstateTax({
       type: 'gift', gross: 3_000_000, debts: 0, spouse: false,

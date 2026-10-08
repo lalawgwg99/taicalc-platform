@@ -116,6 +116,11 @@ export function calculateDebtConsolidation(
 export function calculateLaborPension(
   averageInsuredSalary: number, insuredYears: number, claimAge: number, lumpSumEligible: boolean
 ) {
+  // 薪資或年資為 0（或被清空成 NaN／負數）時，不應套用 A 式的 3,000 元固定加給，
+  // 否則會顯示「0 年資月領 3,000 元」。0 年資本來就沒有年金可領，直接全歸零。
+  if (!(averageInsuredSalary > 0) || !(insuredYears > 0)) {
+    return { formula: '—', ageAdjustment: 0, monthly: 0, annual: 0, lumpSum: 0, breakEvenYears: 0 };
+  }
   const formulaA = averageInsuredSalary * insuredYears * 0.00775 + 3000;
   const formulaB = averageInsuredSalary * insuredYears * 0.0155;
   const ageAdjustment = claimAge < 65
