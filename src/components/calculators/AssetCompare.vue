@@ -81,7 +81,7 @@ const insight = computed(() => {
     const a = assets.value[0].real, c = assets.value[2].real
     const diff = c - a
     return diff > 0
-        ? `同樣放 $ ${fmt(principal)}、放 ${years} 年：定存扣掉通膨後大概值 $ ${fmt(a)}，股票型 ETF 大概 $ ${fmt(c)}，差了 $ ${fmt(diff)}。通膨 ${inflation}% 的時候，報酬低的錢等於沒在長大。`
+        ? `同樣放 ${fmt(principal.value)} 元、放 ${years.value} 年：定存扣掉通膨後大概值 ${fmt(a)} 元，股票型 ETF 大概 ${fmt(c)} 元，差了 ${fmt(diff)} 元。通膨 ${inflation.value}% 的時候，報酬低的錢等於沒在長大。`
         : '請調整參數後再比較。'
 })
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

@@ -45,7 +45,7 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">怎麼選</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-300">月領約 {{ breakevenYears }} 年，領的總額就會超過一次領。實際給付仍以勞保局核定為準。</p>
+            <p class="text-[10px] text-ink-300">月領約 {{ breakevenYears.toFixed(1) }} 年，累計總額就會超過一次領。實際給付仍以勞保局核定為準。</p>
         </div>
 
         <div class="flex gap-2">
@@ -76,9 +76,9 @@ const breakevenYears = computed(() => monthly.value > 0 ? lumpSum.value / monthl
 const insight = computed(() => {
     const y = breakevenYears.value
     if (y <= 0) return '請輸入投保薪資與年資。'
-    if (y <= 15) return `月領約 ${y} 年就能累計超過一次領總額——若預期長壽或需要穩定現金流，月領通常較有利。`
-    if (y <= 20) return `月領約 ${y} 年超過一次領。若你預期壽命長、或需要每月現金流，月領較合適；否則一次領可靈活運用。`
-    return `月領需 ${y} 年才超過一次領——若你較早退休、或想一次運用資金，一次領可能是較佳選擇。`
+    if (y <= 15) return `月領約 ${y.toFixed(1)} 年就能累計超過一次領總額——若預期長壽或需要穩定現金流，月領通常較有利。`
+    if (y <= 20) return `月領約 ${y.toFixed(1)} 年超過一次領。若你預期壽命長、或需要每月現金流，月領較合適；否則一次領可靈活運用。`
+    return `月領需 ${y.toFixed(1)} 年才超過一次領——若你較早退休、或想一次運用資金，一次領可能是較佳選擇。`
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'
