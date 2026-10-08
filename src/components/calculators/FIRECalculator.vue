@@ -140,6 +140,17 @@
       </div>
     </div>
 
+    <div class="flex justify-center">
+      <SnapshotButton
+        tool-name="FIRE 財務自由試算"
+        :metrics="[
+          { label: '不用上班要存到', value: '$' + fmt(fireNumber) },
+          { label: '目前淨資產', value: '$' + fmt(currentNetWorth || 0) },
+          { label: '已達成', value: progressPercent + '%' },
+        ]"
+      />
+    </div>
+
     <!-- 資產成長圖 -->
     <div class="card-surface p-5">
       <div class="flex items-center justify-between mb-4">
@@ -200,6 +211,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import Chart from 'chart.js/auto';
+import SnapshotButton from '../SnapshotButton.vue';
 
 // ── 輸入狀態 ───────────────────────────────────────────────────
 const currentAge      = ref(30);

@@ -1,0 +1,156 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "我的數字｜TaiCalc";
+const description = "把試算結果存下來，追蹤你的財務數字變化，還能請 AI 幫你做一次財務體檢。資料只存在你的瀏覽器，不上傳。";
+const keywords = "試算紀錄,財務追蹤,AI財務體檢";
+---
+
+<Layout title={title} description={description} keywords={keywords}>
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
+        <nav class="text-xs text-ink-400 mb-4">
+            <a href="/" class="hover:text-ink-700">TaiCalc</a> › <span class="text-ink-600">我的數字</span>
+        </nav>
+
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">My numbers</p>
+        <h1 class="mt-2 text-2xl font-semibold md:text-3xl">我的數字</h1>
+        <p class="mt-2 text-sm leading-7 text-ink-500">
+            你在工具頁按「存下這次試算」，數字就會留在這裡。隔一段時間回來看，就知道自己進步了多少。
+        </p>
+        <p class="mt-2 text-xs leading-6 text-ink-400">
+            資料只存在這台裝置的瀏覽器裡，不會上傳到任何伺服器。換裝置或清除瀏覽資料，紀錄就會不見。
+        </p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button
+                id="health-check-btn"
+                type="button"
+                class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+                AI 財務體檢
+            </button>
+            <p class="text-xs text-ink-400">AI 會看你的歷史紀錄，幫你看出變化、給一個小建議。結果僅供參考，不是投資建議。</p>
+        </div>
+
+        <div id="health-result" class="hidden mt-4 rounded-2xl border border-brand-200 bg-brand-50 p-5">
+            <p class="text-xs font-semibold tracking-[.08em] text-brand-700 mb-2">體檢結果</p>
+            <p id="health-text" class="text-sm leading-7 text-ink-700 whitespace-pre-line"></p>
+        </div>
+        <p id="health-error" class="hidden mt-3 text-xs text-red-500"></p>
+
+        <div id="snapshot-list" class="mt-6 space-y-3"></div>
+
+        <div id="empty-state" class="hidden mt-6 rounded-2xl border border-dashed border-paper-300 bg-paper-100 p-8 text-center">
+            <p class="text-4xl mb-3">📝</p>
+            <p class="text-sm font-semibold text-ink-700">還沒有紀錄</p>
+            <p class="mt-1 text-xs leading-6 text-ink-500">去算一支工具，結果下面按「存下這次試算」吧</p>
+            <a href="/#tools" class="mt-4 inline-flex items-center justify-center rounded-xl bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800">
+                去逛工具 →
+            </a>
+        </div>
+    </div>
+</Layout>
+
+<script>
+const KEY = 'taicalc-snapshots-v1';
+
+const escapeHtml = (v) => String(v ?? '').replace(/[&<>'"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
+
+const load = () => {
+    try {
+        const raw = localStorage.getItem(KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+    } catch { return []; }
+};
+const saveAll = (list) => {
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {}
+};
+
+const fmtDate = (iso) => {
+    try {
+        const d = new Date(iso);
+        return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+    } catch { return ''; }
+};
+
+const render = () => {
+    const list = load();
+    const box = document.getElementById('snapshot-list');
+    const empty = document.getElementById('empty-state');
+    const btn = document.getElementById('health-check-btn');
+    if (!box || !empty || !btn) return;
+
+    btn.disabled = list.length === 0;
+
+    if (list.length === 0) {
+        box.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+    box.innerHTML = list.map((s, i) => {
+        const metrics = Array.isArray(s.metrics) ? s.metrics.map((m) =>
+            `<div class="flex items-baseline justify-between gap-3 py-1.5 border-b border-paper-300/60 last:border-0">
+                <span class="text-xs text-ink-500">${escapeHtml(m.label)}</span>
+                <span class="text-sm font-semibold text-ink-700 tabular-nums">${escapeHtml(m.value)}</span>
+            </div>`
+        ).join('') : '';
+        return `<div class="rounded-2xl border border-paper-300 bg-white p-5 shadow-sm">
+            <div class="flex items-center justify-between gap-3 mb-2">
+                <div>
+                    <p class="text-sm font-semibold text-ink-700">${escapeHtml(s.toolName)}</p>
+                    <p class="text-[11px] text-ink-400 mt-0.5">${escapeHtml(fmtDate(s.date))} 存下</p>
+                </div>
+                <button type="button" data-del="${i}" class="text-xs text-ink-400 hover:text-red-500 transition-colors px-2 py-1">刪除</button>
+            </div>
+            <div>${metrics}</div>
+        </div>`;
+    }).join('');
+
+    box.querySelectorAll('[data-del]').forEach((el) => {
+        el.addEventListener('click', () => {
+            const idx = Number(el.getAttribute('data-del'));
+            const cur = load();
+            cur.splice(idx, 1);
+            saveAll(cur);
+            render();
+        });
+    });
+};
+
+const healthBtn = document.getElementById('health-check-btn');
+const healthBox = document.getElementById('health-result');
+const healthText = document.getElementById('health-text');
+const healthError = document.getElementById('health-error');
+
+if (healthBtn) {
+    healthBtn.addEventListener('click', async () => {
+        const list = load();
+        if (list.length === 0 || !healthBox || !healthText || !healthError) return;
+        healthBtn.disabled = true;
+        healthBtn.textContent = '體檢中…';
+        healthError.classList.add('hidden');
+        healthBox.classList.add('hidden');
+        try {
+            const resp = await fetch('https://ai.taicalc.com/api/ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task: 'wealth-check', payload: { snapshots: list } }),
+            });
+            const data = await resp.json();
+            if (!resp.ok || !data.text) throw new Error(data.error || 'ai error');
+            healthText.textContent = data.text;
+            healthBox.classList.remove('hidden');
+        } catch {
+            healthError.textContent = 'AI 現在忙不過來，晚點再試一次吧。';
+            healthError.classList.remove('hidden');
+        } finally {
+            healthBtn.disabled = false;
+            healthBtn.textContent = 'AI 財務體檢';
+        }
+    });
+}
+
+render();
+</script>

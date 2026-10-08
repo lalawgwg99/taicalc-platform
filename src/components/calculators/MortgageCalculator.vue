@@ -154,6 +154,17 @@
                 </div>
             </div>
 
+            <div class="mt-5 flex justify-center">
+                <SnapshotButton
+                    tool-name="房貸試算"
+                    :metrics="[
+                        { label: '每個月要繳', value: '$' + fmt(graceYears > 0 ? results.gracePay : results.basePay) },
+                        { label: '利息總共繳多少', value: '$' + fmt(results.totalInterest) },
+                        { label: '全部總共要繳', value: '$' + fmt(results.totalPayment) },
+                    ]"
+                />
+            </div>
+
             <figure class="mt-4 rounded-xl border border-paper-300 bg-paper-800 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
                 <figcaption class="mb-3 flex items-end justify-between gap-3">
                     <span><strong class="block text-xs">總額裡面多少是本金、多少是利息</strong><small class="mt-0.5 block text-[10px] text-paper-300">一眼看出利息吃掉多少</small></span>
@@ -263,6 +274,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import Decimal from 'decimal.js';
 import { calculateMortgageResults } from '../../utils/calculators/mortgage';
+import SnapshotButton from '../SnapshotButton.vue';
 
 // ── 狀態 ───────────────────────────────────────────────────────
 const amountWan    = ref(1000)

@@ -101,6 +101,17 @@
                     </div>
                 </div>
 
+                <div class="flex justify-center">
+                    <SnapshotButton
+                        tool-name="薪資實拿試算"
+                        :metrics="[
+                            { label: '每月實拿', value: '$' + monthlyNet.toLocaleString() },
+                            { label: '整年總共', value: '$' + yearlyNet.toLocaleString() },
+                            { label: '每月可存', value: '$' + Math.round(monthlyDisposable).toLocaleString() },
+                        ]"
+                    />
+                </div>
+
                 <!-- 甜甜圈圖 -->
                 <div class="h-44 relative mb-5">
                     <canvas ref="donutChartRef"></canvas>
@@ -430,6 +441,7 @@ import Chart from 'chart.js/auto';
 import Decimal from 'decimal.js';
 import { calculateIncomeTax } from '../../utils/calculators/incomeTax';
 import { calculateSalaryBreakdown, estimateAnnualSalaryIncome } from '../../utils/calculators/salary';
+import SnapshotButton from '../SnapshotButton.vue';
 
 // ── 響應式狀態 ─────────────────────────────────────────────────
 const mode = ref('single')

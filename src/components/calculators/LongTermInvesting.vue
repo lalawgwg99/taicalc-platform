@@ -57,12 +57,23 @@
         <p class="mt-2 text-sm leading-6 text-ink-100">如果第 {{ shockYear }} 年大跌 {{ drawdown }}%，你照樣每個月投，最後大概是 <strong>{{ money(shockResult) }}</strong>。這只是照假設計算的，不是市場保證。</p>
         <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">第幾年跌<input v-model.number="shockYear" type="text" inputmode="decimal" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌多少 %<input v-model.number="drawdown" type="text" inputmode="decimal" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
       </div>
+      <div class="mt-5 flex justify-center">
+        <SnapshotButton
+          tool-name="長期投資試算"
+          :metrics="[
+            { label: '換算成今天的錢', value: money(result.realValue) },
+            { label: '期滿時帳面總額', value: money(result.nominalValue) },
+            { label: '總共投入', value: money(result.contributions) },
+          ]"
+        />
+      </div>
     </aside>
   </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import SnapshotButton from '../SnapshotButton.vue';
 
 const principal = ref(500000), monthly = ref(10000), years = ref(20), returnRate = ref(6), feeRate = ref(0.3), inflation = ref(2), shockYear = ref(5), drawdown = ref(30), selectedPlan = ref('middle');
 const plans = [
