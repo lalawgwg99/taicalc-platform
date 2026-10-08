@@ -16,17 +16,22 @@ function jsonResponse(data, status = 200, extraHeaders = {}) {
 
 async function fetchTWSE(exchange, code) {
     const url = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=${exchange}_${code}.tw&json=1&delay=0`;
-    const res = await fetch(url, {
-        headers: {
-            'Referer': 'https://mis.twse.com.tw/',
-            'User-Agent': 'Mozilla/5.0 (compatible; TaiCalc/1.0)',
-        },
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const item = data?.msgArray?.[0];
-    if (!item || item.c !== code) return null;
-    return item;
+    try {
+        const res = await fetch(url, {
+            headers: {
+                'Referer': 'https://mis.twse.com.tw/',
+                'User-Agent': 'Mozilla/5.0 (compatible; TaiCalc/1.0)',
+            },
+            signal: AbortSignal.timeout(8000),
+        });
+        if (!res.ok) return { status: 'api_error' };
+        const data = await res.json();
+        const item = data?.msgArray?.[0];
+        if (!item || item.c !== code) return { status: 'not_found' };
+        return { status: 'ok', item };
+    } catch {
+        return { status: 'api_error' };
+    }
 }
 
 export async function onRequestGet(context) {
@@ -46,14 +51,20 @@ export async function onRequestGet(context) {
 
     try {
         // 先試上市（TSE），再試上櫃（OTC）
-        let item = await fetchTWSE('tse', code);
-        if (!item) {
-            item = await fetchTWSE('otc', code);
+        let r = await fetchTWSE('tse', code);
+        let apiFailed = r.status === 'api_error';
+        if (r.status === 'not_found') {
+            r = await fetchTWSE('otc', code);
+            apiFailed = apiFailed && r.status === 'api_error';
         }
 
-        if (!item) {
+        if (r.status === 'api_error' || (apiFailed && r.status !== 'ok')) {
+            return jsonResponse({ error: '證交所連線不穩，請稍後再試一次' }, 502);
+        }
+        if (r.status !== 'ok') {
             return jsonResponse({ error: `查無股票代碼 ${code}，請確認是否為上市/上櫃股票` }, 404);
         }
+        const item = r.item;
 
         const name = item.n || '';
         const yesterdayStr = item.y || '0';

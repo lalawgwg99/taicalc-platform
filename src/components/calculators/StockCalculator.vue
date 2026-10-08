@@ -83,7 +83,10 @@
       </div>
 
       <!-- 錯誤訊息 -->
-      <p v-if="stockError" class="mt-2 text-xs text-red-500">{{ stockError }}</p>
+      <div v-if="stockError" class="mt-2 flex items-center gap-2">
+        <p class="text-xs text-red-500">{{ stockError }}</p>
+        <button @click="fetchStockPrice" class="text-xs text-brand-700 underline underline-offset-2 shrink-0">再試一次</button>
+      </div>
 
       <!-- 查詢結果 -->
       <div v-if="stockResult" class="mt-3 p-3 bg-paper-50 rounded-xl border border-ink-100">
