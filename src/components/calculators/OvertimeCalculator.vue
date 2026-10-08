@@ -119,7 +119,7 @@
                     <div class="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner">
                         <div class="h-full bg-ink-300 rounded-full w-full"></div>
                     </div>
-                    <span class="text-xs font-bold text-ink-500 w-12 font-mono">${{ baseHourlyRate }}</span>
+                    <span class="text-xs font-bold text-ink-500 w-12 font-mono">${{ baseHourlyRate.toLocaleString() }}</span>
                 </div>
                 <!-- Overtime Rate -->
                 <div class="flex items-center gap-3">
