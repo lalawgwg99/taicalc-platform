@@ -128,6 +128,7 @@ const loan = computed(() => Math.max(0, homePrice.value - down.value))
 const buyMonthly = computed(() => {
     const P = loan.value, Y = loanYears.value, r = (rate.value || 0) / 100 / 12
     if (P <= 0) return 0
+    if (Y <= 0) return 0
     if (r === 0) return P / (Y * 12)
     const n = Y * 12
     const power = Math.pow(1 + r, n)

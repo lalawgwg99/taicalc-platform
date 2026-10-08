@@ -211,9 +211,9 @@ const transactions = computed(() => {
     let totalWeight = list.reduce((sum, m) => sum + (mode.value === 'weighted' ? m.weight : 1), 0);
     
     let balances = list.map(m => {
-        let share = mode.value === 'weighted' 
-            ? (grandTotal * (m.weight / totalWeight)) 
-            : (grandTotal / list.length);
+        let share = mode.value === 'weighted'
+            ? (totalWeight > 0 ? (grandTotal * (m.weight / totalWeight)) : 0)
+            : (list.length > 0 ? (grandTotal / list.length) : 0);
         
         return {
             ...m,
@@ -336,7 +336,7 @@ onMounted(() => {
     if(saved) {
         try {
             const d = JSON.parse(saved);
-            if(d.members) members.value = d.members;
+            if (Array.isArray(d.members) && d.members.length > 0) members.value = d.members;
             if(d.totalAmount) totalAmount.value = d.totalAmount;
             if(d.mode) mode.value = d.mode;
         } catch(e) {}

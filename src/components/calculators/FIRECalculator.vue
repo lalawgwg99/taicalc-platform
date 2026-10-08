@@ -179,7 +179,7 @@
       </div>
       <div class="card-surface p-3 text-center">
         <p class="stat-label">每月多存 1 萬</p>
-        <p class="text-base font-semibold text-azure tabular-nums">{{ saveMoreImpact }} 年</p>
+        <p class="text-base font-semibold text-azure tabular-nums">{{ saveMoreImpact }}<span v-if="saveMoreImpact !== '—'"> 年</span></p>
         <p class="text-[10px] text-ink-400 mt-0.5">提早退休</p>
       </div>
     </div>
@@ -201,7 +201,7 @@
       </div>
       <div v-if="coffeeMode" class="bg-white/60 rounded-xl p-3 text-center animate-fade-in-up mt-3">
         <p class="text-xs text-amber-700 mb-1">一個月多存 $4,500，讓複利跑快一點…</p>
-        <p class="text-xl font-bold text-amber-600">提早 {{ coffeeSavedYears }} 年！</p>
+        <p class="text-xl font-bold text-amber-600"><span v-if="coffeeSavedYears === '—'">目前參數下還算不出來</span><span v-else>提早 {{ coffeeSavedYears }} 年！</span></p>
       </div>
     </div>
 
@@ -278,6 +278,7 @@ const calcYears = (start, target, monthlySave) => {
   if (monthlySave <= 0 && start <= 0) return 999;
   const r = realReturnRate.value / 12;
   if (Math.abs(r) < 1e-9) {
+    if (monthlySave <= 0) return 999;
     return (target - start) / (monthlySave * 12);
   }
   const num = target * r + monthlySave;
@@ -295,12 +296,14 @@ const yearsToFreedom = computed(() =>
 const coffeeSavedYears = computed(() => {
   const base   = calcYears(currentNetWorth.value, fireNumber.value, monthlySavings.value);
   const coffee = calcYears(currentNetWorth.value, fireNumber.value, monthlySavings.value + 4500);
+  if (base >= 999 || coffee >= 999) return '—';
   return Math.max(0, (base - coffee).toFixed(1));
 });
 
 const saveMoreImpact = computed(() => {
   const base   = yearsToFreedom.value;
   const boosted = calcYears(currentNetWorth.value, fireNumber.value, realSavings.value + 10000);
+  if (base >= 999 || boosted >= 999) return '—';
   return Math.max(0, (base - boosted).toFixed(1));
 });
 

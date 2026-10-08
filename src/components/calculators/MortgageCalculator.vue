@@ -310,7 +310,7 @@ const yearlySchedule = computed(() => {
         const remainingMonths = Y * 12 - G * 12
         if (remainingMonths > 0) {
           const power = Math.pow(1 + r, remainingMonths)
-          const monthlyPayment = (P * r * power) / (power - 1)
+          const monthlyPayment = r === 0 ? P / remainingMonths : (P * r * power) / (power - 1)
           monthPrincipal = Math.min(balance, monthlyPayment - monthInterest)
         }
       }
