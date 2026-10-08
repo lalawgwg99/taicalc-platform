@@ -7,9 +7,9 @@
           <h2 class="mt-4 text-3xl font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
           <p class="mt-4 text-sm leading-7 text-ink-300">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
           <ol class="mt-8 space-y-4 text-xs text-ink-200">
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-200">1</span><span>選一個接近你的範例</span></li>
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-200">2</span><span>微調收入、支出與資產</span></li>
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-200">3</span><span>開始走你想試的人生</span></li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">1</span><span>選一個接近你的範例</span></li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">2</span><span>微調收入、支出與資產</span></li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">3</span><span>開始走你想試的人生</span></li>
           </ol>
         </div>
 
@@ -106,11 +106,11 @@
         <div class="grid grid-cols-2 gap-4 px-5 py-4 sm:px-7">
           <div>
             <div class="flex justify-between text-[10px] text-ink-300"><span>幸福感</span><span>{{ Math.round(state.happiness) }}</span></div>
-            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-brand-300 transition-all" :style="{ width: `${state.happiness}%` }"></div></div>
+            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-brand-300 transition-all" :style="{ width: `${state.happiness}%` }"></div></div>
           </div>
           <div>
             <div class="flex justify-between text-[10px] text-ink-300"><span>壓力</span><span>{{ Math.round(state.stress) }}</span></div>
-            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10"><div class="h-full rounded-full bg-amber-300 transition-all" :style="{ width: `${state.stress}%` }"></div></div>
+            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-amber-300 transition-all" :style="{ width: `${state.stress}%` }"></div></div>
           </div>
         </div>
         <button

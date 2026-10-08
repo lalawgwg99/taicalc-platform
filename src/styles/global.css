@@ -1070,6 +1070,46 @@ button, a, input, select, textarea {
     min-height: auto;
 }
 
+/* ─── 自訂拉桿：軌道清楚、滑塊明顯 ─────────────────────────────── */
+.calculator-shell input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 9999px;
+    background: #C9C2B0; /* paper-300：淺卡上看得見 */
+    outline: none;
+    cursor: pointer;
+}
+.calculator-shell input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #1D4B34; /* brand-700 */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    cursor: grab;
+}
+.calculator-shell input[type="range"]::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+}
+.calculator-shell input[type="range"]::-moz-range-track {
+    height: 8px;
+    border-radius: 9999px;
+    background: #C9C2B0;
+}
+.calculator-shell input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #1D4B34;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    cursor: grab;
+}
+
 .calculator-shell .seg-btn-active {
     background-image: none;
     background-color: #139b79;
