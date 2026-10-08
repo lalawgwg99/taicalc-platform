@@ -118,7 +118,7 @@
         <Metric label="目前月付合計" :value="currency(debtResult.currentPayment)" />
         <Metric label="整合本金" :value="currency(debtResult.balance)" />
         <Metric label="整合總利息＋費用" :value="currency(debtResult.newCosts)" />
-        <Metric v-if="debtResult.currentPayoffPossible" label="相較目前省下" :value="currency(debtResult.savings)" :tone="debtResult.savings >= 0 ? 'good' : 'bad'" />
+        <Metric v-if="debtResult.currentPayoffPossible" :label="debtResult.savings >= 0 ? '相較目前每月省下' : '相較目前每月多付'" :value="currency(Math.abs(debtResult.savings))" :tone="debtResult.savings >= 0 ? 'good' : 'bad'" />
         <Metric v-if="debtPlan.extra > 0" label="多還幾時能還完" :value="duration(debtResult.extraMonths)" />
         <Metric v-if="debtPlan.extra > 0" label="多還可省利息" :value="currency(debtResult.extraSavings)" tone="good" />
         <DecisionChart title="每月還款比較" caption="柱子越短，每個月壓力越小" kind="columns" :items="debtChartItems" />

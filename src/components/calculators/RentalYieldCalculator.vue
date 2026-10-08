@@ -255,7 +255,8 @@ const monthlyCashflowRaw = computed(() =>
 const monthlyCashflow = computed(() => fmt(monthlyCashflowRaw.value));
 
 const annualRent = computed(() => fmt(annualRentNet.value));
-const annualCostFmt = computed(() => fmt(annualCost.value));
+const annualCostExVacancy = computed(() => annualCost.value - vacancyLoss.value);
+const annualCostFmt = computed(() => fmt(annualCostExVacancy.value));
 const annualNetFmt = computed(() => fmt(annualNet.value));
 
 const verdict = computed(() => {
