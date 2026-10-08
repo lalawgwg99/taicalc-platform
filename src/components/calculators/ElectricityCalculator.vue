@@ -734,41 +734,6 @@ onMounted(() => {
   });
 });
 
-watch(acPower, (value) => {
-  const nextValue = Number(value) || 0;
-  if (nextValue !== normalizedAcPower.value) {
-    acPower.value = normalizedAcPower.value;
-  }
-});
-
-watch(acBtu, (value) => {
-  const nextValue = Number(value) || 0;
-  if (nextValue !== normalizedAcBtu.value) {
-    acBtu.value = normalizedAcBtu.value;
-  }
-});
-
-watch(acCapacityKw, (value) => {
-  const nextValue = Number(value) || 0;
-  if (nextValue !== normalizedAcCapacityKw.value) {
-    acCapacityKw.value = normalizedAcCapacityKw.value;
-  }
-});
-
-watch(acEfficiencyValue, (value) => {
-  const nextValue = Number(value) || 0;
-  if (nextValue !== normalizedAcEfficiencyValue.value) {
-    acEfficiencyValue.value = normalizedAcEfficiencyValue.value;
-  }
-});
-
-watch(acHours, (value) => {
-  const nextValue = Number(value) || 0;
-  if (nextValue !== normalizedAcHours.value) {
-    acHours.value = normalizedAcHours.value;
-  }
-});
-
 watch([kwh, isSummer, acInputMode, acPower, acBtu, acCapacityKw, acEfficiencyType, acEfficiencyValue, acHours, userAppliances], () => {
   localStorage.setItem('taicalc_electricity_inputs', JSON.stringify({
     kwh: kwh.value,
