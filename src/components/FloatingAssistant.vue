@@ -161,7 +161,7 @@ async function send() {
     const res = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ task: 'chat', payload: { messages: history } }),
+      body: JSON.stringify({ task: 'chat-taicalc', payload: { messages: history } }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || '查詢失敗');
