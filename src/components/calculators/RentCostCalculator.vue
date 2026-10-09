@@ -117,61 +117,116 @@
 
       <!-- Tab: Subsidy Checker -->
       <div v-else-if="activeTab === 'subsidy'" class="calculator-shell">
-         <div class="bg-brand-50 border-l-4 border-brand-500 p-4 rounded-r-xl">
-             <div class="flex">
-                 <div class="flex-shrink-0">
-                     <svg class="h-5 w-5 text-brand-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                     </svg>
-                 </div>
-                 <div class="ml-3">
-                     <p class="text-sm text-brand-700">
-                         根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算。實際資格與金額以政府核定為準。
-                     </p>
-                 </div>
-             </div>
-         </div>
+        <!-- 資格檢查：4 題都答「是」才能領 -->
+        <div>
+          <h3 class="text-xl font-semibold text-ink-800 mb-1">先確認你符合資格</h3>
+          <p class="text-sm text-ink-500 leading-relaxed mb-5">4 個問題，有一題答「否」就先處理那個問題，不用往下算。</p>
+          <div class="space-y-5">
+            <div v-for="q in eligQuestions" :key="q.key">
+              <p class="block text-base font-medium text-ink-800 mb-2">{{ q.label }}</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button type="button" @click="elig[q.key] = true"
+                  :class="['h-12 rounded-xl text-base font-semibold border transition-all', elig[q.key] === true ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">是</button>
+                <button type="button" @click="elig[q.key] = false"
+                  :class="['h-12 rounded-xl text-base font-semibold border transition-all', elig[q.key] === false ? 'bg-red-600 text-paper-50 border-red-600' : 'bg-paper-50 text-ink-700 border-ink-200']">否</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div>
-                 <label for="fld-dcb95277" class="block text-xs font-semibold text-ink-400 mb-2">居住縣市</label>
-                 <select id="fld-dcb95277" v-model="subsidyLocation" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
-                     <option value="Taipei">台北市</option>
-                     <option value="NewTaipei">新北市</option>
-                     <option value="Taoyuan">桃園市</option>
-                     <option value="Taichung">台中市主要行政區</option>
-                     <option value="Tainan">台南市主要行政區</option>
-                     <option value="Kaohsiung">高雄市主要行政區</option>
-                     <option value="Hsinchu">新竹縣市</option>
-                     <option value="Other">其他縣市</option>
-                 </select>
-             </div>
-             <div>
-                 <label for="fld-90c33dda" class="block text-xs font-semibold text-ink-400 mb-2">身分條件 (加碼倍數)</label>
-                 <select id="fld-90c33dda" v-model="subsidyStatus" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
-                     <option value="SingleL40">單身 (未滿40歲) [1.2倍]</option>
-                     <option value="Single">單身 (40歲以上) [無加碼]</option>
-                     <option value="Newlywed">2025 年底前結婚的新婚家庭 [1.3倍]</option>
-                     <option value="Newlywed2026">2026 年起結婚的新婚家庭 [1.5倍]</option>
-                     <option value="Child1">育有未成年子女 (1人) [1.4倍]</option>
-                     <option value="Child2">育有未成年子女 (2人) [1.6倍]</option>
-                     <option value="Child3">育有未成年子女 (3人+) [1.8倍]</option>
-                     <option value="Baby2026_1">2026 年起新生兒 (1人) [2倍]</option>
-                     <option value="Baby2026_2">2026 年起新生兒 (2人) [2.5倍]</option>
-                     <option value="Baby2026_3">2026 年起新生兒 (3人) [3倍]</option>
-                     <option value="LowIncome">中低收入戶 [1.4倍]</option>
-                 </select>
-             </div>
-         </div>
+        <!-- 卡關：紅字告知原因＋解法 -->
+        <div v-if="eligibilityBlocker" class="rounded-xl border-l-4 border-red-600 bg-red-50 p-4">
+          <p class="text-base font-semibold text-red-800 mb-1">這題卡住了：{{ eligibilityBlocker.reason }}</p>
+          <p class="text-sm text-red-700 leading-relaxed">{{ eligibilityBlocker.fix }}</p>
+        </div>
 
-         <div class="calculator-card-dark text-center">
-             <div class="absolute top-0 right-0 p-4 opacity-10">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-             </div>
-             <p class="text-base text-paper-200 mb-2">預估每月領取補貼</p>
-             <p class="text-4xl font-bold text-brand-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
-             <p class="text-sm text-paper-200">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
-         </div>
+        <!-- 還沒答完的空狀態 -->
+        <div v-else-if="!eligibilityDone" class="text-center py-4">
+          <p class="text-sm text-ink-500">上面 4 題都回答後，開始幫你試算。</p>
+        </div>
+
+        <!-- 試算 -->
+        <div v-else class="space-y-5">
+          <div>
+            <label for="sub-rent" class="block text-base font-medium text-ink-800 mb-2">每個月租金多少？</label>
+            <div class="relative">
+              <input id="sub-rent" type="text" inputmode="decimal" v-model.number="monthlyRent" placeholder="例如：15000"
+                class="w-full h-12 bg-paper-50 border border-ink-200 rounded-xl pl-4 pr-12 text-ink-800 text-base font-medium focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20" />
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-base text-ink-500">元</span>
+            </div>
+            <p class="text-sm text-ink-500 mt-1.5">補貼不會超過你的實付租金。</p>
+          </div>
+
+          <div>
+            <label for="sub-loc" class="block text-base font-medium text-ink-800 mb-2">房子在哪個縣市？</label>
+            <select id="sub-loc" v-model="subsidyLocation"
+              class="w-full h-12 bg-paper-50 border border-ink-200 rounded-xl px-3 text-ink-800 text-base font-medium focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20">
+              <option value="Taipei">台北市</option>
+              <option value="NewTaipei">新北市</option>
+              <option value="Taoyuan">桃園市</option>
+              <option value="Taichung">台中市主要行政區</option>
+              <option value="Tainan">台南市主要行政區</option>
+              <option value="Kaohsiung">高雄市主要行政區</option>
+              <option value="Hsinchu">新竹縣市</option>
+              <option value="Other">其他縣市</option>
+            </select>
+          </div>
+
+          <div>
+            <p class="block text-base font-medium text-ink-800 mb-2">符合下面哪些身分？<span class="font-normal text-sm text-ink-500">可複選，自動用最高的加碼</span></p>
+            <div class="flex flex-wrap gap-2">
+              <button v-for="opt in identityOptions" :key="opt.key" type="button"
+                @click="identityChecks[opt.key] = !identityChecks[opt.key]"
+                :class="['h-10 px-4 rounded-full text-base font-medium border transition-all', identityChecks[opt.key] ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">{{ opt.label }}</button>
+            </div>
+            <div v-if="identityChecks.newlywed" class="mt-3">
+              <p class="text-sm text-ink-500 mb-2">什麼時候結婚的？</p>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" @click="identityChecks.newlywedYear = '2025'"
+                  :class="['h-10 px-4 rounded-full text-base font-medium border transition-all', identityChecks.newlywedYear === '2025' ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">2025 年底前（1.3 倍）</button>
+                <button type="button" @click="identityChecks.newlywedYear = '2026'"
+                  :class="['h-10 px-4 rounded-full text-base font-medium border transition-all', identityChecks.newlywedYear === '2026' ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">2026 年起（1.5 倍）</button>
+              </div>
+            </div>
+            <div v-if="identityChecks.hasChildren" class="mt-3">
+              <p class="text-sm text-ink-500 mb-2">未成年子女幾人？</p>
+              <div class="flex flex-wrap gap-2">
+                <button v-for="n in [1, 2, 3]" :key="n" type="button" @click="identityChecks.childCount = n"
+                  :class="['h-10 px-4 rounded-full text-base font-medium border transition-all', identityChecks.childCount === n ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">{{ n === 3 ? '3 人以上' : n + ' 人' }}（{{ n === 3 ? '1.8' : n === 2 ? '1.6' : '1.4' }} 倍）</button>
+              </div>
+            </div>
+            <div v-if="identityChecks.newborn2026" class="mt-3">
+              <p class="text-sm text-ink-500 mb-2">2026 年起出生的寶寶幾人？</p>
+              <div class="flex flex-wrap gap-2">
+                <button v-for="n in [1, 2, 3]" :key="n" type="button" @click="identityChecks.newbornCount = n"
+                  :class="['h-10 px-4 rounded-full text-base font-medium border transition-all', identityChecks.newbornCount === n ? 'bg-brand-600 text-paper-50 border-brand-600' : 'bg-paper-50 text-ink-700 border-ink-200']">{{ n === 3 ? '3 人以上' : n + ' 人' }}（{{ n === 3 ? '3' : n === 2 ? '2.5' : '2' }} 倍）</button>
+              </div>
+            </div>
+            <p v-if="appliedMultiplier.multi > 1" class="text-sm text-brand-700 font-medium mt-3">已自動選用最高加碼：{{ appliedMultiplier.label }}（{{ appliedMultiplier.multi }} 倍）</p>
+          </div>
+
+          <!-- 結果：結論先行，深色卡 -->
+          <div class="calculator-card-dark">
+            <p class="text-base font-semibold text-paper-50 mb-3">試算結果：你每月約可領下面這個金額</p>
+            <p class="text-4xl font-bold text-paper-50 tabular-nums mb-1">NT$ {{ estimatedSubsidyText }}</p>
+            <p class="text-sm text-paper-200 mb-4">實付房租從 NT$ {{ rentText }} 降到 NT$ {{ afterText }}</p>
+            <div class="border-t border-paper-200/20 pt-3 space-y-2">
+              <div class="flex justify-between text-sm">
+                <span class="text-paper-200">基本額（{{ locationLabel }}）</span>
+                <span class="text-paper-50 tabular-nums font-medium">NT$ {{ baseText }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-paper-200">加碼倍數（{{ appliedMultiplier.label }}）</span>
+                <span class="text-paper-50 tabular-nums font-medium">× {{ appliedMultiplier.multi }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-paper-200">補貼不超過實付租金</span>
+                <span class="text-paper-50 tabular-nums font-medium">NT$ {{ rentText }}</span>
+              </div>
+            </div>
+            <p class="text-sm text-paper-200 leading-relaxed mt-4">實際資格與金額以政府核定為準。依據 300 億元中央擴大租金補貼專案估算。</p>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -188,9 +243,27 @@ const leaseMonths = ref(12); // Default 1 year
 const managementFee = ref(1000);
 const electricityFee = ref(1000);
 
-// Subsidy Logic
+// ---- 租金補貼：資格檢查（4 題都「是」才能領） ----
+const eligQuestions = [
+  { key: 'age', label: '你滿 18 歲，而且有中華民國戶籍嗎？' },
+  { key: 'noHouse', label: '你和家人（配偶、未成年子女）名下都沒有房子嗎？' },
+  { key: 'noOtherSubsidy', label: '你沒有領其他住宅補助（社會住宅、包租代管等）嗎？' },
+  { key: 'legalHouse', label: '你租的是合法住宅（不是頂加、違建）嗎？' },
+];
+const elig = ref({ age: null, noHouse: null, noOtherSubsidy: null, legalHouse: null });
+
+const eligibilityBlocker = computed(() => {
+  const e = elig.value;
+  if (e.age === false) return { reason: '年齡或戶籍不符', fix: '要年滿 18 歲且設有戶籍才能申請。' };
+  if (e.noHouse === false) return { reason: '名下有自有住宅', fix: '家庭成員名下不能有自有住宅，先處理這題再來算。' };
+  if (e.noOtherSubsidy === false) return { reason: '已領其他住宅補助', fix: '同一個家庭不能同時領兩種住宅補助。' };
+  if (e.legalHouse === false) return { reason: '租的不是合法住宅', fix: '新申請戶要租合法住宅（有房屋稅籍或保存登記）才行；頂加違建無法申請，建議先換合法租屋再試算。' };
+  return null;
+});
+const eligibilityDone = computed(() => Object.values(elig.value).every((v) => v !== null));
+
+// ---- 租金補貼：身分加碼（可複選，自動擇高） ----
 const subsidyLocation = ref('Taipei');
-const subsidyStatus = ref('SingleL40');
 
 const baseSubsidyMap = {
     Taipei: 3000,
@@ -202,26 +275,55 @@ const baseSubsidyMap = {
     Hsinchu: 2400,
     Other: 2000
 };
-
-const multiplierMap = {
-    SingleL40: 1.2,
-    Single: 1,
-    Newlywed: 1.3,
-    Newlywed2026: 1.5,
-    Child1: 1.4,
-    Child2: 1.6,
-    Child3: 1.8,
-    Baby2026_1: 2,
-    Baby2026_2: 2.5,
-    Baby2026_3: 3,
-    LowIncome: 1.4
+const locationLabels = {
+    Taipei: '台北市',
+    NewTaipei: '新北市',
+    Taoyuan: '桃園市',
+    Taichung: '台中市主要行政區',
+    Tainan: '台南市主要行政區',
+    Kaohsiung: '高雄市主要行政區',
+    Hsinchu: '新竹縣市',
+    Other: '其他縣市'
 };
 
-const estimatedSubsidy = computed(() => {
-    const base = baseSubsidyMap[subsidyLocation.value] || 2000;
-    const multi = multiplierMap[subsidyStatus.value] || 1;
-    return Math.round(base * multi).toLocaleString();
+const identityChecks = ref({
+  singleU40: false,
+  newlywed: false,
+  newlywedYear: '2025',
+  hasChildren: false,
+  childCount: 1,
+  newborn2026: false,
+  newbornCount: 1,
+  lowIncome: false,
 });
+const identityOptions = [
+  { key: 'singleU40', label: '單身未滿 40 歲' },
+  { key: 'newlywed', label: '2 年內結婚' },
+  { key: 'hasChildren', label: '有未成年子女' },
+  { key: 'newborn2026', label: '2026 年起有新生兒' },
+  { key: 'lowIncome', label: '中低收入戶' },
+];
+
+const appliedMultiplier = computed(() => {
+  const c = identityChecks.value;
+  let best = { multi: 1, label: '無加碼' };
+  const consider = (multi, label) => { if (multi > best.multi) best = { multi, label }; };
+  if (c.singleU40) consider(1.2, '單身未滿 40 歲');
+  if (c.newlywed) consider(c.newlywedYear === '2026' ? 1.5 : 1.3, c.newlywedYear === '2026' ? '2026 年起結婚' : '2025 年底前結婚');
+  if (c.hasChildren) consider(c.childCount >= 3 ? 1.8 : c.childCount === 2 ? 1.6 : 1.4, c.childCount >= 3 ? '3 名以上未成年子女' : c.childCount + ' 名未成年子女');
+  if (c.newborn2026) consider(c.newbornCount >= 3 ? 3 : c.newbornCount === 2 ? 2.5 : 2, c.newbornCount >= 3 ? '3 名以上新生兒' : c.newbornCount + ' 名新生兒');
+  if (c.lowIncome) consider(1.4, '中低收入戶');
+  return best;
+});
+
+const locationLabel = computed(() => locationLabels[subsidyLocation.value] || '其他縣市');
+const baseText = computed(() => (baseSubsidyMap[subsidyLocation.value] || 2000).toLocaleString());
+const rawSubsidy = computed(() => Math.round((baseSubsidyMap[subsidyLocation.value] || 2000) * appliedMultiplier.value.multi));
+// 115 年規則：補貼不得超過當月實付租金
+const estimatedSubsidyNum = computed(() => Math.min(rawSubsidy.value, monthlyRent.value || 0));
+const estimatedSubsidyText = computed(() => estimatedSubsidyNum.value.toLocaleString());
+const rentText = computed(() => (monthlyRent.value || 0).toLocaleString());
+const afterText = computed(() => Math.max((monthlyRent.value || 0) - estimatedSubsidyNum.value, 0).toLocaleString());
 
 // Basic Calcs
 const actualMonthly = computed(() =>
