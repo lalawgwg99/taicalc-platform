@@ -208,7 +208,7 @@
               @click="showSchedule = !showSchedule" 
               class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"
             >
-              {{ showSchedule ? '收起年度明細 ▲' : '展開 480 期年度還款明細 ▼' }}
+              {{ showSchedule ? '收起年度明細 ▲' : `展開 ${Math.max(1, years || 0) * 12} 期年度還款明細 ▼` }}
             </button>
           </div>
 
