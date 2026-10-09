@@ -20,7 +20,7 @@ export const toolHelp: Record<string, [string, string, string]> = {
   '/tools/insurance-calculator': ['先選受僱、自營或其他投保身分', '填月薪，工具會對應投保級距', '眷口只填依附在你名下的人數'],
   '/tools/labor-pension-calculator': ['填月薪、年齡、退休年齡與已提繳年資', '年資不知道可去勞保局 e 化服務系統查', '自提不知道可先比較 0% 與 6%'],
   '/tools/insurance-assessment': ['保單比較先填年繳保費與繳費年期', '解約金請查保單年度價值表', '保障缺口再填負債、家庭支出與現有資產'],
-  '/tools/rent-cost-calculator': ['租金試算先填月租、押金與預計租期', '補貼查詢先回答 4 題資格，有一題不符就不用算', '身分可複選，系統自動用最高的加碼倍數'],
+  '/tools/rent-cost-calculator': ['先填月租、押金與預計租期', '管理費與水電填每月估計', '租金補貼資格與金額仍以審核為準'],
   '/tools/fire-calculator': ['先填年齡、現有資產與每月投入', '退休月支出請用今天的生活水準估算', '報酬、通膨與提領率不確定可先保留預設'],
 };
 
