@@ -5,6 +5,7 @@ import {
   EXEMPTION_PER_PERSON,
   INSURANCE_DEDUCTION_PER_PERSON,
   LONG_TERM_CARE_PER_PERSON,
+  MINOR_CHILD_EXEMPTION,
   MORTGAGE_INTEREST_DEDUCTION_MAX,
   PRESCHOOL_ADDITIONAL_CHILD,
   PRESCHOOL_FIRST_CHILD,
@@ -31,6 +32,7 @@ export interface IncomeTaxCalculationInput {
   otherIncome?: number;
   filingStatus?: FilingStatus;
   dependents?: number;
+  minorChildren?: number;
   longTermCareEligibleCount?: number;
   disabilityCount?: number;
   preschoolCount?: number;
@@ -118,8 +120,12 @@ export const calculateIncomeTax = (
     + otherIncome
     + spouseSalary;
 
-  const totalExemptions = 1 + (filingStatus === 'married' ? 1 : 0) + normalizeCount(input.dependents);
-  const exemptionAmount = totalExemptions * EXEMPTION_PER_PERSON;
+  const dependentsCount = normalizeCount(input.dependents);
+  // 未成年子女是扶養親屬的子集：免稅額 151,500，其餘扶養親屬維持 101,000。
+  const minorChildrenCount = Math.min(dependentsCount, normalizeCount(input.minorChildren));
+  const totalExemptions = 1 + (filingStatus === 'married' ? 1 : 0) + dependentsCount;
+  const exemptionAmount = (totalExemptions - minorChildrenCount) * EXEMPTION_PER_PERSON
+    + minorChildrenCount * MINOR_CHILD_EXEMPTION;
   const standardDeduction = getStandardDeduction(filingStatus);
   const salarySpecialDeduction = calculateSalarySpecialDeduction(salaryIncome, spouseSalary, filingStatus);
   const savingsDeduction = Math.min(interestIncome, SAVINGS_DEDUCTION_MAX);

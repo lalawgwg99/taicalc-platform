@@ -9,6 +9,8 @@ export interface IncomeTaxBracket {
 
 // 115 年度（2026 所得，2027 年 5 月申報）財政部公告金額。
 export const EXEMPTION_PER_PERSON = 101000;
+// 115.1.1 起：受扶養未成年子女免稅額加成 50%（所得稅法第 17 條修正，2026/08/21 立院三讀）。
+export const MINOR_CHILD_EXEMPTION = 151500;
 export const SALARY_SPECIAL_MAX = 227000;
 export const STANDARD_DEDUCTION_SINGLE = 136000;
 export const STANDARD_DEDUCTION_MARRIED = 272000;

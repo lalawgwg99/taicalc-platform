@@ -76,6 +76,11 @@
           <p class="text-[10px] text-ink-400 mt-1">含子女、父母</p>
         </div>
         <div>
+          <label for="fld-minor-children" class="block text-xs font-medium text-ink-400 mb-1.5">其中未成年子女人數</label>
+          <input id="fld-minor-children" type="text" inputmode="decimal" v-model.number="minorChildren" class="input-clean" placeholder="0" min="0" max="10" />
+          <p class="text-[10px] text-ink-400 mt-1">115 年起每人免稅額 151,500</p>
+        </div>
+        <div>
           <label for="fld-e9c47932" class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>
           <input id="fld-e9c47932" type="text" inputmode="decimal" v-model.number="longTermCareEligibleCount" class="input-clean" placeholder="0" min="0" max="10" />
           <p class="text-[10px] text-ink-400 mt-1">每人 180,000（需符合規定）</p>
@@ -204,7 +209,7 @@
           <span class="tabular-nums text-red-500">− $ {{ fmt(salarySpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">免稅額（{{ totalExemptions }} 人）</span>
+          <span class="text-ink-400">免稅額（{{ totalExemptions }} 人{{ minorChildren > 0 ? '，未成年 ' + minorChildren + ' 人' : '' }}）</span>
           <span class="tabular-nums text-red-500">− $ {{ fmt(exemptionAmount) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
@@ -361,6 +366,7 @@ const otherIncome = ref(0);
 const spouseSalary = ref(0);
 const filingStatus = ref('single');
 const dependents = ref(0);
+const minorChildren = ref(0);
 const longTermCareEligibleCount = ref(0);
 const disabilityCount = ref(0);
 const preschoolCount = ref(0);
@@ -389,6 +395,7 @@ const taxResult = computed(() =>
     otherIncome: otherIncome.value || 0,
     filingStatus: filingStatus.value,
     dependents: dependents.value,
+    minorChildren: minorChildren.value,
     longTermCareEligibleCount: longTermCareEligibleCount.value,
     disabilityCount: disabilityCount.value,
     preschoolCount: preschoolCount.value,
