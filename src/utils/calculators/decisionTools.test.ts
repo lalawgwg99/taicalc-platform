@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  calculateEstateTax, calculateLaborPension, calculateParentalBenefits,
-  calculateSeparation, estimateResaleRate, monthlyPayment, vehicleTaxes,
+  calculateDebtConsolidation, calculateEstateTax, calculateLaborPension, calculateParentalBenefits,
+  calculateSeparation, estimateResaleRate, impliedAnnualRate, monthlyPayment, vehicleTaxes,
 } from './decisionTools';
 
 describe('decision calculators', () => {
@@ -74,5 +74,35 @@ describe('decision calculators', () => {
     expect(estimateResaleRate(-3)).toBe(88);
     expect(estimateResaleRate(30)).toBeGreaterThanOrEqual(5);
     expect(estimateResaleRate(3)).toBeGreaterThan(estimateResaleRate(8));
+  });
+
+  it('derives annual rate from balance, payment and months', () => {
+    // 餘額 828,931、月付 17,385、剩 62 期 → 約 10.5%
+    const r = impliedAnnualRate(828_931, 17_385, 62);
+    expect(r).toBeGreaterThan(9);
+    expect(r).toBeLessThan(12);
+    expect(impliedAnnualRate(0, 100, 12)).toBe(0);
+    expect(impliedAnnualRate(100_000, 1_000, 12)).toBe(0); // 月付連本金都不夠
+  });
+
+  it('compares debt consolidation with monthly and total view', () => {
+    const res = calculateDebtConsolidation(
+      [{ balance: 828_931, months: 62, payment: 17_385 }],
+      6, 7, 0, 0, 0,
+    );
+    // 繼續繳總利息 = 17,385×62 − 828,931
+    expect(res.currentInterest).toBe(17_385 * 62 - 828_931);
+    expect(res.currentPayment).toBe(17_385);
+    // 轉 7 年 6%：月付下降、總成本也變少（利率 10.5%→6% 的效果大過期限拉長）
+    expect(res.monthlySavings).toBeGreaterThan(0);
+    expect(res.totalCostDiff).toBeLessThan(0);
+    expect(res.impliedRates[0]).toBeGreaterThan(9);
+    // 同利率只拉長期限：月付降、總成本增
+    const res2 = calculateDebtConsolidation(
+      [{ balance: 828_931, months: 62, payment: 17_385 }],
+      10.5, 7, 0, 0, 0,
+    );
+    expect(res2.monthlySavings).toBeGreaterThan(0);
+    expect(res2.totalCostDiff).toBeGreaterThan(0);
   });
 });

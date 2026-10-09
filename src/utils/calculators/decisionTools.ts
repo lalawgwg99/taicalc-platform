@@ -91,29 +91,57 @@ function simulateDebt(balance: number, annualRate: number, payment: number, extr
   return { months, interest };
 }
 
-export interface DebtInput { balance: number; rate: number; payment: number }
+export interface DebtInput { balance: number; months: number; payment: number }
+
+// 由餘額、月付、剩餘期數反推年利率（二分法解本息攤還公式）
+export function impliedAnnualRate(balance: number, payment: number, months: number): number {
+  if (!(balance > 0) || !(payment > 0) || !(months > 0)) return 0;
+  const minPayment = balance / months;
+  if (payment <= minPayment) return 0;
+  const pmt = (r: number) => (r <= 0 ? minPayment : balance * r / (1 - Math.pow(1 + r, -months)));
+  let lo = 0, hi = 0.05;
+  while (pmt(hi) < payment && hi < 2) hi *= 2;
+  for (let i = 0; i < 64; i++) {
+    const mid = (lo + hi) / 2;
+    if (pmt(mid) < payment) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2 * 12 * 100;
+}
 
 export function calculateDebtConsolidation(
   debts: DebtInput[], newRate: number, newYears: number, fee: number, penalty: number, extra: number
 ) {
-  const valid = debts.filter(d => d.balance > 0);
-  const balance = valid.reduce((sum, d) => sum + d.balance, 0);
-  const currentPayment = valid.reduce((sum, d) => sum + d.payment, 0);
-  const currentPlans = valid.map(d => simulateDebt(d.balance, d.rate, d.payment));
-  const currentPayoffPossible = currentPlans.every(plan => Number.isFinite(plan.interest));
-  const currentInterest = currentPayoffPossible
-    ? currentPlans.reduce((sum, plan) => sum + plan.interest, 0)
-    : 0;
-  const currentMonths = currentPayoffPossible ? Math.max(0, ...currentPlans.map(plan => plan.months)) : Infinity;
-  const newPayment = monthlyPayment(balance, newRate, newYears * 12);
-  const newInterest = newPayment * newYears * 12 - balance;
-  const extraPlan = simulateDebt(balance, newRate, newPayment, extra);
-  const newCosts = newInterest + fee + penalty;
+  const valid = debts.filter(d => d.balance > 0 && d.months > 0 && d.payment > 0);
+  // 每筆：推算年利率；剩餘總利息 = 月付×期數 − 本金（精確，不用模擬）
+  const per = valid.map(d => {
+    const rate = impliedAnnualRate(d.balance, d.payment, d.months);
+    const totalInterest = d.payment * d.months - d.balance;
+    return { ...d, rate, totalInterest };
+  });
+  const broken = per.filter(d => d.totalInterest < 0).length;
+  const good = per.filter(d => d.totalInterest >= 0);
+  const balance = good.reduce((sum, d) => sum + d.balance, 0);
+  const currentPayment = good.reduce((sum, d) => sum + d.payment, 0);
+  const currentInterest = good.reduce((sum, d) => sum + d.totalInterest, 0);
+  const currentMonths = good.length ? Math.max(...good.map(d => d.months)) : 0;
+
+  const newMonths = Math.max(1, Math.round(newYears * 12));
+  const newPayment = monthlyPayment(balance, newRate, newMonths);
+  const newInterest = Math.max(0, newPayment * newMonths - balance);
+  const newCosts = newInterest + Math.max(0, fee) + Math.max(0, penalty);
+  const monthlySavings = currentPayment - newPayment; // 每月少付（正=輕鬆）
+  const totalCostDiff = newCosts - currentInterest; // 總成本差（正=整合後總共多付）
+
+  const extraPlan = simulateDebt(balance, newRate, newPayment, Math.max(0, extra));
   return {
     balance: money(balance), currentPayment: money(currentPayment),
-    currentInterest: money(currentInterest), currentMonths, currentPayoffPossible,
+    currentInterest: money(currentInterest), currentMonths,
+    impliedRates: good.map(d => d.rate),
+    hasBroken: broken > 0,
     newPayment: money(newPayment), newInterest: money(newInterest),
-    newCosts: money(newCosts), savings: currentPayoffPossible ? money(currentInterest - newCosts) : 0,
+    newCosts: money(newCosts),
+    monthlySavings: money(monthlySavings),
+    totalCostDiff: money(totalCostDiff),
     extraMonths: extraPlan.months, extraInterest: money(extraPlan.interest),
     extraSavings: money(newInterest - extraPlan.interest),
   };

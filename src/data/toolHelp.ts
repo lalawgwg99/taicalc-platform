@@ -8,7 +8,7 @@ export const toolHelp: Record<string, [string, string, string]> = {
   '/tools/delivery-income-calculator': ['填平台顯示的總收入', '再填總工時與總里程', '油價與油耗不知道，可先用畫面預設'],
   '/tools/car-cost-calculator': ['先填車價、頭期款與預計持有年數', '油耗可查原廠資料，不確定先用接近車型', '殘值會依持有年數自動估算，不用填'],
   '/tools/severance-calculator': ['平均工資看離職前 6 個月工資總額', '年資可填小數，例如 3 年 6 個月填 3.5', '不是資遣或有舊制年資，需另外確認'],
-  '/tools/debt-consolidation-calculator': ['每筆填剩餘本金、利率與目前月付', '新方案填銀行提供的利率與期數', '開辦費和違約金沒有就填 0'],
+  '/tools/debt-consolidation-calculator': ['每筆填餘額、剩餘期數與目前月付，利率會自動推算', '新方案填銀行提供的利率與期數', '開辦費和違約金沒有就填 0'],
   '/tools/labor-insurance-pension-calculator': ['填勞保年資，不是勞退年資', '平均投保薪資可先參考投保紀錄', '請領年齡不同，月領金額也會改變'],
   '/tools/estate-gift-tax-calculator': ['先選遺產或贈與情境', '填財產總額，再填符合條件的扣除額', '不知道可扣項目時不要自行猜測'],
   '/tools/parental-benefit-calculator': ['先填投保薪資與預計留停月數', '選擇父母各自可能請領期間', '地方補助不同，結果仍需向所在地確認'],
