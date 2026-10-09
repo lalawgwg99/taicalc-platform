@@ -28,8 +28,14 @@ export function vehicleTaxes(cc: number, fuel: 'gasoline' | 'hybrid' | 'diesel' 
   return { licenseTax, fuelFee: row ? row[fuel === 'diesel' ? 2 : 1] : 0 };
 }
 
-export function calculateCarCost(input: {
-  price: number; downPayment: number; annualRate: number; loanYears: number;
+// 殘值估算：新車落地約剩 88%，之後每年折舊約 10.4%（指數遞減），貼近台灣二手行情。
+// 開 1 年約 79%、3 年約 63%、5 年約 51%、8 年約 37%、10 年約 29%。
+export function estimateResaleRate(years: number): number {
+  const y = Math.max(0, years || 0);
+  return Math.round(Math.min(88, Math.max(5, 88 * Math.exp(-0.11 * y))));
+}
+
+export function calculateCarCost(input: {  price: number; downPayment: number; annualRate: number; loanYears: number;
   years: number; cc: number; fuel: 'gasoline' | 'hybrid' | 'diesel' | 'electric';
   annualKm: number; efficiency: number; energyPrice: number; insuranceAnnual: number;
   maintenanceAnnual: number; parkingMonthly: number; resaleRate: number;

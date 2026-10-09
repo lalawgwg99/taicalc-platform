@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   calculateEstateTax, calculateLaborPension, calculateParentalBenefits,
-  calculateSeparation, monthlyPayment, vehicleTaxes,
+  calculateSeparation, estimateResaleRate, monthlyPayment, vehicleTaxes,
 } from './decisionTools';
 
 describe('decision calculators', () => {
@@ -63,5 +63,16 @@ describe('decision calculators', () => {
     });
     expect(result.leaveBenefit).toBe(384_000);
     expect(result.allowanceMonthly).toBe(6000);
+  });
+
+  it('estimates car resale rate on a declining curve', () => {
+    expect(estimateResaleRate(0)).toBe(88);
+    expect(estimateResaleRate(1)).toBe(79);
+    expect(estimateResaleRate(5)).toBe(51);
+    expect(estimateResaleRate(8)).toBe(37);
+    expect(estimateResaleRate(10)).toBe(29);
+    expect(estimateResaleRate(-3)).toBe(88);
+    expect(estimateResaleRate(30)).toBeGreaterThanOrEqual(5);
+    expect(estimateResaleRate(3)).toBeGreaterThan(estimateResaleRate(8));
   });
 });

@@ -35,6 +35,18 @@
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
             </div>
+            <div>
+              <label for="pastYears" class="block text-xs font-medium text-ink-400 mb-1">勞退已提繳年資（年）</label>
+              <input
+                id="pastYears"
+                type="text" inputmode="decimal"
+                v-model.number="pastYears"
+                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+              />
+              <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
+                不知道年資？<a href="https://edesk.bli.gov.tw/na/" target="_blank" rel="noopener" class="underline decoration-amber-500 underline-offset-2">去勞保局 e 化服務系統查</a>（手機門號驗證就能登入，可查總提繳年資），查完回來填。
+              </p>
+            </div>
           </div>
         </section>
 
@@ -176,11 +188,11 @@
                 <div class="grid grid-cols-2 gap-4 mb-2">
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
                         <p class="text-xs text-ink-400 mb-1">自己總共提撥</p>
-                        <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * years).toLocaleString() }}</p>
+                        <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
                         <p class="text-xs text-ink-400 mb-1">總共省下的稅</p>
-                        <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * years).toLocaleString() }}</p>
+                        <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
                 </div>
             </div>
@@ -201,6 +213,10 @@
             <li>
               <strong>算法說明：</strong> 月領金額用年金法算，假設退休後錢繼續以 2%
               滾存，分 20 年領完。
+            </li>
+            <li>
+              <strong>已提繳年資：</strong>
+              過去年資以目前提繳水準估算本金（未計過去的投資報酬，偏保守），實際專戶累計金額以勞保局查詢為準。
             </li>
           </ul>
         </div>
@@ -236,6 +252,7 @@ const getPensionGrade = (s) => {
 const salary = ref(45000);
 const currentAge = ref(30);
 const retireAge = ref(65);
+const pastYears = ref(0); // 已經提繳的年資（過去）
 const selfRate = ref(6);
 const roi = ref(5); // Annual ROI
 const taxRate = ref(12); // Tax Rate
@@ -244,6 +261,11 @@ const growthChart = ref(null);
 let chartInstance = null;
 
 const years = computed(() => Math.max(1, retireAge.value - currentAge.value));
+// 已提繳年資（防呆：負數或空值視為 0）
+const pastYearsClamped = computed(() => Math.max(0, pastYears.value || 0));
+// 計算過去提繳累積的本金估算（以目前提繳水準估算，未計過去報酬，偏保守）
+const pastPrincipalTotal = computed(() => new Decimal(totalMonthlyContribution.value).mul(pastYearsClamped.value * 12).toNumber());
+const pastPrincipalBasic = computed(() => new Decimal(employerMonthlyContribution.value).mul(pastYearsClamped.value * 12).toNumber());
 const monthlyWageGrade = computed(() => getPensionGrade(salary.value));
 
 const employerMonthlyContribution = computed(() => new Decimal(monthlyWageGrade.value).mul(0.06).round().toNumber());
@@ -262,9 +284,10 @@ const calculateProjection = () => {
   const monthlyContribTotal = new Decimal(totalMonthlyContribution.value);
 
   let data = [];
-  let balanceBasic = new Decimal(0);
-  let balanceTotal = new Decimal(0);
-  let principalTotal = new Decimal(0);
+  // 過去年資的累積本金當作起點，之後跟著一起複利
+  let balanceBasic = new Decimal(pastPrincipalBasic.value);
+  let balanceTotal = new Decimal(pastPrincipalTotal.value);
+  let principalTotal = new Decimal(pastPrincipalTotal.value);
 
   for (let i = 1; i <= years.value; i++) {
     for (let m = 0; m < 12; m++) {
@@ -380,6 +403,11 @@ const updateChart = () => {
 watch(selfRate, (val) => {
     if (val < 0) selfRate.value = 0
     if (val > 6) selfRate.value = 6
+})
+
+watch(pastYears, (val) => {
+    if (val < 0) pastYears.value = 0
+    if (val > 60) pastYears.value = 60
 })
 
 watch([salary, currentAge, retireAge, selfRate, roi, taxRate], updateChart, { deep: true });
