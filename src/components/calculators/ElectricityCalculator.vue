@@ -182,7 +182,9 @@
               class="w-full bg-white border border-ink-100 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
             >
               <option value="" disabled>--- 請選擇 ---</option>
-              <option v-for="item in appliancePresets" :key="item.name" :value="item">{{ item.name }}</option>
+              <optgroup v-for="group in presetGroups" :key="group" :label="group">
+                <option v-for="item in appliancePresets.filter(p => p.cat === group)" :key="item.name" :value="item">{{ item.name }}</option>
+              </optgroup>
             </select>
           </div>
           <div>
@@ -212,6 +214,12 @@
         >
           + 加入清單
         </button>
+        <button
+          @click="addQuickSet"
+          class="mt-2 w-full py-2 bg-paper-100 border border-ink-100 text-ink-600 rounded-lg text-sm font-semibold hover:border-brand-300 transition-colors"
+        >
+          ⚡ 一鍵加入小家庭基本盤（冰箱＋洗衣機＋電視＋電燈＋熱水瓶）
+        </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" v-if="userAppliances.length > 0">
@@ -222,12 +230,15 @@
             class="flex items-center justify-between p-3 bg-paper-50 rounded-xl border border-paper-100"
           >
             <div>
-              <p class="font-bold text-ink-600 text-sm">{{ app.name }}</p>
+              <p class="font-bold text-ink-600 text-sm flex items-center gap-1.5">
+                {{ app.name }}
+                <span v-if="idx === topMonsterIdx" class="text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full whitespace-nowrap">👻 頭號怪獸</span>
+              </p>
               <p class="text-xs text-ink-400">{{ app.watts }}W × {{ app.hours }}hr/日</p>
             </div>
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <p class="font-bold text-ink-800 text-sm">{{ Math.round(app.monthlyKwh) }}度</p>
+                <p class="font-bold text-ink-800 text-sm">{{ Math.round(app.monthlyKwh) }}度 <span class="font-normal text-ink-400 text-xs">({{ monsterShare(app) }}%)</span></p>
                 <p class="text-xs text-ink-400">約 ${{ Math.round(app.monthlyCost) }}</p>
               </div>
               <button
@@ -268,6 +279,10 @@
           </p>
         </div>
       </div>
+      <div v-else class="text-center py-6 text-sm text-ink-400">
+        👻 還沒有怪獸現形。選個電器按「加入清單」，或一鍵加入小家庭基本盤，看看誰在偷吃你的電。
+      </div>
+      <p class="mt-3 text-[11px] text-ink-400">預設值參考台電節電資訊與能源局能效分級資料（變頻冰箱月耗約 27–36 度、儲熱式電熱水器日均約 2–3 度），實際耗電以電器銘板為準，可自行調整功率與時數。</p>
     </section>
 
     <section class="calculator-card">
@@ -504,18 +519,26 @@ import {
 } from '../../utils/calculators/electricity';
 
 const APPLIANCE_PRESETS = [
-  { name: '冷氣 (小型)', watts: 800, hours: 8 },
-  { name: '冷氣 (中型)', watts: 1200, hours: 8 },
-  { name: '冰箱 (中型)', watts: 130, hours: 24 },
-  { name: '除濕機', watts: 300, hours: 8 },
-  { name: '電視 (65吋)', watts: 150, hours: 4 },
-  { name: '電腦 (桌機)', watts: 300, hours: 6 },
-  { name: '電熱水瓶', watts: 800, hours: 2 },
-  { name: '電鍋 (保溫)', watts: 40, hours: 12 },
-  { name: '吹風機', watts: 1200, hours: 0.2 },
-  { name: '洗衣機', watts: 500, hours: 1 },
-  { name: '電燈 (全家)', watts: 100, hours: 6 }
+  { name: '冷氣 (小型)', watts: 800, hours: 8, cat: '冷暖空調' },
+  { name: '冷氣 (中型)', watts: 1200, hours: 8, cat: '冷暖空調' },
+  { name: '除濕機', watts: 300, hours: 8, cat: '冷暖空調' },
+  { name: '電熱水器 (儲熱式)', watts: 4000, hours: 0.75, cat: '廚房衛浴' },
+  { name: '電磁爐', watts: 1400, hours: 0.5, cat: '廚房衛浴' },
+  { name: '微波爐', watts: 1200, hours: 0.15, cat: '廚房衛浴' },
+  { name: '氣炸鍋 / 烤箱', watts: 1500, hours: 0.3, cat: '廚房衛浴' },
+  { name: '電熱水瓶 (保溫為主)', watts: 40, hours: 24, cat: '廚房衛浴' },
+  { name: '冰箱 (變頻400L)', watts: 45, hours: 24, cat: '廚房衛浴' },
+  { name: '電鍋 (保溫)', watts: 40, hours: 12, cat: '廚房衛浴' },
+  { name: '洗衣機 (每週約2次)', watts: 500, hours: 0.3, cat: '清潔衣物' },
+  { name: '烘衣機', watts: 1200, hours: 0.5, cat: '清潔衣物' },
+  { name: '電視 (65吋)', watts: 150, hours: 4, cat: '娛樂影音' },
+  { name: '電腦 (桌機)', watts: 150, hours: 6, cat: '娛樂影音' },
+  { name: '電燈 (全家)', watts: 100, hours: 6, cat: '其他' },
+  { name: '待機電力 (機上盒等)', watts: 30, hours: 24, cat: '其他' },
+  { name: '吹風機', watts: 1200, hours: 0.2, cat: '其他' }
 ];
+// 一鍵加入：小家庭基本盤
+const QUICK_HOME_SET = ['冰箱 (變頻400L)', '洗衣機 (每週約2次)', '電視 (65吋)', '電燈 (全家)', '電熱水瓶 (保溫為主)'];
 
 const acModes = [
   { id: 'kw', label: 'kW 輸入' },
@@ -690,6 +713,35 @@ watch([avgRate, userAppliances], () => {
 }, { deep: true });
 
 const totalGhostKwh = computed(() => Math.round(userAppliances.value.reduce((sum, appliance) => sum + appliance.monthlyKwh, 0)));
+// 預設選單的分類群組（照 APPLIANCE_PRESETS 出現順序）
+const presetGroups = computed(() => {
+  const groups = [];
+  APPLIANCE_PRESETS.forEach(p => { if (!groups.includes(p.cat)) groups.push(p.cat); });
+  return groups;
+});
+// 頭號怪獸：月耗電最高的電器
+const topMonsterIdx = computed(() => {
+  if (!userAppliances.value.length) return -1;
+  let idx = 0;
+  userAppliances.value.forEach((a, i) => { if (a.monthlyKwh > userAppliances.value[idx].monthlyKwh) idx = i; });
+  return idx;
+});
+const monsterShare = (app) => totalGhostKwh.value > 0 ? Math.round(app.monthlyKwh / totalGhostKwh.value * 100) : 0;
+// 一鍵加入小家庭基本盤（已在清單的不重複加）
+const addQuickSet = () => {
+  QUICK_HOME_SET.forEach(name => {
+    const preset = APPLIANCE_PRESETS.find(p => p.name === name);
+    if (preset && !userAppliances.value.some(a => a.name === name)) {
+      userAppliances.value.push({
+        name: preset.name,
+        watts: preset.watts,
+        hours: preset.hours,
+        monthlyKwh: (preset.watts * preset.hours * 30) / 1000,
+        monthlyCost: 0
+      });
+    }
+  });
+};
 const ghostCoverage = computed(() => {
   const monthlyUsage = kwh.value || 1;
   return Math.min(100, Math.round(totalGhostKwh.value / monthlyUsage * 100));
