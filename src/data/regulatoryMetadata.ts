@@ -23,7 +23,7 @@ export const platformGovernance: GovernanceMeta = {
   ],
 };
 
-export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'insurance', GovernanceMeta> = {
+export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'insurance' | 'electricity', GovernanceMeta> = {
   salary: {
     version: 'SALARY-2026.07',
     dataYear: '2026 年度',
@@ -61,6 +61,15 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
       { label: '勞保局（115 年勞保費率與投保薪資）', href: 'https://www.bli.gov.tw/0108700.html' },
       { label: '健保署（115 年投保金額分級表）', href: 'https://www.nhi.gov.tw/ch/cp-19421-f9533-2569-1.html' },
       { label: '健保署（一般保險費計算）', href: 'https://www.nhi.gov.tw/ch/cp-3277-6c895-2588-1.html' },
+    ],
+  },
+  electricity: {
+    version: 'ELECTRICITY-2026.07',
+    dataYear: '2026 年度',
+    updatedAt: '2026-10-10',
+    sources: [
+      { label: '台電（住宅用電電價表）', href: 'https://www.taipower.com.tw/2289/2290/46940/simpleList' },
+      { label: '台電（租屋電費查詢）', href: 'https://service.taipower.com.tw/ebpps2/simplebill/tenant/simple-query-bill' },
     ],
   },
 };

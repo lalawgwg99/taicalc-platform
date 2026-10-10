@@ -286,6 +286,17 @@ export const getRelatedTools = (currentHref: string, limit = 4): ToolCatalogItem
   const currentTool = getToolByHref(currentHref);
   const currentPath = normalizeToolPath(currentHref);
 
+  // 贏家互連：四個贏家頁的前兩位固定放另外兩個贏家（輪流錯開，避免四頁順序完全相同）
+  const WINNER_CROSS_LINKS: Record<string, string[]> = {
+    '/tools/split-calculator': ['/tools/delivery-income-calculator', '/tools/electricity-calculator'],
+    '/tools/delivery-income-calculator': ['/tools/electricity-calculator', '/tools/salary-calculator'],
+    '/tools/electricity-calculator': ['/tools/salary-calculator', '/tools/split-calculator'],
+    '/tools/salary-calculator': ['/tools/split-calculator', '/tools/delivery-income-calculator'],
+  };
+  const winnerLinks = (WINNER_CROSS_LINKS[currentPath] ?? [])
+    .map((href) => getToolByHref(href))
+    .filter((tool): tool is ToolCatalogItem => Boolean(tool));
+
   const sameCategoryTools = currentTool
     ? toolCatalog.filter(
         tool => tool.href !== currentPath && tool.category === currentTool.category
@@ -297,5 +308,9 @@ export const getRelatedTools = (currentHref: string, limit = 4): ToolCatalogItem
       !sameCategoryTools.some(relatedTool => relatedTool.href === tool.href)
   );
 
-  return [...sameCategoryTools, ...remainingTools].slice(0, limit);
+  const merged = [...winnerLinks, ...sameCategoryTools, ...remainingTools];
+  const deduped = merged.filter(
+    (tool, index) => merged.findIndex((t) => t.href === tool.href) === index
+  );
+  return deduped.slice(0, limit);
 };

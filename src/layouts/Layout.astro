@@ -14,6 +14,7 @@ interface Props {
     keywords?: string;
     type?: string;
     canonical?: string;
+    robots?: string;
 }
 
 const {
@@ -25,7 +26,8 @@ const {
     ogImage = "https://taicalc.com/og-image-v2.png",
     keywords = "薪資計算機,房貸試算,所得稅,2026新制,勞健保,FIRE退休,當沖手續費,台灣財務計算機,免費線上工具",
     type = "website",
-    canonical = undefined
+    canonical = undefined,
+    robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
 } = Astro.props;
 
 const canonicalPath = Astro.url.pathname
@@ -50,7 +52,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID || "G-J6BM5DCBNN";
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="TaiCalc" />
         <meta name="format-detection" content="telephone=no" />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="robots" content={robots} />
         <meta name="googlebot" content="index, follow" />
         <meta name="language" content="Chinese" />
         <meta name="revisit-after" content="7 days" />

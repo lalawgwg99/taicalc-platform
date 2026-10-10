@@ -316,6 +316,7 @@ const profilePresets = [
   { id: 'starter', icon: 'sprout', label: '剛開始累積', note: '28 歲・月收 4.8 萬', values: { ...defaultProfile } },
   { id: 'steady', icon: 'explore', label: '工作漸穩定', note: '35 歲・月收 6.5 萬', values: { ...defaultProfile, startAge: 35, monthlyIncome: 65_000, monthlyLivingCost: 36_000, initialCash: 600_000, initialInvestments: 600_000 } },
   { id: 'family', icon: 'home', label: '準備成家', note: '32 歲・月收 8 萬', values: { ...defaultProfile, startAge: 32, monthlyIncome: 80_000, monthlyLivingCost: 45_000, initialCash: 1_200_000, initialInvestments: 500_000 } },
+  { id: 'retire50', icon: 'savings', label: '50 歲退休倒數', note: '50 歲・月收 5 萬', values: { ...defaultProfile, startAge: 50, targetAge: 65, monthlyIncome: 50_000, monthlyLivingCost: 35_000, initialCash: 500_000, initialInvestments: 800_000 } },
 ];
 const scenarioModes = [
   { id: 'steady', label: '平穩', note: '較少突發變化' },
@@ -327,6 +328,7 @@ const choiceFilters = [
   { id: 'growth', label: '成長與體驗' },
   { id: 'family', label: '家庭生活' },
   { id: 'assets', label: '資產與轉彎' },
+  { id: 'retire', label: '退休倒數' },
 ];
 
 const profile = ref({ ...defaultProfile });
@@ -352,6 +354,11 @@ const choices = [
   { id: 'home', category: 'family', label: '準備買房', icon: 'home', effect: '頭期款＋房貸情境', cost: 2_000_000, annualCost: 360_000, happiness: 15, stress: 15, sellbackRate: 0.85, maxCount: 1 },
   { id: 'sabbatical', category: 'growth', label: '休息充電一年', icon: 'spa', effect: '降低壓力', cost: 300_000, annualCost: 0, happiness: 18, stress: -22, maxCount: 2 },
   { id: 'business', category: 'assets', label: '嘗試一人創業', icon: 'rocket_launch', effect: '收入情境 +20%', cost: 500_000, annualCost: 60_000, incomeRateDelta: 20, happiness: 10, stress: 18, maxCount: 1 },
+  { id: 'health', category: 'retire', label: '提撥健康預備金', icon: 'health_and_safety', effect: '醫療有底氣', cost: 200_000, annualCost: 0, happiness: 8, stress: -6, maxCount: 1 },
+  { id: 'parentcare', category: 'retire', label: '照顧年邁父母', icon: 'family_restroom', effect: '每年多一筆照顧支出', cost: 100_000, annualCost: 240_000, happiness: 10, stress: 8, maxCount: 1 },
+  { id: 'downshift', category: 'retire', label: '轉半退休少做一點', icon: 'spa', effect: '收入 -25%，壓力大減', cost: 0, annualCost: 0, incomeRateDelta: -25, happiness: 14, stress: -14, maxCount: 1 },
+  { id: 'debtfree', category: 'retire', label: '一次還清債務', icon: 'payments', effect: '無債一身輕', cost: 500_000, annualCost: 0, happiness: 12, stress: -18, maxCount: 1 },
+  { id: 'reskill', category: 'retire', label: '50 歲進修轉職', icon: 'school', effect: '收入情境 +10%', cost: 60_000, annualCost: 0, incomeRateDelta: 10, happiness: 6, stress: 4, maxCount: 2 },
 ];
 
 const investmentAmounts = [50_000, 100_000, 300_000];

@@ -1,10 +1,12 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ElectricityCalculator from '../../components/calculators/ElectricityCalculator.vue';
+import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
 const title = "電費計算機｜一度電多少錢？2026台電電費試算，3秒算出你家電費";
 const description = "台電一度電多少錢？輸入每月用電度數，3秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算，2026最新費率，免註冊免費試算。";
 const keywords = "電費計算機,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費";
+const governance = coreToolGovernance.electricity;
 
 const faqs = [
     {
@@ -34,7 +36,17 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="生活計算" faqs={faqs}>
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="生活計算"
+    faqs={faqs}
+    dataVersion={governance.version}
+    dataYear={governance.dataYear}
+    lastUpdated={governance.updatedAt}
+    sources={governance.sources}
+>
     <ElectricityCalculator client:only="vue" slot="tool" />
 
     <div slot="article">

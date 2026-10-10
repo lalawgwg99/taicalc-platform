@@ -108,6 +108,35 @@
 
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
+        <span class="text-lg">⚡</span> 一度電多少錢？六段費率速查表
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-ink-400 text-xs border-b border-ink-100">
+              <th class="text-left font-medium py-2 pr-2">每月用電級距</th>
+              <th class="text-right font-medium py-2 pr-2">夏月（6~9月）</th>
+              <th class="text-right font-medium py-2">非夏月</th>
+            </tr>
+          </thead>
+          <tbody class="text-ink-700">
+            <tr class="border-b border-paper-100"><td class="py-2 pr-2">120 度以下</td><td class="text-right tabular-nums pr-2">$1.78</td><td class="text-right tabular-nums">$1.78</td></tr>
+            <tr class="border-b border-paper-100"><td class="py-2 pr-2">121~330 度</td><td class="text-right tabular-nums pr-2">$2.55</td><td class="text-right tabular-nums">$2.26</td></tr>
+            <tr class="border-b border-paper-100"><td class="py-2 pr-2">331~500 度</td><td class="text-right tabular-nums pr-2">$3.80</td><td class="text-right tabular-nums">$3.13</td></tr>
+            <tr class="border-b border-paper-100"><td class="py-2 pr-2">501~700 度</td><td class="text-right tabular-nums pr-2">$5.14</td><td class="text-right tabular-nums">$4.24</td></tr>
+            <tr class="border-b border-paper-100"><td class="py-2 pr-2">701~1000 度</td><td class="text-right tabular-nums pr-2">$6.44</td><td class="text-right tabular-nums">$5.27</td></tr>
+            <tr><td class="py-2 pr-2">1001 度以上</td><td class="text-right tabular-nums pr-2">$8.86</td><td class="text-right tabular-nums">$7.03</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-ink-600 leading-relaxed mt-4">
+        舉例：每月用 <span class="font-bold text-ink-800">300 度</span>，夏月約繳 <span class="font-bold text-orange-600 tabular-nums">$673</span>、非夏月約繳 <span class="font-bold text-brand-600 tabular-nums">$621</span>。
+      </p>
+      <p class="text-xs text-ink-400 mt-2">費率為台電 2026-04-01 起實施之住宅用電價，單位元/度。</p>
+    </section>
+
+    <section class="calculator-card">
+      <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
         <span class="text-lg">💡</span> 省電模擬
         <span class="text-ink-400 font-normal text-xs ml-auto">如果每月少用...</span>
       </h2>

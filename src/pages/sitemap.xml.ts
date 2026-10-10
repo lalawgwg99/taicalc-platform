@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { toolCatalog } from '../data/toolCatalog';
 import { taxYears } from '../data/taxYears';
-import { glossary } from '../data/glossary';
 import cities from '../data/cities.json';
 
 export const prerender = true;
@@ -38,12 +37,6 @@ export const GET: APIRoute = async () => {
     changefreq: 'yearly',
   }));
 
-  const glossaryPages = glossary.map((entry) => ({
-    path: `/glossary/${entry.slug}`,
-    priority: '0.6',
-    changefreq: 'yearly',
-  }));
-
   const costOfLivingPages = [
     { path: '/cost-of-living', priority: '0.8', changefreq: 'monthly' },
     { path: '/cost-of-living/compare', priority: '0.8', changefreq: 'monthly' },
@@ -69,21 +62,12 @@ export const GET: APIRoute = async () => {
       changefreq: page.changefreq,
       lastmod: today,
     })),
-    ...glossaryPages.map((page) => ({
-      path: page.path,
-      priority: page.priority,
-      changefreq: page.changefreq,
-      lastmod: today,
-    })),
     ...costOfLivingPages.map((page) => ({
       path: page.path,
       priority: page.priority,
       changefreq: page.changefreq,
       lastmod: today,
     })),
-    { path: '/llms.txt', priority: '1.0', changefreq: 'daily', lastmod: today },
-    { path: '/llms-full.txt', priority: '0.9', changefreq: 'weekly', lastmod: today },
-    { path: '/api/calculators.json', priority: '0.9', changefreq: 'weekly', lastmod: today },
     { path: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: today },
     { path: '/tax-season', priority: '0.8', changefreq: 'monthly', lastmod: today },
     { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },

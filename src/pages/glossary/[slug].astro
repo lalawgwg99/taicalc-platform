@@ -24,7 +24,7 @@ const relatedTools = (entry.tools ?? []).map(getToolByHref).filter(Boolean);
 const relatedTerms = (entry.seeAlso ?? []).map(getGlossaryEntry).filter(Boolean);
 ---
 
-<Layout title={title} description={description} keywords={`${entry.term},${entry.category},財務術語,台灣,${entry.term}計算`}>
+<Layout title={title} description={description} keywords={`${entry.term},${entry.category},財務術語,台灣,${entry.term}計算`} robots="noindex, follow">
     <script type="application/ld+json" set:html={definedTermSchema} slot="head" />
     <div class="max-w-3xl mx-auto px-4 md:px-0 py-8">
         <nav class="text-xs text-ink-400 mb-4">
