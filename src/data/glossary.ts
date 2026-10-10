@@ -109,7 +109,7 @@ export const glossary: GlossaryEntry[] = [
 
   // ── 房貸與房產 ────────────────────────────────────────
   { slug: 'new-youth-mortgage', term: '新青安貸款', category: '房貸與房產',
-    def: '政府為首購族推出的優惠購屋貸款，115 年額度最高 1,000 萬元、年限最長 40 年、寬限期最長 5 年，利率享補貼。',
+    def: '政府為首購族推出的優惠購屋貸款（2023-08-01～2026-07-31，已截止受理）：額度最高 1,000 萬元、年限最長 40 年、寬限期最長 5 年，利率享補貼。現行方案為青安3.0（2026-08-01～2029-07-31）。',
     tools: ['/tools/mortgage-calculator'], seeAlso: ['grace-period', 'mortgage-ltv'] },
   { slug: 'grace-period', term: '寬限期', category: '房貸與房產',
     def: '貸款初期只繳利息、不還本金的期間。可減輕前期負擔，但寬限期結束後月付金會因剩餘本金與縮短年限而明顯跳升。',
@@ -121,7 +121,7 @@ export const glossary: GlossaryEntry[] = [
     def: '每月償還固定本金，利息隨餘額遞減，因此月付金逐月下降。前期負擔較重，但總利息較本息平均攤還少。',
     tools: ['/tools/mortgage-calculator'], seeAlso: ['annuity-repayment'] },
   { slug: 'staged-rate', term: '分段利率', category: '房貸與房產',
-    def: '貸款期間利率分階段變動的設計，例如新青安補貼期（1.775%）結束後回歸市場利率（約 2.15%）。試算時須看第二段利率的真實負擔。',
+    def: '貸款期間利率分階段變動的設計，例如青安3.0補貼「3+3」退場（前 3 年 1.775%，第 7 年起 2.275%）。試算時須看補貼退場後利率的真實負擔。',
     tools: ['/tools/mortgage-calculator'], seeAlso: ['new-youth-mortgage'] },
   { slug: 'mortgage-ltv', term: '房貸成數', category: '房貸與房產',
     def: '銀行核貸金額占房屋價值的比例。成數越高自備款越低，但月付與利息越高；央行與銀行會依地區與屋況調整。',

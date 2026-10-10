@@ -2,15 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import { centralBankFiveBankRates, newYouthRates, newYouthTerms, mortgageDataSources, mortgageLastUpdated } from '../data/mortgageRates';
 
-const title = "房貸利率市調表｜央行五大銀行與新青安 3.0 利率一覽 | TaiCalc";
-const description = "台灣房貸利率市調：央行五大銀行新承做放款平均利率（2026 最新）、新青安 3.0 完整利率階梯（1.775%→2.275%）與申請條件。附資料來源與更新日期。";
-const keywords = "房貸利率,房貸利率比較,五大銀行房貸利率,新青安利率,新青安3.0,央行利率,房貸利率2026";
+const title = "房貸利率市調表｜央行五大銀行與青安3.0 利率一覽 | TaiCalc";
+const description = "台灣房貸利率市調：央行五大銀行新承做放款平均利率（2026 最新）、青安3.0 完整利率階梯（1.775%→2.275%）與申請條件。附資料來源與更新日期。";
+const keywords = "房貸利率,房貸利率比較,五大銀行房貸利率,青安3.0利率,青安3.0,央行利率,房貸利率2026";
 
 const tableSchema = JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: 'TaiCalc 房貸利率市調表',
-    description: '央行五大銀行新承做放款平均利率與新青安 3.0 利率階梯',
+    description: '央行五大銀行新承做放款平均利率與青安3.0 利率階梯',
     dateModified: mortgageLastUpdated,
     creator: { '@type': 'Organization', name: 'TaiCalc' },
 });
@@ -27,7 +27,7 @@ const tableSchema = JSON.stringify({
 
         <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">Mortgage rates</p>
         <h1 class="mt-2 text-2xl font-semibold md:text-3xl">房貸利率市調表</h1>
-        <p class="mt-2 text-sm text-ink-500">央行五大銀行新承做放款平均利率（市場基準）＋新青安 3.0 利率階梯。更新：{mortgageLastUpdated}</p>
+        <p class="mt-2 text-sm text-ink-500">央行五大銀行新承做放款平均利率（市場基準）＋青安3.0 利率階梯。更新：{mortgageLastUpdated}</p>
 
         <h2 class="mt-8 text-lg font-semibold">五大銀行新承做放款平均利率（央行）</h2>
         <table class="mt-3 w-full text-sm border-collapse">
@@ -50,7 +50,7 @@ const tableSchema = JSON.stringify({
         </table>
         <p class="mt-2 text-xs text-ink-400">五大銀行＝台銀、合庫銀、一銀、華銀、土銀。此為市場整體利率基準，個別銀行房貸利率依成數、信用與專案略有差異。</p>
 
-        <h2 class="mt-8 text-lg font-semibold">新青安 3.0 利率階梯（2026-08-01 起）</h2>
+        <h2 class="mt-8 text-lg font-semibold">青安3.0 利率階梯（2026-08-01 起）</h2>
         <table class="mt-3 w-full text-sm border-collapse">
             <thead>
                 <tr class="border-b border-paper-300 text-left text-ink-400">
@@ -70,7 +70,7 @@ const tableSchema = JSON.stringify({
             </tbody>
         </table>
 
-        <h2 class="mt-8 text-lg font-semibold">新青安 3.0 申請條件</h2>
+        <h2 class="mt-8 text-lg font-semibold">青安3.0 申請條件</h2>
         <ul class="mt-3 space-y-1 text-sm text-ink-600">
             <li>額度上限：{newYouthTerms.maxAmountWan} 萬元（新婚 1,200 萬、育兒家庭 1,500 萬）</li>
             <li>成數最高 {Math.round(newYouthTerms.maxLtv * 100)} 成、年限最長 {newYouthTerms.maxYears} 年、寬限期最長 {newYouthTerms.maxGrace} 年</li>
@@ -80,7 +80,7 @@ const tableSchema = JSON.stringify({
 
         <div class="mt-8 grid gap-3 sm:grid-cols-2">
             <a href="/tools/mortgage-calculator" class="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 hover:border-brand-400 hover:bg-brand-100 transition-colors">用房貸試算器算月付 →</a>
-            <a href="/compare/xin-qing-an-vs-general-mortgage" class="rounded-xl border border-paper-300 bg-white px-4 py-3 text-sm font-semibold text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-colors">新青安 vs 一般房貸比較 →</a>
+            <a href="/compare/xin-qing-an-vs-general-mortgage" class="rounded-xl border border-paper-300 bg-white px-4 py-3 text-sm font-semibold text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-colors">青安3.0 vs 一般房貸比較 →</a>
         </div>
 
         <div class="mt-8 rounded-xl border border-paper-300 bg-paper-100 px-4 py-3 text-xs text-ink-500">

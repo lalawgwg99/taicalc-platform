@@ -46,14 +46,14 @@ export const toolCatalog: ToolCatalogItem[] = [
   },
   {
     href: '/tools/mortgage-calculator',
-    label: '2026 房貸試算 (新青安版)',
+    label: '2026 房貸試算 (青安3.0版)',
     desc: '40年期、5年寬限期、利率補貼與月付金壓力對照。',
     category: '居住與房產',
     isCore: true,
-    scenario: '買房、新青安申請、換屋試算前',
-    cta: '算每月新青安房貸',
+    scenario: '買房、青安3.0申請、換屋試算前',
+    cta: '算每月青安3.0房貸',
     icon: '<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>',
-    tags: ['房貸', '新青安', '房貸試算', '新青安計算機', '40年房貸', '寬限期', '利率補貼'],
+    tags: ['房貸', '青安3.0', '房貸試算', '青安3.0計算機', '40年房貸', '寬限期', '利率補貼'],
   },
   {
     href: '/tools/electricity-calculator',

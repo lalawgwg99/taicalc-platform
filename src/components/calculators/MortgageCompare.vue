@@ -1,4 +1,4 @@
-// TaiCalc 互動比較器：新青安 vs 一般房貸
+// TaiCalc 互動比較器：青安3.0 vs 一般房貸
 // 共用同一筆貸款金額，左右兩方案即時對照月付金、總利息與負擔差異。
 <template>
     <div class="calculator-shell space-y-4">
@@ -24,7 +24,7 @@
                     <label for="fld-49661c2a" class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
                     <input id="fld-49661c2a" type="text" inputmode="decimal" v-model.number="side.rate" step="0.005" :aria-label="side.label + '利率'"
                         class="input-clean font-semibold tabular-nums">
-                    <p v-if="side.key === 'a'" class="mt-1 text-[10px] text-brand-600/70">預設為 2026 新青安優惠利率（補貼期間）</p>
+<p v-if="side.key === 'a'" class="mt-1 text-[10px] text-brand-600/70">預設為青安3.0優惠利率（補貼期間，前 3 年 1.775%）</p>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -109,8 +109,8 @@ import ResultReceipt from '../ResultReceipt.vue';
 // ── 狀態 ───────────────────────────────────────────────────────
 const amountWan = ref(1000)
 const sides = ref([
-    { key: 'a', label: '新青安', rate: 1.775, years: 40, grace: 5 },
-    { key: 'b', label: '一般房貸', rate: 2.185, years: 30, grace: 0 },
+    { key: 'a', label: '青安3.0', rate: 1.775, years: 40, grace: 5 },
+    { key: 'b', label: '一般房貸', rate: 2.5, years: 30, grace: 0 },
 ])
 
 // ── 核心計算（本息平均攤還，含寬限期）────────────────────────
@@ -156,7 +156,7 @@ const insight = computed(() => {
     const m = diffMonthly.value, i = diffInterest.value, t = 300
     if (Math.abs(m) < t && Math.abs(i) < t) return '兩方案的月付與總利息相近，可再比較寬限期壓力與申請資格。'
     if (m > 0 && i < 0) return `一般房貸月付較高（多 $ ${fmt(m)}），但完整清償的總利息反而較低——貸款年限與寬限期拉得越長，付出的總利息越多。`
-    if (m < 0 && i > 0) return `新青安月付較低，但總利息較高。寬限期只減輕前期負擔，寬限期結束後的「真實月付」才是長期壓力來源。`
+return `青安3.0月付較低，但總利息較高。寬限期只減輕前期負擔，寬限期結束後的「真實月付」才是長期壓力來源。`
     return '兩案各有優勢，請同時比較「寬限期後的真實月付」與總利息。'
 })
 

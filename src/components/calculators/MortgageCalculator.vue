@@ -3,7 +3,7 @@
 
         <!-- 快速預設 -->
         <div class="seg-control">
-            <button @click="applyPreset('newYouth')" :class="['seg-btn', preset === 'newYouth' ? 'seg-btn-active' : '']">🏠 新青安</button>
+            <button @click="applyPreset('newYouth')" :class="['seg-btn', preset === 'newYouth' ? 'seg-btn-active' : '']">🏠 青安3.0</button>
             <button @click="applyPreset('general')"  :class="['seg-btn', preset === 'general'  ? 'seg-btn-active' : '']">🏦 一般房貸</button>
         </div>
 
@@ -41,7 +41,7 @@
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
                 <p v-if="preset === 'newYouth'" class="text-[11px] text-ink-400 mt-1.5 leading-5">
-                    新青安 3.0 一段式採「3+3」退場：前 3 年 1.775%，第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%。本試算以現行優惠利率估算，實際總利息會更高。
+                    青安3.0 一段式採「3+3」退場：前 3 年 1.775%，第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%。本試算以現行優惠利率估算，實際總利息會更高。
                 </p>
             </div>
         </div>
@@ -220,7 +220,7 @@
         <!-- 月付房租比 -->
         <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
-            <p class="mt-1">用本息分期攤還法計算。新青安 3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
+            <p class="mt-1">用本息分期攤還法計算。青安3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
         </div>
 
         <!-- 分享列 -->

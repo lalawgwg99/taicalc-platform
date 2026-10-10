@@ -3,18 +3,18 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import MortgageCompare from '../../components/calculators/MortgageCompare.vue';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
-const title = "新青安 vs 一般房貸：月付與總利息比較｜互動試算 | TaiCalc";
-const description = "輸入貸款金額，即時比較新青安(40年/寬限期5年/利率1.775%)與一般房貸(30年/利率2.185%)的月付金、總利息與負擔差異。附申請資格與方案對照表，決定前先算清楚。";
-const keywords = "新青安vs一般房貸,新青安比較,房貸方案比較,40年房貸,30年房貸,寬限期,房貸利率比較,房貸試算,新青安利率,首購房貸";
+const title = "青安3.0 vs 一般房貸：月付與總利息比較｜互動試算 | TaiCalc";
+const description = "輸入貸款金額，即時比較青安3.0(40年/寬限期5年/利率1.775%)與一般房貸(30年/利率2.5%)的月付金、總利息與負擔差異。附申請資格與方案對照表，決定前先算清楚。";
+const keywords = "青安3.0vs一般房貸,青安3.0比較,房貸方案比較,40年房貸,30年房貸,寬限期,房貸利率比較,房貸試算,青安3.0利率,首購房貸";
 const governance = coreToolGovernance.mortgage;
 
 const faqs = [
     {
-        q: "新青安和一般房貸，誰的總利息比較少？",
-        a: "以貸款 1,000 萬元為例試算：新青安（1.775%、40 年、寬限期 5 年）寬限期後月付約 3.2 萬元，完整期間總利息約 431 萬元；一般房貸（2.185%、30 年、無寬限期）月付約 3.79 萬元，總利息約 366 萬元。也就是說，月付較低的方案因為年限拉長，總利息反而多出約 65 萬元。決定前一定要同時看「月付」與「總利息」。"
+        q: "青安3.0和一般房貸，誰的總利息比較少？",
+        a: "以貸款 1,000 萬元為例試算：青安3.0（優惠利率 1.775%、40 年、寬限期 5 年）寬限期後月付約 3.2 萬元，完整期間總利息約 432 萬元；一般房貸（2.5%、30 年、無寬限期）月付約 3.95 萬元，總利息約 422 萬元。也就是說，月付較低的方案因為年限拉長，總利息反而多出約 10 萬元。注意青安3.0補貼採「3+3」逐年退場，實際總利息會比上表更高。決定前一定要同時看「月付」與「總利息」。"
     },
     {
-        q: "新青安的寬限期 5 年，是免費的嗎？",
+        q: "青安3.0的寬限期 5 年，是免費的嗎？",
         a: "不是。寬限期內仍要按月繳利息（只是不還本金），寬限期結束後因為本金完全沒減、剩餘年數縮短，月付金會明顯跳升。以上述試算為例：寬限期內月付約 1.48 萬元，寬限結束後跳升到約 3.2 萬元。"
     },
     {
@@ -46,14 +46,15 @@ const policyRange = governance.sources
     <MortgageCompare client:only="vue" slot="tool" />
 
     <div slot="article">
-        <h2>新青安 vs 一般房貸：核心差異速覽</h2>
-        <p>2026 年首購族最常問的問題是「該辦新青安，還是直接走一般房貸？」。兩者差的不只利率，還有<strong>年限、寬限期與總利息</strong>。先看這張表，再用上方比較器輸入自己的金額。</p>
+        <h2>青安3.0 vs 一般房貸：核心差異速覽</h2>
+        <p>2026 年首購族最常問的問題是「該辦青安3.0，還是直接走一般房貸？」。兩者差的不只利率，還有<strong>年限、寬限期與總利息</strong>。先看這張表，再用上方比較器輸入自己的金額。</p>
+        <p class="note-box">舊版「新青安」已於 2026-07-31 截止受理；下表為現行 <strong>青安3.0</strong>（2026-08-01～2029-07-31）。</p>
 
         <table class="w-full text-sm border-collapse">
             <thead>
                 <tr class="border-b border-paper-300 text-left text-ink-400">
                     <th class="py-2 pr-3 font-medium">項目</th>
-                    <th class="py-2 pr-3 font-medium text-brand-700">新青安</th>
+                    <th class="py-2 pr-3 font-medium text-brand-700">青安3.0</th>
                     <th class="py-2 font-medium text-ink-600">一般房貸</th>
                 </tr>
             </thead>
@@ -70,8 +71,8 @@ const policyRange = governance.sources
                 </tr>
                 <tr>
                     <td class="py-2 pr-3">利率</td>
-                    <td class="py-2 pr-3 font-semibold text-ink-700">優惠利率 1.775%（補貼期間）</td>
-                    <td class="py-2">市場機動利率，約 2.0%～2.4%</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">優惠利率 1.775%（前 3 年，之後逐年退場）</td>
+                    <td class="py-2">市場機動利率，約 2.5%～2.7%</td>
                 </tr>
                 <tr>
                     <td class="py-2 pr-3">貸額上限</td>
@@ -80,7 +81,7 @@ const policyRange = governance.sources
                 </tr>
                 <tr>
                     <td class="py-2 pr-3">申請資格</td>
-                    <td class="py-2 pr-3 font-semibold text-ink-700">首購、本人或配偶名下無自用住宅</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">首購、本人／配偶／未成年子女名下無自用住宅；未滿 50 歲、本人年所得 200 萬以下</td>
                     <td class="py-2">不限首購</td>
                 </tr>
             </tbody>
@@ -88,14 +89,14 @@ const policyRange = governance.sources
 
         <h3>1,000 萬元試算情境（本頁比較器預設值）</h3>
         <ul>
-            <li><strong>新青安</strong>（1.775%、40 年、寬限期 5 年）：寬限期內月付約 <strong>1.48 萬元</strong>、寬限後約 <strong>3.2 萬元</strong>、總利息約 <strong>431 萬元</strong>。</li>
-            <li><strong>一般房貸</strong>（2.185%、30 年）：月付約 <strong>3.79 萬元</strong>、總利息約 <strong>366 萬元</strong>。</li>
+            <li><strong>青安3.0</strong>（優惠利率 1.775%、40 年、寬限期 5 年）：寬限期內月付約 <strong>1.48 萬元</strong>、寬限後約 <strong>3.2 萬元</strong>、總利息約 <strong>432 萬元</strong>（以優惠利率全程估算，實際採 3+3 退場會更高）。</li>
+            <li><strong>一般房貸</strong>（2.5%、30 年）：月付約 <strong>3.95 萬元</strong>、總利息約 <strong>422 萬元</strong>。</li>
         </ul>
         <blockquote>
-            <strong>關鍵洞察：</strong>新青安把月付壓低，代價是總利息多約 65 萬元。寬限期買到的是「前 5 年的喘氣空間」，不是免費的錢——務必用比較器改動年限與寬限期，找出自己長期負擔得起的組合。
+            <strong>關鍵洞察：</strong>青安3.0把月付壓低，代價是總利息多約 10 萬元（且補貼退場後實際差距更大）。寬限期買到的是「前 5 年的喘氣空間」，不是免費的錢——務必用比較器改動年限與寬限期，找出自己長期負擔得起的組合。
         </blockquote>
 
-        <h3>什麼樣的人適合新青安？</h3>
+        <h3>什麼樣的人適合青安3.0？</h3>
         <ul>
             <li>首購、名下無自用住宅，且短期現金流較緊——先靠寬限期與低利率撐過前幾年。</li>
             <li>預期未來收入明顯成長，寬限期結束後負擔得起跳升後的月付。</li>
@@ -109,6 +110,6 @@ const policyRange = governance.sources
             <li>寬限期後月付會超過家庭月收入 40%：寧可提高自備款或縮短年限。</li>
         </ul>
 
-        <p class="note-box">數字為本頁比較器採本息平均攤還法產生，四捨五入至萬元級；新青安補貼採「3+3」逐年退場，實際利率以承貸銀行通知為準。試算僅供比較，正式金額以銀行核貸為準（{policyRange}）。</p>
+        <p class="note-box">數字為本頁比較器採本息平均攤還法產生，四捨五入至萬元級；青安3.0補貼採「3+3」逐年退場（前 3 年 1.775% → 第 7 年起 2.275%），上表以優惠利率估算、實際總利息更高，實際利率以承貸銀行通知為準。試算僅供比較，正式金額以銀行核貸為準（{policyRange}）。</p>
     </div>
 </ToolLayout>
