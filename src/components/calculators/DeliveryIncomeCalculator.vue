@@ -116,7 +116,7 @@
         ></div>
 
         <div class="relative z-10">
-          <p class="text-sm font-bold text-brand-800 mb-1">實際入袋</p>
+          <p class="text-sm font-bold text-brand-800 mb-1">每月實際入袋</p>
           <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2">
             <span class="text-2xl opacity-70">{{ netIncomeRaw < 0 ? '−$' : '$' }}</span>{{ netIncomeDisplay }}
           </p>

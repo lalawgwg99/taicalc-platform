@@ -205,22 +205,30 @@ const transactions = computed(() => {
     
     // Core Logic:
     // Net Balance = Paid - ShouldPay
-    
-    // Calculate ShouldPay
-    let grandTotal = totalAmount.value; 
+
+    // Calculate ShouldPay as integers (largest remainder method):
+    // shares always sum exactly to the total, so transfers never drift by $1.
+    let grandTotal = Math.round(totalAmount.value || 0);
     let totalWeight = list.reduce((sum, m) => sum + (mode.value === 'weighted' ? m.weight : 1), 0);
-    
-    let balances = list.map(m => {
-        let share = mode.value === 'weighted'
+
+    const rawShares = list.map(m =>
+        mode.value === 'weighted'
             ? (totalWeight > 0 ? (grandTotal * (m.weight / totalWeight)) : 0)
-            : (list.length > 0 ? (grandTotal / list.length) : 0);
-        
-        return {
-            ...m,
-            shouldPay: share,
-            balance: m.paid - share // Positive = Owed money, Negative = Owes money
-        };
-    });
+            : (list.length > 0 ? (grandTotal / list.length) : 0)
+    );
+    const intShares = rawShares.map(s => Math.floor(s));
+    const leftover = grandTotal - intShares.reduce((a, b) => a + b, 0);
+    rawShares
+        .map((s, i) => ({ i, frac: s - Math.floor(s) }))
+        .sort((a, b) => b.frac - a.frac)
+        .slice(0, Math.max(0, leftover))
+        .forEach(({ i }) => { intShares[i]++; });
+
+    let balances = list.map((m, i) => ({
+        ...m,
+        shouldPay: intShares[i],
+        balance: (m.paid || 0) - intShares[i] // Positive = Owed money, Negative = Owes money
+    }));
     
     // Sort creditors (+) and debtors (-)
     let debtors = balances.filter(b => b.balance < -0.1).sort((a,b) => a.balance - b.balance); // Ascending (most negative first)
