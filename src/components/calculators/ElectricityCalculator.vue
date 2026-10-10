@@ -483,7 +483,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-ink-400">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-400"></span> 非夏月：其他月份</div>
-        <div class="md:col-span-2">家用電價用台電 2025-10-01 開始的費率：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03。</div>
+        <div class="md:col-span-2">家用電價用台電 2026-04-01 起實施的費率：夏月一度 $1.78–$8.86、其他月份 $1.78–$7.03。</div>
         <div class="md:col-span-2">已經算進 2025-09-12 公告的每月最低收 100 元規則；冷氣 BTU/h、CSPF 換算只是大概估的，以機器上的銘板跟實際帳單為準。</div>
       </div>
     </footer>
