@@ -110,7 +110,7 @@
         </div>
 
         <div class="text-center bg-amber-50 border border-amber-100 rounded-xl p-3">
-          <p class="text-sm text-amber-800 font-medium">💡 小知識：押金少賺的利息以年化 2% 計算</p>
+          <p class="text-sm text-amber-800 font-medium">💡 小知識：押金少賺的利息以年化 1.7% 計算</p>
           <p class="text-xs text-amber-600/70 mt-1">這筆錢如果拿去定存或投資，每年本應產生的收益。</p>
         </div>
       </div>
@@ -230,7 +230,7 @@ const actualMonthly = computed(() =>
 const depositTotal = computed(() => ((monthlyRent.value || 0) * (depositMonths.value || 0)).toLocaleString());
 const depositCost = computed(() => {
   const deposit = (monthlyRent.value || 0) * (depositMonths.value || 0);
-  return Math.round(deposit * 0.02).toLocaleString();
+  return Math.round(deposit * 0.017).toLocaleString();
 });
 const totalCost = computed(() => {
   const monthly = (monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0);

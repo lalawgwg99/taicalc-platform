@@ -33,27 +33,18 @@
 
         <!-- 利率設定 -->
         <div class="card-surface p-5 space-y-3">
-            <div class="flex items-center justify-between">
-                <p class="text-sm font-medium text-ink-600">利率設定</p>
-                <button @click="twoStageMode = !twoStageMode"
-                    class="text-xs text-azure hover:underline transition-colors">
-                    {{ twoStageMode ? '切換單一利率' : '啟用自訂分段利率' }}
-                </button>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
+            <p class="text-sm font-medium text-ink-600">利率設定</p>
+            <div>
                 <div>
-                    <label for="fld-f18441ea" class="block text-xs font-medium text-ink-400 mb-1.5">
-                        {{ twoStageMode ? '第一段利率（%）' : '年利率（%）' }}
-                    </label>
+                    <label for="fld-f18441ea" class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
                     <input id="fld-f18441ea" type="text" inputmode="decimal" v-model.number="rate1" step="0.005" aria-label="利率"
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
-                <div v-if="twoStageMode">
-                    <label for="fld-7bb4ee94" class="block text-xs font-medium text-ink-400 mb-1.5">第二段利率（%）</label>
-                    <input id="fld-7bb4ee94" type="text" inputmode="decimal" v-model.number="rate2" step="0.005" aria-label="第二段利率"
-                        class="input-clean font-semibold tabular-nums">
-                </div>
+                <p v-if="preset === 'newYouth'" class="text-[11px] text-ink-400 mt-1.5 leading-5">
+                    新青安 3.0 一段式採「3+3」退場：前 3 年 1.775%，第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%。本試算以現行優惠利率估算，實際總利息會更高。
+                </p>
             </div>
+        </div>
             <!-- ⚡ 央行即時利率提示 -->
         <div v-if="liveRate" class="flex items-center justify-between bg-azure-50 rounded-lg px-3 py-2 animate-fade-in-up">
             <div class="flex items-center gap-1.5 text-[11px] text-azure min-w-0">
@@ -66,16 +57,6 @@
                 class="text-[11px] font-medium text-azure hover:text-azure-700 transition-colors ml-3 flex-shrink-0">
                 套用 →
             </button>
-        </div>
-
-        <div v-if="twoStageMode" class="animate-fade-in-up">
-                <label for="fld-2e96bf68" class="block text-xs font-medium text-ink-400 mb-1.5">第一段期間（月）</label>
-                <div class="flex gap-2 items-center">
-                    <input id="fld-2e96bf68" type="text" inputmode="decimal" v-model.number="stage1Months" placeholder="7"
-                        class="input-clean w-24 text-center font-semibold">
-                    <span class="text-xs text-ink-400">個月後變更利率</span>
-                </div>
-            </div>
         </div>
 
         <!-- 提前還款 -->
@@ -126,20 +107,12 @@
                 <div>
                     <p class="text-xs text-ink-400 mb-1">寬限期後</p>
                     <p class="stat-value-md text-ink-700">$ {{ fmt(results.afterGracePay) }}</p>
-                    <p v-if="twoStageMode && results.stage2Pay !== results.afterGracePay"
-                        class="text-xs text-ink-400 mt-1">
-                        （利率變更後：$ {{ fmt(results.stage2Pay) }}）
-                    </p>
                 </div>
             </div>
 
             <!-- 無寬限期 -->
             <div v-else class="text-center">
                 <p class="stat-value-lg text-azure">$ {{ fmt(results.basePay) }}</p>
-                <p v-if="twoStageMode && results.stage2Pay !== results.basePay"
-                    class="text-sm text-ink-400 mt-2">
-                    第 {{ stage1Months + 1 }} 個月起：$ {{ fmt(results.stage2Pay) }}
-                </p>
             </div>
 
             <!-- 摘要統計 -->
@@ -361,14 +334,13 @@ const applyPreset = (type) => {
         years.value        = 40
         graceYears.value   = 5
         rate1.value        = 1.775
-        rate2.value        = 2.299
         twoStageMode.value = false
         stage1Months.value = 12
     } else {
         amountWan.value    = 1200
         years.value        = 30
         graceYears.value   = 0
-        rate1.value        = 2.185
+        rate1.value        = 2.5
         twoStageMode.value = false
     }
 }
@@ -577,9 +549,8 @@ onMounted(() => {
         if (p.has('years'))   years.value        = parseInt(p.get('years'))    || years.value
         if (p.has('grace'))   graceYears.value   = parseInt(p.get('grace'))    ?? graceYears.value
         if (p.has('r1'))      rate1.value        = parseFloat(p.get('r1'))     || rate1.value
-        if (p.has('r2'))      rate2.value        = parseFloat(p.get('r2'))     || rate2.value
-        if (p.has('ts'))      twoStageMode.value = p.get('ts') === '1'
-        if (p.has('sm'))      stage1Months.value = parseInt(p.get('sm'))       || stage1Months.value
+        // 二段式已於青安3.0取消：舊分享連結的 r2/ts/sm 參數不再讀取，強制單一利率
+        twoStageMode.value = false
         // 有 URL 參數時不再讀 localStorage，直接返回
         if (p.has('amount') || p.has('r1')) return
     }
@@ -594,9 +565,8 @@ onMounted(() => {
             if (d.years)                   years.value        = d.years
             if (d.graceYears !== undefined) graceYears.value  = d.graceYears
             if (d.rate1)                   rate1.value        = d.rate1
-            if (d.rate2)                   rate2.value        = d.rate2
-            if (d.stage1Months)            stage1Months.value = d.stage1Months
-            if (d.twoStageMode !== undefined) twoStageMode.value = d.twoStageMode
+            // 舊版 localStorage 的二段式欄位不再還原，強制單一利率
+            twoStageMode.value = false
         }
     } catch (e) {}
 })
