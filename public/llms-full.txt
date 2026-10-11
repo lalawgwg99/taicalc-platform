@@ -9,7 +9,7 @@
 
 ### 1.1 薪資實拿與勞健保試算 (Salary Net Pay Formula)
 - **應付薪資 (Gross Salary)** = 月薪 + 固定津貼
-- **勞保個人負擔 (Labor Insurance)** = 投保薪資級距 × 勞保費率 12% × 個人負擔 20%
+- **勞保個人負擔 (Labor Insurance)** = 投保薪資級距 × 勞保費率 12.5% × 個人負擔 20%
 - **健保個人負擔 (Health Insurance)** = 投保金額級距 × 健保費率 5.17% × 個人負擔 30% × (1 + 眷屬人數 [最多計3人])
 - **勞退自提 (Optional Labor Pension)** = 勞退投保薪資 × 自提比例 (0% ~ 6%) [該金額全額免納當年度綜所稅]
 - **每月實拿薪資 (Net Salary)** = Gross Salary - 勞保 - 健保 - 勞退自提 - 預扣所得稅 (若應預扣)
@@ -25,10 +25,11 @@
 - **本息平均攤還 (Principal and Interest Amortization)**:
   PMT = P * [r(1+r)^n] / [(1+r)^n - 1]
   (P = 貸款本金, r = 月利率, n = 總期數月數)
-- **新青安房貸 (New Youth Mortgage 2026)**:
+- **青安3.0 房貸 (2026-08-01～2029-07-31；舊版新青安已於 2026-07-31 截止)**:
   - 貸款上限 1,000 萬元
   - 寬限期最高 5 年 (期間僅需繳納利息)
   - 最長貸款期限 40 年 (480期)
+  - 補貼採「3+3」逐年退場：前 3 年 1.775%，第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%
 - **線上試算器**: [TaiCalc 房貸試算](https://taicalc.com/tools/mortgage-calculator)
 
 ### 1.4 加班費試算 (Overtime Pay Formula - Labor Standards Act §24)
