@@ -33,6 +33,26 @@ const faqs = [
         q: "如何有效降低夏季電費？",
         a: "幾個省電實招：(1) 冷氣設定 26～28°C，搭配電扇可省電 10～20%；(2) 每月清洗一次濾網；(3) 夏季尖峰減少高耗電家電同時運轉；(4) 換用 LED 燈泡；(5) 若已知冷氣 BTU/h 與 COP/CSPF，可先用本工具找出耗電是否異常，再決定是否換機。"
     },
+    {
+        q: "租屋電費一度 5 元合理嗎？房東這樣收算超收嗎？",
+        a: "很可能超收。以每月用電 300 度為例，台電實收金額為非夏月 621 元、夏月 673 元；房東若按一度 5 元收就是 1,500 元，約為台電實價的 2.2～2.4 倍。2024 年 7 月上路的租屋電費新制規定，房東按度計費不得超過電費單的「每度平均電價」，超收部分房客可要求返還。簽約前先用本工具算出台電實價，再跟房東談。"
+    },
+    {
+        q: "兩房小家庭一個月電費大概多少？",
+        a: "以兩大一小、冷氣加電熱水器加家電齊全為例：非夏月每月約 400 度，電費約 908 元；夏天冷氣全開每月約 650 度，電費約 2,167 元。台電多為雙月抄表，夏天的雙月帳單會一次看到約 4,334 元，先有心理準備就不會被嚇到。"
+    },
+    {
+        q: "冷氣開整晚（8 小時）一個月要多花多少電費？",
+        a: "以輸入功率 0.9 kW 的變頻冷氣為例：0.9 kW × 8 小時 × 30 天＝216 度電，換算電費非夏月約 431 元/月、夏月約 459 元/月。另外提醒：冷氣噸數要配對房間坪數，噸數不足時壓縮機全速運轉反而更耗電。"
+    },
+    {
+        q: "一級能效冰箱一年電費多少？換掉老冰箱省多少？",
+        a: "看能源效率標示的「年耗電量」。以年耗電 300 度的一級能效冰箱為例，月均 25 度，25 × 1.78＝44.5 元，未達每月最低計收 100 元，以 100 元計收，一年電費約 1,200 元。老舊冰箱（200W 全年不停，年耗電約 1,752 度）一年電費約 3,276 元，換新一年可省約 2,076 元。"
+    },
+    {
+        q: "為什麼夏天的電費帳單特別貴？",
+        a: "兩個原因疊加：第一，台電多為每兩個月抄表，帳單金額是兩個月的用量；第二，6～9 月適用較貴的夏月費率。以小家庭夏天每月 650 度為例，單月電費 2,167 元，雙月帳單一次就是約 4,334 元，看起來嚇人但公式正確，不是被多收。"
+    },
 ];
 ---
 
@@ -84,5 +104,32 @@ const faqs = [
         <blockquote>
             <strong>資料版本：</strong> 本頁住宅級距單價採台電 2026-04-01 起實施費率（115 年 3 月 27 日電價審議會決議），並納入每月最低計收 100 元規則。冷氣換算屬估算，實際仍以設備銘板與帳單為準。
         </blockquote>
+
+        <h2>三種家庭的實際電費案例</h2>
+        <p>直接看數字最有感。以下皆以台電 2026-04-01 住宅費率、用本頁同款公式試算：</p>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">家庭型態</th>
+                    <th class="py-2 pr-3 font-medium">每月用電</th>
+                    <th class="py-2 pr-3 font-medium">非夏月電費</th>
+                    <th class="py-2 font-medium">夏月電費</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600">
+                <tr><td class="py-2 pr-3">單身租屋族（套房＋小冷氣）</td><td class="py-2 pr-3">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700">395 元</td><td class="py-2 font-semibold text-ink-700">418 元</td></tr>
+                <tr><td class="py-2 pr-3">小資租屋（1 房 1 廳）</td><td class="py-2 pr-3">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700">621 元</td><td class="py-2 font-semibold text-ink-700">673 元</td></tr>
+                <tr><td class="py-2 pr-3">兩房小家庭（冷氣＋電熱水器）</td><td class="py-2 pr-3">非夏月 400 度／夏月 650 度</td><td class="py-2 pr-3 font-semibold text-ink-700">908 元</td><td class="py-2 font-semibold text-ink-700">2,167 元</td></tr>
+            </tbody>
+        </table>
+        <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單金額約為上表 × 2（例如小家庭夏月雙月帳單約 4,334 元）。</p>
+
+        <h2>相關工具與延伸閱讀</h2>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><a href="/tools/rent-cost-calculator" class="text-ink-700 underline underline-offset-4">租屋成本計算機</a>：房租、水電、管理費一次算清，租屋族比價簽約前必用。</li>
+            <li><a href="/tools/home-ownership-cost-calculator" class="text-ink-700 underline underline-offset-4">購屋成本計算機</a>：買房後的水電、管理費等長期持有成本一起估。</li>
+            <li><a href="/blog/2026-october-electricity-price-freeze-guide" class="text-ink-700 underline underline-offset-4">2026年10月電價凍漲解讀：應漲沒漲，你的電費單差了多少？</a></li>
+            <li><a href="/blog/2026-rental-electricity-rate-legal-guide" class="text-ink-700 underline underline-offset-4">2026租屋電費一度收多少才合法？租屋電費新制懶人包</a></li>
+        </ul>
     </div>
 </ToolLayout>
