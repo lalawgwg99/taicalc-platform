@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { platformGovernance } from '../data/regulatoryMetadata';
 import { toolCatalog } from '../data/toolCatalog';
+import YiwenPromo from '../components/YiwenPromo.astro';
 
 const title = "TaiCalc｜台灣生活計算工具";
 const description = "薪資、房貸、買車、稅務與生活成本試算工具；資料年度與來源清楚標示。";
@@ -181,6 +182,8 @@ const toolListSchema = JSON.stringify({
             </div>
         </div>
     </section>
+
+    <YiwenPromo variant="banner" />
 
     <section class="border-t border-paper-300 v2-section reveal" data-reveal>
         <div class="max-w-3xl mx-auto px-4 md:px-6">

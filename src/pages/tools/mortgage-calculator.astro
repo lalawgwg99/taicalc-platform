@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import YiwenPromo from '../../components/YiwenPromo.astro';
 import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
 import IntentPanel from '../../components/IntentPanel.astro';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
@@ -50,6 +51,7 @@ const faqs = [
         source="mortgage"
         partnerTitle="房貸、轉增貸與購屋服務合作"
     />
+    <YiwenPromo slot="after-tool" />
 
     <div slot="article">
         <h2>2026 房貸試算重點：青安3.0與寬限期策略</h2>

@@ -1,0 +1,26 @@
+---
+// 易問 cross-promo：TaiCalc（算數字） ↔ 易問（觀大勢）
+// variant="banner" 用於首頁大橫幅；variant="line" 用於工具頁內嵌一行
+const { variant = "line" } = Astro.props;
+const url = "https://yiwen.taicalc.com";
+---
+{variant === "banner" ? (
+  <section class="border-t border-paper-300 v2-section reveal" data-reveal>
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="rounded-3xl border border-paper-300 bg-paper-200/70 p-8 md:p-10 text-center">
+        <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-ink-500">數字之外</p>
+        <h2 class="mt-2 text-xl md:text-2xl font-semibold text-ink-700">算完數字，心還沒定？</h2>
+        <p class="mt-3 text-sm leading-7 text-ink-500 max-w-xl mx-auto">
+          易問——問事・起卦・觀變。重大決定前起一卦、觀大勢，給自己多一個思考角度。
+        </p>
+        <div class="mt-6">
+          <a href={url} target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-xl bg-brand-400 px-6 py-3 text-sm font-semibold text-ink-900 shadow-sm transition hover:bg-brand-300">
+            去易問起一卦 →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+) : (
+  <p class="note-box">🔮 數字算完了，心還沒定？<a href={url} target="_blank" rel="noopener" class="font-semibold text-brand-700 hover:underline">去易問起一卦，觀大勢 →</a></p>
+)}

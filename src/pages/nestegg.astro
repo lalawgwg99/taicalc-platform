@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import YiwenPromo from '../components/YiwenPromo.astro';
 import NestEggApp from '../nestegg/index';
 
 const title = "NestEgg 退休現金流規劃｜TaiCalc";
@@ -40,4 +41,5 @@ const faqSchema = JSON.stringify({
 <Layout title={title} description={description} keywords={keywords} canonical={canonical} fullWidth>
   <script type="application/ld+json" set:html={faqSchema} slot="head" />
   <NestEggApp client:only="react" />
+  <div class="max-w-3xl mx-auto px-4 mt-6"><YiwenPromo /></div>
 </Layout>
