@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NestEggApp from '../nestegg/index';
+
+const title = "NestEgg 退休現金流規劃｜TaiCalc";
+const description = "NestEgg 退休現金流規劃：分開計算勞保、國保、勞退與每筆投資，算出資產幾歲用完、退休缺口多少，並給出下一步。中英雙語。";
+const keywords = "退休規劃,退休金試算,勞保年金,勞退,國民年金,退休現金流,資產幾歲用完,retirement calculator,Taiwan pension";
+const canonical = "https://taicalc.com/nestegg";
+
+const faqs = [
+  {
+    q: "退休金要準備多少才夠？",
+    desc: "把退休後每月生活費、通膨、勞保勞退收入和自己的投資放在一起算，NestEgg 會直接告訴你資產大約幾歲用完、還差多少。",
+  },
+  {
+    q: "勞保、國保、勞退可以一起算嗎？",
+    desc: "可以。NestEgg 把勞保老年年金、國民年金、勞退個人專戶分開計算，再跟你的投資加總，不會混在一起。",
+  },
+  {
+    q: "已經在國外工作，還能用嗎？",
+    desc: "可以。年金開關各自獨立：只在台灣工作過、有年資的才打開；幣別與出生年曆法（民國／西元）也可以單獨切換。",
+  },
+  {
+    q: "試算結果是保證嗎？",
+    desc: "不是。NestEgg 是教育試算工具，依你填的假設計算，不保證報酬、不預測市場，壓力測試只是用不利條件檢查承受力。",
+  },
+];
+
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.desc },
+  })),
+});
+---
+
+<Layout title={title} description={description} keywords={keywords} canonical={canonical} fullWidth>
+  <script type="application/ld+json" set:html={faqSchema} slot="head" />
+  <NestEggApp client:only="react" />
+</Layout>
