@@ -211,6 +211,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['保險', 'IRR', '保單', '保障缺口', '保險效益'],
   },
   {
+    href: '/nestegg',
+    label: 'NestEgg 退休現金流規劃',
+    desc: '勞保、國保、勞退與投資一起算，資產幾歲用完一次看清。',
+    category: '投資與退休',
+    isCore: true,
+    scenario: '想一次算清退休夠不夠用前',
+    cta: '規劃退休現金流',
+    tags: ['退休規劃', '退休金', '勞保', '勞退', '國民年金', '現金流', 'NestEgg'],
+  },
+  {
     href: '/tools/fire-calculator',
     label: 'FIRE 退休規劃',
     desc: '財務自由數字、儲蓄率與提早退休年齡試算。',
