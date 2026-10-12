@@ -3,6 +3,39 @@
 <template>
     <div class="calculator-shell space-y-4">
 
+        <!-- 標章圖解 -->
+        <details class="card-surface p-5">
+            <summary class="text-sm font-bold text-ink-700 cursor-pointer">🏷️ 標章看不懂？點開圖解，30 秒找到要填的數字</summary>
+            <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <div class="rounded-xl border-2 border-dashed border-brand-300 bg-brand-50/50 p-4">
+                    <p class="text-[11px] font-bold text-ink-400 mb-2">能源效率標示長這樣（重點只有 2 個）</p>
+                    <div class="rounded-lg bg-white border border-paper-300 p-3 space-y-2 text-sm">
+                        <div class="rounded-lg bg-amber-100 border-2 border-amber-400 p-2.5 relative">
+                            <p class="text-xs text-ink-400">每年耗電量</p>
+                            <p class="text-xl font-black text-ink-700">約 <span class="text-brand-700">XXX</span> 度</p>
+                            <span class="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">1</span>
+                        </div>
+                        <p class="text-[11px] text-ink-500">👆 <strong>① 這個數字填進來</strong>，就是比電費用的年耗電量</p>
+                        <div class="rounded-lg bg-paper-100 p-2.5 relative">
+                            <p class="text-xs text-ink-400">能源效率等級</p>
+                            <p class="text-lg font-black text-ink-700">第 <span class="text-brand-700">1</span> 級 <span class="text-xs font-normal text-ink-400">（1 最省 → 5 最耗電）</span></p>
+                            <span class="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">2</span>
+                        </div>
+                        <p class="text-[11px] text-ink-500">👆 <strong>② 等級只看排名</strong>，同級之間還是要比 ① 的數字才準</p>
+                    </div>
+                </div>
+                <div class="text-sm space-y-2.5">
+                    <p class="text-[11px] font-bold text-ink-400">名詞白話翻譯</p>
+                    <div class="space-y-2 text-[13px] leading-relaxed text-ink-600">
+                        <p><strong>CSPF</strong>（冷氣）：一整季平均多省電，數字越大越省。不用背，拿來比較兩台冷氣誰省電很好用。</p>
+                        <p><strong>EER</strong>（冷氣）：瞬間效率，看看就好，買冷氣以 CSPF 和年耗電量為主。</p>
+                        <p><strong>EF 值</strong>（冰箱／除濕機）：每用 1 度電能產生多少效果（冰箱是保冷公升數、除濕機是除濕公升數），越大越省。</p>
+                        <p><strong>每年耗電量</strong>：實驗室標準條件測出來的全年用電度數。拿來<strong>比較兩台誰省電</strong>最公平；估自家電費則要再乘上你的使用習慣。</p>
+                    </div>
+                </div>
+            </div>
+        </details>
+
         <!-- 共用：電價 -->
         <div class="card-surface p-5">
             <label for="fld-price" class="block text-xs font-medium text-ink-400 mb-1.5">平均每度電價（元/度）</label>
@@ -20,6 +53,21 @@
                         class="input-clean text-base font-bold w-2/3" :placeholder="`A款家電`">
                     <span v-if="championIdx === i && hasResult"
                         class="text-[11px] font-bold text-white bg-brand-600 rounded-full px-2.5 py-1">👑 最省</span>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-ink-400 mb-1.5">這台是什麼家電？</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button v-for="t in appTypes" :key="t.id" type="button" @click="app.type = t.id"
+                            :aria-pressed="app.type === t.id"
+                            class="py-2 px-1 rounded-xl border text-xs font-semibold transition-all"
+                            :class="app.type === t.id ? 'border-brand-600 bg-brand-600 text-white' : 'border-paper-300 bg-white text-ink-500'">
+                            {{ t.icon }} {{ t.label }}
+                        </button>
+                    </div>
+                    <div v-if="typeGuide(app.type)" class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-2.5">
+                        <p class="text-[12px] leading-relaxed text-ink-600">📋 {{ typeGuide(app.type) }}</p>
+                    </div>
                 </div>
 
                 <div>
@@ -137,10 +185,29 @@ import { ref, computed, watch } from 'vue';
 
 const pricePerKwh = ref(4.0);
 
-const blankApp = (name) => ({ name, level: '', mode: 'label', labelKwh: null, watts: null, hours: null, price: null });
+const appTypes = [
+    { id: 'ac', icon: '❄️', label: '冷氣' },
+    { id: 'fridge', icon: '🧊', label: '冰箱' },
+    { id: 'dehumid', icon: '💧', label: '除濕機' },
+    { id: 'tv', icon: '📺', label: '電視' },
+    { id: 'washer', icon: '🌀', label: '洗衣機' },
+    { id: 'other', icon: '🔌', label: '其他' },
+];
+
+const typeGuides = {
+    ac: '看標章左上角「每年耗電量 約XXX度」，把 XXX 填進下面。只看到 CSPF？數字越大越省，兩台都填年耗電量來比最準。',
+    fridge: '看標章左上角「每年耗電量 約XXX度」，把 XXX 填進下面。冰箱 24 小時運轉，這個數字直接比最公平。',
+    dehumid: '看標章的「能源因數值（EF）」，是每度電能除幾公升水，越大越省。下方直接填年耗電量來比電費也行。',
+    tv: '看標章左上角「每年耗電量 約XXX度」，把 XXX 填進下面。',
+    washer: '看標章左上角「每年耗電量 約XXX度」，把 XXX 填進下面。',
+    other: '找標章或銘板上的「每年耗電量」或「消耗功率（W）」，填進下面對應欄位。',
+};
+const typeGuide = (type) => typeGuides[type] || '';
+
+const blankApp = (name) => ({ name, type: '', level: '', mode: 'label', labelKwh: null, watts: null, hours: null, price: null });
 const apps = ref([
-    Object.assign(blankApp('A款：變頻冷氣'), { level: '1', labelKwh: 900, price: 35000 }),
-    Object.assign(blankApp('B款：定頻冷氣'), { level: '3', labelKwh: 1500, price: 26000 }),
+    Object.assign(blankApp('A款：變頻冷氣'), { type: 'ac', level: '1', labelKwh: 900, price: 35000 }),
+    Object.assign(blankApp('B款：定頻冷氣'), { type: 'ac', level: '3', labelKwh: 1500, price: 26000 }),
     blankApp('C款'),
 ]);
 
