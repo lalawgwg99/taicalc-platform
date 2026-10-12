@@ -34,19 +34,13 @@ const faqs = [
 >
     <div slot="tool">
         <div class="st-tabs" role="tablist" aria-label="訂閱管家功能切換">
-            <button type="button" data-st-tab="home" role="tab" aria-selected="true">🏠 首頁</button>
-            <button type="button" data-st-tab="list" role="tab" aria-selected="false">📝 清單</button>
-            <button type="button" data-st-tab="cal" role="tab" aria-selected="false">📅 月曆</button>
-            <button type="button" data-st-tab="guide" role="tab" aria-selected="false">❓ 取消指南</button>
+            <button type="button" data-st-tab="home" role="tab" aria-selected="true">⏳ 提醒</button>
+            <button type="button" data-st-tab="list" role="tab" aria-selected="false">📝 訂閱</button>
             <button type="button" data-st-tab="form" role="tab" aria-selected="false">＋ 新增</button>
         </div>
 
         <div data-st-panel="home" role="tabpanel">
             <div id="st-homeBanner"></div>
-            <div class="st-grid2">
-                <div class="st-card st-stat"><div class="st-big" id="st-statMonthPaid">–</div><div class="st-label">本月已扣</div></div>
-                <div class="st-card st-stat"><div class="st-big" id="st-statNextMonth">–</div><div class="st-label">下月預估</div></div>
-            </div>
             <div class="st-card">
                 <h3>⏳ 取消期限倒數</h3>
                 <div id="st-cancelList"><div class="st-muted">載入中…</div></div>
@@ -56,11 +50,6 @@ const faqs = [
                 <h3>⏰ 7 天內扣款</h3>
                 <div id="st-dueList"><div class="st-muted">載入中…</div></div>
             </div>
-            <div class="st-card">
-                <h3>📊 每月花費分佈 <span class="st-muted" style="font-weight:400">（估算）</span></h3>
-                <div id="st-catBars"><div class="st-muted">載入中…</div></div>
-                <div class="st-foot">USD 以 1:32 換算台幣；年繳以月平均計入。</div>
-            </div>
         </div>
 
         <div data-st-panel="list" role="tabpanel" hidden>
@@ -69,22 +58,6 @@ const faqs = [
                 <summary id="st-histSummary">已取消的訂閱</summary>
                 <div id="st-histList"></div>
             </details>
-        </div>
-
-        <div data-st-panel="cal" role="tabpanel" hidden>
-            <div class="st-card">
-                <div class="st-cal-head">
-                    <button type="button" id="st-calPrev" aria-label="上個月">‹</button>
-                    <strong id="st-calTitle"></strong>
-                    <button type="button" id="st-calNext" aria-label="下個月">›</button>
-                </div>
-                <div class="st-cal-grid" id="st-calGrid"></div>
-                <div class="st-foot">🔴 扣款日（含試用轉付費）　⚠️ 最晚取消日</div>
-            </div>
-        </div>
-
-        <div data-st-panel="guide" role="tabpanel" hidden>
-            <div class="st-card" id="st-guideBody"></div>
         </div>
 
         <div data-st-panel="form" role="tabpanel" hidden>
@@ -348,15 +321,8 @@ const faqs = [
             }
             function renderHome() {
                 var today = todayStr();
-                var t = today.split('-');
-                var y = +t[0], m = +t[1];
-                var cur = monthRange(y, m);
-                var nm = m === 12 ? 1 : m + 1, ny = m === 12 ? y + 1 : y;
-                var nxt = monthRange(ny, nm);
 
                 var live = state.subs.filter(isLive);
-                $('st-statMonthPaid').textContent = twd(sumBillingInRange(live, cur.start, today));
-                $('st-statNextMonth').textContent = twd(sumBillingInRange(live, nxt.start, nxt.end));
 
                 var due = getDue(state.subs, today);
 
@@ -422,25 +388,6 @@ const faqs = [
                     }).join('');
                 }
 
-                /* 分類統計 */
-                var cats = {};
-                live.forEach(function (s) {
-                    var c = s.category || '未分類';
-                    cats[c] = (cats[c] || 0) + toTWD(monthlyAvg(s), s.currency);
-                });
-                var entries = Object.keys(cats).map(function (k) { return [k, cats[k]]; })
-                    .sort(function (a, b) { return b[1] - a[1]; });
-                var cb2 = $('st-catBars');
-                if (!entries.length) {
-                    cb2.innerHTML = '<div class="st-muted">尚無資料</div>';
-                } else {
-                    var max = entries[0][1] || 1;
-                    cb2.innerHTML = entries.map(function (e) {
-                        var pct = Math.max(4, Math.round(e[1] / max * 100));
-                        return '<div class="st-bar"><div class="st-blabel"><span>' + esc(e[0]) + '</span><span>' + twd(e[1]) + '/月</span></div>' +
-                            '<div class="st-track"><div class="st-fill" style="width:' + pct + '%"></div></div></div>';
-                    }).join('');
-                }
             }
 
             /* ---------- 清單 ---------- */
@@ -453,7 +400,16 @@ const faqs = [
                     return da < db ? -1 : da > db ? 1 : 0;
                 });
 
-                function card(s) {
+                function guideFor(name) {
+                var n = String(name || '').toLowerCase().replace(/\s+/g, '');
+                for (var i = 0; i < GUIDE.length; i++) {
+                    var g = GUIDE[i].name.toLowerCase().replace(/\s+/g, '');
+                    if (n.indexOf(g) !== -1 || g.indexOf(n) !== -1) return GUIDE[i];
+                }
+                return null;
+            }
+
+            function card(s) {
                     var cancelled = s.status === 'cancelled';
                     var cb = cancelled ? '' : getCancelBy(s, today);
                     var cbd = cancelled ? 999 : daysUntil(cb, today);
@@ -463,6 +419,10 @@ const faqs = [
                     var paid = totalPaid(s, today);
                     var cancelLine = cancelled ? '' :
                         '<div class="st-cancel' + (urgent ? ' st-urgent' : '') + '">⚠️ 最晚取消：' + cb + '（' + (cbd === 0 ? '今天到期' : '剩 ' + cbd + ' 天') + '）</div>';
+                    var gd = cancelled ? null : guideFor(s.name);
+                    var guideLine = !gd ? '' :
+                        '<details class="st-guide"><summary>🔌 怎麼取消？</summary><ol>' +
+                        gd.steps.map(function (st) { return '<li>' + esc(st) + '</li>'; }).join('') + '</ol></details>';
                     var countTxt;
                     if (cancelled) countTxt = '已取消';
                     else if (s.status === 'paused') countTxt = '暫停中';
@@ -476,6 +436,7 @@ const faqs = [
                         (s.category ? '・' + esc(s.category) : '') +
                         (s.pay_method ? '・' + esc(s.pay_method) : '') + '</div>' +
                         cancelLine +
+                        guideLine +
                         '<div class="st-row" style="margin-top:6px"><div class="st-count' + (urgent ? ' st-soon' : '') + '">' + esc(countTxt) + '</div>' +
                         '<div class="st-muted">累計 ' + twd(toTWD(paid, s.currency)) + '</div></div>' +
                         '<div class="st-btnrow">' +
@@ -637,78 +598,12 @@ const faqs = [
                 switchView('list');
             });
 
-            /* ---------- 月曆 ---------- */
-            function renderCal() {
-                var today = todayStr();
-                if (!state.calY) {
-                    var t = today.split('-');
-                    state.calY = +t[0]; state.calM = +t[1];
-                }
-                var y = state.calY, m = state.calM;
-                $('st-calTitle').textContent = y + ' 年 ' + m + ' 月';
 
-                var firstDow = new Date(y, m - 1, 1).getDay();
-                var daysIn = new Date(y, m, 0).getDate();
-                var r = monthRange(y, m);
-
-                var byDay = {};
-                state.subs.filter(isLive).forEach(function (s) {
-                    var n = 0, guard = 0;
-                    while (guard < 2000) {
-                        var d = billingAt(s, n);
-                        if (d > r.end) break;
-                        if (d >= r.start) {
-                            (byDay[d] = byDay[d] || []).push({ name: s.name, kind: 'bill' });
-                        }
-                        n++; guard++;
-                    }
-                    var cb = getCancelBy(s, today);
-                    if (cb >= r.start && cb <= r.end) {
-                        (byDay[cb] = byDay[cb] || []).push({ name: s.name, kind: 'cancel' });
-                    }
-                    if (s.status === 'trial' && s.trial_end && s.trial_end >= r.start && s.trial_end <= r.end) {
-                        (byDay[s.trial_end] = byDay[s.trial_end] || []).push({ name: s.name + '（試用到期）', kind: 'bill' });
-                    }
-                });
-
-                var html = ['日', '一', '二', '三', '四', '五', '六'].map(function (d) {
-                    return '<div class="st-dow">' + d + '</div>';
-                }).join('');
-                for (var i = 0; i < firstDow; i++) html += '<div class="st-day st-other"></div>';
-                for (var day = 1; day <= daysIn; day++) {
-                    var ds = y + '-' + pad(m) + '-' + pad(day);
-                    var marks = (byDay[ds] || []).slice(0, 3);
-                    html += '<div class="st-day"><div>' + day + '</div>' +
-                        marks.map(function (mk) {
-                            return '<div class="st-dot' + (mk.kind === 'cancel' ? ' st-warn' : '') + '" title="' + esc(mk.name) + '"></div>';
-                        }).join('') + '</div>';
-                }
-                $('st-calGrid').innerHTML = html;
-            }
-            $('st-calPrev').addEventListener('click', function () {
-                state.calM--; if (state.calM < 1) { state.calM = 12; state.calY--; } renderCal();
-            });
-            $('st-calNext').addEventListener('click', function () {
-                state.calM++; if (state.calM > 12) { state.calM = 1; state.calY++; } renderCal();
-            });
-
-            /* ---------- 取消指南 ---------- */
-            function renderGuide() {
-                $('st-guideBody').innerHTML = '<h3>🔌 取消訂閱指南</h3>' +
-                    '<div class="st-muted">各平台取消路徑（2026 年整理，介面可能微調）：</div>' +
-                    GUIDE.map(function (g) {
-                        return '<h4>' + esc(g.name) + '</h4><ol>' +
-                            g.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
-                    }).join('') +
-                    '<div class="st-foot">小提醒：取消流程應與訂閱同等便利（易進易出）。取消後務必確認收到確認信或截圖留存；若遇到惡意挽留，可向消保處申訴。</div>';
-            }
 
             /* ---------- 總渲染 ---------- */
             function renderAll() {
                 renderHome();
                 renderList();
-                renderCal();
-                renderGuide();
             }
 
             renderAll();
@@ -716,8 +611,10 @@ const faqs = [
         </script>
 
         <style>
-            .st-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; }
+            .st-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .st-tabs::-webkit-scrollbar { display: none; }
             .st-tabs [data-st-tab] {
+                flex-shrink: 0;
                 padding: 0.6rem 0.9rem; font-size: 0.875rem; font-weight: 600; white-space: nowrap;
                 color: #78716c; background: transparent; border: none; cursor: pointer;
                 border-bottom: 2px solid transparent; margin-bottom: -2px;
@@ -725,6 +622,9 @@ const faqs = [
             .st-tabs [data-st-tab][aria-selected="true"] { color: #2F7550; border-bottom-color: #2F7550; }
             .st-tabs [data-st-tab]:hover { color: #44403c; }
             .st-card { background: #FFFDF7; border: 1px solid #E8E4DA; border-radius: 1rem; padding: 1rem 1.1rem; margin-bottom: 0.9rem; }
+            :global(.st-guide) { margin-top: 8px; font-size: 0.85rem; }
+            :global(.st-guide summary) { cursor: pointer; font-weight: 600; color: #2F7550; }
+            :global(.st-guide ol) { margin: 6px 0 0; padding-left: 1.2rem; color: #57534e; line-height: 1.7; }
             .st-card h3 { font-size: 0.95rem; font-weight: 700; color: #25231F; margin: 0 0 0.6rem; }
             .st-card h4 { font-size: 0.875rem; font-weight: 700; color: #25231F; margin: 1rem 0 0.35rem; }
             .st-card ol { margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem; line-height: 1.8; color: #4A463B; }
