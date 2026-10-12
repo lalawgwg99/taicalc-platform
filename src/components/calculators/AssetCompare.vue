@@ -101,8 +101,8 @@ watch(inflation, validate)
 const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
-    const p = new URLSearchParams({ a: String(Math.round(amountWan.value)), y: String(years.value), i: String(inflation.value) })
-    return `${window.location.origin}/compare/asset-real-return?${p.toString()}`
+    const p = new URLSearchParams({ tab: 'assetvs', a: String(Math.round(amountWan.value)), y: String(years.value), i: String(inflation.value) })
+    return `${window.location.origin}/tools/real-return-calculator?${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

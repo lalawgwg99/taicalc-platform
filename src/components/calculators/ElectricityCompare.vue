@@ -103,7 +103,7 @@ const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
     const p = new URLSearchParams({ kwh: String(Math.round(kwh.value)) })
-    return `${window.location.origin}/compare/electricity-summer-vs-nonsummer?${p.toString()}`
+    return `${window.location.origin}/tools/electricity-calculator?tab=summer&${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

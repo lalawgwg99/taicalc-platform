@@ -9,7 +9,16 @@ const title = "TaiCalc｜台灣生活計算工具";
 const description = "薪資、房貸、買車、稅務與生活成本試算工具；資料年度與來源清楚標示。";
 const keywords = "人生模擬器,台灣人生模擬器,人生遊戲,台灣計算機,買車成本,離職資遣費,債務整合,勞保老年年金,育兒津貼,買房成本";
 
-const categoryNames = Array.from(new Set(toolCatalog.map((tool) => tool.category)));
+const toolGroups = [
+    { title: '買房置產', desc: '買房、房貸、包租投報一次搞定', hrefs: ['/tools/mortgage-calculator', '/tools/home-ownership-cost-calculator', '/tools/rental-yield-calculator'] },
+    { title: '租屋生活', desc: '租屋、電費、分帳日常開銷', hrefs: ['/tools/rent-cost-calculator', '/tools/electricity-calculator', '/tools/split-calculator'] },
+    { title: '薪資稅務', desc: '薪水、報稅、勞健保、離職結算', hrefs: ['/tools/salary-calculator', '/tools/income-tax-calculator', '/tools/insurance-calculator', '/tools/overtime-calculator', '/tools/year-end-bonus-calculator', '/tools/severance-calculator', '/tools/estate-gift-tax-calculator'] },
+    { title: '工作收入', desc: '外送實拿、債務整合', hrefs: ['/tools/delivery-income-calculator', '/tools/debt-consolidation-calculator'] },
+    { title: '投資理財', desc: '股票、ETF、長期投資、保險評估', hrefs: ['/tools/stock-calculator', '/tools/etf-dividend-calculator', '/tools/long-term-investing-calculator', '/tools/real-return-calculator', '/tools/insurance-assessment'] },
+    { title: '退休規劃', desc: 'FIRE、勞保勞退、人生模擬', hrefs: ['/tools/fire-calculator', '/tools/labor-insurance-pension-calculator', '/tools/labor-pension-calculator', '/tools/life-simulator'] },
+    { title: '家庭買車', desc: '育兒津貼、買車總成本', hrefs: ['/tools/parental-benefit-calculator', '/tools/car-cost-calculator'] },
+];
+const toolByHref = new Map(toolCatalog.map((tool) => [tool.href, tool]));
 
 const hotHrefs = new Set([
     '/tools/delivery-income-calculator',
@@ -59,6 +68,20 @@ const toolListSchema = JSON.stringify({
 });
 ---
 
+<style>
+    .proto-tool-group { margin-top: 2.4rem; }
+    .proto-tool-group:first-of-type { margin-top: 1.8rem; }
+    .proto-group-head { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; }
+    .proto-group-title {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #161511;
+        letter-spacing: .02em;
+    }
+    .proto-group-desc { color: #5C665D; font-size: .88rem; }
+    .proto-tool-group .proto-cards { margin-top: 1rem; }
+</style>
+
 <Layout title={title} description={description} keywords={keywords} fullWidth>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
     <script type="application/ld+json" set:html={toolListSchema} slot="head" />
@@ -106,32 +129,35 @@ const toolListSchema = JSON.stringify({
             <h2 class="proto-h2">從一個問題開始</h2>
             <p class="proto-tools-sub">不先要求你理解名詞；先選生活情境，再逐步帶你得到可解讀的結果。</p>
 
-            <div class="proto-pills" role="group" aria-label="依情境篩選工具">
-                <button type="button" class="is-active" data-category-filter="all" aria-pressed="true">全部</button>
-                {categoryNames.map((category) => (
-                    <button type="button" data-category-filter={category} aria-pressed="false">{category}</button>
-                ))}
-            </div>
-            <p id="catalog-status" class="sr-only" aria-live="polite"></p>
-
-            <div id="catalog-grid" class="proto-cards">
-                {toolCatalog.map((tool) => (
-                    <a href={tool.href} class="proto-card group" data-category={tool.category} data-sfx="tap">
-                        <div class="proto-card-top">
-                            <span class="proto-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon ?? defaultIcon} />
-                            </span>
-                            {hotHrefs.has(tool.href) && <span class="proto-hot">熱門</span>}
-                        </div>
-                        <h3>{tool.label.split(' | ')[0].split(' (')[0]}</h3>
-                        <p class="proto-card-desc">{tool.desc}</p>
-                        <div class="proto-card-foot">
-                            <span>{tool.category}</span>
-                            <span class="proto-go">開始試算 →</span>
-                        </div>
-                    </a>
-                ))}
-            </div>
+            {toolGroups.map((group) => (
+                <section class="proto-tool-group" aria-label={group.title}>
+                    <div class="proto-group-head">
+                        <h3 class="proto-group-title">{group.title}</h3>
+                        <p class="proto-group-desc">{group.desc}</p>
+                    </div>
+                    <div class="proto-cards">
+                        {group.hrefs.map((href) => {
+                            const tool = toolByHref.get(href);
+                            return (
+                                <a href={tool.href} class="proto-card group" data-sfx="tap">
+                                    <div class="proto-card-top">
+                                        <span class="proto-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon ?? defaultIcon} />
+                                        </span>
+                                        {hotHrefs.has(tool.href) && <span class="proto-hot">熱門</span>}
+                                    </div>
+                                    <h3>{tool.label.split(' | ')[0].split(' (')[0]}</h3>
+                                    <p class="proto-card-desc">{tool.desc}</p>
+                                    <div class="proto-card-foot">
+                                        <span>{group.title}</span>
+                                        <span class="proto-go">開始試算 →</span>
+                                    </div>
+                                </a>
+                            );
+                        })}
+                    </div>
+                </section>
+            ))}
         </div>
     </section>
 
@@ -281,27 +307,6 @@ document.addEventListener('keydown', (event) => {
     if (tag === 'input' || tag === 'textarea') return;
     event.preventDefault();
     searchInput?.focus();
-});
-
-const catalogFilters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-category-filter]'));
-const catalogCards = Array.from(document.querySelectorAll<HTMLElement>('.proto-card'));
-const catalogStatus = document.getElementById('catalog-status');
-
-catalogFilters.forEach((button) => {
-    button.addEventListener('click', () => {
-        const selected = button.dataset.categoryFilter || 'all';
-        catalogFilters.forEach((filter) => {
-            const active = filter === button;
-            filter.classList.toggle('is-active', active);
-            filter.setAttribute('aria-pressed', String(active));
-        });
-        catalogCards.forEach((card) => {
-            card.hidden = selected !== 'all' && card.dataset.category !== selected;
-        });
-        if (catalogStatus) {
-            catalogStatus.textContent = selected === 'all' ? '已顯示所有工具類別' : `已顯示${selected}工具`;
-        }
-    });
 });
 </script>
 </Layout>

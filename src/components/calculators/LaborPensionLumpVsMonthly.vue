@@ -95,8 +95,8 @@ watch(years, validate)
 const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
-    const p = new URLSearchParams({ w: String(Math.round(avgWage.value)), y: String(years.value) })
-    return `${window.location.origin}/compare/labor-pension-lump-vs-monthly?${p.toString()}`
+    const p = new URLSearchParams({ tab: 'lump', w: String(Math.round(avgWage.value)), y: String(years.value) })
+    return `${window.location.origin}/tools/labor-pension-calculator?${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

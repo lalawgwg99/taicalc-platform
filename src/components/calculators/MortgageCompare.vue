@@ -188,7 +188,7 @@ const buildShareURL = () => {
         ra: String(sides.value[0].rate), ya: String(sides.value[0].years), ga: String(sides.value[0].grace),
         rb: String(sides.value[1].rate), yb: String(sides.value[1].years), gb: String(sides.value[1].grace),
     })
-    return `${window.location.origin}/compare/xin-qing-an-vs-general-mortgage?${p.toString()}`
+    return `${window.location.origin}/tools/mortgage-calculator?tab=qingan&${p.toString()}`
 }
 
 const copyShareLink = async () => {

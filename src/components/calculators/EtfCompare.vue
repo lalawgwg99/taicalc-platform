@@ -95,8 +95,8 @@ watch(years, validate)
 const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
-    const p = new URLSearchParams({ m: String(Math.round(monthlyAmount.value)), y: String(years.value) })
-    return `${window.location.origin}/compare/etf-0050-vs-0056-vs-006208??${p.toString()}`
+    const p = new URLSearchParams({ tab: 'etfvs', m: String(Math.round(monthlyAmount.value)), y: String(years.value) })
+    return `${window.location.origin}/tools/etf-dividend-calculator?${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

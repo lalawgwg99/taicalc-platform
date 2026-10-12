@@ -157,7 +157,7 @@ const buildShareURL = () => {
         ya: String(sides.value[0].years),
         yb: String(sides.value[1].years),
     })
-    return `${window.location.origin}/compare/mortgage-30-vs-40-years?${p.toString()}`
+    return `${window.location.origin}/tools/mortgage-calculator?tab=term&${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

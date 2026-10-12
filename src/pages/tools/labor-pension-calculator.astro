@@ -1,10 +1,12 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import LaborPensionCalculator from '../../components/calculators/LaborPensionCalculator.vue';
+import LaborPensionLumpVsMonthly from '../../components/calculators/LaborPensionLumpVsMonthly.vue';
+import PensionContributionCompare from '../../components/calculators/PensionContributionCompare.vue';
 
-const title = "2026 勞退試算極致版｜舊制/新制退休金｜TaiCalc";
-const description = "試算勞退提撥、複利與退休後可領金額。";
-const keywords = "勞退自提,勞工退休金,新制退休金,舊制退休金,勞退試算,勞退自提6%,退休金計算,雇主提撥,節稅效益";
+const title = "2026 勞退試算極致版｜舊制/新制退休金＋一次領vs月領、自提0%vs6%比較｜TaiCalc";
+const description = "試算勞退提撥、複利與退休後可領金額。另有「一次領 vs 月領」分頁比較勞保老年年金回本年限，「自提 0% vs 6%」分頁比較自提節稅與長期效益。";
+const keywords = "勞退自提,勞工退休金,新制退休金,舊制退休金,勞退試算,勞退自提6%,退休金計算,雇主提撥,節稅效益,勞保一次領,勞保月領,一次領vs月領,回本年限";
 
 const faqs = [
     {
@@ -27,16 +29,94 @@ const faqs = [
         q: "勞退自提的錢會不會虧損？",
         a: "法律設有保證收益機制：勞退基金運用收益不得低於以當地銀行 2 年期定期存款利率計算的收益。也就是說長期持有基本上保本，歷史平均報酬率多高於定存。但要注意這是「保證不低於定存利率」，不是保證高報酬，別把它當成積極投資工具。"
     },
+    {
+        q: "勞退自提 6% 能節多少稅？",
+        a: "以月薪 45,000 元、稅率 12% 為例：每月自提 2,700 元，每年節稅約 3,888 元。稅率越高，自提節稅效益越大。可用「自提 0% vs 6%」分頁試算你的情境。"
+    },
+    {
+        q: "誰適合自提？誰不適合？",
+        a: "高稅率、想強迫儲蓄、退休資金不足者適合自提；低稅率、需要資金彈性、或自信投資報酬遠高於勞退者，可評估後再決定。"
+    },
+    {
+        q: "勞保老年年金月領怎麼算？",
+        a: "月領金額＝平均月投保薪資 × 年資 × 1.55%。以平均投保薪資 45,800 元、年資 30 年為例，每月約 21,297 元。可用「一次領 vs 月領」分頁試算。"
+    },
+    {
+        q: "勞保一次請領怎麼算？",
+        a: "一次領金額＝平均月投保薪資 × 給付月數。前 15 年年資每年 1 個月、第 16 年起每年 2 個月，上限 50 個月。以 45,800 元、30 年為例，約 137.4 萬元。"
+    },
+    {
+        q: "勞保月領要多久才能超過一次領？",
+        a: "以 45,800 元、30 年為例：一次領約 137.4 萬元，月領每月約 2.13 萬元，約 5.4 年累計即可超過一次領。預期領取超過 5~6 年者，月領通常較有利。"
+    },
+    {
+        q: "勞保可以同時領一次領和月領嗎？",
+        a: "不行。勞保老年給付的月領與一次請領只能擇一，請領時需確認。提前或延後請領會增減月領金額（每提前/延後 1 年增減 4%）。"
+    },
 ];
 ---
 
 <ToolLayout title={title} description={description} keywords={keywords} category="退休理財" faqs={faqs}>
-    <LaborPensionCalculator client:only="vue" slot="tool" />  
+    <div slot="tool">
+        <div class="tool-tabs" role="tablist" aria-label="勞退功能切換">
+            <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">勞退試算</button>
+            <button type="button" data-tabbtn="lump" role="tab" aria-selected="false">一次領 vs 月領</button>
+            <button type="button" data-tabbtn="selfpay" role="tab" aria-selected="false">自提 0% vs 6%</button>
+        </div>
+        <div data-tabpanel="calc" role="tabpanel">
+            <LaborPensionCalculator client:only="vue" />
+        </div>
+        <div data-tabpanel="lump" role="tabpanel" hidden>
+            <LaborPensionLumpVsMonthly client:only="vue" />
+        </div>
+        <div data-tabpanel="selfpay" role="tabpanel" hidden>
+            <PensionContributionCompare client:only="vue" />
+        </div>
+    </div>
+    <script>
+        (function () {
+            var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
+            var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
+            if (!btns.length) return;
+            function activate(name) {
+                btns.forEach(function (b) {
+                    var on = b.getAttribute('data-tabbtn') === name;
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                panels.forEach(function (p) { p.hidden = p.getAttribute('data-tabpanel') !== name; });
+            }
+            btns.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    var name = b.getAttribute('data-tabbtn');
+                    activate(name);
+                    try {
+                        var url = new URL(window.location.href);
+                        url.searchParams.set('tab', name);
+                        history.replaceState(null, '', url.toString());
+                    } catch (e) {}
+                });
+            });
+            var init = null;
+            try { init = new URLSearchParams(window.location.search).get('tab'); } catch (e) {}
+            var valid = btns.map(function (b) { return b.getAttribute('data-tabbtn'); });
+            activate(valid.indexOf(init) >= 0 ? init : 'calc');
+        })();
+    </script>
+    <style>
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+        .tool-tabs [data-tabbtn] {
+            padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
+            color: #78716c; background: transparent; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+        }
+        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
+        .tool-tabs [data-tabbtn]:hover { color: #44403c; }
+    </style>
 
     <div slot="article">
         <h2>為什麼要自提 6%？三大優勢一次看懂</h2>
         <p>很多勞工朋友聽到「自提 6%」的第一個反應是：「為什麼要讓政府扣我的錢？」其實，勞退自提是政府送給受薪階級最強大的<strong>合法節稅與強迫儲蓄工具</strong>。</p>
-        
+
         <h3>1. 立即節稅</h3>
         <p>您自提的金額，會從當年度的「個人綜合所得總額」中全數扣除。這意味著您的課稅級距可能因此降低，直接少繳稅金。對於高收入族群來說，效益更是驚人。</p>
 
@@ -49,5 +129,41 @@ const faqs = [
         <blockquote>
             <strong>專家建議：</strong>如果您均無債務壓力，且希望能強迫儲蓄，自提 6% 絕對是您理財配置中的基石，建議優先提好提滿。
         </blockquote>
+
+        <h2>勞保老年年金：一次領 vs 月領（回本年限試算）</h2>
+        <p>勞保老年年金請領時最常糾結「一次領」還是「月領」。關鍵在於：<strong>月領多久能累計超過一次領總額</strong>。切換上方「一次領 vs 月領」分頁，輸入你的投保薪資與年資即時比較。</p>
+
+        <h3>45,800 元、30 年試算情境</h3>
+        <ul>
+            <li><strong>月領</strong>：45,800 × 30 × 1.55% ≈ <strong>21,297 元／月</strong></li>
+            <li><strong>一次領</strong>：45,800 × 30 個月（前 15 年 15 個月＋後 15 年 30 個月）≈ <strong>137.4 萬元</strong></li>
+            <li><strong>回本年限</strong>：137.4 萬 ÷ 21,297 ÷ 12 ≈ <strong>5.4 年</strong></li>
+        </ul>
+        <blockquote>
+            <strong>判斷原則：</strong>預期領取超過回本年限者，月領通常較有利（且月領隨物價調整）；資金有立即需求、或預期壽命較短者，可考慮一次領。
+        </blockquote>
+
+        <h3>注意事項</h3>
+        <ul>
+            <li>提前 5 年或延後 5 年請領，每 1 年增減 4% 給付。</li>
+            <li>實際給付以勞保局核定為準，本頁為概算。</li>
+            <li>月領年金設有「展延」機制，延後請領可提高月領金額。</li>
+        </ul>
+        <p class="note-box">數字為本頁比較器依勞保老年給付規則概算，四捨五入；實際金額以勞保局核定為準。</p>
+
+        <h2>勞退自提 0% vs 6%：節稅與複利比較</h2>
+        <p>勞退新制除了雇主強制提撥 6%，勞工還可自願額外提繳 1%~6%。自提的最大誘因是<strong>節稅</strong>——自提金額免計入當年度所得。切換上方「自提 0% vs 6%」分頁，比較自提與不自提的長期差異。</p>
+
+        <h3>月薪 45,000、30 年、報酬 5%、稅率 12% 試算情境</h3>
+        <ul>
+            <li><strong>每月自提 6%</strong>：2,700 元／月，30 年累積約 <strong>224 萬元</strong>（複利）</li>
+            <li><strong>每年節稅</strong>：約 3,888 元，30 年累積節稅約 <strong>11.7 萬元</strong>（若同率投資再增值）</li>
+            <li>自提 vs 不自提的長期差異，主要來自節稅效益</li>
+        </ul>
+        <blockquote>
+            <strong>重點：</strong>自提是「強迫儲蓄＋節稅」的組合。稅率越高越划算；但資金鎖在專戶、須待法定年齡領取，需權衡彈性。
+        </blockquote>
+
+        <p class="note-box">數字為本頁比較器複利估算；勞退專戶具保證收益下限（2 年期定存利率），實際收益以勞保局公布為準。</p>
     </div>
 </ToolLayout>

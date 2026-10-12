@@ -1,0 +1,12 @@
+# TaiCalc 301 轉址：比較頁整併（2026-10-12）
+# 格式：來源路徑 目標網址 狀態碼
+
+/tools/appliance-energy-compare /tools/electricity-calculator?tab=appliances 301
+/compare/electricity-summer-vs-nonsummer /tools/electricity-calculator?tab=summer 301
+/compare/mortgage-30-vs-40-years /tools/mortgage-calculator?tab=term 301
+/compare/xin-qing-an-vs-general-mortgage /tools/mortgage-calculator?tab=qingan 301
+/compare/rent-vs-buy /tools/rent-cost-calculator?tab=rentbuy 301
+/compare/labor-pension-lump-vs-monthly /tools/labor-pension-calculator?tab=lump 301
+/compare/pension-contribution-0-vs-6 /tools/labor-pension-calculator?tab=selfpay 301
+/compare/etf-0050-vs-0056-vs-006208 /tools/etf-dividend-calculator?tab=etfvs 301
+/compare/asset-real-return /tools/real-return-calculator?tab=assetvs 301

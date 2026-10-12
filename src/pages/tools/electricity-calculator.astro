@@ -1,11 +1,13 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import ElectricityCalculator from '../../components/calculators/ElectricityCalculator.vue';
+import ElectricityCompare from '../../components/calculators/ElectricityCompare.vue';
+import ApplianceEnergyCompare from '../../components/calculators/ApplianceEnergyCompare.vue';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
-const title = "電費計算機｜一度電多少錢？2026台電電費試算，3秒算出你家電費";
-const description = "台電一度電多少錢？輸入每月用電度數，3秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算，2026最新費率，免註冊免費試算。";
-const keywords = "電費計算機,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費";
+const title = "電費計算機｜一度電多少錢？2026台電電費試算＋家電耗電比一比";
+const description = "台電一度電多少錢？輸入每月用電度數，3秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算、夏月非夏月比較；另有「比家電」分頁，輸入節能標示年耗電量比較3台家電電費。2026最新費率，免註冊免費試算。";
+const keywords = "電費計算機,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費,家電耗電比較,節能標章,每年耗電量";
 const governance = coreToolGovernance.electricity;
 
 const faqs = [
@@ -67,7 +69,61 @@ const faqs = [
     lastUpdated={governance.updatedAt}
     sources={governance.sources}
 >
-    <ElectricityCalculator client:only="vue" slot="tool" />
+    <div slot="tool">
+        <div class="tool-tabs" role="tablist" aria-label="電費功能切換">
+            <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">電費試算</button>
+            <button type="button" data-tabbtn="summer" role="tab" aria-selected="false">夏月 vs 非夏月</button>
+            <button type="button" data-tabbtn="appliances" role="tab" aria-selected="false">比家電</button>
+        </div>
+        <div data-tabpanel="calc" role="tabpanel">
+            <ElectricityCalculator client:only="vue" />
+        </div>
+        <div data-tabpanel="summer" role="tabpanel" hidden>
+            <ElectricityCompare client:only="vue" />
+        </div>
+        <div data-tabpanel="appliances" role="tabpanel" hidden>
+            <ApplianceEnergyCompare client:only="vue" />
+        </div>
+    </div>
+    <script>
+        (function () {
+            var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
+            var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
+            if (!btns.length) return;
+            function activate(name) {
+                btns.forEach(function (b) {
+                    var on = b.getAttribute('data-tabbtn') === name;
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                panels.forEach(function (p) { p.hidden = p.getAttribute('data-tabpanel') !== name; });
+            }
+            btns.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    var name = b.getAttribute('data-tabbtn');
+                    activate(name);
+                    try {
+                        var url = new URL(window.location.href);
+                        url.searchParams.set('tab', name);
+                        history.replaceState(null, '', url.toString());
+                    } catch (e) {}
+                });
+            });
+            var init = null;
+            try { init = new URLSearchParams(window.location.search).get('tab'); } catch (e) {}
+            var valid = btns.map(function (b) { return b.getAttribute('data-tabbtn'); });
+            activate(valid.indexOf(init) >= 0 ? init : 'calc');
+        })();
+    </script>
+    <style>
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+        .tool-tabs [data-tabbtn] {
+            padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
+            color: #78716c; background: transparent; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+        }
+        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
+        .tool-tabs [data-tabbtn]:hover { color: #44403c; }
+    </style>
 
     <div slot="article">
         <h2>台電住宅電費怎麼算？現行累進費率懶人包</h2>

@@ -188,7 +188,7 @@ const buildShareURL = () => {
         r: String(rate.value), ly: String(loanYears.value), rent: String(Math.round(monthlyRent.value)),
         y: String(years.value), ha: String(homeAppr.value), ra: String(rentAppr.value), ir: String(investRate.value),
     })
-    return `${window.location.origin}/compare/rent-vs-buy?${p.toString()}`
+    return `${window.location.origin}/tools/rent-cost-calculator?tab=rentbuy&${p.toString()}`
 }
 const copyShareLink = async () => {
     try {

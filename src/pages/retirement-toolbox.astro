@@ -29,12 +29,30 @@ const steps = [
         href: "/tools/fire-calculator",
         cta: "FIRE 試算",
     },
+    {
+        title: "看長期投資複利",
+        desc: "定期投入、成本與下跌情境一次檢視，估算退休資產累積。",
+        href: "/tools/long-term-investing-calculator",
+        cta: "長期投資試算",
+    },
+    {
+        title: "算通膨後實質報酬",
+        desc: "定存、債券、ETF 的購買力比較，別被名目報酬騙了。",
+        href: "/tools/real-return-calculator",
+        cta: "實質報酬試算",
+    },
+    {
+        title: "算 ETF 配息",
+        desc: "配息總額、補充保費 2.11% 與年化配息率，退休現金流來源之一。",
+        href: "/tools/etf-dividend-calculator",
+        cta: "配息試算",
+    },
 ];
 
 const compareLinks = [
-    { title: "一次領 vs 月領", href: "/compare/labor-pension-lump-vs-monthly" },
-    { title: "勞退自提 0% vs 6%", href: "/compare/pension-contribution-0-vs-6" },
-    { title: "定存 vs 債券 vs ETF", href: "/compare/asset-real-return" },
+    { title: "一次領 vs 月領", href: "/tools/labor-pension-calculator?tab=lump" },
+    { title: "勞退自提 0% vs 6%", href: "/tools/labor-pension-calculator?tab=selfpay" },
+    { title: "定存 vs 債券 vs ETF", href: "/tools/real-return-calculator?tab=assetvs" },
 ];
 ---
 
@@ -60,8 +78,8 @@ const compareLinks = [
     <section class="py-16 md:py-24 bg-white section-wash">
         <div class="max-w-6xl mx-auto px-4 md:px-6">
             <div class="max-w-xl mb-10 md:mb-14">
-                <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">四步驟</span>
-                <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">用 4 個計算完成退休規劃</h2>
+                <span class="text-[11px] font-semibold text-brand uppercase tracking-widest">七步驟</span>
+                <h2 class="text-xl md:text-2xl font-medium text-ink-700 mt-2">用 7 個計算完成退休規劃</h2>
             </div>
             <div class="grid gap-4 md:grid-cols-3">
                 {steps.map((step) => (

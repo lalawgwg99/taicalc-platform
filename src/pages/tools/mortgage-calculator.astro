@@ -2,12 +2,14 @@
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import YiwenPromo from '../../components/YiwenPromo.astro';
 import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
+import MortgageTermCompare from '../../components/calculators/MortgageTermCompare.vue';
+import MortgageCompare from '../../components/calculators/MortgageCompare.vue';
 import IntentPanel from '../../components/IntentPanel.astro';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
-const title = "2026 房貸試算機｜青安3.0 vs 一般房貸，40年期月付、5年寬限期對照 | TaiCalc";
-const description = "2026 最新房貸試算機：青安3.0（40年期、5年寬限期）與一般房貸月付、總利息對照。免費試算本息平均與本金平均，幫助首購族精準控管現金流！";
-const keywords = "青安3.0房貸,房貸試算,青安3.0計算機,青安貸款,寬限期試算,40年房貸,房貸月付金,房貸利率比較,購屋試算,青年安心成家";
+const title = "2026 房貸試算機｜青安3.0 vs 一般房貸、30年 vs 40年期月付、5年寬限期對照 | TaiCalc";
+const description = "2026 最新房貸試算機：青安3.0（40年期、5年寬限期）與一般房貸月付、總利息對照；另有「30年 vs 40年」年限比較分頁。免費試算本息平均與本金平均，幫助首購族精準控管現金流！";
+const keywords = "青安3.0房貸,房貸試算,青安3.0計算機,青安貸款,寬限期試算,40年房貸,房貸月付金,房貸利率比較,購屋試算,青年安心成家,房貸30年vs40年,房貸年限比較,青安3.0vs一般房貸";
 const governance = coreToolGovernance.mortgage;
 
 const faqs = [
@@ -31,7 +33,41 @@ const faqs = [
         q: "提前還款划算嗎？需要注意什麼？",
         a: "提前還款可以節省大量利息，尤其在貸款前期效果最顯著（因為前期還款中利息佔比較高）。需注意：部分銀行在貸款前 1～3 年收取提前還款違約金（通常為提前還款金額的 1～2%）。建議確認合約後再決定時機。本工具的「提前還款試算」可幫您精算省息效果。"
     },
+    {
+        q: "房貸 30 年和 40 年，總利息差多少？",
+        a: "以貸款 1,000 萬元、利率 2% 為例試算：30 年月付約 3.70 萬元、總利息約 331 萬元；40 年月付約 3.03 萬元、總利息約 454 萬元。月付少約 6,700 元，但 40 年總利息多約 123 萬元。"
+    },
+    {
+        q: "選 40 年房貸划算嗎？",
+        a: "40 年房貸的優點是月付較低、現金流壓力小，適合收入成長期或首購負擔較重者；缺點是總利息明顯增加，且年齡較長者可能不符合銀行年限限制（通常貸款年限＋年齡上限約 75 歲）。"
+    },
+    {
+        q: "想省利息，該縮短年限還是提前還款？",
+        a: "兩者都能省利息。縮短年限是「結構性」省息，月付固定變高；提前還款則保有彈性。建議先確認銀行提前還款違約金條款，再比較兩者對現金流的影響。"
+    },
+    {
+        q: "銀行會讓所有人貸 40 年嗎？",
+        a: "不會。40 年房貸通常有屋齡、借款人年齡與收入負擔比等限制，且各銀行政策不同。以 30 年為基準試算較保守，40 年作為壓力測試的彈性選項。"
+    },
+    {
+        q: "青安3.0和一般房貸，誰的總利息比較少？",
+        a: "以貸款 1,000 萬元為例試算：青安3.0（優惠利率 1.775%、40 年、寬限期 5 年）寬限期後月付約 3.2 萬元，完整期間總利息約 432 萬元；一般房貸（2.5%、30 年、無寬限期）月付約 3.95 萬元，總利息約 422 萬元。也就是說，月付較低的方案因為年限拉長，總利息反而多出約 10 萬元。注意青安3.0補貼採「3+3」逐年退場，實際總利息會比上表更高。決定前一定要同時看「月付」與「總利息」。"
+    },
+    {
+        q: "青安3.0的寬限期 5 年，是免費的嗎？",
+        a: "不是。寬限期內仍要按月繳利息（只是不還本金），寬限期結束後因為本金完全沒減、剩餘年數縮短，月付金會明顯跳升。以上述試算為例：寬限期內月付約 1.48 萬元，寬限結束後跳升到約 3.2 萬元。"
+    },
+    {
+        q: "一般房貸也能談寬限期嗎？",
+        a: "可以，多數銀行對一般房貸也提供寬限期（通常 1～3 年，視信用條件與擔保品而定），但利率與寬限期條件採個案審核。您可以在「青安 vs 一般」分頁把「一般房貸」的寬限期改為 1～3 年，直接比較加入寬限期後的月付變化。"
+    },
+    {
+        q: "房貸利率每差 0.1%，月付金差多少？",
+        a: "以貸款 1,000 萬、30 年為例，利率 2.0% 的月付約 3.70 萬元，2.1% 約 3.75 萬元，2.2% 約 3.80 萬元，大約每差 0.1% 月付差 400～500 元，30 年下來差距可達 15～18 萬元。調整「青安 vs 一般」分頁「一般房貸」的利率欄即可即時觀察。"
+    },
 ];
+
+const policyRange = governance.sources.map(source => `[${source.label}](${source.href})`).join(' · ');
 ---
 
 <ToolLayout
@@ -45,7 +81,61 @@ const faqs = [
     lastUpdated={governance.updatedAt}
     sources={governance.sources}
 >
-    <MortgageCalculator client:only="vue" slot="tool" />
+    <div slot="tool">
+        <div class="tool-tabs" role="tablist" aria-label="房貸功能切換">
+            <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">房貸試算</button>
+            <button type="button" data-tabbtn="term" role="tab" aria-selected="false">30年 vs 40年</button>
+            <button type="button" data-tabbtn="qingan" role="tab" aria-selected="false">青安 vs 一般</button>
+        </div>
+        <div data-tabpanel="calc" role="tabpanel">
+            <MortgageCalculator client:only="vue" />
+        </div>
+        <div data-tabpanel="term" role="tabpanel" hidden>
+            <MortgageTermCompare client:only="vue" />
+        </div>
+        <div data-tabpanel="qingan" role="tabpanel" hidden>
+            <MortgageCompare client:only="vue" />
+        </div>
+    </div>
+    <script>
+        (function () {
+            var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
+            var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
+            if (!btns.length) return;
+            function activate(name) {
+                btns.forEach(function (b) {
+                    var on = b.getAttribute('data-tabbtn') === name;
+                    b.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+                panels.forEach(function (p) { p.hidden = p.getAttribute('data-tabpanel') !== name; });
+            }
+            btns.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    var name = b.getAttribute('data-tabbtn');
+                    activate(name);
+                    try {
+                        var url = new URL(window.location.href);
+                        url.searchParams.set('tab', name);
+                        history.replaceState(null, '', url.toString());
+                    } catch (e) {}
+                });
+            });
+            var init = null;
+            try { init = new URLSearchParams(window.location.search).get('tab'); } catch (e) {}
+            var valid = btns.map(function (b) { return b.getAttribute('data-tabbtn'); });
+            activate(valid.indexOf(init) >= 0 ? init : 'calc');
+        })();
+    </script>
+    <style>
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+        .tool-tabs [data-tabbtn] {
+            padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
+            color: #78716c; background: transparent; border: none; cursor: pointer;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+        }
+        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
+        .tool-tabs [data-tabbtn]:hover { color: #44403c; }
+    </style>
     <IntentPanel
         slot="after-tool"
         source="mortgage"
@@ -55,7 +145,7 @@ const faqs = [
 
     <div slot="article">
         <h2>2026 房貸試算重點：青安3.0與寬限期策略</h2>
-        <p class="note-box"><a href="/compare/xin-qing-an-vs-general-mortgage" class="font-semibold text-brand-700 hover:underline">🔍 想比較「青安3.0 vs 一般房貸」的月付金與總利息差異？</a> 用互動比較頁即時對照兩方案。</p>
+        <p class="note-box"><a href="/tools/mortgage-calculator?tab=qingan" class="font-semibold text-brand-700 hover:underline">🔍 想比較「青安3.0 vs 一般房貸」的月付金與總利息差異？</a> 切換上方「青安 vs 一般」分頁即時對照兩方案；「30年 vs 40年」分頁可比較不同年限的月付與總利息。</p>
         <p>隨著 2026 年房市政策變化，購屋族最關心的莫過於「青安3.0」的補貼期限與還款壓力測試（舊版新青安已於 2026-07-31 截止受理，現行方案為青安3.0）。本工具協助您精算寬限期後的真實負擔，同時支援<strong>「青安3.0 5 年寬限期試算」</strong>與<strong>「分段利率模擬」</strong>，讓您在補貼退場前做好準備。</p>
 
         <h3>什麼是青安3.0？</h3>
@@ -72,5 +162,119 @@ const faqs = [
         <blockquote>
             <strong>專家建議：</strong>不要只看寬限期內的低月付。請確保補貼結束後（第 6 年起），您的家庭月收入仍能負擔房貸支出不超過 30%~40%，才是健康的財務結構。
         </blockquote>
+
+        <h2>30 年 vs 40 年：用年限換現金流，還是用利息換彈性？</h2>
+        <p>同樣一筆貸款，年限越長月付越低、總利息越高。這是房貸決策最核心的取捨。用「30年 vs 40年」分頁輸入自己的金額與利率，先看數字再決定。</p>
+
+        <h3>1,000 萬元試算情境（利率 2%）</h3>
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">項目</th>
+                    <th class="py-2 pr-3 font-medium text-brand-700">30 年</th>
+                    <th class="py-2 font-medium text-ink-600">40 年</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600 [&>tr:nth-child(even)]:bg-paper-100/70">
+                <tr>
+                    <td class="py-2 pr-3">每月還款</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 3.70 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 3.03 萬元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">總利息</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 331 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 454 萬元</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">本息總額</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">約 1,331 萬元</td>
+                    <td class="py-2 font-semibold text-ink-700">約 1,454 萬元</td>
+                </tr>
+            </tbody>
+        </table>
+        <blockquote>
+            <strong>關鍵數字：</strong>40 年每月少付約 6,700 元，但 30 年下來總利息多約 123 萬元——這筆錢足以再買一輛車或當作頭期款。月付壓力與總利息是魚與熊掌。
+        </blockquote>
+
+        <h3>什麼情況適合 40 年？</h3>
+        <ul>
+            <li>首購、自備款有限，需要壓低月付才能通過銀行負擔比審核。</li>
+            <li>預期收入成長，未來可提前還款縮短實際年限。</li>
+            <li>利率處於相對低檔，長期鎖定低月付。</li>
+        </ul>
+
+        <h3>什麼情況選 30 年更好？</h3>
+        <ul>
+            <li>貸款金額較高，總利息差距被放大。</li>
+            <li>想降低總利息、加快累積資產，或接近退休年齡。</li>
+            <li>銀行對 40 年房貸有屋齡／年齡限制，無法申請。</li>
+        </ul>
+
+        <h2>青安3.0 vs 一般房貸：核心差異速覽</h2>
+        <p>2026 年首購族最常問的問題是「該辦青安3.0，還是直接走一般房貸？」。兩者差的不只利率，還有<strong>年限、寬限期與總利息</strong>。先看這張表，再用「青安 vs 一般」分頁輸入自己的金額。</p>
+        <p class="note-box">舊版「新青安」已於 2026-07-31 截止受理；下表為現行 <strong>青安3.0</strong>（2026-08-01～2029-07-31）。</p>
+
+        <table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium">項目</th>
+                    <th class="py-2 pr-3 font-medium text-brand-700">青安3.0</th>
+                    <th class="py-2 font-medium text-ink-600">一般房貸</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600">
+                <tr>
+                    <td class="py-2 pr-3">貸款年限</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">最長 40 年</td>
+                    <td class="py-2">通常 20～30 年，視銀行與屋齡</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">寬限期</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">最長 5 年（僅繳息）</td>
+                    <td class="py-2">多數銀行可談，通常 1～3 年</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">利率</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">優惠利率 1.775%（前 3 年，之後逐年退場）</td>
+                    <td class="py-2">市場機動利率，約 2.5%～2.7%</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">貸額上限</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">最高 1,000 萬元</td>
+                    <td class="py-2">依銀行評估（成數與屋況）</td>
+                </tr>
+                <tr>
+                    <td class="py-2 pr-3">申請資格</td>
+                    <td class="py-2 pr-3 font-semibold text-ink-700">首購、本人／配偶／未成年子女名下無自用住宅；未滿 50 歲、本人年所得 200 萬以下</td>
+                    <td class="py-2">不限首購</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>1,000 萬元試算情境（比較器預設值）</h3>
+        <ul>
+            <li><strong>青安3.0</strong>（優惠利率 1.775%、40 年、寬限期 5 年）：寬限期內月付約 <strong>1.48 萬元</strong>、寬限後約 <strong>3.2 萬元</strong>、總利息約 <strong>432 萬元</strong>（以優惠利率全程估算，實際採 3+3 退場會更高）。</li>
+            <li><strong>一般房貸</strong>（2.5%、30 年）：月付約 <strong>3.95 萬元</strong>、總利息約 <strong>422 萬元</strong>。</li>
+        </ul>
+        <blockquote>
+            <strong>關鍵洞察：</strong>青安3.0把月付壓低，代價是總利息多約 10 萬元（且補貼退場後實際差距更大）。寬限期買到的是「前 5 年的喘氣空間」，不是免費的錢——務必用比較器改動年限與寬限期，找出自己長期負擔得起的組合。
+        </blockquote>
+
+        <h3>什麼樣的人適合青安3.0？</h3>
+        <ul>
+            <li>首購、名下無自用住宅，且短期現金流較緊——先靠寬限期與低利率撐過前幾年。</li>
+            <li>預期未來收入明顯成長，寬限期結束後負擔得起跳升後的月付。</li>
+            <li>打算長住不換屋，願意用較長年限換取穩定月付。</li>
+        </ul>
+
+        <h3>什麼樣的人反而不適合？</h3>
+        <ul>
+            <li>貸款金額不高（例如 500 萬以下）：年限多吃掉的利息差距更明顯，一般房貸 30 年可能更划算。</li>
+            <li>想壓低總利息、有不動產傳承安排：更短的年限與較低總利息優先。</li>
+            <li>寬限期後月付會超過家庭月收入 40%：寧可提高自備款或縮短年限。</li>
+        </ul>
+
+        <p class="note-box">數字為比較器採本息平均攤還法產生，四捨五入至萬元級；青安3.0補貼採「3+3」逐年退場（前 3 年 1.775% → 第 7 年起 2.275%），上表以優惠利率估算、實際總利息更高，實際利率以承貸銀行通知為準。試算僅供比較，正式金額以銀行核貸為準（{policyRange}）。</p>
     </div>
 </ToolLayout>
