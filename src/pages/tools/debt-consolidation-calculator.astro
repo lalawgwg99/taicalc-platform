@@ -1,14 +1,57 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
+import LoanPitfallDetector from '../../components/calculators/LoanPitfallDetector.vue';
 import IntentPanel from '../../components/IntentPanel.astro';
 const faqs = [
   { q: '債務整合一定能省錢嗎？', a: '不一定。期限拉長可能讓月付下降但總利息增加，必須把新利息、開辦費與提前清償違約金一起比較。' },
   { q: '我不知道原本信貸的年利率怎麼辦？', a: '不用查。填餘額、剩餘期數和目前月付，工具會用本息攤還公式反推年利率給你看。' },
+  { q: '總費用年百分率（APR）是什麼？', a: '把開辦費、手續費等所有成本都攤進去後的真實年利率。銀行依法必須揭露。比較兩家貸款時，看 APR 不要看廣告利率——廣告寫 2.99%，APR 可能是 4.5%。' },
+  { q: '開辦費多少算合理？', a: '2026 年市場常見 0~3,000 元，很多專案直接零開辦費。超過 6,000 元就偏高，可以要求減免或換一家。' },
+  { q: '銀行可以強制搭售保險嗎？', a: '不行。金管會規定銀行不得以搭售保險為核貸條件，你可以拒絕，或要求把保險拆開單獨評估。' },
 ];
 ---
-<ToolLayout title="信貸／債務整合計算器｜月付與總利息比較" description="比較多筆信貸整合前後的月付、總利息、費用與提前清償效果。" keywords="信貸試算,債務整合,總利息,提前清償,月付金" category="貸款與債務" kicker="月付變低不等於更便宜，先比較完整清償成本。" faqs={faqs} dataVersion="2026.07-debt-v1" dataYear="情境試算" lastUpdated="2026-07-29" sources={[{ label: '金融監督管理委員會｜金融消費資訊', href: 'https://www.fsc.gov.tw/' }]}>
-  <DecisionCalculator type="debt" client:only="vue" slot="tool" />
+<ToolLayout title="信貸／債務整合計算器｜月付總利息比較＋貸款地雷檢測" description="比較多筆信貸整合前後的月付、總利息、費用與提前清償效果；「借錢前檢測」分頁幫你檢查銀行開的條件有沒有地雷。" keywords="信貸試算,債務整合,總利息,提前清償,月付金,信貸注意事項,貸款陷阱,總費用年百分率,開辦費" category="貸款與債務" kicker="月付變低不等於更便宜，先比較完整清償成本。" faqs={faqs} dataVersion="2026.07-debt-v1" dataYear="情境試算" lastUpdated="2026-10-12" sources={[{ label: '金融監督管理委員會｜金融消費資訊', href: 'https://www.fsc.gov.tw/' }]}>
+  <div slot="tool">
+    <div class="tool-tabs" role="tablist" aria-label="信貸功能切換">
+      <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">債務整合試算</button>
+      <button type="button" data-tabbtn="pitfall" role="tab" aria-selected="false">借錢前檢測</button>
+    </div>
+    <div data-tabpanel="calc" role="tabpanel">
+      <DecisionCalculator type="debt" client:only="vue" />
+    </div>
+    <div data-tabpanel="pitfall" role="tabpanel" hidden>
+      <LoanPitfallDetector client:only="vue" />
+    </div>
+    <script is:inline>
+      (function () {
+        var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
+        if (!btns.length) return;
+        function activate(name) {
+          btns.forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tabbtn') === name ? 'true' : 'false'); });
+          panels.forEach(function (p) { p.hidden = p.getAttribute('data-tabpanel') !== name; });
+        }
+        btns.forEach(function (b) {
+          b.addEventListener('click', function () {
+            var name = b.getAttribute('data-tabbtn');
+            activate(name);
+            try { var url = new URL(window.location.href); url.searchParams.set('tab', name); history.replaceState(null, '', url.toString()); } catch (e) {}
+          });
+        });
+        var init = null;
+        try { init = new URLSearchParams(window.location.search).get('tab'); } catch (e) {}
+        var valid = btns.map(function (b) { return b.getAttribute('data-tabbtn'); });
+        activate(valid.indexOf(init) >= 0 ? init : 'calc');
+      })();
+    </script>
+    <style>
+      .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+      .tool-tabs [data-tabbtn] { padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600; color: #78716c; background: transparent; border: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+      .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
+      .tool-tabs [data-tabbtn]:hover { color: #44403c; }
+    </style>
+  </div>
   <IntentPanel slot="after-tool" source="debt" partnerTitle="合法貸款與債務諮詢服務合作" />
   <div slot="article"><h2>整合前後要比什麼</h2><p>填每筆債務的餘額、剩餘期數和目前月付，工具會反推年利率，並用「月付 × 期數 − 本金」算出繼續繳的總利息，再跟整合貸款的本金、利息、費用與違約金比較。實際核貸利率、總費用年百分率與提前清償條款，以金融機構契約為準。</p><h3>優先看總成本</h3><p>月付金下降可能只是因為還款年限變長。若現金流允許，可測試每月固定多還，觀察省下的利息與時間。申請前可先閱讀<a href="/blog/debt-consolidation-interest-comparison-taiwan">債務整合月付、總利息與信用影響比較</a>。</p></div>
 </ToolLayout>
