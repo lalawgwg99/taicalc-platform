@@ -105,4 +105,18 @@ describe('decision calculators', () => {
     expect(res2.monthlySavings).toBeGreaterThan(0);
     expect(res2.totalCostDiff).toBeGreaterThan(0);
   });
+
+  it('zeroes all outputs when debts are cleared (fee must not linger)', () => {
+    const res = calculateDebtConsolidation(
+      [{ balance: 0, months: 0, payment: 0 }],
+      5, 5, 5_000, 0, 2_000,
+    );
+    expect(res.balance).toBe(0);
+    expect(res.currentPayment).toBe(0);
+    expect(res.currentInterest).toBe(0);
+    expect(res.newPayment).toBe(0);
+    expect(res.newInterest).toBe(0);
+    expect(res.newCosts).toBe(0); // 開辦費不可在沒有債務時殘留
+    expect(res.monthlySavings).toBe(0);
+  });
 });

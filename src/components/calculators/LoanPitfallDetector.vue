@@ -50,6 +50,7 @@
                 <input type="checkbox" v-model="bundled" class="mt-1 w-4 h-4 accent-red-600">
                 <span class="text-sm text-ink-600">銀行要求同時買保險／理財商品才給這個利率（搭售）</span>
             </label>
+            <p class="text-[10px] text-ink-400">註：各欄位會自動限制在合理範圍內（例如違約金 0–20%），超出會自動調整為上限。</p>
         </div>
 
         <!-- 檢測結果 -->

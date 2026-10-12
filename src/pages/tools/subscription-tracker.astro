@@ -41,6 +41,16 @@ const faqs = [
 
         <div data-st-panel="home" role="tabpanel">
             <div id="st-homeBanner"></div>
+            <div class="st-card st-total" id="st-totalCard">
+                <div class="st-total-row">
+                    <div>
+                        <div class="st-total-num" id="st-monthlyTotal">NT$0</div>
+                        <div class="st-label">使用中訂閱・每月平均總支出</div>
+                    </div>
+                    <div class="st-total-side" id="st-totalMeta"></div>
+                </div>
+                <div class="st-foot">年繳／季繳會自動換算成月平均（年繳 ÷ 12），USD 依 1:32 換算。</div>
+            </div>
             <div class="st-card">
                 <h3>⏳ 取消期限倒數</h3>
                 <div id="st-cancelList"><div class="st-muted">載入中…</div></div>
@@ -323,6 +333,29 @@ const faqs = [
                 var today = todayStr();
 
                 var live = state.subs.filter(isLive);
+
+                /* 每月平均總支出（不同週期換算成月平均；USD 換算 TWD） */
+                function monthlyAvgTWD(s) {
+                    var amt = toTWD(s.amount, s.currency);
+                    switch (s.cycle) {
+                        case 'weekly': return amt * 52 / 12;
+                        case 'monthly': return amt;
+                        case 'quarterly': return amt / 3;
+                        case 'halfyear': return amt / 6;
+                        case 'yearly': return amt / 12;
+                        case 'custom': {
+                            var days = parseInt(s.cycle_days, 10);
+                            if (!days || days <= 0) days = 30;
+                            return amt * 30 / days;
+                        }
+                        default: return amt;
+                    }
+                }
+                var totalMonthly = live.reduce(function (sum, s) { return sum + monthlyAvgTWD(s); }, 0);
+                $('st-monthlyTotal').textContent = twd(totalMonthly);
+                $('st-totalMeta').innerHTML = live.length
+                    ? '使用中 ' + live.length + ' 筆<br>年支出約 ' + twd(totalMonthly * 12)
+                    : '<span class="st-muted">還沒有使用中的訂閱</span>';
 
                 var due = getDue(state.subs, today);
 
@@ -636,6 +669,10 @@ const faqs = [
             .st-foot { font-size: 0.75rem; color: #78716c; margin-top: 0.6rem; line-height: 1.7; }
             .st-hint { font-size: 0.75rem; font-weight: 400; color: #78716c; }
             .st-banner { border-radius: 0.9rem; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 600; line-height: 1.7; margin-bottom: 0.9rem; background: #FFF7E6; border: 1px solid #F0D9A8; color: #7C5A1E; }
+            .st-total { background: #F4F8F4; border-color: #CBDCCB; }
+            .st-total-row { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+            .st-total-num { font-size: 1.65rem; font-weight: 800; color: #245F40; letter-spacing: -0.01em; }
+            .st-total-side { text-align: right; font-size: 0.78rem; color: #78716c; line-height: 1.7; }
             .st-banner.st-danger { background: #FDECEA; border-color: #F5B5AE; color: #9B2C1F; }
             .st-banner.st-ok { background: #EDF5EF; border-color: #B8D5BF; color: #245F40; }
             .st-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid #F0EBDD; }

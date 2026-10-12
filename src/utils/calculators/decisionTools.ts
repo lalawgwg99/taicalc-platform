@@ -128,7 +128,8 @@ export function calculateDebtConsolidation(
   const newMonths = Math.max(1, Math.round(newYears * 12));
   const newPayment = monthlyPayment(balance, newRate, newMonths);
   const newInterest = Math.max(0, newPayment * newMonths - balance);
-  const newCosts = newInterest + Math.max(0, fee) + Math.max(0, penalty);
+  // 沒有有效債務（本金為 0）時不應計入開辦費／違約金，否則清空欄位後仍顯示 $5,000
+  const newCosts = balance > 0 ? newInterest + Math.max(0, fee) + Math.max(0, penalty) : 0;
   const monthlySavings = currentPayment - newPayment; // 每月少付（正=輕鬆）
   const totalCostDiff = newCosts - currentInterest; // 總成本差（正=整合後總共多付）
 
