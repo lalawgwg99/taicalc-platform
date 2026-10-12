@@ -211,6 +211,14 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['保險', 'IRR', '保單', '保障缺口', '保險效益'],
   },
   {
+    href: '/tools/subscription-tracker',
+    label: '訂閱管家 | 別再被自動續訂扣錢',
+    desc: '記錄每筆訂閱扣款日與最晚取消日，3 天前紅色警示。',
+    category: '投資與退休',
+    icon: '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="8" x2="8" y1="3" y2="7"/><line x1="16" x2="16" y1="3" y2="7"/><line x1="3" x2="21" y1="10" y2="10"/><circle cx="12" cy="15" r="2.5"/><line x1="12" x2="12" y1="15" y2="13.5"/>',
+    tags: ['訂閱管理', '自動續訂', '取消訂閱', '訂閱追蹤', '扣款提醒', '訂閱管家', '試用期'],
+  },
+  {
     href: '/nestegg',
     label: 'NestEgg 退休現金流規劃',
     desc: '勞保、國保、勞退與投資一起算，資產幾歲用完一次看清。',

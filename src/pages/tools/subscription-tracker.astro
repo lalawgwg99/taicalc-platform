@@ -1,0 +1,814 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+const title = "訂閱管家｜別再被自動續訂扣錢：訂閱追蹤＋取消期限提醒";
+const description = "Netflix、Spotify、iCloud 訂閱一多就忘記取消？訂閱管家幫你記錄每筆訂閱的扣款日與最晚取消日，取消期限 3 天前紅色警示，再也不被自動續訂偷扣錢。資料只存你的瀏覽器，免註冊免費使用。";
+const keywords = "訂閱管理,自動續訂,取消訂閱,Netflix取消,Spotify取消,訂閱追蹤,扣款提醒,訂閱管家,試用期提醒";
+
+const faqs = [
+    {
+        q: "「最晚取消日」是什麼？為什麼要設？",
+        a: "很多訂閱不是扣款當天取消就好：有些平台要求提前 24 小時以上取消，有些則是取消後要等帳單週期結束。最晚取消日就是「想取消的話，最晚要在這天之前動手」的日子，預設是下次扣款日前一天，你也可以按各平台規則往前調。期限剩 3 天內會紅色警示。"
+    },
+    {
+        q: "我的訂閱資料存在哪裡？會上傳嗎？",
+        a: "只存在你自己瀏覽器的 localStorage，不會上傳到任何伺服器，也不用註冊。但也因此換手機或清掉瀏覽器資料會遺失；重要訂閱建議另外截圖備份。"
+    },
+    {
+        q: "年繳的訂閱要怎麼記？",
+        a: "金額填年繳總額、週期選「每年」即可。每月花費分佈會自動換算成月平均（年繳金額 ÷ 12），讓你跟月繳方案放在同一個基準比較。"
+    },
+    {
+        q: "取消指南的步驟是最新的嗎？",
+        a: "取消路徑為 2026 年整理，各平台介面可能微調，原則是：網頁版訂閱到官網帳戶頁取消、App Store 訂閱到 iPhone「設定 → Apple ID → 訂閱項目」取消、Google Play 訂閱到 Play 商店「付款與訂閱」取消。取消後務必確認收到確認信或截圖留存。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="投資與退休"
+    faqs={faqs}
+>
+    <div slot="tool">
+        <div class="st-tabs" role="tablist" aria-label="訂閱管家功能切換">
+            <button type="button" data-st-tab="home" role="tab" aria-selected="true">🏠 首頁</button>
+            <button type="button" data-st-tab="list" role="tab" aria-selected="false">📝 清單</button>
+            <button type="button" data-st-tab="cal" role="tab" aria-selected="false">📅 月曆</button>
+            <button type="button" data-st-tab="guide" role="tab" aria-selected="false">❓ 取消指南</button>
+            <button type="button" data-st-tab="form" role="tab" aria-selected="false">＋ 新增</button>
+        </div>
+
+        <div data-st-panel="home" role="tabpanel">
+            <div id="st-homeBanner"></div>
+            <div class="st-grid2">
+                <div class="st-card st-stat"><div class="st-big" id="st-statMonthPaid">–</div><div class="st-label">本月已扣</div></div>
+                <div class="st-card st-stat"><div class="st-big" id="st-statNextMonth">–</div><div class="st-label">下月預估</div></div>
+            </div>
+            <div class="st-card">
+                <h3>⏳ 取消期限倒數</h3>
+                <div id="st-cancelList"><div class="st-muted">載入中…</div></div>
+                <div class="st-foot">想取消的訂閱要在「最晚取消日」前動手，否則會被續扣。期限剩 3 天內會紅色標示。</div>
+            </div>
+            <div class="st-card">
+                <h3>⏰ 7 天內扣款</h3>
+                <div id="st-dueList"><div class="st-muted">載入中…</div></div>
+            </div>
+            <div class="st-card">
+                <h3>📊 每月花費分佈 <span class="st-muted" style="font-weight:400">（估算）</span></h3>
+                <div id="st-catBars"><div class="st-muted">載入中…</div></div>
+                <div class="st-foot">USD 以 1:32 換算台幣；年繳以月平均計入。</div>
+            </div>
+        </div>
+
+        <div data-st-panel="list" role="tabpanel" hidden>
+            <div id="st-subList"></div>
+            <details class="st-hist" id="st-histWrap" style="display:none">
+                <summary id="st-histSummary">已取消的訂閱</summary>
+                <div id="st-histList"></div>
+            </details>
+        </div>
+
+        <div data-st-panel="cal" role="tabpanel" hidden>
+            <div class="st-card">
+                <div class="st-cal-head">
+                    <button type="button" id="st-calPrev" aria-label="上個月">‹</button>
+                    <strong id="st-calTitle"></strong>
+                    <button type="button" id="st-calNext" aria-label="下個月">›</button>
+                </div>
+                <div class="st-cal-grid" id="st-calGrid"></div>
+                <div class="st-foot">🔴 扣款日（含試用轉付費）　⚠️ 最晚取消日</div>
+            </div>
+        </div>
+
+        <div data-st-panel="guide" role="tabpanel" hidden>
+            <div class="st-card" id="st-guideBody"></div>
+        </div>
+
+        <div data-st-panel="form" role="tabpanel" hidden>
+            <div class="st-card">
+                <h3 id="st-formTitle">新增訂閱</h3>
+                <div class="st-muted" style="margin-bottom:4px">快速帶入：</div>
+                <div class="st-chips" id="st-presetChips"></div>
+                <form class="st-f" id="st-subForm" onsubmit="return false">
+                    <input type="hidden" id="st-f_id">
+                    <label>名稱 *</label>
+                    <input id="st-f_name" placeholder="例：Netflix" maxlength="100">
+                    <div class="st-grid2">
+                        <div><label>金額 *</label><input id="st-f_amount" type="number" min="0" step="0.01" placeholder="390"></div>
+                        <div><label>幣別</label>
+                            <select id="st-f_currency"><option value="TWD">TWD</option><option value="USD">USD</option></select>
+                        </div>
+                    </div>
+                    <div class="st-grid2">
+                        <div><label>週期</label>
+                            <select id="st-f_cycle">
+                                <option value="monthly">每月</option>
+                                <option value="weekly">每週</option>
+                                <option value="quarterly">每季</option>
+                                <option value="halfyear">每半年</option>
+                                <option value="yearly">每年</option>
+                                <option value="custom">自訂天數</option>
+                            </select>
+                        </div>
+                        <div id="st-cycleDaysWrap" style="display:none"><label>每幾天</label><input id="st-f_cycle_days" type="number" min="1" value="30"></div>
+                    </div>
+                    <label>首次扣款日 *</label>
+                    <input id="st-f_first_billing" type="date">
+                    <label>最晚取消日 <span class="st-hint">想取消要在這天之前動手，否則被續扣（預設為下次扣款日前一天）</span></label>
+                    <input id="st-f_cancel_by" type="date">
+                    <div class="st-grid2">
+                        <div><label>狀態</label>
+                            <select id="st-f_status">
+                                <option value="active">使用中</option>
+                                <option value="trial">試用中</option>
+                                <option value="paused">已暫停</option>
+                            </select>
+                        </div>
+                        <div id="st-trialEndWrap" style="display:none"><label>試用到期日</label><input id="st-f_trial_end" type="date"></div>
+                    </div>
+                    <div class="st-grid2">
+                        <div><label>分類</label>
+                            <select id="st-f_category">
+                                <option value="">未分類</option>
+                                <option>影音</option><option>音樂</option><option>雲端</option>
+                                <option>遊戲</option><option>健身</option><option>購物會員</option>
+                                <option>工具</option><option>其他</option>
+                            </select>
+                        </div>
+                        <div><label>付款方式</label><input id="st-f_pay_method" placeholder="例：信用卡末四碼" maxlength="50"></div>
+                    </div>
+                    <label>備註</label>
+                    <textarea id="st-f_note" maxlength="500" rows="2"></textarea>
+                    <div style="margin-top:14px"><button type="button" class="st-primary st-block" id="st-formSave">儲存</button></div>
+                </form>
+            </div>
+        </div>
+
+        <script is:inline>
+        (function () {
+            'use strict';
+            /* ---------- 日期邏輯（純函數，移植自 sub-tracker/logic.js） ---------- */
+            function pad(n) { return (n < 10 ? '0' : '') + n; }
+            function fmtDate(y, m, d) { return y + '-' + pad(m) + '-' + pad(d); }
+            function todayStr(d) { d = d || new Date(); return fmtDate(d.getFullYear(), d.getMonth() + 1, d.getDate()); }
+            function parseParts(s) { var p = String(s).split('-'); return { y: +p[0], m: +p[1], d: +p[2] }; }
+            function lastDayOf(y, m) { return new Date(y, m, 0).getDate(); }
+            function addMonthsAnchored(firstBilling, months) {
+                var p = parseParts(firstBilling);
+                var total = (p.m - 1) + months;
+                var ny = p.y + Math.floor(total / 12);
+                var nm = (total % 12) + 1;
+                var nd = Math.min(p.d, lastDayOf(ny, nm));
+                return fmtDate(ny, nm, nd);
+            }
+            function addDaysStr(dateStr, days) {
+                var p = parseParts(dateStr);
+                var d = new Date(p.y, p.m - 1, p.d);
+                d.setDate(d.getDate() + days);
+                return fmtDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+            }
+            function cycleMonths(cycle) {
+                switch (cycle) {
+                    case 'monthly': return 1;
+                    case 'quarterly': return 3;
+                    case 'halfyear': return 6;
+                    case 'yearly': return 12;
+                    default: return 0;
+                }
+            }
+            function billingAt(sub, n) {
+                var first = sub.first_billing;
+                if (sub.cycle === 'weekly') return addDaysStr(first, n * 7);
+                if (sub.cycle === 'custom') {
+                    var days = parseInt(sub.cycle_days, 10);
+                    if (!days || days <= 0) days = 30;
+                    return addDaysStr(first, n * days);
+                }
+                return addMonthsAnchored(first, n * cycleMonths(sub.cycle));
+            }
+            function nextBilling(sub, today) {
+                today = today || todayStr();
+                var n = 0, date = billingAt(sub, 0), guard = 0;
+                while (date <= today && guard < 5000) { n++; date = billingAt(sub, n); guard++; }
+                return date;
+            }
+            function billingOnOrAfter(sub, date) {
+                var n = 0, d = billingAt(sub, 0), guard = 0;
+                while (d < date && guard < 5000) { n++; d = billingAt(sub, n); guard++; }
+                return d;
+            }
+            function daysUntil(dateStr, today) {
+                today = today || todayStr();
+                var a = parseParts(dateStr), b = parseParts(today);
+                var ms = Date.UTC(a.y, a.m - 1, a.d) - Date.UTC(b.y, b.m - 1, b.d);
+                return Math.round(ms / 86400000);
+            }
+            function billingCount(sub, today) {
+                today = today || todayStr();
+                var n = 0, count = 0, guard = 0;
+                while (guard < 5000) {
+                    if (billingAt(sub, n) > today) break;
+                    count++; n++; guard++;
+                }
+                return count;
+            }
+            function totalPaid(sub, today) { return billingCount(sub, today) * Number(sub.amount || 0); }
+            function monthlyAvg(sub) {
+                var amt = Number(sub.amount || 0);
+                switch (sub.cycle) {
+                    case 'weekly': return amt * 52 / 12;
+                    case 'monthly': return amt;
+                    case 'quarterly': return amt / 3;
+                    case 'halfyear': return amt / 6;
+                    case 'yearly': return amt / 12;
+                    case 'custom': {
+                        var days = parseInt(sub.cycle_days, 10);
+                        if (!days || days <= 0) days = 30;
+                        return amt * 30 / days;
+                    }
+                    default: return amt;
+                }
+            }
+            function toTWD(amount, currency) {
+                return String(currency || 'TWD').toUpperCase() === 'USD' ? Number(amount) * 32 : Number(amount);
+            }
+            function isLive(sub) { return sub.status === 'active' || sub.status === 'trial'; }
+            function getDue(subs, today) {
+                today = today || todayStr();
+                var horizon = addDaysStr(today, 7);
+                var dueSoon = [], trialEnding = [];
+                (subs || []).forEach(function (sub) {
+                    if (!sub || sub.status === 'cancelled') return;
+                    if (sub.status === 'trial' && sub.trial_end) {
+                        var dt = daysUntil(sub.trial_end, today);
+                        if (dt >= 0 && dt <= 3) trialEnding.push({ sub: sub, daysLeft: dt });
+                    }
+                    if (sub.status === 'paused') return;
+                    var nb = billingOnOrAfter(sub, today);
+                    if (nb <= horizon) dueSoon.push({ sub: sub, date: nb, daysLeft: daysUntil(nb, today) });
+                });
+                dueSoon.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+                trialEnding.sort(function (a, b) { return a.daysLeft - b.daysLeft; });
+                return { dueSoon: dueSoon, trialEnding: trialEnding };
+            }
+            /* 最晚取消日：有填用填的，沒填預設為下次扣款日前一天 */
+            function getCancelBy(sub, today) {
+                if (sub.cancel_by) return sub.cancel_by;
+                return addDaysStr(nextBilling(sub, today || todayStr()), -1);
+            }
+
+            /* ---------- 資料（localStorage，不上傳） ---------- */
+            var LS_KEY = 'taicalc-subscriptions-v1';
+            function loadSubs() {
+                try {
+                    var raw = localStorage.getItem(LS_KEY);
+                    var arr = raw ? JSON.parse(raw) : [];
+                    return Array.isArray(arr) ? arr : [];
+                } catch (e) { return []; }
+            }
+            function saveSubs() {
+                try { localStorage.setItem(LS_KEY, JSON.stringify(state.subs)); } catch (e) {}
+            }
+            function newId() { return Date.now() * 1000 + Math.floor(Math.random() * 1000); }
+
+            var state = { subs: loadSubs(), calY: 0, calM: 0, editingId: null, cancelByTouched: false };
+
+            var PRESETS = [
+                { name: 'Netflix', amount: 390, currency: 'TWD', cycle: 'monthly', category: '影音' },
+                { name: 'Spotify', amount: 149, currency: 'TWD', cycle: 'monthly', category: '音樂' },
+                { name: 'YouTube Premium', amount: 199, currency: 'TWD', cycle: 'monthly', category: '影音' },
+                { name: 'iCloud+', amount: 90, currency: 'TWD', cycle: 'monthly', category: '雲端' },
+                { name: 'Google One 100GB', amount: 65, currency: 'TWD', cycle: 'monthly', category: '雲端' },
+                { name: 'Disney+', amount: 270, currency: 'TWD', cycle: 'monthly', category: '影音' },
+                { name: 'KKBOX', amount: 149, currency: 'TWD', cycle: 'monthly', category: '音樂' }
+            ];
+
+            var GUIDE = [
+                { name: 'Netflix', steps: ['開啟 Netflix 網頁版並登入', '右上角頭像 →「帳戶」', '「會員資格與帳單」→「取消會員資格」', '按指示確認，帳單週期結束前仍可觀看'] },
+                { name: 'Spotify', steps: ['到 spotify.com/account 登入', '「變更方案」→ 捲到最下「取消 Premium」', '按指示確認即可'] },
+                { name: 'YouTube Premium', steps: ['YouTube App → 右下「你」→ 右上齒輪', '「購買內容與會員資格」→ 點 Premium 方案', '「停用」→ 選擇原因確認'] },
+                { name: 'iCloud+', steps: ['iPhone「設定」→ 點最上方 Apple ID', '「訂閱項目」→ 選擇 iCloud+', '「取消訂閱」確認（經 App Store 訂閱者皆在此取消）'] },
+                { name: 'Google One', steps: ['Google One App → 左上選單 →「設定」', '「取消會員資格」→ 按指示確認', '注意：經由 Google Play 訂閱者改在 Play 商店「付款與訂閱」取消'] },
+                { name: 'Disney+', steps: ['到 disneyplus.com 登入 →「帳戶」', '訂閱方案下點「取消訂閱」', '經 Apple / Google 訂閱者：請到該平台的訂閱管理取消'] },
+                { name: 'KKBOX', steps: ['KKBOX App →「設定」→「方案管理」', '「取消自動續訂」→ 確認', '經電信帳單代收者：需到電信商 App 取消小額付費項目'] }
+            ];
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+            function $(id) { return document.getElementById(id); }
+            function moneyOf(sub) {
+                var a = Number(sub.amount || 0);
+                return sub.currency === 'USD' ? 'US$' + a : 'NT$' + Math.round(a).toLocaleString('en-US');
+            }
+            function twd(n) { return 'NT$' + Math.round(n).toLocaleString('en-US'); }
+            function cycleLabel(c) {
+                return { weekly: '每週', monthly: '每月', quarterly: '每季', halfyear: '每半年', yearly: '每年', custom: '自訂' }[c] || '每月';
+            }
+            function statusLabel(s) {
+                return { trial: '試用中', active: '使用中', paused: '已暫停', cancelled: '已取消' }[s] || s;
+            }
+            function shortDate(ds) { var p = parseParts(ds); return p.m + '/' + p.d; }
+
+            /* ---------- 分頁切換 ---------- */
+            var tabBtns = Array.prototype.slice.call(document.querySelectorAll('[data-st-tab]'));
+            var tabPanels = Array.prototype.slice.call(document.querySelectorAll('[data-st-panel]'));
+            function switchView(name) {
+                tabBtns.forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-st-tab') === name ? 'true' : 'false'); });
+                tabPanels.forEach(function (p) { p.hidden = p.getAttribute('data-st-panel') !== name; });
+                if (name === 'form' && !state.editingId) resetForm();
+                try { window.scrollTo(0, 0); } catch (e) {}
+            }
+            tabBtns.forEach(function (b) {
+                b.addEventListener('click', function () { switchView(b.getAttribute('data-st-tab')); });
+            });
+
+            /* ---------- 首頁 ---------- */
+            function monthRange(y, m) {
+                return { start: y + '-' + pad(m) + '-01', end: y + '-' + pad(m) + '-' + new Date(y, m, 0).getDate() };
+            }
+            function sumBillingInRange(subs, start, end) {
+                var total = 0;
+                subs.forEach(function (s) {
+                    if (!isLive(s)) return;
+                    var n = 0, guard = 0;
+                    while (guard < 2000) {
+                        var d = billingAt(s, n);
+                        if (d > end) break;
+                        if (d >= start) total += toTWD(s.amount, s.currency);
+                        n++; guard++;
+                    }
+                });
+                return total;
+            }
+            function renderHome() {
+                var today = todayStr();
+                var t = today.split('-');
+                var y = +t[0], m = +t[1];
+                var cur = monthRange(y, m);
+                var nm = m === 12 ? 1 : m + 1, ny = m === 12 ? y + 1 : y;
+                var nxt = monthRange(ny, nm);
+
+                var live = state.subs.filter(isLive);
+                $('st-statMonthPaid').textContent = twd(sumBillingInRange(live, cur.start, today));
+                $('st-statNextMonth').textContent = twd(sumBillingInRange(live, nxt.start, nxt.end));
+
+                var due = getDue(state.subs, today);
+
+                /* 取消期限清單：依最晚取消日排序 */
+                var cancelItems = live.map(function (s) {
+                    var cb = getCancelBy(s, today);
+                    return { sub: s, cancelBy: cb, daysLeft: daysUntil(cb, today) };
+                }).filter(function (x) { return x.daysLeft >= 0; })
+                  .sort(function (a, b) { return a.cancelBy < b.cancelBy ? -1 : 1; });
+
+                var cl = $('st-cancelList');
+                if (!cancelItems.length) {
+                    cl.innerHTML = '<div class="st-muted">沒有使用中的訂閱</div>';
+                } else {
+                    cl.innerHTML = cancelItems.map(function (x) {
+                        var s = x.sub;
+                        var urgent = x.daysLeft <= 3;
+                        var badge = x.daysLeft === 0
+                            ? '<span class="st-badge st-due">今天到期</span>'
+                            : '<span class="st-badge' + (urgent ? ' st-due' : '') + '">剩 ' + x.daysLeft + ' 天</span>';
+                        return '<div class="st-row">' +
+                            '<div><strong>' + esc(s.name) + '</strong><div class="st-muted">最晚 ' + x.cancelBy + ' 前取消</div></div>' +
+                            '<div style="text-align:right">' + badge + '<div class="st-muted">' + moneyOf(s) + '・' + cycleLabel(s.cycle) + '</div></div></div>';
+                    }).join('');
+                }
+
+                /* 橫幅：取消期限 ≤3 天優先，其次試用，最後扣款 */
+                var banner = '';
+                var urgentCancel = cancelItems.filter(function (x) { return x.daysLeft <= 3; });
+                var parts = [];
+                urgentCancel.forEach(function (x) {
+                    parts.push(esc(x.sub.name) + ' 最晚 ' + (x.daysLeft === 0 ? '今天' : x.daysLeft + ' 天內') + '要取消');
+                });
+                due.trialEnding.forEach(function (x) {
+                    parts.push(esc(x.sub.name) + ' 試用剩 ' + x.daysLeft + ' 天');
+                });
+                if (parts.length) {
+                    banner = '<div class="st-banner st-danger">⚠️ ' + parts.join('；') + '，否則會被續扣！</div>';
+                } else {
+                    var urgentDue = due.dueSoon.filter(function (x) { return x.daysLeft <= 3; });
+                    if (urgentDue.length) {
+                        banner = '<div class="st-banner">⏰ ' + urgentDue.map(function (x) {
+                            return esc(x.sub.name) + (x.daysLeft === 0 ? '今天' : x.daysLeft + ' 天後') + '扣款';
+                        }).join('；') + '</div>';
+                    } else if (state.subs.length) {
+                        banner = '<div class="st-banner st-ok">✅ 近期沒有即將到期或扣款的訂閱</div>';
+                    }
+                }
+                $('st-homeBanner').innerHTML = banner;
+
+                /* 7 天內扣款 */
+                var dl = $('st-dueList');
+                if (!due.dueSoon.length) {
+                    dl.innerHTML = '<div class="st-muted">7 天內沒有扣款</div>';
+                } else {
+                    dl.innerHTML = due.dueSoon.map(function (x) {
+                        var s = x.sub;
+                        var when = x.daysLeft === 0 ? '<span class="st-badge st-due">今天</span>' :
+                            '<span class="st-badge' + (x.daysLeft <= 3 ? ' st-due' : '') + '">' + x.daysLeft + ' 天後</span>';
+                        return '<div class="st-row">' +
+                            '<div><strong>' + esc(s.name) + '</strong><div class="st-muted">' + x.date + (s.pay_method ? '・' + esc(s.pay_method) : '') + '</div></div>' +
+                            '<div style="text-align:right">' + when + '<div class="st-muted">' + moneyOf(s) + '</div></div></div>';
+                    }).join('');
+                }
+
+                /* 分類統計 */
+                var cats = {};
+                live.forEach(function (s) {
+                    var c = s.category || '未分類';
+                    cats[c] = (cats[c] || 0) + toTWD(monthlyAvg(s), s.currency);
+                });
+                var entries = Object.keys(cats).map(function (k) { return [k, cats[k]]; })
+                    .sort(function (a, b) { return b[1] - a[1]; });
+                var cb2 = $('st-catBars');
+                if (!entries.length) {
+                    cb2.innerHTML = '<div class="st-muted">尚無資料</div>';
+                } else {
+                    var max = entries[0][1] || 1;
+                    cb2.innerHTML = entries.map(function (e) {
+                        var pct = Math.max(4, Math.round(e[1] / max * 100));
+                        return '<div class="st-bar"><div class="st-blabel"><span>' + esc(e[0]) + '</span><span>' + twd(e[1]) + '/月</span></div>' +
+                            '<div class="st-track"><div class="st-fill" style="width:' + pct + '%"></div></div></div>';
+                    }).join('');
+                }
+            }
+
+            /* ---------- 清單 ---------- */
+            function renderList() {
+                var today = todayStr();
+                var live = [], hist = [];
+                state.subs.forEach(function (s) { (s.status === 'cancelled' ? hist : live).push(s); });
+                live.sort(function (a, b) {
+                    var da = getCancelBy(a, today), db = getCancelBy(b, today);
+                    return da < db ? -1 : da > db ? 1 : 0;
+                });
+
+                function card(s) {
+                    var cancelled = s.status === 'cancelled';
+                    var cb = cancelled ? '' : getCancelBy(s, today);
+                    var cbd = cancelled ? 999 : daysUntil(cb, today);
+                    var urgent = !cancelled && cbd <= 3;
+                    var nb = cancelled ? '' : nextBilling(s, today);
+                    var d = cancelled ? 0 : daysUntil(nb, today);
+                    var paid = totalPaid(s, today);
+                    var cancelLine = cancelled ? '' :
+                        '<div class="st-cancel' + (urgent ? ' st-urgent' : '') + '">⚠️ 最晚取消：' + cb + '（' + (cbd === 0 ? '今天到期' : '剩 ' + cbd + ' 天') + '）</div>';
+                    var countTxt;
+                    if (cancelled) countTxt = '已取消';
+                    else if (s.status === 'paused') countTxt = '暫停中';
+                    else if (s.status === 'trial' && s.trial_end) countTxt = '試用剩 ' + daysUntil(s.trial_end, today) + ' 天';
+                    else countTxt = d === 0 ? '今天扣款' : d + ' 天後扣款';
+                    return '<div class="st-card st-subcard' + (cancelled ? ' st-cancelled' : '') + '">' +
+                        '<div class="st-row"><div class="st-name">' + esc(s.name) + '</div>' +
+                        '<span class="st-badge st-' + s.status + '">' + statusLabel(s.status) + '</span></div>' +
+                        '<div class="st-meta">' + moneyOf(s) + '・' + cycleLabel(s.cycle) +
+                        (s.cycle === 'custom' ? '(' + esc(String(s.cycle_days)) + '天)' : '') +
+                        (s.category ? '・' + esc(s.category) : '') +
+                        (s.pay_method ? '・' + esc(s.pay_method) : '') + '</div>' +
+                        cancelLine +
+                        '<div class="st-row" style="margin-top:6px"><div class="st-count' + (urgent ? ' st-soon' : '') + '">' + esc(countTxt) + '</div>' +
+                        '<div class="st-muted">累計 ' + twd(toTWD(paid, s.currency)) + '</div></div>' +
+                        '<div class="st-btnrow">' +
+                        '<button type="button" class="st-small" data-act="edit" data-id="' + s.id + '">編輯</button>' +
+                        (cancelled
+                            ? '<button type="button" class="st-small" data-act="restore" data-id="' + s.id + '">恢復</button>'
+                            : '<button type="button" class="st-small" data-act="cancel" data-id="' + s.id + '">取消訂閱</button>') +
+                        '<button type="button" class="st-small st-danger-btn" data-act="del" data-id="' + s.id + '">刪除</button>' +
+                        '</div></div>';
+                }
+
+                $('st-subList').innerHTML = live.length
+                    ? live.map(card).join('')
+                    : '<div class="st-empty">還沒有訂閱<br>按「＋ 新增」開始記錄</div>';
+
+                var hw = $('st-histWrap');
+                if (hist.length) {
+                    hw.style.display = 'block';
+                    $('st-histSummary').textContent = '已取消的訂閱（' + hist.length + '）';
+                    $('st-histList').innerHTML = hist.map(card).join('');
+                } else {
+                    hw.style.display = 'none';
+                }
+
+                Array.prototype.forEach.call(document.querySelectorAll('#st-subList [data-act], #st-histList [data-act]'), function (b) {
+                    b.addEventListener('click', function () { onCardAct(b.getAttribute('data-act'), +b.getAttribute('data-id')); });
+                });
+            }
+
+            function onCardAct(act, id) {
+                var s = null;
+                state.subs.forEach(function (x) { if (x.id === id) s = x; });
+                if (act === 'edit') { openEdit(id); return; }
+                if (!s) return;
+                if (act === 'cancel') {
+                    if (!confirm('確定取消這筆訂閱？\n紀錄會保留，方便查看累計花費。記得去平台完成取消流程喔！')) return;
+                    s.status = 'cancelled';
+                } else if (act === 'restore') {
+                    s.status = 'active';
+                } else if (act === 'del') {
+                    if (!confirm('確定永久刪除？累計花費紀錄也會消失，建議用「取消訂閱」保留。')) return;
+                    state.subs = state.subs.filter(function (x) { return x.id !== id; });
+                }
+                saveSubs();
+                renderAll();
+            }
+
+            /* ---------- 表單 ---------- */
+            function resetForm() {
+                state.editingId = null;
+                state.cancelByTouched = false;
+                $('st-formTitle').textContent = '新增訂閱';
+                ['st-f_id', 'st-f_name', 'st-f_amount', 'st-f_pay_method', 'st-f_note'].forEach(function (id) { $(id).value = ''; });
+                $('st-f_currency').value = 'TWD';
+                $('st-f_cycle').value = 'monthly';
+                $('st-f_cycle_days').value = 30;
+                $('st-f_first_billing').value = todayStr();
+                $('st-f_cancel_by').value = '';
+                $('st-f_status').value = 'active';
+                $('st-f_trial_end').value = '';
+                $('st-f_category').value = '';
+                toggleFormParts();
+            }
+            function toggleFormParts() {
+                $('st-cycleDaysWrap').style.display = $('st-f_cycle').value === 'custom' ? 'block' : 'none';
+                $('st-trialEndWrap').style.display = $('st-f_status').value === 'trial' ? 'block' : 'none';
+            }
+            $('st-f_cycle').addEventListener('change', toggleFormParts);
+            $('st-f_status').addEventListener('change', toggleFormParts);
+
+            /* 首次扣款日變更時，若使用者沒手動改過最晚取消日，自動帶入「下次扣款日前一天」 */
+            $('st-f_first_billing').addEventListener('change', autoCancelBy);
+            $('st-f_cycle').addEventListener('change', autoCancelBy);
+            $('st-f_cycle_days').addEventListener('change', autoCancelBy);
+            $('st-f_cancel_by').addEventListener('change', function () { state.cancelByTouched = true; });
+            function autoCancelBy() {
+                if (state.cancelByTouched) return;
+                var fb = $('st-f_first_billing').value;
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(fb)) return;
+                var tmp = { first_billing: fb, cycle: $('st-f_cycle').value, cycle_days: parseInt($('st-f_cycle_days').value, 10) || 30 };
+                $('st-f_cancel_by').value = addDaysStr(nextBilling(tmp), -1);
+            }
+
+            $('st-presetChips').innerHTML = PRESETS.map(function (p, i) {
+                return '<button type="button" data-preset="' + i + '">' + esc(p.name) + ' ' + p.amount + '</button>';
+            }).join('');
+            Array.prototype.forEach.call(document.querySelectorAll('#st-presetChips [data-preset]'), function (b) {
+                b.addEventListener('click', function () {
+                    var p = PRESETS[+b.getAttribute('data-preset')];
+                    $('st-f_name').value = p.name;
+                    $('st-f_amount').value = p.amount;
+                    $('st-f_currency').value = p.currency;
+                    $('st-f_cycle').value = p.cycle;
+                    $('st-f_category').value = p.category;
+                    if (!$('st-f_first_billing').value) $('st-f_first_billing').value = todayStr();
+                    state.cancelByTouched = false;
+                    toggleFormParts();
+                    autoCancelBy();
+                });
+            });
+
+            function openEdit(id) {
+                var s = null;
+                state.subs.forEach(function (x) { if (x.id === id) s = x; });
+                if (!s) return;
+                state.editingId = id;
+                state.cancelByTouched = !!s.cancel_by;
+                $('st-formTitle').textContent = '編輯訂閱';
+                $('st-f_id').value = s.id;
+                $('st-f_name').value = s.name || '';
+                $('st-f_amount').value = s.amount || 0;
+                $('st-f_currency').value = s.currency || 'TWD';
+                $('st-f_cycle').value = s.cycle || 'monthly';
+                $('st-f_cycle_days').value = s.cycle_days || 30;
+                $('st-f_first_billing').value = s.first_billing || todayStr();
+                $('st-f_cancel_by').value = s.cancel_by || '';
+                $('st-f_status').value = ['trial', 'active', 'paused'].indexOf(s.status) >= 0 ? s.status : 'active';
+                $('st-f_trial_end').value = s.trial_end || '';
+                $('st-f_category').value = s.category || '';
+                $('st-f_pay_method').value = s.pay_method || '';
+                $('st-f_note').value = s.note || '';
+                toggleFormParts();
+                switchView('form');
+            }
+
+            $('st-formSave').addEventListener('click', function () {
+                var body = {
+                    name: $('st-f_name').value.trim(),
+                    amount: parseFloat($('st-f_amount').value) || 0,
+                    currency: $('st-f_currency').value,
+                    cycle: $('st-f_cycle').value,
+                    cycle_days: parseInt($('st-f_cycle_days').value, 10) || 30,
+                    first_billing: $('st-f_first_billing').value,
+                    cancel_by: $('st-f_cancel_by').value || null,
+                    status: $('st-f_status').value,
+                    trial_end: $('st-f_trial_end').value || null,
+                    category: $('st-f_category').value,
+                    pay_method: $('st-f_pay_method').value.trim(),
+                    note: $('st-f_note').value.trim()
+                };
+                if (!body.name) { alert('請填寫名稱'); return; }
+                if (!/^\d{4}-\d{2}-\d{2}$/.test(body.first_billing)) { alert('請選擇首次扣款日'); return; }
+                if (!body.cancel_by) {
+                    body.cancel_by = addDaysStr(nextBilling({ first_billing: body.first_billing, cycle: body.cycle, cycle_days: body.cycle_days }), -1);
+                }
+                if (state.editingId) {
+                    state.subs.forEach(function (x) {
+                        if (x.id === state.editingId) {
+                            for (var k in body) x[k] = body[k];
+                        }
+                    });
+                } else {
+                    body.id = newId();
+                    state.subs.push(body);
+                }
+                saveSubs();
+                resetForm();
+                renderAll();
+                switchView('list');
+            });
+
+            /* ---------- 月曆 ---------- */
+            function renderCal() {
+                var today = todayStr();
+                if (!state.calY) {
+                    var t = today.split('-');
+                    state.calY = +t[0]; state.calM = +t[1];
+                }
+                var y = state.calY, m = state.calM;
+                $('st-calTitle').textContent = y + ' 年 ' + m + ' 月';
+
+                var firstDow = new Date(y, m - 1, 1).getDay();
+                var daysIn = new Date(y, m, 0).getDate();
+                var r = monthRange(y, m);
+
+                var byDay = {};
+                state.subs.filter(isLive).forEach(function (s) {
+                    var n = 0, guard = 0;
+                    while (guard < 2000) {
+                        var d = billingAt(s, n);
+                        if (d > r.end) break;
+                        if (d >= r.start) {
+                            (byDay[d] = byDay[d] || []).push({ name: s.name, kind: 'bill' });
+                        }
+                        n++; guard++;
+                    }
+                    var cb = getCancelBy(s, today);
+                    if (cb >= r.start && cb <= r.end) {
+                        (byDay[cb] = byDay[cb] || []).push({ name: s.name, kind: 'cancel' });
+                    }
+                    if (s.status === 'trial' && s.trial_end && s.trial_end >= r.start && s.trial_end <= r.end) {
+                        (byDay[s.trial_end] = byDay[s.trial_end] || []).push({ name: s.name + '（試用到期）', kind: 'bill' });
+                    }
+                });
+
+                var html = ['日', '一', '二', '三', '四', '五', '六'].map(function (d) {
+                    return '<div class="st-dow">' + d + '</div>';
+                }).join('');
+                for (var i = 0; i < firstDow; i++) html += '<div class="st-day st-other"></div>';
+                for (var day = 1; day <= daysIn; day++) {
+                    var ds = y + '-' + pad(m) + '-' + pad(day);
+                    var marks = (byDay[ds] || []).slice(0, 3);
+                    html += '<div class="st-day"><div>' + day + '</div>' +
+                        marks.map(function (mk) {
+                            return '<div class="st-dot' + (mk.kind === 'cancel' ? ' st-warn' : '') + '" title="' + esc(mk.name) + '"></div>';
+                        }).join('') + '</div>';
+                }
+                $('st-calGrid').innerHTML = html;
+            }
+            $('st-calPrev').addEventListener('click', function () {
+                state.calM--; if (state.calM < 1) { state.calM = 12; state.calY--; } renderCal();
+            });
+            $('st-calNext').addEventListener('click', function () {
+                state.calM++; if (state.calM > 12) { state.calM = 1; state.calY++; } renderCal();
+            });
+
+            /* ---------- 取消指南 ---------- */
+            function renderGuide() {
+                $('st-guideBody').innerHTML = '<h3>🔌 取消訂閱指南</h3>' +
+                    '<div class="st-muted">各平台取消路徑（2026 年整理，介面可能微調）：</div>' +
+                    GUIDE.map(function (g) {
+                        return '<h4>' + esc(g.name) + '</h4><ol>' +
+                            g.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+                    }).join('') +
+                    '<div class="st-foot">小提醒：取消流程應與訂閱同等便利（易進易出）。取消後務必確認收到確認信或截圖留存；若遇到惡意挽留，可向消保處申訴。</div>';
+            }
+
+            /* ---------- 總渲染 ---------- */
+            function renderAll() {
+                renderHome();
+                renderList();
+                renderCal();
+                renderGuide();
+            }
+
+            renderAll();
+        })();
+        </script>
+
+        <style>
+            .st-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; }
+            .st-tabs [data-st-tab] {
+                padding: 0.6rem 0.9rem; font-size: 0.875rem; font-weight: 600; white-space: nowrap;
+                color: #78716c; background: transparent; border: none; cursor: pointer;
+                border-bottom: 2px solid transparent; margin-bottom: -2px;
+            }
+            .st-tabs [data-st-tab][aria-selected="true"] { color: #2F7550; border-bottom-color: #2F7550; }
+            .st-tabs [data-st-tab]:hover { color: #44403c; }
+            .st-card { background: #FFFDF7; border: 1px solid #E8E4DA; border-radius: 1rem; padding: 1rem 1.1rem; margin-bottom: 0.9rem; }
+            .st-card h3 { font-size: 0.95rem; font-weight: 700; color: #25231F; margin: 0 0 0.6rem; }
+            .st-card h4 { font-size: 0.875rem; font-weight: 700; color: #25231F; margin: 1rem 0 0.35rem; }
+            .st-card ol { margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem; line-height: 1.8; color: #4A463B; }
+            .st-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.9rem; }
+            .st-stat { text-align: center; margin-bottom: 0; }
+            .st-big { font-size: 1.5rem; font-weight: 800; color: #25231F; }
+            .st-label { font-size: 0.75rem; color: #78716c; margin-top: 0.2rem; }
+            .st-muted { font-size: 0.78rem; color: #78716c; }
+            .st-foot { font-size: 0.75rem; color: #78716c; margin-top: 0.6rem; line-height: 1.7; }
+            .st-hint { font-size: 0.75rem; font-weight: 400; color: #78716c; }
+            .st-banner { border-radius: 0.9rem; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 600; line-height: 1.7; margin-bottom: 0.9rem; background: #FFF7E6; border: 1px solid #F0D9A8; color: #7C5A1E; }
+            .st-banner.st-danger { background: #FDECEA; border-color: #F5B5AE; color: #9B2C1F; }
+            .st-banner.st-ok { background: #EDF5EF; border-color: #B8D5BF; color: #245F40; }
+            .st-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid #F0EBDD; }
+            .st-row:last-child { border-bottom: none; }
+            .st-row strong { font-size: 0.9rem; color: #25231F; }
+            .st-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 999px; background: #EDF5EF; color: #245F40; }
+            .st-badge.st-due { background: #FDECEA; color: #9B2C1F; }
+            .st-badge.st-trial { background: #FFF7E6; color: #7C5A1E; }
+            .st-badge.st-active { background: #EDF5EF; color: #245F40; }
+            .st-badge.st-paused { background: #E8E4DA; color: #5F594C; }
+            .st-badge.st-cancelled { background: #E8E4DA; color: #78716c; }
+            .st-bar { margin-bottom: 0.55rem; }
+            .st-blabel { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4A463B; margin-bottom: 0.2rem; }
+            .st-track { height: 0.5rem; background: #F0EBDD; border-radius: 999px; overflow: hidden; }
+            .st-fill { height: 100%; background: #5E966C; border-radius: 999px; }
+            .st-subcard { margin-bottom: 0.75rem; }
+            .st-subcard.st-cancelled { opacity: 0.65; }
+            .st-name { font-size: 1rem; font-weight: 700; color: #25231F; }
+            .st-meta { font-size: 0.78rem; color: #78716c; margin-top: 0.25rem; }
+            .st-cancel { font-size: 0.82rem; font-weight: 700; color: #7C5A1E; margin-top: 0.45rem; }
+            .st-cancel.st-urgent { color: #9B2C1F; }
+            .st-count { font-size: 0.85rem; font-weight: 700; color: #245F40; }
+            .st-count.st-soon { color: #9B2C1F; }
+            .st-btnrow { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
+            .st-small { font-size: 0.78rem; padding: 0.4rem 0.8rem; border-radius: 0.6rem; border: 1px solid #E8E4DA; background: #fff; color: #4A463B; cursor: pointer; }
+            .st-small:hover { background: #F6F0E4; }
+            .st-small.st-danger-btn { color: #9B2C1F; border-color: #F5B5AE; }
+            .st-empty { text-align: center; color: #78716c; font-size: 0.85rem; line-height: 2; padding: 2.5rem 0; }
+            .st-hist { margin-top: 0.5rem; }
+            .st-hist summary { cursor: pointer; font-size: 0.85rem; color: #78716c; padding: 0.5rem 0; }
+            .st-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+            .st-cal-head button { font-size: 1.4rem; line-height: 1; padding: 0.2rem 0.7rem; border: 1px solid #E8E4DA; border-radius: 0.6rem; background: #fff; cursor: pointer; color: #4A463B; }
+            .st-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 0.75rem; }
+            .st-dow { text-align: center; font-weight: 700; color: #78716c; padding: 0.3rem 0; }
+            .st-day { min-height: 2.6rem; border-radius: 0.4rem; padding: 0.2rem; text-align: center; color: #4A463B; background: #FFFCF4; }
+            .st-day.st-other { background: transparent; }
+            .st-dot { width: 6px; height: 6px; border-radius: 999px; background: #C0392B; margin: 2px auto 0; }
+            .st-dot.st-warn { background: #E67E22; }
+            .st-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.8rem; }
+            .st-chips button { font-size: 0.78rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid #D8E9DC; background: #EDF5EF; color: #245F40; cursor: pointer; }
+            .st-f label { display: block; font-size: 0.82rem; font-weight: 600; color: #4A463B; margin: 0.7rem 0 0.25rem; }
+            .st-f input, .st-f select, .st-f textarea { width: 100%; font-size: 0.9rem; padding: 0.55rem 0.7rem; border: 1px solid #E8E4DA; border-radius: 0.6rem; background: #fff; color: #25231F; box-sizing: border-box; }
+            .st-f input:focus, .st-f select:focus, .st-f textarea:focus { outline: 2px solid #B8D5BF; border-color: #5E966C; }
+            .st-primary { background: #2F7550; color: #fff; font-weight: 700; border: none; cursor: pointer; padding: 0.7rem 1.2rem; border-radius: 0.75rem; font-size: 0.9rem; }
+            .st-primary:hover { background: #245F40; }
+            .st-block { width: 100%; }
+        </style>
+
+    </div>
+
+    <div slot="article">
+        <h2>為什麼需要訂閱管家？自動續訂是最貴的「忘記」</h2>
+        <p>Netflix、Spotify、iCloud、Disney+……每個月幾百塊看起來不多，但訂閱一多、加上免費試用轉付費，很容易「想取消卻忘記」，一年下來被多扣好幾千塊。訂閱管家的核心不是記帳，而是幫你盯住每筆訂閱的「最晚取消日」：想取消的話最晚要在那天之前動手，期限剩 3 天會紅色警示。</p>
+
+        <h3>三個步驟開始用</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>一鍵帶入常用訂閱：</strong>新增頁點一下 Netflix、Spotify 等預設，金額週期自動填好，只要選首次扣款日。</li>
+            <li><strong>設定最晚取消日：</strong>預設為下次扣款日前一天；若平台要求提早取消（或你想留緩衝），可以往前調。</li>
+            <li><strong>每天看一眼首頁：</strong>取消期限倒數、7 天內扣款、每月花費分佈一次看清；月曆上紅點是扣款日、橘點是最晚取消日。</li>
+        </ul>
+
+        <h3>取消訂閱的三個好習慣</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>經哪裡訂、就去哪裡取消：</strong>App Store 訂閱到 iPhone「設定 → Apple ID → 訂閱項目」取消；Google Play 訂閱到 Play 商店「付款與訂閱」取消；官網訂閱到官網帳戶頁取消。找錯地方會白忙一場。</li>
+            <li><strong>取消後留證據：</strong>確認收到取消確認信，或把取消成功的畫面截圖。很多續扣爭議都是「以為取消成功」造成的。</li>
+            <li><strong>試用期設兩個提醒：</strong>試用結束前 3 天決定要不要留、結束當天再確認一次。本工具的試用倒數會自動提醒你。</li>
+        </ul>
+
+        <h2>相關工具與延伸閱讀</h2>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><a href="/tools/insurance-assessment" class="text-ink-700 underline underline-offset-4">保險效益評估</a>：保單也是一種長期訂閱，算算 IRR 跟保障缺口。</li>
+            <li><a href="/tools/salary-calculator" class="text-ink-700 underline underline-offset-4">薪資實拿計算機</a>：訂閱總額佔薪水幾 %？先算實拿再決定留不留。</li>
+            <li><a href="/tools/split-calculator" class="text-ink-700 underline underline-offset-4">分帳計算機</a>：跟家人朋友合訂分攤，一人付、全員平分。</li>
+        </ul>
+    </div>
+</ToolLayout>
