@@ -27,10 +27,19 @@ const faqs = [
         q: "怎麼算外送的真實時薪？",
         a: "公式是：（當月跑單總收入 − 油錢 − 保養維修攤提 − 保險攤提 − 勞健保自付額）÷ 當月實際上線時數。很多人只用總收入除以時數，會高估 2 到 3 成。把上線等單、取餐、送餐、回程的時間全部計入，才是真實時薪。"
     },
+    {
+        q: "外送專法上路後，每單真的有保底 45 元嗎？",
+        a: "有。《外送員權益保障及外送平台管理法》2026 年 7 月 21 日上路後，每筆訂單基本報酬不得低於 45 元；另以外送服務時間換算時薪不得低於最低工資 1.25 倍（2026 年為 245 元）。注意：等單時間不算在內。2027 年最低工資時薪調為 205 元後，保底金額會隨調升比率公告調整，約 47 元。詳細公式可看本站專法解讀文。"
+    },
+];
+
+const sources = [
+    { label: '勞動部（外送員權益保障專法主管機關）', href: 'https://www.mol.gov.tw/' },
+    { label: '財政部（綜合所得稅申報）', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=34b463dc8f1b49f29d440d92a6fd5139' },
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs}>
+<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs} sources={sources}>
     <DeliveryIncomeCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
@@ -62,5 +71,14 @@ const faqs = [
             <li><strong>固定熱區減少空車：</strong> 熟悉 2 到 3 個店家密集的熱區，縮短取餐等待與空車里程。</li>
             <li><strong>記帳：</strong> 用本站計算機每月結算一次，連續記錄三個月，你會清楚知道自己的真實時薪曲線。</li>
         </ul>
+
+        <h2>外送專法上路後的三件事（2026 年 7 月 21 日起）</h2>
+        <p>《外送員權益保障及外送平台管理法》上路後，跑單收入多了法定下限，直接影響你的試算基準：</p>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>每單保底 45 元：</strong> 每筆訂單的基本報酬不得低於 45 元，低於這個數字的派單結構可以直接檢舉。</li>
+            <li><strong>時薪下限 1.25 倍：</strong> 以外送服務時間（不含等單）換算，時薪不得低於最低工資 1.25 倍；2026 年為 245 元，2027 年隨最低工資調升約為 256 元。</li>
+            <li><strong>職災保障：</strong> 平台須為外送員投保相關保險並提撥職災補償準備，跑單途中的保障不再是零。</li>
+        </ul>
+        <p>想搞懂保底公式怎麼算、疊單怎麼拆，看這兩篇：<a href="/blog/2026-delivery-worker-protection-act-pay-guide">外送專法計酬公式全解讀（45 元與 245 元怎麼來）</a>、<a href="/blog/2026-delivery-monthly-income-after-new-act">專法上路後實測月收＋3 種時數試算</a>。算完也可以回本頁把保底金額代入，當作收入下限來試算。</p>
     </div>
 </ToolLayout>
