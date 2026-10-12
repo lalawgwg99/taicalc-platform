@@ -1,0 +1,78 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ApplianceEnergyCompare from '../../components/calculators/ApplianceEnergyCompare.vue';
+import { coreToolGovernance } from '../../data/regulatoryMetadata';
+
+const title = "家電耗電比一比｜節能標章年耗電量換算電費，冷氣冰箱誰最省一比就知道";
+const description = "買冷氣、冰箱怎麼看節能標章？輸入能源效率標示的「每年耗電量」，3秒算出年電費、10年電費與總持有成本，最多同時比較3台，賣場比價不再憑感覺。";
+const keywords = "家電耗電比較,節能標章,能源效率標示,每年耗電量,冷氣耗電比較,冰箱耗電,一級能效,變頻冷氣省電,家電電費計算";
+const governance = coreToolGovernance.electricity;
+
+const faqs = [
+    {
+        q: "能源效率標示上的「每年耗電量」在哪裡看？",
+        a: "標示左上角綠色區塊會寫「每年耗電量 約XXX度」。這是經濟部能源署用標準測試條件估出來的全年用電度數，拿來橫向比較同類家電最公平——數字越小越省電。"
+    },
+    {
+        q: "1級跟5級能效，電費差多少？",
+        a: "看年耗電量差幾度再乘以電價最準。以冷氣為例，1級年耗電約900度、5級可能到1,800度，一年電費差約 (1800-900)×4＝3,600 元，10年差36,000元，遠超過當初的價差。"
+    },
+    {
+        q: "變頻冷氣標示的年耗電量準嗎？",
+        a: "標示值是實驗室標準條件下的估計值，實際會因使用時數、設定溫度、房間坪數而異。但同類產品都用同一套標準測試，拿來「比較兩台誰省電」是可靠的；要估自家實際電費，建議用功率換算模式填入你真正的使用時數。"
+    },
+    {
+        q: "平均每度電價要填多少？",
+        a: "拿自家電費帳單「總金額 ÷ 總度數」最準，一般家庭約3～5元。本工具用平均單價估算，未計入台電累進級距與夏月加價；想精算整戶電費可用電費計算機。"
+    },
+    {
+        q: "冰箱24小時開著，年耗電量怎麼估？",
+        a: "直接看標示的「每年耗電量」最準，因為測試條件本來就是模擬全年運轉。以年耗電300度的一級能效冰箱為例，一年電費約300×4＝1,200元；老舊冰箱年耗電可能破1,500度，一年電費6,000元，換新兩三年就回本。"
+    },
+    {
+        q: "除濕機、電視的標示要看哪個數字？",
+        a: "除濕機看「能源因數值（EF值）」——每度電能除多少公升水，數字越大越省；電視、洗衣機則直接看「每年耗電量」。不管哪種家電，最後都換算成年耗電度數，就能用本工具一起比。"
+    },
+];
+---
+
+<ToolLayout
+    title={title}
+    description={description}
+    keywords={keywords}
+    category="生活計算"
+    faqs={faqs}
+    dataVersion={governance.version}
+    dataYear={governance.dataYear}
+    lastUpdated={governance.updatedAt}
+    sources={[...governance.sources, { label: '經濟部能源署（能源效率標示網）', href: 'https://www.energylabel.org.tw/' }]}
+>
+    <ApplianceEnergyCompare client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>能源效率標示怎麼看？9 個數字一次搞懂</h2>
+        <p>台灣的「能源效率標示」（俗稱節能標章）貼在冷氣、冰箱、除濕機、電視等家電上，重點只看兩個：<strong>每年耗電量</strong>（左上角，約XXX度）跟<strong>等級</strong>（右側溫度計，1級最省、5級最耗電）。等級是相對排名，同級距內還是要比年耗電量才精準。</p>
+
+        <h3>各家電標示的關鍵數字</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>冷氣：</strong>看「每年耗電量」＋CSPF（季節性能因數，越高越省）。變頻機種的年耗電量通常只有定頻的一半左右。</li>
+            <li><strong>電冰箱：</strong>看「每年耗電量」＋EF值（能源因數值，每度電能維持多少公升冷藏容積）。冰箱全年無休，直接拿年耗電量比最準。</li>
+            <li><strong>除濕機：</strong>看 EF 值（每度電除濕公升數），數字越大越省電。</li>
+            <li><strong>電視、洗衣機：</strong>直接看「每年耗電量」。</li>
+        </ul>
+
+        <h2>為什麼要算「10 年總持有成本」？</h2>
+        <p>賣場最常見的陷阱：1級變頻冷氣賣35,000、3級定頻賣26,000，乍看貴9,000很不划算。但1級年耗電900度、3級1,500度，一年電費差2,400元，不到4年就回本，10年下來1級反而省15,000元。只比售價不比電費，等於只看頭期款不看房貸。</p>
+
+        <h2>三步驟用標示挑省電家電</h2>
+        <ol class="list-decimal pl-5 space-y-2">
+            <li><strong>抄數字：</strong>在賣場把候選機種的「每年耗電量」跟售價拍下來，等級僅供參考。</li>
+            <li><strong>輸入比較：</strong>用本工具輸入3台，年電費、10年電費自動算好，還會告訴你貴的機種幾年回本。</li>
+            <li><strong>看總成本：</strong>有填售價的話，直接看「10年總持有成本」那一列，數字最小的就是真正的省錢冠軍。</li>
+        </ol>
+
+        <blockquote>
+            <strong>資料版本：</strong>電價參數採台電 2026-04-01 起實施費率；家電年耗電量以各產品能源效率標示為準，實際耗電依使用習慣而異。本工具為估算，實際以帳單為準。
+        </blockquote>
+    </div>
+</ToolLayout>

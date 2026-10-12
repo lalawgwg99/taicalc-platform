@@ -67,6 +67,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['電費', '電費計算機', '冷氣電費', '冷氣電費計算機', '台電', '夏月電價', '變頻冷氣'],
   },
   {
+    href: '/tools/appliance-energy-compare',
+    label: '家電耗電比一比 | 節能標章電費換算',
+    desc: '輸入能源效率標示年耗電量，3台家電年電費與10年總成本一次比完。',
+    category: '居住與房產',
+    scenario: '買冷氣、冰箱前，看節能標章比價時',
+    cta: '比哪台家電最省電',
+    icon: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>',
+    tags: ['家電耗電', '節能標章', '能源效率標示', '每年耗電量', '冷氣耗電比較', '冰箱耗電', '一級能效', '家電比較'],
+  },
+  {
     href: '/tools/split-calculator',
     label: '分帳計算機 | AA制分錢速算',
     desc: '聚餐旅遊多人拆帳，自動產生最少轉帳次數與LINE複製文字。',
@@ -300,7 +310,7 @@ export const getRelatedTools = (currentHref: string, limit = 4): ToolCatalogItem
   const WINNER_CROSS_LINKS: Record<string, string[]> = {
     '/tools/split-calculator': ['/tools/delivery-income-calculator', '/tools/electricity-calculator'],
     '/tools/delivery-income-calculator': ['/tools/electricity-calculator', '/tools/salary-calculator'],
-    '/tools/electricity-calculator': ['/tools/salary-calculator', '/tools/split-calculator'],
+    '/tools/electricity-calculator': ['/tools/appliance-energy-compare', '/tools/salary-calculator', '/tools/split-calculator'],
     '/tools/salary-calculator': ['/tools/split-calculator', '/tools/delivery-income-calculator'],
   };
   const winnerLinks = (WINNER_CROSS_LINKS[currentPath] ?? [])
