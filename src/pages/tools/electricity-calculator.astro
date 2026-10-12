@@ -83,9 +83,8 @@ const faqs = [
         </div>
         <div data-tabpanel="appliances" role="tabpanel" hidden>
             <ApplianceEnergyCompare client:only="vue" />
-        </div>
-    </div>
-    <script>
+        
+    <script is:inline>
         (function () {
             var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
             var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
@@ -114,6 +113,9 @@ const faqs = [
             activate(valid.indexOf(init) >= 0 ? init : 'calc');
         })();
     </script>
+</div>
+    </div>
+    
     <style>
         .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
         .tool-tabs [data-tabbtn] {
