@@ -122,7 +122,7 @@
       </div>
 
       <!-- 右側：結果與圖表 -->
-      <div class="lg:col-span-2 space-y-6">
+      <div v-if="hasValidSalary" class="lg:col-span-2 space-y-6">
         <!-- 核心數字 -->
         <section class="calculator-card">
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
@@ -221,12 +221,20 @@
           </ul>
         </div>
       </div>
+      <!-- 空狀態：月薪未輸入 -->
+      <div v-else class="lg:col-span-2">
+        <div class="calculator-card text-center py-16">
+          <p class="text-4xl mb-4">🐢</p>
+          <p class="text-ink-600 font-medium mb-1">還沒輸入月薪</p>
+          <p class="text-xs text-ink-400">在左側填入月薪 (NT$)，立刻看到你的勞退試算</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 import Decimal from 'decimal.js';
 
@@ -267,6 +275,11 @@ const pastYearsClamped = computed(() => Math.max(0, pastYears.value || 0));
 const pastPrincipalTotal = computed(() => new Decimal(totalMonthlyContribution.value).mul(pastYearsClamped.value * 12).toNumber());
 const pastPrincipalBasic = computed(() => new Decimal(employerMonthlyContribution.value).mul(pastYearsClamped.value * 12).toNumber());
 const monthlyWageGrade = computed(() => getPensionGrade(salary.value));
+// 月薪為空／0 視為尚未輸入：結果區（含圖表）整區隱藏，避免 getPensionGrade 的 1,500 下限產生幽靈投影
+const hasValidSalary = computed(() => {
+  const s = Number(salary.value);
+  return Number.isFinite(s) && s > 0;
+});
 
 const employerMonthlyContribution = computed(() => new Decimal(monthlyWageGrade.value).mul(0.06).round().toNumber());
 const selfMonthlyContribution = computed(() => new Decimal(monthlyWageGrade.value).mul(new Decimal(selfRate.value).div(100)).round().toNumber());
@@ -411,6 +424,11 @@ watch(pastYears, (val) => {
 })
 
 watch([salary, currentAge, retireAge, selfRate, roi, taxRate], updateChart, { deep: true });
+
+// 月薪從空恢復有效時，canvas 剛掛載，下一 tick 再重建圖表
+watch(hasValidSalary, (valid) => {
+  if (valid) nextTick(() => updateChart());
+});
 
 onMounted(() => {
   setTimeout(updateChart, 200);
