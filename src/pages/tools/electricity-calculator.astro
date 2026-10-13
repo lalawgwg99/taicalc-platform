@@ -63,6 +63,7 @@ const faqs = [
     description={description}
     keywords={keywords}
     category="生活計算"
+    compactHero
     faqs={faqs}
     dataVersion={governance.version}
     dataYear={governance.dataYear}
@@ -70,10 +71,10 @@ const faqs = [
     sources={governance.sources}
 >
     <div slot="tool">
-        <section class="ec-answer" aria-label="一度電多少錢速答">
-            <p class="ec-answer-kicker">一度電多少錢？</p>
-            <p class="ec-answer-big">1.78 ～ 8.86 <span class="ec-answer-unit">元 / 度</span></p>
-            <p class="ec-answer-note">台電住家電費採累進費率：用得越少一度越便宜（120 度以下 1.78 元），用得越多越貴（夏月超過 1,000 度一度 8.86 元）。往下輸入度數，3 秒算出你的電費。</p>
+        <section class="ec-hero" aria-label="一度電多少錢速答">
+            <p class="ec-hero-kicker">一度電多少錢？</p>
+            <p class="ec-hero-big">1.78 <span class="ec-hero-tilde">～</span> 8.86 <span class="ec-hero-unit">元 / 度</span></p>
+            <p class="ec-hero-note">台電住家採累進費率：120 度以下最便宜，超過 1,000 度夏月最貴。往下輸入度數，3 秒算出你的電費。</p>
         </section>
 
         <section class="ec-section" aria-label="電費試算">
@@ -81,48 +82,50 @@ const faqs = [
             <ElectricityCalculator client:only="vue" />
         </section>
 
+        <div class="ec-duo">
         <section class="ec-section" aria-label="三種家庭實際案例">
             <h2 class="ec-h2">三種家庭的實際電費</h2>
-            <p class="ec-lead">直接看數字最有感。以下皆以台電 2026-04-01 住宅費率試算：</p>
-            <table class="w-full text-sm border-collapse">
+            <p class="ec-lead">直接看數字最有感，皆以台電 2026-04-01 住宅費率試算：</p>
+            <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
                 <thead>
                     <tr class="border-b border-paper-300 text-left text-ink-400">
-                        <th class="py-2 pr-3 font-medium">家庭型態</th>
-                        <th class="py-2 pr-3 font-medium">每月用電</th>
-                        <th class="py-2 pr-3 font-medium">非夏月</th>
-                        <th class="py-2 font-medium">夏月</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">家庭型態</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">每月用電</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">非夏月</th>
+                        <th class="py-2 font-medium whitespace-nowrap">夏月</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-paper-200 text-ink-600">
-                    <tr><td class="py-2 pr-3">單身租屋族（套房＋小冷氣）</td><td class="py-2 pr-3">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700">395 元</td><td class="py-2 font-semibold text-ink-700">418 元</td></tr>
-                    <tr><td class="py-2 pr-3">小資租屋（1 房 1 廳）</td><td class="py-2 pr-3">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700">621 元</td><td class="py-2 font-semibold text-ink-700">673 元</td></tr>
-                    <tr><td class="py-2 pr-3">兩房小家庭（冷氣＋電熱水器）</td><td class="py-2 pr-3">非夏月 400 度／夏月 650 度</td><td class="py-2 pr-3 font-semibold text-ink-700">908 元</td><td class="py-2 font-semibold text-ink-700">2,167 元</td></tr>
+                    <tr><td class="py-2 pr-3">單身租屋族</td><td class="py-2 pr-3 whitespace-nowrap">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">395 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">418 元</td></tr>
+                    <tr><td class="py-2 pr-3">小資租屋</td><td class="py-2 pr-3 whitespace-nowrap">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">621 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">673 元</td></tr>
+                    <tr><td class="py-2 pr-3">兩房小家庭</td><td class="py-2 pr-3 whitespace-nowrap">400／650 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">908 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">2,167 元</td></tr>
                 </tbody>
-            </table>
-            <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單金額約為上表 × 2（例如小家庭夏月雙月帳單約 4,334 元）。</p>
+            </table></div>
+            <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單約為上表 × 2。</p>
         </section>
 
         <section class="ec-section" aria-label="級距速查表">
-            <h2 class="ec-h2">台電住宅六段級距單價速查（元/度）</h2>
-            <table class="w-full text-sm border-collapse">
+            <h2 class="ec-h2">六段級距單價速查 <span class="ec-h2-sub">元/度</span></h2>
+            <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
                 <thead>
                     <tr class="border-b border-paper-300 text-left text-ink-400">
-                        <th class="py-2 pr-3 font-medium">每月用電度數</th>
-                        <th class="py-2 pr-3 font-medium">夏月（6/1～9/30）</th>
-                        <th class="py-2 font-medium">非夏月</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">每月用電</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">夏月</th>
+                        <th class="py-2 font-medium whitespace-nowrap">非夏月</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-paper-200 text-ink-600">
-                    <tr><td class="py-2 pr-3">120 度以下</td><td class="py-2 pr-3 font-semibold text-ink-700">1.78</td><td class="py-2 font-semibold text-ink-700">1.78</td></tr>
-                    <tr><td class="py-2 pr-3">121～330 度</td><td class="py-2 pr-3 font-semibold text-ink-700">2.55</td><td class="py-2 font-semibold text-ink-700">2.26</td></tr>
-                    <tr><td class="py-2 pr-3">331～500 度</td><td class="py-2 pr-3 font-semibold text-ink-700">3.80</td><td class="py-2 font-semibold text-ink-700">3.13</td></tr>
-                    <tr><td class="py-2 pr-3">501～700 度</td><td class="py-2 pr-3 font-semibold text-ink-700">5.14</td><td class="py-2 font-semibold text-ink-700">4.24</td></tr>
-                    <tr><td class="py-2 pr-3">701～1,000 度</td><td class="py-2 pr-3 font-semibold text-ink-700">6.44</td><td class="py-2 font-semibold text-ink-700">5.27</td></tr>
-                    <tr><td class="py-2 pr-3">1,001 度以上</td><td class="py-2 pr-3 font-semibold text-ink-700">8.86</td><td class="py-2 font-semibold text-ink-700">7.03</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">120 度以下</td><td class="py-2 pr-3 font-semibold text-ink-700">1.78</td><td class="py-2 font-semibold text-ink-700">1.78</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">121～330 度</td><td class="py-2 pr-3 font-semibold text-ink-700">2.55</td><td class="py-2 font-semibold text-ink-700">2.26</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">331～500 度</td><td class="py-2 pr-3 font-semibold text-ink-700">3.80</td><td class="py-2 font-semibold text-ink-700">3.13</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">501～700 度</td><td class="py-2 pr-3 font-semibold text-ink-700">5.14</td><td class="py-2 font-semibold text-ink-700">4.24</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">701～1,000 度</td><td class="py-2 pr-3 font-semibold text-ink-700">6.44</td><td class="py-2 font-semibold text-ink-700">5.27</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">1,001 度以上</td><td class="py-2 pr-3 font-semibold text-ink-700">8.86</td><td class="py-2 font-semibold text-ink-700">7.03</td></tr>
                 </tbody>
-            </table>
-            <p class="text-xs text-ink-400 mt-2">資料來源：台電官網「請問電費如何計算？」（2026-05-05 更新）；依 115 年 3 月 27 日電價審議會決議，自 2026-04-01 起適用。雙月抄表者各級距度數加倍計算。</p>
+            </table></div>
+            <p class="text-xs text-ink-400 mt-2">台電 2026-04-01 起實施費率；雙月抄表者各級距度數加倍。</p>
         </section>
+        </div>
 
         <section class="ec-section" aria-label="夏月 vs 非夏月">
             <h2 class="ec-h2">夏月 vs 非夏月</h2>
@@ -138,14 +141,29 @@ const faqs = [
     </div>
 
     <style>
-        .ec-answer { background: #FFFDF7; border: 1px solid #E8E4DA; border-radius: 1rem; padding: 1.25rem 1.25rem; margin-bottom: 1.5rem; text-align: center; }
-        .ec-answer-kicker { font-size: 0.8rem; font-weight: 700; color: #78716c; margin: 0 0 0.25rem; }
-        .ec-answer-big { font-size: 2rem; font-weight: 800; color: #166534; margin: 0; line-height: 1.2; }
-        .ec-answer-unit { font-size: 1rem; font-weight: 600; color: #57534e; }
-        .ec-answer-note { font-size: 0.85rem; color: #57534e; line-height: 1.7; margin: 0.75rem 0 0; text-align: left; }
-        .ec-section { margin-bottom: 2rem; }
-        .ec-h2 { font-size: 1.15rem; font-weight: 800; color: #25231F; margin: 0 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+        .ec-hero { background: linear-gradient(135deg, #14532d 0%, #166534 60%, #15803d 100%); border-radius: 1.25rem; padding: 2rem 1.5rem; margin-bottom: 2rem; text-align: center; color: #fff; box-shadow: 0 8px 24px rgba(20,83,45,.25); }
+        .ec-hero-kicker { font-size: 0.9rem; font-weight: 700; color: #bbf7d0; margin: 0 0 0.5rem; letter-spacing: .05em; }
+        .ec-hero-big { font-size: 2.75rem; font-weight: 800; margin: 0; line-height: 1.15; font-variant-numeric: tabular-nums; }
+        .ec-hero-tilde { color: #bbf7d0; font-weight: 600; }
+        .ec-hero-unit { font-size: 1.1rem; font-weight: 600; color: #dcfce7; }
+        .ec-hero-note { font-size: 0.85rem; color: #dcfce7; line-height: 1.7; margin: 0.9rem auto 0; max-width: 34rem; }
+        .ec-section { margin-bottom: 2.25rem; }
+        .ec-h2 { font-size: 1.2rem; font-weight: 800; color: #25231F; margin: 0 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(20,83,45,.15); }
+        .ec-h2-sub { font-size: 0.8rem; font-weight: 600; color: #78716c; }
         .ec-lead { font-size: 0.9rem; color: #57534e; line-height: 1.7; margin: 0 0 1rem; }
+        .ec-tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #E8E4DA; border-radius: 0.75rem; background: #FFFDF7; }
+        .ec-tablewrap table { min-width: 100%; }
+        .ec-tablewrap th, .ec-tablewrap td { padding-left: 0.75rem; }
+        .ec-tablewrap th:first-child, .ec-tablewrap td:first-child { padding-left: 1rem; }
+        .ec-tablewrap th:last-child, .ec-tablewrap td:last-child { padding-right: 1rem; }
+        @media (min-width: 1024px) {
+            .ec-duo { display: grid; grid-template-columns: 1.15fr 1fr; gap: 2rem; align-items: start; }
+            .ec-duo .ec-section { margin-bottom: 2.25rem; }
+            .ec-hero-big { font-size: 3.5rem; }
+            .ec-hero { padding: 2.75rem 2rem; text-align: left; display: grid; grid-template-columns: 1fr auto; gap: 1rem 2rem; align-items: center; }
+            .ec-hero-kicker { grid-column: 1 / -1; }
+            .ec-hero-note { grid-column: 1 / -1; margin-left: 0; max-width: 44rem; text-align: left; }
+        }
     </style>
 
     <div slot="article">

@@ -11,6 +11,7 @@ interface Props {
   faqs?: { q: string; a: string }[];
   keywords?: string;
   kicker?: string;
+  compactHero?: boolean;
   dataVersion?: string;
   dataYear?: string;
   lastUpdated?: string;
@@ -24,6 +25,7 @@ const {
   faqs = [],
   keywords,
   kicker = "先算，再看細節",
+  compactHero = false,
   dataVersion = platformGovernance.version,
   dataYear = platformGovernance.dataYear,
   lastUpdated = platformGovernance.updatedAt,
@@ -105,8 +107,8 @@ const relatedToolsSchema = JSON.stringify({
     <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />
     <script type="application/ld+json" set:html={relatedToolsSchema} slot="head" />
     <div class="max-w-7xl mx-auto px-0 sm:px-4 md:px-6 xl:px-0">
-        <header class="proto-grid-bg border-b border-paper-300">
-            <div class="pt-6 pb-8 md:pt-10 md:pb-10">
+        <header class={`proto-grid-bg border-b border-paper-300 ${compactHero ? 'proto-hero-compact' : ''}`}>
+            <div class={compactHero ? 'pt-5 pb-6 md:pt-6 md:pb-6' : 'pt-6 pb-8 md:pt-10 md:pb-10'}>
                 <div class="mb-4 flex items-center justify-between gap-3">
                     <a href="/" class="inline-flex items-center gap-1.5 text-xs font-medium text-ink-400 hover:text-brand-700 transition-colors group">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-x-0.5 transition-transform">
@@ -118,10 +120,16 @@ const relatedToolsSchema = JSON.stringify({
                 </div>
                 <p class="proto-kicker"><span class="proto-kicker-dash"></span>{category}</p>
                 <h1 class="proto-tool-h1">{cleanTitle}</h1>
-                <p class="proto-tool-sub">{kicker}</p>
-                <div class="mt-5">
-                    <a href="#calculator-panel" data-sfx="accent" class="proto-tool-cta">開始試算</a>
-                </div>
+                {compactHero ? (
+                    <p class="proto-tool-sub">{kicker}</p>
+                ) : (
+                    <>
+                        <p class="proto-tool-sub">{kicker}</p>
+                        <div class="mt-5">
+                            <a href="#calculator-panel" data-sfx="accent" class="proto-tool-cta">開始試算</a>
+                        </div>
+                    </>
+                )}
             </div>
         </header>
 
