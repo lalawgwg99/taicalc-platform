@@ -1047,7 +1047,7 @@ button, a, input, select, textarea {
 }
 
 .calculator-shell:not(.decision-calculator) {
-    max-width: 56rem;
+    max-width: 72rem;
 }
 
 .calculator-shell .bg-azure {
