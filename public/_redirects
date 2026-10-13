@@ -1,8 +1,8 @@
 # TaiCalc 301 轉址：比較頁整併（2026-10-12）
 # 格式：來源路徑 目標網址 狀態碼
 
-/tools/appliance-energy-compare /tools/electricity-calculator?tab=appliances 301
-/compare/electricity-summer-vs-nonsummer /tools/electricity-calculator?tab=summer 301
+/tools/appliance-energy-compare /tools/electricity-calculator 301
+/compare/electricity-summer-vs-nonsummer /tools/electricity-calculator 301
 /compare/mortgage-30-vs-40-years /tools/mortgage-calculator?tab=term 301
 /compare/xin-qing-an-vs-general-mortgage /tools/mortgage-calculator?tab=qingan 301
 /compare/rent-vs-buy /tools/rent-cost-calculator?tab=rentbuy 301

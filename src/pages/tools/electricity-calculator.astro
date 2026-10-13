@@ -70,117 +70,89 @@ const faqs = [
     sources={governance.sources}
 >
     <div slot="tool">
-        <div class="tool-tabs" role="tablist" aria-label="電費功能切換">
-            <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">電費試算</button>
-            <button type="button" data-tabbtn="summer" role="tab" aria-selected="false">夏月 vs 非夏月</button>
-            <button type="button" data-tabbtn="appliances" role="tab" aria-selected="false">比家電</button>
-        </div>
-        <div data-tabpanel="calc" role="tabpanel">
+        <section class="ec-answer" aria-label="一度電多少錢速答">
+            <p class="ec-answer-kicker">一度電多少錢？</p>
+            <p class="ec-answer-big">1.78 ～ 8.86 <span class="ec-answer-unit">元 / 度</span></p>
+            <p class="ec-answer-note">台電住家電費採累進費率：用得越少一度越便宜（120 度以下 1.78 元），用得越多越貴（夏月超過 1,000 度一度 8.86 元）。往下輸入度數，3 秒算出你的電費。</p>
+        </section>
+
+        <section class="ec-section" aria-label="電費試算">
+            <h2 class="ec-h2">電費試算</h2>
             <ElectricityCalculator client:only="vue" />
-        </div>
-        <div data-tabpanel="summer" role="tabpanel" hidden>
+        </section>
+
+        <section class="ec-section" aria-label="三種家庭實際案例">
+            <h2 class="ec-h2">三種家庭的實際電費</h2>
+            <p class="ec-lead">直接看數字最有感。以下皆以台電 2026-04-01 住宅費率試算：</p>
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-paper-300 text-left text-ink-400">
+                        <th class="py-2 pr-3 font-medium">家庭型態</th>
+                        <th class="py-2 pr-3 font-medium">每月用電</th>
+                        <th class="py-2 pr-3 font-medium">非夏月</th>
+                        <th class="py-2 font-medium">夏月</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-paper-200 text-ink-600">
+                    <tr><td class="py-2 pr-3">單身租屋族（套房＋小冷氣）</td><td class="py-2 pr-3">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700">395 元</td><td class="py-2 font-semibold text-ink-700">418 元</td></tr>
+                    <tr><td class="py-2 pr-3">小資租屋（1 房 1 廳）</td><td class="py-2 pr-3">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700">621 元</td><td class="py-2 font-semibold text-ink-700">673 元</td></tr>
+                    <tr><td class="py-2 pr-3">兩房小家庭（冷氣＋電熱水器）</td><td class="py-2 pr-3">非夏月 400 度／夏月 650 度</td><td class="py-2 pr-3 font-semibold text-ink-700">908 元</td><td class="py-2 font-semibold text-ink-700">2,167 元</td></tr>
+                </tbody>
+            </table>
+            <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單金額約為上表 × 2（例如小家庭夏月雙月帳單約 4,334 元）。</p>
+        </section>
+
+        <section class="ec-section" aria-label="級距速查表">
+            <h2 class="ec-h2">台電住宅六段級距單價速查（元/度）</h2>
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-paper-300 text-left text-ink-400">
+                        <th class="py-2 pr-3 font-medium">每月用電度數</th>
+                        <th class="py-2 pr-3 font-medium">夏月（6/1～9/30）</th>
+                        <th class="py-2 font-medium">非夏月</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-paper-200 text-ink-600">
+                    <tr><td class="py-2 pr-3">120 度以下</td><td class="py-2 pr-3 font-semibold text-ink-700">1.78</td><td class="py-2 font-semibold text-ink-700">1.78</td></tr>
+                    <tr><td class="py-2 pr-3">121～330 度</td><td class="py-2 pr-3 font-semibold text-ink-700">2.55</td><td class="py-2 font-semibold text-ink-700">2.26</td></tr>
+                    <tr><td class="py-2 pr-3">331～500 度</td><td class="py-2 pr-3 font-semibold text-ink-700">3.80</td><td class="py-2 font-semibold text-ink-700">3.13</td></tr>
+                    <tr><td class="py-2 pr-3">501～700 度</td><td class="py-2 pr-3 font-semibold text-ink-700">5.14</td><td class="py-2 font-semibold text-ink-700">4.24</td></tr>
+                    <tr><td class="py-2 pr-3">701～1,000 度</td><td class="py-2 pr-3 font-semibold text-ink-700">6.44</td><td class="py-2 font-semibold text-ink-700">5.27</td></tr>
+                    <tr><td class="py-2 pr-3">1,001 度以上</td><td class="py-2 pr-3 font-semibold text-ink-700">8.86</td><td class="py-2 font-semibold text-ink-700">7.03</td></tr>
+                </tbody>
+            </table>
+            <p class="text-xs text-ink-400 mt-2">資料來源：台電官網「請問電費如何計算？」（2026-05-05 更新）；依 115 年 3 月 27 日電價審議會決議，自 2026-04-01 起適用。雙月抄表者各級距度數加倍計算。</p>
+        </section>
+
+        <section class="ec-section" aria-label="夏月 vs 非夏月">
+            <h2 class="ec-h2">夏月 vs 非夏月</h2>
+            <p class="ec-lead">6～9 月適用較貴的夏月費率。同樣度數，夏天就是比較貴——直接比較看看差多少：</p>
             <ElectricityCompare client:only="vue" />
-        </div>
-        <div data-tabpanel="appliances" role="tabpanel" hidden>
+        </section>
+
+        <section class="ec-section" aria-label="比家電">
+            <h2 class="ec-h2">比家電：誰是吃電怪獸？</h2>
+            <p class="ec-lead">看不懂能源效率標示？選家電類型，照著黃色指引找到標示上的數字，3 台家電直接比年電費：</p>
             <ApplianceEnergyCompare client:only="vue" />
-        
-    <script is:inline>
-        (function () {
-            var btns = Array.prototype.slice.call(document.querySelectorAll('[data-tabbtn]'));
-            var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel]'));
-            if (!btns.length) return;
-            function activate(name) {
-                btns.forEach(function (b) {
-                    var on = b.getAttribute('data-tabbtn') === name;
-                    b.setAttribute('aria-selected', on ? 'true' : 'false');
-                });
-                panels.forEach(function (p) { p.hidden = p.getAttribute('data-tabpanel') !== name; });
-            }
-            btns.forEach(function (b) {
-                b.addEventListener('click', function () {
-                    var name = b.getAttribute('data-tabbtn');
-                    activate(name);
-                    try {
-                        var url = new URL(window.location.href);
-                        url.searchParams.set('tab', name);
-                        history.replaceState(null, '', url.toString());
-                    } catch (e) {}
-                });
-            });
-            var init = null;
-            try { init = new URLSearchParams(window.location.search).get('tab'); } catch (e) {}
-            var valid = btns.map(function (b) { return b.getAttribute('data-tabbtn'); });
-            activate(valid.indexOf(init) >= 0 ? init : 'calc');
-        })();
-    </script>
-</div>
+        </section>
     </div>
-    
+
     <style>
-        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
-        .tool-tabs [data-tabbtn] {
-            padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
-            color: #78716c; background: transparent; border: none; cursor: pointer;
-            border-bottom: 2px solid transparent; margin-bottom: -2px;
-        }
-        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
-        .tool-tabs [data-tabbtn]:hover { color: #44403c; }
+        .ec-answer { background: #FFFDF7; border: 1px solid #E8E4DA; border-radius: 1rem; padding: 1.25rem 1.25rem; margin-bottom: 1.5rem; text-align: center; }
+        .ec-answer-kicker { font-size: 0.8rem; font-weight: 700; color: #78716c; margin: 0 0 0.25rem; }
+        .ec-answer-big { font-size: 2rem; font-weight: 800; color: #166534; margin: 0; line-height: 1.2; }
+        .ec-answer-unit { font-size: 1rem; font-weight: 600; color: #57534e; }
+        .ec-answer-note { font-size: 0.85rem; color: #57534e; line-height: 1.7; margin: 0.75rem 0 0; text-align: left; }
+        .ec-section { margin-bottom: 2rem; }
+        .ec-h2 { font-size: 1.15rem; font-weight: 800; color: #25231F; margin: 0 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
+        .ec-lead { font-size: 0.9rem; color: #57534e; line-height: 1.7; margin: 0 0 1rem; }
     </style>
 
     <div slot="article">
         <h2>台電住宅電費怎麼算？現行累進費率懶人包</h2>
-        <p>夏季電費總是讓人心驚膽跳？真正要先搞懂的，是台電住家電費不是「總度數 × 單價」，而是分段累進計價。本工具以每月度數估算，會自動切換夏月 / 非夏月級距，並補上低用電時的每月最低計收規則。</p>
+        <p>夏季電費總是讓人心驚膽跳？真正要先搞懂的，是台電住家電費不是「總度數 × 單價」，而是分段累進計價：120 度以下一度 1.78 元，超過 1,000 度夏月一度最高 8.86 元。本頁上方的級距速查表可以直接對照，輸入每月度數則會自動切換夏月 / 非夏月級距，並補上低用電時的每月最低計收規則。</p>
 
-        <h3>關鍵名詞解釋</h3>
-        <ul class="list-disc pl-5 space-y-2">
-            <li><strong>夏月 (6/1 ~ 9/30)：</strong> 這四個月的電價比較貴！因為夏季是用電高峰，台電為了以價制量，各級距的費率都會調漲。</li>
-            <li><strong>累進費率：</strong> 電費不是「總度數 × 單價」這麼簡單，而是像切蛋糕一樣分段計算。前段最便宜，越後段越貴。</li>
-            <li><strong>最低計收：</strong> 現行住家電價若每月試算不到 100 元，仍會以 100 元計收，因此低用電戶不能只看級距單價。</li>
-            <li><strong>冷房能力：</strong> 冷氣銘板常寫 BTU/h 或 kW，這是冷房能力，不等於實際耗電；要再配合 COP 或 CSPF 才能換算輸入功率。</li>
-        </ul>
-
-        <h3>台電住宅六段級距單價速查（元/度）</h3>
-        <table class="w-full text-sm border-collapse">
-            <thead>
-                <tr class="border-b border-paper-300 text-left text-ink-400">
-                    <th class="py-2 pr-3 font-medium">每月用電度數</th>
-                    <th class="py-2 pr-3 font-medium">夏月（6/1～9/30）</th>
-                    <th class="py-2 font-medium">非夏月</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-paper-200 text-ink-600">
-                <tr><td class="py-2 pr-3">120 度以下</td><td class="py-2 pr-3 font-semibold text-ink-700">1.78</td><td class="py-2 font-semibold text-ink-700">1.78</td></tr>
-                <tr><td class="py-2 pr-3">121～330 度</td><td class="py-2 pr-3 font-semibold text-ink-700">2.55</td><td class="py-2 font-semibold text-ink-700">2.26</td></tr>
-                <tr><td class="py-2 pr-3">331～500 度</td><td class="py-2 pr-3 font-semibold text-ink-700">3.80</td><td class="py-2 font-semibold text-ink-700">3.13</td></tr>
-                <tr><td class="py-2 pr-3">501～700 度</td><td class="py-2 pr-3 font-semibold text-ink-700">5.14</td><td class="py-2 font-semibold text-ink-700">4.24</td></tr>
-                <tr><td class="py-2 pr-3">701～1,000 度</td><td class="py-2 pr-3 font-semibold text-ink-700">6.44</td><td class="py-2 font-semibold text-ink-700">5.27</td></tr>
-                <tr><td class="py-2 pr-3">1,001 度以上</td><td class="py-2 pr-3 font-semibold text-ink-700">8.86</td><td class="py-2 font-semibold text-ink-700">7.03</td></tr>
-            </tbody>
-        </table>
-        <p class="text-xs text-ink-400 mt-2">資料來源：台電官網「請問電費如何計算？」（2026-05-05 更新）；依 115 年 3 月 27 日電價審議會決議，自 2026-04-01 起適用。雙月抄表者各級距度數加倍計算。</p>
-
-        <blockquote>
-            <strong>資料版本：</strong> 本頁住宅級距單價採台電 2026-04-01 起實施費率（115 年 3 月 27 日電價審議會決議），並納入每月最低計收 100 元規則。冷氣換算屬估算，實際仍以設備銘板與帳單為準。
-        </blockquote>
-
-        <h2>三種家庭的實際電費案例</h2>
-        <p>直接看數字最有感。以下皆以台電 2026-04-01 住宅費率、用本頁同款公式試算：</p>
-        <table class="w-full text-sm border-collapse">
-            <thead>
-                <tr class="border-b border-paper-300 text-left text-ink-400">
-                    <th class="py-2 pr-3 font-medium">家庭型態</th>
-                    <th class="py-2 pr-3 font-medium">每月用電</th>
-                    <th class="py-2 pr-3 font-medium">非夏月電費</th>
-                    <th class="py-2 font-medium">夏月電費</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-paper-200 text-ink-600">
-                <tr><td class="py-2 pr-3">單身租屋族（套房＋小冷氣）</td><td class="py-2 pr-3">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700">395 元</td><td class="py-2 font-semibold text-ink-700">418 元</td></tr>
-                <tr><td class="py-2 pr-3">小資租屋（1 房 1 廳）</td><td class="py-2 pr-3">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700">621 元</td><td class="py-2 font-semibold text-ink-700">673 元</td></tr>
-                <tr><td class="py-2 pr-3">兩房小家庭（冷氣＋電熱水器）</td><td class="py-2 pr-3">非夏月 400 度／夏月 650 度</td><td class="py-2 pr-3 font-semibold text-ink-700">908 元</td><td class="py-2 font-semibold text-ink-700">2,167 元</td></tr>
-            </tbody>
-        </table>
-        <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單金額約為上表 × 2（例如小家庭夏月雙月帳單約 4,334 元）。</p>
+        <p class="text-xs text-ink-400 mt-6">資料版本：本頁住宅級距單價採台電 2026-04-01 起實施費率（115 年 3 月 27 日電價審議會決議），並納入每月最低計收 100 元規則。冷氣換算屬估算，實際仍以設備銘板與帳單為準。</p>
 
         <h2>相關工具與延伸閱讀</h2>
         <ul class="list-disc pl-5 space-y-2">
