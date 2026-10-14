@@ -107,6 +107,11 @@
             <p class="text-xs text-ink-400 mb-2">整個租期總支出 ({{ leaseMonths }}個月)</p>
             <p class="text-2xl font-bold text-ink-800 font-mono">NT$ {{ totalCost }}</p>
           </div>
+
+          <div class="text-center pt-4 mt-4 border-t border-ink-100">
+            <p class="text-xs text-ink-400 mb-2">入住首月總支出（當月支出＋押金）</p>
+            <p class="text-2xl font-bold text-ink-800 font-mono">NT$ {{ firstMonthTotal }}</p>
+          </div>
         </div>
 
         <div class="text-center bg-amber-50 border border-amber-100 rounded-xl p-3">
@@ -126,7 +131,7 @@
                  </div>
                  <div class="ml-3">
                      <p class="text-sm text-brand-700">
-                         根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算。實際資格與金額以政府核定為準。
+                         根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算，補貼金額以實際租金為上限。實際資格與金額以政府核定為準。
                      </p>
                  </div>
              </div>
@@ -164,13 +169,18 @@
              </div>
          </div>
 
-         <div class="calculator-card-dark text-center">
+         <div v-if="hasValidRent" class="calculator-card-dark text-center">
              <div class="absolute top-0 right-0 p-4 opacity-10">
                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
              <p class="text-base text-paper-200 mb-2">預估每月領取補貼</p>
              <p class="text-4xl font-bold text-brand-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
              <p class="text-sm text-paper-200">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
+         </div>
+         <div v-else class="text-center bg-paper-50 border border-ink-100 rounded-xl p-6">
+             <p class="text-2xl mb-2">🏠</p>
+             <p class="text-sm text-ink-600 font-medium">還沒輸入月租</p>
+             <p class="text-xs text-ink-400 mt-1">先到「租金試算」分頁填入每月租金，就能看到預估補貼金額。</p>
          </div>
       </div>
 
@@ -220,7 +230,17 @@ const multiplierMap = {
 const estimatedSubsidy = computed(() => {
     const base = baseSubsidyMap[subsidyLocation.value] || 2000;
     const multi = multiplierMap[subsidyStatus.value] || 1;
-    return Math.round(base * multi).toLocaleString();
+    const raw = Math.round(base * multi);
+    // 補貼金額以實際租金為上限（核實補貼原則）；未填月租時不顯示（見 hasValidRent）
+    const rent = Number(monthlyRent.value);
+    const capped = Number.isFinite(rent) && rent > 0 ? Math.min(raw, rent) : raw;
+    return capped.toLocaleString();
+});
+
+// 月租未填／0／非數字時，補貼分頁不顯示幽靈投影
+const hasValidRent = computed(() => {
+    const rent = Number(monthlyRent.value);
+    return Number.isFinite(rent) && rent > 0;
 });
 
 // Basic Calcs
@@ -235,6 +255,11 @@ const depositCost = computed(() => {
 const totalCost = computed(() => {
   const monthly = (monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0);
   return (monthly * (leaseMonths.value || 0)).toLocaleString();
+});
+const firstMonthTotal = computed(() => {
+  const monthly = (monthlyRent.value || 0) + (managementFee.value || 0) + (electricityFee.value || 0);
+  const deposit = (monthlyRent.value || 0) * (depositMonths.value || 0);
+  return (monthly + deposit).toLocaleString();
 });
 
 // Auto-save for Dashboard
