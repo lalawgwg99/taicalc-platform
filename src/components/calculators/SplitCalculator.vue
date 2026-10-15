@@ -15,7 +15,7 @@
     </div>
 
     <!-- 1. 總額設定與成員名單 (Apple Inset Grouped Form) -->
-    <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5">
+    <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5 scroll-mt-24">
       <div class="mb-6 text-center">
         <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
         <div class="relative max-w-xs mx-auto flex items-center justify-center">
@@ -123,7 +123,17 @@
           <div class="font-mono font-bold text-base text-ink-900">${{ tx.amount.toLocaleString() }}</div>
         </div>
       </div>
-      <div v-else class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
+      <div v-if="settlementInfo.unpaid > 0" class="mt-3 p-3.5 bg-amber-50/70 rounded-xl border border-amber-200/70">
+        <p class="text-sm font-semibold text-ink-800">尚有 ${{ settlementInfo.unpaid.toLocaleString() }} 未付給店家</p>
+        <ul class="mt-2 space-y-1.5">
+          <li v-for="s in settlementInfo.shares" :key="s.name" class="flex items-center justify-between text-sm">
+            <span class="font-medium text-ink-800">{{ s.name }}</span>
+            <span class="font-mono text-ink-600">應付 ${{ s.shouldPay.toLocaleString() }}（已付 ${{ s.paid.toLocaleString() }}）</span>
+          </li>
+        </ul>
+        <p class="text-xs text-ink-400 mt-2">已付的差額由成員間轉帳結清（見上方）；未付部分請直接付給店家。</p>
+      </div>
+      <div v-if="transactions.length === 0 && settlementInfo.unpaid === 0" class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
         🎉 沒人欠誰，都結清了
       </div>
 
@@ -185,8 +195,8 @@ const addMember = () => {
 };
 const removeMember = (idx) => members.value.splice(idx, 1);
 
-// Logic
-const transactions = computed(() => {
+// Logic：先算每人應付份額與成員間轉帳，再算尚欠店家多少
+const settlementInfo = computed(() => {
     let list = members.value.map((m, idx) => ({ ...m, paid: m.paid || 0, weight: m.weight || 1, name: m.name || `成員 ${idx + 1}` }));
     
     // 1. Calculate Fair Share per person
@@ -261,8 +271,16 @@ const transactions = computed(() => {
         if(creditor.balance < 0.1) c++;
     }
     
-    return result;
+    return {
+        transactions: result,
+        shares: balances.map(b => ({ name: b.name, shouldPay: b.shouldPay, paid: b.paid })),
+        unpaid: Math.max(0, grandTotal - totalPaid),
+        grandTotal,
+        totalPaid,
+    };
 });
+
+const transactions = computed(() => settlementInfo.value.transactions);
 
 const copyResult = async () => {
     let lines = [`【分帳結果】總額: $${totalAmount.value}`];
@@ -270,7 +288,13 @@ const copyResult = async () => {
         lines.push(`${tx.from} \t→ ${tx.to} \t$${tx.amount}`);
     });
 
-    if(transactions.value.length === 0) lines.push("沒人欠誰（已結清）");
+    if (transactions.value.length === 0 && settlementInfo.value.unpaid <= 0) lines.push("沒人欠誰（已結清）");
+    if (settlementInfo.value.unpaid > 0) {
+        lines.push(`尚有 $${settlementInfo.value.unpaid} 未付給店家`);
+        settlementInfo.value.shares.forEach(s => {
+            lines.push(`${s.name} 應付 $${s.shouldPay}（已付 $${s.paid}）`);
+        });
+    }
 
     try {
         await navigator.clipboard.writeText(lines.join('\n'));
