@@ -97,7 +97,7 @@ const insight = computed(() => {
     const parts = []
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) {
-        parts.push(`年終達 90,501 元起扣點，公司會用全部年終扣 5%（$ ${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,525 元。`)
+        parts.push(`年終達 90,501 元起扣點，公司會用全部年終扣 5%（$ ${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,524 元。`)
     } else {
         parts.push('未達起扣點，發放時免預扣，但年終仍須併入當年度薪資所得申報。')
     }
