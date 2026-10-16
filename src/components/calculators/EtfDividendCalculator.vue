@@ -54,6 +54,7 @@
                 :main-value="`$ ${fmt(annualDividend)}`"
                 :rows="[
                     { label: '一年配息率', value: annualYield !== null ? `${annualYield}%` : '請輸入股價', tone: 'growth' },
+                    { label: '月均配息（約）', value: `$ ${fmt(Math.round(annualNet / 12))}` },
                     { label: '一年實際拿到（扣掉健保補充保費）', value: `$ ${fmt(annualNet)}` },
                 ]"
             />

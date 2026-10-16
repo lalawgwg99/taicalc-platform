@@ -36,7 +36,8 @@
         <input
           id="kwhRange"
           type="range"
-          v-model.number="kwh"
+          :value="Number(kwh) || 0"
+          @input="kwh = Number($event.target.value)"
           min="0"
           max="2000"
           step="10"
@@ -50,13 +51,13 @@
 
     <section class="receipt-card">
       <div class="receipt-head">
-        <p class="receipt-title">預估電費</p>
+        <p class="receipt-title">預估電費（每月）</p>
         <span class="data-pill !px-2.5 !py-1 text-brand-700 bg-brand-50 border-brand-200">越用越貴</span>
       </div>
       <hr class="receipt-divider" />
       <div class="flex items-end justify-between mb-6 pb-6 border-b border-paper-100">
         <div>
-          <p class="text-xs text-ink-400 font-semibold uppercase tracking-wider mb-1">預估電費</p>
+          <p class="text-xs text-ink-400 font-semibold uppercase tracking-wider mb-1">預估電費（每月）</p>
           <p
             class="text-4xl sm:text-5xl font-bold font-mono tracking-tight"
             :class="isSummer ? 'text-orange-600' : 'text-brand-600'"
@@ -146,7 +147,9 @@
           v-for="n in [30, 50, 100]"
           :key="n"
           @click="simulateSave(n)"
-          class="bg-paper-50 hover:bg-paper-100 border border-ink-100 rounded-xl p-3 text-center transition-all group active:scale-95"
+          :disabled="(kwh || 0) < n"
+          :title="(kwh || 0) < n ? '用電度數不足，省下的不會超過整張帳單' : ''"
+          class="bg-paper-50 hover:bg-paper-100 border border-ink-100 rounded-xl p-3 text-center transition-all group active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <p class="text-lg font-bold text-ink-600 group-hover:text-brand-600">-{{ n }} 度</p>
           <p class="text-xs text-ink-400 mt-1">省 ${{ getSaving(n) }}</p>
@@ -612,7 +615,7 @@ const getSaving = (savingKwh) => {
 
 const simulatedSaving = computed(() => getSaving(simulatedSave.value));
 const simulateSave = (savingKwh) => {
-  simulatedSave.value = savingKwh;
+  simulatedSave.value = Math.min(savingKwh, (kwh.value || 0));
 };
 
 const normalizedAcPower = computed(() => clamp(Number(acPower.value) || 0, 0.1, 20));
