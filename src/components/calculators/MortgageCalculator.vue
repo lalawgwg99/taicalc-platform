@@ -345,6 +345,19 @@ const applyPreset = (type) => {
     }
 }
 
+// ── 預設按鈕高亮同步 ─────────────────────────────────────────────
+// 高亮必須反映欄位實際值：還原 localStorage／URL 參數／手動改欄位後，
+// 若欄位恰好等於某組預設值才亮該按鈕，否則不亮任何按鈕，避免「亮青安、算一般」的誤導。
+function syncPresetFromFields() {
+    if (amountWan.value === 1000 && years.value === 40 && graceYears.value === 5 && rate1.value === 1.775) {
+        preset.value = 'newYouth'
+    } else if (amountWan.value === 1200 && years.value === 30 && graceYears.value === 0 && rate1.value === 2.5) {
+        preset.value = 'general'
+    } else {
+        preset.value = ''
+    }
+}
+
 // ── 工具 ───────────────────────────────────────────────────────
 const fmt = (n) => n ? new Decimal(n).round().toNumber().toLocaleString('zh-TW') : '0'
 
@@ -552,7 +565,7 @@ onMounted(() => {
         // 二段式已於青安3.0取消：舊分享連結的 r2/ts/sm 參數不再讀取，強制單一利率
         twoStageMode.value = false
         // 有 URL 參數時不再讀 localStorage，直接返回
-        if (p.has('amount') || p.has('r1')) return
+        if (p.has('amount') || p.has('r1')) { syncPresetFromFields(); return }
     }
 
     // 2. localStorage 備份
@@ -569,10 +582,12 @@ onMounted(() => {
             twoStageMode.value = false
         }
     } catch (e) {}
+    syncPresetFromFields()
 })
 
 watch([amountWan, years, graceYears, rate1, rate2, twoStageMode, stage1Months], (vals) => {
     validate()
+    syncPresetFromFields()
     if (typeof localStorage === 'undefined') return
     localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
         amountWan: vals[0], years: vals[1], graceYears: vals[2],
