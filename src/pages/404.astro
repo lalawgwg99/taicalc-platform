@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = "找不到頁面｜TaiCalc";
+const description = "您要找的頁面不存在或已被移除。回到 TaiCalc 首頁，繼續使用 27 支免費生活計算工具。";
+const keywords = "404,找不到頁面,TaiCalc";
+---
+
+<Layout title={title} description={description} keywords={keywords} robots="noindex, nofollow">
+    <div class="max-w-3xl mx-auto px-4 md:px-0 py-16 text-center">
+        <p class="text-[11px] font-semibold uppercase tracking-[.18em] text-brand-300">404 Not Found</p>
+        <h1 class="mt-4 text-3xl font-semibold md:text-4xl">找不到這個頁面</h1>
+        <p class="mt-4 text-sm leading-7 text-ink-600">
+            您輸入的網址可能有誤，或該頁面已經被移除。<br />
+            試試回到首頁，或從下方熱門工具繼續。
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+            <a href="/" class="inline-block rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-600">回首頁</a>
+            <a href="/tools/salary-calculator" class="inline-block rounded-full border border-ink-200 px-6 py-3 text-sm font-semibold text-ink-700 hover:border-brand-400">薪資實拿計算機</a>
+            <a href="/tools/electricity-calculator" class="inline-block rounded-full border border-ink-200 px-6 py-3 text-sm font-semibold text-ink-700 hover:border-brand-400">電費計算機</a>
+            <a href="/tools/delivery-income-calculator" class="inline-block rounded-full border border-ink-200 px-6 py-3 text-sm font-semibold text-ink-700 hover:border-brand-400">外送收入計算機</a>
+        </div>
+    </div>
+</Layout>
