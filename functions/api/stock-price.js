@@ -53,10 +53,11 @@ export async function onRequestGet(context) {
     try {
         // 先試上市（TSE），再試上櫃（OTC）。
         // TWSE mis API 偶有瞬間抖動回空（msgArray 為空或 c 不符），not_found 時
-        // 整個 tse→otc 流程重試一次，仍未命中才回 404。
+        // 整個 tse→otc 流程最多跑 3 輪（輪間隔 400ms），仍未命中才回 404。
         let r = { status: 'not_found' };
         let sawApiError = false;
-        for (let attempt = 0; attempt < 2; attempt++) {
+        for (let attempt = 0; attempt < 3; attempt++) {
+            if (attempt > 0) await new Promise((res) => setTimeout(res, 400));
             r = await fetchTWSE('tse', code);
             if (r.status === 'not_found') {
                 r = await fetchTWSE('otc', code);
