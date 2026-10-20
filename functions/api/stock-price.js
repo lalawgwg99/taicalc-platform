@@ -51,18 +51,25 @@ export async function onRequestGet(context) {
     }
 
     try {
-        // 先試上市（TSE），再試上櫃（OTC）
-        let r = await fetchTWSE('tse', code);
-        let apiFailed = r.status === 'api_error';
-        if (r.status === 'not_found') {
-            r = await fetchTWSE('otc', code);
-            apiFailed = apiFailed && r.status === 'api_error';
+        // 先試上市（TSE），再試上櫃（OTC）。
+        // TWSE mis API 偶有瞬間抖動回空（msgArray 為空或 c 不符），not_found 時
+        // 整個 tse→otc 流程重試一次，仍未命中才回 404。
+        let r = { status: 'not_found' };
+        let sawApiError = false;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            r = await fetchTWSE('tse', code);
+            if (r.status === 'not_found') {
+                r = await fetchTWSE('otc', code);
+            }
+            if (r.status === 'ok') break;
+            if (r.status === 'api_error') sawApiError = true;
         }
 
-        if (r.status === 'api_error' || (apiFailed && r.status !== 'ok')) {
-            return jsonResponse({ error: '證交所連線不穩，請稍後再試一次' }, 502);
-        }
         if (r.status !== 'ok') {
+            // 連線層失敗過 → 502；純粹查無 → 404
+            if (sawApiError) {
+                return jsonResponse({ error: '證交所連線不穩，請稍後再試一次' }, 502);
+            }
             return jsonResponse({ error: `查無股票代碼 ${code}，請確認是否為上市/上櫃股票` }, 404);
         }
         const item = r.item;
