@@ -33,7 +33,7 @@
             <button v-for="t in overtimeTypes" :key="t.id" @click="selectedType = t.id"
                 :class="['py-3 px-2 rounded-xl text-sm font-medium transition-all text-center border', 
                             selectedType === t.id ? t.activeClass : 'bg-paper-50 border-ink-100 text-ink-400 hover:bg-paper-100']">
-                <span class="block text-xl mb-1 filter drop-shadow-sm">{{ t.icon }}</span>
+                
                 {{ t.label }}
             </button>
         </div>
@@ -141,7 +141,7 @@
     <section class="calculator-card">
         <div class="flex items-center justify-between mb-5">
             <h2 class="text-sm font-bold text-ink-600 flex items-center gap-2">
-                <span class="text-base">📅</span> 本月累計清單
+                本月累計清單
             </h2>
             <button @click="addToWeekly" class="text-xs px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-colors shadow-sm shadow-amber-200">
                 + 加入本月紀錄
@@ -240,9 +240,9 @@ const weeklyRecords = ref([]);
 const baseHourlyRate = computed(() => Math.round((monthlySalary.value || 0) / (monthlyHours.value || 240)));
 
 const overtimeTypes = [
-    { id: 'weekday', label: '平日', icon: '📅', activeClass: 'bg-brand-50 border-brand-200 text-brand-700 ring-2 ring-brand-500/20' },
-    { id: 'restday', label: '休息日', icon: '🛋️', activeClass: 'bg-amber-50 border-amber-200 text-amber-700 ring-2 ring-amber-500/20' },
-    { id: 'holiday', label: '國定假日', icon: '🎌', activeClass: 'bg-rose-50 border-rose-200 text-rose-700 ring-2 ring-rose-500/20' }
+    { id: 'weekday', label: '平日', activeClass: 'bg-brand-50 border-brand-200 text-brand-700 ring-2 ring-brand-500/20' },
+    { id: 'restday', label: '休息日', activeClass: 'bg-amber-50 border-amber-200 text-amber-700 ring-2 ring-amber-500/20' },
+    { id: 'holiday', label: '國定假日', activeClass: 'bg-rose-50 border-rose-200 text-rose-700 ring-2 ring-rose-500/20' }
 ];
 
 const typeInfo = {

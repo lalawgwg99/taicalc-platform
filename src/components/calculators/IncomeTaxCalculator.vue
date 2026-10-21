@@ -3,7 +3,7 @@
 
     <!-- 標題說明 -->
     <div class="note-box flex items-start gap-2">
-      <span class="text-base">📋</span>
+      
       <div>
         <p class="font-medium text-ink-600 mb-0.5">適用對象：上班族、斜槓族、小房東</p>
         <p class="text-[11px] text-ink-400">依據 2026 年度綜合所得稅率表（財政部）。本試算為估算，實際以報稅結果為準。</p>

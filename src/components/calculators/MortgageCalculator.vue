@@ -3,8 +3,8 @@
 
         <!-- 快速預設 -->
         <div class="seg-control">
-            <button @click="applyPreset('newYouth')" :class="['seg-btn', preset === 'newYouth' ? 'seg-btn-active' : '']">🏠 青安3.0</button>
-            <button @click="applyPreset('general')"  :class="['seg-btn', preset === 'general'  ? 'seg-btn-active' : '']">🏦 一般房貸</button>
+            <button @click="applyPreset('newYouth')" :class="['seg-btn', preset === 'newYouth' ? 'seg-btn-active' : '']">青安3.0</button>
+            <button @click="applyPreset('general')"  :class="['seg-btn', preset === 'general'  ? 'seg-btn-active' : '']">一般房貸</button>
         </div>
 
         <!-- 基本設定 -->
@@ -45,7 +45,7 @@
                 </p>
             </div>
         </div>
-            <!-- ⚡ 央行即時利率提示 -->
+            <!-- 央行即時利率提示 -->
         <div v-if="liveRate" class="flex items-center justify-between bg-azure-50 rounded-lg px-3 py-2 animate-fade-in-up">
             <div class="flex items-center gap-1.5 text-[11px] text-azure min-w-0">
                 <span class="w-1.5 h-1.5 bg-azure rounded-full animate-pulse flex-shrink-0"></span>
@@ -176,7 +176,7 @@
         <!-- 競品優勢：方案對照與年度明細展延卡 -->
         <div class="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
           <div class="flex items-center justify-between">
-            <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">📊 方案與試算明細</h3>
+            <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">方案與試算明細</h3>
             <button 
               @click="showSchedule = !showSchedule" 
               class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"

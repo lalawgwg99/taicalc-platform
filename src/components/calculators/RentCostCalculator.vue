@@ -115,7 +115,7 @@
         </div>
 
         <div class="text-center bg-amber-50 border border-amber-100 rounded-xl p-3">
-          <p class="text-sm text-amber-800 font-medium">💡 小知識：押金少賺的利息以年化 1.7% 計算</p>
+          <p class="text-sm text-amber-800 font-medium">小知識：押金少賺的利息以年化 1.7% 計算</p>
           <p class="text-xs text-amber-600/70 mt-1">這筆錢如果拿去定存或投資，每年本應產生的收益。</p>
         </div>
       </div>
@@ -134,7 +134,7 @@
                          根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算，補貼金額以實際租金為上限。實際資格與金額以政府核定為準。
                      </p>
                      <p class="text-sm text-brand-700 mt-2">
-                         📌 116 年度新制：新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。
+                         116 年度新制：新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。
                      </p>
                  </div>
              </div>
@@ -181,7 +181,7 @@
              <p class="text-sm text-paper-200">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>
          <div v-else class="text-center bg-paper-50 border border-ink-100 rounded-xl p-6">
-             <p class="text-2xl mb-2">🏠</p>
+             
              <p class="text-sm text-ink-600 font-medium">還沒輸入月租</p>
              <p class="text-xs text-ink-400 mt-1">先到「租金試算」分頁填入每月租金，就能看到預估補貼金額。</p>
          </div>

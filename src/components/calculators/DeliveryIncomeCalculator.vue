@@ -3,7 +3,7 @@
     <!-- 輸入區塊 -->
     <div class="grid lg:grid-cols-2 gap-6">
       <section class="calculator-card">
-        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">💰 收入結構</h2>
+        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">收入結構</h2>
         <div class="space-y-4">
           <div>
             <label for="baseIncome" class="block text-xs font-medium text-ink-400 mb-1"
@@ -52,7 +52,7 @@
       </section>
 
       <section class="calculator-card">
-        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">🛵 車輛與隱性成本</h2>
+        <h2 class="text-lg font-bold text-ink-800 mb-4 flex items-center gap-2">車輛與隱性成本</h2>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
@@ -174,7 +174,7 @@
     </div>
 
     <div class="calculator-footer-note text-center">
-      💡 平台獎勵才是賺錢關鍵，每週盡量跑滿達標趟次，時薪才拉得起來。
+      平台獎勵才是賺錢關鍵，每週盡量跑滿達標趟次，時薪才拉得起來。
     </div>
   </div>
 </template>

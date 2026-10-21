@@ -140,7 +140,7 @@
 
             <!-- 雇主成本視角 -->
             <div class="card-surface p-5">
-                <h3 class="text-sm font-medium text-ink-600 mb-4">💼 雇主視角：實際人力成本</h3>
+                <h3 class="text-sm font-medium text-ink-600 mb-4">雇主視角：實際人力成本</h3>
                 <div class="grid grid-cols-3 gap-3 text-center">
                     <div>
                         <p class="stat-label">你的月薪</p>
@@ -367,7 +367,7 @@
         <!-- 回本分析分析 (僅比較模式) -->
         <div v-if="mode === 'compare'" class="card-surface p-5 bg-gradient-to-br from-white to-amber-50/30">
             <h3 class="text-sm font-medium text-ink-600 mb-4 flex items-center gap-2">
-                <span class="text-base">🚀</span> 換工作回本分析
+                換工作回本分析
             </h3>
             
             <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
@@ -407,7 +407,7 @@
 
         <!-- 費率說明 -->
         <div class="note-box space-y-2">
-            <p class="font-medium text-ink-500">📌 2026 費率依據</p>
+            <p class="font-medium text-ink-500">2026 費率依據</p>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
                 <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
                     <p class="text-xs text-ink-400">基本工資</p>

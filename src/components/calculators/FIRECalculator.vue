@@ -77,7 +77,7 @@
             </label>
             <input type="range" v-model.number="inflationRate" min="0" max="10" step="0.1"
               class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-red-400" />
-            <!-- ⚡ 主計總處即時 CPI -->
+            <!-- 主計總處即時 CPI -->
             <div v-if="liveCPI" class="flex items-center gap-2 mt-2 bg-red-50 rounded-lg px-3 py-1.5 animate-fade-in-up">
               <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></span>
               <span class="text-[11px] text-red-600 flex-1">

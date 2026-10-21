@@ -35,13 +35,13 @@
           @click="mode = 'even'" 
           :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'even' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
         >
-          ⚖️ 平均分攤
+          平均分攤
         </button>
         <button 
           @click="mode = 'weighted'" 
           :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'weighted' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
         >
-          📊 權重 / 自訂
+          權重 / 自訂
         </button>
       </div>
 
@@ -134,7 +134,7 @@
         <p class="text-xs text-ink-400 mt-2">已付的差額由成員間轉帳結清（見上方）；未付部分請直接付給店家。</p>
       </div>
       <div v-if="transactions.length === 0 && settlementInfo.unpaid === 0" class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
-        🎉 沒人欠誰，都結清了
+        沒人欠誰，都結清了
       </div>
 
       <!-- 操作按鈕 -->
@@ -143,14 +143,14 @@
           @click="copyResult" 
           class="text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
         >
-          <span v-if="copyStatus === 'idle'">📋 複製分帳文字 (LINE/iMessage)</span>
+          <span v-if="copyStatus === 'idle'">複製分帳文字 (LINE/iMessage)</span>
           <span v-else>✓ 已複製到剪貼簿</span>
         </button>
         <button 
           @click="copyShareLink" 
           class="text-xs font-semibold text-ink-600 bg-white hover:bg-paper-100 border border-ink-100 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
         >
-          <span v-if="!shareCopied">🔗 複製分享連結</span>
+          <span v-if="!shareCopied">複製分享連結</span>
           <span v-else>✓ 連結已複製</span>
         </button>
       </div>

@@ -34,8 +34,8 @@ const faqs = [
 >
     <div slot="tool">
         <div class="st-tabs" role="tablist" aria-label="訂閱管家功能切換">
-            <button type="button" data-st-tab="home" role="tab" aria-selected="true">⏳ 提醒</button>
-            <button type="button" data-st-tab="list" role="tab" aria-selected="false">📝 訂閱</button>
+            <button type="button" data-st-tab="home" role="tab" aria-selected="true">提醒</button>
+            <button type="button" data-st-tab="list" role="tab" aria-selected="false">訂閱</button>
             <button type="button" data-st-tab="form" role="tab" aria-selected="false">＋ 新增</button>
         </div>
 
@@ -401,7 +401,7 @@ const faqs = [
                             return esc(x.sub.name) + (x.daysLeft === 0 ? '今天' : x.daysLeft + ' 天後') + '扣款';
                         }).join('；') + '</div>';
                     } else if (state.subs.length) {
-                        banner = '<div class="st-banner st-ok">✅ 近期沒有即將到期或扣款的訂閱</div>';
+                        banner = '<div class="st-banner st-ok">✓ 近期沒有即將到期或扣款的訂閱</div>';
                     }
                 }
                 $('st-homeBanner').innerHTML = banner;
@@ -454,7 +454,7 @@ const faqs = [
                         '<div class="st-cancel' + (urgent ? ' st-urgent' : '') + '">⚠️ 最晚取消：' + cb + '（' + (cbd === 0 ? '今天到期' : '剩 ' + cbd + ' 天') + '）</div>';
                     var gd = cancelled ? null : guideFor(s.name);
                     var guideLine = !gd ? '' :
-                        '<details class="st-guide"><summary>🔌 怎麼取消？</summary><ol>' +
+                        '<details class="st-guide"><summary>怎麼取消？</summary><ol>' +
                         gd.steps.map(function (st) { return '<li>' + esc(st) + '</li>'; }).join('') + '</ol></details>';
                     var countTxt;
                     if (cancelled) countTxt = '已取消';

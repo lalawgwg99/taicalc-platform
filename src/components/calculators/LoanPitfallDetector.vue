@@ -64,7 +64,7 @@
             </div>
 
             <div v-if="estimatedApr" class="rounded-xl bg-brand-50 border border-brand-200 p-3.5">
-                <p class="text-xs font-bold text-brand-700 mb-1">💡 你沒填總費用年百分率，我幫你估算</p>
+                <p class="text-xs font-bold text-brand-700 mb-1">你沒填總費用年百分率，我幫你估算</p>
                 <p class="text-sm text-ink-600">貸款 {{ amount }} 萬、開辦費 {{ fmt(fee) }} 元、廣告利率 {{ adRate }}%，<strong>實質年利率約 {{ estimatedApr }}%</strong>（已把開辦費攤入）。拿這個數字去跟別家比，不要比廣告利率。</p>
             </div>
 
@@ -82,7 +82,7 @@
             <div v-if="talkPoints.length" class="rounded-xl bg-paper-100 p-4">
                 <p class="text-xs font-bold text-ink-400 mb-2">拿去跟銀行談的話術</p>
                 <ul class="space-y-1.5">
-                    <li v-for="(t, i) in talkPoints" :key="i" class="text-[13px] leading-relaxed text-ink-600">💬 {{ t }}</li>
+                    <li v-for="(t, i) in talkPoints" :key="i" class="text-[13px] leading-relaxed text-ink-600">{{ t }}</li>
                 </ul>
             </div>
             <p class="text-[10px] text-ink-400">檢查基準：廣告利率 2.1%~3% 為 2026 年市場常見「起」利率；開辦費常見 0~3,000 元；綁約期常見 12 個月；提前清償違約金常見 1%~3%；聯徵 3 個月內新業務查詢建議 ≤2 次。實際核貸條件依個人信用而定，本工具為提醒性質，簽約前務必詳閱契約。</p>

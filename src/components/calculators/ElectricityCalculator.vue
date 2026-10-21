@@ -7,14 +7,14 @@
           :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
           isSummer ? 'bg-orange-500 text-white border-orange-600 shadow-md shadow-orange-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
         >
-          <span>🌞</span> 夏月 (6-9月)
+          夏月 (6-9月)
         </button>
         <button
           @click="isSummer = false"
           :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
           !isSummer ? 'bg-brand-500 text-white border-brand-600 shadow-md shadow-brand-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
         >
-          <span>❄️</span> 非夏月
+          非夏月
         </button>
       </div>
 
@@ -109,7 +109,7 @@
 
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
-        <span class="text-lg">⚡</span> 一度電多少錢？六段費率速查表
+        一度電多少錢？六段費率速查表
       </h2>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -138,7 +138,7 @@
 
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
-        <span class="text-lg">💡</span> 省電模擬
+        省電模擬
         <span class="text-ink-400 font-normal text-xs ml-auto">如果每月少用...</span>
       </h2>
 
@@ -171,7 +171,7 @@
 
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
-        <span class="text-lg">👻</span> 耗電怪獸分析
+        耗電怪獸分析
       </h2>
 
       <div class="bg-paper-50 rounded-xl p-4 mb-6 border border-ink-100">
@@ -221,7 +221,7 @@
           @click="addQuickSet"
           class="mt-2 w-full py-2 bg-paper-100 border border-ink-100 text-ink-600 rounded-lg text-sm font-semibold hover:border-brand-300 transition-colors"
         >
-          ⚡ 一鍵加入小家庭基本盤（冰箱＋洗衣機＋電視＋電燈＋熱水瓶）
+          一鍵加入小家庭基本盤（冰箱＋洗衣機＋電視＋電燈＋熱水瓶）
         </button>
       </div>
 
@@ -235,7 +235,7 @@
             <div>
               <p class="font-bold text-ink-600 text-sm flex items-center gap-1.5">
                 {{ app.name }}
-                <span v-if="idx === topMonsterIdx" class="text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full whitespace-nowrap">👻 頭號怪獸</span>
+                <span v-if="idx === topMonsterIdx" class="text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full whitespace-nowrap">頭號怪獸</span>
               </p>
               <p class="text-xs text-ink-400">{{ app.watts }}W × {{ app.hours }}hr/日</p>
             </div>
@@ -283,14 +283,14 @@
         </div>
       </div>
       <div v-else class="text-center py-6 text-sm text-ink-400">
-        👻 還沒有怪獸現形。選個電器按「加入清單」，或一鍵加入小家庭基本盤，看看誰在偷吃你的電。
+        還沒有怪獸現形。選個電器按「加入清單」，或一鍵加入小家庭基本盤，看看誰在偷吃你的電。
       </div>
       <p class="mt-3 text-[11px] text-ink-400">預設值參考台電節電資訊與能源局能效分級資料（變頻冰箱月耗約 27–36 度、儲熱式電熱水器日均約 2–3 度），實際耗電以電器銘板為準，可自行調整功率與時數。</p>
     </section>
 
     <section class="calculator-card">
       <h2 class="text-sm font-bold text-ink-800 mb-4 flex items-center gap-2">
-        <span class="text-lg">🌡️</span> 冷氣耗電估算
+        冷氣耗電估算
       </h2>
 
       <div class="grid grid-cols-3 gap-2 mb-4">
@@ -497,7 +497,7 @@
     </section>
 
     <footer class="bg-paper-50 border border-ink-100 rounded-xl p-4 text-xs text-ink-400">
-      <p class="font-bold text-ink-500 mb-2">📌 資料版本與說明</p>
+      <p class="font-bold text-ink-500 mb-2">資料版本與說明</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-ink-400">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-400"></span> 非夏月：其他月份</div>

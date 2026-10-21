@@ -52,7 +52,7 @@
 
         <section class="calculator-card">
           <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
-            <span>📈</span> 投資與節稅
+            投資與節稅
           </h2>
           <div class="space-y-4">
             <div>
@@ -150,7 +150,7 @@
         <div class="grid sm:grid-cols-2 gap-4">
           <!-- 資金結構 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-ink-600 mb-4">💰 錢是怎麼變多的</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">錢是怎麼變多的</h3>
             <div class="space-y-4">
               <div>
                 <div class="flex justify-between text-sm mb-1">

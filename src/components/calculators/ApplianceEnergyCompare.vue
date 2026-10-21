@@ -5,7 +5,7 @@
 
         <!-- 標章圖解 -->
         <details class="card-surface p-5">
-            <summary class="text-sm font-bold text-ink-700 cursor-pointer">🏷️ 標章看不懂？點開圖解，30 秒找到要填的數字</summary>
+            <summary class="text-sm font-bold text-ink-700 cursor-pointer">標章看不懂？點開圖解，30 秒找到要填的數字</summary>
             <div class="mt-4 grid gap-4 md:grid-cols-2">
                 <div class="rounded-xl border-2 border-dashed border-brand-300 bg-brand-50/50 p-4">
                     <p class="text-[11px] font-bold text-ink-400 mb-2">能源效率標示長這樣（重點只有 2 個）</p>
@@ -15,13 +15,13 @@
                             <p class="text-xl font-black text-ink-700">約 <span class="text-brand-700">XXX</span> 度</p>
                             <span class="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">1</span>
                         </div>
-                        <p class="text-[11px] text-ink-500">👆 <strong>① 這個數字填進來</strong>，就是比電費用的年耗電量</p>
+                        <p class="text-[11px] text-ink-500"><strong>① 這個數字填進來</strong>，就是比電費用的年耗電量</p>
                         <div class="rounded-lg bg-paper-100 p-2.5 relative">
                             <p class="text-xs text-ink-400">能源效率等級</p>
                             <p class="text-lg font-black text-ink-700">第 <span class="text-brand-700">1</span> 級 <span class="text-xs font-normal text-ink-400">（1 最省 → 5 最耗電）</span></p>
                             <span class="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">2</span>
                         </div>
-                        <p class="text-[11px] text-ink-500">👆 <strong>② 等級只看排名</strong>，同級之間還是要比 ① 的數字才準</p>
+                        <p class="text-[11px] text-ink-500"><strong>② 等級只看排名</strong>，同級之間還是要比 ① 的數字才準</p>
                     </div>
                 </div>
                 <div class="text-sm space-y-2.5">
@@ -52,7 +52,7 @@
                     <input v-model="app.name" :aria-label="`家電${i + 1}名稱`"
                         class="input-clean text-base font-bold w-2/3" :placeholder="`A款家電`">
                     <span v-if="championIdx === i && hasResult"
-                        class="text-[11px] font-bold text-white bg-brand-600 rounded-full px-2.5 py-1">👑 最省</span>
+                        class="text-[11px] font-bold text-white bg-brand-600 rounded-full px-2.5 py-1">最省</span>
                 </div>
 
                 <div>
@@ -62,11 +62,11 @@
                             :aria-pressed="app.type === t.id"
                             class="py-2 px-1 rounded-xl border text-xs font-semibold transition-all"
                             :class="app.type === t.id ? 'border-brand-600 bg-brand-600 text-white' : 'border-paper-300 bg-white text-ink-500'">
-                            {{ t.icon }} {{ t.label }}
+                            {{ t.label }}
                         </button>
                     </div>
                     <div v-if="typeGuide(app.type)" class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-2.5">
-                        <p class="text-[12px] leading-relaxed text-ink-600">📋 {{ typeGuide(app.type) }}</p>
+                        <p class="text-[12px] leading-relaxed text-ink-600">{{ typeGuide(app.type) }}</p>
                     </div>
                 </div>
 
@@ -154,7 +154,7 @@
                             <td class="py-2 pr-3 text-ink-400">10 年總成本（含售價）</td>
                             <td v-for="(r, i) in results" :key="i" class="py-2 pr-3 font-bold"
                                 :class="totalChampionIdx === i ? 'text-brand-700' : ''">
-                                {{ r.hasPrice ? `$ ${fmt(r.totalCost)}` : '—' }}{{ totalChampionIdx === i ? ' 💰' : '' }}
+                                {{ r.hasPrice ? `$ ${fmt(r.totalCost)}` : '—' }}
                             </td>
                         </tr>
                     </tbody>
@@ -186,12 +186,12 @@ import { ref, computed, watch } from 'vue';
 const pricePerKwh = ref(4.0);
 
 const appTypes = [
-    { id: 'ac', icon: '❄️', label: '冷氣' },
-    { id: 'fridge', icon: '🧊', label: '冰箱' },
-    { id: 'dehumid', icon: '💧', label: '除濕機' },
-    { id: 'tv', icon: '📺', label: '電視' },
-    { id: 'washer', icon: '🌀', label: '洗衣機' },
-    { id: 'other', icon: '🔌', label: '其他' },
+    { id: 'ac', label: '冷氣' },
+    { id: 'fridge', label: '冰箱' },
+    { id: 'dehumid', label: '除濕機' },
+    { id: 'tv', label: '電視' },
+    { id: 'washer', label: '洗衣機' },
+    { id: 'other', label: '其他' },
 ];
 
 const typeGuides = {
