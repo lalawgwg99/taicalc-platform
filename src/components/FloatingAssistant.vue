@@ -11,9 +11,9 @@
         <!-- 標題列 -->
         <div class="flex items-center justify-between px-4 py-3 bg-brand-700 text-white shrink-0">
           <div class="flex items-center gap-2">
-            <span class="text-lg">✨</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <div>
-              <p class="text-sm font-bold leading-tight">小算 AI 助手</p>
+              <p class="text-sm font-bold leading-tight">小算助手</p>
               <p class="text-[11px] opacity-80 leading-tight">問理財、問工具怎麼用都可以</p>
             </div>
           </div>
@@ -94,7 +94,7 @@
         @click="openChat"
         class="bg-white border border-ink-100 shadow-lg rounded-2xl rounded-br-md px-3.5 py-2.5 text-sm text-ink-700 text-left max-w-[220px] hover:shadow-xl transition-shadow"
       >
-        👋 有問題嗎？問小算 ✨
+        有問題嗎？問小算
       </button>
     </transition>
 
@@ -105,7 +105,7 @@
       class="w-14 h-14 rounded-full bg-brand-700 text-white shadow-xl flex items-center justify-center text-2xl transition-transform hover:scale-105 active:scale-95"
     >
       <transition name="fade" mode="out-in">
-        <span v-if="!open" key="sparkle">✨</span>
+        <svg v-if="!open" key="chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <svg v-else key="close" width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       </transition>
     </button>
@@ -120,7 +120,7 @@ const input = ref('');
 const loading = ref(false);
 const error = ref('');
 const messages = ref([
-  { role: 'assistant', content: '嗨，我是小算 ✨\n理財問題、工具怎麼用，都可以直接問我。' },
+  { role: 'assistant', content: '嗨，我是小算。\n理財問題、工具怎麼用，都可以直接問我。' },
 ]);
 const msgBox = ref(null);
 const showHint = ref(false);

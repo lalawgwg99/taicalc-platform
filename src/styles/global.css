@@ -172,8 +172,8 @@ button, a, input, select, textarea {
 
     /* Primary Blue Button */
     .btn-primary-blue {
-        @apply inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold px-8 py-3.5 rounded-full
-               transition-all duration-300 cursor-pointer select-none hover:from-primary-600 hover:to-primary-700 active:scale-[0.98]
+        @apply inline-flex items-center justify-center gap-2 bg-primary-600 text-white font-semibold px-8 py-3.5 rounded-full
+               transition-all duration-300 cursor-pointer select-none hover:bg-primary-700 active:scale-[0.98]
                shadow-lg hover:shadow-xl hover:-translate-y-0.5;
     }
 
@@ -192,7 +192,7 @@ button, a, input, select, textarea {
     }
 
     .seg-btn-active {
-        @apply bg-gradient-to-r from-brand-500 to-azure-500 text-paper-50 shadow-card;
+        @apply bg-brand-600 text-paper-50 shadow-card;
     }
 
     /* Stat display — 數據展示 */
@@ -333,7 +333,7 @@ button, a, input, select, textarea {
     }
 
     .ink-panel {
-        @apply bg-gradient-to-br from-brand-500 via-azure-500 to-azure-600 text-paper-50 rounded-3xl shadow-card-hover;
+        @apply bg-brand-800 text-paper-50 rounded-3xl shadow-card-hover;
     }
 
     .portal-card {
@@ -541,7 +541,7 @@ button, a, input, select, textarea {
     }
 
     .calculator-pill-active {
-        @apply border-brand-400/60 bg-gradient-to-r from-brand-500 to-azure-500 text-paper-50 shadow-card;
+        @apply border-brand-400/60 bg-brand-600 text-paper-50 shadow-card;
     }
 
     .calculator-tile {
@@ -662,13 +662,13 @@ button, a, input, select, textarea {
         width: 100%;
     }
 
-    /* 文字漸變 */
+    /* 實色標題字（原漸層字已移除，避免模板感） */
     .text-gradient-brand {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-500 via-azure-500 to-azure-600;
+        @apply text-brand-600;
     }
 
     .text-gradient-primary {
-        @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-primary-600;
+        @apply text-primary-600;
     }
 
     /* 陰影增強 */

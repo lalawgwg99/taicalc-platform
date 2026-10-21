@@ -156,7 +156,7 @@
             <!-- 提前還款效益 -->
             <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
                 class="mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
-                <p class="text-xs font-medium text-amber-700 mb-3">🎉 提前還款效益</p>
+                <p class="text-xs font-medium text-amber-700 mb-3">提前還款效益</p>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <p class="text-xs text-amber-600/70 mb-0.5">節省利息</p>

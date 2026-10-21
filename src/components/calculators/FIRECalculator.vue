@@ -129,12 +129,10 @@
           <span class="badge-neutral">{{ currentAge + parseFloat(yearsToFreedom) }} 歲達成</span>
         </div>
         <div v-else-if="yearsToFreedom <= 0" class="flex flex-col items-center">
-          <span class="text-4xl mb-2">🎉</span>
           <p class="text-base font-semibold text-ink-700">已達財務自由！</p>
           <p class="text-xs text-ink-400 mt-1">用 4% 的速度花，已經夠你花了</p>
         </div>
         <div v-else class="flex flex-col items-center">
-          <span class="text-4xl mb-2">🐢</span>
           <p class="text-sm text-ink-500">多存一點，或找報酬高一點的標的</p>
         </div>
       </div>
@@ -174,7 +172,7 @@
       <div class="card-surface p-3 text-center">
         <p class="stat-label">加速關鍵</p>
         <p class="text-sm font-semibold text-ink-700">
-          {{ monthlySavings > monthlyExpense ? '儲蓄力強 🚀' : '複利效應 📈' }}
+          {{ monthlySavings > monthlyExpense ? '儲蓄力強' : '複利效應' }}
         </p>
       </div>
       <div class="card-surface p-3 text-center">
@@ -188,7 +186,7 @@
     <div class="card-surface p-5 bg-amber-50/60 border-amber-100">
       <div class="flex items-start justify-between mb-2">
         <div>
-          <h3 class="text-sm font-medium text-amber-800">☕ 拿鐵因子模擬</h3>
+          <h3 class="text-sm font-medium text-amber-800">拿鐵因子模擬</h3>
           <p class="text-xs text-amber-600/80 mt-0.5">每天少喝一杯拿鐵（$150），能提早多久退休？</p>
         </div>
         <label class="relative inline-flex items-center cursor-pointer shrink-0">

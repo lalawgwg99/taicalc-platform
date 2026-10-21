@@ -5,7 +5,7 @@
       <div class="space-y-6 lg:col-span-1">
         <section class="calculator-card">
           <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
-            <span>🐢</span> 基礎設定
+            基礎設定
           </h2>
           <div class="space-y-4">
             <div>
@@ -175,7 +175,7 @@
 
           <!-- 節稅 & 月提 -->
           <section class="calculator-card-tight">
-            <h3 class="text-sm font-bold text-ink-600 mb-4">🎁 省稅效果</h3>
+            <h3 class="text-sm font-bold text-ink-600 mb-4">省稅效果</h3>
             <div class="relative z-10">
                 <div class="text-center mb-6">
                     <p class="text-ink-400 text-sm mb-1 uppercase tracking-wider">每年少繳的稅</p>
@@ -224,7 +224,6 @@
       <!-- 空狀態：月薪未輸入 -->
       <div v-else class="lg:col-span-2">
         <div class="calculator-card text-center py-16">
-          <p class="text-4xl mb-4">🐢</p>
           <p class="text-ink-600 font-medium mb-1">還沒輸入月薪</p>
           <p class="text-xs text-ink-400">在左側填入月薪 (NT$)，立刻看到你的勞退試算</p>
         </div>
