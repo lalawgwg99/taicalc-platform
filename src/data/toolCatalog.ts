@@ -246,6 +246,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
   {
+    href: '/tools/refinance-calculator',
+    label: '房貸轉貸損益平衡試算',
+    desc: '轉貸每月省多少、幾個月回本、總利息差。',
+    category: '居住與房產',
+    scenario: '銀行推轉貸、利率降了想換約時',
+    cta: '算轉貸幾個月回本',
+    icon: '<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/>',
+    tags: ['房貸轉貸', '轉貸試算', '轉貸成本', '轉貸違約金', '轉貸划算嗎'],
+  },
+  {
     href: '/tools/rent-deduction-calculator',
     label: '租金特別扣除額試算',
     desc: '租金扣除上限 18 萬，算實際省稅與房東漲租損益平衡。',

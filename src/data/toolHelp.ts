@@ -12,6 +12,7 @@ export const toolHelp: Record<string, [string, string, string]> = {
   '/tools/labor-insurance-pension-calculator': ['填勞保年資，不是勞退年資', '平均投保薪資可先參考投保紀錄', '請領年齡不同，月領金額也會改變'],
   '/tools/estate-gift-tax-calculator': ['先選遺產或贈與情境', '填財產總額，再填符合條件的扣除額', '不知道可扣項目時不要自行猜測'],
   '/tools/rent-deduction-calculator': ['先填每月租金與承租月數', '有領租金補貼要填金額，申報時會先減掉', '稅率不知道，可用全年所得淨額推算'],
+  '/tools/refinance-calculator': ['先填目前餘額、利率與剩餘年期', '違約金看原契約綁約條款，過綁約期填 0', '新年期先跟剩餘年期填一樣，看同年期對照最準'],
   '/tools/parental-benefit-calculator': ['先填投保薪資與預計留停月數', '選擇父母各自可能請領期間', '地方補助不同，結果仍需向所在地確認'],
   '/tools/home-ownership-cost-calculator': ['先填房價、頭期款和貸款條件', '管理費填每月；稅與維修填每年', '房價漲跌是假設，不確定可先填 0'],
   '/tools/real-return-calculator': ['先填本金、每月投入與年限', '報酬率是自行假設，不是保證', '費用與通膨不確定可先用預設情境比較'],
