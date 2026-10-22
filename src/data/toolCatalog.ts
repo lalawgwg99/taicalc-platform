@@ -246,6 +246,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
   {
+    href: '/tools/fund-fee-calculator',
+    label: '基金費用拖累試算',
+    desc: '費用率差 1%，20／30 年後被吃掉多少錢。',
+    category: '投資與退休',
+    scenario: '持有主動基金、在銀行被推銷新基金時',
+    cta: '算費用吃掉多少錢',
+    icon: '<path d="M12 2v20"/><path d="M17 6.5c-.6-1-2-1.5-5-1.5-3 0-4.5 1.2-4.5 3 0 4.5 9.5 2.5 9.5 7 0 1.8-1.7 3-4.5 3-3 0-4.6-.7-5.5-2"/>',
+    tags: ['基金費用率', '費用拖累', '總費用率', 'ETF費用', '基金內扣'],
+  },
+  {
     href: '/tools/refinance-calculator',
     label: '房貸轉貸損益平衡試算',
     desc: '轉貸每月省多少、幾個月回本、總利息差。',
