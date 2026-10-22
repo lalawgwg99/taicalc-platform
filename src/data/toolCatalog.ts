@@ -246,6 +246,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
   {
+    href: '/tools/rent-deduction-calculator',
+    label: '租金特別扣除額試算',
+    desc: '租金扣除上限 18 萬，算實際省稅與房東漲租損益平衡。',
+    category: '薪資與稅務',
+    scenario: '五月報稅、房東說申報就漲租時',
+    cta: '算租金能省多少稅',
+    icon: '<line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+    tags: ['租金特別扣除額', '租金報稅', '房租報稅', '租屋節稅', '租金扣除額'],
+  },
+  {
     href: '/tools/rental-yield-calculator',
     label: '租金報酬率計算',
     desc: '包租投報率：租金扣掉稅費管理維修後的真實報酬。',
