@@ -5,6 +5,7 @@ import { QuickCalc } from "./components/QuickCalc";
 import { isQuickInputComplete, quickInputFromPlanning, quickInputToPlanning, type QuickInput } from "./domain/quick-calc";
 import { ResultsPanel } from "./components/ResultsPanel";
 import { PlanComparison } from "./components/PlanComparison";
+import { ScenarioCompare } from "./components/ScenarioCompare";
 import { InvestmentPage } from "./components/InvestmentPage";
 import { IncomeTool } from "./components/IncomeTool";
 import { CashflowTool } from "./components/CashflowTool";
@@ -282,8 +283,11 @@ export default function App() {
           ) : calculation && "error" in calculation ? (
             <div className="empty-state" role="alert"><EmptyIcon /><h1>{t.empty.calcFailedTitle}</h1><p>{calculation.error}</p></div>
           ) : calculation && "result" in calculation ? (
-            <ResultsPanel result={calculation.result} scenarios={calculation.scenarios} onChange={setInput}
-              comparison={<PlanComparison current={calculation.result} saved={comparison} onSave={() => setComparison(calculation.result)} onRestore={() => comparison && setInput(comparison.input)} onClear={() => setComparison(null)} />} />
+            <>
+              <ResultsPanel result={calculation.result} scenarios={calculation.scenarios} onChange={setInput}
+                comparison={<PlanComparison current={calculation.result} saved={comparison} onSave={() => setComparison(calculation.result)} onRestore={() => comparison && setInput(comparison.input)} onClear={() => setComparison(null)} />} />
+              <ScenarioCompare input={effectiveInput} />
+            </>
           ) : null}
         </div>
       </main>

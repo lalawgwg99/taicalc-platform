@@ -584,3 +584,13 @@
 .error-jump { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .error-jump:hover { color: var(--teal); }
 .step-why { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+.scenario-compare-grid { display: grid; gap: 12px; margin-top: 16px; }
+@media (min-width: 720px) { .scenario-compare-grid { grid-template-columns: repeat(3, 1fr); } }
+.scenario-compare-card { border: 1px solid #d7e3da; border-radius: 10px; background: #fff; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.scenario-compare-card h3 { margin: 0; font-size: 14px; color: #245740; }
+.scenario-compare-fixed { margin: 0; display: flex; flex-direction: column; gap: 12px; padding-top: 2px; }
+.scenario-compare-fixed div { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
+.scenario-compare-fixed dt { color: var(--muted); }
+.scenario-compare-fixed dd { margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; }
+.scenario-compare-error { margin: 0; color: #b3261e; font-size: 12px; line-height: 1.5; }

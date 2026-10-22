@@ -224,6 +224,28 @@ export const en: Strings = {
     groupPartTime: "Part-time income",
     groupAsOf: "Projection date"
   },
+  scenarioCompare: {
+    label: "Side-by-side scenarios",
+    title: "Three scenarios, side by side",
+    intro: "Scenario A is your current plan. B and C change only three things — retirement age, extra monthly saving, and the labor insurance claim age — everything else follows A. All three use the same engine, so A's numbers match the result above exactly.",
+    nameA: "A Current plan",
+    nameB: "B Custom scenario",
+    nameC: "C Custom scenario",
+    retirementAge: "Retirement age",
+    extraMonthly: "Extra saving per month",
+    laborClaimAge: "Labor insurance claim age",
+    caption: "Conditions and results for the three scenarios",
+    colItem: "Item",
+    rowAssets: "Assets at retirement (today's money)",
+    rowGap: "Distance to target",
+    over: "Over by",
+    short: "Short by",
+    rowOutcome: "Assets last until",
+    outcomeOk: (age: number) => `Lasts to age ${age}`,
+    outcomeDepleted: (age: string) => `Runs short around age ${age}`,
+    invalid: "This combination cannot be projected",
+    footnote: "Linked adjustments: if a scenario's retirement age is later than the labor pension claim age, part-time start age, or long-term care start age, those ages move to the retirement age. Custom future service years are capped at the years remaining to retirement. Extra monthly saving is split across holdings in proportion to current contributions."
+  },
   incomeRelay: {
     label: "Income relay",
     eyebrow: "How income connects",

@@ -222,6 +222,28 @@ export const zhTW = {
     groupPartTime: "兼職收入",
     groupAsOf: "試算日期"
   },
+  scenarioCompare: {
+    label: "三情境並排比較",
+    title: "三個情境並排看",
+    intro: "情境 A 是你目前的方案；B、C 只改退休年齡、每月多存、勞保請領年齡三個條件，其餘照 A。用同一套引擎計算，A 的數字會和上方結果完全相同。",
+    nameA: "A 目前方案",
+    nameB: "B 自訂情境",
+    nameC: "C 自訂情境",
+    retirementAge: "退休年齡（歲）",
+    extraMonthly: "每月多存（元）",
+    laborClaimAge: "勞保請領年齡（歲）",
+    caption: "三個情境的條件與試算結果",
+    colItem: "比較項目",
+    rowAssets: "退休時可用資產（今天的錢）",
+    rowGap: "距離目標",
+    over: "超過",
+    short: "還差",
+    rowOutcome: "資產可支應到",
+    outcomeOk: (age: number) => `可支應到 ${age} 歲`,
+    outcomeDepleted: (age: string) => `約 ${age} 歲開始不足`,
+    invalid: "這個組合目前無法試算",
+    footnote: "連動調整：情境的退休年齡若晚於勞退請領、兼職開始或長照開始年齡，這些年齡會自動延到退休年齡；自訂年資若超過到退休的年數，會截到退休當年。每月多存按各筆持倉目前投入比例分配。"
+  },
   incomeRelay: {
     label: "收入接力表",
     eyebrow: "收入怎麼接上",
