@@ -121,15 +121,15 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div class="bg-red-50 rounded-xl p-3">
                         <p class="text-xs text-red-400 mb-0.5">勞保費（自付／月）</p>
-                        <p class="text-base font-semibold text-red-600 tabular-nums">− {{ laborIns.toLocaleString() }}</p>
+                        <p class="text-base font-semibold text-red-600 tabular-nums">{{ fmtNeg(laborIns) }}</p>
                     </div>
                     <div class="bg-red-50 rounded-xl p-3">
                         <p class="text-xs text-red-400 mb-0.5">健保費（自付／月）</p>
-                        <p class="text-base font-semibold text-red-600 tabular-nums">− {{ healthIns.toLocaleString() }}</p>
+                        <p class="text-base font-semibold text-red-600 tabular-nums">{{ fmtNeg(healthIns) }}</p>
                     </div>
                     <div class="bg-amber-50 rounded-xl p-3">
                         <p class="text-xs text-amber-500 mb-0.5">勞退自提／月</p>
-                        <p class="text-base font-semibold text-amber-600 tabular-nums">− {{ pensionSelf.toLocaleString() }}</p>
+                        <p class="text-base font-semibold text-amber-600 tabular-nums">{{ fmtNeg(pensionSelf) }}</p>
                     </div>
                     <div class="bg-green-50 rounded-xl p-3">
                         <p class="text-xs text-green-500 mb-0.5">年省所得稅</p>
@@ -307,10 +307,10 @@
                     <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
                     <div class="space-y-1 mt-3 text-xs text-ink-400">
                         <div class="flex justify-between">
-                            <span>勞保</span><span>− {{ laborIns.toLocaleString() }}</span>
+                            <span>勞保</span><span>{{ fmtNeg(laborIns) }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>健保</span><span>− {{ healthIns.toLocaleString() }}</span>
+                            <span>健保</span><span>{{ fmtNeg(healthIns) }}</span>
                         </div>
                     </div>
                 </div>
@@ -324,10 +324,10 @@
                     <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNetB / 10000).toFixed(1) }} 萬</p>
                     <div class="space-y-1 mt-3 text-xs text-ink-400">
                         <div class="flex justify-between">
-                            <span>勞保</span><span>− {{ laborInsB.toLocaleString() }}</span>
+                            <span>勞保</span><span>{{ fmtNeg(laborInsB) }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span>健保</span><span>− {{ healthInsB.toLocaleString() }}</span>
+                            <span>健保</span><span>{{ fmtNeg(healthInsB) }}</span>
                         </div>
                     </div>
                 </div>
@@ -488,6 +488,8 @@ const resB = computed(() => calculateSalaryBreakdown({
 }))
 
 const laborIns    = computed(() => res.value.labor)
+// 扣除額顯示：正數前加減號；為 0 時直接顯示「0」，避免出現 −0（2026-10-23 每日優化發現）
+const fmtNeg = (n) => (Number(n) > 0 ? '− ' + Number(n).toLocaleString() : '0')
 const healthIns   = computed(() => res.value.health)
 const pensionSelf = computed(() => res.value.penS)
 const monthlyNet  = computed(() => res.value.mNet)
