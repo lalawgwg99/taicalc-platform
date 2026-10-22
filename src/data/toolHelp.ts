@@ -14,6 +14,7 @@ export const toolHelp: Record<string, [string, string, string]> = {
   '/tools/rent-deduction-calculator': ['先填每月租金與承租月數', '有領租金補貼要填金額，申報時會先減掉', '稅率不知道，可用全年所得淨額推算'],
   '/tools/refinance-calculator': ['先填目前餘額、利率與剩餘年期', '違約金看原契約綁約條款，過綁約期填 0', '新年期先跟剩餘年期填一樣，看同年期對照最準'],
   '/tools/fund-fee-calculator': ['費用率填「總費用率」，基金月報查得到', '兩檔先用同一個報酬假設，只比費用差距', '每月投入沒有定期定額就填 0'],
+  '/tools/house-tax-calculator': ['房屋評定現值看稅單上的數字，不是買賣市價', '自住要三項齊全：沒出租或營業、實際居住並設戶籍、全國 3 戶以內', '非自住是全數累進：戶數跳級距，全部房屋一起按新稅率算'],
   '/tools/parental-benefit-calculator': ['先填投保薪資與預計留停月數', '選擇父母各自可能請領期間', '地方補助不同，結果仍需向所在地確認'],
   '/tools/home-ownership-cost-calculator': ['先填房價、頭期款和貸款條件', '管理費填每月；稅與維修填每年', '房價漲跌是假設，不確定可先填 0'],
   '/tools/real-return-calculator': ['先填本金、每月投入與年限', '報酬率是自行假設，不是保證', '費用與通膨不確定可先用預設情境比較'],

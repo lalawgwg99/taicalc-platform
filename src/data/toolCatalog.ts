@@ -266,6 +266,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['房貸轉貸', '轉貸試算', '轉貸成本', '轉貸違約金', '轉貸划算嗎'],
   },
   {
+    href: '/tools/house-tax-calculator',
+    label: '房屋稅 2.0 試算器',
+    desc: '房屋評定現值乘稅率就是年稅額。自住 1.2%、單一自住 1.0%；非自住全國歸戶全數累進，六都 3.2% 起、7 戶以上 4.8%。',
+    category: '居住與房產',
+    scenario: '多屋族想知道新制下每年多繳多少',
+    cta: '試算房屋稅',
+    icon: '<path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/>',
+    tags: ['房屋稅', '囤房稅', '自住稅率', '差別稅率'],
+  },
+  {
     href: '/tools/rent-deduction-calculator',
     label: '租金特別扣除額試算',
     desc: '租金扣除上限 18 萬，算實際省稅與房東漲租損益平衡。',
