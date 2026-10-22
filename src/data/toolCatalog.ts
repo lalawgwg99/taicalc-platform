@@ -246,6 +246,16 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['租金', '租屋', '押金', '房租', '租房成本'],
   },
   {
+    href: '/tools/overseas-card-calculator',
+    label: '海外刷卡淨回饋試算器',
+    desc: '回饋扣掉 1.5% 海外手續費才是淨回饋。輸入消費金額與目的地，比較 10 張主流卡的淨回饋排行。',
+    category: '投資與退休',
+    scenario: '出國前想知道哪張卡刷下去實際拿回多少',
+    cta: '比較海外刷卡淨回饋',
+    icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>',
+    tags: ['海外刷卡', '信用卡回饋', '海外手續費', '日本刷卡'],
+  },
+  {
     href: '/tools/fund-fee-calculator',
     label: '基金費用拖累試算',
     desc: '費用率差 1%，20／30 年後被吃掉多少錢。',
