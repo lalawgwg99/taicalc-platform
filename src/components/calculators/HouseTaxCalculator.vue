@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { formatTWD } from '../../data/calculators/taiwanIncomeTax';
 import SnapshotButton from '../SnapshotButton.vue';
+
+const formatTWD = (n: number) => 'NT$ ' + Math.round(Number(n) || 0).toLocaleString('zh-TW');
 
 type CityGroup = 'metro' | 'nonmetro';
 type Usage = 'self' | 'single' | 'rental' | 'nonowner';
