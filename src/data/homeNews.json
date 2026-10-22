@@ -1,1 +1,41 @@
-{"items":[{"date":"2026-10-21","source":"聯合新聞網","title":"利率不升房價不死？徐佳馨調20年數據打臉：管制不緊房市才不死","tool":"/tools/mortgage-calculator","toolLabel":"房貸試算","url":"https://house.udn.com/house/story/123589/9827962?from=udn_ch1025_updown","why":"20年數據證明房價漲跌的開關是信用管制和貸款可得性，不是利率；別再賭央行降息救房價，想買房先把月付能力算出來才是真的。"},{"date":"2026-10-21","source":"聯合新聞網","title":"薪資揭露門檻調高到5萬元年底預告修法…洪申翰：推政策組合 助多數勞工加薪","tool":"/tools/salary-calculator","toolLabel":"薪資實拿計算","url":"https://udn.com/news/story/7269/9828199?from=udn-relatednews_ch2","why":"以後月薪5萬以下的職缺都不能寫「面議」，必須揭露薪資範圍；求職前先算清楚自己現在的實拿落在哪裡，談加薪、跳槽才有底氣。"},{"date":"2026-10-21","source":"聯合新聞網","title":"年薪54萬才達中位數！賺百萬打趴8成勞工 懶錢包：投資先拚本業加薪","tool":"/tools/salary-calculator","toolLabel":"薪資實拿計算","url":"https://udn.com/news/story/7251/9827675?list_ch2_index","why":"主計總處薪情平台：年薪54.6萬剛好是全台中位數，突破百萬就贏過8成勞工；對照看看自己的薪水落在哪一級，加薪該喊多少先算再說。"},{"date":"2026-10-21","source":"工商時報","title":"65歲以上長者健保免費！403萬人受惠、400億代價浮現","tool":"/tools/insurance-calculator","toolLabel":"勞健保計算","url":"https://www.ctee.com.tw/news/20261021701366-430104","why":"老福法三讀後細節出爐：403萬長者適用、中央一年要多付近400億，試算青壯年每人每年恐多付約2,690元；健保費再調整前，先看看自己薪資單上的扣款會變多少。"}],"updatedAt":"2026-10-22"}
+{
+  "updatedAt": "2026-10-23",
+  "items": [
+    {
+      "date": "2026-10-22",
+      "source": "風傳媒",
+      "title": "勞保局10月發錢行事曆：國保生育給付最高10萬元，14筆入帳時間一次看",
+      "url": "https://www.storm.mg/lifestyle/11174677",
+      "why": "國保生育給付加碼到單胎10萬元、10月22日入帳，勞保年金和勞退月退10月29日接力發；退休後每月進帳固定，夠不夠花先試算才有底。",
+      "tool": "/tools/labor-pension-calculator",
+      "toolLabel": "勞退試算"
+    },
+    {
+      "date": "2026-10-22",
+      "source": "工商時報",
+      "title": "立院撥補進入關鍵期 12月電價如走到檢討 優先鎖定高用電產業",
+      "url": "https://www.ctee.com.tw/news/20261022701981-430503",
+      "why": "12月底電價審議會前，先看立院711億撥補過不過；台電放話優先檢討高用電產業和民生高用電度數，自家電費落在哪個級距，先算清楚。",
+      "tool": "/tools/electricity-calculator",
+      "toolLabel": "電費計算"
+    },
+    {
+      "date": "2026-10-22",
+      "source": "經濟日報",
+      "title": "美光新增季度分潤、提高退休保障 盧東暉：與桃園工會持續協商",
+      "url": "https://money.udn.com/money/amp/story/5612/9831590",
+      "why": "美光新增與獲利連動的季度分潤，勞退提撥從8%拉到10%；雇主多提的退休金最後滾多大，自己動手試算最有感。",
+      "tool": "/tools/labor-pension-calculator",
+      "toolLabel": "勞退試算"
+    },
+    {
+      "date": "2026-10-22",
+      "source": "中時房產網",
+      "title": "國家住都中心：寄居蟹「轉銜登記」10／31截止",
+      "url": "https://house.chinatimes.com/20261022001574-264401",
+      "why": "寄居蟹退場，社宅包租代管房東房客10月31日前沒完成轉銜登記就退出計畫、補助歸零；租屋成本裡的補助別當理所當然，先算一遍沒有補助的版本。",
+      "tool": "/tools/rent-cost-calculator",
+      "toolLabel": "租屋成本試算"
+    }
+  ]
+}
