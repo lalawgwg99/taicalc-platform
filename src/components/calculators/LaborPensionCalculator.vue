@@ -128,7 +128,7 @@
           <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
             <div>
               <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">
-                退休時大約存到 ({{ retireAge - currentAge }} 年後)
+                退休時大約存到 ({{ years }} 年後)
               </p>
               <p class="text-4xl font-bold stat-value text-amber-600">
                 <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalAmount.toLocaleString() }}

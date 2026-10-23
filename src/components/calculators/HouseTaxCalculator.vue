@@ -109,7 +109,7 @@ const notes = computed(() => {
         </label>
       </div>
 
-      <p class="mt-4 rounded-lg bg-[var(--color-paper)] px-4 py-3 text-sm leading-6 text-[var(--color-ink)]">{{ notes }}</p>
+      <p class="mt-4 rounded-lg bg-[#EDF5EF] px-4 py-3 text-sm leading-6 text-[#25231F]">{{ notes }}</p>
 
       <div class="summary-strip" aria-live="polite">
         <span>適用稅率 <strong>{{ rate }}%</strong></span>
@@ -141,6 +141,6 @@ const notes = computed(() => {
 </template>
 
 <style scoped>
-.seg-btn { border: 1px solid #d7e3da; background: #fff; color: var(--color-ink); border-radius: 999px; padding: 0.45rem 0.9rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
-.seg-btn--active { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }
+.seg-btn { border: 1px solid #d7e3da; background: #fff; color: #25231F; border-radius: 999px; padding: 0.45rem 0.9rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
+.seg-btn--active { background: #245F40; border-color: #245F40; color: #fff; }
 </style>

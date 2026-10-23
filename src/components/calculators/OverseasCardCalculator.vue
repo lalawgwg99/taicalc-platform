@@ -86,13 +86,13 @@ const globalOnly = computed(() => destination.value === 'other');
         </div>
       </div>
 
-      <div v-if="best" class="summary-strip" aria-live="polite">
+      <div v-if="best && amount > 0" class="summary-strip" aria-live="polite">
         <span>淨回饋最高 <strong>{{ best.bank }} {{ best.name }}</strong></span>
         <span>回饋 {{ formatTWD(best.rebate) }} − 手續費 {{ formatTWD(best.fee) }}</span>
         <span>淨拿回 <strong>{{ formatTWD(best.net) }}</strong>（淨回饋率 {{ best.netRate.toFixed(1) }}%）</span>
       </div>
 
-      <p v-if="globalOnly" class="mt-4 rounded-lg bg-[var(--color-paper)] px-4 py-3 text-sm leading-6 text-[var(--color-ink)]">此目的地只列不限國家的卡片；日韓泰專屬卡（J 卡、一卡通聯名卡、吉鶴卡、熊本熊卡）在其他國家不適用表列回饋率。</p>
+      <p v-if="globalOnly" class="mt-4 rounded-lg bg-[#EDF5EF] px-4 py-3 text-sm leading-6 text-[#25231F]">此目的地只列不限國家的卡片；日韓泰專屬卡（J 卡、一卡通聯名卡、吉鶴卡、熊本熊卡）在其他國家不適用表列回饋率。</p>
 
       <div class="overflow-x-auto">
         <table class="calc-table">
@@ -121,6 +121,6 @@ const globalOnly = computed(() => destination.value === 'other');
 </template>
 
 <style scoped>
-.seg-btn { border: 1px solid #d7e3da; background: #fff; color: var(--color-ink); border-radius: 999px; padding: 0.45rem 0.9rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
-.seg-btn--active { background: var(--color-brand); border-color: var(--color-brand); color: #fff; }
+.seg-btn { border: 1px solid #d7e3da; background: #fff; color: #25231F; border-radius: 999px; padding: 0.45rem 0.9rem; font-size: 0.875rem; font-weight: 600; cursor: pointer; }
+.seg-btn--active { background: #245F40; border-color: #245F40; color: #fff; }
 </style>

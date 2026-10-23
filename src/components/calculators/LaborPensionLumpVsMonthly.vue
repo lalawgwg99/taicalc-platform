@@ -70,7 +70,7 @@ const avgWage = ref(45800)
 const years = ref(30)
 
 const monthly = computed(() => Math.round(Math.max(0, avgWage.value || 0) * Math.max(0, years.value || 0) * 0.0155))
-const months = computed(() => Math.min(50, 15 + Math.max(0, (years.value || 0) - 15) * 2))
+const months = computed(() => Math.min(50, Math.min(15, Math.max(0, years.value || 0)) + Math.max(0, (years.value || 0) - 15) * 2))
 const lumpSum = computed(() => Math.round(Math.max(0, avgWage.value || 0) * months.value))
 const breakevenYears = computed(() => monthly.value > 0 ? lumpSum.value / monthly.value / 12 : 0)
 const insight = computed(() => {
