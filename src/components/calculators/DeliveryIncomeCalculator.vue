@@ -7,7 +7,7 @@
         <div class="space-y-4">
           <div>
             <label for="baseIncome" class="block text-xs font-medium text-ink-400 mb-1"
-              >基礎跑單收入 (不含獎勵)</label
+              >基礎跑單收入 (每月，不含獎勵)</label
             >
             <input
               id="baseIncome"
@@ -18,7 +18,7 @@
           </div>
           <div>
             <label for="incentive" class="block text-xs font-medium text-ink-400 mb-1"
-              >平台獎勵/加碼 (趟次達標)</label
+              >平台獎勵/加碼 (每月，趟次達標)</label
             >
             <input
               id="incentive"
@@ -30,7 +30,7 @@
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="kilometers" class="block text-xs font-medium text-ink-400 mb-1">總里程 (KM)</label>
+              <label for="kilometers" class="block text-xs font-medium text-ink-400 mb-1">總里程 (每月，KM)</label>
               <input
                 id="kilometers"
                 type="text" inputmode="decimal"
@@ -39,7 +39,7 @@
               />
             </div>
             <div>
-              <label for="workHours" class="block text-xs font-medium text-ink-400 mb-1">總工時 (H)</label>
+              <label for="workHours" class="block text-xs font-medium text-ink-400 mb-1">總工時 (每月，H)</label>
               <input
                 id="workHours"
                 type="text" inputmode="decimal"
@@ -77,7 +77,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="maintenancePerKm" class="block text-xs font-medium text-ink-400 mb-1"
-                >每公里保養攤提</label
+                >每公里保養攤提 (元/KM)</label
               >
               <div class="relative">
                 <input
@@ -91,7 +91,7 @@
             </div>
             <div>
               <label for="insuranceMonthly" class="block text-xs font-medium text-ink-400 mb-1"
-                >商用保險/折舊</label
+                >商用保險/折舊 (每月)</label
               >
               <div class="relative">
                 <input

@@ -78,7 +78,7 @@
         <div>
           <label for="fld-minor-children" class="block text-xs font-medium text-ink-400 mb-1.5">其中未成年子女人數</label>
           <input id="fld-minor-children" type="text" inputmode="decimal" v-model.number="minorChildren" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">115 年起每人免稅額 151,500</p>
+          <p class="text-[10px] text-ink-400 mt-1">115 年起未成年子女每人免稅額 151,500</p>
         </div>
         <div>
           <label for="fld-e9c47932" class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>

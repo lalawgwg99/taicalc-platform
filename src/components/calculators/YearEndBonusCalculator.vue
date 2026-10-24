@@ -104,7 +104,9 @@ const insight = computed(() => {
     if (suppFee.value > 0) {
         parts.push(`年終超過投保金額 4 倍（$ ${fmt(suppThreshold.value)}），超過部分再扣 2.11% 補充保費 $ ${fmt(suppFee.value)}。`)
     }
-    parts.push('被預扣的 5% 不是消失，隔年報稅可抵減，多退少補。')
+    if (withholdingTax.value > 0) {
+        parts.push('被預扣的 5% 不是消失，隔年報稅可抵減，多退少補。')
+    }
     return parts.join(' ')
 })
 
