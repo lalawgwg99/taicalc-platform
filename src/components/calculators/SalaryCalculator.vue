@@ -192,6 +192,7 @@
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m12 }} 個月</p>
                         </div>
                     </div>
+                    <p v-else-if="(monthlyExpense || 0) <= 0" class="text-xs text-ink-400">尚未輸入每月固定支出，輸入後即可估算存滿預備金需要的時間。</p>
                     <p v-else class="text-xs text-ink-400">目前支出高於實領，先降低支出或提升收入，才能建立安全墊。</p>
                 </div>
             </div>

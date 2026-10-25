@@ -566,6 +566,13 @@ watch(() => newAppliance.value.hours, (v) => {
   if (typeof v === 'number' && v < 0) newAppliance.value.hours = 0;
 });
 
+// 冷氣每日時數同樣收斂到 0–24：輸入框為 text 型態、min/max 不會擋，
+// 且舊快照還原可能帶入超過 24 的值，否則畫面會顯示 25 小時這種不可能的數字
+watch(acHours, (v) => {
+  if (typeof v === 'number' && v > 24) acHours.value = 24;
+  if (typeof v === 'number' && v < 0) acHours.value = 0;
+});
+
 const kwh = ref(400);
 const isSummer = ref(true);
 const simulatedSave = ref(0);
