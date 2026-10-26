@@ -82,9 +82,14 @@
         </div>
       </div>
 
-      <div v-if="monthlySaving <= 0" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+      <div v-if="yearsInvalid" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <p class="text-sm font-semibold text-amber-800">⚠️ 年期未填或為 0，無法試算</p>
+        <p class="mt-1 text-xs leading-5 text-amber-700">剩餘年期與新貸款年期都要填大於 0 的數字；清空欄位重打字時會短暫出現這個提示，填好就恢復正常。</p>
+      </div>
+
+      <div v-if="!yearsInvalid && monthlySaving <= 0" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
         <p class="text-sm font-semibold text-amber-800">⚠️ 新條件的月付沒有比較低</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">月付差額為 {{ fmt(monthlySaving) }} 元。可能是新利率不夠低，或新年期比剩餘年期短。月付沒降就不會有回本點，先確認利率與年期有沒有填錯。</p>
+        <p class="mt-1 text-xs leading-5 text-amber-700">月付差額為 {{ fmt(monthlySaving) }} 元。可能是新利率不夠低，或新年期比剩餘年期短。月付沒降就不會有回本點，先確認利率與年期有沒有填錯；但全期淨效益仍可能為正，請看下方全期欄。</p>
       </div>
 
       <div class="calculator-subcard md:p-6 mt-6">
@@ -165,9 +170,11 @@ const oldMonths = computed(() => Math.round(num(remainingYears.value) * 12));
 const newMonths = computed(() => Math.round(num(newYears.value) * 12));
 const holdMonths = computed(() => Math.round(num(holdYears.value) * 12));
 
-const oldPayment = computed(() => monthlyPayment(num(balance.value), num(currentRate.value), oldMonths.value));
-const newPayment = computed(() => monthlyPayment(num(balance.value), num(newRate.value), newMonths.value));
-const newPaymentSameTerm = computed(() => monthlyPayment(num(balance.value), num(newRate.value), oldMonths.value));
+// 年期為 0 時 monthlyPayment 會回傳月付 0，造成「每月少付＝舊月付全額」的假結論；直接擋下計算
+const yearsInvalid = computed(() => oldMonths.value <= 0 || newMonths.value <= 0);
+const oldPayment = computed(() => (yearsInvalid.value ? 0 : monthlyPayment(num(balance.value), num(currentRate.value), oldMonths.value)));
+const newPayment = computed(() => (yearsInvalid.value ? 0 : monthlyPayment(num(balance.value), num(newRate.value), newMonths.value)));
+const newPaymentSameTerm = computed(() => (yearsInvalid.value ? 0 : monthlyPayment(num(balance.value), num(newRate.value), oldMonths.value)));
 
 const monthlySaving = computed(() => oldPayment.value - newPayment.value);
 const sameTermSaving = computed(() => oldPayment.value - newPaymentSameTerm.value);

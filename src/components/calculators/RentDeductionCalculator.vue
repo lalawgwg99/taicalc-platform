@@ -48,7 +48,7 @@
 
       <div v-if="excluded" class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
         <p class="text-sm font-semibold text-amber-800">⚠️ 你的適用稅率在 20% 以上，依排富規定不能申報租金特別扣除額</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">排富三種情形（符合任一即不適用）：申報適用稅率 20% 以上、股利按 28% 分開計稅、基本所得額超過當年度扣除額（113 年度為 750 萬元）。下方金額僅供對照，實際省稅為 0。</p>
+        <p class="mt-1 text-xs leading-5 text-amber-700">排富三種情形（符合任一即不適用）：申報適用稅率 20% 以上、股利按 28% 分開計稅、基本所得額超過當年度扣除額（113 至 115 年度皆為 750 萬元）。下方金額僅供對照，實際省稅為 0。</p>
       </div>
 
       <div class="calculator-subcard md:p-6 mt-6">
@@ -89,7 +89,7 @@
             <p>申報淨效益（省稅 − 多付租金）：<strong class="font-mono" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</strong></p>
           </div>
         </div>
-        <p class="mt-3 text-xs leading-5 text-ink-500">損益平衡漲幅是 <strong>{{ breakevenPct.toFixed(1) }}%</strong>：漲幅低於這個數字，申報後整年仍是賺的；高於這個數字，多付的租金會吃掉全部省稅。這個算法只算錢——房東若因申報衍生其他爭議（提前解約、不續租），不在試算範圍內。</p>
+        <p class="mt-3 text-xs leading-5 text-ink-500"><span v-if="taxSaved > 0">損益平衡漲幅是 <strong>{{ breakevenPct.toFixed(1) }}%</strong>：漲幅低於這個數字，申報後整年仍是賺的；高於這個數字，多付的租金會吃掉全部省稅。</span><span v-else>目前沒有省稅可抵漲租：省稅為 0 時，任何漲租都會讓你多付錢。</span>這個算法只算錢——房東若因申報衍生其他爭議（提前解約、不續租），不在試算範圍內。</p>
       </div>
 
       <div class="mt-5 flex justify-center">
@@ -122,12 +122,14 @@ const marginalRate = computed(() => {
 });
 
 const excluded = computed(() => marginalRate.value >= 0.2);
-const annualRent = computed(() => Math.max((Number(monthlyRent.value) || 0) * (Number(months.value) || 0), 0));
-const annualSubsidy = computed(() => Math.max((Number(subsidyMonthly.value) || 0) * (Number(months.value) || 0), 0));
+// 逐欄箝制：雙負相乘不得變正；承租月數一年最多 12 個月
+const clampedMonths = computed(() => Math.min(Math.max(Number(months.value) || 0, 0), 12));
+const annualRent = computed(() => Math.max(Number(monthlyRent.value) || 0, 0) * clampedMonths.value);
+const annualSubsidy = computed(() => Math.max(Number(subsidyMonthly.value) || 0, 0) * clampedMonths.value);
 const deductibleBase = computed(() => Math.max(annualRent.value - annualSubsidy.value, 0));
 const deduction = computed(() => Math.min(deductibleBase.value, RENT_DEDUCTION_MAX));
 const taxSaved = computed(() => (excluded.value ? 0 : Math.round(deduction.value * marginalRate.value)));
-const extraRentYear = computed(() => Math.round(annualRent.value * ((Number(raisePct.value) || 0) / 100)));
+const extraRentYear = computed(() => Math.round(annualRent.value * (Math.max(Number(raisePct.value) || 0, 0) / 100)));
 const netBenefit = computed(() => taxSaved.value - extraRentYear.value);
 const breakevenPct = computed(() => (annualRent.value > 0 ? (taxSaved.value / annualRent.value) * 100 : 0));
 

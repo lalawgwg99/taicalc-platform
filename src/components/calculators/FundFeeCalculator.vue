@@ -40,9 +40,9 @@
 
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
-          <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">{{ years }} 年後，A 比 B 少 {{ fmt(diffAB) }} 元</p>
+          <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2"><span v-if="diffAB >= 0">{{ safeYears }} 年後，A 比 B 少 {{ fmt(diffAB) }} 元</span><span v-else>{{ safeYears }} 年後，A 比 B 多 {{ fmt(diffAbs) }} 元</span></p>
           <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
-            <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(diffAB) }}
+            <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(diffAbs) }}
           </p>
           <p class="mt-2 text-xs text-ink-400">同樣本金、同樣報酬假設，只差費用率 {{ feeA }}% 與 {{ feeB }}%</p>
         </div>
@@ -72,7 +72,7 @@
           </div>
           <p class="mt-3 text-[11px] leading-5 text-ink-400">費用率差距固定時，差額隨年數放大——因為被扣走的錢同時失去了後續的複利。這三格固定以 10／20／30 年計算，與上方年數欄位無關。</p>
         </div>
-        <p class="mt-4 text-[11px] leading-5 text-ink-400">報酬假設為固定年化、未計稅與申購手續費、贖回費用；實際基金報酬逐年波動，費用率以各基金最新月報與公開說明書為準。本試算不推薦特定基金，換基金前先查新基金的追蹤標的、規模與買賣價差，不要只看費用率。</p>
+        <p class="mt-4 text-[11px] leading-5 text-ink-400">報酬假設為固定年化、未計稅與申購手續費、贖回費用；實際基金報酬逐年波動，費用率以各基金最新月報與公開說明書為準。本金以年複利、每月投入以月複利估算；淨報酬以「假設報酬 − 費用率」線性估算。本試算不推薦特定基金，換基金前先查新基金的追蹤標的、規模與買賣價差，不要只看費用率。</p>
       </div>
 
       <div class="mt-5 flex justify-center">
@@ -112,6 +112,9 @@ const fvGross = computed(() => fv(num(grossReturn.value), num(years.value)));
 const fvA = computed(() => fv(num(grossReturn.value) - num(feeA.value), num(years.value)));
 const fvB = computed(() => fv(num(grossReturn.value) - num(feeB.value), num(years.value)));
 const diffAB = computed(() => fvB.value - fvA.value);
+const diffAbs = computed(() => Math.abs(diffAB.value));
+// 標題用箝制後年數：年數填負數或清空時，計算用 0 年、標題不應顯示負年數或空白
+const safeYears = computed(() => Math.max(0, Math.round(Number(years.value) || 0)));
 
 const horizonRows = computed(() => [10, 20, 30].map((y) => ({
   y,
@@ -121,6 +124,6 @@ const horizonRows = computed(() => [10, 20, 30].map((y) => ({
 const snapshotMetrics = computed(() => [
   { label: '本金', value: `$${fmt(principal.value)}` },
   { label: '費用率 A／B', value: `${feeA.value}%／${feeB.value}%` },
-  { label: `${years.value} 年差額`, value: `$${fmt(diffAB.value)}` },
+  { label: `${safeYears.value} 年差額`, value: `$${fmt(diffAbs.value)}` },
 ]);
 </script>

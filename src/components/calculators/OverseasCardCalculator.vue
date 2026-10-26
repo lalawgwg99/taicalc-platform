@@ -41,9 +41,12 @@ const feeRate = ref(1.5);
 const rows = computed(() => CARDS
   .filter((c) => c.scopes.includes('global') || (destination.value !== 'other' && c.scopes.includes(destination.value as Scope)))
   .map((c) => {
-    const rebate = Math.round(amount.value * c.rate / 100);
-    const fee = Math.round(amount.value * feeRate.value / 100);
-    return { ...c, rebate, fee, net: rebate - fee, netRate: c.rate - feeRate.value };
+    // 金額與費率欄的 min/max 只是 HTML 屬性，打字可越過：計算一律箝制 ≥0，負費率不再灌水淨回饋
+    const amt = Math.max(Number(amount.value) || 0, 0);
+    const fr = Math.max(Number(feeRate.value) || 0, 0);
+    const rebate = Math.round(amt * c.rate / 100);
+    const fee = Math.round(amt * fr / 100);
+    return { ...c, rebate, fee, net: rebate - fee, netRate: c.rate - fr };
   })
   .sort((a, b) => b.net - a.net));
 
@@ -68,10 +71,16 @@ const globalOnly = computed(() => destination.value === 'other');
         />
       </div>
 
+      <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <p class="text-sm font-semibold text-amber-800">⚠️ 出國刷卡永遠選當地貨幣結帳</p>
+        <p class="mt-1 text-xs leading-5 text-amber-700">刷卡機問你要不要用台幣結帳時，選「當地貨幣」。選台幣就是啟動 DCC 動態貨幣轉換，匯率由當地收單行決定、加價常達 4% 以上，足以吃掉上面全部淨回饋。</p>
+      </div>
+
       <div class="calculator-grid">
         <label class="field field--result">
           <span>海外消費金額（新台幣）</span>
           <input v-model.number="amount" type="number" min="0" step="1000" inputmode="numeric" />
+          <small>請以帳單台幣金額輸入；帳單若是外幣金額，請先換算成台幣再填。</small>
         </label>
         <label class="field">
           <span>海外交易手續費率（%）</span>
@@ -89,7 +98,8 @@ const globalOnly = computed(() => destination.value === 'other');
       <div v-if="best && amount > 0" class="summary-strip" aria-live="polite">
         <span>淨回饋最高 <strong>{{ best.bank }} {{ best.name }}</strong></span>
         <span>回饋 {{ formatTWD(best.rebate) }} − 手續費 {{ formatTWD(best.fee) }}</span>
-        <span>淨拿回 <strong>{{ formatTWD(best.net) }}</strong>（淨回饋率 {{ best.netRate.toFixed(1) }}%）</span>
+        <span v-if="best.net >= 0">淨拿回 <strong>{{ formatTWD(best.net) }}</strong>（淨回饋率 {{ best.netRate.toFixed(1) }}%）</span>
+        <span v-else>最少虧損 <strong>{{ formatTWD(-best.net) }}</strong>（淨回饋率 {{ best.netRate.toFixed(1) }}%）</span>
       </div>
 
       <p v-if="globalOnly" class="mt-4 rounded-lg bg-[#EDF5EF] px-4 py-3 text-sm leading-6 text-[#25231F]">此目的地只列不限國家的卡片；日韓泰專屬卡（J 卡、一卡通聯名卡、吉鶴卡、熊本熊卡）在其他國家不適用表列回饋率。</p>

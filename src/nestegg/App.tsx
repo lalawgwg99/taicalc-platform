@@ -134,7 +134,11 @@ export default function App() {
   }, [errors.length, effectiveInput, t]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 4, input }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 4, input }));
+    } catch {
+      // 配額滿／無痕模式時寫入失敗不應中斷畫面（與快算存檔一致）
+    }
   }, [input]);
   useEffect(() => {
     try {
@@ -183,7 +187,10 @@ export default function App() {
           return;
         }
         setInput({ ...defaultInput, ...parsed.input });
-        if (parsed.quick) {
+        // 快算欄位也要同步更新：只寫 localStorage 的話，使用者改動任一快算欄位就會把舊 state 蓋回來、匯入值永久消失
+        if (parsed.quick && [parsed.quick.currentAge, parsed.quick.retirementAge, parsed.quick.savings, parsed.quick.monthlyInvestment, parsed.quick.monthlySpending, parsed.quick.returnRatePercent]
+          .every((value) => typeof value === "number" && Number.isFinite(value))) {
+          setQuickInput(parsed.quick);
           try { localStorage.setItem(QUICK_STORAGE_KEY, JSON.stringify(parsed.quick)); } catch { /* 忽略 */ }
         }
       } catch {

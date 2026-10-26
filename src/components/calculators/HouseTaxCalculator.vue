@@ -12,6 +12,10 @@ const group = ref<CityGroup>('metro');
 const usage = ref<Usage>('self');
 const households = ref(2);
 
+// 輸入欄的 min/max 只是 HTML 屬性，打字可越過：計算一律用箝制值（現值 ≥0、戶數 ≥1 且取整）
+const safeAssessed = computed(() => Math.max(Number(assessedValue.value) || 0, 0));
+const safeCount = computed(() => Math.max(1, Math.round(Number(households.value) || 1)));
+
 const usages: { value: Usage; label: string }[] = [
   { value: 'self', label: '自住（全國 3 戶以內）' },
   { value: 'single', label: '全國單一自住' },
@@ -45,13 +49,13 @@ const needsCount = computed(() => usage.value === 'rental' || usage.value === 'n
 const rate = computed(() => {
   if (usage.value === 'self') return 1.2;
   if (usage.value === 'single') return 1.0;
-  if (usage.value === 'rental') return rentalRate(households.value);
-  return nonownerRate(group.value, households.value);
+  if (usage.value === 'rental') return rentalRate(safeCount.value);
+  return nonownerRate(group.value, safeCount.value);
 });
 
-const tax = computed(() => Math.round(assessedValue.value * rate.value / 100));
-const selfTax = computed(() => Math.round(assessedValue.value * 1.2 / 100));
-const singleTax = computed(() => Math.round(assessedValue.value * 1.0 / 100));
+const tax = computed(() => Math.round(safeAssessed.value * rate.value / 100));
+const selfTax = computed(() => Math.round(safeAssessed.value * 1.2 / 100));
+const singleTax = computed(() => Math.round(safeAssessed.value * 1.0 / 100));
 const extraVsSelf = computed(() => tax.value - selfTax.value);
 
 const usageLabel = computed(() => usages.find((u) => u.value === usage.value)?.label ?? '');
@@ -76,7 +80,7 @@ const notes = computed(() => {
         <SnapshotButton
           tool-name="房屋稅 2.0 試算"
           :metrics="[
-            { label: '房屋評定現值', value: formatTWD(assessedValue) },
+            { label: '房屋評定現值', value: formatTWD(safeAssessed) },
             { label: '縣市組別', value: groupLabel },
             { label: '使用類別', value: usageLabel },
             { label: '適用稅率', value: `${rate}%` },
@@ -127,14 +131,14 @@ const notes = computed(() => {
           <tbody>
             <tr :class="{ 'row-total': usage === 'single' }"><td>全國單一自住</td><td>1.0%</td><td>{{ formatTWD(singleTax) }}</td></tr>
             <tr :class="{ 'row-total': usage === 'self' }"><td>自住（3 戶以內）</td><td>1.2%</td><td>{{ formatTWD(selfTax) }}</td></tr>
-            <tr :class="{ 'row-total': usage === 'rental' }"><td>出租申報達標／繼承共有（目前戶數）</td><td>{{ rentalRate(households) }}%</td><td>{{ formatTWD(Math.round(assessedValue * rentalRate(households) / 100)) }}</td></tr>
-            <tr :class="{ 'row-total': usage === 'nonowner' }"><td>非自住（目前縣市組與戶數）</td><td>{{ nonownerRate(group, households) }}%</td><td>{{ formatTWD(Math.round(assessedValue * nonownerRate(group, households) / 100)) }}</td></tr>
+            <tr :class="{ 'row-total': usage === 'rental' }"><td>出租申報達標／繼承共有（目前戶數）</td><td>{{ rentalRate(safeCount) }}%</td><td>{{ formatTWD(Math.round(safeAssessed * rentalRate(safeCount) / 100)) }}</td></tr>
+            <tr :class="{ 'row-total': usage === 'nonowner' }"><td>非自住（目前縣市組與戶數）</td><td>{{ nonownerRate(group, safeCount) }}%</td><td>{{ formatTWD(Math.round(safeAssessed * nonownerRate(group, safeCount) / 100)) }}</td></tr>
           </tbody>
         </table>
       </div>
 
       <p class="mt-4 text-sm leading-6 text-[var(--color-muted)]">
-        稅率採財政部公告的差別稅率範本（房屋稅 2.0，113 年 7 月 1 日施行；直轄市組級距經臺北市政府公告稅率表交叉核對）。各縣市實際徵收率由自治條例訂定，可能與範本不同，實際稅額以房屋所在地稅捐稽徵處核定的稅單為準。資料日期：2026 年 10 月。
+        稅率採財政部公告的差別稅率範本（房屋稅 2.0，113 年 7 月 1 日施行；直轄市組級距經臺北市政府公告稅率表交叉核對）。各縣市實際徵收率由自治條例訂定，可能與範本不同，實際稅額以房屋所在地稅捐稽徵處核定的稅單為準。年度中取得或拆除者按月比例計課，本工具以全年計。資料日期：2026 年 10 月。
       </p>
     </section>
   </div>
