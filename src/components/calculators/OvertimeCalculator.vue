@@ -21,6 +21,7 @@
             <span class="text-sm text-ink-400">換算平時時薪</span>
             <span class="text-lg font-bold text-ink-600 font-mono">${{ baseHourlyRate.toLocaleString() }}</span>
         </div>
+        <p class="mt-1 text-[10px] text-ink-400">時薪先四捨五入至整數元再計算加班費；公司若以未四捨五入的時薪計算，結果可能差數元。</p>
     </section>
 
     <!-- 加班類型選擇 -->
