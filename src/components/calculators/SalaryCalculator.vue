@@ -555,20 +555,21 @@ const savingsGoals = computed(() => {
 })
 
 // ── 5年預測 ────────────────────────────────────────────────────
+// 首年以實際試算的整年實拿（yearlyNet：月實拿×12＋年終－補充保費＋勞退自提節稅）為基準，
+// 之後每年按調薪幅度成長；過去寫死的 0.88 概估會與主結果對不上（2026-10-28 每日優化發現：
+// 月薪 50,000 時預測首年 528,000，但主結果整年總共 576,840），故改以實際值為基準。
 const forecast = computed(() => {
     const rows = []
-    let s = new Decimal(salary.value || 0)
+    let nominal = new Decimal(yearlyNet.value || 0)
     let cumInf = new Decimal(1)
     const rr = new Decimal(raiseRate.value).div(100).plus(1)
     const ir = new Decimal(inflationRate.value).div(100).plus(1)
 
     for (let i = 0; i < 5; i++) {
-        if (i > 0) s = s.mul(rr).round()
+        if (i > 0) nominal = nominal.mul(rr).round()
         cumInf = cumInf.mul(ir)
 
-        // 年薪 = (月薪 × 12 + 年終) × (1 - 勞健保率約 12%)
-        const nominal = s.mul(new Decimal(12).plus(bonus.value)).mul(0.88).round()
-        const real    = nominal.div(cumInf).round()
+        const real = nominal.div(cumInf).round()
 
         let growth = '—'
         if (i > 0) {

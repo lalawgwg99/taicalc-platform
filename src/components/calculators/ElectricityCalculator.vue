@@ -102,7 +102,7 @@
       >
         <span>⚠️</span>
         <span>
-          貴的級距佔了 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級一度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
+          貴的級距電費佔了 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級一度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
         </span>
       </div>
     </section>
