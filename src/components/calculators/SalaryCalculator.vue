@@ -285,6 +285,7 @@
                         </tbody>
                     </table>
                 </div>
+                <p class="text-[10px] text-ink-400 mt-2">本表為扣勞健保後的整年實拿，尚未扣除年度綜合所得稅結算；扣完稅金額請參考上方「扣完稅一年領多少」。「換算成今天的錢」以首年為基準，首年實質值等於名目值。</p>
             </div>
         </div>
 
@@ -567,7 +568,9 @@ const forecast = computed(() => {
 
     for (let i = 0; i < 5; i++) {
         if (i > 0) nominal = nominal.mul(rr).round()
-        cumInf = cumInf.mul(ir)
+        // 「換算成今天的錢」以首年為基準年：首年實質值等於名目值，之後每年再按通膨折現。
+        // 過去首年也被先折現一年（2026 年顯示 565,529 而非 576,840），與基準年定義矛盾，2026-10-29 修正。
+        if (i > 0) cumInf = cumInf.mul(ir)
 
         const real = nominal.div(cumInf).round()
 
