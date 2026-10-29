@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  calculateDebtConsolidation, calculateEstateTax, calculateLaborPension, calculateParentalBenefits,
+  calculateDebtConsolidation, calculateEstateTax, calculateGiftSplit, calculateLaborPension, calculateParentalBenefits,
   calculateSeparation, estimateResaleRate, impliedAnnualRate, monthlyPayment, vehicleTaxes,
 } from './decisionTools';
 
@@ -54,6 +54,43 @@ describe('decision calculators', () => {
       type: 'estate', gross: 20_000_000, debts: 0, spouse: false,
       children: 0, parents: 0, disabled: 0, otherDeductions: 0,
     }).tax).toBe(529_000);
+  });
+
+  it('adds minor-child extra deduction and sibling deduction to estate tax', () => {
+    // 扣除額＝2,000,000＋5,530,000＋1,120,000＋1,380,000＋5,600,000＝15,630,000
+    // 淨額＝30,000,000－13,330,000－15,630,000＝1,040,000；稅額＝104,000
+    const minor = calculateEstateTax({
+      type: 'estate', gross: 30_000_000, debts: 2_000_000, spouse: true,
+      children: 2, parents: 0, disabled: 0, otherDeductions: 0,
+      minorChildren: 1, minorYears: 10, siblings: 0,
+    });
+    expect(minor.minorExtra).toBe(5_600_000);
+    expect(minor.net).toBe(1_040_000);
+    expect(minor.tax).toBe(104_000);
+    // 扣除額＝1,380,000（喪葬費）＋1,120,000（兄弟姊妹 2 人）＝2,500,000
+    // 淨額＝20,000,000－13,330,000－2,500,000＝4,170,000；稅額＝417,000
+    const sib = calculateEstateTax({
+      type: 'estate', gross: 20_000_000, debts: 0, spouse: false,
+      children: 0, parents: 0, disabled: 0, otherDeductions: 0,
+      minorChildren: 0, minorYears: 0, siblings: 2,
+    });
+    expect(sib.siblingDed).toBe(1_120_000);
+    expect(sib.net).toBe(4_170_000);
+    expect(sib.tax).toBe(417_000);
+  });
+
+  it('compares one-time gift vs split over two years', () => {
+    // 一次給：淨額＝10,000,000－2,440,000＝7,560,000，稅＝756,000
+    // 分兩年：每年淨額＝5,000,000－2,440,000＝2,560,000，稅＝256,000，合計 512,000，省 244,000
+    const split = calculateGiftSplit({ gross: 10_000_000, debts: 0, otherDeductions: 0 });
+    expect(split.once).toBe(756_000);
+    expect(split.split).toBe(512_000);
+    expect(split.saved).toBe(244_000);
+    // 4,880,000 分兩年剛好每年都在免稅額內：一次給 244,000，分兩年 0
+    const edge = calculateGiftSplit({ gross: 4_880_000, debts: 0, otherDeductions: 0 });
+    expect(edge.once).toBe(244_000);
+    expect(edge.split).toBe(0);
+    expect(edge.saved).toBe(244_000);
   });
 
   it('limits parental leave benefit to six months per parent', () => {

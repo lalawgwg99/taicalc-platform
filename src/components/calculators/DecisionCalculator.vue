@@ -168,17 +168,26 @@
             <label>直系卑親屬人數<input v-model.number="tax.children" type="text" inputmode="decimal" class="input-clean"></label>
             <label>受扶養父母人數<input v-model.number="tax.parents" type="text" inputmode="decimal" class="input-clean"></label>
             <label>重度以上身心障礙人數<input v-model.number="tax.disabled" type="text" inputmode="decimal" class="input-clean"></label>
+            <label>未成年直系卑親屬人數<input v-model.number="tax.minorChildren" type="text" inputmode="decimal" class="input-clean"></label>
+            <label>未成年距成年平均年數<input v-model.number="tax.minorYears" type="text" inputmode="decimal" class="input-clean"></label>
+            <label>受扶養兄弟姊妹及祖父母人數<input v-model.number="tax.siblings" type="text" inputmode="decimal" class="input-clean"></label>
           </template>
           <label>其他依法扣除額<input v-model.number="tax.otherDeductions" type="text" inputmode="decimal" class="input-clean"></label>
         </div>
-        <p v-if="tax.type === 'estate'" class="scope-note">未滿 18 歲直系卑親屬依距成年年數可再增加扣除；本簡版先計每人基本扣除，額外金額請填入「其他依法扣除額」。</p>
+        <p v-if="tax.type === 'estate'" class="scope-note">未成年直系卑親屬加扣＝人數 × 距成年年數 × 56 萬元；受扶養兄弟姊妹及祖父母每人扣 56 萬元。拋棄繼承者不享有對應扣除額，近親拋棄由次親繼承時扣除額以原可扣除數為限。</p>
       </div>
       <ResultPanel eyebrow="115 年度" label="大概要繳的稅" :value="currency(taxResult.tax)" :insight="taxInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: taxChartItems }" :comparison-items="scenarioComparisonItems">
         <Metric label="免稅額" :value="currency(taxResult.exemption)" />
         <Metric label="扣除額合計" :value="currency(taxResult.deductions)" />
         <Metric label="要課稅的淨額" :value="currency(taxResult.net)" />
+        <Metric v-if="tax.type === 'estate' && taxResult.minorExtra > 0" label="未成年加扣" :value="currency(taxResult.minorExtra)" />
+        <Metric v-if="tax.type === 'estate' && taxResult.siblingDed > 0" label="兄弟姊妹及祖父母扣除" :value="currency(taxResult.siblingDed)" />
         <DecisionChart title="金額怎麼拆" caption="從財產總額一路算到要繳的稅" kind="columns" :items="taxChartItems" />
         <div class="result-callout">用 10%、15%、20% 的級距一段一段算</div>
+        <div v-if="tax.type === 'gift'" class="mt-4 text-sm leading-6 text-ink-600">
+          <p>分兩年給的對照：今年一次給要繳 {{ currency(giftSplit.once) }}，平分兩年給合計 {{ currency(giftSplit.split) }}，省 {{ currency(giftSplit.saved) }}。</p>
+          <p class="mt-1 text-xs leading-5 text-ink-400">分兩年是把可扣除後金額平分、每年各扣 244 萬免稅額試算；每年贈與總額都要申報，實際節稅效果依當年贈與情形而定。</p>
+        </div>
       </ResultPanel>
     </section>
 
@@ -269,7 +278,7 @@
 import { computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue';
 import { carPresets, getCarPreset } from '../../data/carPresets';
 import {
-  calculateCarCost, calculateDebtConsolidation, calculateEstateTax, calculateHomeCost,
+  calculateCarCost, calculateDebtConsolidation, calculateEstateTax, calculateGiftSplit, calculateHomeCost,
   calculateLaborPension, calculateParentalBenefits, calculateRealReturns, calculateSeparation,
   estimateResaleRate,
 } from '../../utils/calculators/decisionTools';
@@ -701,13 +710,17 @@ const pensionChartItems = computed(() => [
 const pensionInsight = computed(() => laborPension.claimAge < 65
   ? '提早領會永久打折；如果錢夠用，可以把延後領之後每個月多領的也一起比比看。'
   : '月領適合拿來規劃長期生活費；能不能一次領、實際領多少，還是要查你勞保局的個人資料。');
-const tax = reactive({ type: 'estate', gross: 30_000_000, debts: 2_000_000, spouse: true, children: 2, parents: 0, disabled: 0, otherDeductions: 0 });
+const tax = reactive({ type: 'estate', gross: 30_000_000, debts: 2_000_000, spouse: true, children: 2, parents: 0, disabled: 0, otherDeductions: 0, minorChildren: 0, minorYears: 0, siblings: 0 });
 watch(() => tax.type, (type) => {
   tax.gross = type === 'gift' ? 3_000_000 : 30_000_000;
   tax.debts = type === 'gift' ? 0 : 2_000_000;
   tax.otherDeductions = 0;
+  tax.minorChildren = 0;
+  tax.minorYears = 0;
+  tax.siblings = 0;
 }, { flush: 'sync' });
 const taxResult = computed(() => calculateEstateTax(tax));
+const giftSplit = computed(() => calculateGiftSplit({ gross: tax.gross, debts: tax.debts, otherDeductions: tax.otherDeductions }));
 const taxChartItems = computed(() => [
   { label: tax.type === 'estate' ? '遺產總額' : '贈與總額', value: tax.gross },
   { label: '要課稅的淨額', value: taxResult.value.net },

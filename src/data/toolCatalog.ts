@@ -325,6 +325,24 @@ export const toolCatalog: ToolCatalogItem[] = [
     cta: '算年終實拿',
     tags: ['年終獎金', '年終扣稅', '年終試算', '預扣稅', '年終實拿'],
   },
+  {
+    href: '/tools/real-estate-gains-tax-calculator',
+    label: '房地合一稅 2.0 試算器',
+    desc: '賣房課稅所得與應納稅額，附再持有幾個月稅率降一級的臨界點與自用優惠試算。',
+    category: '居住與房產',
+    scenario: '賣房簽約前先看稅額與臨界點',
+    cta: '算賣房要繳多少稅',
+    tags: ['房地合一稅', '房地合一稅2.0', '賣房稅', '自用住宅優惠', '持有期間'],
+  },
+  {
+    href: '/tools/unemployment-benefit-calculator',
+    label: '失業給付試算器',
+    desc: '離職前 6 個月平均月投保薪資 60%，算每月給付、最長月數與領滿總額。',
+    category: '薪資與稅務',
+    scenario: '非自願離職後先算生活費缺口',
+    cta: '算每月失業給付',
+    tags: ['失業給付', '失業補助', '就業保險', '非自願離職', '失業給付試算'],
+  },
 ];
 
 export const toolCatalogMap = Object.fromEntries(

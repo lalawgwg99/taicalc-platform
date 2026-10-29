@@ -182,17 +182,34 @@ function progressiveTax(net: number, first: number, second: number) {
 export function calculateEstateTax(input: {
   type: 'estate' | 'gift'; gross: number; debts: number; spouse: boolean;
   children: number; parents: number; disabled: number; otherDeductions: number;
+  minorChildren?: number; minorYears?: number; siblings?: number;
 }) {
   if (input.type === 'gift') {
     const exemption = 2_440_000;
     const net = Math.max(0, input.gross - input.debts - exemption - input.otherDeductions);
     return { exemption, deductions: input.debts + input.otherDeductions, net, tax: progressiveTax(net, 28_110_000, 56_210_000) };
   }
+  const clampCount = (v: unknown) => Math.max(0, Math.floor(Number(v) || 0));
+  // 未成年直系卑親屬加扣：人數 × 距成年年數（上限 18 年）× 56 萬；
+  // 受扶養兄弟姊妹及祖父母：每人 56 萬。未傳入時皆為 0，舊行為不變。
+  const minorExtra = clampCount(input.minorChildren) * Math.min(18, clampCount(input.minorYears)) * 560_000;
+  const siblingDed = clampCount(input.siblings) * 560_000;
   const exemption = 13_330_000;
   const deductions = input.debts + (input.spouse ? 5_530_000 : 0) + input.children * 560_000 +
-    input.parents * 1_380_000 + input.disabled * 6_930_000 + 1_380_000 + input.otherDeductions;
+    input.parents * 1_380_000 + input.disabled * 6_930_000 + 1_380_000 + minorExtra + siblingDed + input.otherDeductions;
   const net = Math.max(0, input.gross - exemption - deductions);
-  return { exemption, deductions, net, tax: progressiveTax(net, 56_210_000, 112_420_000) };
+  return { exemption, deductions, net, tax: progressiveTax(net, 56_210_000, 112_420_000), minorExtra, siblingDed };
+}
+
+// 分年贈與對比：一次給 vs 平分兩年給（每年各扣 244 萬免稅額）。
+// 以可扣除後金額（總額－負擔－其他扣除額）平分兩年試算。
+export function calculateGiftSplit(input: { gross: number; debts: number; otherDeductions: number }) {
+  const base = Math.max(0, (Number(input.gross) || 0) - (Number(input.debts) || 0) - (Number(input.otherDeductions) || 0));
+  const onceNet = Math.max(0, base - 2_440_000);
+  const once = progressiveTax(onceNet, 28_110_000, 56_210_000);
+  const halfNet = Math.max(0, base / 2 - 2_440_000);
+  const split = 2 * progressiveTax(halfNet, 28_110_000, 56_210_000);
+  return { once, split, saved: Math.max(0, once - split) };
 }
 
 export function calculateParentalBenefits(input: {
