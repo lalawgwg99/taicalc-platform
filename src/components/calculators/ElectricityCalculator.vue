@@ -67,6 +67,9 @@
           <p v-if="minimumChargeApplied > 0" class="mt-2 text-xs text-ink-400">
             已經含每月最低收 100 元，補了 ${{ minimumChargeApplied }}
           </p>
+          <p class="mt-2 text-xs text-ink-400">
+            台電多為兩個月抄表一次，實際一期帳單約為本月金額 × 2（約 ${{ (totalCost * 2).toLocaleString() }}）
+          </p>
         </div>
         <div class="text-right">
           <p class="text-xs text-ink-400 mb-1">平均一度</p>
