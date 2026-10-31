@@ -51,6 +51,7 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
     sources: [
       { label: '財政部（青安3.0）', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=2bc35b71dbd04bfaba2d2c88640042c4' },
       { label: '中央銀行（115 年 6 月五大銀行利率）', href: 'https://www.cbc.gov.tw/tw/cp-302-192614-192cb-1.html' },
+      { label: 'Money101（青安3.0階梯利率整理）', href: 'https://www.money101.com.tw/blog/%E5%8F%B0%E7%81%A3%E5%90%84%E5%AE%B6%E9%8A%80%E8%A1%8C%E5%AE%89%E5%BF%83%E6%88%90%E5%AE%B6%E9%9D%92%E5%B9%B4%E8%B3%BC%E5%B1%8B%E8%B2%B8%E6%AC%BE%E5%84%AA%E6%83%A0%E6%AF%94%E8%BC%83' },
     ],
   },
   insurance: {

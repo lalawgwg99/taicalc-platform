@@ -5,9 +5,9 @@ import ElectricityCompare from '../../components/calculators/ElectricityCompare.
 import ApplianceEnergyCompare from '../../components/calculators/ApplianceEnergyCompare.vue';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
-const title = "電費計算機｜一度電 1.78～8.86 元，3 秒算 2026 台電電費＋家電耗電比一比";
-const description = "一度電 1.78～8.86 元（台電住宅累進費率）。台電一度電多少錢？輸入每月用電度數，3 秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算、夏月非夏月比較；另有「比家電」分頁，輸入節能標示年耗電量比較 3 台家電電費。2026 最新費率，免註冊免費試算。";
-const keywords = "電費計算機,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費,家電耗電比較,節能標章,每年耗電量";
+const title = "電費計算機｜一度電 1.78～8.86 元，3 秒算 2026 台電電費";
+const description = "電費試算、電費計算線上版：一度電 1.78～8.86 元（台電住宅累進費率）。輸入每月用電度數，3 秒算出夏月／非夏月電費金額；支援冷氣噸數換算、電器耗電估算，另有「比家電」分頁，輸入節能標示年耗電量比較 3 台家電電費。2026 最新費率，免註冊免費試算。";
+const keywords = "電費計算機,電費試算,電費計算線上,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費,家電耗電比較,節能標章,每年耗電量";
 const governance = coreToolGovernance.electricity;
 
 const faqs = [
@@ -84,6 +84,11 @@ const faqs = [
         <section class="ec-section" aria-label="電價審議追蹤">
             <h2 class="ec-h2">12 月電價審議追蹤（尚未定案）</h2>
             <p class="ec-lead">台電 2026 年 9 月電價審議會提報平均電價應調 12.83%，審議會決議優先爭取政府 711 億元撥補，並預留伏筆、將在 12 月第 3 次電價審議會審議輸配電費率時一併討論電價。台電 10 月 22 日說法：今年民生用電估計吸收逾 760 億元，民生高用電度數會被優先討論。以上皆為審議前說法，12 月是否調漲、調多少，仍以電價審議會決議為準；本頁費率維持台電 2026-04-01 住宅費率。</p>
+        </section>
+
+        <section class="ec-section" aria-label="若漲價情境試算">
+            <h2 class="ec-h2">若漲 12.83%，電費會差多少？（情境假設，非定案）</h2>
+            <p class="ec-lead">以下只是把 9 月審議提報的平均電價應調幅度 12.83% 套用到同一用電量的粗估，12 月是否調漲、調多少，仍以電價審議會決議與台電公告費率為準；本頁計算機仍用現行費率。以每月 350 度為例：非夏月現行約 $752，情境價約 $849（多約 $97）；夏月現行約 $826，情境價約 $932（多約 $106）。實際調幅若按級距分開調整，數字會與粗估不同。</p>
         </section>
 
         <section class="ec-section" id="calculator" aria-label="電費試算">
