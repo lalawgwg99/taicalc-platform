@@ -8,6 +8,45 @@ export const prerender = true;
 
 const SITE = 'https://taicalc.com';
 
+// 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-01 盤點）。
+// 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
+const toolLastUpdated: Record<string, string> = {
+  '/tools/delivery-income-calculator': '2026-11-01',
+  '/tools/electricity-calculator': '2026-11-01',
+  '/tools/labor-insurance-pension-calculator': '2026-11-01',
+  '/tools/life-simulator': '2026-11-01',
+  '/tools/mortgage-calculator': '2026-11-01',
+  '/tools/salary-calculator': '2026-11-01',
+  '/tools/split-calculator': '2026-11-01',
+  '/tools/unemployment-benefit-calculator': '2026-11-01',
+  '/tools/debt-consolidation-calculator': '2026-10-12',
+  '/tools/estate-gift-tax-calculator': '2026-10-29',
+  '/tools/real-estate-gains-tax-calculator': '2026-10-29',
+  '/tools/fund-fee-calculator': '2026-10-22',
+  '/tools/house-tax-calculator': '2026-10-22',
+  '/tools/overseas-card-calculator': '2026-10-22',
+  '/tools/refinance-calculator': '2026-10-22',
+  '/tools/rent-deduction-calculator': '2026-10-22',
+  '/tools/long-term-investing-calculator': '2026-09-05',
+  '/tools/car-cost-calculator': '2026-07-30',
+  '/tools/home-ownership-cost-calculator': '2026-07-29',
+  '/tools/parental-benefit-calculator': '2026-07-29',
+  '/tools/real-return-calculator': '2026-07-29',
+  '/tools/severance-calculator': '2026-07-29',
+  '/tools/etf-dividend-calculator': '2026-10-08',
+  '/tools/fire-calculator': '2026-10-08',
+  '/tools/income-tax-calculator': '2026-10-08',
+  '/tools/insurance-assessment': '2026-10-08',
+  '/tools/insurance-calculator': '2026-10-08',
+  '/tools/labor-pension-calculator': '2026-10-08',
+  '/tools/overtime-calculator': '2026-10-08',
+  '/tools/rent-cost-calculator': '2026-10-08',
+  '/tools/rental-yield-calculator': '2026-10-08',
+  '/tools/stock-calculator': '2026-10-08',
+  '/tools/subscription-tracker': '2026-10-08',
+  '/tools/year-end-bonus-calculator': '2026-10-08',
+};
+
 const escapeXml = (value: string) =>
   value.replace(/[<>&'"]/g, (character) => ({
     '<': '&lt;',
@@ -42,44 +81,41 @@ export const GET: APIRoute = async () => {
 
   const pages = [
     { path: '/', priority: '1.0', changefreq: 'weekly', lastmod: today },
-    { path: '/glossary', priority: '0.7', changefreq: 'monthly', lastmod: today },
+    { path: '/glossary', priority: '0.7', changefreq: 'monthly' },
     ...comparePages.map((comparePage) => ({
       path: comparePage.path,
       priority: comparePage.priority,
       changefreq: comparePage.changefreq,
-      lastmod: today,
     })),
     ...taxYearPages.map((page) => ({
       path: page.path,
       priority: page.priority,
       changefreq: page.changefreq,
-      lastmod: today,
     })),
     ...costOfLivingPages.map((page) => ({
       path: page.path,
       priority: page.priority,
       changefreq: page.changefreq,
-      lastmod: today,
     })),
     { path: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: today },
-    { path: '/tax-season', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/car-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/parenting-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/retirement-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/career-toolbox', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/partnerships', priority: '0.5', changefreq: 'monthly', lastmod: today },
-    { path: '/about', priority: '0.5', changefreq: 'monthly', lastmod: today },
-    { path: '/privacy', priority: '0.3', changefreq: 'yearly', lastmod: today },
-    { path: '/disclaimer', priority: '0.3', changefreq: 'yearly', lastmod: today },
-    { path: '/data-sources', priority: '0.6', changefreq: 'monthly', lastmod: today },
-    { path: '/mortgage-rates', priority: '0.8', changefreq: 'monthly', lastmod: today },
-    { path: '/etf-fees', priority: '0.8', changefreq: 'monthly', lastmod: today },
+    { path: '/tax-season', priority: '0.8', changefreq: 'monthly' },
+    { path: '/housing-toolbox', priority: '0.8', changefreq: 'monthly' },
+    { path: '/car-toolbox', priority: '0.8', changefreq: 'monthly' },
+    { path: '/parenting-toolbox', priority: '0.8', changefreq: 'monthly' },
+    { path: '/retirement-toolbox', priority: '0.8', changefreq: 'monthly' },
+    { path: '/career-toolbox', priority: '0.8', changefreq: 'monthly' },
+    { path: '/partnerships', priority: '0.5', changefreq: 'monthly' },
+    { path: '/about', priority: '0.5', changefreq: 'monthly' },
+    { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
+    { path: '/disclaimer', priority: '0.3', changefreq: 'yearly' },
+    { path: '/data-sources', priority: '0.6', changefreq: 'monthly' },
+    { path: '/mortgage-rates', priority: '0.8', changefreq: 'monthly' },
+    { path: '/etf-fees', priority: '0.8', changefreq: 'monthly' },
     ...toolCatalog.map((tool) => ({
       path: tool.href,
       priority: tool.isCore ? '0.9' : '0.8',
       changefreq: 'monthly',
-      lastmod: today,
+      lastmod: toolLastUpdated[tool.href],
     })),
     ...posts.map((post) => ({
       path: `/blog/${post.id}`,
@@ -90,8 +126,8 @@ export const GET: APIRoute = async () => {
   ];
 
   const urls = pages.map((page) => `  <url>
-    <loc>${escapeXml(`${SITE}${page.path}`)}</loc>
-    <lastmod>${escapeXml(page.lastmod)}</lastmod>
+    <loc>${escapeXml(`${SITE}${page.path}`)}</loc>${page.lastmod ? `
+    <lastmod>${escapeXml(page.lastmod)}</lastmod>` : ''}
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`).join('\n');

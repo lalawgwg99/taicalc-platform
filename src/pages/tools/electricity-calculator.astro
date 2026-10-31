@@ -5,8 +5,8 @@ import ElectricityCompare from '../../components/calculators/ElectricityCompare.
 import ApplianceEnergyCompare from '../../components/calculators/ApplianceEnergyCompare.vue';
 import { coreToolGovernance } from '../../data/regulatoryMetadata';
 
-const title = "電費計算機｜一度電多少錢？2026台電電費試算＋家電耗電比一比";
-const description = "台電一度電多少錢？輸入每月用電度數，3秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算、夏月非夏月比較；另有「比家電」分頁，輸入節能標示年耗電量比較3台家電電費。2026最新費率，免註冊免費試算。";
+const title = "電費計算機｜一度電 1.78～8.86 元，3 秒算 2026 台電電費＋家電耗電比一比";
+const description = "一度電 1.78～8.86 元（台電住宅累進費率）。台電一度電多少錢？輸入每月用電度數，3 秒算出夏月／非夏月電費金額。支援冷氣噸數換算、電器耗電估算、夏月非夏月比較；另有「比家電」分頁，輸入節能標示年耗電量比較 3 台家電電費。2026 最新費率，免註冊免費試算。";
 const keywords = "電費計算機,冷氣電費計算機,台電電費,累進電價,夏月電費,非夏月電費,省電試算,冷氣耗電,BTU/h,CSPF,一度電多少錢,租屋電費,家電耗電比較,節能標章,每年耗電量";
 const governance = coreToolGovernance.electricity;
 
@@ -55,6 +55,10 @@ const faqs = [
         q: "為什麼夏天的電費帳單特別貴？",
         a: "兩個原因疊加：第一，台電多為每兩個月抄表，帳單金額是兩個月的用量；第二，6～9 月適用較貴的夏月費率。以小家庭夏天每月 650 度為例，單月電費 2,167 元，雙月帳單一次就是約 4,334 元，看起來嚇人但公式正確，不是被多收。"
     },
+    {
+        q: "電費試算線上做要準備什麼資料？",
+        a: "只要準備最近一期帳單的用電度數即可。本頁就是免費的電費計算線上工具：輸入每月用電度數，3 秒算出夏月與非夏月金額；若帳單是雙月抄表，先將帳單度數除以 2 再輸入。級距單價採台電 2026-04-01 住宅費率，一度電 1.78～8.86 元。"
+    },
 ];
 ---
 
@@ -77,7 +81,12 @@ const faqs = [
             <p class="ec-hero-note">台電住家採累進費率：120 度以下最便宜，超過 1,000 度夏月最貴。往下輸入度數，3 秒算出你的電費。</p>
         </section>
 
-        <section class="ec-section" aria-label="電費試算">
+        <section class="ec-section" aria-label="電價審議追蹤">
+            <h2 class="ec-h2">12 月電價審議追蹤（尚未定案）</h2>
+            <p class="ec-lead">台電 2026 年 9 月電價審議會提報平均電價應調 12.83%，審議會決議優先爭取政府 711 億元撥補，並預留伏筆、將在 12 月第 3 次電價審議會審議輸配電費率時一併討論電價。台電 10 月 22 日說法：今年民生用電估計吸收逾 760 億元，民生高用電度數會被優先討論。以上皆為審議前說法，12 月是否調漲、調多少，仍以電價審議會決議為準；本頁費率維持台電 2026-04-01 住宅費率。</p>
+        </section>
+
+        <section class="ec-section" id="calculator" aria-label="電費試算">
             <h2 class="ec-h2">電費試算</h2>
             <ElectricityCalculator client:only="vue" />
         </section>
@@ -104,7 +113,7 @@ const faqs = [
             <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單約為上表 × 2。</p>
         </section>
 
-        <section class="ec-section" aria-label="級距速查表">
+        <section class="ec-section" id="tiers" aria-label="級距速查表">
             <h2 class="ec-h2">六段級距單價速查 <span class="ec-h2-sub">元/度</span></h2>
             <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
                 <thead>

@@ -40,4 +40,27 @@ describe('失業給付', () => {
     expect(huge.monthly).toBe(120_000);
     expect(huge.maxTotal).toBe(720_000);
   });
+
+  it('扶養加給：45,800、1 名：每月 32,060、6 個月 192,360、9 個月 288,540', () => {
+    // 每月＝45,800 × 70%＝32,060；6 個月＝192,360；9 個月＝288,540
+    const r6 = calculateUnemploymentBenefit({ averageSalary: 45_800, age: 30, disabled: false, dependents: 1 });
+    expect(r6.monthly).toBe(32_060);
+    expect(r6.maxTotal).toBe(192_360);
+    const r9 = calculateUnemploymentBenefit({ averageSalary: 45_800, age: 50, disabled: false, dependents: 1 });
+    expect(r9.maxTotal).toBe(288_540);
+  });
+
+  it('扶養加給：45,800、2 名：每月 36,640、6 個月 219,840、9 個月 329,760', () => {
+    // 每月＝45,800 × 80%＝36,640；6 個月＝219,840；9 個月＝329,760
+    const r6 = calculateUnemploymentBenefit({ averageSalary: 45_800, age: 30, disabled: false, dependents: 2 });
+    expect(r6.monthly).toBe(36_640);
+    expect(r6.maxTotal).toBe(219_840);
+    const r9 = calculateUnemploymentBenefit({ averageSalary: 45_800, age: 50, disabled: false, dependents: 2 });
+    expect(r9.maxTotal).toBe(329_760);
+  });
+
+  it('扶養人數上限與下限：3 名按 2 名計、負數按 0 名計', () => {
+    expect(calculateUnemploymentBenefit({ averageSalary: 45_800, age: 30, disabled: false, dependents: 3 }).monthly).toBe(36_640);
+    expect(calculateUnemploymentBenefit({ averageSalary: 45_800, age: 30, disabled: false, dependents: -1 }).monthly).toBe(27_480);
+  });
 });
