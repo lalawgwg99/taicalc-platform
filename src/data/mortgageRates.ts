@@ -9,6 +9,9 @@ export interface MortgageRatePoint {
 
 // 五大銀行（台銀、合庫銀、一銀、華銀、土銀）新承做放款加權平均利率
 export const centralBankFiveBankRates: MortgageRatePoint[] = [
+    { month: '2026-09', rate: 2.193, note: '115年9月，較 8 月上升 0.006 個百分點' },
+    { month: '2026-08', rate: 2.187, note: '115年8月，較 7 月上升 0.020 個百分點' },
+    { month: '2026-07', rate: 2.167, note: '115年7月，較 6 月上升 0.012 個百分點' },
     { month: '2026-06', rate: 2.155, note: '115年6月，較 5 月下降 0.053 個百分點' },
     { month: '2026-05', rate: 2.208, note: '115年5月' },
 ];
@@ -37,4 +40,4 @@ export const mortgageDataSources = [
     { label: '財政部青安3.0 規定（青安 3.0 房貸試算）', href: 'https://www.0966553929.com/about/new-qingan-3-calculator' },
 ];
 
-export const mortgageLastUpdated = '2026-09-01';
+export const mortgageLastUpdated = '2026-11-01';

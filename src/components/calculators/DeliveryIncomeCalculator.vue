@@ -173,7 +173,10 @@
       </section>
     </div>
 
-    <div class="calculator-footer-note text-center">
+    <div v-if="netIncomeRaw < 0" class="calculator-footer-note text-center text-rose-600">
+      注意：目前試算為負數，代表收入 cover 不住油錢、保養與保險成本。請先檢查里程、工時與跑單收入是否與實際相符，或提高單量、獎勵後再試算一次。
+    </div>
+    <div v-else class="calculator-footer-note text-center">
       平台獎勵才是賺錢關鍵，每週盡量跑滿達標趟次，時薪才拉得起來。
     </div>
   </div>

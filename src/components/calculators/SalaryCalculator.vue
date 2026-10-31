@@ -491,7 +491,7 @@ const resB = computed(() => calculateSalaryBreakdown({
 
 const laborIns    = computed(() => res.value.labor)
 // 扣除額顯示：正數前加減號；為 0 時直接顯示「0」，避免出現 −0（2026-10-23 每日優化發現）
-const fmtNeg = (n) => (Number(n) > 0 ? '− ' + Number(n).toLocaleString() : '0')
+const fmtNeg = (n) => (Number(n) > 0 ? '− ' + Number(n).toLocaleString() : '− 0')
 const healthIns   = computed(() => res.value.health)
 const pensionSelf = computed(() => res.value.penS)
 const monthlyNet  = computed(() => res.value.mNet)
