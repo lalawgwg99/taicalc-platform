@@ -117,7 +117,7 @@ export const GET: APIRoute = async () => {
       changefreq: 'monthly',
       lastmod: toolLastUpdated[tool.href],
     })),
-    ...posts.map((post) => ({
+    ...posts.filter((post) => !post.data.noindex).map((post) => ({
       path: `/blog/${post.id}`,
       priority: '0.7',
       changefreq: 'monthly',

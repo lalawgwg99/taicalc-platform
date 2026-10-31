@@ -6,6 +6,7 @@ category: "房產居家"
 tags: ["新青安", "房貸試算", "首購族", "買房攻略"]
 coverImage: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1973&auto=format&fit=crop"
 author: "TaiCalc 房產研究室"
+noindex: true
 ---
 
 > [!NOTE]

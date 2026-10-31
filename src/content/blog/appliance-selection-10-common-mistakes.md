@@ -15,6 +15,7 @@ tags: [
     "省電"
 ]
 author: "TaiCalc 編輯部"
+noindex: true
 ---
 
 你是正在佈置新家的準新婚夫妻，或是剛搬進租屋處的小資族嗎？

@@ -46,7 +46,7 @@ const articleSchema = JSON.stringify({
 });
 ---
 
-<Layout title={title} description={description} keywords={keywords} ogImage={coverImageURL} type="article">
+<Layout title={title} description={description} keywords={keywords} ogImage={coverImageURL} type="article" robots={post.data.noindex ? "noindex, follow" : undefined}>
     <script is:inline type="application/ld+json" set:html={articleSchema} slot="head" />
     <!-- Breadcrumb -->
     <div class="article-breadcrumb text-sm text-ink-400 mb-8 flex items-center gap-2">

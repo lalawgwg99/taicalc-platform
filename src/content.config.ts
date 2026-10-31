@@ -23,6 +23,7 @@ const blogCollection = defineCollection({
         tags: z.array(z.string()),
         coverImage: z.string().optional(),
         author: z.string().default('TaiCalc 編輯部'),
+        noindex: z.boolean().optional(),
     }),
 });
 

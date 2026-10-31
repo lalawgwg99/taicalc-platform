@@ -33,7 +33,7 @@ export const GET: APIRoute = async () => {
         priority: t.isCore ? 0.9 : 0.8,
         changefreq: 'monthly',
       })),
-      ...posts.map((p) => ({
+      ...posts.filter((p) => !p.data.noindex).map((p) => ({
         url: `${SITE}/blog/${p.id}`,
         type: 'article',
         title: p.data.title,

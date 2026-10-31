@@ -15,6 +15,7 @@ tags: [
     "指數投資"
 ]
 author: "TaiCalc 編輯部"
+noindex: true
 ---
 
 對於剛踏入美股 ETF 世界的投資人來說，最經典的靈魂拷問莫過於：「我到底該買代表美國國力的 VOO (S&P 500)，還是買下全世界的 VT (Vanguard Total World Stock)？」

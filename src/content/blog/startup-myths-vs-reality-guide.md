@@ -15,6 +15,7 @@ tags: [
     "一人公司"
 ]
 author: "TaiCalc 編輯部"
+noindex: true
 ---
 
 打開社群媒體，你看到的創業故事通常是這樣的：

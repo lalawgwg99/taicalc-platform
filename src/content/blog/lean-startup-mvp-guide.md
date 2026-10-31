@@ -15,6 +15,7 @@ tags: [
     "市場驗證"
 ]
 author: "TaiCalc 編輯部"
+noindex: true
 ---
 
 你有一個絕妙的創業點子。你興奮得睡不著，覺得這將改變世界。
