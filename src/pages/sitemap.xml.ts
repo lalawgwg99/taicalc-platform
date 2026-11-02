@@ -8,16 +8,16 @@ export const prerender = true;
 
 const SITE = 'https://taicalc.com';
 
-// 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-01 盤點）。
+// 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-03 同步）。
 // 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
 const toolLastUpdated: Record<string, string> = {
-  '/tools/delivery-income-calculator': '2026-11-01',
-  '/tools/electricity-calculator': '2026-11-01',
-  '/tools/labor-insurance-pension-calculator': '2026-11-01',
-  '/tools/life-simulator': '2026-11-01',
-  '/tools/mortgage-calculator': '2026-11-01',
-  '/tools/salary-calculator': '2026-11-01',
-  '/tools/split-calculator': '2026-11-01',
+  '/tools/delivery-income-calculator': '2026-11-03',
+  '/tools/electricity-calculator': '2026-11-03',
+  '/tools/labor-insurance-pension-calculator': '2026-11-02',
+  '/tools/life-simulator': '2026-11-03',
+  '/tools/mortgage-calculator': '2026-11-02',
+  '/tools/salary-calculator': '2026-11-02',
+  '/tools/split-calculator': '2026-11-03',
   '/tools/unemployment-benefit-calculator': '2026-11-01',
   '/tools/debt-consolidation-calculator': '2026-10-12',
   '/tools/estate-gift-tax-calculator': '2026-10-29',
@@ -32,13 +32,13 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/home-ownership-cost-calculator': '2026-07-29',
   '/tools/parental-benefit-calculator': '2026-07-29',
   '/tools/real-return-calculator': '2026-07-29',
-  '/tools/severance-calculator': '2026-07-29',
+  '/tools/severance-calculator': '2026-11-02',
   '/tools/etf-dividend-calculator': '2026-10-08',
   '/tools/fire-calculator': '2026-10-08',
   '/tools/income-tax-calculator': '2026-10-08',
   '/tools/insurance-assessment': '2026-10-08',
   '/tools/insurance-calculator': '2026-10-08',
-  '/tools/labor-pension-calculator': '2026-10-08',
+  '/tools/labor-pension-calculator': '2026-11-03',
   '/tools/overtime-calculator': '2026-10-08',
   '/tools/rent-cost-calculator': '2026-10-08',
   '/tools/rental-yield-calculator': '2026-10-08',
