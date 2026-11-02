@@ -27,6 +27,9 @@
       "default": "TaiCalc 編輯部",
       "type": "string"
     },
+    "noindex": {
+      "type": "boolean"
+    },
     "$schema": {
       "type": "string"
     }

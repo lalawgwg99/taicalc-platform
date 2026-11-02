@@ -3,8 +3,8 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import SplitCalculator from '../../components/calculators/SplitCalculator.vue';
 
 const title = "分帳計算機｜AA 制聚餐旅遊試算｜TaiCalc";
-const description = "聚餐、合租、旅遊快速分帳。";
-const keywords = "分帳計算,AA制計算,聚餐分帳,旅遊分帳,室友分帳,多人分攤,均分計算,誰付誰,分帳APP";
+const description = "聚餐、合租、旅遊快速分帳：AA 制均分與權重分攤，湊整到元不怕零頭。";
+const keywords = "分帳計算,AA制計算,聚餐分帳,旅遊分帳,室友分帳,多人分攤,均分計算,誰付誰,分帳APP,分錢計算";
 
 const faqs = [
     {
@@ -35,15 +35,19 @@ const faqs = [
         q: "權重比例怎麼定才不會吵架？",
         a: "按實際受益或用量定，不是按身份定：喝酒的人、整天在家用電的人、房間比較大的人，權重就往上加；基準設為 1，只調相對倍數。比例一定要事前共識、最好寫下來讓所有人看過；人數、習慣或情境變了，就重新談一次，不要沿用舊比例硬套。油錢、過路費這類與餐費無關的支出，建議另計，不要併進餐費權重。"
     },
+    {
+        q: "聚餐加 10% 服務費，分錢怎麼算？",
+        a: "先把服務費併入總額再拆，不要只拆餐費。例：4 人聚餐，餐費 6,000 元＋10% 服務費 600 元＝6,600 元，均分每人 1,650 元；若用權重分攤，也是先算出含服務費的總額再按權重拆。更完整的餐費＋服務費情境可看本站<a href=\"/blog/2026-dinner-aa-split-service-charge-guide\">聚餐 AA 制服務費分攤指南</a>。"
+    },
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-01">
+<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-03">
     <SplitCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
         <h2>分帳不尷尬：多人出遊、聚餐的 AA 制藝術</h2>
-        <p>「這餐誰先付？」「車錢怎麼算？」多人出遊最怕碰到錢算不清楚，不僅麻煩，還可能傷感情。使用分帳計算機，讓數字說話，快速結清恩怨情仇。計算完成後可一鍵<strong>「複製分享連結」</strong>，直接傳到 LINE 群組讓大家確認。</p>
+        <p>「這餐誰先付？」「車錢怎麼算？」多人出遊最怕碰到錢算不清楚，不僅麻煩，還可能傷感情。使用分帳計算機（也就是分錢計算機），讓數字說話，快速結清恩怨情仇。計算完成後可一鍵<strong>「複製分享連結」</strong>，直接傳到 LINE 群組讓大家確認。</p>
 
         <h3>常見的分帳情境</h3>
         <ul class="list-disc pl-5 space-y-2">
@@ -70,5 +74,12 @@ const faqs = [
 
         <h3>案例 4：3 人合租，水電費 1,850 元按用量分攤</h3>
         <p>其中一人在家工作（WFH）用電明顯較多：他的權重設 2、另兩人各設 1，總權重 4。WFH 者付 925 元、另兩人各付 462.5 元，實務上湊整為 <strong>925／463／462 元</strong>，合計正好 1,850 元。分攤前可先用 <a href="/tools/electricity-calculator">電費計算機</a> 試算整戶電費，再按權重拆分，比直接均分更少爭議。</p>
+
+        <h2>相關工具</h2>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><a href="/tools/electricity-calculator">電費計算機</a>：合租水電先算出整戶電費，再按權重拆分。</li>
+            <li><a href="/tools/car-cost-calculator">汽車持有成本計算機</a>：出遊油錢、過路費先算清楚，再決定要不要併進分帳。</li>
+            <li><a href="/blog/2026-travel-group-expense-splitting-guide">旅遊團體分帳完整指南</a>：長途旅遊公基金模式的完整做法。</li>
+        </ul>
     </div>
 </ToolLayout>

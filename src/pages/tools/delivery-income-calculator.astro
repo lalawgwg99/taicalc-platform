@@ -35,6 +35,10 @@ const faqs = [
         q: "專法後每單報酬變高，為什麼月底實拿可能反而變少？",
         a: "因為保底只管基本報酬下限，不管你一個月跑幾單、等單多久、獎金有沒有被砍。據三立新聞網 2026-10-30 報導，foodpanda 平均每單報酬增加 38%，等單時間卻也增加 43%；同樣上線時數，單量少了、趟次獎金變了，月底毛收入未必增加。判斷有沒有真的變多，要看淨時薪：（跑單總收入 − 油錢 − 保養維修攤提 − 保險攤提）÷ 實際上線時數，而且要把等單時間也算進去。下面對照表就是同樣 180 小時的兩種跑法試算。"
     },
+    {
+        q: "Uber 和熊貓，專法後哪家比較划算？",
+        a: "不能只比平台公告的漲幅，要比扣成本、含等單時間的淨時薪。毛數字方面，據三立新聞網 2026-10-30 報導，Uber Eats 服務期間平均每小時報酬由 330 元提高至 420 元；foodpanda 平均每單報酬增加 38%，但等單時間也增加 43%，單量少了會抵銷單價漲幅。淨時薪算法：（跑單總收入 − 油錢 − 保養維修攤提 − 保險攤提）÷ 含等單、取餐、送餐、回程的實際上線時數。本頁下方對照表就是同樣 180 小時的兩種跑法：A 專法前常見跑法淨時薪 220 元，B 等單拉長、獎金減半淨時薪 181 元。報導數字是毛數字，不會寫入本頁計算機預設；要比哪家划算，把你上個月的實際數字代入計算機最準。"
+    },
 ];
 
 const sources = [
@@ -44,7 +48,7 @@ const sources = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs} sources={sources} lastUpdated="2026-11-02">
+<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs} sources={sources} lastUpdated="2026-11-03">
     <DeliveryIncomeCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
