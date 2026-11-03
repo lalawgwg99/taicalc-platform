@@ -29,7 +29,6 @@ export interface SalaryCalculationResult {
   health: number;
   penS: number;
   mNet: number;
-  tSave: number;
   yNet: number;
   employerLabor: number;
   employerHealth: number;
@@ -61,7 +60,6 @@ export const calculateSalaryBreakdown = (
       health: 0,
       penS: 0,
       mNet: 0,
-      tSave: 0,
       yNet: 0,
       employerLabor: 0,
       employerHealth: 0,
@@ -92,9 +90,6 @@ export const calculateSalaryBreakdown = (
   const penS = pensionBasis.mul(pensionRate).div(100).round().toNumber();
   const mNet = salary.minus(labor).minus(health).minus(penS).toNumber();
 
-  // Salary card keeps the existing quick estimate: pension self-contribution saves roughly 12% tax.
-  const tSave = new Decimal(penS).mul(12).mul(0.12).round().toNumber();
-
   const bonusTotal = salary.mul(bonusMonths);
   const fourTimesInsured = healthGrade.mul(4);
   const suppHealthBonus = bonusTotal.gt(fourTimesInsured)
@@ -112,11 +107,14 @@ export const calculateSalaryBreakdown = (
   const empCost = employerLabor + employerHealth + employerPension;
   const tCost = salary.plus(empCost).toNumber();
 
+  // 整年總共＝稅前實拿（月實拿×12＋年終－補充保費），不含所得稅效果：
+  // 稅務區已用 calculateIncomeTax 實算含自提的稅額，若此處再加估計省稅，
+  // 扣完稅年薪會把同一筆節稅算兩次（2026-11-03 每日優化發現：45,000 元自提 6%
+  // 時舊算法多算 3,957 元）。
   const yNet = new Decimal(mNet)
     .mul(12)
     .plus(bonusTotal)
     .minus(suppHealthBonus)
-    .plus(tSave)
     .round()
     .toNumber();
 
@@ -125,7 +123,6 @@ export const calculateSalaryBreakdown = (
     health,
     penS,
     mNet,
-    tSave,
     yNet,
     employerLabor,
     employerHealth,

@@ -18,7 +18,6 @@ describe('calculateSalaryBreakdown', () => {
       health: 0,
       penS: 0,
       mNet: 0,
-      tSave: 0,
       yNet: 0,
       employerLabor: 0,
       employerHealth: 0,
@@ -43,6 +42,15 @@ describe('calculateSalaryBreakdown', () => {
     const r = calculateSalaryBreakdown({ salary: 120000, bonusMonths: 0, pensionRate: 6 });
     expect(r.mNet).toBeGreaterThan(0);
     expect(r.mNet).toBeLessThan(120000);
+  });
+
+  it('自提 6% 時整年總共不含節稅概估，避免與稅務區實算稅額重複計算（2026-11-03 bug）', () => {
+    const r = calculateSalaryBreakdown({ salary: 45000, bonusMonths: 0, pensionRate: 6 });
+    expect(r.mNet).toBe(40397);
+    expect(r.penS).toBe(2748);
+    // 稅前整年實拿＝月實拿×12，不再加自提×12% 的概估省稅（舊值 488721 多算 3957）
+    expect(r.yNet).toBe(r.mNet * 12);
+    expect(r.yNet).toBe(484764);
   });
 });
 

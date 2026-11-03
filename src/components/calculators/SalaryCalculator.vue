@@ -133,9 +133,11 @@
                     </div>
                     <div class="bg-green-50 rounded-xl p-3">
                         <p class="text-xs text-green-500 mb-0.5">年省所得稅</p>
-                        <p class="text-base font-semibold text-green-600 tabular-nums">+ {{ taxSave.toLocaleString() }}</p>
+                        <p class="text-base font-semibold text-green-600 tabular-nums">+ {{ actualTaxSave.toLocaleString() }}</p>
+                        <p class="text-[10px] text-green-500/80 mt-0.5">依下方稅務試算實算（無自提稅額－有自提稅額）</p>
                     </div>
                 </div>
+                <p class="text-[10px] text-ink-400 mt-2">勞保以投保薪資 $ {{ res.laborGrade.toLocaleString() }} 計、健保以投保金額 $ {{ res.healthGrade.toLocaleString() }} 計（級距制，故與月薪不一定相同）。</p>
             </div>
 
             <!-- 雇主成本視角 -->
@@ -495,7 +497,6 @@ const fmtNeg = (n) => (Number(n) > 0 ? '− ' + Number(n).toLocaleString() : '�
 const healthIns   = computed(() => res.value.health)
 const pensionSelf = computed(() => res.value.penS)
 const monthlyNet  = computed(() => res.value.mNet)
-const taxSave     = computed(() => res.value.tSave)
 const yearlyNet   = computed(() => res.value.yNet)
 const employerCost = computed(() => res.value.empCost)
 const totalCost   = computed(() => res.value.tCost)
@@ -536,6 +537,19 @@ const estimatedIncomeTax = computed(() => calculateIncomeTax({
     laborPensionSelfContribution: pensionSelf.value * 12,
 }).totalTax)
 
+// 年省所得稅改以稅務試算實算（無自提稅額－有自提稅額），不再用自提金額×12% 概估：
+// 概估值與稅務區實算稅額不一致，且舊整年總共已把概估值加進去、扣完稅又扣一次實算稅額，
+// 等於同一筆節稅算兩次（2026-11-03 每日優化發現）。
+const estimatedIncomeTaxNoPension = computed(() => calculateIncomeTax({
+    salaryIncome: annualSalaryIncome.value,
+    filingStatus: taxFilingStatus.value,
+    dependents: taxDependents.value,
+    deductionType: 'standard',
+    dividendTaxMode: 'combined',
+    laborPensionSelfContribution: 0,
+}).totalTax)
+const actualTaxSave = computed(() => Math.max(0, estimatedIncomeTaxNoPension.value - estimatedIncomeTax.value))
+
 const estimatedAfterTaxAnnual = computed(() => {
     const base = yearlyNet.value
     return Math.max(0, Math.round(base - estimatedIncomeTax.value))
@@ -556,7 +570,7 @@ const savingsGoals = computed(() => {
 })
 
 // ── 5年預測 ────────────────────────────────────────────────────
-// 首年以實際試算的整年實拿（yearlyNet：月實拿×12＋年終－補充保費＋勞退自提節稅）為基準，
+// 首年以實際試算的整年實拿（yearlyNet：月實拿×12＋年終－補充保費，稅前）為基準，
 // 之後每年按調薪幅度成長；過去寫死的 0.88 概估會與主結果對不上（2026-10-28 每日優化發現：
 // 月薪 50,000 時預測首年 528,000，但主結果整年總共 576,840），故改以實際值為基準。
 const forecast = computed(() => {
