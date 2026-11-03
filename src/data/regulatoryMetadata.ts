@@ -47,7 +47,7 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
   mortgage: {
     version: 'MORTGAGE-2026.07',
     dataYear: '2026 年度',
-    updatedAt: '2026-11-02',
+    updatedAt: '2026-11-04',
     sources: [
       { label: '財政部（青安3.0）', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=2bc35b71dbd04bfaba2d2c88640042c4' },
       { label: '中央銀行（115 年 9 月五大銀行利率）', href: 'https://www.cbc.gov.tw/tw/cp-302-192614-192cb-1.html' },
@@ -67,7 +67,7 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
   electricity: {
     version: 'ELECTRICITY-2026.07',
     dataYear: '2026 年度',
-    updatedAt: '2026-11-03',
+    updatedAt: '2026-11-04',
     sources: [
       { label: '台電（住宅用電電價表）', href: 'https://www.taipower.com.tw/2289/2290/46940/simpleList' },
       { label: '台電（租屋電費查詢）', href: 'https://service.taipower.com.tw/ebpps2/simplebill/tenant/simple-query-bill' },
