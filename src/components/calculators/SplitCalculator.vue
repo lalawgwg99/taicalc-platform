@@ -98,9 +98,31 @@
           </div>
         </div>
       </div>
+      <!-- 服務費率：預設 0% 不改變舊行為；填 10% 時以「餐費 × (1+費率)」為應付總額再分攤 -->
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
+        <label class="text-xs font-semibold text-ink-400">服務費率</label>
+        <div class="flex items-center gap-1">
+          <input
+            v-model.number="serviceRate"
+            type="text" inputmode="decimal"
+            class="w-16 text-center text-sm font-semibold font-mono text-ink-900 border-b-2 border-ink-100 focus:border-brand-500 outline-none py-1 bg-transparent"
+            placeholder="0"
+          />
+          <span class="text-ink-400">%</span>
+        </div>
+        <button
+          v-for="r in [0, 5, 10]"
+          :key="r"
+          @click="serviceRate = r"
+          class="text-xs font-medium bg-white hover:bg-paper-100 text-ink-600 border border-ink-100/80 px-2.5 py-1 rounded-full transition-all active:scale-95"
+        >
+          {{ r }}%
+        </button>
+        <span v-if="serviceFeeInfo.rate > 0" class="text-xs text-ink-500">
+          服務費 ${{ serviceFeeInfo.fee.toLocaleString() }}，含服務費總額 ${{ serviceFeeInfo.grandTotal.toLocaleString() }}
+        </span>
+      </div>
     </div>
-
-    <!-- 2. 結算結果 (Apple Native Settlement Card) -->
     <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-brand-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
@@ -163,6 +185,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 
 const totalAmount = ref(1200);
+const serviceRate = ref(0); // 服務費率 %，預設 0% 不改變舊行為
 const mode = ref('even'); // 'even' | 'weighted'
 const members = ref([
     { id: 1, name: '小明', paid: 1200, weight: 1 },
@@ -178,6 +201,7 @@ const presets = [
 
 const applyPreset = (preset) => {
   totalAmount.value = preset.total;
+  serviceRate.value = 0; // 預設情境的總額就是應付總額，不再疊加服務費
   mode.value = 'even';
   members.value = preset.members.map((m, i) => ({
     id: Date.now() + i,
@@ -195,7 +219,13 @@ const addMember = () => {
 };
 const removeMember = (idx) => members.value.splice(idx, 1);
 
-// Logic：先算每人應付份額與成員間轉帳，再算尚欠店家多少
+// 服務費試算：應付總額 = 餐費 × (1 + 費率)，四捨五入到元
+const serviceFeeInfo = computed(() => {
+    const base = Math.round(totalAmount.value || 0);
+    const rate = Math.max(0, serviceRate.value || 0);
+    const grandTotal = Math.round(base * (1 + rate / 100));
+    return { rate, base, fee: grandTotal - base, grandTotal };
+});
 const settlementInfo = computed(() => {
     let list = members.value.map((m, idx) => ({ ...m, paid: m.paid || 0, weight: m.weight || 1, name: m.name || `成員 ${idx + 1}` }));
     
@@ -218,7 +248,7 @@ const settlementInfo = computed(() => {
 
     // Calculate ShouldPay as integers (largest remainder method):
     // shares always sum exactly to the total, so transfers never drift by $1.
-    let grandTotal = Math.round(totalAmount.value || 0);
+    let grandTotal = serviceFeeInfo.value.grandTotal;
     let totalWeight = list.reduce((sum, m) => sum + (mode.value === 'weighted' ? m.weight : 1), 0);
 
     const rawShares = list.map(m =>
@@ -283,7 +313,9 @@ const settlementInfo = computed(() => {
 const transactions = computed(() => settlementInfo.value.transactions);
 
 const copyResult = async () => {
-    let lines = [`【分帳結果】總額: $${totalAmount.value}`];
+    let lines = serviceFeeInfo.value.rate > 0
+        ? [`【分帳結果】餐費: $${serviceFeeInfo.value.base}（服務費 ${serviceFeeInfo.value.rate}%：$${serviceFeeInfo.value.fee}）總額: $${serviceFeeInfo.value.grandTotal}`]
+        : [`【分帳結果】總額: $${totalAmount.value}`];
     transactions.value.forEach(tx => {
         lines.push(`${tx.from} \t→ ${tx.to} \t$${tx.amount}`);
     });
@@ -311,6 +343,7 @@ const buildShareURL = () => {
     if (typeof window === 'undefined') return '';
     const p = new URLSearchParams({
         total: String(totalAmount.value),
+        fee: String(serviceRate.value || 0),
         mode:  mode.value,
         m:     JSON.stringify(members.value.map(m => ({
             n: m.name || '',
@@ -331,11 +364,12 @@ const copyShareLink = async () => {
 
 // Persistence
 const STORAGE_KEY = 'taicalc_split_v2';
-watch([members, totalAmount, mode], () => {
+watch([members, totalAmount, mode, serviceRate], () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
         members: members.value,
         totalAmount: totalAmount.value,
-        mode: mode.value
+        mode: mode.value,
+        serviceRate: serviceRate.value
     }));
 }, { deep: true });
 
@@ -345,6 +379,7 @@ onMounted(() => {
         const p = new URLSearchParams(window.location.search);
         if (p.has('total') || p.has('m')) {
             if (p.has('total'))  totalAmount.value = parseFloat(p.get('total')) || totalAmount.value;
+            if (p.has('fee'))    serviceRate.value = parseFloat(p.get('fee')) || 0;
             if (p.has('mode'))   mode.value        = p.get('mode') === 'weighted' ? 'weighted' : 'even';
             if (p.has('m')) {
                 try {
@@ -370,6 +405,7 @@ onMounted(() => {
             const d = JSON.parse(saved);
             if (Array.isArray(d.members) && d.members.length > 0) members.value = d.members;
             if(d.totalAmount) totalAmount.value = d.totalAmount;
+            if(d.serviceRate !== undefined) serviceRate.value = d.serviceRate;
             if(d.mode) mode.value = d.mode;
         } catch(e) {}
     }

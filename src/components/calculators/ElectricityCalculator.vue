@@ -570,7 +570,9 @@ watch(() => newAppliance.value.hours, (v) => {
 });
 
 const kwh = ref(400);
-const isSummer = ref(true);
+// 預設季節跟著當下月份走（6～9 月夏月，其餘非夏月），避免 11 月進站還預設夏月費率
+const _nowMonth = new Date().getMonth() + 1;
+const isSummer = ref(_nowMonth >= 6 && _nowMonth <= 9);
 const simulatedSave = ref(0);
 
 const acInputMode = ref('kw');
