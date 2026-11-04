@@ -159,6 +159,24 @@ const faqs = [
         <section class="ec-section" aria-label="夏月 vs 非夏月">
             <h2 class="ec-h2">夏月 vs 非夏月</h2>
             <p class="ec-lead">6～9 月適用較貴的夏月費率。同樣度數，夏天就是比較貴——直接比較看看差多少：</p>
+            <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-paper-300 text-left text-ink-400">
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">每月用電</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">非夏月</th>
+                        <th class="py-2 pr-3 font-medium whitespace-nowrap">夏月</th>
+                        <th class="py-2 font-medium whitespace-nowrap">夏月多付</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-paper-200 text-ink-600">
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">395 元</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">418 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多 23 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">350 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">752 元</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">826 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多 74 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">500 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">1,221 元</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">1,396 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多 175 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">700 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">2,069 元</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">2,424 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多 355 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">1,000 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">3,650 元</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">4,356 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多 706 元</td></tr>
+                </tbody>
+            </table></div>
+            <p class="text-xs text-ink-400 mt-2">以台電 2026-04-01 住宅費率逐級計價：每級距金額四捨五入至元後加總；度數越高、夏月貴的差距越大。下方互動比較器可輸入自己的度數即時對照。</p>
             <ElectricityCompare client:only="vue" />
         </section>
 
