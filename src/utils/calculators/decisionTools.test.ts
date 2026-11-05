@@ -35,6 +35,15 @@ describe('decision calculators', () => {
     expect(result.monthly).toBe(17_038);
   });
 
+  it('caps the old-age lump sum at 45 months of salary', () => {
+    // 45,800 元 × 30 年：前 15 年 15 個月＋後 15 年 30 個月＝45 個月
+    const r30 = calculateLaborPension(45_800, 30, 65, true);
+    expect(r30.lumpSum).toBe(2_061_000);
+    expect(r30.breakEvenYears).toBeCloseTo(8.06, 1);
+    // 35 年資仍以 45 個月為上限（非 50 個月）
+    expect(calculateLaborPension(45_800, 35, 65, true).lumpSum).toBe(2_061_000);
+  });
+
   it('returns zero when labor pension salary or years is empty/zero/negative', () => {
     // 0 年資或 0 薪資不應顯示 A 式的 3,000 元加給（曾經誤顯示月領 3,000）
     expect(calculateLaborPension(0, 0, 65, true).monthly).toBe(0);

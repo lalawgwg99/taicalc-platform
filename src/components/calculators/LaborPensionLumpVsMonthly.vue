@@ -14,7 +14,7 @@
                 <input id="fld-e4a511a1" type="text" inputmode="decimal" v-model.number="years" min="1" max="50" aria-label="勞保年資"
                 class="input-clean font-semibold">
             </div>
-            <p class="text-[11px] text-ink-400">算法：月領每年資給 1.55%；一次領前 15 年每年給 1 個月，第 16 年起每年 2 個月（最多 50 個月）。</p>
+            <p class="text-[11px] text-ink-400">算法：月領每年資給 1.55%；一次領前 15 年每年給 1 個月，第 16 年起每年 2 個月（最多 45 個月）。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-2 items-stretch">
@@ -70,7 +70,7 @@ const avgWage = ref(45800)
 const years = ref(30)
 
 const monthly = computed(() => Math.round(Math.max(0, avgWage.value || 0) * Math.max(0, years.value || 0) * 0.0155))
-const months = computed(() => Math.min(50, Math.min(15, Math.max(0, years.value || 0)) + Math.max(0, (years.value || 0) - 15) * 2))
+const months = computed(() => Math.min(45, Math.min(15, Math.max(0, years.value || 0)) + Math.max(0, (years.value || 0) - 15) * 2))
 const lumpSum = computed(() => Math.round(Math.max(0, avgWage.value || 0) * months.value))
 const breakevenYears = computed(() => monthly.value > 0 ? lumpSum.value / monthly.value / 12 : 0)
 const insight = computed(() => {

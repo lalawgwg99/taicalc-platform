@@ -9,6 +9,7 @@
                     <label for="fld-03e1be7b" class="block text-xs font-medium text-ink-400 mb-1.5">月薪（元）</label>
                     <input id="fld-03e1be7b" type="text" inputmode="decimal" v-model.number="salary" aria-label="月薪" placeholder="45000"
                     class="input-clean font-semibold tabular-nums">
+                    <p class="text-[11px] text-ink-400 mt-1">對應勞退月提繳工資 $ {{ monthlyWageGrade.toLocaleString() }} 元（級距制，提撥以此為基數）。</p>
                 </div>
                 <div>
                     <label for="fld-174aa272" class="block text-xs font-medium text-ink-400 mb-1.5">年資（年）</label>
@@ -79,13 +80,16 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import ResultReceipt from '../ResultReceipt.vue';
+import { getPensionGrade } from '../../utils/calculators/pensionGrade';
 
 const salary = ref(45000)
 const years = ref(30)
 const roi = ref(5)
 const taxRate = ref(12)
 
-const monthlyContribution = computed(() => Math.round(Math.max(0, salary.value || 0) * 0.06))
+// 提撥以勞退月提繳工資（級距）為基數，與主計算器一致，不直接用月薪乘算
+const monthlyWageGrade = computed(() => getPensionGrade(salary.value))
+const monthlyContribution = computed(() => Math.round(monthlyWageGrade.value * 0.06))
 const yearlyTaxSaving = computed(() => Math.round(monthlyContribution.value * 12 * (taxRate.value || 0) / 100))
 
 // 每月投入的複利終值（月投入）

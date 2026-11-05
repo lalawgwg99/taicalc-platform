@@ -16,6 +16,9 @@
                 v-model.number="salary"
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
+              <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
+                對應勞退月提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元（級距制，雇主與自提提撥都以此為基數）。
+              </p>
             </div>
             <div>
               <label for="currentAge" class="block text-xs font-medium text-ink-400 mb-1">目前年齡</label>
@@ -163,7 +166,7 @@
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-ink-400">自己投入的本金 ({{ principalPercent }}%)</span>
+                  <span class="text-ink-400">投入的本金（雇主＋自提） ({{ principalPercent }}%)</span>
                   <span class="text-ink-600 font-bold">${{ totalPrincipal.toLocaleString() }}</span>
                 </div>
                 <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
@@ -236,25 +239,7 @@
 import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 import Decimal from 'decimal.js';
-
-// 2026 級距 (Min 1500, Max 150000 for Pension)
-const PENSION_GRADES = [
-    1500, 3000, 4500, 6000, 7500, 8700, 9900, 11100, 12540, 13500, 15840, 16500,
-    17280, 17880, 19047, 20008, 21009, 22000, 23100, 24000, 25200, 26400, 27600,
-    29500, 30300, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800,
-    48200, 50600, 53000, 55400, 57800, 60800, 63800, 66800, 69800, 72800, 76500,
-    80200, 83900, 87600, 92100, 96600, 101100, 105600, 110100, 115500, 120900,
-    126300, 131700, 137100, 142500, 147900, 150000
-]
-
-const getPensionGrade = (s) => {
-    if (s < 1500) return 1500
-    if (s > 150000) return 150000
-    for (let g of PENSION_GRADES) {
-        if (g >= s) return g
-    }
-    return 150000
-}
+import { getPensionGrade } from '../../utils/calculators/pensionGrade';
 
 const salary = ref(45000);
 const currentAge = ref(30);
