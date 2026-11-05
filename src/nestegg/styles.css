@@ -520,6 +520,33 @@
   .result-section { break-inside: avoid; margin-top: 24px; }
 }
 
+/* ---- NestEgg 個人化報告書 ---- */
+.nestegg-report h3 { margin: 28px 0 8px; font-size: 17px; }
+.nestegg-report h3:first-of-type { margin-top: 20px; }
+.nestegg-report > p { margin: 0 0 8px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.report-download { display: grid; gap: 8px; justify-items: end; flex-shrink: 0; }
+.report-download p { max-width: 320px; text-align: right; }
+.report-assumptions { display: grid; gap: 0; margin: 12px 0; }
+.report-assumptions > div { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.report-assumptions dt { color: var(--muted); font-size: 13px; }
+.report-assumptions dd { margin: 0; font-size: 14px; line-height: 1.6; }
+.report-holding { display: block; }
+.report-yearly-table td:nth-child(n+2), .report-yearly-table th:nth-child(n+2) { text-align: right; }
+@media(max-width: 600px) {
+  .report-assumptions > div { grid-template-columns: 1fr; gap: 2px; }
+  .report-download { justify-items: stretch; }
+  .report-download p { text-align: left; }
+}
+/* 列印時只印報告書：其餘畫面全部隱藏，報告書移到頁首；表格跨頁時重複表頭 */
+@media print {
+  body * { visibility: hidden; }
+  #nestegg-report, #nestegg-report * { visibility: visible; }
+  #nestegg-report { position: absolute; left: 0; top: 0; width: 100%; margin: 0; }
+  #nestegg-report .report-download { display: none !important; }
+  #nestegg-report thead { display: table-header-group; }
+  #nestegg-report tr { break-inside: avoid; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }

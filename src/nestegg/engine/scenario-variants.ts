@@ -1,11 +1,45 @@
-import type { PlanningInput } from "../domain/types";
+import type { PlanningInput, ProjectionResult } from "../domain/types";
 import { birthSerial, monthAtAge, toSerial } from "../domain/time";
+import { projectPlan } from "./project";
 
 export interface ScenarioParams {
   retirementAge: number;
   /** 每月多存金額：加到各筆持倉的每月投入（按現有投入比例分配，全為 0 時加到第一筆） */
   extraMonthly: number;
   laborClaimAge: number;
+}
+
+export interface ScenarioOutcome {
+  result: ProjectionResult | null;
+  error: string | null;
+}
+
+/** 三情境預設值：A 目前方案；B 晚 5 年退休＋每月多存 5,000＋勞保延後 5 年請領；C 每月多存 10,000。 */
+export function defaultScenarioParams(base: PlanningInput): [ScenarioParams, ScenarioParams, ScenarioParams] {
+  const baseRetirement = base.profile.retirementAge;
+  const baseClaim = base.laborInsurance.claimAge;
+  const longevity = base.profile.longevityAge;
+  return [
+    { retirementAge: baseRetirement, extraMonthly: 0, laborClaimAge: baseClaim },
+    {
+      retirementAge: Math.min(baseRetirement + 5, Math.max(baseRetirement, longevity - 1)),
+      extraMonthly: 5000,
+      laborClaimAge: Math.min(baseClaim + 5, 70)
+    },
+    { retirementAge: baseRetirement, extraMonthly: 10000, laborClaimAge: baseClaim }
+  ];
+}
+
+export function runScenario(
+  base: PlanningInput,
+  params: ScenarioParams,
+  warnings: Parameters<typeof projectPlan>[2]
+): ScenarioOutcome {
+  try {
+    return { result: projectPlan(buildScenarioInput(base, params), undefined, warnings), error: null };
+  } catch (error) {
+    return { result: null, error: error instanceof Error ? error.message.split("\n")[0] : String(error) };
+  }
 }
 
 /**

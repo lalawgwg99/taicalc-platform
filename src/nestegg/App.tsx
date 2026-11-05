@@ -6,6 +6,9 @@ import { isQuickInputComplete, quickInputFromPlanning, quickInputToPlanning, typ
 import { ResultsPanel } from "./components/ResultsPanel";
 import { PlanComparison } from "./components/PlanComparison";
 import { ScenarioCompare } from "./components/ScenarioCompare";
+import { ReportSection } from "./components/ReportSection";
+import type { ScenarioParams } from "./engine/scenario-variants";
+import { defaultScenarioParams, runScenario } from "./engine/scenario-variants";
 import { InvestmentPage } from "./components/InvestmentPage";
 import { IncomeTool } from "./components/IncomeTool";
 import { CashflowTool } from "./components/CashflowTool";
@@ -117,6 +120,8 @@ export default function App() {
   const [quickInput, setQuickInput] = useState<QuickInput>(() => loadSavedQuick(input));
   const [comparison, setComparison] = useState<ProjectionResult | null>(null);
   const [mobileView, setMobileView] = useState<"inputs" | "results">("inputs");
+  // 三情境參數：使用者改過 B／C 後固定下來；沒改過時跟著目前方案走（與報告書共用）
+  const [scenarioCustom, setScenarioCustom] = useState<[ScenarioParams, ScenarioParams, ScenarioParams] | null>(null);
   // 快算模式：以 6 欄映射出的有效輸入計算；完整輸入保持不動，切回完整模式還在
   const quickReady = inputMode === "quick" && isQuickInputComplete(quickInput);
   const effectiveInput = useMemo(
@@ -230,6 +235,20 @@ export default function App() {
   };
   const quickResult: ProjectionResult | null = calculation?.result ?? null;
   const quickCalcError: string | null = calculation?.error ?? null;
+  const scenarioDefaults = useMemo(() => defaultScenarioParams(effectiveInput), [effectiveInput]);
+  const scenarioParams = scenarioCustom ?? scenarioDefaults;
+  const scenarioOutcomes = useMemo(
+    () => scenarioParams.map((params) => runScenario(effectiveInput, params, t.project.warnings)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [effectiveInput, scenarioParams, t]
+  );
+  const handleScenarioParamsChange = (index: 1 | 2, params: ScenarioParams) => {
+    setScenarioCustom((prev) => {
+      const next = [...(prev ?? scenarioDefaults)] as [ScenarioParams, ScenarioParams, ScenarioParams];
+      next[index] = params;
+      return next;
+    });
+  };
 
   return (
     <div className="app-shell">
@@ -293,7 +312,8 @@ export default function App() {
             <>
               <ResultsPanel result={calculation.result} scenarios={calculation.scenarios} onChange={setInput}
                 comparison={<PlanComparison current={calculation.result} saved={comparison} onSave={() => setComparison(calculation.result)} onRestore={() => comparison && setInput(comparison.input)} onClear={() => setComparison(null)} />} />
-              <ScenarioCompare input={effectiveInput} />
+              <ScenarioCompare params={scenarioParams} outcomes={scenarioOutcomes} onParamsChange={handleScenarioParamsChange} />
+              <ReportSection input={effectiveInput} params={scenarioParams} outcomes={scenarioOutcomes} />
             </>
           ) : null}
         </div>

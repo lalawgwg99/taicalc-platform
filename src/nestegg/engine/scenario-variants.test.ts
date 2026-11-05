@@ -2,7 +2,25 @@ import { describe, expect, it } from "vitest";
 import { defaultInput } from "../defaults";
 import { projectPlan } from "./project";
 import { summarizeResult } from "./result-summary";
-import { buildScenarioInput } from "./scenario-variants";
+import { buildScenarioInput, defaultScenarioParams, runScenario } from "./scenario-variants";
+
+describe("defaultScenarioParams", () => {
+  it("A 為目前方案；B 晚 5 年退休＋每月多存 5,000＋勞保延後 5 年；C 每月多存 10,000", () => {
+    const [a, b, c] = defaultScenarioParams(defaultInput);
+    expect(a).toEqual({ retirementAge: 65, extraMonthly: 0, laborClaimAge: 65 });
+    expect(b).toEqual({ retirementAge: 70, extraMonthly: 5000, laborClaimAge: 70 });
+    expect(c).toEqual({ retirementAge: 65, extraMonthly: 10000, laborClaimAge: 65 });
+  });
+
+  it("runScenario(A) 的結果與單情境試算完全一致（與報告書共用同一份計算）", () => {
+    const base = projectPlan(structuredClone(defaultInput));
+    const [paramsA] = defaultScenarioParams(defaultInput);
+    const outcome = runScenario(defaultInput, paramsA, []);
+    expect(outcome.error).toBeNull();
+    expect(outcome.result?.depletedMonth).toBe(base.depletedMonth);
+    expect(outcome.result?.projectedRetirementAssetsAtRetirement).toBe(base.projectedRetirementAssetsAtRetirement);
+  });
+});
 
 describe("buildScenarioInput", () => {
   it("情境 A（條件與目前方案相同）的結果與單情境試算完全一致", () => {

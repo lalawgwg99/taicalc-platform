@@ -1,57 +1,19 @@
-import { useMemo, useState } from "react";
-import type { PlanningInput, ProjectionResult } from "../domain/types";
-import { projectPlan } from "../engine/project";
 import { summarizeResult } from "../engine/result-summary";
-import { buildScenarioInput, type ScenarioParams } from "../engine/scenario-variants";
+import type { ScenarioOutcome, ScenarioParams } from "../engine/scenario-variants";
 import { formatMoney } from "../lib/format";
 import { useLocale } from "../i18n";
 import { Field } from "./Field";
 
 interface Props {
-  input: PlanningInput;
+  params: [ScenarioParams, ScenarioParams, ScenarioParams];
+  outcomes: ScenarioOutcome[];
+  onParamsChange: (index: 1 | 2, params: ScenarioParams) => void;
 }
 
-interface ScenarioOutcome {
-  result: ProjectionResult | null;
-  error: string | null;
-}
-
-function runScenario(base: PlanningInput, params: ScenarioParams, warnings: Parameters<typeof projectPlan>[2]): ScenarioOutcome {
-  try {
-    return { result: projectPlan(buildScenarioInput(base, params), undefined, warnings), error: null };
-  } catch (error) {
-    return { result: null, error: error instanceof Error ? error.message.split("\n")[0] : String(error) };
-  }
-}
-
-export function ScenarioCompare({ input }: Props) {
+export function ScenarioCompare({ params, outcomes, onParamsChange }: Props) {
   const { t } = useLocale();
   const s = t.scenarioCompare;
-  const baseRetirement = input.profile.retirementAge;
-  const baseClaim = input.laborInsurance.claimAge;
-  const longevity = input.profile.longevityAge;
-
-  const [paramsB, setParamsB] = useState<ScenarioParams>(() => ({
-    retirementAge: Math.min(baseRetirement + 5, Math.max(baseRetirement, longevity - 1)),
-    extraMonthly: 5000,
-    laborClaimAge: Math.min(baseClaim + 5, 70)
-  }));
-  const [paramsC, setParamsC] = useState<ScenarioParams>(() => ({
-    retirementAge: baseRetirement,
-    extraMonthly: 10000,
-    laborClaimAge: baseClaim
-  }));
-
-  const paramsA: ScenarioParams = { retirementAge: baseRetirement, extraMonthly: 0, laborClaimAge: baseClaim };
-  const allParams = [paramsA, paramsB, paramsC];
-  const setters = [null, setParamsB, setParamsC] as const;
   const names = [s.nameA, s.nameB, s.nameC];
-
-  const outcomes = useMemo(
-    () => allParams.map((params) => runScenario(input, params, t.project.warnings)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [input, paramsB, paramsC, t]
-  );
 
   const outcomeText = (outcome: ScenarioOutcome): string => {
     if (!outcome.result) return s.invalid;
@@ -82,24 +44,24 @@ export function ScenarioCompare({ input }: Props) {
       </div>
 
       <div className="scenario-compare-grid">
-        {allParams.map((params, i) => (
+        {params.map((param, i) => (
           <div key={names[i]} className="scenario-compare-card">
             <h3>{names[i]}</h3>
-            {setters[i] ? (
-              <>
-                <Field label={s.retirementAge} value={params.retirementAge} min={40} max={80} step={1}
-                  onChange={(v) => setters[i]!((prev) => ({ ...prev, retirementAge: v }))} />
-                <Field label={s.extraMonthly} value={params.extraMonthly} min={0} max={200000} step={1000}
-                  onChange={(v) => setters[i]!((prev) => ({ ...prev, extraMonthly: v }))} />
-                <Field label={s.laborClaimAge} value={params.laborClaimAge} min={60} max={70} step={1}
-                  onChange={(v) => setters[i]!((prev) => ({ ...prev, laborClaimAge: v }))} />
-              </>
-            ) : (
+            {i === 0 ? (
               <dl className="scenario-compare-fixed">
-                <div><dt>{s.retirementAge}</dt><dd>{params.retirementAge}</dd></div>
-                <div><dt>{s.extraMonthly}</dt><dd>{params.extraMonthly}</dd></div>
-                <div><dt>{s.laborClaimAge}</dt><dd>{params.laborClaimAge}</dd></div>
+                <div><dt>{s.retirementAge}</dt><dd>{param.retirementAge}</dd></div>
+                <div><dt>{s.extraMonthly}</dt><dd>{param.extraMonthly}</dd></div>
+                <div><dt>{s.laborClaimAge}</dt><dd>{param.laborClaimAge}</dd></div>
               </dl>
+            ) : (
+              <>
+                <Field label={s.retirementAge} value={param.retirementAge} min={40} max={80} step={1}
+                  onChange={(v) => onParamsChange(i as 1 | 2, { ...param, retirementAge: v })} />
+                <Field label={s.extraMonthly} value={param.extraMonthly} min={0} max={200000} step={1000}
+                  onChange={(v) => onParamsChange(i as 1 | 2, { ...param, extraMonthly: v })} />
+                <Field label={s.laborClaimAge} value={param.laborClaimAge} min={60} max={70} step={1}
+                  onChange={(v) => onParamsChange(i as 1 | 2, { ...param, laborClaimAge: v })} />
+              </>
             )}
             {outcomes[i].error && <p className="scenario-compare-error" role="alert">{outcomes[i].error}</p>}
           </div>
