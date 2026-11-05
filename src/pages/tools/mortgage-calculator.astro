@@ -308,6 +308,76 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
 
         <p class="note-box">數字為比較器採本息平均攤還法產生，四捨五入至萬元級；青安3.0總利息約 542 萬元為分段利率實算（前 3 年 1.775%、第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%，寬限期 5 年），基準利率變動會改變各階段實際利率，實際利率以承貸銀行通知為準。試算僅供比較，正式金額以銀行核貸為準（{policyRange}）。</p>
 
+        <!-- ── 下一步 affiliate 導流區（2026-11-05，榮德「都做免費」拍板） ──
+             現況：合作洽談中，尚未接任何 affiliate 連結；兩個欄位皆為待接洽狀態，
+             不放假連結、不連到無關頁面。
+             追蹤：沿用 Layout 的 window.taicalcTrackEvent 橋接（GA4）——
+               ① 曝光：區塊進入可視區時發 affiliate_section_view 一次；
+               ② 點擊：待接洽欄位被點時發 partner_click（漏斗第 7 步「合作連結」），
+                  另帶 partner_status: 'pending'，與正式合作點擊區隔。
+             接上正式連結時：把 button[data-affiliate-slot] 整顆換成 a 元素
+               （href 填真正的 affiliate 連結，rel="sponsored nofollow"，
+               target="_blank"，data-partner-id 沿用同名、
+               data-partner-placement="mortgage_result_next"、
+               data-offer-type="mortgage"）；
+               Layout 的全域點擊監聽會自動發同一組 partner_click 事件，
+               本區塊的 inline script 屆時整段移除即可。 -->
+        <h2>下一步：把試算結果拿去比價</h2>
+        <p>算出月付與總利息後，下一步通常是拿這個數字去問銀行。以下為合作推廣連結（目前合作洽談中、尚未開放）：房貸試算本身完全免費，點不點都不影響試算結果與數字。</p>
+        <div class="grid gap-3 sm:grid-cols-2" data-affiliate-section="mortgage_result_next">
+            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="mortgage-bank-offers" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
+                <span class="block text-sm font-semibold text-ink-700">銀行房貸方案比較</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-500">各銀行房貸利率與開辦費一次比對，再決定要找哪家談。</span>
+                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+            </button>
+            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="mortgage-refinance" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
+                <span class="block text-sm font-semibold text-ink-700">轉貸／增貸評估</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-500">舊房貸轉貸划不划算？先算轉貸後的月付與總利息差。</span>
+                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+            </button>
+        </div>
+        <p class="text-xs text-ink-400 mt-2">推廣連結說明：本站不收取試算費用；未來合作連結上線時，點擊後前往銀行或合作平台頁面，本站可能獲得推廣分潤，分潤不影響您的貸款條件，實際利率與核貸結果以銀行通知為準。</p>
+        <script is:inline>
+            (function () {
+                var section = document.querySelector('[data-affiliate-section="mortgage_result_next"]');
+                if (!section) return;
+                function track(name, params) {
+                    try {
+                        if (typeof window.taicalcTrackEvent === 'function') window.taicalcTrackEvent(name, params);
+                    } catch (e) {}
+                }
+                if ('IntersectionObserver' in window) {
+                    var seen = false;
+                    var observer = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting && !seen) {
+                                seen = true;
+                                track('affiliate_section_view', { section: 'mortgage_result_next', tool_id: 'mortgage-calculator' });
+                                observer.disconnect();
+                            }
+                        });
+                    }, { threshold: 0.3 });
+                    observer.observe(section);
+                }
+                section.querySelectorAll('[data-affiliate-slot]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        track('partner_click', {
+                            partner_id: btn.getAttribute('data-partner-id'),
+                            partner_placement: btn.getAttribute('data-partner-placement') || 'mortgage_result_next',
+                            offer_type: btn.getAttribute('data-offer-type') || 'mortgage',
+                            partner_status: 'pending'
+                        });
+                        var badge = btn.querySelector('[data-affiliate-badge]');
+                        if (badge && !badge.dataset.clicked) {
+                            badge.dataset.clicked = '1';
+                            badge.textContent = '已記錄您的興趣';
+                            setTimeout(function () { badge.textContent = '合作洽談中'; delete badge.dataset.clicked; }, 2500);
+                        }
+                    });
+                });
+            })();
+        </script>
+
         <YiwenPromo nofollow />
     </div>
 </ToolLayout>
