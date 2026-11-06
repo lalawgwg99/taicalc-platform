@@ -8,16 +8,16 @@ export const prerender = true;
 
 const SITE = 'https://taicalc.com';
 
-// 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-06 同步）。
+// 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-07 同步）。
 // 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
 const toolLastUpdated: Record<string, string> = {
   '/tools/delivery-income-calculator': '2026-11-03',
-  '/tools/electricity-calculator': '2026-11-06',
+  '/tools/electricity-calculator': '2026-11-07',
   '/tools/labor-insurance-pension-calculator': '2026-11-02',
-  '/tools/life-simulator': '2026-11-06',
+  '/tools/life-simulator': '2026-11-07',
   '/tools/mortgage-calculator': '2026-11-05',
   '/tools/salary-calculator': '2026-11-02',
-  '/tools/split-calculator': '2026-11-03',
+  '/tools/split-calculator': '2026-11-07',
   '/tools/unemployment-benefit-calculator': '2026-11-01',
   '/tools/debt-consolidation-calculator': '2026-10-12',
   '/tools/estate-gift-tax-calculator': '2026-10-29',

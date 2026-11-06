@@ -67,7 +67,7 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
   electricity: {
     version: 'ELECTRICITY-2026.07',
     dataYear: '2026 年度',
-    updatedAt: '2026-11-06',
+    updatedAt: '2026-11-07',
     sources: [
       { label: '台電（住宅用電電價表）', href: 'https://www.taipower.com.tw/2289/2290/46940/simpleList' },
       { label: '台電（租屋電費查詢）', href: 'https://service.taipower.com.tw/ebpps2/simplebill/tenant/simple-query-bill' },

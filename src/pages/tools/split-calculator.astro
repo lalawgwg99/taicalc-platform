@@ -3,7 +3,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import SplitCalculator from '../../components/calculators/SplitCalculator.vue';
 
 const title = "分帳計算機｜AA 制聚餐旅遊試算｜TaiCalc";
-const description = "聚餐、合租、旅遊快速分帳：AA 制均分與權重分攤，湊整到元不怕零頭。";
+const description = "聚餐、合租、旅遊快速分帳：AA 制均分與權重分攤，支援服務費 0／5／10% 一起分，湊整到元不怕零頭，結果可複製分享，免註冊免費試算。";
 const keywords = "分帳計算,AA制計算,聚餐分帳,旅遊分帳,室友分帳,多人分攤,均分計算,誰付誰,分帳APP,分錢計算";
 
 const faqs = [
@@ -42,7 +42,7 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-05">
+<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-07">
     <SplitCalculator client:only="vue" slot="tool" />
 
     <div slot="article">
