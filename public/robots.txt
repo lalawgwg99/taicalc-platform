@@ -80,4 +80,3 @@ Allow: /
 
 # Sitemaps and LLM Documentation Interfaces
 Sitemap: https://taicalc.com/sitemap.xml
-Sitemap: https://taicalc.com/sitemap.json
