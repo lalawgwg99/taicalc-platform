@@ -54,7 +54,7 @@
 
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
             <a href="/tools/life-simulator"

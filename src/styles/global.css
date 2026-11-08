@@ -43,7 +43,8 @@ body::before {
 @media (max-width: 768px) {
     body {
         background-attachment: scroll;
-        padding-bottom: env(safe-area-inset-bottom);
+        /* 浮動小算鈕 56px + 邊距 20px = 76px 遮擋區，底部留 96px 才不會蓋住頁尾內容 */
+        padding-bottom: calc(96px + env(safe-area-inset-bottom));
     }
 
     /* Prevent iOS Safari auto-zooming into inputs with font-size < 16px */
@@ -184,15 +185,173 @@ button, a, input, select, textarea {
 
     /* Segmented Control (tab selector) */
     .seg-control {
-        @apply flex bg-paper-200/80 border border-paper-300/70 rounded-2xl p-1.5 gap-1 backdrop-blur-xl;
+        @apply flex flex-wrap bg-paper-200/80 border border-paper-300/70 rounded-2xl p-1.5 gap-1 backdrop-blur-xl;
     }
 
     .seg-btn {
-        @apply flex-1 py-2.5 px-4 text-sm font-medium text-ink-500 rounded-xl transition-all duration-200 cursor-pointer text-center;
+        @apply flex-1 py-2.5 px-4 text-sm font-medium text-ink-500 rounded-xl transition-all duration-200 cursor-pointer text-center whitespace-nowrap;
     }
 
     .seg-btn-active {
         @apply bg-brand-600 text-paper-50 shadow-card;
+    }
+
+    /* 失蹤 class 補齊（2026-11-08 手機排版總檢查：房屋稅／海外刷卡兩頁掛了這幾個 class，全站卻無定義） */
+    .calculator-toolbar {
+        @apply flex flex-wrap items-start justify-between gap-3;
+    }
+
+    .calculator-grid {
+        @apply grid gap-4;
+    }
+
+    @media (min-width: 640px) {
+        .calculator-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    .field {
+        @apply flex flex-col gap-1.5 min-w-0;
+    }
+
+    .field > span {
+        @apply text-sm font-semibold text-ink-700;
+    }
+
+    .field small {
+        @apply text-xs leading-5 text-ink-400;
+    }
+
+    .field--result input {
+        @apply text-xl font-bold tabular-nums;
+    }
+
+    /* 結果條：直排、標籤左／數值右、數字不換行 */
+    .summary-strip {
+        @apply mt-4 flex flex-col gap-1.5 rounded-xl bg-brand-50 px-4 py-3 text-sm text-ink-700;
+    }
+
+    .summary-strip > span {
+        @apply flex items-baseline justify-between gap-3;
+    }
+
+    /* 主行：稅率與年稅額併成一行（例：適用稅率 1.2%・年稅額 NT$ 12,000） */
+    .summary-strip > span.summary-main {
+        @apply block text-base;
+    }
+
+    .summary-strip strong {
+        @apply whitespace-nowrap font-bold text-ink-800 tabular-nums;
+    }
+
+    /* 對照表：數字欄不換行、首欄可換行、選中列強調 */
+    .calc-table {
+        @apply w-full border-collapse text-sm;
+    }
+
+    .calc-table caption {
+        @apply pb-2 text-left text-xs font-semibold text-ink-500;
+    }
+
+    .calc-table th,
+    .calc-table td {
+        @apply border-b border-paper-300/70 px-2 py-2.5 text-left align-top;
+    }
+
+    .calc-table th {
+        @apply text-xs font-semibold text-ink-500 whitespace-nowrap;
+    }
+
+    .calc-table td {
+        @apply whitespace-nowrap tabular-nums;
+    }
+
+    .calc-table td:first-child {
+        @apply whitespace-normal font-medium text-ink-700;
+    }
+
+    .calc-table tr.row-total {
+        @apply bg-brand-50 font-semibold;
+    }
+
+    /* 卡片式對照（窄版表格替代）：每卡只留卡名、淨回饋、條件 1 句 */
+    .calc-cards {
+        @apply mt-4 flex flex-col gap-3;
+    }
+
+    .calc-card {
+        @apply rounded-2xl border border-paper-300/80 bg-white p-4;
+    }
+
+    .calc-card--best {
+        @apply border-brand-400/60 bg-brand-50;
+    }
+
+    .calc-card-head {
+        @apply flex flex-wrap items-baseline gap-x-2 gap-y-1;
+    }
+
+    .calc-card-head strong {
+        @apply text-sm font-bold text-ink-800;
+    }
+
+    .calc-card-scope {
+        @apply text-xs text-ink-400;
+    }
+
+    .calc-card-badge {
+        @apply ml-auto rounded-full bg-brand-600 px-2 py-0.5 text-[11px] font-bold text-white whitespace-nowrap;
+    }
+
+    .calc-card-net {
+        @apply mt-2 flex items-baseline gap-2 text-sm text-ink-700;
+    }
+
+    .calc-card-net strong {
+        @apply text-lg font-bold text-ink-800 whitespace-nowrap tabular-nums;
+    }
+
+    .calc-card-net span {
+        @apply text-xs text-ink-400 whitespace-nowrap;
+    }
+
+    .calc-card-math {
+        @apply mt-1 text-xs leading-5 text-ink-500;
+    }
+
+    .calc-card-note {
+        @apply mt-1.5 text-xs leading-5 text-ink-500;
+    }
+
+    /* 保費分攤圖（InsuranceCalculator.vue 專用，之前全站無定義、長條與圓點看不見） */
+    .premium-chart { margin-top: 1.5rem; }
+    .premium-chart-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: .75rem; margin-bottom: 1rem; }
+    .premium-chart-heading strong { display: block; font-size: .875rem; color: #1f2937; }
+    .premium-chart-heading span { display: block; font-size: .72rem; color: #687b6e; margin-top: .15rem; }
+    .premium-chart-heading small { font-size: .68rem; color: #687b6e; white-space: nowrap; }
+    .premium-chart-row + .premium-chart-row { margin-top: .85rem; }
+    .premium-chart-meta { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; font-size: .8rem; }
+    .premium-chart-meta span { color: #45594b; }
+    .premium-chart-meta strong { white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .premium-chart-scale { margin-top: .4rem; height: .6rem; border-radius: 999px; background: #eef2ee; overflow: hidden; }
+    .premium-chart-total { display: flex; height: 100%; border-radius: inherit; }
+    .premium-chart-total i { display: block; height: 100%; }
+    .premium-chart-legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .85rem; font-size: 11px; color: #687b6e; }
+    .premium-chart-legend span { display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap; }
+    .premium-dot { width: .55rem; height: .55rem; border-radius: 999px; display: inline-block; }
+    .premium-dot-labor { background: #32c99c; }
+    .premium-dot-health { background: #72dfba; }
+    .premium-dot-pension { background: #e8b26f; }
+
+    /* 金額與數值永遠不換行（手機版 NT$／$ 不可與數字分離） */
+    .money-value,
+    .stat-value-lg,
+    .stat-value-md,
+    .stat-value-sm,
+    .receipt-main-value,
+    .receipt-row-value {
+        white-space: nowrap;
     }
 
     /* Stat display — 數據展示 */
@@ -536,14 +695,6 @@ button, a, input, select, textarea {
         @apply input-clean text-lg font-semibold tabular-nums;
     }
 
-    .calculator-pill {
-        @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-paper-300/80 bg-paper-100/80 px-3 py-2 text-sm font-medium text-ink-500 transition-all duration-200 hover:border-brand-400/60 hover:text-ink-700;
-    }
-
-    .calculator-pill-active {
-        @apply border-brand-400/60 bg-brand-600 text-paper-50 shadow-card;
-    }
-
     .calculator-tile {
         @apply rounded-2xl border border-paper-300/80 bg-paper-100/80 p-3;
     }
@@ -629,6 +780,14 @@ button, a, input, select, textarea {
     .calculator-card-dark .text-ink-400,
     .calculator-card-dark .text-ink-400 {
         color: rgba(226, 232, 240, 0.8);
+    }
+
+    /* 選中態 seg-btn 在 shell／深色卡內仍須白字：
+       .calculator-shell .seg-btn（由 text-ink-500 @apply 展開）的 color 權重 (0,2,0)
+       高於 .seg-btn-active (0,1,0)，不補這條會深字壓深綠底、看不見 */
+    .calculator-shell .seg-btn-active,
+    .calculator-card-dark .seg-btn-active {
+        color: #FFFDF7;
     }
 
     .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
@@ -1108,11 +1267,6 @@ button, a, input, select, textarea {
     border: 3px solid #1D4B34;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     cursor: grab;
-}
-
-.calculator-shell .seg-btn-active {
-    background-image: none;
-    background-color: #139b79;
 }
 
 @media (min-width: 900px) {
@@ -2156,6 +2310,19 @@ a.v2-card:hover {
 }
 .proto-quick a:hover { border-color: #2F7550; transform: translateY(-1px); }
 .proto-quick a span { color: #1D4B34; font-weight: 700; }
+.proto-quick a:last-child { grid-column: 1 / -1; }
+
+/* 工具頁文章區裸表：窄版可橫捲（逐格 nowrap 以各頁 class 為準） */
+.prose table { display: block; width: 100%; overflow-x: auto; }
+
+/* 手機：搜尋框拿掉 / 鍵、新聞 why 只留 2 行 */
+@media (max-width: 639px) {
+    .proto-kbd { display: none; }
+    .proto-search-input { padding-right: 1rem; }
+}
+@media (max-width: 767px) {
+    .news-why { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+}
 
 .proto-tools { padding: 3.25rem 0 4rem; }
 .proto-h2 {

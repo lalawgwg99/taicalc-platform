@@ -86,7 +86,7 @@
                     <div class="flex flex-col items-end gap-2">
                         <div class="text-right">
                             <p class="stat-label">整年總共</p>
-                            <p class="stat-value-md text-ink-500">$ {{ yearlyNet.toLocaleString() }}</p>
+                            <p class="stat-value-md text-ink-500">${{ yearlyNet.toLocaleString() }}</p>
                             <p class="text-xs text-ink-400 mt-0.5">≈ {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
                         </div>
                         <button @click="shareResult"
@@ -145,16 +145,16 @@
                 <h3 class="text-sm font-medium text-ink-600 mb-4">雇主視角：實際人力成本</h3>
                 <div class="grid grid-cols-3 gap-3 text-center">
                     <div>
-                        <p class="stat-label">你的月薪</p>
-                        <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ (salary || 0).toLocaleString() }}</p>
+                        <p class="stat-label">月薪</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ (salary || 0).toLocaleString() }}</p>
                     </div>
                     <div>
-                        <p class="stat-label">公司多付的</p>
-                        <p class="text-base font-semibold text-red-500 tabular-nums">+ {{ employerCost.toLocaleString() }}</p>
+                        <p class="stat-label">公司多付</p>
+                        <p class="text-base font-semibold text-red-500 tabular-nums whitespace-nowrap">+ {{ employerCost.toLocaleString() }}</p>
                     </div>
                     <div>
-                        <p class="stat-label">公司每月總花費</p>
-                        <p class="text-base font-semibold text-ink-800 tabular-nums">$ {{ totalCost.toLocaleString() }}</p>
+                        <p class="stat-label">總成本</p>
+                        <p class="text-base font-semibold text-ink-800 tabular-nums whitespace-nowrap">${{ totalCost.toLocaleString() }}</p>
                     </div>
                 </div>
                 <p class="note-box mt-3">雇主每月額外負擔：勞保＋就保 70%、健保 60%（以平均眷屬 1.56 人計）、勞退 6%。</p>
@@ -228,14 +228,14 @@
                     </div>
                     <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
                         <p class="text-xs text-paper-200 mb-0.5">平均每月實拿</p>
-                        <p class="text-base font-semibold tabular-nums">$ {{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
+                        <p class="text-base font-semibold tabular-nums whitespace-nowrap">${{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
                     </div>
                 </div>
 
                 <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
                     <div v-for="g in savingsGoals" :key="g.amount" class="bg-white border border-paper-300 rounded-lg py-2">
-                        <p class="text-ink-400">{{ g.label }}</p>
-                        <p class="text-sm font-semibold text-ink-700">{{ g.months }}</p>
+                        <p class="text-ink-400 whitespace-nowrap">{{ g.label }}</p>
+                        <p class="text-sm font-semibold text-ink-700 whitespace-nowrap">{{ g.months }}</p>
                     </div>
                 </div>
                 <p class="text-[10px] text-ink-400 mt-2">目標以「每月可存」估算，實際仍依個人狀況調整。</p>
@@ -266,18 +266,18 @@
                         <thead>
                             <tr class="text-ink-400 border-b border-paper-300">
                                 <th class="text-left py-2 font-medium">年份</th>
-                                <th class="text-right py-2 font-medium">整年領到的薪水</th>
-                                <th class="text-right py-2 font-medium">換算成今天的錢</th>
+                                <th class="text-right py-2 font-medium whitespace-nowrap">年實拿</th>
+                                <th class="text-right py-2 font-medium whitespace-nowrap">折現值</th>
                                 <th class="text-right py-2 font-medium">成長</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(row, i) in forecast" :key="i" class="border-b border-paper-200">
                                 <td class="py-2 text-ink-400">{{ 2026 + i }}</td>
-                                <td class="py-2 text-right tabular-nums text-ink-600">$ {{ row.nominal.toLocaleString() }}</td>
-                                <td class="py-2 text-right tabular-nums"
+                                <td class="py-2 text-right tabular-nums text-ink-600 whitespace-nowrap">${{ row.nominal.toLocaleString() }}</td>
+                                <td class="py-2 text-right tabular-nums whitespace-nowrap"
                                     :class="row.real < row.nominal ? 'text-amber-600' : 'text-green-600'">
-                                    $ {{ row.real.toLocaleString() }}
+                                    ${{ row.real.toLocaleString() }}
                                 </td>
                                 <td class="py-2 text-right"
                                     :class="row.growth.startsWith('+') ? 'text-green-600' : 'text-ink-400'">
@@ -287,7 +287,7 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="text-[10px] text-ink-400 mt-2">本表為扣勞健保後的整年實拿，尚未扣除年度綜合所得稅結算；扣完稅金額請參考上方「扣完稅一年領多少」。「換算成今天的錢」以首年為基準，首年實質值等於名目值。</p>
+                <p class="text-[10px] text-ink-400 mt-2">本表為扣勞健保後的整年實拿，未扣年度所得稅；扣完稅請看上方「扣完稅一年領多少」。「折現值」以首年為基準。</p>
             </div>
         </div>
 
@@ -307,7 +307,7 @@
                 <!-- 方案 A -->
                 <div class="text-center">
                     <p class="text-xs text-ink-400 mb-1">方案 A（現職）</p>
-                    <p class="text-2xl font-semibold text-ink-700 tabular-nums">$ {{ monthlyNet.toLocaleString() }}</p>
+                    <p class="text-2xl font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ monthlyNet.toLocaleString() }}</p>
                     <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNet / 10000).toFixed(1) }} 萬</p>
                     <div class="space-y-1 mt-3 text-xs text-ink-400">
                         <div class="flex justify-between">
@@ -321,9 +321,9 @@
                 <!-- 方案 B -->
                 <div class="text-center border-l border-paper-300 pl-4">
                     <p class="text-xs text-azure mb-1">方案 B（新 Offer）</p>
-                    <p class="text-2xl font-semibold tabular-nums"
+                    <p class="text-2xl font-semibold tabular-nums whitespace-nowrap"
                        :class="monthlyNetB >= monthlyNet ? 'text-azure' : 'text-red-500'">
-                        $ {{ monthlyNetB.toLocaleString() }}
+                        ${{ monthlyNetB.toLocaleString() }}
                     </p>
                     <p class="text-xs text-ink-400 mt-2">年薪 {{ (yearlyNetB / 10000).toFixed(1) }} 萬</p>
                     <div class="space-y-1 mt-3 text-xs text-ink-400">

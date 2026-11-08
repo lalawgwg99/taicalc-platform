@@ -17,7 +17,7 @@
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
               <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
-                對應勞退月提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元（級距制，雇主與自提提撥都以此為基數）。
+                提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元。
               </p>
             </div>
             <div>
@@ -47,7 +47,7 @@
                 class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
               <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
-                不知道年資？<a href="https://edesk.bli.gov.tw/na/" target="_blank" rel="noopener" class="underline decoration-amber-500 underline-offset-2">去勞保局 e 化服務系統查</a>（手機門號驗證就能登入，可查總提繳年資），查完回來填。
+                不知道年資？<a href="https://edesk.bli.gov.tw/na/" target="_blank" rel="noopener" class="underline decoration-amber-500 underline-offset-2">去勞保局查 →</a>
               </p>
             </div>
           </div>
@@ -81,19 +81,19 @@
               <div class="flex gap-1 mb-2">
                 <button
                   @click="roi = 3"
-                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
+                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 3 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
                 >
                   保守 3%
                 </button>
                 <button
                   @click="roi = 5"
-                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
+                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 5 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
                 >
                   穩健 5%
                 </button>
                 <button
                   @click="roi = 8"
-                  class="flex-1 py-1 rounded bg-paper-100 text-ink-400 text-xs hover:bg-ink-100 transition-colors"
+                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 8 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
                 >
                   積極 8%
                 </button>
@@ -158,7 +158,7 @@
               <div>
                 <div class="flex justify-between text-sm mb-1">
                   <span class="text-ink-400">投資賺的 ({{ interestPercent }}%)</span>
-                  <span class="text-amber-600 font-bold">+${{ totalInterest.toLocaleString() }}</span>
+                  <span class="text-amber-600 font-bold whitespace-nowrap">+${{ totalInterest.toLocaleString() }}</span>
                 </div>
                 <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
                   <div class="bg-amber-500 h-full" :style="{ width: interestPercent + '%' }"></div>
@@ -166,8 +166,8 @@
               </div>
               <div>
                 <div class="flex justify-between text-sm mb-1">
-                  <span class="text-ink-400">投入的本金（雇主＋自提） ({{ principalPercent }}%)</span>
-                  <span class="text-ink-600 font-bold">${{ totalPrincipal.toLocaleString() }}</span>
+                  <span class="text-ink-400">投入本金 ({{ principalPercent }}%)</span>
+                  <span class="text-ink-600 font-bold whitespace-nowrap">${{ totalPrincipal.toLocaleString() }}</span>
                 </div>
                 <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
                   <div class="bg-ink-400 h-full" :style="{ width: principalPercent + '%' }"></div>
@@ -191,11 +191,11 @@
                 <div class="grid grid-cols-2 gap-4 mb-2">
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
                         <p class="text-xs text-ink-400 mb-1">自己總共提撥</p>
-                        <p class="text-lg font-bold text-ink-600">${{ (selfMonthlyContribution * 12 * (years + pastYearsClamped)).toLocaleString() }}</p>
+                        <p class="text-base font-bold text-ink-600 whitespace-nowrap">${{ (selfMonthlyContribution * 12 * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
                     <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
                         <p class="text-xs text-ink-400 mb-1">總共省下的稅</p>
-                        <p class="text-lg font-bold text-brand-500">+${{ (taxSavingYearly * (years + pastYearsClamped)).toLocaleString() }}</p>
+                        <p class="text-base font-bold text-brand-500 whitespace-nowrap">+${{ (taxSavingYearly * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
                 </div>
             </div>
@@ -204,24 +204,16 @@
 
         <!-- 說明 -->
         <div class="p-5 rounded-xl border border-ink-100 bg-paper-50 text-xs text-ink-400 space-y-2 leading-relaxed">
-          <p class="font-bold text-ink-600">ℹ️ 極致使用技巧：</p>
+          <p class="font-bold text-ink-600">ℹ️ 使用技巧：</p>
           <ul class="list-disc pl-4 space-y-1">
-            <li>
-              <strong>為什麼要自提？</strong>
-              除了強迫存錢，最直接的好處是省稅：自提的錢當年不用繳稅，等於直接降低要課稅的所得。
-            </li>
-            <li>
-              <strong>複利很驚人：</strong> 報酬率從 3% 調到 5%，差一點點，30 年下來退休金可能差到快一倍！
-            </li>
-            <li>
-              <strong>算法說明：</strong> 月領金額用年金法算，假設退休後錢繼續以 2%
-              滾存，分 20 年領完。
-            </li>
-            <li>
-              <strong>已提繳年資：</strong>
-              過去年資以目前提繳水準估算本金（未計過去的投資報酬，偏保守），實際專戶累計金額以勞保局查詢為準。
-            </li>
+            <li>自提省稅：自提的錢當年不用繳稅。</li>
+            <li>報酬 3%→5%，30 年退休金差近一倍。</li>
+            <li>月領用年金法，2% 滾存、20 年領完。</li>
           </ul>
+          <details>
+            <summary class="cursor-pointer">算法細節</summary>
+            <p class="mt-1">過去年資以目前提繳水準估算本金（未計過去投資報酬，偏保守）；實際專戶累計金額以勞保局查詢為準。</p>
+          </details>
         </div>
       </div>
       <!-- 空狀態：月薪未輸入 -->

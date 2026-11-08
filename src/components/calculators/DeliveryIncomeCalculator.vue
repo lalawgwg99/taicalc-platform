@@ -7,7 +7,7 @@
         <div class="space-y-4">
           <div>
             <label for="baseIncome" class="block text-xs font-medium text-ink-400 mb-1"
-              >基礎跑單收入 (每月，不含獎勵)</label
+              >基礎跑單收入（每月）</label
             >
             <input
               id="baseIncome"
@@ -77,7 +77,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="maintenancePerKm" class="block text-xs font-medium text-ink-400 mb-1"
-                >每公里保養攤提 (元/KM)</label
+                >保養攤提（元／公里）</label
               >
               <div class="relative">
                 <input
@@ -117,7 +117,7 @@
 
         <div class="relative z-10">
           <p class="text-sm font-bold text-brand-800 mb-1">每月實際入袋</p>
-          <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2">
+          <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2 whitespace-nowrap">
             <span class="text-2xl opacity-70">{{ netIncomeRaw < 0 ? '−$' : '$' }}</span>{{ netIncomeDisplay }}
           </p>
           <div class="flex items-center gap-3 text-sm">
@@ -139,8 +139,8 @@
       </section>
 
       <!-- 成本結構圖表 -->
-      <section class="calculator-card flex items-center">
-        <div class="w-1/2">
+      <section class="calculator-card flex flex-col sm:flex-row items-center gap-4">
+        <div class="w-full sm:w-1/2">
           <h3 class="text-sm font-bold text-ink-600 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">
             <li class="flex justify-between">
@@ -165,7 +165,7 @@
             </li>
           </ul>
         </div>
-        <div class="w-1/2 flex justify-center">
+        <div class="w-full sm:w-1/2 flex justify-center">
           <div class="chart-container w-32 h-32 relative">
             <canvas ref="chartCanvas"></canvas>
           </div>

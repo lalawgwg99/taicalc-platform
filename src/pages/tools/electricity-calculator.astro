@@ -13,39 +13,39 @@ const governance = coreToolGovernance.electricity;
 const faqs = [
     {
         q: "台電帳單的「用電度數」怎麼計算？",
-        a: "台電多為每兩個月抄一次表，帳單上的「度數」通常是雙月用電量。1 度電 = 1 千瓦時（kWh）= 1,000W 電器使用 1 小時。若想換算成月用量，可先將帳單度數除以 2，再輸入本工具。"
+        a: "台電多為每兩個月抄一次表，帳單度數通常是雙月用量。1度電＝1千瓦時（kWh）＝1,000W電器用1小時；換算月用量先將帳單度數除以2再輸入。"
     },
     {
         q: "台電累進電費怎麼算？夏月和非夏月差多少？",
-        a: "台電住家電費採累進費率，且帳單多半是雙月抄表。本工具以「每月」度數估算：300 度/月約為非夏月 621 元、夏月 673 元；若對照雙月帳單，可再乘以 2。高用電級距已採現行費率，低用電則納入每月最低計收 100 元。"
+        a: "台電住家電費採累進費率：300度/月約非夏月621元、夏月673元，對照雙月帳單再乘以2；高用電級距採現行費率，低用電納入每月最低計收100元。"
     },
     {
         q: "冷氣開一天大概多少電費？",
-        a: "現在可用三種方式估算：直接輸入電功率 kW、輸入冷房能力 BTU/h 搭配 COP/CSPF，或輸入冷房能力 kW 再換算。例如 12,000 BTU/h、COP 4.0 的冷氣，推估輸入功率約 0.88 kW；每天開 8 小時，一個月約 211 度。"
+        a: "電功率kW、BTU/h配COP/CSPF，或冷房kW換算。如12,000 BTU/h、COP 4.0冷氣約0.88 kW；日開8小時，月約211度。"
     },
     {
         q: "家裡哪個電器最耗電？",
-        a: "耗電怪獸依序通常是：電熱水器（約 1,200W）、冷氣（家用約 900W～3,600W，大型或商用機種可到 5kW～10kW 以上）、電磁爐（1,800W）、烘乾機（1,800W）、老舊冰箱（150～200W，全年不停）。建議用插座型電表或設備銘板量測各電器實際耗電，比估算更準確。"
+        a: "依序：電熱水器約1,200W、冷氣900W～3,600W（大型可到5kW～10kW以上）、電磁爐、烘乾機各1,800W、老舊冰箱150～200W。"
     },
     {
         q: "BTU/h、COP、CSPF 分別是什麼？",
-        a: "BTU/h 與冷房能力 kW 都是在描述冷氣的冷房能力；1 kW 冷房能力約等於 3,412 BTU/h。COP 是即時效率，冷房能力 ÷ COP 可推估當下輸入功率；CSPF 是季節效率，適合拿來粗估整季平均耗電，但不等於每一分鐘的實際功率。"
+        a: "BTU/h與冷房能力kW都是冷房能力，1 kW約3,412 BTU/h；COP是即時效率，冷房能力÷COP推估功率；CSPF是季節效率，粗估整季耗電。"
     },
     {
         q: "如何有效降低夏季電費？",
-        a: "幾個省電實招：(1) 冷氣設定 26～28°C，搭配電扇可省電 10～20%；(2) 每月清洗一次濾網；(3) 夏季尖峰減少高耗電家電同時運轉；(4) 換用 LED 燈泡；(5) 若已知冷氣 BTU/h 與 COP/CSPF，可先用本工具找出耗電是否異常，再決定是否換機。"
+        a: "冷氣設26～28°C，搭配電扇可省電10～20%；每月洗一次濾網；夏季尖峰減少高耗電家電同時運轉；換用LED燈泡。"
     },
     {
         q: "租屋電費一度 5 元合理嗎？房東這樣收算超收嗎？",
-        a: "很可能超收。以每月用電 300 度為例，台電實收金額為非夏月 621 元、夏月 673 元；房東若按一度 5 元收就是 1,500 元，約為台電實價的 2.2～2.4 倍。2024 年 7 月上路的租屋電費新制規定，房東按度計費不得超過電費單的「每度平均電價」，超收部分房客可要求返還。簽約前先用本工具算出台電實價，再跟房東談。"
+        a: "很可能超收：300度非夏月621、夏月673元，5元/度1,500元，約2.2～2.4倍；2024年7月新制，房東不得逾「每度平均電價」，超收可返還。"
     },
     {
         q: "兩房小家庭一個月電費大概多少？",
-        a: "以兩大一小、冷氣加電熱水器加家電齊全為例：非夏月每月約 400 度，電費約 908 元；夏天冷氣全開，每月約 650 度，電費約 2,167 元。注意兩者度數與季節都不同，不能直接對比漲幅。台電多為雙月抄表，夏天的雙月帳單會一次看到約 4,334 元，先有心理準備就不會被嚇到。"
+        a: "兩大一小：非夏月每月約400度、約908元；夏天每月約650度、約2,167元，雙月帳單一次約4,334元。度數與季節不同，漲幅不能直接對比。"
     },
     {
         q: "冷氣開整晚（8 小時）一個月要多花多少電費？",
-        a: "以輸入功率 0.9 kW 的變頻冷氣為例：0.9 kW × 8 小時 × 30 天＝216 度電，換算電費非夏月約 431 元/月、夏月約 459 元/月。另外提醒：冷氣噸數要配對房間坪數，噸數不足時壓縮機全速運轉反而更耗電。"
+        a: "輸入功率0.9 kW變頻冷氣：0.9 kW×8小時×30天＝216度，非夏月約431元/月、夏月約459元/月；噸數須配對坪數，不足反而更耗電。"
     },
     {
         q: "一級能效冰箱一年電費多少？換掉老冰箱省多少？",
@@ -53,11 +53,11 @@ const faqs = [
     },
     {
         q: "為什麼夏天的電費帳單特別貴？",
-        a: "兩個原因疊加：第一，台電多為每兩個月抄表，帳單金額是兩個月的用量；第二，6～9 月適用較貴的夏月費率。以小家庭夏天每月 650 度為例，單月電費 2,167 元，雙月帳單一次就是約 4,334 元，看起來嚇人但公式正確，不是被多收。"
+        a: "台電多為雙月抄表；6～9月適用較貴夏月費率。小家庭夏天每月650度，單月2,167元，雙月帳單一次約4,334元，不是被多收。"
     },
     {
         q: "電費試算線上做要準備什麼資料？",
-        a: "只要準備最近一期帳單的用電度數即可。本頁就是免費的電費計算線上工具：輸入每月用電度數，3 秒算出夏月與非夏月金額；若帳單是雙月抄表，先將帳單度數除以 2 再輸入。級距單價採台電 2026-04-01 住宅費率，一度電 1.78～8.86 元。"
+        a: "只要帳單度數：輸入每月用電度數即算出夏月與非夏月金額；雙月抄表先除以2再輸入。級距單價採台電2026-04-01住宅費率，一度電1.78～8.86元。"
     },
 ];
 ---
@@ -78,7 +78,7 @@ const faqs = [
         <section class="ec-hero" aria-label="一度電多少錢速答">
             <p class="ec-hero-kicker">一度電多少錢？</p>
             <p class="ec-hero-big">1.78 <span class="ec-hero-tilde">～</span> 8.86 <span class="ec-hero-unit">元 / 度</span></p>
-            <p class="ec-hero-note">台電住家採累進費率：120 度以下最便宜，超過 1,000 度夏月最貴。往下輸入度數，3 秒算出你的電費。帳單多半是雙月抄表：先把帳單度數除以 2 再輸入——例如帳單 700 度 → 每月 350 度 → 非夏月約 752 元、夏月約 826 元。</p>
+            <p class="ec-hero-note">雙月帳單先除以 2 再輸入，立刻算出夏月與非夏月金額。</p>
         </section>
 
         <section class="ec-section" id="calculator" aria-label="電費試算">
@@ -92,7 +92,7 @@ const faqs = [
         </details>
 
         <details class="ec-section ec-collapse" aria-label="若漲價情境試算">
-            <summary class="ec-summary">若漲 12.83%，電費會差多少？（情境假設，非定案）<span class="ec-summary-hint">點開看對照</span></summary>
+            <summary class="ec-summary">若漲 12.83%，電費差多少？</summary>
             <p class="ec-lead">以下只是把 9 月審議提報的平均電價應調幅度 12.83% 套用到同一用電量的粗估，12 月是否調漲、調多少，仍以電價審議會決議與台電公告費率為準；本頁計算機仍用現行費率。實際調幅若按級距分開調整，數字會與粗估不同。</p>
             <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
                 <thead>
@@ -104,8 +104,8 @@ const faqs = [
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-paper-200 text-ink-600">
-                    <tr><td class="py-2 pr-3">非夏月 350 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $752</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $849</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多約 $97</td></tr>
-                    <tr><td class="py-2 pr-3">夏月 350 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $826</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $932</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多約 $106</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">非夏月 350 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $752</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $849</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多約 $97</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">夏月 350 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $826</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">約 $932</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">多約 $106</td></tr>
                 </tbody>
             </table></div>
         </details>
@@ -124,9 +124,9 @@ const faqs = [
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-paper-200 text-ink-600">
-                    <tr><td class="py-2 pr-3">單身租屋族</td><td class="py-2 pr-3 whitespace-nowrap">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">395 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">418 元</td></tr>
-                    <tr><td class="py-2 pr-3">小資租屋</td><td class="py-2 pr-3 whitespace-nowrap">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">621 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">673 元</td></tr>
-                    <tr><td class="py-2 pr-3">兩房小家庭</td><td class="py-2 pr-3 whitespace-nowrap">500 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">1,221 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">1,396 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">單身租屋族</td><td class="py-2 pr-3 whitespace-nowrap">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">395 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">418 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">小資租屋</td><td class="py-2 pr-3 whitespace-nowrap">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">621 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">673 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">兩房小家庭</td><td class="py-2 pr-3 whitespace-nowrap">500 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">1,221 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">1,396 元</td></tr>
                 </tbody>
             </table></div>
             <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單約為上表 × 2。同樣度數直接比較：夏月費率較貴，度數越高差距越大。</p>

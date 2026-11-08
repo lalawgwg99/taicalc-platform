@@ -22,8 +22,8 @@
         <div>
           <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">你的邊際稅率</label>
           <div class="seg-control">
-            <button type="button" @click="rateMode = 'direct'" :class="['seg-btn', rateMode === 'direct' ? 'seg-btn-active' : '']">直接選稅率</button>
-            <button type="button" @click="rateMode = 'income'" :class="['seg-btn', rateMode === 'income' ? 'seg-btn-active' : '']">用所得淨額推算</button>
+            <button type="button" @click="rateMode = 'direct'" :class="['seg-btn', rateMode === 'direct' ? 'seg-btn-active' : '']">直接選</button>
+            <button type="button" @click="rateMode = 'income'" :class="['seg-btn', rateMode === 'income' ? 'seg-btn-active' : '']">所得推算</button>
           </div>
         </div>
         <div v-if="rateMode === 'direct'">
@@ -48,32 +48,42 @@
 
       <div v-if="excluded" class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
         <p class="text-sm font-semibold text-amber-800">⚠️ 你的適用稅率在 20% 以上，依排富規定不能申報租金特別扣除額</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">排富三種情形（符合任一即不適用）：申報適用稅率 20% 以上、股利按 28% 分開計稅、基本所得額超過當年度扣除額（113 至 115 年度皆為 750 萬元）。下方金額僅供對照，實際省稅為 0。</p>
+        <p class="mt-1 text-xs leading-5 text-amber-700">排富三種情形（符合任一即不適用）：</p>
+        <ul class="mt-1 text-xs leading-5 text-amber-700 list-disc pl-4 space-y-0.5">
+          <li>申報適用稅率 20% 以上</li>
+          <li>股利按 28% 分開計稅</li>
+          <li>基本所得額超過當年度扣除額（113 至 115 年度皆為 750 萬元）</li>
+        </ul>
+        <p class="mt-1 text-xs leading-5 text-amber-700">下方金額僅供對照，實際省稅為 0。</p>
       </div>
 
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
           <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">預估一年省稅金額</p>
-          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
+          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight whitespace-nowrap">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(taxSaved) }}
           </p>
-          <p class="mt-2 text-xs text-ink-400">申報扣除額 ${{ fmt(deduction) }} × 邊際稅率 {{ (marginalRate * 100).toFixed(0) }}%</p>
+          <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">申報扣除額 ${{ fmt(deduction) }} × 邊際稅率 {{ (marginalRate * 100).toFixed(0) }}%</p>
         </div>
-        <div class="grid grid-cols-3 gap-4 text-center pt-6 border-t border-ink-100">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 text-center pt-6 border-t border-ink-100">
           <div>
             <p class="text-xs text-ink-400 mb-1">年租金總額</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(annualRent) }}</p>
+            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(annualRent) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">減除補助後金額</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(deductibleBase) }}</p>
+            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(deductibleBase) }}</p>
           </div>
           <div>
-            <p class="text-xs text-ink-400 mb-1">可申報扣除額（上限 18 萬）</p>
-            <p class="text-lg font-bold text-brand-700 font-mono">${{ fmt(deduction) }}</p>
+            <p class="text-xs text-ink-400 mb-1">可申報扣除額</p>
+            <p class="text-lg font-bold text-brand-700 font-mono whitespace-nowrap">${{ fmt(deduction) }}</p>
+            <p class="text-[10px] text-ink-400">上限 18 萬</p>
           </div>
         </div>
-        <p class="mt-4 text-[11px] leading-5 text-ink-400">省稅以「扣除額 × 邊際稅率」估算；若扣除後剛好跨越稅率級距，實際省稅會略低於這個數字。申報還需符合：本人、配偶及受扶養直系親屬在國內沒有自有房屋（財政部核釋的 5 種例外情形除外）、租屋供自住且非營業使用。</p>
+        <details class="mt-4 text-[11px] leading-5 text-ink-400">
+          <summary class="cursor-pointer">估算說明</summary>
+          <p class="mt-1">省稅以「扣除額 × 邊際稅率」估算；若扣除後剛好跨越稅率級距，實際省稅會略低。申報還需符合：本人、配偶及受扶養直系親屬在國內沒有自有房屋（財政部核釋的 5 種例外情形除外）、租屋供自住且非營業使用。</p>
+        </details>
       </div>
 
       <div class="mt-6 rounded-2xl border border-paper-300 bg-paper-100 p-5">
@@ -85,8 +95,8 @@
               class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
           </div>
           <div class="text-sm leading-6 text-ink-600">
-            <p>漲租後每年多付：<strong class="font-mono">${{ fmt(extraRentYear) }}</strong></p>
-            <p>申報淨效益（省稅 − 多付租金）：<strong class="font-mono" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</strong></p>
+            <p>漲租後每年多付：<strong class="font-mono whitespace-nowrap">${{ fmt(extraRentYear) }}</strong></p>
+            <p>申報淨效益（省稅 − 多付租金）：<strong class="font-mono whitespace-nowrap" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</strong></p>
           </div>
         </div>
         <p class="mt-3 text-xs leading-5 text-ink-500"><span v-if="taxSaved > 0">損益平衡漲幅是 <strong>{{ breakevenPct.toFixed(1) }}%</strong>：漲幅低於這個數字，申報後整年仍是賺的；高於這個數字，多付的租金會吃掉全部省稅。</span><span v-else>目前沒有省稅可抵漲租：省稅為 0 時，任何漲租都會讓你多付錢。</span>這個算法只算錢——房東若因申報衍生其他爭議（提前解約、不續租），不在試算範圍內。</p>

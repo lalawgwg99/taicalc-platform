@@ -2,7 +2,7 @@
   <div class="calculator-shell max-w-2xl mx-auto space-y-5">
     
     <!-- 快速預設情境 (Apple Chip Selector) -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" style="mask-image: linear-gradient(to right, black 88%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);">
       <span class="text-xs font-semibold text-ink-400 flex-shrink-0">快速情境：</span>
       <button 
         v-for="p in presets" 
@@ -58,14 +58,14 @@
           <div 
             v-for="(m, idx) in members" 
             :key="m.id" 
-            class="flex items-center gap-3 p-2.5 bg-[#F9F9FB] rounded-xl border border-ink-100/60 transition-all hover:border-ink-200"
+            class="flex flex-wrap items-center gap-x-3 gap-y-2 p-2.5 bg-[#F9F9FB] rounded-xl border border-ink-100/60 transition-all hover:border-ink-200"
           >
             <div class="w-7 h-7 flex items-center justify-center bg-white rounded-full border border-ink-100 text-xs font-semibold text-ink-400 flex-shrink-0 shadow-2xs">
               {{ idx + 1 }}
             </div>
             <input 
               v-model="m.name" 
-              class="flex-1 bg-transparent font-medium text-ink-900 text-sm outline-none placeholder-ink-300" 
+              class="flex-1 min-w-[120px] bg-transparent font-medium text-ink-900 text-sm outline-none placeholder-ink-300" 
               placeholder="名字"
             />
             
@@ -77,7 +77,7 @@
                   <input 
                     v-model.number="m.paid" 
                     type="text" inputmode="decimal" 
-                    class="w-20 text-right text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-2 py-1 outline-none focus:border-brand-500" 
+                    class="w-16 text-right text-xs font-semibold font-mono bg-white border border-ink-100 rounded-md px-2 py-1 outline-none focus:border-brand-500" 
                     placeholder="0"
                   />
                 </div>
@@ -118,7 +118,7 @@
         >
           {{ r }}%
         </button>
-        <span v-if="serviceFeeInfo.rate > 0" class="text-xs text-ink-500">
+        <span v-if="serviceFeeInfo.rate > 0" class="basis-full text-center text-xs text-ink-500 whitespace-nowrap">
           服務費 ${{ serviceFeeInfo.fee.toLocaleString() }}，含服務費總額 ${{ serviceFeeInfo.grandTotal.toLocaleString() }}
         </span>
       </div>
@@ -150,7 +150,7 @@
         <ul class="mt-2 space-y-1.5">
           <li v-for="s in settlementInfo.shares" :key="s.name" class="flex items-center justify-between text-sm">
             <span class="font-medium text-ink-800">{{ s.name }}</span>
-            <span class="font-mono text-ink-600">應付 ${{ s.shouldPay.toLocaleString() }}（已付 ${{ s.paid.toLocaleString() }}）</span>
+            <span class="font-mono text-ink-600 whitespace-nowrap shrink-0">應付 ${{ s.shouldPay.toLocaleString() }}（已付 ${{ s.paid.toLocaleString() }}）</span>
           </li>
         </ul>
         <p class="text-xs text-ink-400 mt-2">已付的差額由成員間轉帳結清（見上方）；未付部分請直接付給店家。</p>
@@ -165,7 +165,7 @@
           @click="copyResult" 
           class="text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
         >
-          <span v-if="copyStatus === 'idle'">複製分帳文字 (LINE/iMessage)</span>
+          <span v-if="copyStatus === 'idle'">複製分帳文字</span>
           <span v-else>✓ 已複製到剪貼簿</span>
         </button>
         <button 

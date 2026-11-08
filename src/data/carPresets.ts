@@ -19,7 +19,7 @@ export interface CarPreset {
 export const carPresets: CarPreset[] = [
   {
     id: 'toyota-corolla-cross-gasoline',
-    label: 'Toyota Corolla Cross 豪華（汽油）',
+    label: 'Corolla Cross 豪華・汽油',
     price: 809_000,
     cc: 1_798,
     fuel: 'gasoline',
@@ -30,7 +30,7 @@ export const carPresets: CarPreset[] = [
   },
   {
     id: 'toyota-corolla-cross-hybrid',
-    label: 'Toyota Corolla Cross HYBRID 豪華',
+    label: 'Corolla Cross 豪華・油電',
     price: 849_000,
     cc: 1_798,
     fuel: 'hybrid',
@@ -41,7 +41,7 @@ export const carPresets: CarPreset[] = [
   },
   {
     id: 'honda-crv-gasoline',
-    label: 'Honda CR-V VTi-S（汽油）',
+    label: 'CR-V VTi-S・汽油',
     price: 999_000,
     cc: 1_498,
     fuel: 'gasoline',
@@ -63,7 +63,7 @@ export const carPresets: CarPreset[] = [
   },
   {
     id: 'toyota-rav4-hybrid',
-    label: 'Toyota RAV4 豪華（HYBRID）',
+    label: 'RAV4 豪華・油電',
     price: 1_040_000,
     cc: 2_487,
     fuel: 'hybrid',

@@ -100,7 +100,7 @@
         <div class="flex items-baseline gap-3">
           <span class="text-xl font-bold tabular-nums text-ink-800">${{ stockResult.price.toFixed(2) }}</span>
           <span
-            class="text-sm font-medium tabular-nums"
+            class="text-sm font-medium tabular-nums whitespace-nowrap"
             :class="stockResult.change >= 0 ? 'text-red-500' : 'text-green-600'"
           >
             {{ stockResult.change >= 0 ? '▲' : '▼' }}
@@ -130,19 +130,19 @@
           @click="mode = 'profit'"
           :class="['seg-btn', mode === 'profit' ? 'seg-btn-active' : '']"
         >
-          損益試算
+          損益
         </button>
         <button
           @click="mode = 'breakeven'"
           :class="['seg-btn', mode === 'breakeven' ? 'seg-btn-active' : '']"
         >
-          多少賣才不賠
+          賣價
         </button>
         <button
           @click="mode = 'avg'"
           :class="['seg-btn', mode === 'avg' ? 'seg-btn-active' : '']"
         >
-          定期定額/均價
+          均價
         </button>
       </div>
 
@@ -162,7 +162,7 @@
                   : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
               "
             >
-              {{ type.label }} <span class="text-[10px] opacity-70">({{ type.tax * 1000 }}‰)</span>
+              {{ type.label }}
             </button>
           </div>
 
@@ -443,8 +443,8 @@ const settings = ref({
 });
 
 const stockTypes = [
-  { id: 'common', label: '一般現股', tax: 0.003 },
-  { id: 'daytrade', label: '現股當沖', tax: 0.0015 },
+  { id: 'common', label: '一般', tax: 0.003 },
+  { id: 'daytrade', label: '當沖', tax: 0.0015 },
   { id: 'etf', label: 'ETF', tax: 0.001 },
 ];
 const stockType = ref('common');

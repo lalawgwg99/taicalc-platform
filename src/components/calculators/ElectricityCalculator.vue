@@ -59,7 +59,7 @@
         <div>
           <p class="text-xs text-ink-400 font-semibold uppercase tracking-wider mb-1">預估電費（每月）</p>
           <p
-            class="text-4xl sm:text-5xl font-bold font-mono tracking-tight"
+            class="text-4xl sm:text-5xl font-bold font-mono tracking-tight whitespace-nowrap"
             :class="isSummer ? 'text-orange-600' : 'text-brand-600'"
           >
             <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalCost.toLocaleString() }}
@@ -81,7 +81,7 @@
         <div v-for="(tier, i) in breakdown" :key="i" class="relative">
           <div class="flex justify-between text-xs text-ink-400 mb-1 font-medium">
             <span>{{ tier.label }}</span>
-            <span>
+            <span class="whitespace-nowrap shrink-0">
               {{ trimNum(tier.kwh) }}度 × ${{ tier.rate }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
             </span>
           </div>
@@ -549,7 +549,7 @@ const QUICK_HOME_SET = ['冰箱 (變頻400L)', '洗衣機 (每週約2次)', '電
 const acModes = [
   { id: 'kw', label: 'kW 輸入' },
   { id: 'btu', label: 'BTU/h 輸入' },
-  { id: 'capacity', label: '冷房能力 + 效能' }
+  { id: 'capacity', label: '冷房＋效能' }
 ];
 
 const acPowerPresets = [0.6, 0.8, 1.2, 1.8, 2.5, 3.6, 5, 7.2, 10];

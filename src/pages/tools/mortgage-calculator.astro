@@ -19,27 +19,27 @@ const faqs = [
     },
     {
         q: "寬限期先繳利息划算嗎？只還利息不還本金對嗎？",
-        a: "寬限期內月付金較低，可減輕短期現金壓力，但寬限期結束後月付金會大幅跳升（因剩餘本金不變、還款年限縮短）。以 1,000 萬、2.0% 利率、30 年期為例：寬限期月付約 1.67 萬，寬限後月付升至約 3.7 萬。若預期未來收入明顯成長可考慮；否則建議減少或不使用寬限期。"
+        a: "寬限期月付較低，期滿後跳升（本金不變、年限縮短）。例：1,000萬、2.0%、30年，寬限期約1.67萬，寬限後約3.7萬；收入成長才考慮，否則少用。"
     },
     {
         q: "月薪 5 萬能貸多少房貸？",
-        a: "銀行通常要求「每月房貸還款不超過月收入的 30～40%」。月薪 5 萬元，安全還款上限約 1.5～2 萬元／月。以 2.0% 利率、30 年期試算，約可負擔 350～470 萬元的貸款。若加上伴侶收入合計評估，可貸額度更高。"
+        a: "銀行通常要求月付不超過月收入30～40%。月薪5萬，上限約1.5～2萬／月；以2.0%、30年試算約可負擔350～470萬元，加伴侶收入額度更高。"
     },
     {
         q: "房貸利率每差 0.5%，月付金差多少？",
-        a: "以貸款 1,000 萬、30 年期為例：2.0% 利率月付約 36,963 元，2.5% 約 39,512 元，相差約 2,549 元。30 年下來，利率差 0.5% 就多繳超過 91 萬元利息。選低利率非常值得多比較幾家銀行。"
+        a: "1,000萬、30年：2.0%月付約36,963元，2.5%約39,512元，差約2,549元；30年多繳超過91萬元利息，值得多比較幾家銀行。"
     },
     {
         q: "提前還款划算嗎？需要注意什麼？",
-        a: "提前還款可以節省大量利息，尤其在貸款前期效果最顯著（因為前期還款中利息佔比較高）。需注意：部分銀行在貸款前 1～3 年收取提前還款違約金（通常為提前還款金額的 1～2%）。建議確認合約後再決定時機。本工具的「提前還款試算」可幫您精算省息效果。"
+        a: "提前還款可省大量利息，前期效果最顯著；部分銀行貸款前1～3年收違約金（通常為提前還款金額1～2%），確認合約再決定。本工具可精算省息效果。"
     },
     {
         q: "房貸 30 年和 40 年，總利息差多少？",
-        a: "以貸款 1,000 萬元、利率 2% 為例試算：30 年月付約 3.70 萬元、總利息約 331 萬元；40 年月付約 3.03 萬元、總利息約 454 萬元。月付少約 6,700 元，但 40 年總利息多約 123 萬元。"
+        a: "1,000萬、2%：30年月付約3.70萬、總利息約331萬；40年月付約3.03萬、總利息約454萬。月付少約6,700元，總利息多約123萬。"
     },
     {
         q: "選 40 年房貸划算嗎？",
-        a: "40 年房貸的優點是月付較低、現金流壓力小，適合收入成長期或首購負擔較重者；缺點是總利息明顯增加，且年齡較長者可能不符合銀行年限限制（通常貸款年限＋年齡上限約 75 歲）。"
+        a: "40年房貸月付較低、壓力小，適合收入成長期或首購負擔較重者；缺點是總利息明顯增加，且年限＋年齡上限約75歲，較長者可能不符。"
     },
     {
         q: "想省利息，該縮短年限還是提前還款？",
@@ -55,7 +55,7 @@ const faqs = [
     },
     {
         q: "青安3.0的寬限期 5 年，是免費的嗎？",
-        a: "不是。寬限期內仍要按月繳利息（只是不還本金），寬限期結束後因為本金完全沒減、剩餘年數縮短，月付金會明顯跳升。以上述試算為例：寬限期內月付約 1.48 萬元，寬限結束後第 6 年約 3.39 萬元、第 7 年起約 3.45 萬元（40 年期、1,000 萬例）。"
+        a: "不是。寬限期內仍繳利息（不還本金），期滿後月付跳升。例：期內約1.48萬，第6年約3.39萬、第7年起約3.45萬（40年期、1,000萬例）。"
     },
     {
         q: "寬限期滿後月付會跳多少？",
@@ -63,11 +63,11 @@ const faqs = [
     },
     {
         q: "一般房貸也能談寬限期嗎？",
-        a: "可以，多數銀行對一般房貸也提供寬限期（通常 1～3 年，視信用條件與擔保品而定），但利率與寬限期條件採個案審核。您可以在「青安 vs 一般」分頁把「一般房貸」的寬限期改為 1～3 年，直接比較加入寬限期後的月付變化。"
+        a: "可以，多數銀行一般房貸也提供寬限期（通常1～3年，視信用與擔保品而定），條件採個案審核；可在「青安 vs 一般」分頁改寬限期比較月付。"
     },
     {
         q: "房貸利率每差 0.1%，月付金差多少？",
-        a: "以貸款 1,000 萬、30 年為例，利率 2.0% 的月付約 3.70 萬元，2.1% 約 3.75 萬元，2.2% 約 3.80 萬元，大約每差 0.1% 月付差 400～500 元，30 年下來差距可達 15～18 萬元。調整「青安 vs 一般」分頁「一般房貸」的利率欄即可即時觀察。"
+        a: "1,000萬30年：2.0%月付約3.70萬，2.1%約3.75萬，2.2%約3.80萬，每差0.1%差400～500元，30年差距可達15～18萬。"
     },
 ];
 
@@ -133,8 +133,8 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
     </div>
     
     <style>
-        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); }
-        .tool-tabs [data-tabbtn] {
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; scrollbar-width: none; }
+        .tool-tabs [data-tabbtn] { white-space: nowrap; flex-shrink: 0;
             padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
             color: #78716c; background: transparent; border: none; cursor: pointer;
             border-bottom: 2px solid transparent; margin-bottom: -2px;
@@ -145,7 +145,7 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
     <IntentPanel
         slot="after-tool"
         source="mortgage"
-        partnerTitle="房貸、轉增貸與購屋服務合作"
+        partnerTitle="房貸購屋服務"
     />
     <div slot="article">
         <h2>2026 房貸試算重點：青安3.0與寬限期策略</h2>
@@ -219,12 +219,13 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
         <p>2026 年首購族最常問的問題是「該辦青安3.0，還是直接走一般房貸？」。兩者差的不只利率，還有<strong>年限、寬限期與總利息</strong>。先看這張表，再用「青安 vs 一般」分頁輸入自己的金額。</p>
         <p class="note-box">舊版「新青安」已於 2026-07-31 截止受理；下表為現行 <strong>青安3.0</strong>（2026-08-01～2029-07-31）。</p>
 
+        <div class="overflow-x-auto">
         <table class="w-full text-sm border-collapse">
             <thead>
                 <tr class="border-b border-paper-300 text-left text-ink-400">
-                    <th class="py-2 pr-3 font-medium">項目</th>
-                    <th class="py-2 pr-3 font-medium text-brand-700">青安3.0</th>
-                    <th class="py-2 font-medium text-ink-600">一般房貸</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">項目</th>
+                    <th class="py-2 pr-3 font-medium text-brand-700 whitespace-nowrap">青安3.0</th>
+                    <th class="py-2 font-medium text-ink-600 whitespace-nowrap">一般房貸</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-paper-200 text-ink-600">
@@ -251,10 +252,11 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
                 <tr>
                     <td class="py-2 pr-3">申請資格</td>
                     <td class="py-2 pr-3 font-semibold text-ink-700">首購、本人／配偶／未成年子女名下無自用住宅；未滿 50 歲、本人年所得 200 萬以下</td>
-                    <td class="py-2">不限首購</td>
+                    <td class="py-2 whitespace-nowrap">不限首購</td>
                 </tr>
             </tbody>
         </table>
+        </div>
 
         <h3>1,000 萬元試算情境（比較器預設值）</h3>
         <ul>
@@ -267,23 +269,25 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
 
         <h3>青安3.0階梯月付：1,000 萬、40 年、寬限期 5 年</h3>
         <p>同一筆貸款，只看「寬限期內 1.48 萬」會低估後期負擔。以下按分段利率與本息平均攤還法實算各階段月付：</p>
+        <div class="overflow-x-auto">
         <table class="w-full text-sm border-collapse">
             <thead>
                 <tr class="border-b border-paper-300 text-left text-ink-400">
-                    <th class="py-2 pr-3 font-medium">階段</th>
-                    <th class="py-2 pr-3 font-medium">利率</th>
-                    <th class="py-2 pr-3 font-medium">還款方式</th>
-                    <th class="py-2 font-medium">每月月付</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">階段</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">利率</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">還款方式</th>
+                    <th class="py-2 font-medium whitespace-nowrap">每月月付</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-paper-200 text-ink-600">
-                <tr><td class="py-2 pr-3">第 1～3 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">1.775%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700">約 14,792 元</td></tr>
-                <tr><td class="py-2 pr-3">第 4 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">1.9%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700">約 15,833 元</td></tr>
-                <tr><td class="py-2 pr-3">第 5 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">2.025%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700">約 16,875 元</td></tr>
-                <tr><td class="py-2 pr-3">第 6 年（寬限期滿）</td><td class="py-2 pr-3 font-semibold text-ink-700">2.15%</td><td class="py-2 pr-3">本息攤還（剩 35 年）</td><td class="py-2 font-semibold text-ink-700">約 33,901 元</td></tr>
-                <tr><td class="py-2 pr-3">第 7 年起</td><td class="py-2 pr-3 font-semibold text-ink-700">2.275%</td><td class="py-2 pr-3">本息攤還（剩 34 年）</td><td class="py-2 font-semibold text-ink-700">約 34,539 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">第 1～3 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">1.775%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">約 14,792 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">第 4 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">1.9%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">約 15,833 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">第 5 年（寬限期）</td><td class="py-2 pr-3 font-semibold text-ink-700">2.025%</td><td class="py-2 pr-3">只繳息</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">約 16,875 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">第 6 年（寬限期滿）</td><td class="py-2 pr-3 font-semibold text-ink-700">2.15%</td><td class="py-2 pr-3">本息攤還（剩 35 年）</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">約 33,901 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">第 7 年起</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">2.275%</td><td class="py-2 pr-3 whitespace-nowrap">本息攤還（剩 34 年）</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">約 34,539 元</td></tr>
             </tbody>
         </table>
+        </div>
         <p class="text-xs text-ink-400 mt-2">寬限期滿後月付按當期利率與剩餘年限重算；完整期間總利息約 542 萬元，與上方試算情境一致。機動利率會隨基準利率變動，實際以承貸銀行通知為準。</p>
 
         <h3>什麼樣的人適合青安3.0？</h3>

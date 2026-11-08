@@ -2,13 +2,7 @@
   <div class="calculator-shell">
 
     <!-- 標題說明 -->
-    <div class="note-box flex items-start gap-2">
-      
-      <div>
-        <p class="font-medium text-ink-600 mb-0.5">適用對象：上班族、斜槓族、小房東</p>
-        <p class="text-[11px] text-ink-400">依據 2026 年度綜合所得稅率表（財政部）。本試算為估算，實際以報稅結果為準。</p>
-      </div>
-    </div>
+    <p class="text-[11px] text-ink-400">依 2026 年度稅率表估算，實際以報稅結果為準。</p>
 
     <!-- ── 所得輸入 ── -->
     <div class="card-surface p-5 space-y-4">
@@ -21,8 +15,7 @@
         <label for="fld-24912f32" class="block text-xs font-medium text-ink-400 mb-1.5">薪資所得（NT$）</label>
         <input id="fld-24912f32" type="text" inputmode="decimal" v-model.number="salaryIncome" class="input-clean tabular-nums text-lg font-semibold"
           placeholder="600,000" />
-        <p class="text-[10px] text-ink-400 mt-1">可填年薪或多份工作薪資合計</p>
-      </div>
+              </div>
 
       <div class="grid grid-cols-2 gap-3">
         <div>
@@ -47,11 +40,12 @@
         <label class="block text-xs font-medium text-ink-400 mb-1.5">股利課稅方式</label>
         <div class="seg-control">
           <button @click="dividendTaxMode = 'combined'"
-            :class="['seg-btn', dividendTaxMode === 'combined' ? 'seg-btn-active' : '']">合併計稅（8.5% 抵減）</button>
+            :class="['seg-btn', dividendTaxMode === 'combined' ? 'seg-btn-active' : '']">合併計稅</button>
           <button @click="dividendTaxMode = 'separate'"
-            :class="['seg-btn', dividendTaxMode === 'separate' ? 'seg-btn-active' : '']">分離課稅（28%）</button>
+            :class="['seg-btn', dividendTaxMode === 'separate' ? 'seg-btn-active' : '']">分離課稅</button>
         </div>
-        <p class="text-[10px] text-ink-400 mt-1">高稅率族群可比較分離課稅；本頁提供估算參考。</p>
+        <p v-if="dividendTaxMode === 'combined'" class="text-[10px] text-ink-400 mt-1">合併計稅：股利併入所得，8.5% 可抵減（上限 8 萬）。</p>
+        <p v-else class="text-[10px] text-ink-400 mt-1">分離課稅：股利單獨課 28%。</p>
       </div>
     </div>
 
@@ -73,8 +67,7 @@
         <div>
           <label for="fld-adb87d5f" class="block text-xs font-medium text-ink-400 mb-1.5">扶養親屬人數</label>
           <input id="fld-adb87d5f" type="text" inputmode="decimal" v-model.number="dependents" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">含子女、父母</p>
-        </div>
+                  </div>
         <div>
           <label for="fld-minor-children" class="block text-xs font-medium text-ink-400 mb-1.5">其中未成年子女人數</label>
           <input id="fld-minor-children" type="text" inputmode="decimal" v-model.number="minorChildren" class="input-clean" placeholder="0" min="0" max="10" />
@@ -83,18 +76,16 @@
         <div>
           <label for="fld-e9c47932" class="block text-xs font-medium text-ink-400 mb-1.5">符合長照特扣人數</label>
           <input id="fld-e9c47932" type="text" inputmode="decimal" v-model.number="longTermCareEligibleCount" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">每人 180,000（需符合規定）</p>
+          <p class="text-[10px] text-ink-400 mt-1">每人 180,000</p>
         </div>
         <div>
           <label for="fld-25cdc856" class="block text-xs font-medium text-ink-400 mb-1.5">身心障礙人數</label>
           <input id="fld-25cdc856" type="text" inputmode="decimal" v-model.number="disabilityCount" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">每人 227,000</p>
-        </div>
+                  </div>
         <div>
           <label for="fld-675d6147" class="block text-xs font-medium text-ink-400 mb-1.5">學前幼兒人數</label>
           <input id="fld-675d6147" type="text" inputmode="decimal" v-model.number="preschoolCount" class="input-clean" placeholder="0" min="0" max="10" />
-          <p class="text-[10px] text-ink-400 mt-1">第 1 人 150,000；第 2 人起每人 225,000</p>
-        </div>
+                  </div>
       </div>
 
       <!-- 配偶所得（合併申報） -->
@@ -126,11 +117,11 @@
       <div class="grid grid-cols-2 gap-2 text-center text-xs">
         <div class="bg-paper-200/60 rounded-lg p-2">
           <p class="text-ink-400 mb-0.5">標準扣除額</p>
-          <p class="font-semibold text-ink-700 tabular-nums">$ {{ fmt(standardDeduction) }}</p>
+          <p class="font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(standardDeduction) }}</p>
         </div>
         <div class="bg-paper-200/60 rounded-lg p-2">
           <p class="text-ink-400 mb-0.5">列舉扣除額</p>
-          <p class="font-semibold text-ink-700 tabular-nums">$ {{ fmt(itemizedTotal) }}</p>
+          <p class="font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(itemizedTotal) }}</p>
           <p v-if="itemizedTotal <= standardDeduction" class="text-[10px] text-amber-500 mt-0.5">低於標準扣除</p>
         </div>
       </div>
@@ -145,8 +136,7 @@
           <div>
             <label for="fld-f3d951d7" class="block text-xs font-medium text-ink-400 mb-1.5">人身保險費（NT$）</label>
             <input id="fld-f3d951d7" type="text" inputmode="decimal" v-model.number="insuranceDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
-            <p class="text-[10px] text-ink-400 mt-0.5">上限 24,000/人</p>
-          </div>
+                      </div>
           <div>
             <label for="fld-6fe7a47c" class="block text-xs font-medium text-ink-400 mb-1.5">醫藥及生育費（NT$）</label>
             <input id="fld-6fe7a47c" type="text" inputmode="decimal" v-model.number="medicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
@@ -154,8 +144,7 @@
           <div>
             <label for="fld-65685693" class="block text-xs font-medium text-ink-400 mb-1.5">自用住宅利息（NT$）</label>
             <input id="fld-65685693" type="text" inputmode="decimal" v-model.number="mortgageDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
-            <p class="text-[10px] text-ink-400 mt-0.5">上限 300,000</p>
-          </div>
+                      </div>
           <div>
             <label for="fld-95b82d3a" class="block text-xs font-medium text-ink-400 mb-1.5">政治捐獻（NT$）</label>
             <input id="fld-95b82d3a" type="text" inputmode="decimal" v-model.number="politicalDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
@@ -166,7 +155,7 @@
       <div class="border-t border-paper-300 pt-3">
         <label for="fld-776deddd" class="block text-xs font-medium text-ink-400 mb-1.5">自住房屋租金支出特別扣除額（NT$）</label>
         <input id="fld-776deddd" type="text" inputmode="decimal" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
-        <p class="text-[10px] text-ink-400 mt-1">每戶上限 180,000；須扣除租金補貼，並受自有房屋及排富規定限制。</p>
+        <p class="text-[10px] text-ink-400 mt-1">每戶上限 180,000；須扣租金補貼。</p>
       </div>
     </div>
 
@@ -198,47 +187,47 @@
       <div class="space-y-2 text-sm mb-5">
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">全年總收入</span>
-          <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(grossIncome) }}</span>
+          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(grossIncome) }}</span>
         </div>
         <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">股利（分開課稅）</span>
-          <span class="tabular-nums font-medium text-ink-700">$ {{ fmt(dividendIncome) }}</span>
+          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(dividendIncome) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">薪資特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(salarySpecialDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(salarySpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">免稅額（{{ totalExemptions }} 人{{ minorChildren > 0 ? '，未成年 ' + minorChildren + ' 人' : '' }}）</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(exemptionAmount) }}</span>
+          <span class="text-ink-400">免稅額（{{ totalExemptions }} 人）</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(exemptionAmount) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">{{ deductionType === 'standard' ? '標準' : '列舉' }}扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">長照特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(longTermCareDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(longTermCareDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">身障特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(disabilityDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(disabilityDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">幼兒學前特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(preschoolDeduction) }}</span>
+          <span class="text-ink-400">幼兒學前特扣</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(preschoolDeduction) }}</span>
         </div>
         <div v-if="rentSpecialDeduction > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
-          <span class="text-ink-400">房屋租金支出特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(rentSpecialDeduction) }}</span>
+          <span class="text-ink-400">房屋租金特扣</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(rentSpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">儲蓄投資特別扣除額</span>
-          <span class="tabular-nums text-red-500">− $ {{ fmt(savingsDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(savingsDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200 font-medium">
           <span class="text-ink-600">真正要課稅的所得</span>
-          <span class="tabular-nums text-ink-700">$ {{ fmt(Math.max(0, taxableIncome)) }}</span>
+          <span class="tabular-nums text-ink-700 whitespace-nowrap">$${{ fmt(Math.max(0, taxableIncome)) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">你的稅率</span>
@@ -246,26 +235,26 @@
         </div>
         <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">股利可抵掉的稅</span>
-          <span class="tabular-nums text-green-600">− $ {{ fmt(dividendCredit) }}</span>
+          <span class="tabular-nums text-green-600 whitespace-nowrap">− $${{ fmt(dividendCredit) }}</span>
         </div>
         <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
           <span class="text-ink-400">股利分開課的稅</span>
-          <span class="tabular-nums text-ink-700">+ $ {{ fmt(dividendSeparateTax) }}</span>
+          <span class="tabular-nums text-ink-700 whitespace-nowrap">+ $${{ fmt(dividendSeparateTax) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 font-semibold">
           <span class="text-ink-700">總共要繳的稅</span>
-          <span class="tabular-nums text-ink-800">$ {{ fmt(totalTax) }}</span>
+          <span class="tabular-nums text-ink-800 whitespace-nowrap">$${{ fmt(totalTax) }}</span>
         </div>
       </div>
 
         <div class="grid grid-cols-2 gap-3 text-center text-xs">
           <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
             <p class="text-paper-200 mb-0.5">實際拿到的年收入</p>
-            <p class="text-base font-semibold tabular-nums">$ {{ fmt(afterTaxIncome) }}</p>
+            <p class="text-base font-semibold tabular-nums whitespace-nowrap">${{ fmt(afterTaxIncome) }}</p>
           </div>
           <div class="bg-paper-200/60 rounded-xl p-3">
             <p class="text-ink-400 mb-0.5">平均每月實拿</p>
-            <p class="text-base font-bold text-ink-700 tabular-nums">$ {{ fmt(Math.round(afterTaxIncome / 12)) }}</p>
+            <p class="text-base font-bold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(Math.round(afterTaxIncome / 12)) }}</p>
           </div>
         </div>
 
@@ -277,7 +266,7 @@
         </div>
         <div class="bg-paper-200/60 rounded-xl p-3">
           <p class="text-ink-400 mb-0.5">平均每月繳</p>
-          <p class="text-base font-bold text-ink-700 tabular-nums">$ {{ fmt(Math.round(totalTax / 12)) }}</p>
+          <p class="text-base font-bold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(Math.round(totalTax / 12)) }}</p>
         </div>
         <div class="bg-paper-200/60 rounded-xl p-3">
           <p class="text-ink-400 mb-0.5">實拿比例</p>
@@ -317,15 +306,15 @@
           <div class="flex items-center gap-2">
             <span v-if="isCurrentBracket(bracket)" class="w-1.5 h-1.5 bg-azure rounded-full shrink-0"></span>
             <span v-else class="w-1.5 h-1.5 rounded-full bg-paper-300 shrink-0"></span>
-            <span :class="isCurrentBracket(bracket) ? 'text-azure font-medium' : 'text-ink-400'">
+            <span :class="['whitespace-nowrap', isCurrentBracket(bracket) ? 'text-azure font-medium' : 'text-ink-400']">
               {{ fmt(bracket.min + 1) }} ~ {{ bracket.max === Infinity ? '以上' : fmt(bracket.max) }}
             </span>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 whitespace-nowrap">
             <span :class="['font-bold', isCurrentBracket(bracket) ? 'text-azure' : 'text-ink-500']">
               {{ bracket.rate * 100 }}%
             </span>
-            <span v-if="bracket.subtract > 0" class="text-ink-400 text-[10px]">
+            <span v-if="bracket.subtract > 0" class="text-ink-400 text-[10px] whitespace-nowrap">
               累進差額 {{ fmt(bracket.subtract) }}
             </span>
           </div>
@@ -334,8 +323,8 @@
     </div>
 
     <!-- 免稅說明 -->
-    <div class="note-box space-y-1.5">
-      <p class="font-medium text-ink-500">115 年度扣除標準（財政部公告）</p>
+    <details class="note-box space-y-1.5">
+      <summary class="font-medium text-ink-500 cursor-pointer">115 年度扣除標準（財政部公告）</summary>
       <div class="grid grid-cols-2 gap-2 mt-2 text-[11px]">
         <div>• 每人免稅額：<strong>$101,000</strong></div>
         <div>• 標準扣除（單身）：<strong>$136,000</strong></div>
@@ -347,7 +336,7 @@
         <div>• 長照特別扣除：<strong>$180,000</strong>/人</div>
       </div>
       <p class="text-[10px] text-ink-400">115 年度每人基本生活費尚待財政部於年度結束後公告，暫未納入。</p>
-    </div>
+    </details>
 
   </div>
 </template>

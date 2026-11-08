@@ -1,7 +1,7 @@
 <template>
   <div class="calculator-shell">
     <!-- 快速預設情境 -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" style="mask-image: linear-gradient(to right, black 88%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 88%, transparent 100%);">
       <span class="text-xs font-semibold text-ink-400 flex-shrink-0">快速情境：</span>
       <button
         v-for="p in presets"
@@ -59,7 +59,7 @@
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
-          <label for="fld-bf79f8fd" class="block text-xs font-semibold text-ink-400 mb-2">火險＋地震險（年/元）</label>
+          <label for="fld-bf79f8fd" class="block text-xs font-semibold text-ink-400 mb-2">火險地震險（年/元）</label>
           <input id="fld-bf79f8fd" type="text" inputmode="decimal" v-model.number="insuranceYearly"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
@@ -76,7 +76,7 @@
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">房貸（選填，不貸就留 0）</h3>
       </div>
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label for="fld-46b1790b" class="block text-xs font-semibold text-ink-400 mb-2">貸款金額（萬元）</label>
           <input id="fld-46b1790b" type="text" inputmode="decimal" v-model.number="loanWan"
@@ -106,12 +106,12 @@
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="p-4 bg-white rounded-xl border border-ink-100/80 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">毛報酬率</div>
-          <div class="text-2xl font-bold font-mono text-ink-900">{{ grossYield }}%</div>
+          <div class="text-2xl font-bold font-mono text-ink-900 whitespace-nowrap">{{ grossYield }}%</div>
           <div class="text-[11px] text-ink-400 mt-1">年租金 ÷ 房屋總價</div>
         </div>
         <div class="p-4 bg-white rounded-xl border border-brand-500/30 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">淨報酬率</div>
-          <div class="text-2xl font-bold font-mono text-brand-600">{{ netYield }}%</div>
+          <div class="text-2xl font-bold font-mono text-brand-600 whitespace-nowrap">{{ netYield }}%</div>
           <div class="text-[11px] text-ink-400 mt-1">扣成本後 ÷ 房屋總價</div>
         </div>
       </div>
@@ -119,31 +119,31 @@
       <div class="space-y-2 text-sm">
         <div class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">年租金收入（扣空租後）</span>
-          <span class="font-mono font-semibold text-ink-900">${{ annualRent }}</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualRent }}</span>
         </div>
         <div class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">年持有成本合計</span>
-          <span class="font-mono font-semibold text-ink-900">${{ annualCostFmt }}</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualCostFmt }}</span>
         </div>
         <div class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">年淨收益</span>
-          <span class="font-mono font-semibold text-ink-900">${{ annualNetFmt }}</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualNetFmt }}</span>
         </div>
         <div class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">約幾年回本</span>
-          <span class="font-mono font-semibold text-ink-900">{{ paybackYears }} 年</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">{{ paybackYears }} 年</span>
         </div>
         <div v-if="hasLoan" class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">每月房貸月付金</span>
-          <span class="font-mono font-semibold text-ink-900">${{ monthlyPayment }}</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ monthlyPayment }}</span>
         </div>
         <div v-if="hasLoan" class="flex justify-between py-2 border-b border-ink-100/60">
           <span class="text-ink-400">自備款報酬率（槓桿後）</span>
-          <span class="font-mono font-semibold text-ink-900">{{ equityYield }}%</span>
+          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">{{ equityYield }}%</span>
         </div>
         <div v-if="hasLoan" class="flex justify-between py-2">
-          <span class="text-ink-400">每月淨現金流（租金−月付−月均成本）</span>
-          <span class="font-mono font-semibold" :class="monthlyCashflowRaw >= 0 ? 'text-ink-900' : 'text-red-500'">${{ monthlyCashflow }}</span>
+          <span class="text-ink-400">每月淨現金流<small class="block text-[10px]">租金 − 月付 − 月均成本</small></span>
+          <span class="font-mono font-semibold whitespace-nowrap" :class="monthlyCashflowRaw >= 0 ? 'text-ink-900' : 'text-red-500'">${{ monthlyCashflow }}</span>
         </div>
       </div>
 

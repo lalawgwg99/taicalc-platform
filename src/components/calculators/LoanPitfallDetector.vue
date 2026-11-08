@@ -10,7 +10,7 @@
 
         <!-- 輸入 -->
         <div class="card-surface p-5 space-y-4">
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">貸款金額（萬元）</label>
                     <input type="text" inputmode="decimal" v-model.number="amount" aria-label="貸款金額萬元" placeholder="例：50" class="input-clean text-lg font-semibold tabular-nums">
@@ -25,7 +25,7 @@
                     <p class="mt-1 text-[10px] text-ink-400">DM 上寫的「X%起」那個數字</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">總費用年百分率（%，選填）</label>
+                    <label class="block text-xs font-medium text-ink-400 mb-1.5">總費用年百分率（%）</label>
                     <input type="text" inputmode="decimal" v-model.number="apr" aria-label="總費用年百分率" placeholder="例：3.45" class="input-clean text-lg font-semibold tabular-nums">
                     <p class="mt-1 text-[10px] text-ink-400">銀行依法應揭露，沒給就是警訊</p>
                 </div>
@@ -38,7 +38,7 @@
                     <input type="text" inputmode="numeric" v-model.number="lockMonths" aria-label="綁約期月" placeholder="例：12" class="input-clean text-lg font-semibold tabular-nums">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-ink-400 mb-1.5">提前清償違約金（%，選填）</label>
+                    <label class="block text-xs font-medium text-ink-400 mb-1.5">提前清償違約金（%）</label>
                     <input type="text" inputmode="decimal" v-model.number="penalty" aria-label="提前清償違約金" placeholder="例：2" class="input-clean text-lg font-semibold tabular-nums">
                 </div>
                 <div>
@@ -65,7 +65,7 @@
 
             <div v-if="estimatedApr" class="rounded-xl bg-brand-50 border border-brand-200 p-3.5">
                 <p class="text-xs font-bold text-brand-700 mb-1">你沒填總費用年百分率，我幫你估算</p>
-                <p class="text-sm text-ink-600">貸款 {{ amount }} 萬、開辦費 {{ fmt(fee) }} 元、廣告利率 {{ adRate }}%，<strong>實質年利率約 {{ estimatedApr }}%</strong>（已把開辦費攤入）。拿這個數字去跟別家比，不要比廣告利率。</p>
+                <p class="text-sm text-ink-600">貸款 {{ amount }} 萬、開辦費 {{ fmt(fee) }} 元、廣告利率 {{ adRate }}%，<strong>實質年利率約 {{ estimatedApr }}%</strong>（已把開辦費攤入）。</p>
             </div>
 
             <div class="space-y-2.5">
@@ -79,13 +79,13 @@
                 </div>
             </div>
 
-            <div v-if="talkPoints.length" class="rounded-xl bg-paper-100 p-4">
-                <p class="text-xs font-bold text-ink-400 mb-2">拿去跟銀行談的話術</p>
-                <ul class="space-y-1.5">
+            <details v-if="talkPoints.length" class="rounded-xl bg-paper-100 p-4">
+                <summary class="cursor-pointer text-xs font-bold text-ink-400">拿去跟銀行談的話術</summary>
+                <ul class="mt-2 space-y-1.5">
                     <li v-for="(t, i) in talkPoints" :key="i" class="text-[13px] leading-relaxed text-ink-600">{{ t }}</li>
                 </ul>
-            </div>
-            <p class="text-[10px] text-ink-400">檢查基準：廣告利率 2.1%~3% 為 2026 年市場常見「起」利率；開辦費常見 0~3,000 元；綁約期常見 12 個月；提前清償違約金常見 1%~3%；聯徵 3 個月內新業務查詢建議 ≤2 次。實際核貸條件依個人信用而定，本工具為提醒性質，簽約前務必詳閱契約。</p>
+            </details>
+            <p class="text-[10px] text-ink-400">基準：廣告利率 2.1%～3%、開辦費 0～3,000 元、綁約 12 個月、違約金 1%～3%、聯徵 3 個月內 ≤2 次；實際以契約為準。</p>
         </div>
         <div v-else class="rounded-2xl border border-dashed border-paper-300 p-6 text-center">
             <p class="text-sm text-ink-400">輸入銀行開的條件，就會開始逐項檢測。</p>
@@ -137,53 +137,53 @@ const checks = computed(() => {
     if ((apr.value || 0) > 0) {
         push('green', '總費用年百分率有揭露', `銀行給了 ${apr.value}%，這是含所有費用的真實成本，拿這個數字去比價。`);
     } else {
-        push('yellow', '沒填總費用年百分率', '銀行依法應揭露總費用年百分率（APR），這是含開辦費等所有成本的真實利率。沒給的話主動向銀行要，上面已幫你用開辦費估算。');
+        push('yellow', '沒填總費用年百分率', '銀行依法應揭露 APR（真實利率，含所有費用）；沒給就主動向銀行要。');
     }
 
     // 2. 開辦費
     const f = fee.value || 0;
     if (f <= 0) push('green', '開辦費 0 元', '零開辦費方案，直接省一筆。');
     else if (f <= 3000) push('green', `開辦費 ${fmt(f)} 元`, '在市場常見範圍（0~3,000 元）內，合理。');
-    else if (f <= 6000) push('yellow', `開辦費 ${fmt(f)} 元偏高`, '市場常見 0~3,000 元，這個金額偏高，可以問銀行能不能減免或談成零開辦專案。');
-    else push('red', `開辦費 ${fmt(f)} 元過高`, '明顯高於市場常見的 0~3,000 元。開辦費會直接墊高你的實質利率，建議換一家比價。');
+    else if (f <= 6000) push('yellow', `開辦費 ${fmt(f)} 元偏高`, '高於市場常見 0~3,000 元，可問銀行能否減免或改零開辦。');
+    else push('red', `開辦費 ${fmt(f)} 元過高`, '明顯高於市場常見 0~3,000 元，建議換一家比價。');
 
     // 3. 利率話術
     const ar = adRate.value || 0;
     if (ar > 0 && ar < 2) {
-        push('yellow', `廣告利率 ${ar}% 低得不尋常`, '這麼低通常是「首期優惠利率」，第 2 期起會跳回正常利率。務必問清楚：優惠幾期？之後利率多少？');
+        push('yellow', `廣告利率 ${ar}% 低得不尋常`, '通常是「首期優惠利率」，第 2 期起跳回正常利率；問清楚優惠幾期、之後多少。');
     }
     if ((apr.value || 0) > 0 && ar > 0) {
         const gap = apr.value - ar;
         if (gap <= 0.5) push('green', '廣告利率與實質成本接近', `只差 ${gap.toFixed(2)}%，費用灌水不多，廣告算誠實。`);
         else if (gap <= 1.5) push('yellow', '實質成本比廣告高一截', `總費用年百分率 ${apr.value}% 比廣告 ${ar}% 高了 ${gap.toFixed(2)}%，多出來的就是開辦費等費用的效果。`);
-        else push('red', '廣告利率跟實際成本差太多', `差了 ${gap.toFixed(2)}%！廣告利率只是幌子，真正要付的是 ${apr.value}%。這種話術可以直接跳過。`);
+        else push('red', '廣告利率跟實際成本差太多', `差了 ${gap.toFixed(2)}%！真正要付的是 ${apr.value}%，廣告利率只是幌子。`);
     }
 
     // 4. 綁約期
     const lk = lockMonths.value;
     if (lk === 0) push('green', '無綁約', '隨時可提前清償不用付違約金，彈性最大。');
-    else if (lk > 0 && lk <= 12) push('yellow', `綁約 ${lk} 個月`, '市場常見長度。綁約期內提前還款要付違約金，如果你預期一年內會有大筆資金可還款，要精算違約金划不划算。');
-    else if (lk > 12) push('red', `綁約 ${lk} 個月太長`, '超過市場常見的 12 個月。這段期間你被鎖死，提前還款一定被收違約金，建議談短一點或換不綁約方案。');
+    else if (lk > 0 && lk <= 12) push('yellow', `綁約 ${lk} 個月`, '市場常見長度；綁約期內提前還款要付違約金。');
+    else if (lk > 12) push('red', `綁約 ${lk} 個月太長`, '超過市場常見 12 個月，建議談短一點或換不綁約方案。');
     else push('yellow', '綁約期不明', '合約上一定有寫綁約期，沒問清楚不要簽。');
 
     // 5. 違約金
     if ((lk || 0) > 0) {
         const pn = penalty.value;
-        if (pn == null) push('yellow', '違約金比例沒填', '綁約期內提前清償的違約金比例合約上一定有寫，常見 1%~3%。沒問清楚不要簽。');
+        if (pn == null) push('yellow', '違約金比例沒填', '合約上一定有寫，常見 1%~3%；沒問清楚不要簽。');
         else if (pn <= 1) push('green', `違約金 ${pn}%`, '在合理範圍內。');
-        else if (pn <= 3) push('yellow', `違約金 ${pn}%`, '常見範圍的上限。先算一下：如果提前還 50 萬，違約金就是 ' + fmt(500000 * pn / 100) + ' 元。');
-        else push('red', `違約金 ${pn}% 過高`, '超過常見的 1%~3%。提前還 50 萬要被扣 ' + fmt(500000 * pn / 100) + ' 元，非常不划算。');
+        else if (pn <= 3) push('yellow', `違約金 ${pn}%`, '常見範圍上限；提前還 50 萬，違約金 ' + fmt(500000 * pn / 100) + ' 元。');
+        else push('red', `違約金 ${pn}% 過高`, '超過常見 1%~3%；提前還 50 萬要被扣 ' + fmt(500000 * pn / 100) + ' 元。');
     }
 
     // 6. 搭售
-    if (bundled.value) push('yellow', '有搭售保險／商品', '金管會規定銀行不能強制搭售。你可以拒絕，或要求把保險拆開單獨評估——通常拆開後會發現根本不需要買。');
+    if (bundled.value) push('yellow', '有搭售保險／商品', '銀行不能強制搭售；可拒絕或要求拆開單獨評估。');
     else push('green', '無搭售', '利率是乾淨的，沒有被綁其他商品。');
 
     // 7. 聯徵
     const iq = inquiries.value;
-    if (iq == null) push('yellow', '聯徵查詢次數不明', '回想一下近 3 個月為了比價送了幾家。超過 2 次會開始傷信用評分。');
-    else if (iq <= 2) push('green', `近 3 個月查詢 ${iq} 次`, '在安全範圍內。提醒：30 天內多家銀行的新授信查詢會被視為同一筆，比價盡量集中在 30 天內。');
-    else push('red', `近 3 個月查詢 ${iq} 次過多`, '短期多次查詢會拉低信用評分，反而讓後面申請的利率更差。先暫停送件，等 3 個月再說。');
+    if (iq == null) push('yellow', '聯徵查詢次數不明', '近 3 個月送了幾家？超過 2 次會傷信用評分。');
+    else if (iq <= 2) push('green', `近 3 個月查詢 ${iq} 次`, '在安全範圍內；30 天內多家查詢視為同一筆，比價集中在 30 天內。');
+    else push('red', `近 3 個月查詢 ${iq} 次過多`, '短期多次查詢會拉低評分；先暫停送件，等 3 個月再說。');
 
     return list;
 });

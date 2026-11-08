@@ -14,7 +14,6 @@
                 <input id="fld-6e7c6ae1" type="text" inputmode="decimal" v-model.number="years" min="1" max="40" aria-label="投資年數"
                 class="input-clean font-semibold">
             </div>
-            <p class="text-[11px] text-ink-400">年化報酬是拿歷史長期大概估的（含配息），不是保證賺。0050/006208 跟台灣 50（市值型），0056 跟高股息指數。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-3 items-stretch">
@@ -36,17 +35,17 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-400">每月定期定額、複利估的，沒算手續費跟稅；0056 配息多，但長期總報酬通常輸市值型。</p>
+            <p class="text-[10px] text-ink-400">年化報酬為歷史長期概估（含配息），沒算手續費跟稅，不是保證。</p>
         </div>
 
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
             <a href="/tools/real-return-calculator"
                 class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
-                看扣掉通膨後真正賺多少
+                看實質報酬
                 <span aria-hidden="true">→</span>
             </a>
         </div>
@@ -78,7 +77,7 @@ const insight = computed(() => {
     const a = fv(rates.a), c = fv(rates.c)
     const diff = a - c
     if (diff <= 0) return '三檔差異不大，可依配息需求選擇。'
-    return `長期定期定額下來，市值型（0050/006208）最後大概比高股息（0056）多 $ ${fmt(diff)}。市值型拼的是總資產變大，高股息拼的是每月有錢領——先想清楚你要哪一種。`
+    return `長期定期定額下來，市值型（0050/006208）最後大概比高股息（0056）多 $${fmt(diff)}。市值型拼總資產變大，高股息拼每月有錢領。`
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

@@ -1,10 +1,10 @@
 <template>
-  <div class="fixed bottom-5 right-5 z-[9999] flex flex-col items-end gap-3">
+  <div class="fixed bottom-5 right-5 z-30 flex flex-col items-end gap-3">
     <!-- 聊天面板 -->
     <transition name="pop">
       <div
         v-if="open"
-        class="w-[calc(100vw-2.5rem)] max-w-[380px] h-[min(540px,70vh)] bg-paper-50 border border-ink-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        class="w-[calc(100vw-2.5rem)] max-w-[380px] h-[min(480px,60vh)] bg-paper-50 border border-ink-100 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         role="dialog"
         aria-label="小算 AI 助手"
       >
@@ -182,7 +182,8 @@ async function retry() {
 
 onMounted(() => {
   try {
-    if (!localStorage.getItem('taicalc-assistant-seen')) {
+    // 首次提示泡泡只在桌面顯示，手機版不擋工具區
+    if (window.matchMedia('(min-width: 768px)').matches && !localStorage.getItem('taicalc-assistant-seen')) {
       setTimeout(() => { if (!open.value) showHint.value = true; }, 2500);
       setTimeout(() => { showHint.value = false; }, 12000);
     }

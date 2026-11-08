@@ -8,7 +8,7 @@ const keywords = "訂閱管理,自動續訂,取消訂閱,Netflix取消,Spotify�
 const faqs = [
     {
         q: "「最晚取消日」是什麼？為什麼要設？",
-        a: "很多訂閱不是扣款當天取消就好：有些平台要求提前 24 小時以上取消，有些則是取消後要等帳單週期結束。最晚取消日就是「想取消的話，最晚要在這天之前動手」的日子，預設是下次扣款日前一天，你也可以按各平台規則往前調。期限剩 3 天內會紅色警示。"
+        a: "有些平台要求提前24小時以上取消，有些取消後要等帳單週期結束。最晚取消日即最晚動手那天，預設為下次扣款日前一天，可按平台規則往前調；剩3天內紅色警示。"
     },
     {
         q: "我的訂閱資料存在哪裡？會上傳嗎？",
@@ -100,7 +100,7 @@ const faqs = [
                     </div>
                     <label>首次扣款日 *</label>
                     <input id="st-f_first_billing" type="date">
-                    <label>最晚取消日 <span class="st-hint">想取消要在這天之前動手，否則被續扣（預設為下次扣款日前一天）</span></label>
+                    <label>最晚取消日</label>
                     <input id="st-f_cancel_by" type="date">
                     <div class="st-grid2">
                         <div><label>狀態</label>
@@ -661,7 +661,8 @@ const faqs = [
             .st-card h3 { font-size: 0.95rem; font-weight: 700; color: #25231F; margin: 0 0 0.6rem; }
             .st-card h4 { font-size: 0.875rem; font-weight: 700; color: #25231F; margin: 1rem 0 0.35rem; }
             .st-card ol { margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.85rem; line-height: 1.8; color: #4A463B; }
-            .st-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.9rem; }
+            .st-grid2 { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 0.9rem; }
+            @media (min-width: 640px) { .st-grid2 { grid-template-columns: 1fr 1fr; } }
             .st-stat { text-align: center; margin-bottom: 0; }
             .st-big { font-size: 1.5rem; font-weight: 800; color: #25231F; }
             .st-label { font-size: 0.75rem; color: #78716c; margin-top: 0.2rem; }
@@ -671,7 +672,7 @@ const faqs = [
             .st-banner { border-radius: 0.9rem; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 600; line-height: 1.7; margin-bottom: 0.9rem; background: #FFF7E6; border: 1px solid #F0D9A8; color: #7C5A1E; }
             .st-total { background: #F4F8F4; border-color: #CBDCCB; }
             .st-total-row { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-            .st-total-num { font-size: 1.65rem; font-weight: 800; color: #245F40; letter-spacing: -0.01em; }
+            .st-total-num { font-size: 1.65rem; font-weight: 800; color: #245F40; letter-spacing: -0.01em; white-space: nowrap; }
             .st-total-side { text-align: right; font-size: 0.78rem; color: #78716c; line-height: 1.7; }
             .st-banner.st-danger { background: #FDECEA; border-color: #F5B5AE; color: #9B2C1F; }
             .st-banner.st-ok { background: #EDF5EF; border-color: #B8D5BF; color: #245F40; }
@@ -692,7 +693,7 @@ const faqs = [
             .st-subcard.st-cancelled { opacity: 0.65; }
             .st-name { font-size: 1rem; font-weight: 700; color: #25231F; }
             .st-meta { font-size: 0.78rem; color: #78716c; margin-top: 0.25rem; }
-            .st-cancel { font-size: 0.82rem; font-weight: 700; color: #7C5A1E; margin-top: 0.45rem; }
+            .st-cancel { font-size: 0.82rem; font-weight: 700; color: #7C5A1E; margin-top: 0.45rem; white-space: nowrap; }
             .st-cancel.st-urgent { color: #9B2C1F; }
             .st-count { font-size: 0.85rem; font-weight: 700; color: #245F40; }
             .st-count.st-soon { color: #9B2C1F; }
@@ -703,14 +704,6 @@ const faqs = [
             .st-empty { text-align: center; color: #78716c; font-size: 0.85rem; line-height: 2; padding: 2.5rem 0; }
             .st-hist { margin-top: 0.5rem; }
             .st-hist summary { cursor: pointer; font-size: 0.85rem; color: #78716c; padding: 0.5rem 0; }
-            .st-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
-            .st-cal-head button { font-size: 1.4rem; line-height: 1; padding: 0.2rem 0.7rem; border: 1px solid #E8E4DA; border-radius: 0.6rem; background: #fff; cursor: pointer; color: #4A463B; }
-            .st-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 0.75rem; }
-            .st-dow { text-align: center; font-weight: 700; color: #78716c; padding: 0.3rem 0; }
-            .st-day { min-height: 2.6rem; border-radius: 0.4rem; padding: 0.2rem; text-align: center; color: #4A463B; background: #FFFCF4; }
-            .st-day.st-other { background: transparent; }
-            .st-dot { width: 6px; height: 6px; border-radius: 999px; background: #C0392B; margin: 2px auto 0; }
-            .st-dot.st-warn { background: #E67E22; }
             .st-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.8rem; }
             .st-chips button { font-size: 0.78rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid #D8E9DC; background: #EDF5EF; color: #245F40; cursor: pointer; }
             .st-f label { display: block; font-size: 0.82rem; font-weight: 600; color: #4A463B; margin: 0.7rem 0 0.25rem; }
@@ -731,7 +724,7 @@ const faqs = [
         <ul class="list-disc pl-5 space-y-2">
             <li><strong>一鍵帶入常用訂閱：</strong>新增頁點一下 Netflix、Spotify 等預設，金額週期自動填好，只要選首次扣款日。</li>
             <li><strong>設定最晚取消日：</strong>預設為下次扣款日前一天；若平台要求提早取消（或你想留緩衝），可以往前調。</li>
-            <li><strong>每天看一眼首頁：</strong>取消期限倒數、7 天內扣款、每月花費分佈一次看清；月曆上紅點是扣款日、橘點是最晚取消日。</li>
+            <li><strong>每天看一眼首頁：</strong>取消期限倒數、7 天內扣款、每月花費分佈一次看清。</li>
         </ul>
 
         <h3>取消訂閱的三個好習慣</h3>

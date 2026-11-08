@@ -9,7 +9,7 @@
             v-for="role in roles"
             :key="role.id"
             @click="currentRole = role.id"
-            class="py-2.5 px-2 text-sm font-bold rounded-xl border transition-all truncate"
+            class="py-2.5 px-2 text-sm font-bold rounded-xl border transition-all whitespace-nowrap"
             :class="
               currentRole === role.id
                 ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
@@ -34,8 +34,8 @@
         </div>
         <p class="text-xs text-ink-400 mt-2">
           對應投保級距：<span class="font-bold text-ink-500">{{ fmt(matchedBracket) }}</span> 元
-          <span v-if="salary < MINIMUM_WAGE" class="text-red-500 ml-1">(低於基本工資 29,500)</span>
         </p>
+        <p v-if="salary < MINIMUM_WAGE" class="text-xs text-red-500 mt-1">低於基本工資 29,500 元</p>
       </div>
 
       <!-- Dependents -->
@@ -65,16 +65,16 @@
         <div class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-ink-600">你每個月要繳</h3>
-            <span class="text-2xl font-bold font-mono text-brand-600">{{ fmt(result.workerTotal) }}</span>
+            <span class="text-2xl font-bold font-mono text-brand-600 whitespace-nowrap">{{ fmt(result.workerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
               <span>勞保費</span>
-              <span>{{ fmt(result.workerLabor) }}</span>
+              <span class="whitespace-nowrap">{{ fmt(result.workerLabor) }}</span>
             </div>
             <div class="flex justify-between">
               <span>健保費</span>
-              <span>{{ fmt(result.workerHealth) }}</span>
+              <span class="whitespace-nowrap">{{ fmt(result.workerHealth) }}</span>
             </div>
           </div>
         </div>
@@ -83,20 +83,20 @@
         <div v-if="currentRole === 'employee'" class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-ink-600">老闆每個月要繳</h3>
-            <span class="text-2xl font-bold font-mono text-ink-500">{{ fmt(result.employerTotal) }}</span>
+            <span class="text-2xl font-bold font-mono text-ink-500 whitespace-nowrap">{{ fmt(result.employerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
               <span>勞保費</span>
-              <span>{{ fmt(result.employerLabor) }}</span>
+              <span class="whitespace-nowrap">{{ fmt(result.employerLabor) }}</span>
             </div>
             <div class="flex justify-between">
               <span>健保費</span>
-              <span>{{ fmt(result.employerHealth) }}</span>
+              <span class="whitespace-nowrap">{{ fmt(result.employerHealth) }}</span>
             </div>
             <div class="flex justify-between">
               <span>勞退 (6%)</span>
-              <span>{{ fmt(result.employerPension) }}</span>
+              <span class="whitespace-nowrap">{{ fmt(result.employerPension) }}</span>
             </div>
           </div>
         </div>
@@ -147,9 +147,9 @@ import { MINIMUM_WAGE } from '../../data/calculators/taiwanInsurance';
 import { calculateInsurancePremiums } from '../../utils/calculators/insurance';
 
 const roles = [
-  { id: 'employee', label: '一般勞工' },
-  { id: 'union', label: '職業工會' },
-  { id: 'employer', label: '雇主/負責人' },
+  { id: 'employee', label: '勞工' },
+  { id: 'union', label: '工會' },
+  { id: 'employer', label: '雇主' },
 ];
 const currentRole = ref('employee');
 const salary = ref(35000);

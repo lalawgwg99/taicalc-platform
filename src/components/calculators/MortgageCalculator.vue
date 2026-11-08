@@ -41,8 +41,12 @@
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
                 </div>
                 <p v-if="preset === 'newYouth'" class="text-[11px] text-ink-400 mt-1.5 leading-5">
-                    青安3.0 一段式採「3+3」退場：前 3 年 1.775%，第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%。本試算以現行優惠利率估算，實際總利息會更高。
+                    前 3 年 1.775%，之後逐年退場至 2.275%。
                 </p>
+                <details v-if="preset === 'newYouth'" class="text-[11px] text-ink-400 mt-1">
+                    <summary class="cursor-pointer">退場明細</summary>
+                    <p class="mt-1 leading-5">第 4 年 1.9%、第 5 年 2.025%、第 6 年 2.15%、第 7 年起 2.275%。本試算以現行優惠利率估算，實際總利息會更高。</p>
+                </details>
             </div>
         </div>
             <!-- 央行即時利率提示 -->
@@ -112,18 +116,18 @@
 
             <!-- 無寬限期 -->
             <div v-else class="text-center">
-                <p class="stat-value-lg text-azure">$ {{ fmt(results.basePay) }}</p>
+                <p class="stat-value-lg text-azure">${{ fmt(results.basePay) }}</p>
             </div>
 
             <!-- 摘要統計 -->
             <div class="grid grid-cols-2 gap-3 mt-5">
                 <div class="bg-paper-200/60 rounded-xl p-3">
                     <p class="text-xs text-ink-400 mb-0.5">利息總共繳多少</p>
-                    <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ fmt(results.totalInterest) }}</p>
+                    <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(results.totalInterest) }}</p>
                 </div>
                 <div class="bg-paper-200/60 rounded-xl p-3">
                     <p class="text-xs text-ink-400 mb-0.5">全部總共要繳</p>
-                    <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ fmt(results.totalPayment) }}</p>
+                    <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(results.totalPayment) }}</p>
                 </div>
             </div>
 
@@ -181,7 +185,7 @@
               @click="showSchedule = !showSchedule" 
               class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"
             >
-              {{ showSchedule ? '收起年度明細 ▲' : `展開 ${Math.max(1, years || 0) * 12} 期年度還款明細 ▼` }}
+              {{ showSchedule ? '收起 ▲' : '年度明細 ▼' }}
             </button>
           </div>
 
@@ -190,10 +194,10 @@
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-ink-100 text-ink-400 font-sans">
-                  <th class="py-1.5">年度</th>
-                  <th class="py-1.5 text-right">當年還本金</th>
-                  <th class="py-1.5 text-right">當年繳利息</th>
-                  <th class="py-1.5 text-right">年底還欠多少</th>
+                  <th class="py-1.5 whitespace-nowrap">年度</th>
+                  <th class="py-1.5 text-right whitespace-nowrap">當年還本金</th>
+                  <th class="py-1.5 text-right whitespace-nowrap">當年繳利息</th>
+                  <th class="py-1.5 text-right whitespace-nowrap">年底還欠多少</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-paper-100">
@@ -220,20 +224,19 @@
         <!-- 月付房租比 -->
         <div class="note-box">
             <p>月付金佔稅前月薪比例建議不超過 <strong>30~40%</strong>。</p>
-            <p class="mt-1">用本息分期攤還法計算。青安3.0 自 2026-08-01 起補貼採「3+3」逐年退場；預設先以現行優惠利率 1.775% 試算，實際利率以承貸銀行通知為準。</p>
         </div>
 
         <!-- 分享列 -->
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
                 {{ shareCopied ? '已複製連結 ✓' : '複製分享連結' }}
             </button>
             <button @click="downloadCard"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
                 </svg>

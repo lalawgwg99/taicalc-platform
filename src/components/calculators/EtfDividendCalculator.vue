@@ -55,7 +55,7 @@
                 :rows="[
                     { label: '一年配息率', value: annualYield !== null ? `${annualYield}%` : '請輸入股價', tone: 'growth' },
                     { label: '月均配息（約）', value: `$ ${fmt(Math.round(annualNet / 12))}` },
-                    { label: '一年實際拿到（扣掉健保補充保費）', value: `$ ${fmt(annualNet)}` },
+                    { label: '一年實拿', value: `$ ${fmt(annualNet)}` },
                 ]"
             />
         </div>
@@ -63,7 +63,6 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-400">這是大概估的。配息可以併進綜合所得稅（8.5% 抵稅、上限 8 萬）或選 28% 分開算，實際繳多少以報稅結果為準。</p>
         </div>
 
         <div class="flex gap-2">
@@ -73,8 +72,8 @@
                 <span aria-hidden="true">→</span>
             </a>
             <a href="/tools/real-return-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
-                看扣掉通膨後真正賺多少
+                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                看實質報酬
                 <span aria-hidden="true">→</span>
             </a>
         </div>
@@ -116,11 +115,11 @@ const annualYield = computed(() => {
 const insight = computed(() => {
     const parts = []
     if (totalDividend.value >= SUPP_THRESHOLD) {
-        parts.push(`這次配息有到門檻，要扣 2.11%（$ ${fmt(suppFee.value)}），實際拿到 $ ${fmt(netDividend.value)}。`)
+        parts.push(`這次配息有到門檻，要扣 2.11%（$${fmt(suppFee.value)}），實際拿到 $${fmt(netDividend.value)}。`)
     } else {
         parts.push('這次沒到 2 萬門檻，不用扣補充保費。')
     }
-    parts.push('提醒一下：配息不是多賺的——除息那天股價會跟著往下扣，真正要看的是「含息總報酬」有沒有賺。')
+    parts.push('配息不是多賺的：除息日股價會跟著跌，看含息總報酬。')
     return parts.join(' ')
 })
 

@@ -21,7 +21,6 @@
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
-            <p class="text-[11px] text-ink-400">年化報酬是拿歷史大概估的：定存 1.5%、債券型 3.5%、股票型 ETF 7%。下面的金額都已經扣掉通膨了。</p>
         </div>
 
         <div class="grid gap-3 md:grid-cols-3 items-stretch">
@@ -43,17 +42,17 @@
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">重點</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
-            <p class="text-[10px] text-ink-400">單筆投入、複利大概估的，沒算稅跟手續費。報酬高的波動也大，照自己受得了的風險來配。</p>
+            <p class="text-[10px] text-ink-400">單筆投入、複利概估，沒算稅跟手續費。</p>
         </div>
 
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
             <a href="/tools/real-return-calculator"
                 class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
-                進階：看扣掉通膨真正賺多少
+                看實質報酬
                 <span aria-hidden="true">→</span>
             </a>
         </div>

@@ -6,13 +6,13 @@
           <label for="ub-salary" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">離職前 6 個月平均月投保薪資 (NT$)</label>
           <input id="ub-salary" type="text" inputmode="decimal" v-model.number="averageSalary"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
-          <p class="mt-1.5 text-[11px] text-ink-400">前 6 個月投保薪資合計 ÷ 6；投保未滿 6 個月按實際投保期間計算。</p>
+          <p class="mt-1.5 text-[11px] text-ink-400">前 6 個月合計 ÷ 6。</p>
         </div>
         <div>
           <label for="ub-age" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">離職時年齡</label>
           <input id="ub-age" type="text" inputmode="decimal" v-model.number="age"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
-          <p class="mt-1.5 text-[11px] text-ink-400">離職時年滿 45 歲，最長可領 9 個月；未滿 45 歲最長 6 個月。</p>
+          <p class="mt-1.5 text-[11px] text-ink-400">年滿 45 歲最長 9 個月，未滿 6 個月。</p>
         </div>
         <div class="md:col-span-2">
           <label class="flex items-center gap-2 text-sm text-ink-700">
@@ -24,7 +24,7 @@
           <label for="ub-dependents" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">受扶養眷屬人數（0–2 名）</label>
           <input id="ub-dependents" type="number" min="0" max="2" step="1" inputmode="numeric" v-model.number="dependents"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
-          <p class="mt-1.5 text-[11px] text-ink-400">每名加給平均月投保薪資 10%，最多 2 名；超過 2 名仍按 2 名計算。</p>
+          <p class="mt-1.5 text-[11px] text-ink-400">每名 +10%，最多 2 名。</p>
         </div>
       </div>
 
@@ -34,7 +34,7 @@
           <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(result.monthly) }}
           </p>
-          <p class="mt-2 text-xs text-ink-400">平均月投保薪資 ${{ fmt(num(averageSalary)) }} × {{ 60 + 10 * clampedDependents }}%<span v-if="clampedDependents > 0">（60% ＋ 扶養加給 {{ clampedDependents }} 名 × 10%）</span></p>
+          <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">平均月投保薪資 ${{ fmt(num(averageSalary)) }} × {{ 60 + 10 * clampedDependents }}%</p>
         </div>
 
         <div class="grid grid-cols-2 gap-4 text-center">
@@ -48,7 +48,7 @@
           </div>
         </div>
 
-        <p class="mt-5 text-xs leading-5 text-ink-400">實際領取月數依求職情形而定，領滿是上限不是保證。扶養眷屬加給已納入計算：每名受扶養眷屬加給平均月投保薪資 10%、最多 2 名，月給付＝平均薪資 ×（60% ＋ 10% × 人數）。請領須符合非自願離職等法定要件並辦理求職登記，實際金額以勞保局核定為準。</p>
+        <p class="mt-5 text-xs leading-5 text-ink-400">領滿是上限不是保證。須非自願離職＋求職登記，金額以勞保局核定為準。</p>
       </div>
     </div>
   </div>

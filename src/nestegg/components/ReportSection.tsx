@@ -112,7 +112,7 @@ export function ReportSection({ input, params, outcomes }: Props) {
       <h3>{r.yearlyTitle}</h3>
       <p>{r.yearlyIntro}</p>
       {yearlyRows.length > 0 ? (
-        <div className="scenario-table-wrap">
+        <div className="scenario-table-wrap report-yearly-wrap">
           <table className="scenario-table report-yearly-table">
             <thead>
               <tr><th>{r.colYear}</th><th>{r.colAge}</th><th>{r.colAssets}</th><th>{r.colExpense}</th></tr>
@@ -131,6 +131,19 @@ export function ReportSection({ input, params, outcomes }: Props) {
         </div>
       ) : (
         <p>{r.invalid}</p>
+      )}
+      {yearlyRows.length > 0 && (
+        <div className="report-yearly-cards">
+          {yearlyRows.map((row) => (
+            <div key={row.year} className="report-yearly-card">
+              <div className="ry-head">{r.colYear} {row.year}（{r.colAge} {row.age.toFixed(1)}）</div>
+              <div className="ry-rows">
+                <div>{r.colAssets}<strong>{formatMoney(row.assetsNominal)}</strong></div>
+                <div>{r.colExpense}<strong>{formatMoney(row.expenseNominal)}</strong></div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       <h3>{r.assumptionsTitle}</h3>

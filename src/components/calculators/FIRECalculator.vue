@@ -81,9 +81,7 @@
             <div v-if="liveCPI" class="flex items-center gap-2 mt-2 bg-red-50 rounded-lg px-3 py-1.5 animate-fade-in-up">
               <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></span>
               <span class="text-[11px] text-red-600 flex-1">
-                主計總處最新 CPI <strong>{{ liveCPI.rate }}%</strong>
-                <span class="text-[10px] text-red-400 ml-1">（{{ liveCPI.period }}）</span>
-              </span>
+                主計總處最新 CPI <strong>{{ liveCPI.rate }}%</strong>              </span>
               <button @click="inflationRate = parseFloat(liveCPI.rate)"
                       class="text-[11px] font-medium text-red-600 hover:text-red-800 transition-colors flex-shrink-0">
                 套用 →
@@ -115,7 +113,7 @@
             :style="{ width: progressPercent + '%' }"></div>
         </div>
         <div class="flex justify-between mt-2 text-[11px] text-ink-400">
-          <span>目前：${{ fmt(currentNetWorth || 0) }}</span>
+          <span class="whitespace-nowrap">目前：${{ fmt(currentNetWorth || 0) }}</span>
           <span class="text-azure font-medium">{{ progressPercent }}%</span>
         </div>
       </div>
@@ -161,10 +159,10 @@
     </div>
 
     <!-- 分析小卡 -->
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
       <div class="card-surface p-3 text-center">
-        <p class="stat-label">現在資產每個月生的錢</p>
-        <p class="text-base font-semibold text-ink-700 tabular-nums">
+        <p class="stat-label">每月被動收入</p>
+        <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">
           ${{ fmt(Math.floor((currentNetWorth * 0.04) / 12)) }}
         </p>
         <p class="text-[10px] text-ink-400 mt-0.5">月領</p>
@@ -177,7 +175,7 @@
       </div>
       <div class="card-surface p-3 text-center">
         <p class="stat-label">每月多存 1 萬</p>
-        <p class="text-base font-semibold text-azure tabular-nums">{{ saveMoreImpact }}<span v-if="saveMoreImpact !== '—'"> 年</span></p>
+        <p class="text-base font-semibold text-azure tabular-nums whitespace-nowrap">{{ saveMoreImpact }}<span v-if="saveMoreImpact !== '—'"> 年</span></p>
         <p class="text-[10px] text-ink-400 mt-0.5">提早退休</p>
       </div>
     </div>

@@ -54,7 +54,7 @@ const articleSchema = JSON.stringify({
         <span>/</span>
         <a href="/blog" class="hover:text-ink-700 transition-colors">專欄文章</a>
         <span>/</span>
-        <span class="text-ink-700 font-medium truncate max-w-[200px]">{post.data.title}</span>
+        <span class="text-ink-700 font-medium">{post.data.category}</span>
     </div>
 
     <article class="editorial-article max-w-3xl mx-auto">
@@ -66,7 +66,7 @@ const articleSchema = JSON.stringify({
                 </span>
                 <time class="text-sm text-ink-400">{post.data.date}</time>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold text-ink-700 tracking-tight leading-tight mb-6">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-ink-700 tracking-tight leading-tight mb-6">
                 {post.data.title}
             </h1>
             
@@ -174,7 +174,7 @@ const articleSchema = JSON.stringify({
     }
     .prose-light th,
     .prose-light td {
-        min-width: 9rem;
+        min-width: 5rem;
         padding: 0.75rem;
         border-bottom: 1px solid #e7e5e4;
         text-align: left;

@@ -30,31 +30,24 @@
           <label>持有股數<input v-model.number="shares" type="text" inputmode="decimal" min="0" step="1" class="input-clean" /></label>
           <label v-if="activeAsset.currency === 'USD'">美元匯率<input v-model.number="exchangeRate" type="text" inputmode="decimal" min="0" step="0.01" class="input-clean" /></label>
         </div>
-        <button type="button" class="mt-3 rounded-xl bg-brand-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-brand-800" @click="useHoldingValue">帶入起始資金 {{ money(holdingValue) }}</button>
+        <button type="button" class="mt-3 rounded-xl bg-brand-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-brand-800" @click="useHoldingValue">帶入起始資金<br /><span class="whitespace-nowrap">{{ money(holdingValue) }}</span></button>
         </div>
       </details>
-      <div class="mt-6 rounded-2xl bg-paper-200 p-4">
-        <p class="text-xs font-semibold tracking-[.08em] text-ink-500">兩種思考鏡頭</p>
-        <div class="mt-3 grid gap-3 sm:grid-cols-2">
-          <div><strong class="text-sm text-ink-700">指數與分散</strong><p class="mt-1 text-xs leading-5 text-ink-500">不把擊敗市場當前提；重視低成本、分散與長期持有。</p></div>
-          <div><strong class="text-sm text-ink-700">紀律與續航</strong><p class="mt-1 text-xs leading-5 text-ink-500">把可持續投入和面對波動的行為，放在報酬假設之前。</p></div>
-        </div>
-      </div>
     </div>
     <aside class="rounded-3xl bg-paper-800 p-5 text-white shadow-sm sm:p-7">
       <p class="text-xs font-semibold tracking-[.12em] text-brand-200">換算成今天的錢</p>
-      <p class="mt-2 text-4xl font-semibold tracking-tight">{{ money(result.realValue) }}</p>
+      <p class="mt-2 whitespace-nowrap text-4xl font-semibold tracking-tight">{{ money(result.realValue) }}</p>
       <p class="mt-2 text-sm leading-6 text-ink-200">用今天的錢來算；不是保證未來帳戶有這麼多。</p>
       <div class="mt-6 grid grid-cols-2 gap-3">
-        <div v-for="item in metrics" :key="item.label" class="rounded-2xl border border-white/15 bg-white/5 p-4"><p class="text-xs text-ink-200">{{ item.label }}</p><strong class="mt-1 block text-lg text-white">{{ item.value }}</strong></div>
+        <div v-for="item in metrics" :key="item.label" class="rounded-2xl border border-white/15 bg-white/5 p-4"><p class="text-xs text-ink-200">{{ item.label }}</p><strong class="mt-1 block whitespace-nowrap text-lg text-white">{{ item.value }}</strong></div>
       </div>
       <div class="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4">
-        <div class="flex items-end justify-between gap-4"><div><p class="text-xs text-ink-200">如果利息都沒有再投入</p><strong class="mt-1 block text-xl">{{ money(result.simpleValue) }}</strong></div><div class="text-right"><p class="text-xs text-ink-200">利息再投入，幫你多賺的</p><strong class="mt-1 block text-lg text-brand-200">{{ money(result.compoundGain) }}</strong></div></div>
+        <div class="flex items-end justify-between gap-4"><div><p class="text-xs text-ink-200">如果利息都沒有再投入</p><strong class="mt-1 block whitespace-nowrap text-xl">{{ money(result.simpleValue) }}</strong></div><div class="text-right"><p class="text-xs text-ink-200">利息再投入，幫你多賺的</p><strong class="mt-1 block whitespace-nowrap text-lg text-brand-200">{{ money(result.compoundGain) }}</strong></div></div>
         <p class="mt-2 text-[11px] leading-5 text-ink-200">單利：利息不滾進本金；複利：利息繼續滾，越滾越多。</p>
       </div>
       <div class="mt-5 rounded-2xl border border-white/15 bg-white/5 p-4">
         <p class="text-xs font-semibold text-brand-100">如果中間遇到大跌，會變怎樣</p>
-        <p class="mt-2 text-sm leading-6 text-ink-100">如果第 {{ shockYear }} 年大跌 {{ drawdown }}%，你照樣每個月投，最後大概是 <strong>{{ money(shockResult) }}</strong>。這只是照假設計算的，不是市場保證。</p>
+        <p class="mt-2 text-sm leading-6 text-ink-100">第 {{ shockYear }} 年跌 {{ drawdown }}% 後，照樣每月投，最後大概是 <strong>{{ money(shockResult) }}</strong>。</p>
         <div class="mt-3 flex gap-2"><label class="flex-1 text-xs text-ink-200">第幾年跌<input v-model.number="shockYear" type="text" inputmode="decimal" min="1" :max="years" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label><label class="flex-1 text-xs text-ink-200">跌多少 %<input v-model.number="drawdown" type="text" inputmode="decimal" min="0" max="100" class="mt-1 w-full rounded-lg border border-white/20 bg-white/10 px-2 py-1.5 text-white" /></label></div>
       </div>
       <div class="mt-5 flex justify-center">

@@ -42,7 +42,7 @@
       </div>
 
       <h2 class="text-sm font-bold text-ink-700 mt-8 mb-1">轉貸一次性成本（可修改）</h2>
-      <p class="text-[11px] leading-5 text-ink-400 mb-4">預設值是市場常見範圍，不是官方定價，實際金額以銀行與代書報價為準。抵押權設定規費是法定費用：設定金額（通常為貸款金額 1.2 倍）的千分之一，會依餘額自動估算，可再自行調整。</p>
+      <p class="text-[11px] leading-5 text-ink-400 mb-4">金額為市場常見範圍，以銀行／代書報價為準。</p>
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div>
           <label for="rf-penalty" class="block text-xs font-semibold text-ink-400 mb-2">提前清償違約金 (NT$)</label>
@@ -54,8 +54,7 @@
           <label for="rf-scrivener" class="block text-xs font-semibold text-ink-400 mb-2">代書費 (NT$)</label>
           <input id="rf-scrivener" type="text" inputmode="decimal" v-model.number="scrivener"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
-          <p class="mt-1 text-[11px] text-ink-400">塗銷＋新設定代書費，市場常見 10,000～20,000 元。</p>
-        </div>
+                  </div>
         <div>
           <label for="rf-setting" class="block text-xs font-semibold text-ink-400 mb-2">抵押權設定規費 (NT$)</label>
           <input id="rf-setting" type="text" inputmode="decimal" v-model.number="settingFee"
@@ -66,20 +65,17 @@
           <label for="rf-appraisal" class="block text-xs font-semibold text-ink-400 mb-2">鑑價費 (NT$)</label>
           <input id="rf-appraisal" type="text" inputmode="decimal" v-model.number="appraisal"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
-          <p class="mt-1 text-[11px] text-ink-400">市場常見 3,000～5,000 元，部分銀行免收。</p>
-        </div>
+                  </div>
         <div>
           <label for="rf-bankfee" class="block text-xs font-semibold text-ink-400 mb-2">銀行開辦／手續費 (NT$)</label>
           <input id="rf-bankfee" type="text" inputmode="decimal" v-model.number="bankFee"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
-          <p class="mt-1 text-[11px] text-ink-400">各銀行方案不同，常見 3,000～9,000 元，也有 0 開辦費方案。</p>
-        </div>
+                  </div>
         <div>
           <label for="rf-other" class="block text-xs font-semibold text-ink-400 mb-2">其他費用 (NT$)</label>
           <input id="rf-other" type="text" inputmode="decimal" v-model.number="otherFee"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
-          <p class="mt-1 text-[11px] text-ink-400">火險、地震險重辦等雜費，沒有就填 0。</p>
-        </div>
+                  </div>
       </div>
 
       <div v-if="yearsInvalid" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
@@ -97,32 +93,31 @@
           <div>
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">每月少付</p>
             <p class="text-4xl font-bold text-ink-800 font-mono tracking-tight"><span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(monthlySaving) }}</p>
-            <p class="mt-2 text-xs text-ink-400">目前月付 ${{ fmt(oldPayment) }} → 轉貸月付 ${{ fmt(newPayment) }}</p>
+            <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">目前月付 ${{ fmt(oldPayment) }} → 轉貸月付 ${{ fmt(newPayment) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">回本時間</p>
             <p class="text-4xl font-bold text-brand-700 font-mono tracking-tight">{{ breakevenText }}</p>
-            <p class="mt-2 text-xs text-ink-400">一次性成本 ${{ fmt(totalCost) }} ÷ 每月少付 ${{ fmt(monthlySaving) }}</p>
+            <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">一次性成本 ${{ fmt(totalCost) }} ÷ 每月少付 ${{ fmt(monthlySaving) }}</p>
           </div>
         </div>
-        <div class="grid grid-cols-3 gap-4 text-center pt-6 mt-6 border-t border-ink-100">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 text-center pt-6 mt-6 border-t border-ink-100">
           <div>
             <p class="text-xs text-ink-400 mb-1">不轉貸：剩餘總利息</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(oldTotalInterest) }}</p>
+            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(oldTotalInterest) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">轉貸後：總利息</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(newTotalInterest) }}</p>
+            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(newTotalInterest) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">全期淨效益（利息差 − 成本）</p>
-            <p class="text-lg font-bold font-mono" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</p>
+            <p class="text-lg font-bold font-mono whitespace-nowrap" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</p>
           </div>
         </div>
         <div class="mt-5 rounded-xl bg-paper-100 border border-paper-300 p-4 text-left">
           <p class="text-xs leading-6 text-ink-600">
-            <strong>同年期對照：</strong>若新貸款年期和剩餘年期相同（{{ remainingYears || 0 }} 年），新月付是 ${{ fmt(newPaymentSameTerm) }}，每月少付 ${{ fmt(sameTermSaving) }}，回本 {{ sameTermBreakevenText }}。
-            年期不同時，月付差額有一部分來自「借久一點」，不是利率省下的，這個對照把年期因素排除。
+            <strong>同年期對照：</strong>新月付 ${{ fmt(newPaymentSameTerm) }}，月省 ${{ fmt(sameTermSaving) }}，回本 {{ sameTermBreakevenText }}。
           </p>
           <p class="mt-2 text-xs leading-6 text-ink-600">
             <strong>持有期間判斷：</strong>你預計再持有 {{ holdYears || 0 }} 年（{{ holdMonths }} 個月），回本需要 {{ breakevenMonths === Infinity ? '—' : breakevenMonths + ' 個月' }}。
@@ -130,7 +125,7 @@
             <span v-else-if="monthlySaving > 0" class="text-red-600 font-semibold">持有期間內回不了本——若真的會在 {{ holdYears }} 年內賣房或再轉貸，這次轉貸不划算。</span>
           </p>
         </div>
-        <p class="mt-4 text-[11px] leading-5 text-ink-400">試算假設新舊利率全期固定，未計寬限期、提前還款與利率調整；新銀行是否核貸、實際利率與費用以銀行核定及代書報價為準。本工具不提供貸款媒合，也不保證轉貸結果。</p>
+        <p class="mt-4 text-[11px] leading-5 text-ink-400">利率全期固定、未計寬限期；實際利率與費用以銀行核定為準，不保證轉貸結果。</p>
       </div>
 
       <div class="mt-5 flex justify-center">

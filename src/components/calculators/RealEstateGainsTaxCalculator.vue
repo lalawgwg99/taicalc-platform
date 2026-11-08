@@ -41,7 +41,10 @@
             <button type="button" @click="selfUse = false" :class="['seg-btn', !selfUse ? 'seg-btn-active' : '']">一般</button>
             <button type="button" @click="selfUse = true" :class="['seg-btn', selfUse ? 'seg-btn-active' : '']">自用住宅</button>
           </div>
-          <p class="mt-1.5 text-[11px] text-ink-400">自用優惠須同時符合：個人、配偶或未成年子女設籍並連續持有滿 6 年，且 6 年內未出租、未供營業或執行業務使用。</p>
+          <details class="mt-1.5 text-[11px] text-ink-400">
+            <summary class="cursor-pointer">自用優惠條件</summary>
+            <p class="mt-1 leading-5">須同時符合：個人、配偶或未成年子女設籍並連續持有滿 6 年，且 6 年內未出租、未供營業或執行業務使用。</p>
+          </details>
         </div>
       </div>
 
@@ -53,10 +56,11 @@
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
           <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">預估應納稅額</p>
-          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
+          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight whitespace-nowrap">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(result.tax) }}
           </p>
-          <p class="mt-2 text-xs text-ink-400">課稅所得 ${{ fmt(result.taxableIncome) }} × 適用稅率 {{ rateLabel }}</p>
+          <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">課稅所得 ${{ fmt(result.taxableIncome) }}</p>
+          <p class="mt-1 text-xs text-ink-400">適用稅率 {{ rateLabel }}</p>
         </div>
 
         <div class="grid grid-cols-2 gap-4 text-center">
@@ -71,7 +75,11 @@
         </div>
 
         <div v-if="result.selfUseApplied" class="mt-5 rounded-xl bg-paper-50 p-4">
-          <p class="text-sm leading-6 text-ink-700">已適用自用住宅優惠：課稅所得 {{ fmt(result.taxableIncome) }} 元，400 萬以下免稅，超過部分 {{ fmt(Math.max(0, result.taxableIncome - 4000000)) }} 元 × 10%。</p>
+          <div class="space-y-1 text-sm leading-6 text-ink-700">
+            <p>已適用自用住宅優惠</p>
+            <p>課稅所得 <span class="whitespace-nowrap">{{ fmt(result.taxableIncome) }} 元</span></p>
+            <p>400 萬以下免稅，超過部分 <span class="whitespace-nowrap">{{ fmt(Math.max(0, result.taxableIncome - 4000000)) }} 元</span> × 10%</p>
+          </div>
         </div>
         <div v-else-if="result.nextBracketMonths !== null" class="mt-5 rounded-xl bg-paper-50 p-4">
           <p class="text-sm leading-6 text-ink-700">再持有 <strong class="font-mono">{{ result.nextBracketMonths }}</strong> 個月，稅率可從 {{ (result.rate * 100).toFixed(0) }}% 降至 {{ (result.nextBracketRate * 100).toFixed(0) }}%（持有期間跨過臨界點時適用）。</p>

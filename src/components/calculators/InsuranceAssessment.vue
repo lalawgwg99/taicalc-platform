@@ -6,17 +6,17 @@
         @click="mode = 'irr'"
         :class="['seg-btn', mode === 'irr' ? 'seg-btn-active' : '']"
       >
-        儲蓄險 IRR 試算
+        儲蓄險 IRR
       </button>
       <button
         @click="mode = 'needs'"
         :class="['seg-btn', mode === 'needs' ? 'seg-btn-active' : '']"
       >
-        壽險需求分析
+        壽險需求
       </button>
     </div>
 
-    <div class="p-6 space-y-6">
+    <div class="px-2 py-4 space-y-6">
       <!-- Tab 1: IRR Calculator -->
       <div v-if="mode === 'irr'" class="calculator-shell">
         <div class="space-y-4">
@@ -50,8 +50,8 @@
                 type="text" inputmode="decimal"
                 v-model.number="irr.endYear"
                 aria-label="領回年度"
-                placeholder="第幾年領回? (如: 6)"
-                class="w-24 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                placeholder="第幾年？"
+                class="w-28 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
               />
               <input
                 type="text" inputmode="decimal"
@@ -71,9 +71,8 @@
             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 text-center border border-amber-100"
           >
             <p class="text-xs text-amber-700 uppercase tracking-wide mb-1">實際年報酬率</p>
-            <div class="flex items-baseline justify-center gap-2">
-              <span class="text-4xl font-bold font-mono text-amber-700">{{ irrResult }}</span>
-              <span class="text-sm font-bold text-amber-700">%</span>
+            <div class="text-center whitespace-nowrap">
+              <span class="text-4xl font-bold font-mono text-amber-700">{{ irrResult }}</span><span class="text-sm font-bold text-amber-700">%</span>
             </div>
             <p class="text-xs text-amber-600/70 mt-2">
               比起定存 (約1.7%)：
@@ -119,10 +118,11 @@
                   aria-label="預留年數"
                   class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 >
-                  <option value="5">5年 (緩衝期)</option>
-                  <option value="10">10年 (子女成年前)</option>
-                  <option value="20">20年 (長期照顧)</option>
+                  <option value="5">5 年</option>
+                  <option value="10">10 年</option>
+                  <option value="20">20 年</option>
                 </select>
+                <p class="text-[10px] text-ink-400 mt-1">5 年緩衝期，10 年到子女成年，20 年長期照顧。</p>
               </div>
             </div>
           </div>

@@ -22,12 +22,12 @@
                 title="發放當下"
                 :subtitle="withholdingTax > 0 ? '達起扣點，預扣 5%' : '未達起扣點，免預扣'"
                 main-label="實拿年終"
-                :main-value="`$ ${fmt(netBonus)}`"
+                :main-value="`$${fmt(netBonus)}`"
                 main-tone="brand"
                 :rows="[
-                    { label: '年終總額', value: `$ ${fmt(bonus)}` },
-                    { label: '預扣所得稅 (5%)', value: withholdingTax > 0 ? `−$ ${fmt(withholdingTax)}` : '$ 0', tone: withholdingTax > 0 ? 'tax' : 'neutral' },
-                    { label: '補充保費 (2.11%)', value: suppFee > 0 ? `−$ ${fmt(suppFee)}` : '$ 0', tone: suppFee > 0 ? 'tax' : 'neutral' },
+                    { label: '年終總額', value: `$${fmt(bonus)}` },
+                    { label: '預扣所得稅 (5%)', value: withholdingTax > 0 ? `−$${fmt(withholdingTax)}` : '$0', tone: withholdingTax > 0 ? 'tax' : 'neutral' },
+                    { label: '補充保費 (2.11%)', value: suppFee > 0 ? `−$${fmt(suppFee)}` : '$0', tone: suppFee > 0 ? 'tax' : 'neutral' },
                 ]"
             />
             <ResultReceipt
@@ -36,16 +36,18 @@
                 main-label="距離起扣點"
                 :main-value="thresholdDiff"
                 :rows="[
-                    { label: '起扣點', value: '$ 90,501' },
-                    { label: '補充保費門檻（投保金額 × 4）', value: `$ ${fmt(suppThreshold)}` },
-                    { label: '預扣稅率', value: '5%（用全部年終來算）' },
+                    { label: '起扣點', value: '$90,501' },
+                    { label: '補充保費門檻', value: `$${fmt(suppThreshold)}` },
+                    { label: '預扣稅率', value: '5%' },
                 ]"
             />
         </div>
 
         <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
-            <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
+            <ul class="text-xs leading-relaxed text-ink-500 space-y-1 list-disc pl-4">
+                <li v-for="(line, i) in insight" :key="i">{{ line }}</li>
+            </ul>
             <p class="text-[10px] text-ink-400">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費看的是全年獎金有沒有超過投保金額 4 倍，這裡用這次年終單筆來估，實際以公司核算為準。</p>
         </div>
 
@@ -56,7 +58,7 @@
                 <span aria-hidden="true">→</span>
             </a>
             <a href="/tools/income-tax-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 試算綜合所得稅
                 <span aria-hidden="true">→</span>
             </a>
@@ -90,24 +92,24 @@ const thresholdDiff = computed(() => {
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) return '已超過，須預扣'
     const diff = WITHHOLD_THRESHOLD - b
-    return `還差 $ ${fmt(diff)}`
+    return `還差 NT$${fmt(diff)}`
 })
 
 const insight = computed(() => {
     const parts = []
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) {
-        parts.push(`年終達 90,501 元起扣點，公司會用全部年終扣 5%（$ ${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,524 元。`)
+        parts.push(`年終達 90,501 元起扣點，公司會用全部年終扣 5%（$${fmt(withholdingTax.value)}），這就是「90,501 魔咒」——90,501 元實拿比 90,500 元少 4,524 元。`)
     } else {
         parts.push('未達起扣點，發放時免預扣，但年終仍須併入當年度薪資所得申報。')
     }
     if (suppFee.value > 0) {
-        parts.push(`年終超過投保金額 4 倍（$ ${fmt(suppThreshold.value)}），超過部分再扣 2.11% 補充保費 $ ${fmt(suppFee.value)}。`)
+        parts.push(`年終超過投保金額 4 倍（$${fmt(suppThreshold.value)}），超過部分再扣 2.11% 補充保費 $${fmt(suppFee.value)}。`)
     }
     if (withholdingTax.value > 0) {
         parts.push('被預扣的 5% 不是消失，隔年報稅可抵減，多退少補。')
     }
-    return parts.join(' ')
+    return parts
 })
 
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'

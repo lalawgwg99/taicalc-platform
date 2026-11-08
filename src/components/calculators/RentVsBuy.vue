@@ -4,7 +4,7 @@
     <div class="calculator-shell space-y-4">
 
         <div class="card-surface p-5 space-y-3">
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                     <label for="fld-041a3b61" class="block text-xs font-medium text-ink-400 mb-1.5">房價（萬）</label>
                     <input id="fld-041a3b61" type="text" inputmode="decimal" v-model.number="homePriceWan" aria-label="房價" placeholder="1200"
@@ -16,7 +16,7 @@
                     class="input-clean font-semibold tabular-nums">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                     <label for="fld-c46be16f" class="block text-xs font-medium text-ink-400 mb-1.5">房貸利率（%）</label>
                     <input id="fld-c46be16f" type="text" inputmode="decimal" v-model.number="rate" step="0.05" aria-label="房貸利率"
@@ -28,7 +28,7 @@
                     class="input-clean font-semibold">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                     <label for="fld-083cc2cd" class="block text-xs font-medium text-ink-400 mb-1.5">月租金（元）</label>
                     <input id="fld-083cc2cd" type="text" inputmode="decimal" v-model.number="monthlyRent" aria-label="月租金" placeholder="25000"
@@ -40,7 +40,7 @@
                     class="input-clean font-semibold">
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                     <label for="fld-a6eeb518" class="block text-xs font-medium text-ink-400 mb-1.5">房價年漲幅（%）</label>
                     <input id="fld-a6eeb518" type="text" inputmode="decimal" v-model.number="homeAppr" step="0.5" aria-label="房價年漲幅"
@@ -65,23 +65,23 @@
                 title="買房"
                 subtitle="月付 + 持有成本"
                 main-label="每月總支出"
-                :main-value="`$ ${fmt(buyMonthly)}`"
+                :main-value="`$${fmt(buyMonthly)}`"
                 main-tone="brand"
                 :rows="[
-                { label: '到時候房子值多少', value: `$ ${fmt(homeValue)}` },
-                { label: '到時候還欠多少', value: `− $ ${fmt(remainingLoan)}`, tone: 'tax' },
-                { label: '到時候淨賺多少', value: `$ ${fmt(buyNetAsset)}` },
+                { label: '到時候房子值多少', value: `$${fmt(homeValue)}` },
+                { label: '到時候還欠多少', value: `− $${fmt(remainingLoan)}`, tone: 'tax' },
+                { label: '到時候淨賺多少', value: `$${fmt(buyNetAsset)}` },
                 ]"
             />
             <ResultReceipt
                 title="租屋"
                 subtitle="租金支出"
                 main-label="每月租金"
-                :main-value="`$ ${fmt(monthlyRent)}`"
+                :main-value="`$${fmt(monthlyRent)}`"
                 main-tone="neutral"
                 :rows="[
-                { label: '頭期款投資變多少', value: `$ ${fmt(downInvest)}` },
-                { label: '到時候淨賺多少', value: `$ ${fmt(rentNetAsset)}` },
+                { label: '頭期款投資變多少', value: `$${fmt(downInvest)}` },
+                { label: '到時候淨賺多少', value: `$${fmt(rentNetAsset)}` },
                 ]"
             />
         </div>
@@ -94,7 +94,7 @@
 
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-100 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
             <a href="/tools/home-ownership-cost-calculator"
@@ -160,8 +160,8 @@ const totalRentPaid = computed(() => {
 
 const insight = computed(() => {
     const diff = buyNetAsset.value - rentNetAsset.value
-    if (diff > 0) return `${years.value} 年後：買房到時候淨賺約 $ ${fmt(buyNetAsset.value)}，租屋約 $ ${fmt(rentNetAsset.value)}，買房多 $ ${fmt(diff)}（假設房價每年漲 ${homeAppr.value}%）。`
-    if (diff < 0) return `${years.value} 年後：租屋到時候淨賺約 $ ${fmt(rentNetAsset.value)}，買房約 $ ${fmt(buyNetAsset.value)}，租屋多 $ ${fmt(-diff)}——房價漲得比投資慢的時候，租屋＋投資可能更划算。`
+    if (diff > 0) return `${years.value} 年後：買房到時候淨賺約 $${fmt(buyNetAsset.value)}，租屋約 $${fmt(rentNetAsset.value)}，買房多 $${fmt(diff)}（假設房價每年漲 ${homeAppr.value}%）。`
+    if (diff < 0) return `${years.value} 年後：租屋到時候淨賺約 $${fmt(rentNetAsset.value)}，買房約 $${fmt(buyNetAsset.value)}，租屋多 $${fmt(-diff)}——房價漲得比投資慢的時候，租屋＋投資可能更划算。`
     return '兩個算下來差不多，看你想住得穩一點，還是保持彈性。'
 })
 

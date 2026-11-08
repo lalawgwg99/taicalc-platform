@@ -33,7 +33,7 @@ export function Field({ label, value, onChange, suffix, min, max, step = 1, hint
     onChange(clamp(roundToStep(base + direction * step, step)));
   };
   return (
-    <label className="field">
+    <label className={suffix ? "field field-with-suffix" : "field"}>
       <span className="field-label">{label}</span>
       <span className="field-control has-stepper">
         <button type="button" className="stepper-button" onClick={(event) => { event.preventDefault(); nudge(-1); }} aria-label={t.common.stepDown(label)} tabIndex={-1}><Minus aria-hidden="true" /></button>
@@ -47,8 +47,8 @@ export function Field({ label, value, onChange, suffix, min, max, step = 1, hint
           onChange={(event) => onChange(event.target.value === "" ? Number.NaN : Number(event.target.value))}
         />
         <button type="button" className="stepper-button" onClick={(event) => { event.preventDefault(); nudge(1); }} aria-label={t.common.stepUp(label)} tabIndex={-1}><Plus aria-hidden="true" /></button>
-        {suffix && <span className="field-suffix">{suffix}</span>}
       </span>
+      {suffix && <span className="field-suffix-outside">{suffix}</span>}
       {hint && <span className="field-hint">{hint}</span>}
     </label>
   );

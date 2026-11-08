@@ -25,7 +25,7 @@ const {
   faqs = [],
   keywords,
   kicker = "先算，再看細節",
-  compactHero = false,
+  compactHero = true,
   dataVersion = platformGovernance.version,
   dataYear = platformGovernance.dataYear,
   lastUpdated = platformGovernance.updatedAt,
@@ -106,7 +106,7 @@ const relatedToolsSchema = JSON.stringify({
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />
     <script type="application/ld+json" set:html={relatedToolsSchema} slot="head" />
-    <div class="max-w-7xl mx-auto px-0 sm:px-4 md:px-6 xl:px-0">
+    <div class="max-w-7xl mx-auto px-0">
         <header class={`proto-grid-bg border-b border-paper-300 ${compactHero ? 'proto-hero-compact' : ''}`}>
             <div class={compactHero ? 'pt-5 pb-6 md:pt-6 md:pb-6' : 'pt-6 pb-8 md:pt-10 md:pb-10'}>
                 <div class="mb-4 flex items-center justify-between gap-3">

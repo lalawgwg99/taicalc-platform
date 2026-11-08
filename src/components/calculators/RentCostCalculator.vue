@@ -9,18 +9,18 @@
           @click="activeTab = 'basic'"
           :class="['seg-btn', activeTab === 'basic' ? 'seg-btn-active' : '']"
         >
-          租金試算
+          試算
         </button>
         <button 
           @click="activeTab = 'subsidy'"
           :class="['seg-btn', activeTab === 'subsidy' ? 'seg-btn-active' : '']"
         >
-          租金補貼查詢
+          補貼查詢
         </button>
       </div>
 
       <!-- Tab: Basic Calculator -->
-      <div v-if="activeTab === 'basic'" class="calculator-shell">
+      <div v-if="activeTab === 'basic'">
         <div>
           <label for="monthlyRent" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">
             每個月租金 (NT$)
@@ -93,11 +93,11 @@
           <div class="grid grid-cols-2 gap-4 text-center pt-6 border-t border-ink-100">
             <div>
               <p class="text-xs text-ink-400 mb-1">押金總額（會退回）</p>
-              <p class="text-lg font-bold text-ink-600 font-mono">${{ depositTotal }}</p>
+              <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ depositTotal }}</p>
             </div>
             <div>
               <p class="text-xs text-ink-400 mb-1">押金少賺的利息</p>
-              <p class="text-lg font-bold text-amber-600 font-mono">
+              <p class="text-lg font-bold text-amber-600 font-mono whitespace-nowrap">
                 ${{ depositCost }}<span class="text-xs text-ink-400 font-normal">/年</span>
               </p>
             </div>
@@ -105,12 +105,12 @@
 
           <div class="text-center pt-6 mt-6 border-t border-ink-100">
             <p class="text-xs text-ink-400 mb-2">整個租期總支出 ({{ leaseMonths }}個月)</p>
-            <p class="text-2xl font-bold text-ink-800 font-mono">NT$ {{ totalCost }}</p>
+            <p class="text-2xl font-bold text-ink-800 font-mono whitespace-nowrap">NT${{ totalCost }}</p>
           </div>
 
           <div class="text-center pt-4 mt-4 border-t border-ink-100">
             <p class="text-xs text-ink-400 mb-2">入住首月總支出（當月支出＋押金）</p>
-            <p class="text-2xl font-bold text-ink-800 font-mono">NT$ {{ firstMonthTotal }}</p>
+            <p class="text-2xl font-bold text-ink-800 font-mono whitespace-nowrap">NT${{ firstMonthTotal }}</p>
           </div>
         </div>
 
@@ -121,7 +121,7 @@
       </div>
 
       <!-- Tab: Subsidy Checker -->
-      <div v-else-if="activeTab === 'subsidy'" class="calculator-shell">
+      <div v-else-if="activeTab === 'subsidy'">
          <div class="bg-brand-50 border-l-4 border-brand-500 p-4 rounded-r-xl">
              <div class="flex">
                  <div class="flex-shrink-0">
@@ -131,11 +131,12 @@
                  </div>
                  <div class="ml-3">
                      <p class="text-sm text-brand-700">
-                         根據 2026「300億元中央擴大租金補貼專案」第 3 級、主要行政區上限估算，補貼金額以實際租金為上限。實際資格與金額以政府核定為準。
+                         依 2026 年 300 億租金補貼專案第 3 級上限估算，金額以政府核定為準。
                      </p>
-                     <p class="text-sm text-brand-700 mt-2">
-                         116 年度新制：新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。
-                     </p>
+                     <details class="mt-2">
+                         <summary class="text-xs text-brand-700 cursor-pointer">116 年度新制</summary>
+                         <p class="text-sm text-brand-700 mt-1">新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。</p>
+                     </details>
                  </div>
              </div>
          </div>
@@ -157,17 +158,17 @@
              <div>
                  <label for="fld-90c33dda" class="block text-xs font-semibold text-ink-400 mb-2">身分條件 (加碼倍數)</label>
                  <select id="fld-90c33dda" v-model="subsidyStatus" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
-                     <option value="SingleL40">單身 (未滿40歲) [1.2倍]</option>
-                     <option value="Single">單身 (40歲以上) [無加碼]</option>
-                     <option value="Newlywed">2025 年底前結婚的新婚家庭 [1.3倍]</option>
-                     <option value="Newlywed2026">2026 年起結婚的新婚家庭 [1.5倍]</option>
-                     <option value="Child1">育有未成年子女 (1人) [1.4倍]</option>
-                     <option value="Child2">育有未成年子女 (2人) [1.6倍]</option>
-                     <option value="Child3">育有未成年子女 (3人+) [1.8倍]</option>
-                     <option value="Baby2026_1">2026 年起新生兒 (1人) [2倍]</option>
-                     <option value="Baby2026_2">2026 年起新生兒 (2人) [2.5倍]</option>
-                     <option value="Baby2026_3">2026 年起新生兒 (3人) [3倍]</option>
-                     <option value="LowIncome">中低收入戶 [1.4倍]</option>
+                     <option value="SingleL40">單身未滿 40 歲・1.2 倍</option>
+                     <option value="Single">單身 40 歲以上・無加碼</option>
+                     <option value="Newlywed">2025 年底前結婚・1.3 倍</option>
+                     <option value="Newlywed2026">2026 年起結婚・1.5 倍</option>
+                     <option value="Child1">未成年子女 1 人・1.4 倍</option>
+                     <option value="Child2">未成年子女 2 人・1.6 倍</option>
+                     <option value="Child3">未成年子女 3 人以上・1.8 倍</option>
+                     <option value="Baby2026_1">2026 年起新生兒 1 人・2 倍</option>
+                     <option value="Baby2026_2">2026 年起新生兒 2 人・2.5 倍</option>
+                     <option value="Baby2026_3">2026 年起新生兒 3 人・3 倍</option>
+                     <option value="LowIncome">中低收入戶・1.4 倍</option>
                  </select>
              </div>
          </div>
@@ -177,8 +178,8 @@
                  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
              </div>
              <p class="text-base text-paper-200 mb-2">預估每月領取補貼</p>
-             <p class="text-4xl font-bold text-brand-400 font-mono mb-2">NT$ {{ estimatedSubsidy }}</p>
-             <p class="text-sm text-paper-200">補貼後實付房租：NT$ {{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
+             <p class="text-4xl font-bold text-brand-400 font-mono mb-2 whitespace-nowrap">NT${{ estimatedSubsidy }}</p>
+             <p class="text-sm text-paper-200 whitespace-nowrap">補貼後實付房租：NT${{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>
          <div v-else class="text-center bg-paper-50 border border-ink-100 rounded-xl p-6">
              

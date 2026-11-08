@@ -32,7 +32,7 @@
         </h2>
         <div class="grid grid-cols-3 gap-3 mb-4">
             <button v-for="t in overtimeTypes" :key="t.id" @click="selectedType = t.id"
-                :class="['py-3 px-2 rounded-xl text-sm font-medium transition-all text-center border', 
+                :class="['py-3 px-2 rounded-xl text-sm font-medium transition-all text-center border whitespace-nowrap', 
                             selectedType === t.id ? t.activeClass : 'bg-paper-50 border-ink-100 text-ink-400 hover:bg-paper-100']">
                 
                 {{ t.label }}
@@ -66,15 +66,15 @@
         <div v-else-if="selectedType === 'restday'" class="space-y-4">
             <div class="grid grid-cols-3 gap-3">
                 <div>
-                    <label for="rd1" class="block text-xs text-ink-400 mb-2 h-8">前 2 小時 <br><span class="text-amber-600 font-bold">(4/3x)</span></label>
+                    <label for="rd1" class="block text-xs text-ink-400 mb-2 min-h-8">前 2 小時 <span class="text-amber-600 font-bold">(4/3x)</span></label>
                     <input id="rd1" type="text" inputmode="decimal" v-model.number="restdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd2" class="block text-xs text-ink-400 mb-2 h-8">3~8 小時 <br><span class="text-amber-600 font-bold">(5/3x)</span></label>
+                    <label for="rd2" class="block text-xs text-ink-400 mb-2 min-h-8">3~8 小時 <span class="text-amber-600 font-bold">(5/3x)</span></label>
                     <input id="rd2" type="text" inputmode="decimal" v-model.number="restdayHours2" min="0" max="6" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd3" class="block text-xs text-ink-400 mb-2 h-8">9~12 小時 <br><span class="text-amber-600 font-bold">(8/3x)</span></label>
+                    <label for="rd3" class="block text-xs text-ink-400 mb-2 min-h-8">9~12 小時 <span class="text-amber-600 font-bold">(8/3x)</span></label>
                     <input id="rd3" type="text" inputmode="decimal" v-model.number="restdayHours3" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
@@ -83,14 +83,15 @@
         <div v-else class="space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label for="hol1" class="block text-xs text-ink-400 mb-2">8 小時內 <span class="text-amber-600 font-bold">加發 1 日工資</span></label>
+                    <label for="hol1" class="block text-xs text-ink-400 mb-2">8 小時內</label>
                     <input id="hol1" type="text" inputmode="decimal" v-model.number="holidayHours1" min="0" max="8" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="hol2" class="block text-xs text-ink-400 mb-2">超過 8 小時 <span class="text-amber-600 font-bold">(4/3、5/3x)</span></label>
+                    <label for="hol2" class="block text-xs text-ink-400 mb-2">超過 8 小時</label>
                     <input id="hol2" type="text" inputmode="decimal" v-model.number="holidayHours2" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
+            <p class="text-[10px] text-ink-400 mt-3">8 小時內加發 1 日工資；超過 8 小時按 4/3、5/3 倍計。</p>
         </div>
     </section>
 
@@ -101,13 +102,13 @@
         <div class="flex items-start justify-between mb-6 relative z-10">
             <div>
                 <p class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">本次預估加班費</p>
-                <p class="text-4xl sm:text-5xl font-extrabold text-amber-600 tracking-tight font-mono">
+                <p class="text-4xl sm:text-5xl font-extrabold text-amber-600 tracking-tight font-mono whitespace-nowrap">
                     <span class="text-2xl opacity-60 relative -top-4 mr-1">$</span>{{ currentOvertimePay.toLocaleString() }}
                 </p>
             </div>
             <div class="text-right">
                 <p class="text-xs font-medium text-amber-700 mb-1">總計時數</p>
-                <p class="text-2xl font-bold text-amber-800 font-mono">{{ currentHours }} <span class="text-sm font-medium opacity-70">hr</span></p>
+                <p class="text-2xl font-bold text-amber-800 font-mono whitespace-nowrap">{{ currentHours }} <span class="text-sm font-medium opacity-70">hr</span></p>
             </div>
         </div>
 
@@ -128,7 +129,7 @@
                     <div class="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner relative">
                         <div class="h-full bg-amber-500 rounded-full absolute left-0 top-0 transition-all duration-500" :style="{width: (effectiveRate / baseHourlyRate * 50) + '%'}"></div>
                     </div>
-                    <span class="text-xs font-bold text-amber-700 w-12 font-mono">${{ effectiveRate }}</span>
+                    <span class="text-xs font-bold text-amber-700 min-w-12 whitespace-nowrap font-mono text-right">${{ effectiveRate }}</span>
                 </div>
             </div>
         </div>
@@ -179,7 +180,7 @@
                 </div>
                 <div class="text-right">
                     <p class="text-xs text-ink-400 font-medium mb-1">已記錄加班總額</p>
-                    <p class="text-2xl font-bold text-brand-600 font-mono tracking-tight">+${{ weeklyTotalPay.toLocaleString()}}</p>
+                    <p class="text-2xl font-bold text-brand-600 font-mono tracking-tight whitespace-nowrap">+${{ weeklyTotalPay.toLocaleString()}}</p>
                 </div>
             </div>
 
