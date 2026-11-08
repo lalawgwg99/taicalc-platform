@@ -20,7 +20,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/split-calculator': '2026-11-08',
   '/tools/unemployment-benefit-calculator': '2026-11-08',
   '/tools/debt-consolidation-calculator': '2026-11-08',
-  '/tools/estate-gift-tax-calculator': '2026-11-08',
+  '/tools/estate-gift-tax-calculator': '2026-11-09',
   '/tools/real-estate-gains-tax-calculator': '2026-11-08',
   '/tools/fund-fee-calculator': '2026-11-08',
   '/tools/house-tax-calculator': '2026-11-08',

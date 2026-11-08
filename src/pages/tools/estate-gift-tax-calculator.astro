@@ -3,6 +3,7 @@ import ToolLayout from '../../layouts/ToolLayout.astro';
 import DecisionCalculator from '../../components/calculators/DecisionCalculator.vue';
 import IntentPanel from '../../components/IntentPanel.astro';
 const sources = [
+  { label: '中央社｜明年遺產稅免稅額估調高至 1492 萬', href: 'https://www.cna.com.tw/news/afe/202611050221.aspx' },
   { label: '財政部｜115 年遺產稅免稅額及扣除額', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=f2a148bdd1614850be9fa56df8cc9d5c' },
   { label: '財政部｜遺產及贈與稅課稅級距', href: 'https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=9ba544f1016c4b85b54960b4346b5b75' },
   { label: '財政部稅務入口網｜贈與稅免稅額', href: 'https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-secret/o2Q68JR' },
@@ -19,5 +20,5 @@ const faqs = [
 <ToolLayout title="115 年遺產稅／贈與稅試算" description="套用 115 年遺產稅免稅額、扣除額與遺產贈與稅累進級距，快速估算應納稅額；贈與稅分頁附分年贈與對比，遺產稅分頁支援未成年加扣與受扶養兄弟姊妹扣除。" keywords="遺產稅試算,贈與稅試算,115年免稅額,遺產稅扣除額,贈與稅免稅額,分年贈與" category="稅務與傳承" kicker="先看課稅淨額，再決定是否需要更完整的傳承規劃。" faqs={faqs} dataVersion="115-estate-gift-v2" dataYear="民國 115 年" lastUpdated="2026-10-29" sources={sources}>
   <DecisionCalculator type="estate-tax" client:only="vue" slot="tool" />
   <IntentPanel slot="after-tool" source="estate-tax" partnerTitle="稅務傳承服務" />
-  <div slot="article"><h2>115 年試算基礎</h2><p>遺產稅免稅額為 1,333 萬元，另依配偶、直系卑親屬、父母、重度以上身心障礙與喪葬費等計算扣除額。贈與稅每位贈與人每年免稅額為 244 萬元。</p><p>工具採 10%、15%、20% 逐段累進計算。遺產稅級距：課稅遺產淨額 5,621 萬以下 10%、5,621 萬至 1 億 1,242 萬為 5,621,000 元加超過部分 15%、逾 1 億 1,242 萬為 14,052,500 元加超過部分 20%（115 年沿用 114 年調整結果）。</p><p>未成年直系卑親屬加扣＝人數 × 距成年年數 × 56 萬元；受扶養兄弟姊妹及祖父母每人扣 56 萬元，皆已納入計算。農地、公共設施保留地、夫妻剩餘財產差額分配等特殊項目，請填入其他扣除額前先確認適用資格。</p><p>拋棄繼承邊界：拋棄繼承者不享有對應的扣除額；近親拋棄由次親繼承時，扣除額以原可扣除數為限。贈與稅分頁另附分年贈與對比（今年一次給 vs 平分兩年給），分兩年是把可扣除後金額平分、每年各扣 244 萬免稅額試算。</p><p class="note-box">本工具為試算示範，不構成稅務建議；實際應納稅額與扣除額資格以國稅局核定為準。</p></div>
+  <div slot="article"><h2>115 年試算基礎</h2><p>遺產稅免稅額為 1,333 萬元，另依配偶、直系卑親屬、父母、重度以上身心障礙與喪葬費等計算扣除額。贈與稅每位贈與人每年免稅額為 244 萬元。</p><p>2027 年預告：主計總處 11/5 公布 10 月 CPI 年增 2.33%，遺贈稅適用 CPI 較上次調整累計漲 11.91%、已達 10% 調整門檻，遺產稅免稅額擬由 1,333 萬元調至 1,492 萬元、贈與稅擬由 244 萬元調至 273 萬元；實際金額待財政部年底前公告、尚未定案，本工具目前仍採 115 年現行額度試算。</p><p>工具採 10%、15%、20% 逐段累進計算。遺產稅級距：課稅遺產淨額 5,621 萬以下 10%、5,621 萬至 1 億 1,242 萬為 5,621,000 元加超過部分 15%、逾 1 億 1,242 萬為 14,052,500 元加超過部分 20%（115 年沿用 114 年調整結果）。</p><p>未成年直系卑親屬加扣＝人數 × 距成年年數 × 56 萬元；受扶養兄弟姊妹及祖父母每人扣 56 萬元，皆已納入計算。農地、公共設施保留地、夫妻剩餘財產差額分配等特殊項目，請填入其他扣除額前先確認適用資格。</p><p>拋棄繼承邊界：拋棄繼承者不享有對應的扣除額；近親拋棄由次親繼承時，扣除額以原可扣除數為限。贈與稅分頁另附分年贈與對比（今年一次給 vs 平分兩年給），分兩年是把可扣除後金額平分、每年各扣 244 萬免稅額試算。</p><p class="note-box">本工具為試算示範，不構成稅務建議；實際應納稅額與扣除額資格以國稅局核定為準。</p></div>
 </ToolLayout>
