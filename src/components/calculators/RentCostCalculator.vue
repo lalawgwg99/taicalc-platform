@@ -276,19 +276,43 @@ watch(actualMonthly, (newVal) => {
   }
 });
 
+// 輸入防呆：localStorage 可能殘留異常值（如 999999999 個月），
+// 或使用者手打超大數字；租期、押金月數一律箝制在合理範圍。
+const clampNum = (v, min, max) => {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return min;
+  return Math.min(max, Math.max(min, n));
+};
+
 // Persistence
 onMounted(() => {
   const saved = localStorage.getItem('taicalc_rent_inputs');
   if (saved) {
     try {
       const data = JSON.parse(saved);
-      if (data.monthlyRent) monthlyRent.value = data.monthlyRent;
-      if (data.depositMonths) depositMonths.value = data.depositMonths;
-      if (data.leaseMonths) leaseMonths.value = data.leaseMonths;
-      if (data.managementFee) managementFee.value = data.managementFee;
-      if (data.electricityFee) electricityFee.value = data.electricityFee;
+      if (data.monthlyRent) monthlyRent.value = clampNum(data.monthlyRent, 0, 100000000);
+      if (data.depositMonths != null) depositMonths.value = clampNum(data.depositMonths, 0, 12);
+      if (data.leaseMonths) leaseMonths.value = clampNum(data.leaseMonths, 1, 120);
+      if (data.managementFee) managementFee.value = clampNum(data.managementFee, 0, 100000000);
+      if (data.electricityFee) electricityFee.value = clampNum(data.electricityFee, 0, 100000000);
     } catch (e) {}
   }
+});
+
+// 手打超大數字即時箝制（清空欄位時不干預，讓使用者能重新輸入）
+watch(leaseMonths, (v) => {
+  if (v === '' || v == null) return;
+  const n = Number(v);
+  if (!Number.isFinite(n)) return;
+  const c = Math.min(120, Math.max(1, Math.round(n)));
+  if (c !== n) leaseMonths.value = c;
+});
+watch(depositMonths, (v) => {
+  if (v === '' || v == null) return;
+  const n = Number(v);
+  if (!Number.isFinite(n)) return;
+  const c = Math.min(12, Math.max(0, n));
+  if (c !== n) depositMonths.value = c;
 });
 
 watch(

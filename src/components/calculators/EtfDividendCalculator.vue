@@ -55,6 +55,7 @@
                 :rows="[
                     { label: '一年配息率', value: annualYield !== null ? `${annualYield}%` : '請輸入股價', tone: 'growth' },
                     { label: '月均配息（約）', value: `$ ${fmt(Math.round(annualNet / 12))}` },
+                    { label: '一年補充保費', value: annualSuppFee > 0 ? `−$ ${fmt(annualSuppFee)}` : '$ 0（未達 2 萬門檻）', tone: annualSuppFee > 0 ? 'tax' : 'neutral' },
                     { label: '一年實拿', value: `$ ${fmt(annualNet)}` },
                 ]"
             />

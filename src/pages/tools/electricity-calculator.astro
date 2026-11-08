@@ -56,6 +56,14 @@ const faqs = [
         a: "台電多為雙月抄表；6～9月適用較貴夏月費率。小家庭夏天每月650度，單月2,167元，雙月帳單一次約4,334元，不是被多收。"
     },
     {
+        q: "為什麼現在的電費比 20 年前還便宜？",
+        a: "120 度以下每度 1.78 元，比 2004 年的 2.1 元還便宜：2015 年電價三連降，之後幾次調漲民生 330 度以下都凍漲，直到 2024 年 4 月才結束。代價是台電吸收價差，2026 年 10 月每度售電成本已達 3.64 元。（太報 2026-11-07）"
+    },
+    {
+        q: "12 月電價審議會若調漲，我家電費會漲多少？",
+        a: "仍以審議會決議為準。按 9 月審議提報的平均應調 12.83% 粗估：350 度非夏月 752 元漲到約 849 元、多約 97 元，夏月 826 元漲到約 932 元；實際若按級距分開調整，數字會不同。本頁「若漲 12.83%」有對照表。"
+    },
+    {
         q: "電費試算線上做要準備什麼資料？",
         a: "只要帳單度數：輸入每月用電度數即算出夏月與非夏月金額；雙月抄表先除以2再輸入。級距單價採台電2026-04-01住宅費率，一度電1.78～8.86元。"
     },
@@ -88,7 +96,7 @@ const faqs = [
 
         <details class="ec-section ec-collapse" aria-label="電價審議追蹤">
             <summary class="ec-summary">12 月電價審議追蹤（尚未定案）<span class="ec-summary-hint">點開看進展</span></summary>
-            <p class="ec-lead">台電 2026 年 9 月電價審議會提報平均電價應調 12.83%，審議會決議優先爭取政府 711 億元撥補，並預留伏筆、將在 12 月第 3 次電價審議會審議輸配電費率時一併討論電價；若 12 月作成調整，新費率自 2027 年 1 月 1 日起適用（9 月 18 日審議會結論）。台電 10 月 22 日說法：今年民生用電估計吸收逾 760 億元，民生高用電度數會被優先討論。11 月 4 日立法院聯席會議審查 115 年度追加預算案（台電撥補 711 億元），立委質詢提議中油、台電各砍 500 億元，撥補能否全額通過尚未定案；台電董事長曾文生同日表示今年民生用電已吸收逾 750 億元。11 月 5 日立法院財政等 7 個委員會聯席會議完成 115 年度追加預算案初審，台電 711 億元撥補因朝野無共識全數保留送院會處理、須先經黨團協商，依 10 月 30 日朝野協商結論於 11 月 20 日前完成三讀；台電同日表示，今年吸收補貼民生用電已逾 750 億元，其中每月 700 度以下的一般住宅及小商家約 1,300 萬戶、就吸收約 720 億元。以上皆為審議前說法，12 月是否調漲、調多少，仍以電價審議會決議為準；本頁費率維持台電 2026-04-01 住宅費率。</p>
+            <p class="ec-lead">台電 2026 年 9 月電價審議會提報平均電價應調 12.83%，審議會決議優先爭取政府 711 億元撥補，並預留伏筆、將在 12 月第 3 次電價審議會審議輸配電費率時一併討論電價；若 12 月作成調整，新費率自 2027 年 1 月 1 日起適用（9 月 18 日審議會結論）。台電 10 月 22 日說法：今年民生用電估計吸收逾 760 億元，民生高用電度數會被優先討論。11 月 4 日立法院聯席會議審查 115 年度追加預算案（台電撥補 711 億元），立委質詢提議中油、台電各砍 500 億元，撥補能否全額通過尚未定案；台電董事長曾文生同日表示今年民生用電已吸收逾 750 億元。11 月 5 日立法院財政等 7 個委員會聯席會議完成 115 年度追加預算案初審，台電 711 億元撥補因朝野無共識全數保留送院會處理、須先經黨團協商，依 10 月 30 日朝野協商結論於 11 月 20 日前完成三讀；台電同日表示，今年吸收補貼民生用電已逾 750 億元，其中每月 700 度以下的一般住宅及小商家約 1,300 萬戶、就吸收約 720 億元。11 月 7 日太報引台電說法：10 月每度售電成本已攀升至 3.64 元，民生 120 度以下每度僅售 1.78 元。以上皆為審議前說法，12 月是否調漲、調多少，仍以電價審議會決議為準；本頁費率維持台電 2026-04-01 住宅費率。</p>
         </details>
 
         <details class="ec-section ec-collapse" aria-label="若漲價情境試算">
@@ -111,8 +119,8 @@ const faqs = [
         </details>
 
         <div class="ec-duo">
-        <section class="ec-section" aria-label="三種家庭實際案例">
-            <h2 class="ec-h2">三種家庭的實際電費</h2>
+        <section class="ec-section" aria-label="四種家庭實際案例">
+            <h2 class="ec-h2">四種家庭的實際電費</h2>
             <p class="ec-lead">直接看數字最有感，皆以台電 2026-04-01 住宅費率試算：</p>
             <div class="ec-tablewrap"><table class="w-full text-sm border-collapse">
                 <thead>
@@ -127,6 +135,7 @@ const faqs = [
                     <tr><td class="py-2 pr-3 whitespace-nowrap">單身租屋族</td><td class="py-2 pr-3 whitespace-nowrap">200 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">395 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">418 元</td></tr>
                     <tr><td class="py-2 pr-3 whitespace-nowrap">小資租屋</td><td class="py-2 pr-3 whitespace-nowrap">300 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">621 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">673 元</td></tr>
                     <tr><td class="py-2 pr-3 whitespace-nowrap">兩房小家庭</td><td class="py-2 pr-3 whitespace-nowrap">500 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">1,221 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">1,396 元</td></tr>
+                    <tr><td class="py-2 pr-3 whitespace-nowrap">大家庭（透天）</td><td class="py-2 pr-3 whitespace-nowrap">800 度</td><td class="py-2 pr-3 font-semibold text-ink-700 whitespace-nowrap">2,596 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">3,068 元</td></tr>
                 </tbody>
             </table></div>
             <p class="text-xs text-ink-400 mt-2">台電多為雙月抄表，實際帳單約為上表 × 2。同樣度數直接比較：夏月費率較貴，度數越高差距越大。</p>
@@ -227,6 +236,7 @@ const faqs = [
             <li><a href="/tools/rent-cost-calculator" class="text-ink-700 underline underline-offset-4">租屋成本計算機</a>：房租、水電、管理費一次算清，租屋族比價簽約前必用。</li>
             <li><a href="/tools/home-ownership-cost-calculator" class="text-ink-700 underline underline-offset-4">購屋成本計算機</a>：買房後的水電、管理費等長期持有成本一起估。</li>
             <li><a href="/blog/2026-october-electricity-price-freeze-guide" class="text-ink-700 underline underline-offset-4">2026年10月電價凍漲解讀：應漲沒漲，你的電費單差了多少？</a></li>
+            <li><a href="/blog/2026-december-electricity-price-hike-scenarios" class="text-ink-700 underline underline-offset-4">2026年12月電價會漲嗎？台電10/22最新表態：高用電度數優先討論，4種家庭電費試算表</a></li>
             <li><a href="/blog/2026-rental-electricity-rate-legal-guide" class="text-ink-700 underline underline-offset-4">2026租屋電費一度收多少才合法？租屋電費新制懶人包</a></li>
         </ul>
     </div>
