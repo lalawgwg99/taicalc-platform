@@ -145,15 +145,19 @@
           <div class="font-mono font-bold text-base text-ink-900">${{ tx.amount.toLocaleString() }}</div>
         </div>
       </div>
-      <div v-if="settlementInfo.unpaid > 0" class="mt-3 p-3.5 bg-amber-50/70 rounded-xl border border-amber-200/70">
-        <p class="text-sm font-semibold text-ink-800">尚有 ${{ settlementInfo.unpaid.toLocaleString() }} 未付給店家</p>
-        <ul class="mt-2 space-y-1.5">
+      <!-- 每人應付：不論有無店家欠款都直接列出，不用再從轉帳金額反推 -->
+      <div v-if="settlementInfo.grandTotal > 0" class="mt-3">
+        <p class="text-xs font-semibold text-ink-400 mb-2">每人應付</p>
+        <ul class="space-y-1.5">
           <li v-for="s in settlementInfo.shares" :key="s.name" class="flex items-center justify-between text-sm">
             <span class="font-medium text-ink-800">{{ s.name }}</span>
             <span class="font-mono text-ink-600 whitespace-nowrap shrink-0">應付 ${{ s.shouldPay.toLocaleString() }}（已付 ${{ s.paid.toLocaleString() }}）</span>
           </li>
         </ul>
-        <p class="text-xs text-ink-400 mt-2">已付的差額由成員間轉帳結清（見上方）；未付部分請直接付給店家。</p>
+      </div>
+      <div v-if="settlementInfo.unpaid > 0" class="mt-3 p-3.5 bg-amber-50/70 rounded-xl border border-amber-200/70">
+        <p class="text-sm font-semibold text-ink-800">尚有 ${{ settlementInfo.unpaid.toLocaleString() }} 未付給店家</p>
+        <p class="text-xs text-ink-400 mt-2">未付部分已列在上方轉帳（轉給店家），請按金額付款。</p>
       </div>
       <div v-if="transactions.length === 0 && settlementInfo.unpaid === 0" class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
         沒人欠誰，都結清了
@@ -300,6 +304,19 @@ const settlementInfo = computed(() => {
         if(Math.abs(debtor.balance) < 0.1) d++;
         if(creditor.balance < 0.1) c++;
     }
+
+    // 尚有未付給店家的部分：由結算後仍欠款的成員直接付給店家
+    // （貪婪配對只結清成員間的轉帳，配對結束後仍為負的餘額就是未付店家的金額；
+    //  未釐清這點時，最後一位債務人的轉帳會被默默扣掉未付額，使用者會誤以為少付了）
+    debtors.slice(d).forEach((debtor) => {
+        if (debtor.balance < -0.1) {
+            result.push({
+                from: debtor.name,
+                to: '店家',
+                amount: Math.round(Math.abs(debtor.balance))
+            });
+        }
+    });
     
     return {
         transactions: result,
@@ -321,12 +338,7 @@ const copyResult = async () => {
     });
 
     if (transactions.value.length === 0 && settlementInfo.value.unpaid <= 0) lines.push("沒人欠誰（已結清）");
-    if (settlementInfo.value.unpaid > 0) {
-        lines.push(`尚有 $${settlementInfo.value.unpaid} 未付給店家`);
-        settlementInfo.value.shares.forEach(s => {
-            lines.push(`${s.name} 應付 $${s.shouldPay}（已付 $${s.paid}）`);
-        });
-    }
+    // 未付給店家的部分已包含在上方轉帳（「某人 → 店家 $X」），不再另列，避免重複計算。
 
     try {
         await navigator.clipboard.writeText(lines.join('\n'));
@@ -374,24 +386,31 @@ watch([members, totalAmount, mode, serviceRate], () => {
 }, { deep: true });
 
 onMounted(() => {
+    // 還原時箝制：localStorage 可能殘留舊測試值（如權重 1.5、異常金額），未驗證就寫入會污染預設
+    const clampNum = (v, min, max, fallback) => {
+        const n = Number(v);
+        return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
+    };
+    const sanitizeMembers = (raw) => {
+        if (!Array.isArray(raw) || raw.length === 0) return null;
+        return raw.slice(0, 20).map((item, i) => ({
+            id: Date.now() + i,
+            name: String(item.n ?? item.name ?? ''),
+            paid: clampNum(item.p ?? item.paid, 0, 100000000, 0),
+            weight: clampNum(item.w ?? item.weight, 0.1, 100, 1),
+        }));
+    };
     // 1. URL 參數優先（分享連結）
     if (typeof window !== 'undefined') {
         const p = new URLSearchParams(window.location.search);
         if (p.has('total') || p.has('m')) {
-            if (p.has('total'))  totalAmount.value = parseFloat(p.get('total')) || totalAmount.value;
-            if (p.has('fee'))    serviceRate.value = parseFloat(p.get('fee')) || 0;
+            if (p.has('total'))  totalAmount.value = clampNum(p.get('total'), 0, 100000000, totalAmount.value);
+            if (p.has('fee'))    serviceRate.value = clampNum(p.get('fee'), 0, 100, 0);
             if (p.has('mode'))   mode.value        = p.get('mode') === 'weighted' ? 'weighted' : 'even';
             if (p.has('m')) {
                 try {
-                    const raw = JSON.parse(p.get('m'));
-                    if (Array.isArray(raw) && raw.length > 0) {
-                        members.value = raw.map((item, i) => ({
-                            id: Date.now() + i,
-                            name:   item.n || '',
-                            paid:   item.p || 0,
-                            weight: item.w || 1,
-                        }));
-                    }
+                    const membersFromUrl = sanitizeMembers(JSON.parse(p.get('m')));
+                    if (membersFromUrl) members.value = membersFromUrl;
                 } catch(_) {}
             }
             return; // skip localStorage
@@ -403,10 +422,11 @@ onMounted(() => {
     if(saved) {
         try {
             const d = JSON.parse(saved);
-            if (Array.isArray(d.members) && d.members.length > 0) members.value = d.members;
-            if(d.totalAmount) totalAmount.value = d.totalAmount;
-            if(d.serviceRate !== undefined) serviceRate.value = d.serviceRate;
-            if(d.mode) mode.value = d.mode;
+            const membersFromStorage = sanitizeMembers(d.members);
+            if (membersFromStorage) members.value = membersFromStorage;
+            if(d.totalAmount) totalAmount.value = clampNum(d.totalAmount, 0, 100000000, totalAmount.value);
+            if(d.serviceRate !== undefined) serviceRate.value = clampNum(d.serviceRate, 0, 100, 0);
+            if(d.mode) mode.value = d.mode === 'weighted' ? 'weighted' : 'even';
         } catch(e) {}
     }
 });
