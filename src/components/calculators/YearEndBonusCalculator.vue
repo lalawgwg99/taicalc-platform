@@ -69,25 +69,21 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import ResultReceipt from '../ResultReceipt.vue';
+import {
+  WITHHOLD_THRESHOLD,
+  calculateNetBonus,
+  calculateSuppFee,
+  calculateSuppThreshold,
+  calculateWithholdingTax
+} from '../../utils/calculators/yearEndBonus';
 
 const bonus = ref(100000)
 const insuredAmount = ref(45800)
 
-const WITHHOLD_THRESHOLD = 90501
-const WITHHOLD_RATE = 0.05
-const SUPP_RATE = 0.0211
-const SUPP_MULTIPLE = 4
-
-const withholdingTax = computed(() => {
-    const b = bonus.value || 0
-    return b >= WITHHOLD_THRESHOLD ? Math.round(b * WITHHOLD_RATE) : 0
-})
-const suppThreshold = computed(() => (insuredAmount.value || 0) * SUPP_MULTIPLE)
-const suppFee = computed(() => {
-    const over = (bonus.value || 0) - suppThreshold.value
-    return over > 0 ? Math.round(over * SUPP_RATE) : 0
-})
-const netBonus = computed(() => (bonus.value || 0) - withholdingTax.value - suppFee.value)
+const withholdingTax = computed(() => calculateWithholdingTax(bonus.value))
+const suppThreshold = computed(() => calculateSuppThreshold(insuredAmount.value))
+const suppFee = computed(() => calculateSuppFee(bonus.value, insuredAmount.value))
+const netBonus = computed(() => calculateNetBonus(bonus.value, insuredAmount.value))
 const thresholdDiff = computed(() => {
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) return '已超過，須預扣'

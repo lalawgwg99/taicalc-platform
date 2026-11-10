@@ -32,7 +32,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/home-ownership-cost-calculator': '2026-11-08',
   '/tools/parental-benefit-calculator': '2026-11-08',
   '/tools/real-return-calculator': '2026-11-08',
-  '/tools/severance-calculator': '2026-11-08',
+  '/tools/severance-calculator': '2026-11-11',
   '/tools/etf-dividend-calculator': '2026-11-08',
   '/tools/fire-calculator': '2026-11-08',
   '/tools/income-tax-calculator': '2026-11-08',
@@ -44,7 +44,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/rental-yield-calculator': '2026-11-08',
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
-  '/tools/year-end-bonus-calculator': '2026-11-08',
+  '/tools/year-end-bonus-calculator': '2026-11-11',
 };
 
 const escapeXml = (value: string) =>
