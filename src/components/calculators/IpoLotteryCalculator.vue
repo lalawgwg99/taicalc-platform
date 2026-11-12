@@ -137,7 +137,7 @@ const evDisplay = computed(() => {
 
 const insight = computed(() => {
     const parts = []
-    parts.push(`結論：${verdictText.value}。期望值 $${fmt(Math.abs(result.value.expectedValue))} 元是「每抽一次平均賺或賠多少」，不是保證。`)
+    parts.push(`結論：${verdictText.value}。期望值 ${signed(result.value.expectedValue)} 元是「每抽一次平均賺或賠多少」，不是保證。`)
     if (result.value.spread > 0) {
         parts.push(`中籤賣出價差 $${fmt(result.value.spread)}，扣 70 元手續費與 $${fmt(result.value.opportunityCost)} 機會成本，中籤賺 $${fmt(result.value.winProfit)}。`)
     } else if (result.value.spread < 0) {

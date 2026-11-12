@@ -185,7 +185,7 @@
                     <p class="text-4xl md:text-5xl font-bold text-brand-600">
                         <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
-                    <p class="text-xs text-ink-400 mt-2">用你的稅率 {{ taxRate }}% 算的</p>
+                    <p class="text-xs text-ink-400 mt-2">以提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元 × 自提 {{ selfRate }}% × 稅率 {{ taxRate }}% 算的</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
