@@ -171,6 +171,17 @@ export const toolCatalog: ToolCatalogItem[] = [
     tags: ['股票', '股票損益', '手續費', '證交稅', '當沖', '交易成本'],
   },
   {
+    href: '/tools/ipo-lottery-calculator',
+    label: '新股抽籤試算',
+    desc: '中籤率×價差期望值，該不該抽先算。',
+    category: '投資與退休',
+    isCore: true,
+    scenario: '看到新股申購消息、猶豫要不要抽之前',
+    cta: '算這檔該不該抽',
+    icon: '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/>',
+    tags: ['新股抽籤', '抽籤', '中籤率', 'IPO', '新股申購', '破發', '期望值'],
+  },
+  {
     href: '/tools/overtime-calculator',
     label: '加班費試算',
     desc: '平日、休息日、國定假日加班費。',

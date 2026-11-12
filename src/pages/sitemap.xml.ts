@@ -45,6 +45,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
   '/tools/year-end-bonus-calculator': '2026-11-11',
+  '/tools/ipo-lottery-calculator': '2026-11-12',
 };
 
 const escapeXml = (value: string) =>

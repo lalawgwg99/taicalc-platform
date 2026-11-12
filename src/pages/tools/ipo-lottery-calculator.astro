@@ -1,0 +1,121 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import IpoLotteryCalculator from '../../components/calculators/IpoLotteryCalculator.vue';
+
+const title = "新股抽籤試算機｜中籤率×價差期望值，該不該抽 3 秒算｜TaiCalc";
+const description = "新股抽籤期望值試算：輸入承銷價、中籤率、預期賣出價，算出預扣金額、中籤損益與期望值，直接回答這檔該不該抽。完全免費。";
+const keywords = "新股抽籤,抽籤試算,中籤率,新股申購,IPO抽籤,抽籤期望值,漢測,破發,抽籤該不該抽";
+
+const faqs = [
+    {
+        q: "抽籤要先準備多少錢？",
+        a: "預扣金額＝承銷價×股數＋20 元處理費＋50 元郵寄工本費。90 元×1,000 股要先準備 90,070 元；漢測 2,250 元×1,000 股要 2,250,070 元。交割戶餘額不足會變不合格件，連抽的資格都沒有。"
+    },
+    {
+        q: "同一檔可以向多家券商申購嗎？",
+        a: "不行。同種股票每人僅能向一家券商申購，重複申購即不合格。想提高中籤率不是多開幾家券商抽同一檔，而是等下一檔。"
+    },
+    {
+        q: "抽籤後可以反悔嗎？",
+        a: "不行。申購後不得撤回或更改；中籤後不能放棄認購，一定要繳款認購。所以按下申購前，先用上方計算機確認：萬一破發，這筆虧損你扛不扛得住。"
+    },
+    {
+        q: "中籤率要填多少？",
+        a: "中籤率沒有公開 API，每檔差很多：熱門檔漢測僅 0.29%，冷門檔可能數十%。請參考該檔歷史中籤率或券商公告自填；中籤率填錯，期望值就跟著錯。"
+    },
+    {
+        q: "期望值是正的就一定賺嗎？",
+        a: "不是。期望值是機率平均：漢測中籤率 0.29%，即使期望值 6,506 元，實際上 99.71% 的人只賠 686 元手續費與機會成本。而且掛牌價可能破發——巨虹 45.6 元抽到、33.1 元掛牌，抽中一張現賠 1.25 萬。"
+    },
+];
+---
+
+<ToolLayout title={title} description={description} keywords={keywords} category="投資與退休" faqs={faqs}>
+    <IpoLotteryCalculator client:only="vue" slot="tool" />
+
+    <div slot="article">
+        <h2>同一種抽籤，兩種結局：漢測 vs 巨虹</h2>
+        <p>2026 年 9 月，台股同時上演抽籤的天堂與地獄。漢測（7856）承銷價 2,250 元，公開申購凍結市場資金 8,656 億元、合格件中籤率僅 0.29%，9 月 22 日掛牌首日收 4,730 元，抽中一張現賺約 248 萬。同一個月，巨虹（8084）承銷價 45.6 元，股價連 2 日跌停至 33.1 元，抽中一張現賠 1.25 萬，公司 9 月 23 日決議撤銷現增、金管會 9 月 24 日核准，中籤人依法加計利息返還股款。更殘酷的是，漢測 10 月 12 日也跌停至 3,835 元創掛牌新低——首日沒賣的人，獲利直接縮水近兩成。</p>
+
+        <h3>期望值怎麼讀</h3>
+        <p>期望值＝中籤率×價差 − 手續費 − 資金機會成本。錢被凍結不論中籤與否都會發生，所以機會成本兩種結果都要扣；中籤損益是「價差 − 70 元手續費 − 機會成本」，未中籤損失是「70 元手續費 ＋ 機會成本」。期望值大於 0 代表長期抽下來平均是賺的，小於 0 代表平均是賠的。但「長期平均」有個前提：你要抽夠多次。漢測期望值 6,506 元聽起來很賺，實際上 99.71% 的人只賠 686 元——期望值是拿來判斷「這檔值不值得花一次機會」，不是保證這次會賺。</p>
+
+        <h3>申購前先確認的三件事</h3>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>戶頭錢夠不夠：</strong> 預扣金額＝承銷價×股數＋70 元，餘額不足直接變不合格件。漢測一張要先準備 225 萬元，不是每個人都抽得起。</li>
+            <li><strong>只抽一家：</strong> 同種股票每人僅能向一家券商申購，重複申購即不合格；申購後不能撤回，中籤後不能放棄。</li>
+            <li><strong>破發你扛不扛得住：</strong> 把預期賣出價填成低於承銷價試一次，看中籤損益是多少。如果那個數字讓你睡不著，這檔就別抽。</li>
+        </ul>
+
+        <p class="note-box">免責聲明：本工具僅為機率試算，不構成投資建議。期望值依使用者自填的中籤率與預期賣出價計算，掛牌價可能高於或低於承銷價，實際損益以成交價與券商收費為準；申購規則以各券商與證交所公告為準。</p>
+
+        <!-- ── 下一步 affiliate 導流區（2026-11-05，榮德「都做免費」拍板；做法比照房貸頁） ──
+             現況：合作洽談中，尚未接任何 affiliate 連結；兩個欄位皆為待接洽狀態，
+             不放假連結、不連到無關頁面、不寫佣金數字（台灣券商開戶 affiliate 價目未查到公開數字）。
+             追蹤：沿用 Layout 的 window.taicalcTrackEvent 橋接（GA4）——
+               ① 曝光：區塊進入可視區時發 affiliate_section_view 一次；
+               ② 點擊：待接洽欄位被點時發 partner_click（另帶 partner_status: 'pending'），與正式合作點擊區隔。
+             接上正式連結時：把 button[data-affiliate-slot] 整顆換成 a 元素
+               （href 填真正的 affiliate 連結，rel="sponsored nofollow"，
+               target="_blank"，data-partner-id 沿用同名、
+               data-partner-placement="ipo_result_next"、
+               data-offer-type="brokerage"）；
+               Layout 的全域點擊監聽會自動發同一組 partner_click 事件，
+               本區塊的 inline script 屆時整段移除即可。 -->
+        <h2>下一步：抽籤前先把戶頭準備好</h2>
+        <p>抽籤一定要有證券戶，預扣金額也要先放在交割戶裡。以下為合作推廣連結（目前合作洽談中、尚未開放）：抽籤試算本身完全免費，點不點都不影響試算結果與數字。</p>
+        <div class="grid gap-3 sm:grid-cols-2" data-affiliate-section="ipo_result_next">
+            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="ipo-broker-open" data-partner-placement="ipo_result_next" data-offer-type="brokerage" data-partner-status="pending">
+                <span class="block text-sm font-semibold text-ink-700">證券戶開戶比較</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-500">還沒有證券戶？先比較各券商手續費與開戶優惠，再決定開哪家。</span>
+                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+            </button>
+            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="ipo-subscription-info" data-partner-placement="ipo_result_next" data-offer-type="brokerage" data-partner-status="pending">
+                <span class="block text-sm font-semibold text-ink-700">新股申購資訊</span>
+                <span class="mt-1 block text-xs leading-relaxed text-ink-500">近期有哪些檔開放申購、承銷價與申購期間一次看。</span>
+                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+            </button>
+        </div>
+        <p class="text-xs text-ink-400 mt-2">推廣連結說明：本站不收取試算費用；未來合作連結上線時，點擊後前往券商或合作平台頁面，本站可能獲得推廣分潤，分潤不影響您的開戶條件與手續費，實際費率與優惠以券商公告為準。</p>
+        <script is:inline>
+            (function () {
+                var section = document.querySelector('[data-affiliate-section="ipo_result_next"]');
+                if (!section) return;
+                function track(name, params) {
+                    try {
+                        if (typeof window.taicalcTrackEvent === 'function') window.taicalcTrackEvent(name, params);
+                    } catch (e) {}
+                }
+                if ('IntersectionObserver' in window) {
+                    var seen = false;
+                    var observer = new IntersectionObserver(function (entries) {
+                        entries.forEach(function (entry) {
+                            if (entry.isIntersecting && !seen) {
+                                seen = true;
+                                track('affiliate_section_view', { section: 'ipo_result_next', tool_id: 'ipo-lottery-calculator' });
+                                observer.disconnect();
+                            }
+                        });
+                    }, { threshold: 0.3 });
+                    observer.observe(section);
+                }
+                section.querySelectorAll('[data-affiliate-slot]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        track('partner_click', {
+                            partner_id: btn.getAttribute('data-partner-id'),
+                            partner_placement: btn.getAttribute('data-partner-placement') || 'ipo_result_next',
+                            offer_type: btn.getAttribute('data-offer-type') || 'brokerage',
+                            partner_status: 'pending'
+                        });
+                        var badge = btn.querySelector('[data-affiliate-badge]');
+                        if (badge && !badge.dataset.clicked) {
+                            badge.dataset.clicked = '1';
+                            badge.textContent = '已記錄您的興趣';
+                            setTimeout(function () { badge.textContent = '合作洽談中'; delete badge.dataset.clicked; }, 2500);
+                        }
+                    });
+                });
+            })();
+        </script>
+    </div>
+</ToolLayout>
