@@ -61,6 +61,7 @@
                     { label: '預扣總金額', value: `$${fmt(result.prepaid)}` },
                     { label: '中籤時損益', value: signed(result.winProfit), tone: result.winProfit >= 0 ? 'growth' : 'tax' },
                     { label: '未中籤損失', value: `−$${fmt(result.loseLoss)}`, tone: 'tax' },
+                    { label: '損益平衡賣出價', value: breakEvenDisplay },
                 ]"
             />
             <ResultReceipt
@@ -134,6 +135,8 @@ const evDisplay = computed(() => {
     const ev = result.value.expectedValue
     return ev >= 0 ? `+$${fmt(ev)}` : `−$${fmt(Math.abs(ev))}`
 })
+const breakEvenDisplay = computed(() =>
+    `$${result.value.breakEvenSellPrice.toLocaleString('zh-TW', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}／股`)
 
 const insight = computed(() => {
     const parts = []
@@ -148,6 +151,7 @@ const insight = computed(() => {
     if ((winRatePct.value || 0) < 1) {
         parts.push(`中籤率不到 1%，幾乎等於沒抽到；期望值幾乎全靠價差撐，價差不夠大就不用抽。`)
     }
+    parts.push(`損益平衡賣出價 ${breakEvenDisplay.value}：賣在這個價錢以上，中籤才賺錢；以下就是賠（承銷價＋每股分攤的 70 元手續費與機會成本）。`)
     parts.push(`申購前戶頭要先有 $${fmt(result.value.prepaid)}（承銷價×股數＋70 元），餘額不足會變不合格件。`)
     return parts
 })

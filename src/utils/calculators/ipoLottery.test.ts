@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   IPO_FIXED_FEE,
+  calculateBreakEvenSellPrice,
   calculateExpectedValue,
   calculateIpoLottery,
   calculateLoseLoss,
@@ -28,6 +29,9 @@ import {
 // 案例 4 邊際偏負（承銷價 100、預期賣出 101、中籤率 1%）：
 //   價差 1,000；中籤損益 1,000−70−27＝903；未中籤損失 97；
 //   期望值 1%×903−99%×97＝9.03−96.03＝−87
+// 損益平衡賣出價＝承銷價＋(70＋機會成本)÷股數（中籤損益剛好為 0 的賣出價）：
+//   案例 1：2,250＋686÷1,000＝2,250.69；案例 2：45.6＋83÷1,000＝45.68；
+//   案例 3：100＋97÷1,000＝100.10
 describe('calculatePrepaidAmount', () => {
   it('申購通知實例：90 元×1,000 股→90,070；252 元×1,000 股→252,070；35.15 元×3,000 股→105,520', () => {
     expect(calculatePrepaidAmount(90, 1000)).toBe(90070);
@@ -145,6 +149,7 @@ describe('calculateIpoLottery 整合', () => {
       winProfit: 2479314,
       loseLoss: 686,
       expectedValue: 6506,
+      breakEvenSellPrice: 2250.69,
       verdict: 'worth',
     });
   });
@@ -161,6 +166,7 @@ describe('calculateIpoLottery 整合', () => {
       winProfit: -12583,
       loseLoss: 83,
       expectedValue: -1333,
+      breakEvenSellPrice: 45.68,
       verdict: 'not-worth',
     });
   });
@@ -181,6 +187,24 @@ describe('calculateIpoLottery 整合', () => {
     });
     expect(r.expectedValue).toBe(-87);
     expect(r.verdict).toBe('not-worth');
+  });
+});
+
+describe('calculateBreakEvenSellPrice', () => {
+  it('案例 1 漢測：2,250.69 元／股；案例 2 巨虹：45.68 元／股；案例 3：100.10 元／股', () => {
+    expect(calculateBreakEvenSellPrice(2250, 1000, 616)).toBe(2250.69);
+    expect(calculateBreakEvenSellPrice(45.6, 1000, 13)).toBe(45.68);
+    expect(calculateBreakEvenSellPrice(100, 1000, 27)).toBe(100.1);
+  });
+
+  it('賣在損益平衡價時中籤損益約為 0（只差四捨五入不到 1 元×股數的零頭）', () => {
+    const be = calculateBreakEvenSellPrice(2250, 1000, 616);
+    const winProfit = calculateWinProfit(calculateSpread(2250, be, 1000), 616);
+    expect(Math.abs(winProfit)).toBeLessThanOrEqual(10);
+  });
+
+  it('股數為 0 時回傳承銷價（無意義的邊界，不報錯）', () => {
+    expect(calculateBreakEvenSellPrice(100, 0, 27)).toBe(100);
   });
 });
 

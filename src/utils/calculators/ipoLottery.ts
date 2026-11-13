@@ -44,6 +44,20 @@ export const calculateOpportunityCost = (
 export const calculateWinProfit = (spread: number, opportunityCost: number): number =>
   spread - IPO_FIXED_FEE - normalize(opportunityCost);
 
+/** 損益平衡賣出價（元／股）：中籤損益剛好為 0 的賣出價。
+ * 中籤損益＝(賣出價−承銷價)×股數 − 70 元手續費 − 機會成本，
+ * 令其為 0 得：賣出價＝承銷價＋(70＋機會成本)÷股數。
+ * 機會成本只跟預扣金額、凍結天數、年利率有關，與賣出價無關，所以這個點是定值。 */
+export const calculateBreakEvenSellPrice = (
+  issuePrice: number,
+  shares: number,
+  opportunityCost: number,
+): number => {
+  const s = normalize(shares);
+  if (s === 0) return Math.round(normalize(issuePrice) * 100) / 100;
+  return Math.round((normalize(issuePrice) + (IPO_FIXED_FEE + normalize(opportunityCost)) / s) * 100) / 100;
+};
+
 /** 未中籤損失：70 元手續費 ＋ 機會成本。 */
 export const calculateLoseLoss = (opportunityCost: number): number =>
   IPO_FIXED_FEE + normalize(opportunityCost);
@@ -80,6 +94,7 @@ export interface IpoLotteryResult {
   winProfit: number; // 中籤時損益
   loseLoss: number; // 未中籤損失
   expectedValue: number; // 期望值
+  breakEvenSellPrice: number; // 損益平衡賣出價（元／股）
   verdict: IpoVerdict;
 }
 
@@ -95,6 +110,7 @@ export const calculateIpoLottery = (input: IpoLotteryInput): IpoLotteryResult =>
   const winProfit = calculateWinProfit(spread, opportunityCost);
   const loseLoss = calculateLoseLoss(opportunityCost);
   const expectedValue = calculateExpectedValue(input.winRatePct, winProfit, loseLoss);
+  const breakEvenSellPrice = calculateBreakEvenSellPrice(input.issuePrice, input.shares, opportunityCost);
   return {
     prepaid,
     spread,
@@ -102,6 +118,7 @@ export const calculateIpoLottery = (input: IpoLotteryInput): IpoLotteryResult =>
     winProfit,
     loseLoss,
     expectedValue,
+    breakEvenSellPrice,
     verdict: getVerdict(expectedValue),
   };
 };
