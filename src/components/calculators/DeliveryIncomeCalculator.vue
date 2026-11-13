@@ -144,6 +144,10 @@
           <h3 class="text-sm font-bold text-ink-600 mb-4">支出明細</h3>
           <ul class="space-y-2 text-xs">
             <li class="flex justify-between">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-brand-400"></span>總收入</span>
+              <span class="font-mono text-ink-500">${{ grossIncomeDisplay }}</span>
+            </li>
+            <li class="flex justify-between">
               <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span>油錢</span>
               <span class="font-mono text-ink-500">${{ gasCost }}</span>
             </li>
@@ -207,6 +211,7 @@ const gasCostRaw = computed(() => {
 });
 const maintenanceTotalRaw = computed(() => kilometers.value * maintenancePerKm.value);
 
+const grossIncomeDisplay = computed(() => Math.round(grossIncome.value).toLocaleString());
 const gasCost = computed(() => Math.round(gasCostRaw.value).toLocaleString());
 const maintenanceTotal = computed(() => Math.round(maintenanceTotalRaw.value).toLocaleString());
 const insuranceMonthlyDisplay = computed(() => Math.round(insuranceMonthly.value).toLocaleString());
