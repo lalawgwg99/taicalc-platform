@@ -1,5 +1,7 @@
+import Decimal from 'decimal.js';
 import { describe, expect, it } from 'vitest';
 
+import { getInsuredSalary } from '../../data/calculators/taiwanInsurance';
 import { calculateSalaryBreakdown, estimateAnnualSalaryIncome } from './salary';
 
 describe('calculateSalaryBreakdown', () => {
@@ -115,5 +117,54 @@ describe('estimateAnnualSalaryIncome', () => {
 
   it('NaN 輸入回傳 0', () => {
     expect(estimateAnnualSalaryIncome(NaN, 1)).toBe(0);
+  });
+});
+
+// 2027 年三級距實拿對照表（薪資頁 2027/1/1 生效預估表，2026-11-14 第 15 輪）：
+// 勞保費率預估 13%（勞工負擔 20%）、健保 5.17%（勞工負擔 30%）。2027 年級距表
+// 依最低工資調整推估：第 1 級 30,900 元（30,300 級隨最低工資超過而刪除，其餘不變），
+// 正式數字以勞保局、健保署公告為準。關鍵邊界：月薪剛好等於級距值取該級（30,900→30,900，
+// 不是 31,800）——2027 最低工資指南文曾誤寫 31,800／勞保 827／實拿 29,580，經勞保局
+// 「勞工保險投保薪資分級表」（第 1 級「29,500 元以下」→29,500 元）核實為誤，本測試釘住正確值。
+describe('2027 年實拿對照表（預估）', () => {
+  const LABOR_GRADES_2027 = [30900, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
+  const HEALTH_GRADES_2027 = [
+    30900, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800, 48200, 50600, 53000,
+    55400, 57800, 60800
+  ];
+
+  const calc2027 = (salary: number, pensionRate: number) => {
+    const laborGrade = getInsuredSalary(salary, LABOR_GRADES_2027, 45800);
+    const healthGrade = getInsuredSalary(salary, HEALTH_GRADES_2027, 313000);
+    const labor = new Decimal(laborGrade).mul(0.13).mul(0.2).round().toNumber();
+    const health = new Decimal(healthGrade).mul(0.0517).mul(0.3).round().toNumber();
+    const penS = new Decimal(Math.min(healthGrade, 150000)).mul(pensionRate).div(100).round().toNumber();
+    return { laborGrade, healthGrade, labor, health, penS, mNet: salary - labor - health - penS };
+  };
+
+  it('月薪剛好等於級距值取該級：30,900→30,900（不是 31,800）', () => {
+    expect(getInsuredSalary(30900, LABOR_GRADES_2027, 45800)).toBe(30900);
+    expect(getInsuredSalary(30900, HEALTH_GRADES_2027, 313000)).toBe(30900);
+  });
+
+  it('月薪 30,900：勞保 803、健保 479、實拿 29,618、自提 6% 後 27,764', () => {
+    const r = calc2027(30900, 0);
+    expect([r.laborGrade, r.healthGrade, r.labor, r.health, r.mNet]).toEqual([30900, 30900, 803, 479, 29618]);
+    expect(calc2027(30900, 6).mNet).toBe(27764);
+    expect(calc2027(30900, 6).penS).toBe(1854);
+  });
+
+  it('月薪 45,000：勞保 1,191（上限 45,800）、健保 710、實拿 43,099、自提 6% 後 40,351', () => {
+    const r = calc2027(45000, 0);
+    expect([r.laborGrade, r.healthGrade, r.labor, r.health, r.mNet]).toEqual([45800, 45800, 1191, 710, 43099]);
+    expect(calc2027(45000, 6).mNet).toBe(40351);
+    expect(calc2027(45000, 6).penS).toBe(2748);
+  });
+
+  it('月薪 60,000：勞保 1,191、健保 943（60,800）、實拿 57,866、自提 6% 後 54,218', () => {
+    const r = calc2027(60000, 0);
+    expect([r.laborGrade, r.healthGrade, r.labor, r.health, r.mNet]).toEqual([45800, 60800, 1191, 943, 57866]);
+    expect(calc2027(60000, 6).mNet).toBe(54218);
+    expect(calc2027(60000, 6).penS).toBe(3648);
   });
 });
