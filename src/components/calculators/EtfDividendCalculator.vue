@@ -54,6 +54,7 @@
                 :main-value="`$ ${fmt(annualDividend)}`"
                 :rows="[
                     { label: '一年配息率', value: annualYield !== null ? `${annualYield}%` : '請輸入股價', tone: 'growth' },
+                    ...(price > 0 ? [{ label: '目前總市值', value: `$ ${fmt(totalValue)}` }] : []),
                     { label: '月均配息（約）', value: `$ ${fmt(Math.round(annualNet / 12))}` },
                     { label: '一年補充保費', value: annualSuppFee > 0 ? `−$ ${fmt(annualSuppFee)}` : '$ 0（未達 2 萬門檻）', tone: annualSuppFee > 0 ? 'tax' : 'neutral' },
                     { label: '一年實拿', value: `$ ${fmt(annualNet)}` },
@@ -112,6 +113,7 @@ const annualYield = computed(() => {
     if (p <= 0) return null
     return (((dividendPerShare.value || 0) * (frequency.value || 1)) / p * 100).toFixed(2)
 })
+const totalValue = computed(() => Math.round((shares.value || 0) * (price.value || 0)))
 
 const insight = computed(() => {
     const parts = []
