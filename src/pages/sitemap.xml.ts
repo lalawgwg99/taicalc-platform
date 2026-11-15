@@ -16,7 +16,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
   '/tools/life-simulator': '2026-11-15',
   '/tools/mortgage-calculator': '2026-11-15',
-  '/tools/salary-calculator': '2026-11-15',
+  '/tools/salary-calculator': '2026-11-16',
   '/tools/split-calculator': '2026-11-08',
   '/tools/unemployment-benefit-calculator': '2026-11-08',
   '/tools/debt-consolidation-calculator': '2026-11-08',

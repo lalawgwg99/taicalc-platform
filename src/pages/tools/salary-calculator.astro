@@ -22,8 +22,20 @@ const faqs = [
         a: "月薪 60,000 元，勞保投保薪資已達上限 45,800 元，勞保費固定 1,145 元不再隨薪水增加；健保投保金額 60,800 元、健保費 943 元，無勞退自提時每月實拿 57,912 元。若自提勞退 6%（3,648 元），實拿 54,264 元。薪水超過 45,800 元後，每多 1 萬元月薪，勞保不再多扣，實拿增加幅度反而變大。"
     },
     {
+        q: "月薪 8 萬實拿多少？2026 年版",
+        a: "月薪 80,000 元：勞保 1,145 元（已達上限 45,800 元）、健保 1,244 元（投保金額 80,200 元），無勞退自提時每月實拿 77,611 元；自提 6%（4,812 元）實拿 72,799 元。月薪超過 45,800 元後勞保不再增加，健保則隨級距上升。詳細對照見<a href=\"/blog/2026-monthly-salary-take-home-guide\">2026 月薪 3 萬、5 萬、8 萬實際拿多少</a>。"
+    },
+    {
+        q: "為什麼薪資單上的勞保費跟試算差幾十元？",
+        a: "多半是投保薪資用「級距對照」，不是直接用實際月薪：例如月薪 48,000 元，勞保對到上限 45,800 元、健保對到 48,200 元，健保費 748 元；月薪 52,000 元健保對到 53,000 元、健保費 822 元。差幾十元是級距進位，不是算錯；若差幾百元以上，再問公司人資核對投保薪資。"
+    },
+    {
+        q: "雇主把投保薪資報低，對我有什麼影響？",
+        a: "每月少扣一點保費，但勞保給付（老年、傷病、失能給付）與勞退 6% 提繳都按投保薪資算，報低等於未來領得少、退休金專戶累積也少；健保給付不受投保金額影響。可到勞保局 e 化服務系統查詢自己的投保薪資與勞退提繳金額。想知道少提多少退休金，用<a href=\"/tools/labor-pension-calculator\">勞退試算</a>；想估老年給付，用<a href=\"/tools/labor-insurance-pension-calculator\">勞保年金試算</a>。"
+    },
+    {
         q: "勞退自提 6% 值得嗎？有什麼好處？",
-        a: "看現金流：每月工資6%內自願提繳，不計入當年度薪資所得課稅；請領收益不低於當地銀行2年期定存利率保證收益；資金須符合請領條件才能動用。"
+        a: "看現金流：每月工資6%內自願提繳，不計入當年度薪資所得課稅；請領收益不低於當地銀行2年期定存利率保證收益；資金須符合請領條件才能動用。自提金額與節稅效果用<a href=\"/tools/labor-pension-calculator\">勞退試算</a>精算。"
     },
     {
         q: "薪資條上的「勞保」和「健保」差在哪？",
@@ -77,7 +89,7 @@ const faqs = [
             <strong>注意：</strong> 本計算機已更新至 2026 年最新勞健保級距與基本工資（29,500 元）。若您的薪資單數字與試算結果差異過大，建議向公司人資或會計詢問明細。
         </blockquote>
 
-        <h3>四個薪資級距實拿對照（2026 年，月）</h3>
+        <h3>五個薪資級距實拿對照（2026 年，月）</h3>
         <p>下表以本工具公式實算：勞保費率 12.5%（勞工負擔 20%）、健保費率 5.17%（勞工負擔 30%）、勞保投保薪資上限 45,800 元。實拿為月薪扣勞健保及勞退自提後的金額，尚未計入年度綜合所得稅結算。</p>
         <div class="overflow-x-auto">
         <table>
@@ -87,11 +99,16 @@ const faqs = [
                 <tr><td class="whitespace-nowrap">40,000 元</td><td class="whitespace-nowrap">1,003 元</td><td class="whitespace-nowrap">622 元</td><td class="whitespace-nowrap">38,375 元</td><td class="whitespace-nowrap">35,969 元</td></tr>
                 <tr><td class="whitespace-nowrap">50,000 元</td><td class="whitespace-nowrap">1,145 元</td><td class="whitespace-nowrap">785 元</td><td class="whitespace-nowrap">48,070 元</td><td class="whitespace-nowrap">45,034 元</td></tr>
                 <tr><td class="whitespace-nowrap">60,000 元</td><td class="whitespace-nowrap">1,145 元</td><td class="whitespace-nowrap">943 元</td><td class="whitespace-nowrap">57,912 元</td><td class="whitespace-nowrap">54,264 元</td></tr>
+                <tr><td class="whitespace-nowrap">80,000 元</td><td class="whitespace-nowrap">1,145 元</td><td class="whitespace-nowrap">1,244 元</td><td class="whitespace-nowrap">77,611 元</td><td class="whitespace-nowrap">72,799 元</td></tr>
             </tbody>
         </table>
         </div>
         <p>看得出一個關鍵轉折：月薪 50,000 元與 60,000 元的勞保費同為 1,145 元，因為勞保投保薪資已到頂。談薪水時，超過 45,800 元的部分不再被勞保多扣，是實拿增加較快的區間。</p>
         <p>延伸閱讀：<a href="/blog/2026-monthly-salary-take-home-guide">2026 月薪 3 萬、5 萬、8 萬實際拿多少</a>、<a href="/blog/2027-minimum-wage-take-home-guide">2027 最低工資 30,900 元實拿試算</a>；算完實拿，接著用<a href="/tools/income-tax-calculator">綜合所得稅試算</a>看年度稅額，或用<a href="/tools/year-end-bonus-calculator">年終獎金試算</a>看年終實拿，或用<a href="/tools/overtime-calculator">加班費試算</a>算加班費實拿。</p>
+
+        <h3>案例：月薪 5 萬台北租屋族，每月能存多少？</h3>
+        <p>以月薪 50,000 元、無勞退自提為例，每月實拿 48,070 元；一年 12 個月加 1 個月年終，稅前年實拿 626,840 元（未計年度所得稅結算）。假設情境（非統計數字）：房租 15,000 元、伙食 9,000 元、交通 2,500 元、其他固定支出 5,000 元，每月可存 16,570 元，儲蓄率約 34%。</p>
+        <p>若改自提 6%，每月實拿降為 45,034 元，同樣支出下每月可存 13,534 元，但每月 3,036 元進了退休金專戶、當年免稅，實際儲蓄（含退休金）仍是 16,570 元——自提不是少存錢，是把錢從活期戶頭搬進退休金專戶。想精算自己的自提節稅效果，用<a href="/tools/labor-pension-calculator">勞退試算</a>；想看退休後每月能領多少，用<a href="/tools/labor-insurance-pension-calculator">勞保年金試算</a>。</p>
 
         <h3>把「實拿薪資」變成生活預算</h3>
         <p>多數人不是只想知道實領金額，而是想知道<strong>「每月可以存多少」</strong>。因此本工具新增固定支出與可存金額推估，搭配緊急預備金目標（3 / 6 / 12 個月），讓你把薪資直接轉為可行的理財行動。</p>

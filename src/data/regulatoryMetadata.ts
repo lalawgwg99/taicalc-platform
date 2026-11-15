@@ -27,7 +27,7 @@ export const coreToolGovernance: Record<'salary' | 'incomeTax' | 'mortgage' | 'i
   salary: {
     version: 'SALARY-2026.07',
     dataYear: '2026 年度',
-    updatedAt: '2026-11-02',
+    updatedAt: '2026-11-16',
     sources: [
       { label: '勞動部（115 年最低工資）', href: 'https://www.mol.gov.tw/1607/28162/28652/28922/28931/28937/28940/34586/post' },
       { label: '勞保局（115 年勞保費率與投保薪資）', href: 'https://www.bli.gov.tw/0108700.html' },
