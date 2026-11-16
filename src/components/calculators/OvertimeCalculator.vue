@@ -114,6 +114,7 @@
 
         <!-- 時薪比較圖 -->
         <div class="mb-5 relative z-10">
+            <p class="text-xs font-medium text-amber-800 mb-2">時薪比較（元／小時）</p>
             <div class="space-y-3">
                 <!-- Base Rate -->
                 <div class="flex items-center gap-3">

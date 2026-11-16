@@ -12,7 +12,7 @@
           <label for="ub-age" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">離職時年齡</label>
           <input id="ub-age" type="text" inputmode="decimal" v-model.number="age"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
-          <p class="mt-1.5 text-[11px] text-ink-400">年滿 45 歲最長 9 個月，未滿 6 個月。</p>
+          <p class="mt-1.5 text-[11px] text-ink-400">年滿 45 歲最長 9 個月，未滿 45 歲最長 6 個月。</p>
         </div>
         <div class="md:col-span-2">
           <label class="flex items-center gap-2 text-sm text-ink-700">
