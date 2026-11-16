@@ -44,9 +44,11 @@ export function generalRate(holdingMonths: number): number {
 
 export function nextBracket(holdingMonths: number): { months: number; rate: number } | null {
   const m = Math.floor(num(holdingMonths));
-  if (m <= 24) return { months: 24 - m, rate: 0.35 };
-  if (m <= 60) return { months: 60 - m, rate: 0.2 };
-  if (m <= 120) return { months: 120 - m, rate: 0.15 };
+  // 臨界點是「超過」才降級：24 個月整仍屬「2 年以內」45%，要到第 25 個月才降至 35%，
+  // 故剩餘月數是 25-m（不是 24-m）；60／120 個月同理。2026-11-16 稽核發現舊版在臨界點顯示 0 個月。
+  if (m <= 24) return { months: 25 - m, rate: 0.35 };
+  if (m <= 60) return { months: 61 - m, rate: 0.2 };
+  if (m <= 120) return { months: 121 - m, rate: 0.15 };
   return null;
 }
 

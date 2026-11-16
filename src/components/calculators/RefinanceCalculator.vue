@@ -57,9 +57,9 @@
                   </div>
         <div>
           <label for="rf-setting" class="block text-xs font-semibold text-ink-400 mb-2">抵押權設定規費 (NT$)</label>
-          <input id="rf-setting" type="text" inputmode="decimal" v-model.number="settingFee"
+          <input id="rf-setting" type="text" inputmode="decimal" v-model.number="settingFee" @change="settingFeeTouched = true"
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
-          <p class="mt-1 text-[11px] text-ink-400">法定規費＝設定金額 × 0.1%。改餘額時會重新估算。</p>
+          <p class="mt-1 text-[11px] text-ink-400">法定規費＝設定金額 × 0.1%。改餘額時會重新估算；手動改過後不再自動重估。</p>
         </div>
         <div>
           <label for="rf-appraisal" class="block text-xs font-semibold text-ink-400 mb-2">鑑價費 (NT$)</label>
@@ -156,14 +156,18 @@ const otherFee = ref(0);
 
 const fmt = (n) => Math.round(Number(n) || 0).toLocaleString('zh-TW');
 const num = (v) => Math.max(Number(v) || 0, 0);
+// 年期箝制 0–50 年並取整：填 1000 年會算出「回本 2 個月」的假結論；50 年與房貸年期上限對齊（2026-11-16 稽核）
+const clampYears = (v) => Math.min(50, Math.max(0, Math.round(Number(v) || 0)));
 
-// 設定規費 = 貸款金額 × 1.2（設定金額）× 0.1%（法定千分之一），餘額變動時自動重估，使用者仍可手改
-watch(balance, (b) => { settingFee.value = Math.round(num(b) * 1.2 * 0.001); });
+// 設定規費 = 貸款金額 × 1.2（設定金額）× 0.1%（法定千分之一），餘額變動時自動重估；
+// 使用者手動改過設定規費後不再自動覆寫（2026-11-16 稽核）
+const settingFeeTouched = ref(false);
+watch(balance, (b) => { if (!settingFeeTouched.value) settingFee.value = Math.round(num(b) * 1.2 * 0.001); });
 
 const totalCost = computed(() => num(penalty.value) + num(scrivener.value) + num(settingFee.value) + num(appraisal.value) + num(bankFee.value) + num(otherFee.value));
-const oldMonths = computed(() => Math.round(num(remainingYears.value) * 12));
-const newMonths = computed(() => Math.round(num(newYears.value) * 12));
-const holdMonths = computed(() => Math.round(num(holdYears.value) * 12));
+const oldMonths = computed(() => clampYears(remainingYears.value) * 12);
+const newMonths = computed(() => clampYears(newYears.value) * 12);
+const holdMonths = computed(() => clampYears(holdYears.value) * 12);
 
 // 年期為 0 時 monthlyPayment 會回傳月付 0，造成「每月少付＝舊月付全額」的假結論；直接擋下計算
 const yearsInvalid = computed(() => oldMonths.value <= 0 || newMonths.value <= 0);

@@ -471,6 +471,8 @@ for (const r of [salary, bonus, salaryB, bonusB]) {
 const relocationCost = ref(0)
 const copied = ref(false)
 const monthlyExpense = ref(20000)
+// 每月支出不接受負數：負值會把儲蓄率算到超過 100%（2026-11-16 稽核；與上方薪資／年終 watch 同款做法）
+watch(monthlyExpense, (v) => { if (typeof v === 'number' && v < 0) monthlyExpense.value = 0 })
 const taxFilingStatus = ref('single')
 const taxDependents = ref(0)
 
@@ -758,8 +760,10 @@ const updateCharts = () => {
 
 // ── 儲存 / 持久化 ───────────────────────────────────────────────
 watch(monthlyNet, (v) => {
-    if (v > 0) localStorage.setItem('taicalc_salary_net', v)
-    else       localStorage.removeItem('taicalc_salary_net')
+    try {
+        if (v > 0) localStorage.setItem('taicalc_salary_net', v)
+        else       localStorage.removeItem('taicalc_salary_net')
+    } catch (e) {}
 })
 
 watch([salary, bonus, pension, raiseRate, inflationRate], updateCharts, { deep: true })
@@ -772,17 +776,20 @@ onMounted(() => {
         const data = JSON.parse(saved)
         if (data.salary)              salary.value  = data.salary
         if (data.bonus  !== undefined) bonus.value  = data.bonus
-        if (data.pension !== undefined) pension.value = data.pension
+        // 還原時驗證範圍：自提法定上限 6%（舊存檔或外部竄改可能寫入 200%）、月支出不接受負數（2026-11-16 稽核）
+        if (data.pension !== undefined) pension.value = Math.min(6, Math.max(0, Number(data.pension) || 0))
         if (data.relocationCost !== undefined) relocationCost.value = data.relocationCost
         if (data.taxFilingStatus) taxFilingStatus.value = data.taxFilingStatus
         if (data.taxDependents !== undefined) taxDependents.value = data.taxDependents
-        if (data.monthlyExpense !== undefined) monthlyExpense.value = data.monthlyExpense
+        if (data.monthlyExpense !== undefined) monthlyExpense.value = Math.max(0, Number(data.monthlyExpense) || 0)
     }
 } catch (e) {}
 setTimeout(updateCharts, 100)
 })
 
 watch([salary, bonus, pension, relocationCost, monthlyExpense, taxFilingStatus, taxDependents], ([s, b, p, r, e, f, d]) => {
-    localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p, relocationCost: r, monthlyExpense: e, taxFilingStatus: f, taxDependents: d }))
+    try {
+        localStorage.setItem('taicalc_salary_inputs', JSON.stringify({ salary: s, bonus: b, pension: p, relocationCost: r, monthlyExpense: e, taxFilingStatus: f, taxDependents: d }))
+    } catch (e) {}
 })
 </script>

@@ -132,8 +132,8 @@ const marginalRate = computed(() => {
 });
 
 const excluded = computed(() => marginalRate.value >= 0.2);
-// 逐欄箝制：雙負相乘不得變正；承租月數一年最多 12 個月
-const clampedMonths = computed(() => Math.min(Math.max(Number(months.value) || 0, 0), 12));
+// 逐欄箝制：雙負相乘不得變正；承租月數一年最多 12 個月；月數取整（2.5 個月不應照算，2026-11-16 稽核）
+const clampedMonths = computed(() => Math.min(Math.max(Math.round(Number(months.value) || 0), 0), 12));
 const annualRent = computed(() => Math.max(Number(monthlyRent.value) || 0, 0) * clampedMonths.value);
 const annualSubsidy = computed(() => Math.max(Number(subsidyMonthly.value) || 0, 0) * clampedMonths.value);
 const deductibleBase = computed(() => Math.max(annualRent.value - annualSubsidy.value, 0));

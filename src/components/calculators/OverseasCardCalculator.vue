@@ -52,6 +52,10 @@ const rows = computed(() => CARDS
 
 const best = computed(() => rows.value[0]);
 const globalOnly = computed(() => destination.value === 'other');
+// 快照用箝制後金額：金額填負數時計算已歸零，快照卻照印原始負數（2026-11-16 稽核）
+const safeAmount = computed(() => Math.max(Number(amount.value) || 0, 0));
+// 費率欄清空時計算視同 0%，畫面要講清楚而非靜默（2026-11-16 稽核）
+const feeEmpty = computed(() => feeRate.value === null || feeRate.value === '' || Number.isNaN(Number(feeRate.value)));
 </script>
 
 <template>
@@ -65,7 +69,7 @@ const globalOnly = computed(() => destination.value === 'other');
         <SnapshotButton
           tool-name="海外刷卡淨回饋試算"
           :metrics="[
-            { label: '海外消費金額', value: formatTWD(amount) },
+            { label: '海外消費金額', value: formatTWD(safeAmount) },
             { label: '淨回饋最高', value: best ? `${best.bank} ${best.name} ${formatTWD(best.net)}` : '—' },
           ]"
         />
@@ -85,7 +89,7 @@ const globalOnly = computed(() => destination.value === 'other');
         <label class="field">
           <span>海外交易手續費率（%）</span>
           <input v-model.number="feeRate" type="number" min="0" max="5" step="0.1" inputmode="decimal" />
-          <small>多數銀行收 1.5%（發卡組織 1%＋銀行 0.5%）。</small>
+          <small>多數銀行收 1.5%（發卡組織 1%＋銀行 0.5%）。<span v-if="feeEmpty">尚未填寫費率，目前以 0% 試算。</span></small>
         </label>
         <div class="field" style="grid-column: 1 / -1;">
           <span>目的地</span>

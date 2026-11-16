@@ -749,6 +749,7 @@ export const en: Strings = {
     monthlySpending: "Monthly spending in retirement",
     returnRate: "Expected annual return",
     needAll: "Fill in all 6 fields to see the live result.",
+    retirementAdjusted: (age: string) => `Retirement age must be after your current age; calculated as age ${age}.`,
     depleted: (age: string) => `Assets run out at about age ${age}`,
     depletedSub: (money: string) => `About ${money} at retirement (today's value)`,
     ok: (age: string) => `Savings last until age ${age}`,

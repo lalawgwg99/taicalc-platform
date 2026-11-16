@@ -18,6 +18,8 @@ export function InvestmentPage({ input, onImport }: { input: PlanningInput; onIm
   const [lump, setLump] = useState(0);
   const [lumpDate, setLumpDate] = useState(`${input.asOf.year}-${String(input.asOf.month).padStart(2, "0")}`);
   const [confirm, setConfirm] = useState<"current" | "suggested" | null>(null);
+  // 新增投資防連點：連點兩下會產生兩筆同名空投資（2026-11-16 稽核；與 CarePilot 問卷 350ms 鎖定同款做法）
+  const [addLock, setAddLock] = useState(false);
   useEffect(() => { setConfirm(null); }, [holdings, years, inflation, growth, mode, target, withdrawal, lump, lumpDate]);
   const [year, month] = lumpDate.split("-").map(Number);
   const plan = { holdings, months: Math.round(years * 12), inflation, contributionGrowth: growth, lumpMonth: lump > 0 ? toSerial(year, month) - toSerial(input.asOf.year, input.asOf.month) + 1 : 1, lumpAmount: lump, withdrawal: mode === "draw" ? withdrawal : 0 };
@@ -44,7 +46,7 @@ export function InvestmentPage({ input, onImport }: { input: PlanningInput; onIm
         <details><summary>{it.feeSummary}</summary>{field(it.yearlyFee, h.feeRate * 100, value => setHoldings(holdings.map((item, i) => i === index ? { ...item, feeRate: value / 100 } : item)), 0.1)}<p>{it.feeNote}</p></details>
         {holdings.length > 1 && <button type="button" onClick={() => setHoldings(holdings.filter((_, i) => i !== index))}>{it.removeHolding}</button>}
       </fieldset>)}
-      <button type="button" onClick={() => setHoldings([...holdings, { id: crypto.randomUUID(), name: it.newHoldingName, valueNow: 0, monthlyContributionToday: 0, grossReturnRate: 0.05, feeRate: 0 }])}>{it.addHolding}</button>
+      <button type="button" disabled={addLock} onClick={() => { if (addLock) return; setAddLock(true); setTimeout(() => setAddLock(false), 350); setHoldings([...holdings, { id: crypto.randomUUID(), name: it.newHoldingName, valueNow: 0, monthlyContributionToday: 0, grossReturnRate: 0.05, feeRate: 0 }]); }}>{it.addHolding}</button>
       <details className="result-details"><summary>{it.adjustSummary}</summary>
         {field(it.inflation, inflation * 100, value => setInflation(value / 100), 0.5)}
         {field(it.growth, growth * 100, value => setGrowth(value / 100), 0.5)}

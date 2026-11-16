@@ -45,6 +45,14 @@ export function Field({ label, value, onChange, suffix, min, max, step = 1, hint
           max={max}
           step={step}
           onChange={(event) => onChange(event.target.value === "" ? Number.NaN : Number(event.target.value))}
+          onBlur={() => {
+            // 離開欄位時才箝制：打字中不干預（例如退休年齡 min 是現年＋1，逐字箝制會讓人打不出 65），
+            // 但離開後超限值不應留存（現年 5 歲、報酬率 100% 照算，2026-11-16 稽核）
+            if (Number.isFinite(value)) {
+              const clamped = clamp(value);
+              if (clamped !== value) onChange(clamped);
+            }
+          }}
         />
         <button type="button" className="stepper-button" onClick={(event) => { event.preventDefault(); nudge(1); }} aria-label={t.common.stepUp(label)} tabIndex={-1}><Plus aria-hidden="true" /></button>
       </span>

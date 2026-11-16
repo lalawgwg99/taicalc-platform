@@ -44,7 +44,7 @@
           <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight whitespace-nowrap">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(diffAbs) }}
           </p>
-          <p class="mt-2 text-xs text-ink-400">同樣本金、同樣報酬假設，只差費用率 {{ feeA }}% 與 {{ feeB }}%</p>
+          <p class="mt-2 text-xs text-ink-400">同樣本金、同樣報酬假設，只差費用率 {{ feeLabel(feeA) }} 與 {{ feeLabel(feeB) }}</p>
         </div>
         <div class="grid grid-cols-1 gap-3 pt-6 border-t border-ink-100 text-center sm:grid-cols-3 sm:gap-4">
           <div>
@@ -52,12 +52,12 @@
             <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(fvGross) }}</p>
           </div>
           <div>
-            <p class="text-xs text-ink-400 mb-1">方案 A（費用 {{ feeA }}%）</p>
+            <p class="text-xs text-ink-400 mb-1">方案 A（費用 {{ feeLabel(feeA) }}）</p>
             <p class="text-lg font-bold text-red-600 font-mono whitespace-nowrap">${{ fmt(fvA) }}</p>
             <p class="text-[11px] text-ink-400 mt-0.5">被費用吃掉 ${{ fmt(fvGross - fvA) }}</p>
           </div>
           <div>
-            <p class="text-xs text-ink-400 mb-1">方案 B（費用 {{ feeB }}%）</p>
+            <p class="text-xs text-ink-400 mb-1">方案 B（費用 {{ feeLabel(feeB) }}）</p>
             <p class="text-lg font-bold text-brand-700 font-mono whitespace-nowrap">${{ fmt(fvB) }}</p>
             <p class="text-[11px] text-ink-400 mt-0.5">被費用吃掉 ${{ fmt(fvGross - fvB) }}</p>
           </div>
@@ -108,13 +108,20 @@ function fv(ratePct, yrs) {
   return lump + annuity;
 }
 
-const fvGross = computed(() => fv(num(grossReturn.value), num(years.value)));
-const fvA = computed(() => fv(num(grossReturn.value) - num(feeA.value), num(years.value)));
-const fvB = computed(() => fv(num(grossReturn.value) - num(feeB.value), num(years.value)));
+// 年數箝制 0–50 年並取整，計算與標題共用同一數值：填 1000 年會算出 37 位數字、
+// 100000 年會溢出 Infinity 顯示「$∞」卻差額「$0」；填 30.5 年時舊版計算用 30.5、
+// 標題寫 31 年，兩邊脫鉤；50 年上限也讓極端值不再撐爆 390px 卡片（2026-11-16 稽核）
+const calcYears = computed(() => Math.min(50, Math.max(0, Math.round(Number(years.value) || 0))));
+const safeYears = calcYears;
+// 費率顯示用箝制後的值：計算早已用 num() 歸零，標籤卻照印原始值（例如 −2%），
+// 清空欄位時則顯示「未填」而非空白（2026-11-16 稽核）
+const feeLabel = (v) => (v === null || v === '' || !Number.isFinite(Number(v)) ? '未填' : `${Math.max(0, Number(v))}%`);
+
+const fvGross = computed(() => fv(num(grossReturn.value), calcYears.value));
+const fvA = computed(() => fv(num(grossReturn.value) - num(feeA.value), calcYears.value));
+const fvB = computed(() => fv(num(grossReturn.value) - num(feeB.value), calcYears.value));
 const diffAB = computed(() => fvB.value - fvA.value);
 const diffAbs = computed(() => Math.abs(diffAB.value));
-// 標題用箝制後年數：年數填負數或清空時，計算用 0 年、標題不應顯示負年數或空白
-const safeYears = computed(() => Math.max(0, Math.round(Number(years.value) || 0)));
 
 const horizonRows = computed(() => [10, 20, 30].map((y) => ({
   y,
@@ -123,7 +130,7 @@ const horizonRows = computed(() => [10, 20, 30].map((y) => ({
 
 const snapshotMetrics = computed(() => [
   { label: '本金', value: `$${fmt(principal.value)}` },
-  { label: '費用率 A／B', value: `${feeA.value}%／${feeB.value}%` },
+  { label: '費用率 A／B', value: `${feeLabel(feeA.value)}／${feeLabel(feeB.value)}` },
   { label: `${safeYears.value} 年差額`, value: `$${fmt(diffAbs.value)}` },
 ]);
 </script>

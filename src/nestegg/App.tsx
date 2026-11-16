@@ -206,7 +206,11 @@ export default function App() {
   };
 
   const reset = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore storage errors
+    }
     try {
       localStorage.removeItem(QUICK_STORAGE_KEY);
     } catch {

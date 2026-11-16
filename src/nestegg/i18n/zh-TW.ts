@@ -747,6 +747,7 @@ export const zhTW = {
     monthlySpending: "退休後每月花費",
     returnRate: "預估年化報酬率",
     needAll: "把 6 個欄位填完，就會即時算出結果。",
+    retirementAdjusted: (age: string) => `退休年齡須大於目前年齡，已按 ${age} 歲計算。`,
     depleted: (age: string) => `資產約在 ${age} 歲用完`,
     depletedSub: (money: string) => `退休時約有 ${money}（今日幣值）`,
     ok: (age: string) => `準備金可撐到 ${age} 歲`,

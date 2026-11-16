@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { calculateGainsTax, generalRate, nextBracket } from './realEstateGainsTax';
 
 describe('房地合一稅 2.0（個人）', () => {
-  it('持有 18 個月：課稅所得 330 萬 × 45%＝1,485,000，再持有 6 個月降一級', () => {
+  it('持有 18 個月：課稅所得 330 萬 × 45%＝1,485,000，再持有 7 個月降一級', () => {
     // 課稅所得＝12,000,000－8,000,000－200,000－500,000＝3,300,000
     const r = calculateGainsTax({
       salePrice: 12_000_000, purchasePrice: 8_000_000, costs: 200_000,
@@ -11,11 +11,11 @@ describe('房地合一稅 2.0（個人）', () => {
     expect(r.taxableIncome).toBe(3_300_000);
     expect(r.rate).toBe(0.45);
     expect(r.tax).toBe(1_485_000);
-    expect(r.nextBracketMonths).toBe(6);
+    expect(r.nextBracketMonths).toBe(7);
     expect(r.nextBracketRate).toBe(0.35);
   });
 
-  it('持有 84 個月：課稅所得 670 萬 × 20%＝1,340,000，再持有 36 個月降至 15%', () => {
+  it('持有 84 個月：課稅所得 670 萬 × 20%＝1,340,000，再持有 37 個月降至 15%', () => {
     // 課稅所得＝20,000,000－12,000,000－300,000－1,000,000＝6,700,000
     const r = calculateGainsTax({
       salePrice: 20_000_000, purchasePrice: 12_000_000, costs: 300_000,
@@ -24,7 +24,7 @@ describe('房地合一稅 2.0（個人）', () => {
     expect(r.taxableIncome).toBe(6_700_000);
     expect(r.rate).toBe(0.2);
     expect(r.tax).toBe(1_340_000);
-    expect(r.nextBracketMonths).toBe(36);
+    expect(r.nextBracketMonths).toBe(37);
     expect(r.nextBracketRate).toBe(0.15);
   });
 
@@ -90,5 +90,14 @@ describe('房地合一稅 2.0（個人）', () => {
     });
     expect(huge.taxableIncome).toBe(900_000_000);
     expect(huge.tax).toBe(135_000_000);
+  });
+
+  it('臨界點再持有月數：24／60／120 個月整都要再 1 個月才降級（2026-11-16 稽核）', () => {
+    // 24 個月整仍屬「2 年以內」45%，要到第 25 個月才降至 35%；舊版回傳 0 個月
+    expect(nextBracket(24)).toEqual({ months: 1, rate: 0.35 });
+    expect(nextBracket(60)).toEqual({ months: 1, rate: 0.2 });
+    expect(nextBracket(120)).toEqual({ months: 1, rate: 0.15 });
+    expect(nextBracket(23)).toEqual({ months: 2, rate: 0.35 });
+    expect(nextBracket(121)).toBeNull();
   });
 });

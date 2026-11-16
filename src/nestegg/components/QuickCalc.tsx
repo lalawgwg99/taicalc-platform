@@ -65,6 +65,10 @@ export function QuickCalc({ quick, onChange, result, calcError, onExpand }: Quic
         <Field label={q.returnRate} value={quick.returnRatePercent} onChange={(v) => set({ returnRatePercent: v })} suffix={u.percent} min={-20} max={30} step={0.5} />
       </div>
 
+      {complete && Number.isFinite(quick.retirementAge) && Number.isFinite(quick.currentAge) && quick.retirementAge <= quick.currentAge && (
+        <p className="quick-hint">{q.retirementAdjusted(String(quick.currentAge + 1))}</p>
+      )}
+
       <div className="quick-answer" aria-live="polite">
         {!complete ? (
           <p className="quick-hint">{q.needAll}</p>

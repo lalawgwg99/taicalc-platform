@@ -51,7 +51,8 @@ export const calculateSalaryBreakdown = (
 ): SalaryCalculationResult => {
   const salary = new Decimal(Number.isFinite(input.salary) ? Math.max(0, input.salary) : 0);
   const bonusMonths = new Decimal(Number.isFinite(input.bonusMonths) ? Math.max(0, input.bonusMonths) : 0);
-  const pensionRate = new Decimal(Number.isFinite(input.pensionRate) ? Math.max(0, input.pensionRate) : 0);
+  // 勞退自提法定上限 6%：localStorage 還原或外部呼叫傳入超限值時箝制，避免自提吃掉整份薪水出現負實拿（2026-11-16 稽核）
+  const pensionRate = new Decimal(Number.isFinite(input.pensionRate) ? Math.min(6, Math.max(0, input.pensionRate)) : 0);
 
   // 月薪為 0（或被清空成 NaN）時不應套用最低投保級距，否則會顯示負實拿。
   if (salary.isZero()) {

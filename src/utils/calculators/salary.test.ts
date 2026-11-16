@@ -168,3 +168,18 @@ describe('2027 年實拿對照表（預估）', () => {
     expect(calc2027(60000, 6).penS).toBe(3648);
   });
 });
+
+describe('calculateSalaryBreakdown 自提上限（2026-11-16 稽核）', () => {
+  it('自提 200% 箝制為法定上限 6%：penS 與 6% 相同、實拿為正', () => {
+    const capped = calculateSalaryBreakdown({ salary: 45800, bonusMonths: 0, pensionRate: 200 });
+    const normal = calculateSalaryBreakdown({ salary: 45800, bonusMonths: 0, pensionRate: 6 });
+    expect(capped.penS).toBe(normal.penS);
+    expect(capped.mNet).toBe(normal.mNet);
+    expect(capped.mNet).toBeGreaterThan(0);
+  });
+
+  it('自提負數歸零', () => {
+    const r = calculateSalaryBreakdown({ salary: 45800, bonusMonths: 0, pensionRate: -5 });
+    expect(r.penS).toBe(0);
+  });
+});

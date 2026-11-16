@@ -417,8 +417,10 @@ watch([amountWan, years, graceYears, rate1, rate2, stage1Months, extraMonthly, e
 watch(results, (v) => {
     if (typeof localStorage === 'undefined') return
     const val = v.afterGracePay || v.basePay
-    if (val > 0) localStorage.setItem('taicalc_mortgage_monthly', Math.floor(val))
-    else         localStorage.removeItem('taicalc_mortgage_monthly')
+    try {
+        if (val > 0) localStorage.setItem('taicalc_mortgage_monthly', Math.floor(val))
+        else         localStorage.removeItem('taicalc_mortgage_monthly')
+    } catch (e) {}
 }, { deep: true, immediate: true })
 
 // ── 分享連結 ───────────────────────────────────────────────────
@@ -592,9 +594,11 @@ watch([amountWan, years, graceYears, rate1, rate2, twoStageMode, stage1Months], 
     validate()
     syncPresetFromFields()
     if (typeof localStorage === 'undefined') return
-    localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
-        amountWan: vals[0], years: vals[1], graceYears: vals[2],
-        rate1: vals[3], rate2: vals[4], twoStageMode: vals[5], stage1Months: vals[6]
-    }))
+    try {
+        localStorage.setItem('taicalc_mortgage_inputs', JSON.stringify({
+            amountWan: vals[0], years: vals[1], graceYears: vals[2],
+            rate1: vals[3], rate2: vals[4], twoStageMode: vals[5], stage1Months: vals[6]
+        }))
+    } catch (e) {}
 })
 </script>

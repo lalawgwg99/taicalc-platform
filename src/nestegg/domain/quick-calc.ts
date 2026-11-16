@@ -54,7 +54,9 @@ export function quickInputToPlanning(quick: QuickInput, base: PlanningInput, hol
   const today = new Date();
   const currentAge = Math.round(quick.currentAge);
   const retirementAge = Math.max(Math.round(quick.retirementAge), currentAge + 1);
-  const returnRate = quick.returnRatePercent / 100;
+  // 報酬率箝制在 Field 的 min/max（−20%～30%）：−50% 會讓引擎拋「找不到足夠退休本金」難懂錯誤，
+  // 100% 會算出天文數字；其餘金額欄已是 Math.max(0, …)，報酬率是唯一漏網（2026-11-16 稽核）
+  const returnRate = Math.min(0.3, Math.max(-0.2, quick.returnRatePercent / 100));
   return {
     ...base,
     asOf: { year: today.getFullYear(), month: today.getMonth() + 1 },
@@ -87,6 +89,8 @@ export function quickInputToPlanning(quick: QuickInput, base: PlanningInput, hol
         grossReturnRate: returnRate,
         feeRate: 0.003
       }],
+      // 快算固定用 0.3% 退休階段費率：不沿用完整模式的自訂費率，否則快算文案假設與計算脫鉤（2026-11-16 稽核）
+      retirementFeeRate: 0.003,
       retirementGrossReturnRate: returnRate
     }
   };
