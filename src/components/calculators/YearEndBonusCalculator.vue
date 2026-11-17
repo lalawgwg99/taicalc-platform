@@ -11,9 +11,10 @@
             </div>
             <div>
                 <label for="fld-00d1059e" class="block text-xs font-medium text-ink-400 mb-1.5">健保投保金額（元）</label>
-                <input id="fld-00d1059e" type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="45800"
+                <input id="fld-00d1059e" type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="50600"
                     class="input-clean font-semibold tabular-nums">
             </div>
+            <p class="text-[11px] text-ink-400">預設 50,600 元對應月薪 5 萬；請依薪資單上的健保投保金額填寫（不是勞保投保薪資）。</p>
             <p class="text-[11px] text-ink-400">115 年度（2026）起扣點為 90,501 元；全年獎金超過當月投保金額 4 倍，超過部分扣 2.11% 補充保費。</p>
         </div>
 
@@ -78,7 +79,7 @@ import {
 } from '../../utils/calculators/yearEndBonus';
 
 const bonus = ref(100000)
-const insuredAmount = ref(45800)
+const insuredAmount = ref(50600)
 
 const withholdingTax = computed(() => calculateWithholdingTax(bonus.value))
 const suppThreshold = computed(() => calculateSuppThreshold(insuredAmount.value))

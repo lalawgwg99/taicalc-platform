@@ -137,7 +137,7 @@
                         <p class="text-[10px] text-green-500/80 mt-0.5">依下方稅務試算實算（無自提稅額－有自提稅額）</p>
                     </div>
                 </div>
-                <p class="text-[10px] text-ink-400 mt-2">勞保以投保薪資 $ {{ res.laborGrade.toLocaleString() }} 計、健保以投保金額 $ {{ res.healthGrade.toLocaleString() }} 計（級距制，故與月薪不一定相同）。</p>
+                <p class="text-[10px] text-ink-400 mt-2">每月實拿為扣勞健保後、未扣年度所得稅、不含年終；勞保以投保薪資 $ {{ res.laborGrade.toLocaleString() }} 計、健保以投保金額 $ {{ res.healthGrade.toLocaleString() }} 計、勞退自提按提繳工資 $ {{ res.pensionBasis.toLocaleString() }} 計（級距制，故與月薪不一定相同）。</p>
             </div>
 
             <!-- 雇主成本視角 -->
@@ -222,12 +222,12 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-paper-100 rounded-xl p-3">
-                        <p class="text-xs text-ink-400 mb-0.5">扣完稅一年領多少</p>
+                        <p class="text-xs text-ink-400 mb-0.5">扣完稅一年領多少（含年終）</p>
                         <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ estimatedAfterTaxAnnual.toLocaleString() }}</p>
                         <p class="text-[10px] text-ink-400 mt-0.5">要繳的稅大概 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
                     </div>
                     <div class="p-3">
-                        <p class="text-xs text-ink-400 mb-0.5">平均每月實拿</p>
+                        <p class="text-xs text-ink-400 mb-0.5">平均每月實拿（扣稅後、含年終）</p>
                         <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
                     </div>
                 </div>

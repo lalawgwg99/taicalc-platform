@@ -186,47 +186,47 @@
       <div class="space-y-2 text-sm mb-5">
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">全年總收入</span>
-          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(grossIncome) }}</span>
+          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">${{ fmt(grossIncome) }}</span>
         </div>
         <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利（分開課稅）</span>
-          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(dividendIncome) }}</span>
+          <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">${{ fmt(dividendIncome) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">薪資特別扣除額</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(salarySpecialDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(salarySpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">免稅額（{{ totalExemptions }} 人）</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(exemptionAmount) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(exemptionAmount) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">{{ deductionType === 'standard' ? '標準' : '列舉' }}扣除額</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">長照特別扣除額</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(longTermCareDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(longTermCareDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">身障特別扣除額</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(disabilityDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(disabilityDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">幼兒學前特扣</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(preschoolDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(preschoolDeduction) }}</span>
         </div>
         <div v-if="rentSpecialDeduction > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">房屋租金特扣</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(rentSpecialDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(rentSpecialDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">儲蓄投資特別扣除額</span>
-          <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(savingsDeduction) }}</span>
+          <span class="tabular-nums text-red-500 whitespace-nowrap">− ${{ fmt(savingsDeduction) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB] font-medium">
           <span class="text-ink-600">真正要課稅的所得</span>
-          <span class="tabular-nums text-ink-700 whitespace-nowrap">$${{ fmt(Math.max(0, taxableIncome)) }}</span>
+          <span class="tabular-nums text-ink-700 whitespace-nowrap">${{ fmt(Math.max(0, taxableIncome)) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">你的稅率</span>
@@ -234,15 +234,15 @@
         </div>
         <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利可抵掉的稅</span>
-          <span class="tabular-nums text-green-600 whitespace-nowrap">− $${{ fmt(dividendCredit) }}</span>
+          <span class="tabular-nums text-green-600 whitespace-nowrap">− ${{ fmt(dividendCredit) }}</span>
         </div>
         <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利分開課的稅</span>
-          <span class="tabular-nums text-ink-700 whitespace-nowrap">+ $${{ fmt(dividendSeparateTax) }}</span>
+          <span class="tabular-nums text-ink-700 whitespace-nowrap">+ ${{ fmt(dividendSeparateTax) }}</span>
         </div>
         <div class="flex justify-between items-center py-2 font-semibold">
           <span class="text-ink-700">總共要繳的稅</span>
-          <span class="tabular-nums text-ink-800 whitespace-nowrap">$${{ fmt(totalTax) }}</span>
+          <span class="tabular-nums text-ink-800 whitespace-nowrap">${{ fmt(totalTax) }}</span>
         </div>
       </div>
 
