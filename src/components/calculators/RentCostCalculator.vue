@@ -85,57 +85,57 @@
         <div class="calculator-subcard md:p-6">
           <div class="text-center mb-6">
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">實際每月支出</p>
-            <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
+            <p class="receipt-main-value">
               <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ actualMonthly }}
             </p>
           </div>
 
-          <div class="grid grid-cols-2 gap-4 text-center pt-6 border-t border-ink-100">
+          <div class="grid grid-cols-2 gap-4 text-center pt-6 border-t border-[#E3DCCB]">
             <div>
               <p class="text-xs text-ink-400 mb-1">押金總額（會退回）</p>
-              <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ depositTotal }}</p>
+              <p class="text-lg font-bold text-ink-600 whitespace-nowrap">${{ depositTotal }}</p>
             </div>
             <div>
               <p class="text-xs text-ink-400 mb-1">押金少賺的利息</p>
-              <p class="text-lg font-bold text-amber-600 font-mono whitespace-nowrap">
+              <p class="text-lg font-bold text-amber-600 whitespace-nowrap">
                 ${{ depositCost }}<span class="text-xs text-ink-400 font-normal">/年</span>
               </p>
             </div>
           </div>
 
-          <div class="text-center pt-6 mt-6 border-t border-ink-100">
+          <div class="text-center pt-6 mt-6 border-t border-[#E3DCCB]">
             <p class="text-xs text-ink-400 mb-2">整個租期總支出 ({{ leaseMonths }}個月)</p>
-            <p class="text-2xl font-bold text-ink-800 font-mono whitespace-nowrap">NT${{ totalCost }}</p>
+            <p class="text-2xl font-bold text-ink-800 whitespace-nowrap">NT${{ totalCost }}</p>
           </div>
 
-          <div class="text-center pt-4 mt-4 border-t border-ink-100">
+          <div class="text-center pt-4 mt-4 border-t border-[#E3DCCB]">
             <p class="text-xs text-ink-400 mb-2">入住首月總支出（當月支出＋押金）</p>
-            <p class="text-2xl font-bold text-ink-800 font-mono whitespace-nowrap">NT${{ firstMonthTotal }}</p>
+            <p class="text-2xl font-bold text-ink-800 whitespace-nowrap">NT${{ firstMonthTotal }}</p>
           </div>
         </div>
 
-        <div class="text-center bg-amber-50 border border-amber-100 rounded-xl p-3">
-          <p class="text-sm text-amber-800 font-medium">小知識：押金少賺的利息以年化 1.7% 計算</p>
-          <p class="text-xs text-amber-600/70 mt-1">這筆錢如果拿去定存或投資，每年本應產生的收益。</p>
+        <div class="border-l-2 border-[#A58436] pl-4 py-1 mt-4">
+          <p class="text-sm text-ink-700 font-medium">小知識：押金少賺的利息以年化 1.7% 計算</p>
+          <p class="text-xs text-ink-400 mt-1">這筆錢如果拿去定存或投資，每年本應產生的收益。</p>
         </div>
       </div>
 
       <!-- Tab: Subsidy Checker -->
       <div v-else-if="activeTab === 'subsidy'">
-         <div class="bg-brand-50 border-l-4 border-brand-500 p-4 rounded-r-xl">
+         <div class="border-l-2 border-[#A58436] pl-4 py-1">
              <div class="flex">
                  <div class="flex-shrink-0">
-                     <svg class="h-5 w-5 text-brand-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                     <svg class="h-5 w-5 text-[#A58436]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                      </svg>
                  </div>
                  <div class="ml-3">
-                     <p class="text-sm text-brand-700">
+                     <p class="text-sm text-ink-700">
                          依 2026 年 300 億租金補貼專案第 3 級上限估算，金額以政府核定為準。
                      </p>
                      <details class="mt-2">
-                         <summary class="text-xs text-brand-700 cursor-pointer">116 年度新制</summary>
-                         <p class="text-sm text-brand-700 mt-1">新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。</p>
+                         <summary class="text-xs text-ink-700 cursor-pointer">116 年度新制</summary>
+                         <p class="text-sm text-ink-700 mt-1">新戶受理期間為 2027/1/1 09:00 至 12/31 17:00（預計 74 萬戶）；115/8/31 前已核定之舊戶自動帶入；租約異動請於 3 個月內補件。金額以國土管理署最新公告為準。</p>
                      </details>
                  </div>
              </div>
@@ -173,15 +173,12 @@
              </div>
          </div>
 
-         <div v-if="hasValidRent" class="calculator-card-dark text-center">
-             <div class="absolute top-0 right-0 p-4 opacity-10">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-             </div>
-             <p class="text-base text-paper-200 mb-2">預估每月領取補貼</p>
-             <p class="text-4xl font-bold text-brand-400 font-mono mb-2 whitespace-nowrap">NT${{ estimatedSubsidy }}</p>
-             <p class="text-sm text-paper-200 whitespace-nowrap">補貼後實付房租：NT${{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
+         <div v-if="hasValidRent" class="text-center border-t border-[#E3DCCB] pt-6 mt-6">
+             <p class="text-base text-ink-400 mb-2">預估每月領取補貼</p>
+             <p class="receipt-main-value mb-2 whitespace-nowrap">NT${{ estimatedSubsidy }}</p>
+             <p class="text-sm text-ink-400 whitespace-nowrap">補貼後實付房租：NT${{ (monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) > 0 ? monthlyRent - parseInt(estimatedSubsidy.replace(/,/g,'')) : 0).toLocaleString() }}</p>
          </div>
-         <div v-else class="text-center bg-paper-50 border border-ink-100 rounded-xl p-6">
+         <div v-else class="text-center border-t border-[#E3DCCB] pt-6 mt-6">
              
              <p class="text-sm text-ink-600 font-medium">還沒輸入月租</p>
              <p class="text-xs text-ink-400 mt-1">先到「租金試算」分頁填入每月租金，就能看到預估補貼金額。</p>
