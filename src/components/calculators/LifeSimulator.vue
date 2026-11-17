@@ -1,15 +1,15 @@
 <template>
   <div class="calculator-shell space-y-4" :class="{ 'icons-ready': iconsReady }">
-    <section v-if="showWelcome" class="overflow-hidden rounded-3xl border border-brand-200 bg-white shadow-card">
+    <section v-if="showWelcome" class="border-t border-[#E3DCCB] pt-6">
       <div class="grid lg:grid-cols-[.8fr_1.2fr]">
-        <div class="bg-paper-800 p-6 text-white sm:p-8">
-          <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">設定起點</p>
-          <h2 class="mt-4 text-3xl font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
+        <div class="p-6 sm:p-8 border-b border-[#E3DCCB]">
+          <p class="text-[11px] font-semibold tracking-[.18em] text-[#A58436]">設定起點</p>
+          <h2 class="mt-4 text-3xl font-serif font-semibold leading-tight">先告訴我，<br />現在的你在哪裡？</h2>
           <p class="mt-4 text-sm leading-7 text-ink-400">不用填得很精準。30 秒設定起點，就能開始比較不同人生選擇。</p>
-          <ol class="mt-8 space-y-4 text-xs text-ink-200">
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">1</span><span>選一個接近你的範例</span></li>
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">2</span><span>微調收入、支出與資產</span></li>
-            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/25 text-brand-200">3</span><span>開始走你想試的人生</span></li>
+          <ol class="mt-8 space-y-4 text-xs text-ink-500">
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center bg-[#A58436] text-white">1</span><span>選一個接近你的範例</span></li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center bg-[#A58436] text-white">2</span><span>微調收入、支出與資產</span></li>
+            <li class="flex gap-3"><span class="flex h-6 w-6 shrink-0 items-center justify-center bg-[#A58436] text-white">3</span><span>開始走你想試的人生</span></li>
           </ol>
         </div>
 
@@ -23,8 +23,8 @@
               v-for="preset in profilePresets"
               :key="preset.id"
               type="button"
-              class="rounded-2xl border p-3 text-left transition"
-              :class="selectedPreset === preset.id ? 'border-brand-400 bg-brand-50 ring-2 ring-brand-100' : 'border-paper-300 bg-paper-100 hover:border-brand-200'"
+              class="border-t border-[#E3DCCB] p-3 pt-3 text-left transition"
+              :class="selectedPreset === preset.id ? 'border-[#A58436]' : 'border-[#E3DCCB] hover:border-[#A58436]'"
               @click="applyPreset(preset)"
             >
               <span class="life-icon material-symbols-outlined">{{ preset.icon }}</span>
@@ -40,8 +40,8 @@
                 v-for="mode in scenarioModes"
                 :key="mode.id"
                 type="button"
-                class="rounded-xl border px-3 py-2 text-left transition"
-                :class="profile.eventIntensity === mode.id ? 'border-brand-400 bg-brand-50 text-brand-800' : 'border-paper-300 bg-white text-ink-500 hover:border-brand-200'"
+                class="border-b-2 px-1 py-2 text-left transition"
+                :class="profile.eventIntensity === mode.id ? 'border-[#A58436] text-ink-800' : 'border-transparent text-ink-500 hover:text-ink-700'"
                 @click="profile.eventIntensity = mode.id"
               >
                 <strong class="block text-xs">{{ mode.label }}</strong>
@@ -59,8 +59,8 @@
             <label class="field-label">目前投資<input v-model.number="profile.initialInvestments" type="text" inputmode="decimal" min="0" step="10000" class="input-clean-sm mt-1" /></label>
           </div>
 
-          <p v-if="profile.monthlyLivingCost > profile.monthlyIncome" class="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-700">目前支出高於收入也沒關係，模擬器會幫你看見現金壓力。</p>
-          <button type="button" class="mt-5 w-full rounded-2xl bg-brand-500 px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-600" @click="startJourney">開始我的人生模擬 →</button>
+          <p v-if="profile.monthlyLivingCost > profile.monthlyIncome" class="mt-3 border-l-2 border-[#A58436] pl-3 py-1 text-xs text-ink-700">目前支出高於收入也沒關係，模擬器會幫你看見現金壓力。</p>
+          <button type="button" class="mt-5 w-full py-3 text-center text-sm font-semibold text-[#1D4B34] hover:underline transition" @click="startJourney">開始我的人生模擬 →</button>
           <button v-if="hasSavedJourney" type="button" class="mt-3 w-full text-xs font-medium text-ink-400 hover:text-ink-600" @click="showWelcome = false">先回到目前進度</button>
           <p class="mt-3 text-center text-[10px] text-ink-400">數字只保存在這個瀏覽器，也可以隨時重新設定。</p>
         </div>
@@ -68,54 +68,53 @@
     </section>
 
     <template v-else>
-    <section class="overflow-hidden rounded-3xl border border-paper-800 bg-paper-800 text-white shadow-card">
+    <section class="border-t border-[#E3DCCB] pt-5">
       <div class="relative p-5 sm:p-7">
-        <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-400/15 blur-3xl"></div>
-        <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                <div class="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p class="text-[11px] font-semibold tracking-[.18em] text-brand-300">你的第 {{ state.age }} 歲</p>
-            <p class="mt-2 text-sm text-ink-200">目前淨資產</p>
-            <p class="mt-1 text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">{{ formatMoney(result.netWorth) }}</p>
+            <p class="text-[11px] font-semibold tracking-[.18em] text-[#A58436]">你的第 {{ state.age }} 歲</p>
+            <p class="mt-2 text-sm text-ink-400">目前淨資產</p>
+            <p class="receipt-main-value whitespace-nowrap">{{ formatMoney(result.netWorth) }}</p>
             <p class="mt-3 max-w-xl text-xs leading-6 text-ink-400">
               這是可重玩的財務情境，不是人生預測。每個選擇會改變現金、固定負擔、幸福感與退休進度。
             </p>
           </div>
           <div class="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[480px]">
-            <div class="rounded-2xl bg-white/8 p-3">
+            <div class="border-t border-[#E3DCCB] pt-3">
               <p class="text-[10px] text-ink-400">現金</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ formatCompact(state.cash) }}</p>
             </div>
-            <div class="rounded-2xl bg-white/8 p-3">
+            <div class="border-t border-[#E3DCCB] pt-3">
               <p class="text-[10px] text-ink-400">投資</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ formatCompact(state.investments) }}</p>
             </div>
-            <div class="rounded-2xl bg-white/8 p-3">
+            <div class="border-t border-[#E3DCCB] pt-3">
               <p class="text-[10px] text-ink-400">每年剩下</p>
-              <p class="mt-1 text-sm font-semibold tabular-nums" :class="annualSurplus < 0 ? 'text-red-300' : 'text-brand-200'">
+              <p class="mt-1 text-sm font-semibold tabular-nums" :class="annualSurplus < 0 ? 'text-[#B3261E]' : 'text-[#1D4B34]'">
                 {{ formatSigned(annualSurplus) }}
               </p>
             </div>
-            <div class="rounded-2xl bg-white/8 p-3">
+            <div class="border-t border-[#E3DCCB] pt-3">
               <p class="text-[10px] text-ink-400">退休進度</p>
               <p class="mt-1 text-sm font-semibold tabular-nums">{{ Math.round(result.retirementProgress) }}%</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="grid border-t border-white/10 sm:grid-cols-[1fr_auto]">
+      <div class="grid border-t border-[#E3DCCB] sm:grid-cols-[1fr_auto]">
         <div class="grid grid-cols-2 gap-4 px-5 py-4 sm:px-7">
           <div>
             <div class="flex justify-between text-[10px] text-ink-400"><span>幸福感</span><span>{{ Math.round(state.happiness) }}</span></div>
-            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-brand-300 transition-all" :style="{ width: `${state.happiness}%` }"></div></div>
+            <div class="mt-2 h-1.5 overflow-hidden bg-[#E3DCCB]"><div class="h-full bg-[#A58436] transition-all" :style="{ width: `${state.happiness}%` }"></div></div>
           </div>
           <div>
             <div class="flex justify-between text-[10px] text-ink-400"><span>壓力</span><span>{{ Math.round(state.stress) }}</span></div>
-            <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div class="h-full rounded-full bg-amber-300 transition-all" :style="{ width: `${state.stress}%` }"></div></div>
+            <div class="mt-2 h-1.5 overflow-hidden bg-[#E3DCCB]"><div class="h-full bg-[#B3261E] transition-all" :style="{ width: `${state.stress}%` }"></div></div>
           </div>
         </div>
         <button
           type="button"
-          class="m-3 rounded-2xl bg-brand-400 px-6 py-3 text-sm font-semibold text-ink-900 transition hover:bg-brand-300 disabled:cursor-not-allowed disabled:opacity-40 sm:min-w-40"
+          class="m-3 px-2 py-3 text-sm font-semibold text-[#1D4B34] hover:underline transition disabled:cursor-not-allowed disabled:opacity-40 sm:min-w-40"
           :disabled="finished"
           @click="advanceYear"
         >
@@ -124,27 +123,27 @@
       </div>
     </section>
 
-    <section v-if="state.latestEvent" class="flex items-start gap-3 rounded-2xl border p-4" :class="state.latestEvent.cashImpact < 0 ? 'border-amber-200 bg-amber-50' : state.latestEvent.cashImpact > 0 ? 'border-brand-200 bg-brand-50' : 'border-paper-300 bg-paper-200'">
+    <section v-if="state.latestEvent" class="flex items-start gap-3 border-l-2 border-[#E3DCCB] py-1 pl-4" :class="state.latestEvent.cashImpact < 0 ? 'border-[#B3261E]' : state.latestEvent.cashImpact > 0 ? 'border-[#A58436]' : 'border-[#E3DCCB]'">
       <span class="life-icon material-symbols-outlined">{{ state.latestEvent.icon || 'change_circle' }}</span>
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <p class="text-sm font-semibold text-ink-700">今年事件：{{ state.latestEvent.label }}</p>
-          <p class="text-sm font-semibold tabular-nums" :class="state.latestEvent.cashImpact < 0 ? 'text-amber-700' : 'text-brand-700'">{{ eventImpactLabel(state.latestEvent) }}</p>
+          <p class="text-sm font-semibold tabular-nums" :class="state.latestEvent.cashImpact < 0 ? 'text-[#B3261E]' : 'text-[#1D4B34]'">{{ eventImpactLabel(state.latestEvent) }}</p>
         </div>
         <p class="mt-1 text-xs text-ink-500">{{ state.latestEvent.detail }}</p>
       </div>
     </section>
 
-    <section v-if="feedback" class="flex items-center justify-between gap-3 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3" aria-live="polite">
+    <section v-if="feedback" class="flex items-center justify-between gap-3 border-t border-[#E3DCCB] pt-3" aria-live="polite">
       <div class="flex min-w-0 items-center gap-3"><span class="life-icon material-symbols-outlined">{{ feedback.icon }}</span><p class="text-xs leading-5 text-ink-600">{{ feedback.message }}</p></div>
-      <button type="button" class="shrink-0 text-xs font-semibold text-brand-700" @click="undo">復原</button>
+      <button type="button" class="shrink-0 text-xs font-semibold text-[#1D4B34]" @click="undo">復原</button>
     </section>
 
-    <section class="rounded-2xl border border-paper-300 bg-white p-4 sm:p-5">
+    <section class="border-t border-[#E3DCCB] pt-4 sm:pt-5">
       <div class="flex items-start gap-3">
-        <span class="life-icon material-symbols-outlined flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-brand-50">{{ coach.icon }}</span>
+        <span class="life-icon material-symbols-outlined flex h-10 w-10 shrink-0 items-center justify-center text-[#A58436]">{{ coach.icon }}</span>
         <div>
-          <p class="text-[10px] font-semibold tracking-[.12em] text-brand-600">現在的你，可以先這樣做</p>
+          <p class="text-[10px] font-semibold tracking-[.12em] text-[#A58436]">現在的你，可以先這樣做</p>
           <h2 class="mt-1 text-sm font-semibold text-ink-700">{{ coach.title }}</h2>
           <p class="mt-1 text-xs leading-6 text-ink-500">{{ coach.detail }}</p>
         </div>
@@ -155,7 +154,7 @@
       <div class="card-surface p-4 sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p class="text-[10px] font-semibold tracking-[.14em] text-brand-600">今年的選擇</p>
+            <p class="text-[10px] font-semibold tracking-[.14em] text-[#A58436]">今年的選擇</p>
             <h2 class="mt-1 text-lg font-semibold text-ink-800">{{ state.age }} 歲，你想把力氣放在哪裡？</h2>
           </div>
           <div class="flex gap-2">
@@ -169,16 +168,16 @@
             v-for="filter in choiceFilters"
             :key="filter.id"
             type="button"
-            class="shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition"
-            :class="activeFilter === filter.id ? 'border-brand-700 bg-brand-700 text-white' : 'border-paper-300 bg-white text-ink-500 hover:border-brand-200'"
+            class="shrink-0 border-b-2 px-1 py-1.5 text-xs font-medium transition"
+            :class="activeFilter === filter.id ? 'border-[#A58436] text-ink-800' : 'border-transparent text-ink-500 hover:text-ink-700'"
             @click="activeFilter = filter.id"
           >{{ filter.label }}</button>
         </div>
 
-        <details class="mt-4 rounded-2xl border border-dashed border-brand-200 bg-brand-50/40 p-4">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold text-brand-800">
+        <details class="mt-4 border-t border-[#E3DCCB] pt-4">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-xs font-semibold text-ink-800">
             <span class="flex items-center gap-2"><span class="life-icon material-symbols-outlined">add_circle</span>加入你自己的人生選擇</span>
-            <span class="text-brand-500">＋</span>
+            <span class="text-[#A58436]">＋</span>
           </summary>
           <div class="mt-4 grid gap-3 sm:grid-cols-2">
             <label class="field-label sm:col-span-2">這件事叫什麼？<input v-model="customDraft.label" type="text" maxlength="28" class="input-clean-sm mt-1" placeholder="例如：回家陪家人一年" /></label>
@@ -192,45 +191,45 @@
               </select>
             </label>
           </div>
-          <button type="button" class="mt-3 rounded-xl bg-brand-600 px-4 py-2 text-xs font-semibold text-white disabled:opacity-40" :disabled="!customDraft.label.trim()" @click="addCustomChoice">加入選擇</button>
+          <button type="button" class="mt-3 px-0 py-2 text-xs font-semibold text-[#1D4B34] hover:underline disabled:opacity-40" :disabled="!customDraft.label.trim()" @click="addCustomChoice">加入選擇</button>
         </details>
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2">
-          <article v-for="choice in filteredChoices" :key="choice.id" class="group rounded-2xl border bg-paper-100 p-4 transition hover:border-brand-200 hover:shadow-card" :class="coach.choiceId === choice.id ? 'border-brand-300 ring-2 ring-brand-100' : 'border-paper-300'">
+          <article v-for="choice in filteredChoices" :key="choice.id" class="group border-t border-[#E3DCCB] pt-4 transition" :class="coach.choiceId === choice.id ? 'border-[#A58436]' : 'border-[#E3DCCB]'" >
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3">
-                <span class="life-icon material-symbols-outlined flex h-10 w-10 items-center justify-center rounded-xl bg-paper-200">{{ choice.icon }}</span>
+                <span class="life-icon material-symbols-outlined flex h-10 w-10 items-center justify-center text-[#A58436]">{{ choice.icon }}</span>
                 <div>
                   <h3 class="text-sm font-semibold text-ink-700">{{ choice.label }}</h3>
                   <p class="mt-0.5 text-[10px] text-ink-400">{{ choice.effect }}</p>
                 </div>
               </div>
-              <span v-if="coach.choiceId === choice.id" class="rounded-full bg-brand-500 px-2 py-0.5 text-[9px] font-semibold text-white">適合現在</span>
-              <span v-else-if="ownedCount(choice)" class="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-semibold text-brand-700">× {{ ownedCount(choice) }}</span>
+              <span v-if="coach.choiceId === choice.id" class="text-[9px] font-semibold text-[#A58436]">適合現在</span>
+              <span v-else-if="ownedCount(choice)" class="text-[10px] font-semibold text-[#1D4B34]">× {{ ownedCount(choice) }}</span>
             </div>
             <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
-              <div class="rounded-xl bg-paper-200 px-3 py-2"><span class="block text-[9px] text-ink-400">現金會變成</span><strong class="mt-0.5 block text-ink-700">{{ choiceCashLabel(choice) }}</strong></div>
-              <div class="rounded-xl bg-paper-200 px-3 py-2"><span class="block text-[9px] text-ink-400">每月負擔增加</span><strong class="mt-0.5 block text-ink-700">{{ choice.annualCost ? formatCompact(choice.annualCost / 12) : '沒有' }}</strong></div>
+              <div class="border-t border-[#E3DCCB] pt-2"><span class="block text-[9px] text-ink-400">現金會變成</span><strong class="mt-0.5 block text-ink-700">{{ choiceCashLabel(choice) }}</strong></div>
+              <div class="border-t border-[#E3DCCB] pt-2"><span class="block text-[9px] text-ink-400">每月負擔增加</span><strong class="mt-0.5 block text-ink-700">{{ choice.annualCost ? formatCompact(choice.annualCost / 12) : '沒有' }}</strong></div>
             </div>
             <div class="mt-3 flex gap-2">
               <button
                 type="button"
-                class="flex-1 rounded-xl bg-brand-700 px-3 py-2 text-xs font-semibold text-white transition hover:bg-brand-800 disabled:cursor-not-allowed disabled:bg-paper-300 disabled:text-ink-400"
+                class="flex-1 px-0 py-2 text-xs font-semibold text-[#1D4B34] hover:underline transition disabled:cursor-not-allowed disabled:text-ink-400"
                 :disabled="finished || !canBuy(choice)"
                 @click="buy(choice)"
               >
                 {{ choiceButtonLabel(choice) }}
               </button>
-              <button v-if="choice.sellbackRate && ownedCount(choice)" type="button" class="rounded-xl border border-paper-300 px-3 py-2 text-xs text-ink-500 hover:bg-paper-200" @click="sell(choice)">出售</button>
+              <button v-if="choice.sellbackRate && ownedCount(choice)" type="button" class="px-0 py-2 text-xs text-ink-500 hover:text-ink-700 hover:underline" @click="sell(choice)">出售</button>
             </div>
           </article>
         </div>
 
-        <div class="mt-4 rounded-2xl border border-azure-100 bg-azure-50/60 p-4">
+        <div class="mt-4 border-t border-[#E3DCCB] pt-4">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div><p class="text-sm font-semibold text-ink-700">把現金放進投資帳戶</p><p class="mt-1 text-[10px] text-ink-400">只是資產轉移，未來依你設定的報酬情境增減。</p></div>
             <div class="flex flex-wrap gap-2">
-              <button v-for="amount in investmentAmounts" :key="amount" type="button" class="rounded-xl border border-azure-200 bg-white px-3 py-2 text-xs font-semibold text-azure-700 disabled:opacity-40" :disabled="state.cash < amount || finished" @click="invest(amount)">投資 {{ formatCompact(amount) }}</button>
+              <button v-for="amount in investmentAmounts" :key="amount" type="button" class="px-1 py-2 text-xs font-semibold text-[#1D4B34] hover:underline disabled:opacity-40" :disabled="state.cash < amount || finished" @click="invest(amount)">投資 {{ formatCompact(amount) }}</button>
             </div>
           </div>
         </div>
@@ -239,7 +238,7 @@
       <aside class="space-y-4">
         <div class="card-surface p-4 sm:p-5">
           <div class="flex items-center justify-between gap-3">
-            <div><p class="text-[10px] font-semibold tracking-[.14em] text-azure-600">資產變化</p><h2 class="mt-1 text-sm font-semibold text-ink-700">人生資產軌跡</h2></div>
+            <div><p class="text-[10px] font-semibold tracking-[.14em] text-[#A58436]">資產變化</p><h2 class="mt-1 text-sm font-semibold text-ink-700">人生資產軌跡</h2></div>
             <span class="text-[10px] text-ink-400">{{ profile.startAge }} → {{ state.targetAge }} 歲</span>
           </div>
           <svg class="mt-4 h-44 w-full overflow-visible" viewBox="0 0 640 180" role="img" aria-label="人生資產變化折線圖">
@@ -250,13 +249,13 @@
             <circle v-for="point in chartDots" :key="point.age" :cx="point.x" :cy="point.y" r="5" fill="#fff" stroke="#139b79" stroke-width="3" />
           </svg>
           <div class="grid grid-cols-2 gap-2">
-            <div class="rounded-xl bg-paper-200 p-3"><p class="text-[9px] text-ink-400">退休目標</p><p class="mt-1 text-xs font-semibold text-ink-700">{{ formatCompact(result.retirementTarget) }}</p></div>
-            <div class="rounded-xl bg-paper-200 p-3"><p class="text-[9px] text-ink-400">人生分數</p><p class="mt-1 text-xs font-semibold text-ink-700">{{ result.score }} · {{ result.rank }}</p></div>
+            <div class="border-t border-[#E3DCCB] pt-3"><p class="text-[9px] text-ink-400">退休目標</p><p class="mt-1 text-xs font-semibold text-ink-700">{{ formatCompact(result.retirementTarget) }}</p></div>
+            <div class="border-t border-[#E3DCCB] pt-3"><p class="text-[9px] text-ink-400">人生分數</p><p class="mt-1 text-xs font-semibold text-ink-700">{{ result.score }} · {{ result.rank }}</p></div>
           </div>
         </div>
 
         <details class="card-surface p-4 sm:p-5">
-          <summary class="cursor-pointer list-none text-sm font-semibold text-ink-700">想讓結果更像你？調整設定 <span class="float-right text-brand">＋</span></summary>
+          <summary class="cursor-pointer list-none text-sm font-semibold text-ink-700">想讓結果更像你？調整設定 <span class="float-right text-[#A58436]">＋</span></summary>
           <div class="mt-4 grid grid-cols-2 gap-3">
             <label class="field-label">現在年齡<input v-model.number="profile.startAge" type="text" inputmode="decimal" min="18" max="75" class="input-clean-sm mt-1" /></label>
             <label class="field-label">模擬到幾歲<input v-model.number="profile.targetAge" type="text" inputmode="decimal" min="30" max="90" class="input-clean-sm mt-1" /></label>
@@ -268,14 +267,14 @@
             <label class="field-label">投資年報酬 %<input v-model.number="profile.annualInvestmentReturn" type="text" inputmode="decimal" min="-50" max="50" step="0.5" class="input-clean-sm mt-1" /></label>
             <label class="field-label col-span-2">年通膨情境 %<input v-model.number="profile.inflation" type="text" inputmode="decimal" min="-10" max="20" step="0.5" class="input-clean-sm mt-1" /></label>
           </div>
-          <button type="button" class="mt-4 w-full rounded-xl bg-brand-500 px-4 py-3 text-xs font-semibold text-white hover:bg-brand-600" @click="restart">用新設定重新開始</button>
-          <button type="button" class="mt-2 w-full rounded-xl px-4 py-2 text-xs font-medium text-ink-400 hover:bg-paper-200 hover:text-ink-600" @click="showWelcome = true">重新開啟快速引導</button>
+          <button type="button" class="mt-4 w-full py-3 text-center text-xs font-semibold text-[#1D4B34] hover:underline" @click="restart">用新設定重新開始</button>
+          <button type="button" class="mt-2 w-full py-2 text-center text-xs font-medium text-ink-400 hover:text-ink-600 hover:underline" @click="showWelcome = true">重新開啟快速引導</button>
         </details>
       </aside>
     </section>
 
-    <section v-if="finished" class="rounded-3xl border border-brand-200 bg-brand-50 p-6 text-center sm:p-8">
-      <p class="text-[10px] font-semibold tracking-[.18em] text-brand-700">這次的人生路線</p>
+    <section v-if="finished" class="border-t border-[#E3DCCB] pt-6 text-center sm:pt-8">
+      <p class="text-[10px] font-semibold tracking-[.18em] text-[#A58436]">這次的人生路線</p>
       <h2 class="mt-3 text-2xl font-semibold text-ink-800">{{ state.targetAge }} 歲的你：{{ result.rank }}</h2>
       <p class="mx-auto mt-3 max-w-xl text-sm leading-7 text-ink-500">人生分數 {{ result.score }} 分，淨資產 {{ formatMoney(result.netWorth) }}，退休目標完成 {{ Math.round(result.retirementProgress) }}%。換一組選擇，再看看另一條人生路線。</p>
       <div class="mt-5 flex flex-wrap justify-center gap-2"><button type="button" class="btn-secondary" @click="restart">再玩一次</button><button type="button" class="btn-primary" @click="shareResult">分享這個結局</button></div>

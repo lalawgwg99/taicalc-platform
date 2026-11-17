@@ -14,7 +14,7 @@
                 id="salary"
                 type="text" inputmode="decimal"
                 v-model.number="salary"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 text-lg font-serif font-semibold focus:outline-none focus:border-[#A58436]"
               />
               <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
                 提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元。
@@ -26,7 +26,7 @@
                 id="currentAge"
                 type="text" inputmode="decimal"
                 v-model.number="currentAge"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <div>
@@ -35,7 +35,7 @@
                 id="retireAge"
                 type="text" inputmode="decimal"
                 v-model.number="retireAge"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <div>
@@ -44,10 +44,10 @@
                 id="pastYears"
                 type="text" inputmode="decimal"
                 v-model.number="pastYears"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 focus:outline-none focus:border-[#A58436]"
               />
               <p class="text-xs text-ink-400 mt-1.5 leading-relaxed">
-                不知道年資？<a href="https://edesk.bli.gov.tw/na/" target="_blank" rel="noopener" class="underline decoration-amber-500 underline-offset-2">去勞保局查 →</a>
+                不知道年資？<a href="https://edesk.bli.gov.tw/na/" target="_blank" rel="noopener" class="underline decoration-[#A58436] underline-offset-2">去勞保局查 →</a>
               </p>
             </div>
           </div>
@@ -62,8 +62,8 @@
               <label class="block text-xs font-medium text-ink-400 mb-2">自提比例 (0-6%)</label>
               <div class="flex gap-1">
                 <button v-for="rate in [0, 3, 6]" :key="rate" @click="selfRate = rate"
-                                :class="['flex-1 py-2 rounded-lg text-sm font-medium transition-all group',
-                                         selfRate === rate ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white shadow-md' : 'bg-white/50 text-ink-500 hover:bg-white border border-paper-100']">
+                                :class="['flex-1 py-2 border-b-2 text-sm font-medium transition-all',
+                                         selfRate === rate ? 'text-ink-800 border-[#A58436]' : 'text-ink-400 border-transparent hover:text-ink-600']">
                                 {{ rate }}%
                             </button>
                 <input
@@ -72,7 +72,7 @@
                   v-model.number="selfRate"
                   min="0"
                   max="6"
-                  class="w-12 bg-paper-50 border border-ink-100 rounded-lg text-center text-ink-800 text-sm focus:outline-none focus:border-amber-500"
+                  class="w-12 bg-transparent border-0 border-b border-[#E3DCCB] rounded-none text-center text-ink-800 text-sm focus:outline-none focus:border-[#A58436]"
                 />
               </div>
             </div>
@@ -81,19 +81,19 @@
               <div class="flex gap-1 mb-2">
                 <button
                   @click="roi = 3"
-                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 3 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
+                  :class="['flex-1 py-1 border-b-2 text-xs transition-colors', roi === 3 ? 'text-ink-800 border-[#A58436] font-semibold' : 'text-ink-400 border-transparent hover:text-ink-600']"
                 >
                   保守 3%
                 </button>
                 <button
                   @click="roi = 5"
-                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 5 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
+                  :class="['flex-1 py-1 border-b-2 text-xs transition-colors', roi === 5 ? 'text-ink-800 border-[#A58436] font-semibold' : 'text-ink-400 border-transparent hover:text-ink-600']"
                 >
                   穩健 5%
                 </button>
                 <button
                   @click="roi = 8"
-                  :class="['flex-1 py-1 rounded text-xs transition-colors', roi === 8 ? 'bg-brand-600 text-white font-semibold' : 'bg-paper-100 text-ink-400 hover:bg-ink-100']"
+                  :class="['flex-1 py-1 border-b-2 text-xs transition-colors', roi === 8 ? 'text-ink-800 border-[#A58436] font-semibold' : 'text-ink-400 border-transparent hover:text-ink-600']"
                 >
                   積極 8%
                 </button>
@@ -103,7 +103,7 @@
                 type="text" inputmode="decimal"
                 v-model.number="roi"
                 step="0.5"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 text-sm focus:outline-none focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 text-sm focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <div>
@@ -111,7 +111,7 @@
               <select
                 id="taxRateSelect"
                 v-model.number="taxRate"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 text-sm focus:outline-none appearance-none"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 text-sm focus:outline-none focus:border-[#A58436] appearance-none"
               >
                 <option :value="5">5% (所得淨額 0-61萬)</option>
                 <option :value="12">12% (61-138萬)</option>
@@ -133,13 +133,13 @@
               <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">
                 退休時大約存到 ({{ years }} 年後)
               </p>
-              <p class="text-4xl font-bold stat-value text-amber-600">
+              <p class="receipt-main-value">
                 <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalAmount.toLocaleString() }}
               </p>
             </div>
             <div class="text-left sm:text-right">
               <p class="text-xs text-ink-400 mb-1">每個月可領（領 20 年）</p>
-              <p class="text-xl font-semibold text-ink-600 stat-value">${{ monthlyPension.toLocaleString() }}</p>
+              <p class="text-xl font-serif font-semibold text-ink-800">${{ monthlyPension.toLocaleString() }}</p>
             </div>
           </div>
 
@@ -158,10 +158,10 @@
               <div>
                 <div class="flex justify-between text-sm mb-1">
                   <span class="text-ink-400">投資賺的 ({{ interestPercent }}%)</span>
-                  <span class="text-amber-600 font-bold whitespace-nowrap">+${{ totalInterest.toLocaleString() }}</span>
+                  <span class="text-[#A58436] font-bold whitespace-nowrap">+${{ totalInterest.toLocaleString() }}</span>
                 </div>
-                <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
-                  <div class="bg-amber-500 h-full" :style="{ width: interestPercent + '%' }"></div>
+                <div class="w-full bg-[#E3DCCB] h-2 overflow-hidden">
+                  <div class="bg-[#A58436] h-full" :style="{ width: interestPercent + '%' }"></div>
                 </div>
               </div>
               <div>
@@ -169,7 +169,7 @@
                   <span class="text-ink-400">投入本金 ({{ principalPercent }}%)</span>
                   <span class="text-ink-600 font-bold whitespace-nowrap">${{ totalPrincipal.toLocaleString() }}</span>
                 </div>
-                <div class="w-full bg-paper-100 h-2 rounded-full overflow-hidden">
+                <div class="w-full bg-[#E3DCCB] h-2 overflow-hidden">
                   <div class="bg-ink-400 h-full" :style="{ width: principalPercent + '%' }"></div>
                 </div>
               </div>
@@ -182,20 +182,20 @@
             <div class="relative z-10">
                 <div class="text-center mb-6">
                     <p class="text-ink-400 text-sm mb-1 uppercase tracking-wider">每年少繳的稅</p>
-                    <p class="text-4xl md:text-5xl font-bold text-brand-600">
-                        <span class="text-brand-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
+                    <p class="receipt-main-value">
+                        <span class="text-ink-400 text-2xl mr-1">$</span>{{ taxSavingYearly.toLocaleString() }}
                     </p>
                     <p class="text-xs text-ink-400 mt-2">以提繳工資 ${{ monthlyWageGrade.toLocaleString() }} 元 × 自提 {{ selfRate }}% × 稅率 {{ taxRate }}% 算的</p>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-2">
-                    <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
+                    <div class="border-t border-[#E3DCCB] pt-3 text-center">
                         <p class="text-xs text-ink-400 mb-1">自己總共提撥</p>
                         <p class="text-base font-bold text-ink-600 whitespace-nowrap">${{ (selfMonthlyContribution * 12 * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
-                    <div class="bg-white/50 rounded-xl p-3 text-center border border-paper-100">
+                    <div class="border-t border-[#E3DCCB] pt-3 text-center">
                         <p class="text-xs text-ink-400 mb-1">總共省下的稅</p>
-                        <p class="text-base font-bold text-brand-500 whitespace-nowrap">+${{ (taxSavingYearly * (years + pastYearsClamped)).toLocaleString() }}</p>
+                        <p class="text-base font-bold text-[#1D4B34] whitespace-nowrap">+${{ (taxSavingYearly * (years + pastYearsClamped)).toLocaleString() }}</p>
                     </div>
                 </div>
             </div>
@@ -203,7 +203,7 @@
         </div>
 
         <!-- 說明 -->
-        <div class="p-5 rounded-xl border border-ink-100 bg-paper-50 text-xs text-ink-400 space-y-2 leading-relaxed">
+        <div class="border-l-2 border-[#A58436] pl-4 py-1 text-xs text-ink-400 space-y-2 leading-relaxed">
           <p class="font-bold text-ink-600">ℹ️ 使用技巧：</p>
           <ul class="list-disc pl-4 space-y-1">
             <li>自提省稅：自提的錢當年不用繳稅。</li>

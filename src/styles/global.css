@@ -2622,6 +2622,7 @@ a.v2-card:hover {
 /* 幽靈按鈕／次要按鈕／動作連結 → 純文字連結 */
 .book-tool .btn-ghost,
 .book-tool .btn-secondary,
+.book-tool .btn-primary,
 .book-tool .action-link {
     background: transparent !important;
     border: 0 !important;
@@ -2632,6 +2633,7 @@ a.v2-card:hover {
 }
 .book-tool .btn-ghost:hover,
 .book-tool .btn-secondary:hover,
+.book-tool .btn-primary:hover,
 .book-tool .action-link:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
