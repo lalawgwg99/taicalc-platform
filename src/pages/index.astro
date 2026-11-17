@@ -16,18 +16,11 @@ const toolGroups = [
     { title: '薪資稅務', desc: '薪水、報稅、勞健保、離職結算', hrefs: ['/tools/salary-calculator', '/tools/income-tax-calculator', '/tools/rent-deduction-calculator', '/tools/insurance-calculator', '/tools/overtime-calculator', '/tools/year-end-bonus-calculator', '/tools/severance-calculator', '/tools/estate-gift-tax-calculator', '/tools/unemployment-benefit-calculator'] },
     { title: '工作收入', desc: '外送實拿、債務整合', hrefs: ['/tools/delivery-income-calculator', '/tools/debt-consolidation-calculator'] },
     { title: '投資理財', desc: '股票、ETF、長期投資、保險評估', hrefs: ['/tools/stock-calculator', '/tools/ipo-lottery-calculator', '/tools/etf-dividend-calculator', '/tools/fund-fee-calculator', '/tools/overseas-card-calculator', '/tools/long-term-investing-calculator', '/tools/real-return-calculator', '/tools/insurance-assessment', '/tools/subscription-tracker'] },
-    { title: '退休規劃', desc: 'FIRE、勞保勞退、人生模擬', hrefs: ['/tools/fire-calculator', '/tools/labor-insurance-pension-calculator', '/tools/labor-pension-calculator', '/tools/life-simulator'] },
+    { title: '退休規劃', desc: 'FIRE、勞保勞退、人生模擬', hrefs: ['/nestegg', '/tools/fire-calculator', '/tools/labor-insurance-pension-calculator', '/tools/labor-pension-calculator', '/tools/life-simulator'] },
     { title: '家庭買車', desc: '育兒津貼、買車總成本', hrefs: ['/tools/parental-benefit-calculator', '/tools/car-cost-calculator'] },
 ];
 const toolByHref = new Map(toolCatalog.map((tool) => [tool.href, tool]));
 
-const hotHrefs = new Set([
-    '/tools/delivery-income-calculator',
-    '/tools/split-calculator',
-    '/tools/electricity-calculator',
-    '/tools/salary-calculator',
-]);
-const defaultIcon = '<circle cx="12" cy="12" r="9"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>';
 const toolCatalogJson = JSON.stringify(toolCatalog);
 const allPosts = await getCollection('blog');
 const latestPosts = allPosts
@@ -70,120 +63,205 @@ const toolListSchema = JSON.stringify({
 ---
 
 <style>
-    .proto-tool-group { margin-top: 2.4rem; }
-    .proto-tool-group:first-of-type { margin-top: 1.8rem; }
-    .proto-group-head { display: flex; align-items: baseline; gap: .8rem; flex-wrap: wrap; }
-    .proto-group-title {
-        font-size: 1.25rem;
-        font-weight: 800;
+    /* 極簡書式首頁（2026-11-17，照 Slowfolio 書式）：暖白紙面、襯線標題、金色細線分隔，零卡片零陰影。 */
+    .book-home { background: #FDFCF8; color: #1C1B1A; }
+    .book-col { max-width: 64rem; margin: 0 auto; padding-left: 1rem; padding-right: 1rem; }
+    @media (min-width: 768px) { .book-col { padding-left: 1.5rem; padding-right: 1.5rem; } }
+    .book-col-narrow { max-width: 48rem; }
+
+    .book-hero { padding: 3.25rem 0 2.5rem; }
+    .book-kicker { font-size: .8rem; font-weight: 700; letter-spacing: .22em; color: #A58436; }
+    .book-h1 {
+        margin-top: 1.1rem;
+        font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+        font-weight: 700;
         color: #161511;
-        letter-spacing: .02em;
+        font-size: clamp(2.5rem, 9.5vw, 3.8rem);
+        line-height: 1.2;
+        letter-spacing: .01em;
+        text-wrap: balance;
     }
-    .proto-group-desc { color: #5C665D; font-size: .88rem; }
-    .proto-tool-group .proto-cards { margin-top: 1rem; }
+    .book-sub { margin-top: 1.1rem; max-width: 38ch; color: #5C665D; font-size: .98rem; line-height: 1.85; }
+
+    /* 搜尋：底線式，只改樣式，JS 全部沿用 */
+    .book-search { margin-top: 2rem; position: relative; }
+    .book-search-row { display: flex; align-items: center; gap: .6rem; border-bottom: 1px solid rgba(28, 27, 26, .55); }
+    .book-search-row:focus-within { border-bottom-color: #1C1B1A; }
+    .book-search-row svg { color: #8A948B; flex-shrink: 0; }
+    .book-search-input { flex: 1; min-width: 0; background: transparent; border: 0; outline: none; padding: .8rem 0; font-size: 1rem; color: #1A1815; }
+    .book-search-input::placeholder { color: #9AA39B; }
+    .book-kbd { flex-shrink: 0; font-size: .9rem; font-weight: 600; color: #8A948B; background: transparent; border: 0; padding: .2rem .4rem; cursor: pointer; }
+    @media (max-width: 639px) { .book-kbd { display: none; } }
+    .book-search-results { margin-top: .5rem; max-height: 18rem; overflow-y: auto; background: #FDFCF8; border: 1px solid #E3DCCB; padding: .35rem; }
+
+    /* 常用：一行緊湊小字，細點分隔，無箭頭、無按鈕內距 */
+    .book-quick { margin-top: .9rem; font-size: 13.5px; line-height: 2; color: #5C665D; }
+    .book-quick-label { font-weight: 700; letter-spacing: .12em; color: #A58436; margin-right: .55rem; }
+    .book-quick-item { white-space: nowrap; }
+    .book-quick-item a { color: #1C1B1A; font-weight: 500; text-decoration: none; }
+    .book-quick-item a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .book-dot { color: #C9C2B0; margin: 0 .45rem; }
+
+    .book-section { border-top: 1px solid #E3DCCB; padding: 2.75rem 0; }
+    .book-h2 {
+        font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+        font-weight: 700;
+        color: #161511;
+        font-size: clamp(1.65rem, 6vw, 2.1rem);
+        letter-spacing: .01em;
+        text-wrap: balance;
+    }
+    .book-sec-head { display: flex; flex-direction: column; gap: .4rem; }
+    @media (min-width: 640px) { .book-sec-head { flex-direction: row; align-items: baseline; justify-content: space-between; } }
+    .book-sec-note { font-size: .8rem; color: #8A948B; }
+    .book-more-link { font-size: .88rem; font-weight: 600; color: #1D4B34; white-space: nowrap; }
+    .book-more-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* 工具：書目錄編號＋細線列表 */
+    .book-group { margin-top: 2.4rem; }
+    .book-group:first-of-type { margin-top: 2rem; }
+    .book-group-head { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; }
+    .book-num { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 700; font-size: .95rem; color: #A58436; }
+    .book-group-title { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 700; font-size: 1.3rem; color: #161511; }
+    .book-group-desc { color: #5C665D; font-size: .86rem; }
+    .book-list { margin-top: 1rem; border-top: 1px solid #E3DCCB; list-style: none; padding: 0; }
+    .book-tool { display: block; padding: .95rem 0; border-bottom: 1px solid #E3DCCB; text-decoration: none; }
+    .book-tool-title { display: block; font-size: 1rem; font-weight: 600; color: #1C1B1A; }
+    .book-tool:hover .book-tool-title { text-decoration: underline; text-underline-offset: 3px; }
+    .book-tool-desc { display: block; margin-top: .25rem; font-size: .86rem; line-height: 1.7; color: #6B756C; }
+    @media (min-width: 768px) {
+        .book-tool { display: flex; align-items: baseline; gap: 1.5rem; }
+        .book-tool-title { flex-shrink: 0; }
+        .book-tool-desc { margin-top: 0; margin-left: auto; text-align: right; max-width: 55%; }
+    }
+
+    /* 新聞：細線列表 */
+    .book-news-list { margin-top: 1.6rem; border-top: 1px solid #E3DCCB; }
+    .book-news-item { padding: 1.25rem 0; border-bottom: 1px solid #E3DCCB; }
+    .book-news-meta { font-size: .78rem; color: #8A948B; }
+    .book-news-meta b { color: #5C665D; font-weight: 600; }
+    .book-news-title { display: block; margin-top: .45rem; font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 600; font-size: 1.08rem; line-height: 1.6; color: #1C1B1A; }
+    .book-news-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .book-news-why { margin-top: .4rem; font-size: .86rem; line-height: 1.75; color: #6B756C; }
+    @media (max-width: 767px) {
+        .book-news-why { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    }
+    .book-news-tool { display: inline-block; margin-top: .6rem; font-size: .84rem; font-weight: 600; color: #1D4B34; }
+    .book-news-tool:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* 試算紀錄：純文字區塊 */
+    .book-track { text-align: center; }
+    .book-track-desc { margin: .9rem auto 0; max-width: 36rem; font-size: .92rem; line-height: 1.85; color: #5C665D; }
+    .book-track-link { display: inline-block; margin-top: 1.2rem; font-size: .95rem; font-weight: 700; color: #1D4B34; }
+    .book-track-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .book-track-note { margin-top: .8rem; font-size: .8rem; color: #8A948B; }
+
+    /* 文章：保留封面圖，細線分隔 */
+    .book-posts { margin-top: 1.6rem; display: grid; gap: 2rem; }
+    @media (min-width: 768px) { .book-posts { grid-template-columns: repeat(3, 1fr); } }
+    .book-post { display: block; border-top: 1px solid #E3DCCB; padding-top: 1.25rem; text-decoration: none; }
+    .book-post img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+    .book-post-meta { margin-top: .8rem; font-size: .78rem; color: #8A948B; }
+    .book-post-title { margin-top: .45rem; font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 600; font-size: 1.05rem; line-height: 1.6; color: #1C1B1A; }
+    .book-post:hover .book-post-title { text-decoration: underline; text-underline-offset: 3px; }
+    .book-post-excerpt { margin-top: .4rem; font-size: .86rem; line-height: 1.75; color: #6B756C; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* FAQ：細線列表 */
+    .book-faq { border-top: 1px solid #E3DCCB; }
+    .book-faq:last-of-type { border-bottom: 1px solid #E3DCCB; }
+    .book-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; cursor: pointer; list-style: none; font-size: .95rem; font-weight: 600; color: #1C1B1A; }
+    .book-faq summary::-webkit-details-marker { display: none; }
+    .book-faq summary span { color: #A58436; flex-shrink: 0; }
+    .book-faq p { padding-bottom: 1.15rem; font-size: .92rem; line-height: 1.85; color: #5C665D; }
 </style>
 
-<Layout title={title} description={description} keywords={keywords} fullWidth>
+<style is:global>
+    /* 僅首頁：導覽／頁尾區的底色跟著改暖白，與書式內容銜接 */
+    body.bg-paper-100 { background-color: #FDFCF8; }
+</style>
+
+<Layout title={title} description={description} keywords={keywords} fullWidth hideAssistant>
     <script type="application/ld+json" set:html={homeFaqSchema} slot="head" />
     <script type="application/ld+json" set:html={toolListSchema} slot="head" />
-    <div class="proto-banner">
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <span class="proto-banner-dot"></span>{platformGovernance.dataYear}制度參數已更新
-        </div>
-    </div>
-
-    <section class="proto-hero proto-grid-bg">
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <p class="proto-kicker"><span class="proto-kicker-dash"></span>台灣生活計算工具</p>
-            <h1 class="proto-h1">
-                生活裡的數字，<br /><span class="proto-hl">算得更明白。</span>
+    <div class="book-home">
+    <section class="book-hero reveal" data-reveal>
+        <div class="book-col">
+            <p class="book-kicker">台灣生活計算工具</p>
+            <h1 class="book-h1">
+                生活裡的數字，<br />算得更明白。
             </h1>
-            <p class="proto-sub">
+            <p class="book-sub">
                 薪資、電費、分帳、房貸到退休規劃，填幾個數字就知道答案。
             </p>
 
-            <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="proto-search-card reveal" data-reveal>
-                <span class="proto-tape" aria-hidden="true"></span>
-                <p class="proto-search-title">今天想算什麼？</p>
-                <div class="relative">
-                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div id="tool-discovery" data-tool-catalog={toolCatalogJson} class="book-search">
+                <div class="book-search-row relative">
+                    <svg class="pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
                     </svg>
-                    <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：薪資、房貸、退休" class="proto-search-input" />
-                    <button type="button" id="search-focus-btn" class="proto-kbd" aria-label="聚焦搜尋框">/</button>
-                    <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="hidden absolute left-0 right-0 mt-2 bg-paper-200 border border-paper-300 rounded-xl p-2 space-y-0.5 max-h-72 overflow-y-auto shadow-card-hover z-30"></div>
+                    <input id="tool-search" type="search" autocomplete="off" aria-label="搜尋所有計算工具" aria-controls="search-results" aria-expanded="false" placeholder="例如：薪資、房貸、退休" class="book-search-input" />
+                    <button type="button" id="search-focus-btn" class="book-kbd" aria-label="聚焦搜尋框">/</button>
+                    <div id="search-results" role="listbox" aria-label="工具搜尋結果" class="book-search-results hidden absolute left-0 right-0 z-30"></div>
                     <p id="search-status" class="sr-only" aria-live="polite"></p>
                 </div>
-                <div class="proto-quick">
-                    <a href="/tools/salary-calculator" data-sfx="tap">算薪資實拿<span>→</span></a>
-                    <a href="/tools/electricity-calculator" data-sfx="tap">估這期電費<span>→</span></a>
-                    <a href="/tools/delivery-income-calculator" data-sfx="tap">算外送收入<span>→</span></a>
-                    <a href="/tools/split-calculator" data-sfx="tap">分帳不尷尬<span>→</span></a>
-                    <a href="/tools/fire-calculator" data-sfx="tap">看看退休缺口<span>→</span></a>
-                </div>
+                <p class="book-quick">
+                    <span class="book-quick-label">常用</span><span class="book-quick-item"><a href="/tools/salary-calculator" data-sfx="tap">算薪資實拿</a><span class="book-dot">·</span></span><span class="book-quick-item"><a href="/tools/electricity-calculator" data-sfx="tap">估這期電費</a><span class="book-dot">·</span></span><span class="book-quick-item"><a href="/tools/delivery-income-calculator" data-sfx="tap">算外送收入</a><span class="book-dot">·</span></span><span class="book-quick-item"><a href="/tools/split-calculator" data-sfx="tap">分帳不尷尬</a><span class="book-dot">·</span></span><span class="book-quick-item"><a href="/tools/fire-calculator" data-sfx="tap">看看退休缺口</a></span>
+                </p>
             </div>
         </div>
     </section>
 
-    <section id="tools" class="proto-tools proto-grid-bg reveal" data-reveal>
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <h2 class="proto-h2">照情境找工具</h2>
-            <p class="proto-tools-sub">全部 {toolCatalog.length} 支工具，免費、免註冊，點進去直接算。</p>
+    <section id="tools" class="book-section reveal" data-reveal>
+        <div class="book-col">
+            <h2 class="book-h2">照情境找工具</h2>
 
-            {toolGroups.map((group) => (
-                <section class="proto-tool-group" aria-label={group.title}>
-                    <div class="proto-group-head">
-                        <h3 class="proto-group-title">{group.title}</h3>
-                        <p class="proto-group-desc">{group.desc}</p>
+            {toolGroups.map((group, groupIndex) => (
+                <section class="book-group" aria-label={group.title}>
+                    <div class="book-group-head">
+                        <span class="book-num">{String(groupIndex + 1).padStart(2, '0')}</span>
+                        <h3 class="book-group-title">{group.title}</h3>
+                        <p class="book-group-desc">{group.desc}</p>
                     </div>
-                    <div class="proto-cards">
+                    <ul class="book-list">
                         {group.hrefs.map((href) => {
                             const tool = toolByHref.get(href);
                             return (
-                                <a href={tool.href} class="proto-card group" data-sfx="tap">
-                                    <div class="proto-card-top">
-                                        <span class="proto-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={tool.icon ?? defaultIcon} />
-                                        </span>
-                                        {hotHrefs.has(tool.href) && <span class="proto-hot">熱門</span>}
-                                    </div>
-                                    <h3>{tool.label.split(' | ')[0].split(' (')[0]}</h3>
-                                    <p class="proto-card-desc">{tool.desc}</p>
-                                    <div class="proto-card-foot">
-                                        <span>{group.title}</span>
-                                        <span class="proto-go">開始試算 →</span>
-                                    </div>
-                                </a>
+                                <li>
+                                    <a href={tool.href} class="book-tool" data-sfx="tap">
+                                        <span class="book-tool-title">{tool.label.split(' | ')[0].split(' (')[0]}</span>
+                                        <span class="book-tool-desc">{tool.desc}</span>
+                                    </a>
+                                </li>
                             );
                         })}
-                    </div>
+                    </ul>
                 </section>
             ))}
         </div>
     </section>
 
-    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <section class="book-section reveal" data-reveal>
+        <div class="book-col">
+            <div class="book-sec-head">
                 <div>
-                    <p class="v2-kicker">今日相關新聞</p>
-                    <h2 class="v2-h2">跟你的錢有關的最新消息</h2>
+                    <p class="book-kicker">今日相關新聞</p>
+                    <h2 class="book-h2">跟你的錢有關的最新消息</h2>
                 </div>
-                <p class="text-xs text-ink-500">每天更新 · {homeNews.updatedAt}</p>
+                <p class="book-sec-note">每天更新 · {homeNews.updatedAt}</p>
             </div>
-            <div class="grid gap-4 md:grid-cols-2">
+            <div class="book-news-list">
                 {homeNews.items.map((n) => (
-                    <article class="card-surface p-5">
-                        <div class="flex items-center gap-2 text-[11px] text-ink-500">
-                            <span class="font-semibold text-ink-600">{n.source}</span>
-                            <span>·</span>
+                    <article class="book-news-item">
+                        <div class="book-news-meta">
+                            <b>{n.source}</b>
+                            <span> · </span>
                             <time datetime={n.date}>{n.date}</time>
                         </div>
-                        <a href={n.url} target="_blank" rel="noopener" class="mt-2 block text-[15px] font-semibold leading-7 text-ink-700 hover:text-brand transition-colors">
+                        <a href={n.url} target="_blank" rel="noopener" class="book-news-title">
                             {n.title}
                         </a>
-                        <p class="news-why mt-2 text-xs leading-6 text-ink-500">{n.why}</p>
-                        <a href={n.tool} class="mt-3 inline-flex items-center text-xs font-semibold text-brand hover:text-brand-400">
+                        <p class="book-news-why">{n.why}</p>
+                        <a href={n.tool} class="book-news-tool">
                             用{n.toolLabel}算看看 →
                         </a>
                     </article>
@@ -192,48 +270,38 @@ const toolListSchema = JSON.stringify({
         </div>
     </section>
 
-    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <div class="rounded-3xl bg-paper-800 p-8 md:p-10 text-center relative overflow-hidden">
-                <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-brand-300">試算紀錄</p>
-                <h2 class="mt-2 text-xl md:text-2xl font-semibold text-white">試算存下來，下次接著看</h2>
-                <p class="mt-3 text-sm leading-7 text-paper-300 max-w-xl mx-auto">
-                    按下「存下這次試算」，這次的數字就留在你的瀏覽器。下次回來直接跟上次比：多存了多少、哪筆開銷變大，一眼就知道。
-                </p>
-                <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <a href="/track" class="inline-flex items-center justify-center rounded-xl bg-brand-400 px-6 py-3 text-sm font-semibold text-ink-900 shadow-sm transition hover:bg-brand-300">
-                        看我的數字 →
-                    </a>
-                    <span class="text-xs text-paper-400">資料只存在你的瀏覽器，不上傳</span>
-                </div>
-            </div>
+    <section class="book-section reveal" data-reveal>
+        <div class="book-col book-track">
+            <p class="book-kicker">試算紀錄</p>
+            <h2 class="book-h2">試算存下來，下次接著看</h2>
+            <p class="book-track-desc">
+                按下「存下這次試算」，這次的數字就留在你的瀏覽器。下次回來直接跟上次比：多存了多少、哪筆開銷變大，一眼就知道。
+            </p>
+            <a href="/track" class="book-track-link">看我的數字 →</a>
+            <p class="book-track-note">資料只存在你的瀏覽器，不上傳</p>
         </div>
     </section>
 
-    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
-        <div class="max-w-7xl mx-auto px-4 md:px-6">
-            <div class="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <section class="book-section reveal" data-reveal>
+        <div class="book-col">
+            <div class="book-sec-head">
                 <div>
-                    <p class="v2-kicker">專欄文章</p>
-                    <h2 class="v2-h2">最新文章</h2>
+                    <p class="book-kicker">專欄文章</p>
+                    <h2 class="book-h2">最新文章</h2>
                 </div>
-                <a href="/blog" class="text-sm text-brand hover:text-brand-400">查看全部文章 →</a>
+                <a href="/blog" class="book-more-link">查看全部文章 →</a>
             </div>
-            <div class="grid gap-4 md:grid-cols-3">
+            <div class="book-posts">
                 {latestPosts.map((post) => (
-                    <a href={`/blog/${post.id}`} class="group card-surface-hover overflow-hidden">
+                    <a href={`/blog/${post.id}`} class="book-post">
                         {post.data.coverImage && (
-                            <div class="aspect-[16/9] overflow-hidden border-b border-paper-300">
-                                <img src={post.data.coverImage} alt="" loading="lazy" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-                            </div>
+                            <img src={post.data.coverImage} alt="" loading="lazy" />
                         )}
-                        <div class="p-5">
-                            <div class="flex items-center gap-2 text-[11px] text-ink-500">
-                                <span>{post.data.category}</span><span>·</span><time datetime={post.data.date}>{post.data.date}</time>
-                            </div>
-                            <h3 class="mt-3 text-base font-semibold leading-6 text-ink-700 group-hover:text-brand transition-colors">{post.data.title}</h3>
-                            <p class="mt-2 line-clamp-2 text-xs leading-6 text-ink-500">{post.data.excerpt}</p>
+                        <div class="book-post-meta">
+                            <span>{post.data.category}</span><span> · </span><time datetime={post.data.date}>{post.data.date}</time>
                         </div>
+                        <h3 class="book-post-title">{post.data.title}</h3>
+                        <p class="book-post-excerpt">{post.data.excerpt}</p>
                     </a>
                 ))}
             </div>
@@ -242,22 +310,23 @@ const toolListSchema = JSON.stringify({
 
     <YiwenPromo variant="banner" />
 
-    <section class="border-t border-paper-300 v2-section reveal" data-reveal>
-        <div class="max-w-3xl mx-auto px-4 md:px-6">
-            <p class="v2-kicker">FAQ</p>
-            <h2 class="v2-h2">使用前常見問題</h2>
-            <div class="mt-7 space-y-3">
+    <section class="book-section reveal" data-reveal>
+        <div class="book-col book-col-narrow">
+            <p class="book-kicker">FAQ</p>
+            <h2 class="book-h2">使用前常見問題</h2>
+            <div style="margin-top: 1.6rem;">
                 {homeFaqs.map((faq) => (
-                    <details class="group rounded-2xl border border-paper-300 bg-paper-200/70 p-5">
-                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-ink-700">
-                            {faq.q}<span class="text-brand transition-transform group-open:rotate-45">＋</span>
+                    <details class="book-faq group">
+                        <summary>
+                            {faq.q}<span class="transition-transform group-open:rotate-45">＋</span>
                         </summary>
-                        <p class="mt-4 border-t border-paper-300 pt-4 text-sm leading-7 text-ink-500">{faq.a}</p>
+                        <p>{faq.a}</p>
                     </details>
                 ))}
             </div>
         </div>
     </section>
+    </div>
 
 <script>
 const escapeHtml = (value: unknown): string => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
