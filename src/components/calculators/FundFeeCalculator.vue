@@ -5,35 +5,35 @@
         <div>
           <label for="ff-principal" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">目前本金 (NT$)</label>
           <input id="ff-principal" type="text" inputmode="decimal" v-model.number="principal"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 text-2xl font-serif font-bold focus:outline-none focus:border-[#A58436] transition-all" />
         </div>
         <div>
           <label for="ff-monthly" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">每月再投入 (NT$)</label>
           <input id="ff-monthly" type="text" inputmode="decimal" v-model.number="monthly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-2xl font-bold focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 text-2xl font-serif font-bold focus:outline-none focus:border-[#A58436] transition-all" />
           <p class="mt-1.5 text-[11px] text-ink-400">沒有定期定額就填 0。</p>
         </div>
         <div>
           <label for="ff-return" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">年報酬假設（未扣費用，%)</label>
           <input id="ff-return" type="text" inputmode="decimal" v-model.number="grossReturn"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-medium focus:outline-none focus:border-[#A58436]" />
           <p class="mt-1.5 text-[11px] text-ink-400">假設值，不是保證。</p>
         </div>
         <div>
           <label for="ff-years" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">持有年數 (年)</label>
           <input id="ff-years" type="text" inputmode="decimal" v-model.number="years"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-medium focus:outline-none focus:border-[#A58436]" />
         </div>
         <div>
           <label for="ff-fee-a" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">方案 A 費用率</label>
           <input id="ff-fee-a" type="text" inputmode="decimal" v-model.number="feeA"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-medium focus:outline-none focus:border-[#A58436]" />
           <p class="mt-1.5 text-[11px] text-ink-400">主動型基金常見 1.2%～2%。</p>
         </div>
         <div>
           <label for="ff-fee-b" class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">方案 B 費用率</label>
           <input id="ff-fee-b" type="text" inputmode="decimal" v-model.number="feeB"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+            class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-medium focus:outline-none focus:border-[#A58436]" />
           <p class="mt-1.5 text-[11px] text-ink-400">指數型 ETF 常見 0.03%～0.5%。</p>
         </div>
       </div>
@@ -41,33 +41,33 @@
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
           <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2"><span v-if="diffAB >= 0">{{ safeYears }} 年後，A 比 B 少 {{ fmt(diffAB) }} 元</span><span v-else>{{ safeYears }} 年後，A 比 B 多 {{ fmt(diffAbs) }} 元</span></p>
-          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight whitespace-nowrap">
+          <p class="receipt-main-value whitespace-nowrap">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(diffAbs) }}
           </p>
           <p class="mt-2 text-xs text-ink-400">同樣本金、同樣報酬假設，只差費用率 {{ feeLabel(feeA) }} 與 {{ feeLabel(feeB) }}</p>
         </div>
-        <div class="grid grid-cols-1 gap-3 pt-6 border-t border-ink-100 text-center sm:grid-cols-3 sm:gap-4">
+        <div class="grid grid-cols-1 gap-3 pt-6 border-t border-[#E3DCCB] text-center sm:grid-cols-3 sm:gap-4">
           <div>
             <p class="text-xs text-ink-400 mb-1">零費用（假設 {{ grossReturn }}%）</p>
-            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(fvGross) }}</p>
+            <p class="text-lg font-bold text-ink-600 whitespace-nowrap">${{ fmt(fvGross) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">方案 A（費用 {{ feeLabel(feeA) }}）</p>
-            <p class="text-lg font-bold text-red-600 font-mono whitespace-nowrap">${{ fmt(fvA) }}</p>
+            <p class="text-lg font-bold text-red-600 whitespace-nowrap">${{ fmt(fvA) }}</p>
             <p class="text-[11px] text-ink-400 mt-0.5">被費用吃掉 ${{ fmt(fvGross - fvA) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">方案 B（費用 {{ feeLabel(feeB) }}）</p>
-            <p class="text-lg font-bold text-brand-700 font-mono whitespace-nowrap">${{ fmt(fvB) }}</p>
+            <p class="text-lg font-bold text-brand-700 whitespace-nowrap">${{ fmt(fvB) }}</p>
             <p class="text-[11px] text-ink-400 mt-0.5">被費用吃掉 ${{ fmt(fvGross - fvB) }}</p>
           </div>
         </div>
-        <div class="mt-6 pt-5 border-t border-ink-100">
+        <div class="mt-6 pt-5 border-t border-[#E3DCCB]">
           <p class="text-xs font-semibold text-ink-500 mb-3">不同年數的 A／B 期末差額</p>
           <div class="grid grid-cols-1 gap-3 text-center sm:grid-cols-3 sm:gap-4">
-            <div v-for="row in horizonRows" :key="row.y" class="rounded-xl bg-paper-100 border border-paper-300 py-3">
+            <div v-for="row in horizonRows" :key="row.y" class="border-t border-[#E3DCCB] pt-3">
               <p class="text-[11px] text-ink-400">{{ row.y }} 年</p>
-              <p class="text-base font-bold text-ink-700 font-mono whitespace-nowrap">${{ fmt(row.diff) }}</p>
+              <p class="text-base font-bold text-ink-700 whitespace-nowrap">${{ fmt(row.diff) }}</p>
             </div>
           </div>
           <p class="mt-3 text-[11px] leading-5 text-ink-400">差額隨年數放大；三格固定以 10／20／30 年計算，與上方年數欄位無關。</p>

@@ -643,8 +643,8 @@ const faqs = [
         })();
         </script>
 
-        <style>
-            .st-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        <style is:global>
+            .st-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 1px solid #E3DCCB; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
             .st-tabs::-webkit-scrollbar { display: none; }
             .st-tabs [data-st-tab] {
                 flex-shrink: 0;
@@ -652,11 +652,11 @@ const faqs = [
                 color: #78716c; background: transparent; border: none; cursor: pointer;
                 border-bottom: 2px solid transparent; margin-bottom: -2px;
             }
-            .st-tabs [data-st-tab][aria-selected="true"] { color: #2F7550; border-bottom-color: #2F7550; }
+            .st-tabs [data-st-tab][aria-selected="true"] { color: #1C1B1A; border-bottom-color: #A58436; }
             .st-tabs [data-st-tab]:hover { color: #44403c; }
-            .st-card { background: #FFFDF7; border: 1px solid #E8E4DA; border-radius: 1rem; padding: 1rem 1.1rem; margin-bottom: 0.9rem; }
+            .st-card { background: transparent; border: 0; border-top: 1px solid #E3DCCB; border-radius: 0; padding: 1rem 0; margin-bottom: 0.9rem; }
             :global(.st-guide) { margin-top: 8px; font-size: 0.85rem; }
-            :global(.st-guide summary) { cursor: pointer; font-weight: 600; color: #2F7550; }
+            :global(.st-guide summary) { cursor: pointer; font-weight: 600; color: #1D4B34; }
             :global(.st-guide ol) { margin: 6px 0 0; padding-left: 1.2rem; color: #57534e; line-height: 1.7; }
             .st-card h3 { font-size: 0.95rem; font-weight: 700; color: #25231F; margin: 0 0 0.6rem; }
             .st-card h4 { font-size: 0.875rem; font-weight: 700; color: #25231F; margin: 1rem 0 0.35rem; }
@@ -664,53 +664,54 @@ const faqs = [
             .st-grid2 { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 0.9rem; }
             @media (min-width: 640px) { .st-grid2 { grid-template-columns: 1fr 1fr; } }
             .st-stat { text-align: center; margin-bottom: 0; }
-            .st-big { font-size: 1.5rem; font-weight: 800; color: #25231F; }
+            .st-big { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-size: 1.5rem; font-weight: 700; color: #1C1B1A; }
             .st-label { font-size: 0.75rem; color: #78716c; margin-top: 0.2rem; }
             .st-muted { font-size: 0.78rem; color: #78716c; }
             .st-foot { font-size: 0.75rem; color: #78716c; margin-top: 0.6rem; line-height: 1.7; }
             .st-hint { font-size: 0.75rem; font-weight: 400; color: #78716c; }
-            .st-banner { border-radius: 0.9rem; padding: 0.8rem 1rem; font-size: 0.85rem; font-weight: 600; line-height: 1.7; margin-bottom: 0.9rem; background: #FFF7E6; border: 1px solid #F0D9A8; color: #7C5A1E; }
-            .st-total { background: #F4F8F4; border-color: #CBDCCB; }
+            .st-banner { border: 0; border-left: 2px solid #A58436; border-radius: 0; padding: 0.4rem 0 0.4rem 1rem; font-size: 0.85rem; font-weight: 600; line-height: 1.7; margin-bottom: 0.9rem; background: transparent; color: #1C1B1A; }
+            .st-total { background: transparent; border-top: 2px solid #A58436; }
             .st-total-row { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-            .st-total-num { font-size: 1.65rem; font-weight: 800; color: #245F40; letter-spacing: -0.01em; white-space: nowrap; }
+            .st-total-num { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-size: 1.65rem; font-weight: 700; color: #1C1B1A; letter-spacing: -0.01em; white-space: nowrap; }
             .st-total-side { text-align: right; font-size: 0.78rem; color: #78716c; line-height: 1.7; }
-            .st-banner.st-danger { background: #FDECEA; border-color: #F5B5AE; color: #9B2C1F; }
-            .st-banner.st-ok { background: #EDF5EF; border-color: #B8D5BF; color: #245F40; }
-            .st-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid #F0EBDD; }
+            .st-banner.st-danger { background: transparent; border-left-color: #B3261E; color: #B3261E; }
+            .st-banner.st-ok { background: transparent; color: #1D4B34; }
+            .st-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid #E3DCCB; }
             .st-row:last-child { border-bottom: none; }
             .st-row strong { font-size: 0.9rem; color: #25231F; }
-            .st-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 999px; background: #EDF5EF; color: #245F40; }
-            .st-badge.st-due { background: #FDECEA; color: #9B2C1F; }
-            .st-badge.st-trial { background: #FFF7E6; color: #7C5A1E; }
-            .st-badge.st-active { background: #EDF5EF; color: #245F40; }
-            .st-badge.st-paused { background: #E8E4DA; color: #5F594C; }
-            .st-badge.st-cancelled { background: #E8E4DA; color: #78716c; }
+            .st-badge { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0; border-radius: 0; background: transparent; color: #A58436; }
+            .st-badge.st-due { background: transparent; color: #B3261E; }
+            .st-badge.st-trial { background: transparent; color: #A58436; }
+            .st-badge.st-active { background: transparent; color: #1D4B34; }
+            .st-badge.st-paused { background: transparent; color: #78716c; }
+            .st-badge.st-cancelled { background: transparent; color: #78716c; }
             .st-bar { margin-bottom: 0.55rem; }
             .st-blabel { display: flex; justify-content: space-between; font-size: 0.8rem; color: #4A463B; margin-bottom: 0.2rem; }
-            .st-track { height: 0.5rem; background: #F0EBDD; border-radius: 999px; overflow: hidden; }
-            .st-fill { height: 100%; background: #5E966C; border-radius: 999px; }
+            .st-track { height: 0.5rem; background: #E3DCCB; border-radius: 0; overflow: hidden; }
+            .st-fill { height: 100%; background: #A58436; border-radius: 0; }
             .st-subcard { margin-bottom: 0.75rem; }
             .st-subcard.st-cancelled { opacity: 0.65; }
             .st-name { font-size: 1rem; font-weight: 700; color: #25231F; }
             .st-meta { font-size: 0.78rem; color: #78716c; margin-top: 0.25rem; }
-            .st-cancel { font-size: 0.82rem; font-weight: 700; color: #7C5A1E; margin-top: 0.45rem; white-space: nowrap; }
-            .st-cancel.st-urgent { color: #9B2C1F; }
-            .st-count { font-size: 0.85rem; font-weight: 700; color: #245F40; }
-            .st-count.st-soon { color: #9B2C1F; }
+            .st-cancel { font-size: 0.82rem; font-weight: 700; color: #A58436; margin-top: 0.45rem; white-space: nowrap; }
+            .st-cancel.st-urgent { color: #B3261E; }
+            .st-count { font-size: 0.85rem; font-weight: 700; color: #1D4B34; }
+            .st-count.st-soon { color: #B3261E; }
             .st-btnrow { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
-            .st-small { font-size: 0.78rem; padding: 0.4rem 0.8rem; border-radius: 0.6rem; border: 1px solid #E8E4DA; background: #fff; color: #4A463B; cursor: pointer; }
-            .st-small:hover { background: #F6F0E4; }
-            .st-small.st-danger-btn { color: #9B2C1F; border-color: #F5B5AE; }
+            .st-small { font-size: 0.78rem; padding: 0.4rem 0; border: 0; border-radius: 0; background: transparent; color: #1D4B34; cursor: pointer; }
+            .st-small:hover { background: transparent; text-decoration: underline; }
+            .st-small.st-danger-btn { color: #B3261E; border-color: transparent; }
             .st-empty { text-align: center; color: #78716c; font-size: 0.85rem; line-height: 2; padding: 2.5rem 0; }
             .st-hist { margin-top: 0.5rem; }
             .st-hist summary { cursor: pointer; font-size: 0.85rem; color: #78716c; padding: 0.5rem 0; }
             .st-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.8rem; }
-            .st-chips button { font-size: 0.78rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid #D8E9DC; background: #EDF5EF; color: #245F40; cursor: pointer; }
+            .st-chips button { font-size: 0.78rem; padding: 0.35rem 0; border: 0; border-radius: 0; background: transparent; color: #1D4B34; cursor: pointer; }
+            .st-chips button:hover { text-decoration: underline; }
             .st-f label { display: block; font-size: 0.82rem; font-weight: 600; color: #4A463B; margin: 0.7rem 0 0.25rem; }
-            .st-f input, .st-f select, .st-f textarea { width: 100%; font-size: 0.9rem; padding: 0.55rem 0.7rem; border: 1px solid #E8E4DA; border-radius: 0.6rem; background: #fff; color: #25231F; box-sizing: border-box; }
-            .st-f input:focus, .st-f select:focus, .st-f textarea:focus { outline: 2px solid #B8D5BF; border-color: #5E966C; }
-            .st-primary { background: #2F7550; color: #fff; font-weight: 700; border: none; cursor: pointer; padding: 0.7rem 1.2rem; border-radius: 0.75rem; font-size: 0.9rem; }
-            .st-primary:hover { background: #245F40; }
+            .st-f input, .st-f select, .st-f textarea { width: 100%; font-size: 0.9rem; padding: 0.55rem 0; border: 0; border-bottom: 1px solid #E3DCCB; border-radius: 0; background: transparent; color: #25231F; box-sizing: border-box; }
+            .st-f input:focus, .st-f select:focus, .st-f textarea:focus { outline: none; border-bottom-color: #A58436; }
+            .st-primary { background: transparent; color: #1D4B34; font-weight: 700; border: none; cursor: pointer; padding: 0.7rem 0; border-radius: 0; font-size: 0.9rem; }
+            .st-primary:hover { background: transparent; text-decoration: underline; }
             .st-block { width: 100%; }
         </style>
 

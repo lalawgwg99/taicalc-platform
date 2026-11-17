@@ -28,7 +28,7 @@
                 v-model.number="irr.years"
                 aria-label="繳費年期"
                 placeholder="6"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-bold focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <div>
@@ -38,7 +38,7 @@
                 v-model.number="irr.premium"
                 aria-label="年繳保費"
                 placeholder="100000"
-                class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-bold focus:outline-none focus:border-[#A58436]"
               />
             </div>
           </div>
@@ -51,14 +51,14 @@
                 v-model.number="irr.endYear"
                 aria-label="領回年度"
                 placeholder="第幾年？"
-                class="w-28 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="w-28 bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-bold focus:outline-none focus:border-[#A58436]"
               />
               <input
                 type="text" inputmode="decimal"
                 v-model.number="irr.cashValue"
                 aria-label="領回金額"
                 placeholder="解約金金額"
-                class="flex-1 bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                class="flex-1 min-w-0 bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 text-ink-800 font-bold focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <p class="text-[10px] text-ink-400 mt-1">請輸入您預計在哪一年解約或滿期領回，以及當時的「年度末解約金」。</p>
@@ -66,15 +66,15 @@
         </div>
 
         <!-- Result -->
-        <div class="pt-4 border-t border-paper-100">
+        <div class="pt-4 border-t border-[#E3DCCB]">
           <div
-            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 text-center border border-amber-100"
+            class="pt-2 text-center"
           >
-            <p class="text-xs text-amber-700 uppercase tracking-wide mb-1">實際年報酬率</p>
+            <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">實際年報酬率</p>
             <div class="text-center whitespace-nowrap">
-              <span class="text-4xl font-bold font-mono text-amber-700">{{ irrResult }}</span><span class="text-sm font-bold text-amber-700">%</span>
+              <span class="receipt-main-value">{{ irrResult }}</span><span class="text-sm font-bold text-ink-800">%</span>
             </div>
-            <p class="text-xs text-amber-600/70 mt-2">
+            <p class="text-xs text-ink-400 mt-2">
               比起定存 (約1.7%)：
               <span v-if="irrValue > 1.7" class="font-bold text-green-600">優於定存</span>
               <span v-else class="font-bold text-red-500">低於定存</span>
@@ -90,7 +90,7 @@
       <div v-if="mode === 'needs'" class="calculator-shell">
         <!-- Liabilities -->
         <div class="space-y-3">
-          <h3 class="text-sm font-bold text-ink-600 border-l-4 border-brand-500 pl-2">1. 家庭責任 (負債與開銷)</h3>
+          <h3 class="text-sm font-bold text-ink-600 border-l-2 border-[#A58436] pl-3">1. 家庭責任 (負債與開銷)</h3>
           <div class="grid grid-cols-1 gap-3">
             <div>
               <label for="fld-20b610a3" class="block text-xs font-semibold text-ink-400 mb-1">房貸與其他負債餘額</label>
@@ -98,7 +98,7 @@
                 type="text" inputmode="decimal"
                 v-model.number="needs.debt"
                 aria-label="負債餘額"
-                class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 focus:outline-none focus:border-[#A58436]"
               />
             </div>
             <div class="grid grid-cols-2 gap-3">
@@ -108,7 +108,7 @@
                   type="text" inputmode="decimal"
                   v-model.number="needs.expenses"
                   aria-label="家庭年支出"
-                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                  class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 focus:outline-none focus:border-[#A58436]"
                 />
               </div>
               <div>
@@ -116,7 +116,7 @@
                 <select id="fld-3d2c95c9"
                   v-model.number="needs.years"
                   aria-label="預留年數"
-                  class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                  class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 focus:outline-none focus:border-[#A58436]"
                 >
                   <option value="5">5 年</option>
                   <option value="10">10 年</option>
@@ -130,24 +130,24 @@
 
         <!-- Assets -->
         <div class="space-y-3">
-          <h3 class="text-sm font-bold text-ink-600 border-l-4 border-green-500 pl-2">2. 現有資產</h3>
+          <h3 class="text-sm font-bold text-ink-600 border-l-2 border-[#A58436] pl-3">2. 現有資產</h3>
           <div>
             <label for="fld-df54c0a6" class="block text-xs font-semibold text-ink-400 mb-1">存款與投資總額</label>
             <input id="fld-df54c0a6"
               type="text" inputmode="decimal"
               v-model.number="needs.assets"
               aria-label="現有資產"
-              class="w-full bg-paper-50 border border-ink-100 rounded-lg py-2 px-3 focus:outline-none focus:ring-1 focus:ring-green-500"
+              class="w-full bg-transparent border-0 border-b border-[#E3DCCB] rounded-none py-2 px-0 focus:outline-none focus:border-[#A58436]"
             />
           </div>
         </div>
 
         <!-- Result -->
-        <div class="pt-4 border-t border-paper-100">
-          <div class="bg-paper-50 rounded-xl p-6 border border-ink-100 text-center">
+        <div class="pt-4 border-t border-[#E3DCCB]">
+          <div class="pt-2 text-center">
             <p class="text-xs text-ink-400 uppercase tracking-wide mb-1">建議壽險保額</p>
             <p
-              class="text-3xl font-bold font-mono tracking-tight"
+              class="receipt-main-value"
               :class="needsResult > 0 ? 'text-brand-600' : 'text-green-600'"
             >
               {{ needsResult > 0 ? '$' + fmt(needsResult) : '資產已足夠' }}

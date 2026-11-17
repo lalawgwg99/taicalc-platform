@@ -2731,4 +2731,7 @@ a.v2-card:hover {
 }
 .book-tool .calc-card-badge {
     color: #A58436 !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
 }

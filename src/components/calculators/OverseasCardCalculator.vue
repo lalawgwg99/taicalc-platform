@@ -75,9 +75,9 @@ const feeEmpty = computed(() => feeRate.value === null || feeRate.value === '' |
         />
       </div>
 
-      <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p class="text-sm font-semibold text-amber-800">⚠️ 出國刷卡永遠選當地貨幣結帳</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">選台幣就是 DCC：匯率由收單行決定，加價常達 4% 以上。</p>
+      <div class="mt-4 border-l-2 border-[#A58436] pl-4 py-1">
+        <p class="text-sm font-semibold text-ink-700">⚠️ 出國刷卡永遠選當地貨幣結帳</p>
+        <p class="mt-1 text-xs leading-5 text-ink-400">選台幣就是 DCC：匯率由收單行決定，加價常達 4% 以上。</p>
       </div>
 
       <div class="calculator-grid">
@@ -104,7 +104,7 @@ const feeEmpty = computed(() => feeRate.value === null || feeRate.value === '' |
         <span>回饋 {{ formatTWD(best.rebate) }} − 手續費 {{ formatTWD(best.fee) }}<strong>{{ best.net >= 0 ? '淨拿回' : '最少虧損' }} {{ formatTWD(Math.abs(best.net)) }}（{{ best.netRate.toFixed(1) }}%）</strong></span>
       </div>
 
-      <p v-if="globalOnly" class="mt-4 rounded-lg bg-[#EDF5EF] px-4 py-3 text-sm leading-6 text-[#25231F]">此目的地只列不限國家的卡片。</p>
+      <p v-if="globalOnly" class="mt-4 border-l-2 border-[#A58436] pl-4 py-1 text-sm leading-6 text-ink-700">此目的地只列不限國家的卡片。</p>
 
       <div class="calc-cards" role="list">
         <article v-for="(row, i) in rows" :key="row.name" class="calc-card" :class="{ 'calc-card--best': i === 0 }" role="listitem">

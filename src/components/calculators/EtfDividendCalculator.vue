@@ -62,19 +62,19 @@
             />
         </div>
 
-        <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
+        <div class="border-t border-[#E3DCCB] pt-4 space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
         </div>
 
         <div class="flex gap-2">
             <a href="/tools/stock-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#1D4B34] hover:underline transition-all">
                 算股票買賣損益
                 <span aria-hidden="true">→</span>
             </a>
             <a href="/tools/real-return-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm text-ink-600 hover:text-ink-800 hover:underline transition-all">
                 看實質報酬
                 <span aria-hidden="true">→</span>
             </a>

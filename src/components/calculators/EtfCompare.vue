@@ -32,7 +32,7 @@
             />
         </div>
 
-        <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
+        <div class="border-t border-[#E3DCCB] pt-4 space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">差異解讀</p>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
             <p class="text-[10px] text-ink-400">年化報酬為歷史長期概估（含配息），沒算手續費跟稅，不是保證。</p>
@@ -40,11 +40,11 @@
 
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm text-ink-600 hover:text-ink-800 hover:underline transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
             <a href="/tools/real-return-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#1D4B34] hover:underline transition-all">
                 看實質報酬
                 <span aria-hidden="true">→</span>
             </a>

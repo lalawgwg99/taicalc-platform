@@ -39,11 +39,11 @@
             </div>
             <div class="flex flex-wrap gap-2">
                 <button type="button" @click="applyHanCe"
-                    class="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700 hover:border-brand-400">
+                    class="px-0 py-1 text-xs font-semibold text-[#1D4B34] hover:underline">
                     熱門檔參考：漢測中籤率 0.29%
                 </button>
                 <button type="button" @click="applyJuHong"
-                    class="rounded-full border border-paper-300 bg-white px-3 py-1.5 text-xs font-semibold text-ink-600 hover:border-brand-200 hover:text-brand-600">
+                    class="px-0 py-1 text-xs font-semibold text-ink-600 hover:text-ink-800 hover:underline">
                     破發範例：巨虹 45.6 → 33.1 元
                 </button>
             </div>
@@ -77,7 +77,7 @@
             />
         </div>
 
-        <div class="rounded-2xl border border-black/[0.06] bg-white p-4 shadow-sm space-y-2">
+        <div class="border-t border-[#E3DCCB] pt-4 space-y-2">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">結論解讀</p>
             <ul class="text-xs leading-relaxed text-ink-500 space-y-1 list-disc pl-4">
                 <li v-for="(line, i) in insight" :key="i">{{ line }}</li>
@@ -87,12 +87,12 @@
 
         <div class="flex gap-2">
             <a href="/tools/stock-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold text-[#1D4B34] hover:underline transition-all">
                 算股票損益
                 <span aria-hidden="true">→</span>
             </a>
             <a href="/tools/etf-dividend-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-paper-300 bg-white px-4 py-2.5 text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm text-ink-600 hover:text-ink-800 hover:underline transition-all">
                 試算 ETF 配息
                 <span aria-hidden="true">→</span>
             </a>
