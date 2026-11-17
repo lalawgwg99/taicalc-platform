@@ -8,14 +8,14 @@
         v-for="p in presets" 
         :key="p.title"
         @click="applyPreset(p)"
-        class="text-xs font-medium bg-white hover:bg-paper-100 text-ink-600 border border-ink-100/80 px-3 py-1.5 rounded-full transition-all flex-shrink-0 active:scale-95 shadow-sm"
+        class="text-xs font-medium text-[#1D4B34] hover:underline underline-offset-4 px-0 py-1.5 transition-all flex-shrink-0 active:scale-95"
       >
         {{ p.title }} (${{ p.total.toLocaleString() }})
       </button>
     </div>
 
     <!-- 1. 總額設定與成員名單 (Apple Inset Grouped Form) -->
-    <div class="bg-white rounded-2xl border border-black/[0.06] shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-5 scroll-mt-24">
+    <div class="scroll-mt-24">
       <div class="mb-6 text-center">
         <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wider">總消費金額 (Total Amount)</label>
         <div class="relative max-w-xs mx-auto flex items-center justify-center">
@@ -23,23 +23,23 @@
           <input 
             v-model.number="totalAmount" 
             type="text" inputmode="decimal" 
-            class="w-full text-center text-4xl font-bold font-mono text-ink-900 border-b-2 border-ink-100 focus:border-brand-500 outline-none py-1.5 transition-colors bg-transparent"
+            class="w-full text-center text-4xl font-bold receipt-main-value border-b-2 border-ink-100 focus:border-brand-500 outline-none py-1.5 transition-colors bg-transparent"
             placeholder="0"
           />
         </div>
       </div>
 
       <!-- 模式切換 (iOS Segmented Control) -->
-      <div class="grid grid-cols-2 p-1 bg-[#EFEFF4] rounded-xl mb-6">
-        <button 
-          @click="mode = 'even'" 
-          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'even' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
+      <div class="seg-control mb-6">
+        <button
+          @click="mode = 'even'"
+          :class="['seg-btn', mode === 'even' ? 'seg-btn-active' : '']"
         >
           平均分攤
         </button>
-        <button 
-          @click="mode = 'weighted'" 
-          :class="['py-2 text-xs font-semibold rounded-lg transition-all', mode === 'weighted' ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-400 hover:text-ink-800']"
+        <button
+          @click="mode = 'weighted'"
+          :class="['seg-btn', mode === 'weighted' ? 'seg-btn-active' : '']"
         >
           權重 / 自訂
         </button>
@@ -49,7 +49,7 @@
       <div>
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">成員名單 ({{ members.length }} 人)</h3>
-          <button @click="addMember" class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors active:scale-95">
+          <button @click="addMember" class="text-xs text-[#1D4B34] font-semibold hover:underline underline-offset-4 px-0 py-1 transition-colors active:scale-95">
             + 新增成員
           </button>
         </div>
@@ -58,7 +58,7 @@
           <div 
             v-for="(m, idx) in members" 
             :key="m.id" 
-            class="flex flex-wrap items-center gap-x-3 gap-y-2 p-2.5 bg-[#F9F9FB] rounded-xl border border-ink-100/60 transition-all hover:border-ink-200"
+            class="flex flex-wrap items-center gap-x-3 gap-y-2 py-2.5 border-b border-[#E3DCCB] transition-all"
           >
             <div class="w-7 h-7 flex items-center justify-center bg-white rounded-full border border-ink-100 text-xs font-semibold text-ink-400 flex-shrink-0 shadow-2xs">
               {{ idx + 1 }}
@@ -114,7 +114,7 @@
           v-for="r in [0, 5, 10]"
           :key="r"
           @click="serviceRate = r"
-          class="text-xs font-medium bg-white hover:bg-paper-100 text-ink-600 border border-ink-100/80 px-2.5 py-1 rounded-full transition-all active:scale-95"
+          class="text-xs font-medium text-[#1D4B34] hover:underline underline-offset-4 px-1 py-1 transition-all active:scale-95"
         >
           {{ r }}%
         </button>
@@ -123,7 +123,7 @@
         </span>
       </div>
     </div>
-    <div class="bg-gradient-to-b from-white to-[#F9F9FB] rounded-2xl border border-brand-500/20 shadow-[0_4px_20px_rgba(0,122,255,0.06)] p-5 relative overflow-hidden">
+    <div class="border-t border-[#E3DCCB] pt-5 relative">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-brand-500"></span> 誰該轉帳給誰
@@ -135,7 +135,7 @@
         <div 
           v-for="(tx, i) in transactions" 
           :key="i" 
-          class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-ink-100/80 shadow-2xs"
+          class="flex items-center justify-between py-3.5 border-b border-[#E3DCCB]"
         >
           <div class="flex items-center gap-2 text-sm">
             <span class="font-bold text-ink-900">{{ tx.from }}</span>
@@ -155,26 +155,26 @@
           </li>
         </ul>
       </div>
-      <div v-if="settlementInfo.unpaid > 0" class="mt-3 p-3.5 bg-amber-50/70 rounded-xl border border-amber-200/70">
+      <div v-if="settlementInfo.unpaid > 0" class="mt-3 border-l-2 border-[#A58436] pl-3 py-1">
         <p class="text-sm font-semibold text-ink-800">尚有 ${{ settlementInfo.unpaid.toLocaleString() }} 未付給店家</p>
         <p class="text-xs text-ink-400 mt-2">未付部分已列在上方轉帳（轉給店家），請按金額付款。</p>
       </div>
-      <div v-if="transactions.length === 0 && settlementInfo.unpaid === 0" class="py-6 text-center text-ink-400 text-sm bg-white rounded-xl border border-ink-100/60">
+      <div v-if="transactions.length === 0 && settlementInfo.unpaid === 0" class="py-6 text-center text-ink-400 text-sm border-t border-[#E3DCCB]">
         沒人欠誰，都結清了
       </div>
 
       <!-- 操作按鈕 -->
-      <div class="mt-5 pt-4 border-t border-ink-100/60 flex flex-wrap items-center justify-center gap-3">
+      <div class="mt-5 pt-4 border-t border-[#E3DCCB] flex flex-wrap items-center justify-center gap-3">
         <button 
           @click="copyResult" 
-          class="text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+          class="text-xs font-semibold text-[#1D4B34] hover:underline underline-offset-4 active:scale-95 py-2.5 px-2 transition-all flex items-center gap-1.5"
         >
           <span v-if="copyStatus === 'idle'">複製分帳文字</span>
           <span v-else>✓ 已複製到剪貼簿</span>
         </button>
         <button 
           @click="copyShareLink" 
-          class="text-xs font-semibold text-ink-600 bg-white hover:bg-paper-100 border border-ink-100 active:scale-95 py-2.5 px-4 rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+          class="text-xs font-semibold text-ink-600 hover:underline underline-offset-4 active:scale-95 py-2.5 px-2 transition-all flex items-center gap-1.5"
         >
           <span v-if="!shareCopied">複製分享連結</span>
           <span v-else>✓ 連結已複製</span>

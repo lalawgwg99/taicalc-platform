@@ -48,10 +48,10 @@
           <button v-for="p in returnPresets" :key="p.symbol"
                   @click="annualReturn = p.rate"
                   :title="p.note"
-                  :class="['text-[11px] px-2.5 py-1 rounded-full border transition-all duration-150 cursor-pointer',
+                  :class="['text-[11px] px-2 py-1 border-b-2 transition-all duration-150 cursor-pointer',
                            annualReturn === p.rate
-                             ? 'bg-azure text-white border-azure'
-                             : 'bg-paper-200 text-ink-600 border-transparent hover:border-azure-200 hover:text-azure']">
+                             ? 'border-[#A58436] text-ink-800 font-bold'
+                             : 'border-transparent text-ink-600 hover:text-[#1D4B34]']">
             {{ p.label }} {{ p.rate }}%
           </button>
         </div>
@@ -59,7 +59,7 @@
       </div>
 
       <!-- 進階設定 -->
-      <div class="border-t border-paper-300 pt-4">
+      <div class="border-t border-[#E3DCCB] pt-4">
         <button @click="showAdvanced = !showAdvanced"
           class="flex items-center gap-2 text-xs font-medium text-ink-400 hover:text-ink-700 transition-colors">
           <span>進階設定（通膨 / 提領率）</span>
@@ -78,7 +78,7 @@
             <input type="range" v-model.number="inflationRate" min="0" max="10" step="0.1"
               class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-red-400" />
             <!-- 主計總處即時 CPI -->
-            <div v-if="liveCPI" class="flex items-center gap-2 mt-2 bg-red-50 rounded-lg px-3 py-1.5 animate-fade-in-up">
+            <div v-if="liveCPI" class="flex items-center gap-2 mt-2 border-l-2 border-[#A58436] pl-3 py-1 animate-fade-in-up">
               <span class="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse flex-shrink-0"></span>
               <span class="text-[11px] text-red-600 flex-1">
                 主計總處最新 CPI <strong>{{ liveCPI.rate }}%</strong>              </span>
@@ -103,12 +103,12 @@
     <!-- 主要 KPI -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <!-- FIRE 目標 -->
-      <div class="card-surface p-5 bg-paper-800 border-paper-800">
+      <div class="card-surface p-5">
         <p class="text-xs text-ink-400 uppercase tracking-wider mb-1">不用上班要存到</p>
-        <p class="text-3xl font-bold tabular-nums text-azure-400 mb-4">
+        <p class="receipt-main-value text-3xl font-bold tabular-nums mb-4">
           ${{ fmt(fireNumber) }}
         </p>
-        <div class="w-full bg-paper-900 h-1.5 rounded-full overflow-hidden">
+        <div class="w-full bg-[#E3DCCB] h-1.5 rounded-full overflow-hidden">
           <div class="bg-azure h-full rounded-full transition-all duration-700"
             :style="{ width: progressPercent + '%' }"></div>
         </div>
@@ -122,7 +122,7 @@
       <div class="card-surface p-5 flex flex-col items-center justify-center text-center min-h-[140px]">
         <div v-if="yearsToFreedom > 0 && yearsToFreedom < 100">
           <p class="text-xs text-ink-400 mb-1">距離財務自由還有</p>
-          <p class="text-5xl font-bold text-ink-700 tabular-nums leading-none mb-2">{{ yearsToFreedom }}</p>
+          <p class="receipt-main-value text-5xl font-bold tabular-nums leading-none mb-2">{{ yearsToFreedom }}</p>
           <p class="text-sm text-ink-400 mb-3">年</p>
           <span class="badge-neutral">{{ currentAge + parseFloat(yearsToFreedom) }} 歲達成</span>
         </div>
@@ -195,7 +195,7 @@
                peer-checked:after:translate-x-4"></div>
         </label>
       </div>
-      <div v-if="coffeeMode" class="bg-white/60 rounded-xl p-3 text-center animate-fade-in-up mt-3">
+      <div v-if="coffeeMode" class="border-t border-[#E3DCCB] pt-3 text-center animate-fade-in-up mt-3">
         <p class="text-xs text-amber-700 mb-1">一個月多存 $4,500，讓複利跑快一點…</p>
         <p class="text-xl font-bold text-amber-600"><span v-if="coffeeSavedYears === '—'">目前參數下還算不出來</span><span v-else>提早 {{ coffeeSavedYears }} 年！</span></p>
       </div>

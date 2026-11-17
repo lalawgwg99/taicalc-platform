@@ -2481,3 +2481,226 @@ a.v2-card:hover {
     transition: transform .18s ease, background-color .18s ease;
 }
 .proto-tool-cta:hover { background: #1D4B34; transform: translateY(-1px); }
+
+/* ============================================================
+   極簡書式工具頁（2026-11-17，照 Slowfolio 書式，繼首頁之後）
+   只在 ToolLayout（.book-tool）內生效；其餘頁面不受影響。
+   共享 class 在此重新定義為書式，class 名不動（追蹤與測試依賴它們）。
+   ============================================================ */
+.book-tool { background: #FDFCF8; color: #1C1B1A; }
+.book-tool .book-kicker { font-size: .8rem; font-weight: 700; letter-spacing: .22em; color: #A58436; }
+.book-tool .book-h1 { margin-top: 1rem; font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 700; color: #161511; font-size: clamp(1.7rem, 6vw, 2.2rem); line-height: 1.25; letter-spacing: .01em; text-wrap: balance; }
+.book-tool .book-h2 { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif; font-weight: 700; color: #161511; font-size: clamp(1.5rem, 5vw, 1.9rem); letter-spacing: .01em; line-height: 1.3; }
+.book-tool .book-sub { margin-top: .8rem; max-width: 60ch; color: #5C665D; font-size: .95rem; line-height: 1.85; }
+.book-tool .book-more-link { font-size: .88rem; font-weight: 600; color: #1D4B34; white-space: nowrap; }
+.book-tool .book-more-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.book-tool .book-faq { border-top: 1px solid #E3DCCB; }
+.book-tool .book-faq:last-of-type { border-bottom: 1px solid #E3DCCB; }
+.book-tool .book-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; cursor: pointer; list-style: none; font-size: .95rem; font-weight: 600; color: #1C1B1A; }
+.book-tool .book-faq summary::-webkit-details-marker { display: none; }
+.book-tool .book-faq summary span:last-child { color: #A58436; flex-shrink: 0; }
+.book-tool .book-faq p { padding-bottom: 1.15rem; font-size: .92rem; line-height: 1.85; color: #5C665D; }
+.book-tool .book-faq p a { color: #1D4B34; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 共享容器：去卡片化（只改樣式，class 名不動） */
+.book-tool .card-surface,
+.book-tool .glass-panel,
+.book-tool .calculator-card,
+.book-tool .calculator-card-tight,
+.book-tool .calculator-card-accent,
+.book-tool .calculator-card-warm,
+.book-tool .calculator-subcard,
+.book-tool .calculator-footer-note,
+.book-tool .portal-card,
+.book-tool .flow-card,
+.book-tool .command-card,
+.book-tool .story-card {
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* 輸入：底線式 */
+.book-tool .input-clean,
+.book-tool .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+.book-tool .calculator-shell select,
+.book-tool .calculator-shell textarea {
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(28, 27, 26, .55) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    color: #1A1815 !important;
+}
+.book-tool .input-clean:focus,
+.book-tool .calculator-shell input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):focus,
+.book-tool .calculator-shell select:focus,
+.book-tool .calculator-shell textarea:focus {
+    border-bottom-color: #1C1B1A !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* 分段切換：底線 tab（取代膠囊容器＋綠底選中態） */
+.book-tool .seg-control {
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid #E3DCCB !important;
+    border-radius: 0 !important;
+    padding: 0 0 .5rem !important;
+    gap: 1.5rem !important;
+    backdrop-filter: none !important;
+}
+.book-tool .seg-btn {
+    flex: none !important;
+    padding: .25rem 0 !important;
+    color: #5C665D !important;
+    font-weight: 500 !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.book-tool .seg-btn-active,
+.book-tool .calculator-shell .seg-btn-active,
+.book-tool .calculator-card-dark .seg-btn-active {
+    background: transparent !important;
+    color: #1C1B1A !important;
+    border-bottom-color: #A58436 !important;
+    box-shadow: none !important;
+    font-weight: 700 !important;
+}
+
+/* 標籤 pill → 純文字金色小標 */
+.book-tool .data-pill,
+.book-tool .surface-badge,
+.book-tool .flow-index,
+.book-tool .badge-neutral {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: #A58436 !important;
+    padding: 0 !important;
+    font-size: .75rem !important;
+    letter-spacing: .12em !important;
+}
+
+/* 收據式結果卡 → 純文字；大數字走襯線墨字 */
+.book-tool .receipt-card {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.book-tool .receipt-divider { border-top: 1px solid #E3DCCB !important; margin: 1rem 0 !important; }
+.book-tool .stat-value-lg,
+.book-tool .receipt-main-value,
+.book-tool .money-value {
+    font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif !important;
+    color: #161511 !important;
+}
+
+/* 提示框 → 左側金線純文字 */
+.book-tool .note-box,
+.book-tool .tip-box,
+.book-tool .warning-box,
+.book-tool .success-box {
+    background: transparent !important;
+    border: 0 !important;
+    border-left: 2px solid #A58436 !important;
+    border-radius: 0 !important;
+    padding: .25rem 0 .25rem .9rem !important;
+    color: #5C665D !important;
+}
+
+/* 幽靈按鈕／次要按鈕／動作連結 → 純文字連結 */
+.book-tool .btn-ghost,
+.book-tool .btn-secondary,
+.book-tool .action-link {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #1D4B34 !important;
+    padding: .25rem 0 !important;
+}
+.book-tool .btn-ghost:hover,
+.book-tool .btn-secondary:hover,
+.book-tool .action-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* 計算區內的淺色色塊 → 透明（只清底色，文字本身的紅綠語意保留）。
+   刻意不碰飽和色（bg-brand-500/600/700、bg-amber-500、bg-red-500、bg-ink-300/400 等）：
+   那些是圓點、進度條、開關與主要按鈕，逐支檔案處理。 */
+.book-tool .calculator-shell [class~="bg-paper-50"],
+.book-tool .calculator-shell [class~="bg-paper-100"],
+.book-tool .calculator-shell [class~="bg-paper-100/50"],
+.book-tool .calculator-shell [class~="bg-paper-200"],
+.book-tool .calculator-shell [class~="bg-paper-200/60"],
+.book-tool .calculator-shell [class~="bg-paper-200/40"],
+.book-tool .calculator-shell [class~="bg-paper-300"],
+.book-tool .calculator-shell [class~="bg-brand-50"],
+.book-tool .calculator-shell [class~="bg-brand-50/50"],
+.book-tool .calculator-shell [class~="bg-brand-50/40"],
+.book-tool .calculator-shell [class~="bg-brand-100"],
+.book-tool .calculator-shell [class~="bg-amber-50"],
+.book-tool .calculator-shell [class~="bg-amber-50/70"],
+.book-tool .calculator-shell [class~="bg-amber-50/60"],
+.book-tool .calculator-shell [class~="bg-amber-50/50"],
+.book-tool .calculator-shell [class~="bg-amber-100"],
+.book-tool .calculator-shell [class~="bg-red-50"],
+.book-tool .calculator-shell [class~="bg-red-50/30"],
+.book-tool .calculator-shell [class~="bg-red-100"],
+.book-tool .calculator-shell [class~="bg-green-50"],
+.book-tool .calculator-shell [class~="bg-green-50/30"],
+.book-tool .calculator-shell [class~="bg-green-100"],
+.book-tool .calculator-shell [class~="bg-yellow-50"],
+.book-tool .calculator-shell [class~="bg-azure-50"],
+.book-tool .calculator-shell [class~="bg-azure-50/60"],
+.book-tool .calculator-shell [class~="bg-azure-100"],
+.book-tool .calculator-shell [class~="bg-white"] {
+    background-color: transparent !important;
+}
+
+/* 計算區內的圓角與陰影 → 歸零（rounded-full 圓點除外） */
+.book-tool .calculator-shell [class~="rounded-xl"],
+.book-tool .calculator-shell [class~="rounded-lg"],
+.book-tool .calculator-shell [class~="rounded-2xl"],
+.book-tool .calculator-shell [class~="rounded-3xl"],
+.book-tool .calculator-shell [class~="rounded-md"],
+.book-tool .calculator-shell [class~="rounded"],
+.book-tool .calculator-shell [class~="rounded-r"] {
+    border-radius: 0 !important;
+}
+.book-tool .calculator-shell [class*="shadow"] {
+    box-shadow: none !important;
+}
+
+/* 規則說明內的表格 → 細線分隔 */
+.book-tool #guide-panel .prose table { border-collapse: collapse !important; }
+.book-tool #guide-panel .prose thead th { border: 0 !important; border-bottom: 1px solid #1C1B1A !important; }
+.book-tool #guide-panel .prose tbody td { border: 0 !important; border-bottom: 1px solid #E3DCCB !important; }
+.book-tool #guide-panel .prose tbody tr:last-child td { border-bottom: 0 !important; }
+
+/* 規則說明與相關工具：去 proto 圓角＋深色邊線（舊規則在 1706 行，勿刪，只覆寫） */
+.book-tool #guide-panel,
+.book-tool .after-tool-content {
+    border-radius: 0 !important;
+    background: transparent !important;
+    border-color: #E3DCCB !important;
+}
+
+/* 拉桿軌道：不受淺色透明化影響（global.css 1233 行軌道色 #C9C2B0 須保留，否則只剩滑塊） */
+.book-tool .calculator-shell input[type="range"][class~="bg-paper-200"],
+.book-tool .calculator-shell input[type="range"][class~="bg-paper-100"],
+.book-tool .calculator-shell input[type="range"][class~="bg-white"] {
+    background-color: #C9C2B0 !important;
+    border-radius: 9999px !important;
+}

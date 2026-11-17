@@ -25,10 +25,10 @@
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
                         <div class="grid grid-cols-4 gap-1.5">
                             <button v-for="n in [0, 2, 4, 6]" :key="n" @click="pension = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all',
+                                :class="['py-1 text-sm font-medium transition-colors',
                                     pension === n
-                                        ? 'bg-azure text-white shadow-sm'
-                                        : 'bg-paper-200 text-ink-500 hover:bg-paper-300']">
+                                        ? 'text-ink-800 font-bold border-b-2 border-[#A58436]'
+                                        : 'text-ink-500 hover:text-ink-700']">
                                 {{ n }}%
                             </button>
                         </div>
@@ -50,10 +50,10 @@
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">勞退自提比例</label>
                         <div class="grid grid-cols-4 gap-1.5">
                             <button v-for="n in [0, 2, 4, 6]" :key="n" @click="pensionB = n"
-                                :class="['py-2 rounded-lg text-sm font-medium transition-all',
+                                :class="['py-1 text-sm font-medium transition-colors',
                                     pensionB === n
-                                        ? 'bg-azure text-white shadow-sm'
-                                        : 'bg-paper-200 text-ink-500 hover:bg-paper-300']">
+                                        ? 'text-ink-800 font-bold border-b-2 border-[#A58436]'
+                                        : 'text-ink-500 hover:text-ink-700']">
                                 {{ n }}%
                             </button>
                         </div>
@@ -181,15 +181,15 @@
 
                 <div class="mt-4">
                     <div v-if="emergencyFund" class="grid grid-cols-3 gap-2 text-center text-xs">
-                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                        <div class="py-2">
                             <p class="text-ink-400">3 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m3 }} 個月</p>
                         </div>
-                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                        <div class="py-2">
                             <p class="text-ink-400">6 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m6 }} 個月</p>
                         </div>
-                        <div class="bg-white border border-paper-300 rounded-lg py-2">
+                        <div class="py-2">
                             <p class="text-ink-400">12 個月預備金</p>
                             <p class="text-sm font-semibold text-ink-700">{{ emergencyFund.m12 }} 個月</p>
                         </div>
@@ -226,14 +226,14 @@
                         <p class="text-base font-semibold text-ink-700 tabular-nums">$ {{ estimatedAfterTaxAnnual.toLocaleString() }}</p>
                         <p class="text-[10px] text-ink-400 mt-0.5">要繳的稅大概 $ {{ estimatedIncomeTax.toLocaleString() }}</p>
                     </div>
-                    <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
-                        <p class="text-xs text-paper-200 mb-0.5">平均每月實拿</p>
-                        <p class="text-base font-semibold tabular-nums whitespace-nowrap">${{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
+                    <div class="p-3">
+                        <p class="text-xs text-ink-400 mb-0.5">平均每月實拿</p>
+                        <p class="text-base font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ Math.round(estimatedAfterTaxAnnual / 12).toLocaleString() }}</p>
                     </div>
                 </div>
 
                 <div class="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
-                    <div v-for="g in savingsGoals" :key="g.amount" class="bg-white border border-paper-300 rounded-lg py-2">
+                    <div v-for="g in savingsGoals" :key="g.amount" class="py-2">
                         <p class="text-ink-400 whitespace-nowrap">{{ g.label }}</p>
                         <p class="text-sm font-semibold text-ink-700 whitespace-nowrap">{{ g.months }}</p>
                     </div>
@@ -369,19 +369,18 @@
         </div>
 
         <!-- 回本分析分析 (僅比較模式) -->
-        <div v-if="mode === 'compare'" class="card-surface p-5 bg-gradient-to-br from-white to-amber-50/30">
+        <div v-if="mode === 'compare'" class="card-surface p-5">
             <h3 class="text-sm font-medium text-ink-600 mb-4 flex items-center gap-2">
                 換工作回本分析
             </h3>
             
-            <div class="mb-5 p-3 bg-white rounded-lg border border-paper-200">
+            <div class="mb-5">
                 <label for="fld-3178e1bd" class="block text-xs font-medium text-ink-400 mb-1.5">換工作的一次性花費 (NT$)</label>
-                <input id="fld-3178e1bd" type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean bg-paper-100 focus:bg-white tabular-nums" placeholder="50,000">
+                <input id="fld-3178e1bd" type="text" inputmode="decimal" v-model.number="relocationCost" class="input-clean tabular-nums" placeholder="50,000">
                 <p class="text-[10px] text-ink-400 mt-1.5">例如：放棄的未領年終、搬家租屋違約金、待業期空白成本</p>
             </div>
 
-            <div class="flex flex-col items-center justify-center p-4 rounded-xl text-center border"
-                 :class="breakEvenMonths > 0 ? 'bg-amber-50/50 border-amber-100' : 'bg-paper-100/50 border-paper-200'">
+            <div class="flex flex-col items-center justify-center p-4 text-center">
                 <template v-if="monthlyNetB <= monthlyNet && yearlyNetB <= yearlyNet">
                     <p class="text-sm font-medium text-ink-600">新 Offer 收入未達現職水準</p>
                     <p class="text-xs text-ink-400 mt-1">無法計算回本時間，請謹慎評估發展性</p>
@@ -413,20 +412,20 @@
         <div class="note-box space-y-2">
             <p class="font-medium text-ink-500">2026 費率依據</p>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                <div class="p-2.5 text-center">
                     <p class="text-xs text-ink-400">基本工資</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">$29,500</p>
                 </div>
-                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                <div class="p-2.5 text-center">
                     <p class="text-xs text-ink-400">勞保費率</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">12.5%</p>
                     <p class="text-[10px] text-ink-400">含就保 1%</p>
                 </div>
-                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                <div class="p-2.5 text-center">
                     <p class="text-xs text-ink-400">健保費率</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">5.17%</p>
                 </div>
-                <div class="bg-white rounded-lg p-2.5 text-center border border-paper-300">
+                <div class="p-2.5 text-center">
                     <p class="text-xs text-ink-400">勞退提撥</p>
                     <p class="text-sm font-bold text-ink-700 mt-0.5">6%</p>
                     <p class="text-[10px] text-ink-400">雇主全額</p>

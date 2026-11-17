@@ -111,22 +111,18 @@
     <div class="grid md:grid-cols-2 gap-6">
       <!-- 核心數據 -->
       <section class="calculator-card-accent flex flex-col justify-between">
-        <div
-          class="absolute right-0 top-0 w-32 h-32 bg-brand-100 rounded-full blur-3xl -mr-10 -mt-10 opacity-60"
-        ></div>
-
         <div class="relative z-10">
           <p class="text-sm font-bold text-brand-800 mb-1">每月實際入袋</p>
-          <p class="text-4xl font-extrabold text-brand-600 tracking-tight mb-2 whitespace-nowrap">
+          <p class="receipt-main-value text-4xl font-extrabold tracking-tight mb-2 whitespace-nowrap">
             <span class="text-2xl opacity-70">{{ netIncomeRaw < 0 ? '−$' : '$' }}</span>{{ netIncomeDisplay }}
           </p>
           <div class="flex items-center gap-3 text-sm">
-            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">時薪約 ${{ hourlyRate }} 元</span>
-            <span class="bg-white/60 px-2 py-1 rounded text-brand-700 font-medium">每公里賺 ${{ perKm }}</span>
+            <span class="text-brand-700 font-medium">時薪約 ${{ hourlyRate }} 元</span>
+            <span class="text-brand-700 font-medium">每公里賺 ${{ perKm }}</span>
           </div>
         </div>
 
-        <div class="relative z-10 pt-6 mt-6 border-t border-brand-200/60 grid grid-cols-2 gap-4">
+        <div class="relative z-10 pt-6 mt-6 border-t border-[#E3DCCB] grid grid-cols-2 gap-4">
           <div>
             <p class="text-xs text-brand-600 mb-1">油錢佔收入</p>
              <p class="text-lg font-bold text-rose-600">{{ fuelCostRatio }}%</p>

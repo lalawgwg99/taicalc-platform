@@ -7,9 +7,9 @@
         <details class="card-surface p-5">
             <summary class="text-sm font-bold text-ink-700 cursor-pointer">標章看不懂？點開圖解，30 秒找到要填的數字</summary>
             <div class="mt-4 grid gap-4 md:grid-cols-2">
-                <div class="rounded-xl border-2 border-dashed border-brand-300 bg-brand-50/50 p-4">
+                <div class="p-4">
                     <p class="text-[11px] font-bold text-ink-400 mb-2">能源效率標示長這樣（重點只有 2 個）</p>
-                    <div class="rounded-lg bg-white border border-paper-300 p-3 space-y-2 text-sm">
+                    <div class="p-3 space-y-2 text-sm">
                         <div class="rounded-lg bg-amber-100 border-2 border-amber-400 p-2.5 relative">
                             <p class="text-xs text-ink-400">每年耗電量</p>
                             <p class="text-xl font-black text-ink-700">約 <span class="text-brand-700">XXX</span> 度</p>
@@ -46,26 +46,25 @@
 
         <!-- 三台輸入 -->
         <div class="grid gap-3 lg:grid-cols-3">
-            <div v-for="(app, i) in apps" :key="i" class="card-surface p-5 space-y-3"
-                :class="{ 'ring-2 ring-brand-500': championIdx === i && hasResult }">
+            <div v-for="(app, i) in apps" :key="i" class="card-surface p-5 space-y-3">
                 <div class="flex items-center justify-between">
                     <input v-model="app.name" :aria-label="`家電${i + 1}名稱`"
                         class="input-clean text-base font-bold w-2/3" :placeholder="`A款家電`">
                     <span v-if="championIdx === i && hasResult"
-                        class="text-[11px] font-bold text-white bg-brand-600 rounded-full px-2.5 py-1">最省</span>
+                        class="text-[11px] font-bold text-[#A58436] px-0 py-1">最省</span>
                 </div>
 
                 <div>
                     <label class="block text-xs font-medium text-ink-400 mb-1.5">這台是什麼家電？</label>
-                    <div class="grid grid-cols-3 gap-1.5">
+                    <div class="grid grid-cols-3 gap-1.5 border-b border-[#E3DCCB] pb-2">
                         <button v-for="t in appTypes" :key="t.id" type="button" @click="app.type = t.id"
                             :aria-pressed="app.type === t.id"
-                            class="py-2 px-1 rounded-xl border text-xs font-semibold transition-all"
-                            :class="app.type === t.id ? 'border-brand-600 bg-brand-600 text-white' : 'border-paper-300 bg-white text-ink-500'">
+                            class="py-2 px-1 text-xs font-semibold transition-all border-b-2 -mb-2.5"
+                            :class="app.type === t.id ? 'border-[#A58436] text-ink-800 font-bold' : 'border-transparent text-ink-400 hover:text-ink-600'">
                             {{ t.label }}
                         </button>
                     </div>
-                    <div v-if="typeGuide(app.type)" class="mt-2 rounded-xl bg-amber-50 border border-amber-200 p-2.5">
+                    <div v-if="typeGuide(app.type)" class="mt-2 border-l-2 border-[#A58436] pl-2.5 py-1">
                         <p class="text-[12px] leading-relaxed text-ink-600">{{ typeGuide(app.type) }}</p>
                     </div>
                 </div>
@@ -83,13 +82,13 @@
                 </div>
 
                 <div>
-                    <div class="flex rounded-xl border border-paper-300 overflow-hidden mb-2">
+                    <div class="seg-control mb-2">
                         <button @click="app.mode = 'label'" :aria-pressed="app.mode === 'label'"
-                            class="flex-1 py-2 text-xs font-semibold transition-all"
-                            :class="app.mode === 'label' ? 'bg-brand-600 text-white' : 'bg-white text-ink-400'">標示年耗電量</button>
+                            class="seg-btn"
+                            :class="app.mode === 'label' ? 'seg-btn-active' : ''">標示年耗電量</button>
                         <button @click="app.mode = 'power'" :aria-pressed="app.mode === 'power'"
-                            class="flex-1 py-2 text-xs font-semibold transition-all"
-                            :class="app.mode === 'power' ? 'bg-brand-600 text-white' : 'bg-white text-ink-400'">功率換算</button>
+                            class="seg-btn"
+                            :class="app.mode === 'power' ? 'seg-btn-active' : ''">功率換算</button>
                     </div>
                     <div v-if="app.mode === 'label'">
                         <label class="block text-xs font-medium text-ink-400 mb-1.5">每年耗電量（度/年）</label>
@@ -125,7 +124,7 @@
         </div>
 
         <!-- 比較結果 -->
-        <div v-if="hasResult" class="rounded-2xl border border-black/[0.06] bg-white p-5 shadow-sm space-y-4">
+        <div v-if="hasResult" class="border-t border-[#E3DCCB] pt-5 space-y-4">
             <p class="text-xs font-semibold text-ink-400 uppercase tracking-wider">比較結果</p>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm border-collapse min-w-[520px]">
@@ -160,19 +159,19 @@
                     </tbody>
                 </table>
             </div>
-            <div class="rounded-xl bg-paper-100 p-4 space-y-1.5">
+            <div class="border-l-2 border-[#A58436] pl-3 py-1 space-y-1.5">
                 <p v-for="(line, i) in insights" :key="i" class="text-sm leading-relaxed text-ink-600">{{ line }}</p>
             </div>
             <p class="text-[10px] text-ink-400">估算說明：年耗電量來自標示值或功率換算；電費＝年耗電 × 平均每度電價，未計入台電累進級距與夏月加價，實際以帳單為準。</p>
         </div>
-        <div v-else class="rounded-2xl border border-dashed border-paper-300 p-6 text-center">
+        <div v-else class="border-t border-[#E3DCCB] pt-6 text-center">
             <p class="text-sm text-ink-400">在上方輸入至少一台家電的年耗電量（或功率＋時數），就會自動開始比較。</p>
         </div>
 
         <!-- 相關工具 -->
         <div class="flex gap-2">
             <a href="/tools/electricity-calculator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
+                class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:underline underline-offset-4">
                 精算整戶電費：電費計算機
                 <span aria-hidden="true">→</span>
             </a>

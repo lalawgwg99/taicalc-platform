@@ -1,18 +1,16 @@
 <template>
   <div class="calculator-shell">
     <section class="calculator-card">
-      <div class="grid grid-cols-2 gap-3 mb-6">
+      <div class="seg-control mb-6">
         <button
           @click="isSummer = true"
-          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
-          isSummer ? 'bg-orange-500 text-white border-orange-600 shadow-md shadow-orange-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
+          :class="['seg-btn', isSummer ? 'seg-btn-active' : '']"
         >
           夏月 (6-9月)
         </button>
         <button
           @click="isSummer = false"
-          :class="['py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border',
-          !isSummer ? 'bg-brand-500 text-white border-brand-600 shadow-md shadow-brand-200' : 'bg-paper-50 text-ink-400 border-ink-100 hover:bg-paper-100']"
+          :class="['seg-btn', !isSummer ? 'seg-btn-active' : '']"
         >
           非夏月
         </button>
@@ -59,8 +57,7 @@
         <div>
           <p class="text-xs text-ink-400 font-semibold uppercase tracking-wider mb-1">預估電費（每月）</p>
           <p
-            class="text-4xl sm:text-5xl font-bold font-mono tracking-tight whitespace-nowrap"
-            :class="isSummer ? 'text-orange-600' : 'text-brand-600'"
+            class="receipt-main-value text-4xl sm:text-5xl font-bold tracking-tight whitespace-nowrap"
           >
             <span class="text-2xl text-ink-400 mr-1">$</span>{{ totalCost.toLocaleString() }}
           </p>
@@ -101,7 +98,7 @@
 
       <div
         v-if="breakdown.length > 2"
-        class="bg-rose-50 border border-rose-100 rounded-xl p-3 text-sm text-rose-700 font-medium flex gap-2 items-start"
+        class="border-l-2 border-[#A58436] pl-3 py-1 text-sm text-ink-600 font-medium flex gap-2 items-start"
       >
         <span>⚠️</span>
         <span>
@@ -145,14 +142,14 @@
         <span class="text-ink-400 font-normal text-xs ml-auto">如果每月少用...</span>
       </h2>
 
-      <div class="grid grid-cols-3 gap-3">
+      <div class="grid grid-cols-3 gap-3 divide-x divide-[#E3DCCB]">
         <button
           v-for="n in [30, 50, 100]"
           :key="n"
           @click="simulateSave(n)"
           :disabled="(kwh || 0) < n"
           :title="(kwh || 0) < n ? '用電度數不足，省下的不會超過整張帳單' : ''"
-          class="bg-paper-50 hover:bg-paper-100 border border-ink-100 rounded-xl p-3 text-center transition-all group active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
+          class="p-3 text-center transition-all group active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <p class="text-lg font-bold text-ink-600 group-hover:text-brand-600">-{{ n }} 度</p>
           <p class="text-xs text-ink-400 mt-1">省 ${{ getSaving(n) }}</p>
@@ -161,7 +158,7 @@
 
       <div
         v-if="simulatedSave > 0"
-        class="mt-4 p-4 bg-brand-50 border border-brand-100 rounded-xl text-center"
+        class="mt-4 border-t border-[#E3DCCB] pt-4 text-center"
       >
         <p class="text-brand-800 text-sm font-medium">
           省下 {{ simulatedSave }} 度，每月可省 <span class="text-xl font-bold text-brand-600">${{ simulatedSaving }}</span>
@@ -177,7 +174,7 @@
         耗電怪獸分析
       </h2>
 
-      <div class="bg-paper-50 rounded-xl p-4 mb-6 border border-ink-100">
+      <div class="mb-6">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div class="sm:col-span-1">
             <label for="fld-81abd225" class="block text-xs font-semibold text-ink-400 mb-1">選擇電器</label>
@@ -216,13 +213,13 @@
         </div>
         <button
           @click="addAppliance"
-          class="mt-3 w-full py-2 bg-brand-700 text-white rounded-lg text-sm font-bold hover:bg-brand-800 transition-colors"
+          class="mt-3 w-full py-2.5 border-t border-[#E3DCCB] text-sm font-bold text-[#1D4B34] hover:underline underline-offset-4 transition-colors"
         >
           + 加入清單
         </button>
         <button
           @click="addQuickSet"
-          class="mt-2 w-full py-2 bg-paper-100 border border-ink-100 text-ink-600 rounded-lg text-sm font-semibold hover:border-brand-300 transition-colors"
+          class="mt-2 w-full py-2 text-ink-600 text-sm font-semibold hover:underline underline-offset-4 transition-colors"
         >
           一鍵加入小家庭基本盤（冰箱＋洗衣機＋電視＋電燈＋熱水瓶）
         </button>
@@ -233,7 +230,7 @@
           <div
             v-for="(app, idx) in userAppliances"
             :key="idx"
-            class="flex items-center justify-between p-3 bg-paper-50 rounded-xl border border-paper-100"
+            class="flex items-center justify-between py-3 border-b border-[#E3DCCB]"
           >
             <div>
               <p class="font-bold text-ink-600 text-sm flex items-center gap-1.5">
@@ -276,7 +273,7 @@
           </div>
         </div>
 
-        <div class="flex flex-col items-center justify-center bg-paper-50 rounded-xl p-4 border border-paper-100">
+        <div class="flex flex-col items-center justify-center p-4">
           <div class="w-full h-[200px] relative">
             <canvas id="ghostChart"></canvas>
           </div>
@@ -296,16 +293,14 @@
         冷氣耗電估算
       </h2>
 
-      <div class="grid grid-cols-3 gap-2 mb-4">
+      <div class="seg-control mb-4">
         <button
           v-for="mode in acModes"
           :key="mode.id"
           @click="acInputMode = mode.id"
           :class="[
-            'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
-            acInputMode === mode.id
-              ? 'border-brand-500 bg-brand-50 text-brand-700'
-              : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
+            'seg-btn',
+            acInputMode === mode.id ? 'seg-btn-active' : ''
           ]"
         >
           {{ mode.label }}
@@ -333,7 +328,7 @@
               :key="preset"
               type="button"
               @click="acPower = preset"
-              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
+              class="px-2 py-1 text-xs text-ink-500 hover:text-[#1D4B34] hover:underline underline-offset-4 transition-colors"
             >
               {{ preset }} kW
             </button>
@@ -361,7 +356,7 @@
               :key="preset"
               type="button"
               @click="acBtu = preset"
-              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
+              class="px-2 py-1 text-xs text-ink-500 hover:text-[#1D4B34] hover:underline underline-offset-4 transition-colors"
             >
               {{ preset.toLocaleString() }}
             </button>
@@ -389,7 +384,7 @@
               :key="preset"
               type="button"
               @click="acCapacityKw = preset"
-              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
+              class="px-2 py-1 text-xs text-ink-500 hover:text-[#1D4B34] hover:underline underline-offset-4 transition-colors"
             >
               {{ preset }} kW
             </button>
@@ -416,14 +411,12 @@
       <div v-if="acInputMode !== 'kw'" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-semibold text-ink-400 mb-2 uppercase tracking-wide">效能指標</label>
-          <div class="grid grid-cols-2 gap-2">
+          <div class="seg-control">
             <button
               @click="acEfficiencyType = 'cop'"
               :class="[
-                'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
-                acEfficiencyType === 'cop'
-                  ? 'border-brand-500 bg-brand-50 text-brand-700'
-                  : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
+                'seg-btn',
+                acEfficiencyType === 'cop' ? 'seg-btn-active' : ''
               ]"
             >
               COP
@@ -431,10 +424,8 @@
             <button
               @click="acEfficiencyType = 'cspf'"
               :class="[
-                'rounded-xl border px-3 py-2 text-sm font-semibold transition-colors',
-                acEfficiencyType === 'cspf'
-                  ? 'border-brand-500 bg-brand-50 text-brand-700'
-                  : 'border-ink-100 bg-paper-50 text-ink-400 hover:bg-paper-100'
+                'seg-btn',
+                acEfficiencyType === 'cspf' ? 'seg-btn-active' : ''
               ]"
             >
               CSPF
@@ -464,7 +455,7 @@
               :key="preset"
               type="button"
               @click="acEfficiencyValue = preset"
-              class="px-2.5 py-1 rounded-full border border-ink-100 bg-paper-50 text-xs text-ink-500 hover:border-brand-300 hover:text-brand-700 transition-colors"
+              class="px-2 py-1 text-xs text-ink-500 hover:text-[#1D4B34] hover:underline underline-offset-4 transition-colors"
             >
               {{ preset }}
             </button>
@@ -472,7 +463,7 @@
         </div>
       </div>
 
-      <div class="mt-4 p-4 bg-paper-100/50 rounded-xl border border-paper-100">
+      <div class="mt-4 border-t border-[#E3DCCB] pt-4">
         <div class="flex flex-col gap-1 text-center">
           <p class="text-ink-400 text-xs font-medium">冷氣每月預估</p>
           <div class="flex items-center justify-center gap-2 mt-1">
@@ -499,7 +490,7 @@
       </div>
     </section>
 
-    <footer class="bg-paper-50 border border-ink-100 rounded-xl p-4 text-xs text-ink-400">
+    <footer class="border-t border-[#E3DCCB] pt-4 text-xs text-ink-400">
       <p class="font-bold text-ink-500 mb-2">資料版本與說明</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-ink-400">
         <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-400"></span> 夏月：6~9月</div>

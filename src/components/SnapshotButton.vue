@@ -3,7 +3,7 @@
     type="button"
     @click="save"
     :disabled="saved"
-    class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-800 disabled:cursor-default disabled:opacity-90"
+    class="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-[#1D4B34] underline-offset-4 transition hover:underline disabled:cursor-default disabled:opacity-70"
   >
     <svg v-if="!saved" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
     {{ saved ? '已儲存 ✓' : '存下這次試算' }}

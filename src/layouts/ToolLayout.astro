@@ -106,8 +106,8 @@ const relatedToolsSchema = JSON.stringify({
     <script type="application/ld+json" set:html={webAppSchema} slot="head" />
     <script type="application/ld+json" set:html={breadcrumbSchema} slot="head" />
     <script type="application/ld+json" set:html={relatedToolsSchema} slot="head" />
-    <div class="max-w-7xl mx-auto px-0">
-        <header class={`proto-grid-bg border-b border-paper-300 ${compactHero ? 'proto-hero-compact' : ''}`}>
+    <div class="book-tool mx-auto max-w-[64rem] px-4 md:px-6">
+        <header class="border-b border-[#E3DCCB]">
             <div class={compactHero ? 'pt-5 pb-6 md:pt-6 md:pb-6' : 'pt-6 pb-8 md:pt-10 md:pb-10'}>
                 <div class="mb-4 flex items-center justify-between gap-3">
                     <a href="/" class="inline-flex items-center gap-1.5 text-xs font-medium text-ink-400 hover:text-brand-700 transition-colors group">
@@ -116,19 +116,15 @@ const relatedToolsSchema = JSON.stringify({
                         </svg>
                         所有工具
                     </a>
-                    <span class="proto-data-pill">{dataYear}</span>
+                    <span class="text-xs font-semibold tracking-[.12em] text-[#A58436]">{dataYear}</span>
                 </div>
-                <p class="proto-kicker"><span class="proto-kicker-dash"></span>{category}</p>
-                <h1 class="proto-tool-h1">{cleanTitle}</h1>
-                {compactHero ? (
-                    <p class="proto-tool-sub">{kicker}</p>
-                ) : (
-                    <>
-                        <p class="proto-tool-sub">{kicker}</p>
-                        <div class="mt-5">
-                            <a href="#calculator-panel" data-sfx="accent" class="proto-tool-cta">開始試算</a>
-                        </div>
-                    </>
+                <p class="book-kicker">{category}</p>
+                <h1 class="book-h1">{cleanTitle}</h1>
+                <p class="book-sub">{kicker}</p>
+                {!compactHero && (
+                    <div class="mt-5">
+                        <a href="#calculator-panel" data-sfx="accent" class="book-more-link">開始試算 →</a>
+                    </div>
                 )}
             </div>
         </header>
@@ -136,34 +132,32 @@ const relatedToolsSchema = JSON.stringify({
         <section id="calculator-panel" class="mb-10 max-w-none" aria-label="計算器">
             <details class="mb-4 px-1 py-2">
                 <summary class="cursor-pointer text-xs font-semibold text-ink-500 hover:text-ink-700">第一次使用？30 秒知道怎麼填</summary>
-                <div class="mt-3 grid gap-x-8 gap-y-2 border-l-2 border-brand-200 pl-4 text-xs leading-5 text-ink-500 sm:grid-cols-3">
+                <div class="mt-3 grid gap-x-8 gap-y-2 border-l-2 border-[#E3DCCB] pl-4 text-xs leading-5 text-ink-500 sm:grid-cols-3">
                     {currentHelp.map((help, index) => <p><strong class="text-ink-700">{index + 1}.</strong> {help}</p>)}
                 </div>
             </details>
             <slot name="tool" />
             <slot name="after-tool" />
-            <nav aria-label="相關工具" class="after-tool-content mt-4 rounded-2xl border border-paper-300 bg-white/75 p-3 shadow-[0_18px_45px_-40px_rgba(9,35,26,.45)]">
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-                    <p class="shrink-0 px-2 text-[10px] font-semibold tracking-[.12em] text-ink-400">相關工具</p>
-                    <div class="grid flex-1 gap-2 sm:grid-cols-2">
-                        {immediateTools.map((tool) => (
-                            <a href={tool.href} data-next-tool class="group flex items-center justify-between gap-3 rounded-xl bg-paper-200 px-3 py-2.5 transition hover:bg-brand-50">
-                                <span class="min-w-0">
-                                    <strong class="block truncate text-xs font-semibold text-ink-700">{tool.label}</strong>
-                                    <small class="mt-0.5 block truncate text-[10px] text-ink-400">{tool.desc}</small>
-                                </span>
-                                <span aria-hidden="true" class="shrink-0 text-brand-600 transition group-hover:translate-x-0.5">→</span>
-                            </a>
-                        ))}
-                    </div>
+            <nav aria-label="相關工具" class="after-tool-content mt-8 border-t border-[#E3DCCB] pt-5">
+                <p class="book-kicker">相關工具</p>
+                <div class="mt-2">
+                    {immediateTools.map((tool) => (
+                        <a href={tool.href} data-next-tool class="group flex items-baseline justify-between gap-3 border-b border-[#E3DCCB] py-3">
+                            <span class="min-w-0">
+                                <strong class="block text-sm font-semibold text-ink-700">{tool.label}</strong>
+                                <small class="mt-0.5 block text-xs leading-5 text-ink-400">{tool.desc}</small>
+                            </span>
+                            <span aria-hidden="true" class="shrink-0 text-[#1D4B34] transition group-hover:translate-x-0.5">→</span>
+                        </a>
+                    ))}
                 </div>
             </nav>
         </section>
 
         <section class="max-w-4xl mb-12">
-            <details class="rounded-2xl border border-paper-300 bg-paper-200 p-5">
+            <details class="border-t border-[#E3DCCB] pt-5">
                 <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-ink-700">
-                    <span class="inline-flex items-center gap-2"><i class="h-2 w-2 rounded-full bg-brand-500"></i>資料版本與來源</span>
+                    <span class="inline-flex items-center gap-2"><i class="h-2 w-2 rounded-full bg-[#A58436]"></i>資料版本與來源</span>
                     <span class="text-[10px] font-medium text-ink-400">更新 {lastUpdated}</span>
                 </summary>
                 <ul class="mt-4 grid gap-2">
@@ -180,7 +174,7 @@ const relatedToolsSchema = JSON.stringify({
             </details>
         </section>
 
-        <details id="guide-panel" class="mb-12 max-w-4xl rounded-2xl border border-paper-300 bg-paper-200 p-5">
+        <details id="guide-panel" class="mb-12 max-w-4xl border-t border-[#E3DCCB] pt-5">
             <summary class="cursor-pointer text-sm font-semibold text-ink-700">規則說明</summary>
             <article class="prose prose-gray mt-5 text-sm">
                 <slot name="article" />
@@ -189,25 +183,18 @@ const relatedToolsSchema = JSON.stringify({
 
         {faqs.length > 0 && (
             <section class="mb-16 max-w-4xl">
-                <div class="flex items-center gap-3 mb-6 border-t border-paper-300 pt-10">
-                    <div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500">
-                            <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
-                        </svg>
-                    </div>
-                    <h2 class="text-base font-semibold text-ink-700">常見問題</h2>
+                <div class="mb-6 border-t border-[#E3DCCB] pt-10">
+                    <p class="book-kicker">FAQ</p>
+                    <h2 class="book-h2">常見問題</h2>
                 </div>
-                <div class="space-y-3">
+                <div>
                     {faqs.map((faq) => (
-                        <details class="group bg-paper-200 border border-paper-300 rounded-xl overflow-hidden hover:border-brand-200 transition-colors">
-                            <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none select-none transition-colors hover:bg-paper-100">
-                                <span class="text-sm font-medium text-ink-700 pr-4">{faq.q}</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="text-brand-600 flex-shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
-                                    <path d="m6 9 6 6 6-6"/>
-                                </svg>
+                        <details class="book-faq group">
+                            <summary>
+                                <span>{faq.q}</span>
+                                <span class="transition-transform group-open:rotate-45">＋</span>
                             </summary>
-                            <p class="px-5 pb-4 text-sm text-ink-500 leading-relaxed border-t border-paper-300/60 pt-3">{faq.a}</p>
+                            <p>{faq.a}</p>
                         </details>
                     ))}
                 </div>
@@ -291,6 +278,9 @@ if (calculatorPanel) {
 </script>
 
 <style is:global>
+/* 工具頁底色跟首頁一樣走暖白，與書式內容銜接 */
+body.bg-paper-100 { background-color: #FDFCF8; }
+
 @media print {
     body.print-tool-report {
         background: #fff !important;
