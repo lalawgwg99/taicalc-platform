@@ -7,7 +7,7 @@
     <!-- ── 所得輸入 ── -->
     <div class="card-surface p-5 space-y-4">
       <h2 class="text-sm font-medium text-ink-600 flex items-center gap-2">
-        <span class="w-1 h-4 bg-azure rounded-full"></span>
+        <span class="w-1 h-4 bg-[#A58436] rounded-full"></span>
         全年所得
       </h2>
 
@@ -52,7 +52,7 @@
     <!-- ── 家庭狀況 ── -->
     <div class="card-surface p-5 space-y-4">
       <h2 class="text-sm font-medium text-ink-600 flex items-center gap-2">
-        <span class="w-1 h-4 bg-azure rounded-full"></span>
+        <span class="w-1 h-4 bg-[#A58436] rounded-full"></span>
         家庭與扶養
       </h2>
 
@@ -98,10 +98,9 @@
     <!-- ── 扣除額選擇 ── -->
     <div class="card-surface p-5 space-y-4">
       <h2 class="text-sm font-medium text-ink-600 flex items-center gap-2">
-        <span class="w-1 h-4 bg-azure rounded-full"></span>
+        <span class="w-1 h-4 bg-[#A58436] rounded-full"></span>
         扣除方式
-        <span v-if="recommendation" :class="['text-[10px] font-medium px-2 py-0.5 rounded-full ml-auto',
-          recommendation === 'itemized' ? 'bg-green-100 text-green-700' : 'bg-azure-100 text-azure-700']">
+        <span v-if="recommendation" class="text-[10px] font-medium px-0 py-0.5 ml-auto text-[#A58436]">
           建議選{{ recommendation === 'itemized' ? '列舉' : '標準' }}扣除
         </span>
       </h2>
@@ -115,11 +114,11 @@
 
       <!-- 比較提示 -->
       <div class="grid grid-cols-2 gap-2 text-center text-xs">
-        <div class="bg-paper-200/60 rounded-lg p-2">
+        <div class="py-2">
           <p class="text-ink-400 mb-0.5">標準扣除額</p>
           <p class="font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(standardDeduction) }}</p>
         </div>
-        <div class="bg-paper-200/60 rounded-lg p-2">
+        <div class="py-2">
           <p class="text-ink-400 mb-0.5">列舉扣除額</p>
           <p class="font-semibold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(itemizedTotal) }}</p>
           <p v-if="itemizedTotal <= standardDeduction" class="text-[10px] text-amber-500 mt-0.5">低於標準扣除</p>
@@ -127,7 +126,7 @@
       </div>
 
       <!-- 列舉扣除細項 -->
-      <div v-if="deductionType === 'itemized'" class="space-y-3 animate-fade-in-up border-t border-paper-300 pt-3">
+      <div v-if="deductionType === 'itemized'" class="space-y-3 animate-fade-in-up border-t border-[#E3DCCB] pt-3">
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label for="fld-fa8b67f7" class="block text-xs font-medium text-ink-400 mb-1.5">捐贈支出（NT$）</label>
@@ -152,7 +151,7 @@
         </div>
       </div>
 
-      <div class="border-t border-paper-300 pt-3">
+      <div class="border-t border-[#E3DCCB] pt-3">
         <label for="fld-776deddd" class="block text-xs font-medium text-ink-400 mb-1.5">自住房屋租金支出特別扣除額（NT$）</label>
         <input id="fld-776deddd" type="text" inputmode="decimal" v-model.number="rentDeduction" class="input-clean-sm tabular-nums" placeholder="0" />
         <p class="text-[10px] text-ink-400 mt-1">每戶上限 180,000；須扣租金補貼。</p>
@@ -185,59 +184,59 @@
 
       <!-- 計算流程 -->
       <div class="space-y-2 text-sm mb-5">
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">全年總收入</span>
           <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(grossIncome) }}</span>
         </div>
-        <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div v-if="dividendTaxMode === 'separate' && dividendIncome > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利（分開課稅）</span>
           <span class="tabular-nums font-medium text-ink-700 whitespace-nowrap">$${{ fmt(dividendIncome) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">薪資特別扣除額</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(salarySpecialDeduction) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">免稅額（{{ totalExemptions }} 人）</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(exemptionAmount) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">{{ deductionType === 'standard' ? '標準' : '列舉' }}扣除額</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(deductionType === 'standard' ? standardDeduction : itemizedTotal) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">長照特別扣除額</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(longTermCareDeduction) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">身障特別扣除額</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(disabilityDeduction) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">幼兒學前特扣</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(preschoolDeduction) }}</span>
         </div>
-        <div v-if="rentSpecialDeduction > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div v-if="rentSpecialDeduction > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">房屋租金特扣</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(rentSpecialDeduction) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">儲蓄投資特別扣除額</span>
           <span class="tabular-nums text-red-500 whitespace-nowrap">− $${{ fmt(savingsDeduction) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200 font-medium">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB] font-medium">
           <span class="text-ink-600">真正要課稅的所得</span>
           <span class="tabular-nums text-ink-700 whitespace-nowrap">$${{ fmt(Math.max(0, taxableIncome)) }}</span>
         </div>
-        <div class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">你的稅率</span>
-          <span class="font-bold text-azure">{{ taxBracketLabel }}</span>
+          <span class="font-bold text-[#A58436]">{{ taxBracketLabel }}</span>
         </div>
-        <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div v-if="dividendCredit > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利可抵掉的稅</span>
           <span class="tabular-nums text-green-600 whitespace-nowrap">− $${{ fmt(dividendCredit) }}</span>
         </div>
-        <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-paper-200">
+        <div v-if="dividendSeparateTax > 0" class="flex justify-between items-center py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">股利分開課的稅</span>
           <span class="tabular-nums text-ink-700 whitespace-nowrap">+ $${{ fmt(dividendSeparateTax) }}</span>
         </div>
@@ -248,11 +247,11 @@
       </div>
 
         <div class="grid grid-cols-2 gap-3 text-center text-xs">
-          <div class="bg-paper-800 text-paper-50 rounded-xl p-3">
-            <p class="text-paper-200 mb-0.5">實際拿到的年收入</p>
+          <div class="py-3 text-center">
+            <p class="text-ink-400 mb-0.5">實際拿到的年收入</p>
             <p class="text-base font-semibold tabular-nums whitespace-nowrap">${{ fmt(afterTaxIncome) }}</p>
           </div>
-          <div class="bg-paper-200/60 rounded-xl p-3">
+          <div class="py-3 text-center">
             <p class="text-ink-400 mb-0.5">平均每月實拿</p>
             <p class="text-base font-bold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(Math.round(afterTaxIncome / 12)) }}</p>
           </div>
@@ -260,15 +259,15 @@
 
       <!-- 有效稅率 -->
       <div class="grid grid-cols-3 gap-2 text-center text-xs">
-        <div class="bg-paper-200/60 rounded-xl p-3">
+        <div class="py-3 text-center">
           <p class="text-ink-400 mb-0.5">實際稅率</p>
           <p class="text-base font-bold text-ink-700">{{ effectiveRate }}%</p>
         </div>
-        <div class="bg-paper-200/60 rounded-xl p-3">
+        <div class="py-3 text-center">
           <p class="text-ink-400 mb-0.5">平均每月繳</p>
           <p class="text-base font-bold text-ink-700 tabular-nums whitespace-nowrap">${{ fmt(Math.round(totalTax / 12)) }}</p>
         </div>
-        <div class="bg-paper-200/60 rounded-xl p-3">
+        <div class="py-3 text-center">
           <p class="text-ink-400 mb-0.5">實拿比例</p>
           <p class="text-base font-bold text-ink-700">{{ afterTaxRate }}%</p>
         </div>
@@ -284,8 +283,7 @@
           <input id="fld-8f58d2cf" type="text" inputmode="decimal" v-model.number="withholdingTax" class="input-clean tabular-nums" placeholder="0" />
           <p class="text-[10px] text-ink-400 mt-1">薪資單或扣繳憑單上的總額</p>
         </div>
-        <div class="rounded-xl p-3 border border-paper-300 flex flex-col justify-center text-center"
-             :class="netTax >= 0 ? 'bg-red-50' : 'bg-green-50'">
+        <div class="py-3 border-t border-[#E3DCCB] flex flex-col justify-center text-center">
           <p class="text-xs mb-1" :class="netTax >= 0 ? 'text-red-500' : 'text-green-600'">
             {{ netTax >= 0 ? '預估補繳' : '預估退稅' }}
           </p>
@@ -301,17 +299,17 @@
       <h3 class="text-sm font-medium text-ink-600 mb-3">115 年度累進稅率級距（2027 年 5 月申報）</h3>
       <div class="space-y-1.5">
         <div v-for="bracket in TAX_BRACKETS" :key="bracket.rate"
-          :class="['flex items-center justify-between text-xs px-3 py-2 rounded-lg transition-colors',
-            isCurrentBracket(bracket) ? 'bg-azure-50 border border-azure-100' : 'bg-paper-200/40']">
+          :class="['flex items-center justify-between text-xs px-3 py-2 transition-colors',
+            isCurrentBracket(bracket) ? 'border-l-2 border-[#A58436]' : '']">
           <div class="flex items-center gap-2">
-            <span v-if="isCurrentBracket(bracket)" class="w-1.5 h-1.5 bg-azure rounded-full shrink-0"></span>
+            <span v-if="isCurrentBracket(bracket)" class="w-1.5 h-1.5 bg-[#A58436] rounded-full shrink-0"></span>
             <span v-else class="w-1.5 h-1.5 rounded-full bg-paper-300 shrink-0"></span>
-            <span :class="['whitespace-nowrap', isCurrentBracket(bracket) ? 'text-azure font-medium' : 'text-ink-400']">
+            <span :class="['whitespace-nowrap', isCurrentBracket(bracket) ? 'text-[#A58436] font-medium' : 'text-ink-400']">
               {{ fmt(bracket.min + 1) }} ~ {{ bracket.max === Infinity ? '以上' : fmt(bracket.max) }}
             </span>
           </div>
           <div class="flex items-center gap-2 whitespace-nowrap">
-            <span :class="['font-bold', isCurrentBracket(bracket) ? 'text-azure' : 'text-ink-500']">
+            <span :class="['font-bold', isCurrentBracket(bracket) ? 'text-[#A58436]' : 'text-ink-500']">
               {{ bracket.rate * 100 }}%
             </span>
             <span v-if="bracket.subtract > 0" class="text-ink-400 text-[10px] whitespace-nowrap">

@@ -16,7 +16,7 @@
         </div>
         <div class="md:col-span-2">
           <label class="flex items-center gap-2 text-sm text-ink-700">
-            <input type="checkbox" v-model="disabled" class="accent-emerald-700" />
+            <input type="checkbox" v-model="disabled" class="accent-[#1D4B34]" />
             領有身心障礙證明（最長可領 9 個月）
           </label>
         </div>
@@ -31,7 +31,7 @@
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
           <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">每月失業給付</p>
-          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight">
+          <p class="receipt-main-value">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(result.monthly) }}
           </p>
           <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">平均月投保薪資 ${{ fmt(num(averageSalary)) }} × {{ 60 + 10 * clampedDependents }}%</p>
@@ -40,11 +40,11 @@
         <div class="grid grid-cols-2 gap-4 text-center">
           <div>
             <p class="text-xs text-ink-400">最長可領月數</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">{{ result.maxMonths }} 個月</p>
+            <p class="text-lg font-bold text-ink-600">{{ result.maxMonths }} 個月</p>
           </div>
           <div>
             <p class="text-xs text-ink-400">領滿最長總額</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(result.maxTotal) }}</p>
+            <p class="text-lg font-bold text-ink-600">${{ fmt(result.maxTotal) }}</p>
           </div>
         </div>
 

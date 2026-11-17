@@ -17,9 +17,9 @@
                 <p class="mt-1 text-[10px] text-ink-400">月薪制通常以 240 小時換算；勞動契約另有約定時再調整。</p>
             </div>
         </div>
-        <div class="mt-4 p-3 bg-paper-100/50 rounded-xl flex justify-between items-center border border-ink-100/50">
+        <div class="mt-4 py-3 flex justify-between items-center border-t border-[#E3DCCB]">
             <span class="text-sm text-ink-400">換算平時時薪</span>
-            <span class="text-lg font-bold text-ink-600 font-mono">${{ baseHourlyRate.toLocaleString() }}</span>
+            <span class="text-lg font-bold text-ink-600">${{ baseHourlyRate.toLocaleString() }}</span>
         </div>
         <p class="mt-1 text-[10px] text-ink-400">時薪先四捨五入至整數元再計算加班費；公司若以未四捨五入的時薪計算，結果可能差數元。</p>
     </section>
@@ -27,19 +27,19 @@
     <!-- 加班類型選擇 -->
     <section class="calculator-card">
         <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
+            <span class="w-1 h-4 bg-[#A58436] rounded-full"></span>
             選擇加班類型
         </h2>
         <div class="grid grid-cols-3 gap-3 mb-4">
             <button v-for="t in overtimeTypes" :key="t.id" @click="selectedType = t.id"
-                :class="['py-3 px-2 rounded-xl text-sm font-medium transition-all text-center border whitespace-nowrap', 
-                            selectedType === t.id ? t.activeClass : 'bg-paper-50 border-ink-100 text-ink-400 hover:bg-paper-100']">
+                :class="['py-2 px-0 text-sm font-medium transition-all text-center border-b-2 whitespace-nowrap', 
+                            selectedType === t.id ? t.activeClass : 'text-ink-400 border-transparent hover:text-ink-600']">
                 
                 {{ t.label }}
             </button>
         </div>
 
-        <div class="p-4 rounded-xl text-sm border" :class="currentType.infoClass">
+        <div class="pl-4 py-1 text-sm" :class="currentType.infoClass">
             <p class="font-bold mb-1">{{ currentType.title }}</p>
             <p class="text-xs opacity-90 leading-relaxed">{{ currentType.desc }}</p>
         </div>
@@ -48,17 +48,17 @@
     <!-- 加班時數輸入 -->
     <section class="calculator-card">
         <h2 class="text-sm font-bold text-ink-600 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-amber-500 rounded-full"></span>
+            <span class="w-1 h-4 bg-[#A58436] rounded-full"></span>
             輸入加班時數
         </h2>
 
         <div v-if="selectedType === 'weekday'" class="grid grid-cols-2 gap-4">
             <div>
-                <label for="wd1" class="block text-xs text-ink-400 mb-2">前 2 小時 <span class="text-amber-600 font-bold">(4/3x)</span></label>
+                <label for="wd1" class="block text-xs text-ink-400 mb-2">前 2 小時 <span class="text-[#A58436] font-bold">(4/3x)</span></label>
                 <input id="wd1" type="text" inputmode="decimal" v-model.number="weekdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
             <div>
-                <label for="wd2" class="block text-xs text-ink-400 mb-2">第 3~4 小時 <span class="text-amber-600 font-bold">(5/3x)</span></label>
+                <label for="wd2" class="block text-xs text-ink-400 mb-2">第 3~4 小時 <span class="text-[#A58436] font-bold">(5/3x)</span></label>
                 <input id="wd2" type="text" inputmode="decimal" v-model.number="weekdayHours2" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-3 px-4 text-ink-800 text-xl font-bold focus:outline-none focus:border-amber-500">
             </div>
         </div>
@@ -66,15 +66,15 @@
         <div v-else-if="selectedType === 'restday'" class="space-y-4">
             <div class="grid grid-cols-3 gap-3">
                 <div>
-                    <label for="rd1" class="block text-xs text-ink-400 mb-2 min-h-8">前 2 小時 <span class="text-amber-600 font-bold">(4/3x)</span></label>
+                    <label for="rd1" class="block text-xs text-ink-400 mb-2 min-h-8">前 2 小時 <span class="text-[#A58436] font-bold">(4/3x)</span></label>
                     <input id="rd1" type="text" inputmode="decimal" v-model.number="restdayHours1" min="0" max="2" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd2" class="block text-xs text-ink-400 mb-2 min-h-8">3~8 小時 <span class="text-amber-600 font-bold">(5/3x)</span></label>
+                    <label for="rd2" class="block text-xs text-ink-400 mb-2 min-h-8">3~8 小時 <span class="text-[#A58436] font-bold">(5/3x)</span></label>
                     <input id="rd2" type="text" inputmode="decimal" v-model.number="restdayHours2" min="0" max="6" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="rd3" class="block text-xs text-ink-400 mb-2 min-h-8">9~12 小時 <span class="text-amber-600 font-bold">(8/3x)</span></label>
+                    <label for="rd3" class="block text-xs text-ink-400 mb-2 min-h-8">9~12 小時 <span class="text-[#A58436] font-bold">(8/3x)</span></label>
                     <input id="rd3" type="text" inputmode="decimal" v-model.number="restdayHours3" min="0" max="4" class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2 px-3 text-ink-800 font-bold focus:outline-none focus:border-amber-500">
                 </div>
             </div>
@@ -97,46 +97,44 @@
 
     <!-- 計算結果 -->
     <section class="calculator-card-warm">
-        <div class="absolute -right-6 -top-6 w-32 h-32 bg-amber-200 rounded-full blur-3xl opacity-40 mix-blend-multiply"></div>
-
         <div class="flex items-start justify-between mb-6 relative z-10">
             <div>
-                <p class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">本次預估加班費</p>
-                <p class="text-4xl sm:text-5xl font-extrabold text-amber-600 tracking-tight font-mono whitespace-nowrap">
+                <p class="text-xs font-bold text-ink-400 uppercase tracking-wider mb-1">本次預估加班費</p>
+                <p class="receipt-main-value whitespace-nowrap">
                     <span class="text-2xl opacity-60 relative -top-4 mr-1">$</span>{{ currentOvertimePay.toLocaleString() }}
                 </p>
             </div>
             <div class="text-right">
-                <p class="text-xs font-medium text-amber-700 mb-1">總計時數</p>
-                <p class="text-2xl font-bold text-amber-800 font-mono whitespace-nowrap">{{ currentHours }} <span class="text-sm font-medium opacity-70">hr</span></p>
+                <p class="text-xs font-medium text-ink-400 mb-1">總計時數</p>
+                <p class="text-2xl font-bold text-ink-800 whitespace-nowrap">{{ currentHours }} <span class="text-sm font-medium opacity-70">hr</span></p>
             </div>
         </div>
 
         <!-- 時薪比較圖 -->
         <div class="mb-5 relative z-10">
-            <p class="text-xs font-medium text-amber-800 mb-2">時薪比較（元／小時）</p>
+            <p class="text-xs font-medium text-ink-400 mb-2">時薪比較（元／小時）</p>
             <div class="space-y-3">
                 <!-- Base Rate -->
                 <div class="flex items-center gap-3">
-                    <span class="text-xs font-medium text-amber-800 w-12 text-right">一般</span>
-                    <div class="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner">
+                    <span class="text-xs font-medium text-ink-400 w-12 text-right">一般</span>
+                    <div class="flex-1 h-3 bg-[#E3DCCB] rounded-full overflow-hidden">
                         <div class="h-full bg-ink-300 rounded-full w-full"></div>
                     </div>
-                    <span class="text-xs font-bold text-ink-500 min-w-12 whitespace-nowrap font-mono text-right">${{ baseHourlyRate.toLocaleString() }}</span>
+                    <span class="text-xs font-bold text-ink-500 min-w-12 whitespace-nowrap text-right">${{ baseHourlyRate.toLocaleString() }}</span>
                 </div>
                 <!-- Overtime Rate -->
                 <div class="flex items-center gap-3">
-                    <span class="text-xs font-medium text-amber-700 w-12 text-right">加班</span>
-                    <div class="flex-1 h-3 bg-white/60 rounded-full overflow-hidden shadow-inner relative">
-                        <div class="h-full bg-amber-500 rounded-full absolute left-0 top-0 transition-all duration-500" :style="{width: (effectiveRate / baseHourlyRate * 50) + '%'}"></div>
+                    <span class="text-xs font-medium text-ink-400 w-12 text-right">加班</span>
+                    <div class="flex-1 h-3 bg-[#E3DCCB] rounded-full overflow-hidden relative">
+                        <div class="h-full bg-[#A58436] rounded-full absolute left-0 top-0 transition-all duration-500" :style="{width: (effectiveRate / baseHourlyRate * 50) + '%'}"></div>
                     </div>
-                    <span class="text-xs font-bold text-amber-700 min-w-12 whitespace-nowrap font-mono text-right">${{ effectiveRate }}</span>
+                    <span class="text-xs font-bold text-ink-700 min-w-12 whitespace-nowrap text-right">${{ effectiveRate }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="p-3 bg-white/80 border border-amber-200/50 rounded-xl text-sm text-amber-800 text-center font-medium shadow-sm backdrop-blur-sm relative z-10">
-            加班 CP 值倍率： <span class="font-extrabold text-lg text-amber-600 ml-1">{{ overtimeMultiple }}x</span>
+        <div class="py-3 border-t border-[#E3DCCB] text-sm text-ink-700 text-center font-medium relative z-10">
+            加班 CP 值倍率： <span class="font-extrabold text-lg text-[#A58436] ml-1">{{ overtimeMultiple }}x</span>
         </div>
     </section>
 
@@ -146,29 +144,29 @@
             <h2 class="text-sm font-bold text-ink-600 flex items-center gap-2">
                 本月累計清單
             </h2>
-            <button @click="addToWeekly" class="text-xs px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-colors shadow-sm shadow-amber-200">
+            <button @click="addToWeekly" class="text-xs px-0 py-2 text-[#1D4B34] font-bold hover:underline transition-colors">
                 + 加入本月紀錄
             </button>
         </div>
 
         <div v-if="weeklyRecords.length > 0" class="space-y-2 mb-6 max-h-48 overflow-y-auto">
-            <div v-for="(r, i) in weeklyRecords" :key="i" class="flex items-center justify-between py-2 px-3 bg-paper-50 rounded-lg border border-paper-100 group">
+            <div v-for="(r, i) in weeklyRecords" :key="i" class="flex items-center justify-between py-2 border-b border-[#E3DCCB] group">
                 <div class="flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full" :class="r.type === '平日' ? 'bg-brand-400' : r.type === '休息日' ? 'bg-amber-400' : 'bg-red-400'"></span>
                     <span class="text-sm text-ink-500 font-medium">{{ r.type }}</span>
-                    <span class="text-xs text-ink-400 bg-ink-100 px-1.5 py-0.5 rounded">{{ r.hours }}hr</span>
+                    <span class="text-xs text-ink-400">{{ r.hours }}hr</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="text-sm font-mono font-bold text-ink-600">+${{ r.pay.toLocaleString() }}</span>
-                    <button @click="removeRecord(i)" class="text-ink-200 hover:text-red-500 w-11 h-11 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors">✕</button>
+                    <span class="text-sm font-bold text-ink-600">+${{ r.pay.toLocaleString() }}</span>
+                    <button @click="removeRecord(i)" class="text-ink-400 hover:text-red-500 w-11 h-11 flex items-center justify-center transition-colors">✕</button>
                 </div>
             </div>
         </div>
-        <div v-else class="text-center py-8 text-ink-200 text-sm border-2 border-dashed border-paper-100 rounded-xl mb-4">
+        <div v-else class="text-center py-8 text-ink-400 text-sm border-t border-[#E3DCCB] mb-4">
             尚未加入任何記錄
         </div>
 
-        <div class="p-4 bg-paper-50 rounded-xl border border-ink-100">
+        <div class="py-4 border-t border-[#E3DCCB]">
             <div class="flex justify-between items-center mb-2">
                 <div>
                     <p class="text-xs text-ink-400 font-medium mb-1">已記錄加班時數</p>
@@ -181,15 +179,15 @@
                 </div>
                 <div class="text-right">
                     <p class="text-xs text-ink-400 font-medium mb-1">已記錄加班總額</p>
-                    <p class="text-2xl font-bold text-brand-600 font-mono tracking-tight whitespace-nowrap">+${{ weeklyTotalPay.toLocaleString()}}</p>
+                    <p class="text-2xl font-bold text-ink-800 tracking-tight whitespace-nowrap">+${{ weeklyTotalPay.toLocaleString()}}</p>
                 </div>
             </div>
 
-            <div class="relative h-2.5 bg-ink-100 rounded-full overflow-hidden">
+            <div class="relative h-2.5 bg-[#E3DCCB] rounded-full overflow-hidden">
                 <div class="absolute top-0 left-0 h-full rounded-full transition-all duration-500" :class="weeklyTotalHours > 46 ? 'bg-rose-500' : 'bg-brand-500'" :style="{width: Math.min(weeklyTotalHours / 46 * 100, 100) + '%'}"></div>
             </div>
 
-            <div v-if="weeklyTotalHours > 46" class="mt-3 flex items-start gap-2 p-2 bg-rose-50 border border-rose-100 rounded-lg text-xs leading-relaxed text-rose-700">
+            <div v-if="weeklyTotalHours > 46" class="mt-3 flex items-start gap-2 pl-3 py-1 border-l-2 border-[#B3261E] text-xs leading-relaxed text-[#B3261E]">
                 <span class="text-lg">⚠️</span>
                 <span>注意：勞基法原則上每月加班上限為 46 小時。此區是累積紀錄，若已超過，代表當月排班安排需要重新檢查。</span>
             </div>
@@ -243,15 +241,15 @@ const weeklyRecords = ref([]);
 const baseHourlyRate = computed(() => Math.round((monthlySalary.value || 0) / (monthlyHours.value || 240)));
 
 const overtimeTypes = [
-    { id: 'weekday', label: '平日', activeClass: 'bg-brand-50 border-brand-200 text-brand-700 ring-2 ring-brand-500/20' },
-    { id: 'restday', label: '休息日', activeClass: 'bg-amber-50 border-amber-200 text-amber-700 ring-2 ring-amber-500/20' },
-    { id: 'holiday', label: '國定假日', activeClass: 'bg-rose-50 border-rose-200 text-rose-700 ring-2 ring-rose-500/20' }
+    { id: 'weekday', label: '平日', activeClass: 'text-ink-800 border-[#A58436]' },
+    { id: 'restday', label: '休息日', activeClass: 'text-ink-800 border-[#A58436]' },
+    { id: 'holiday', label: '國定假日', activeClass: 'text-ink-800 border-[#A58436]' }
 ];
 
 const typeInfo = {
-    weekday: { title: '平日延長工時', desc: '正常上班日工作超過 8 小時後，或者是優於勞基法規定的工時後的加班。', infoClass: 'bg-brand-50 border-brand-100 text-brand-800' },
-    restday: { title: '休息日出勤', desc: '每週約定的「休息日」(通常是週六)，出勤費率較高，且納入每月加班上限。', infoClass: 'bg-amber-50 border-amber-100 text-amber-800' },
-    holiday: { title: '國定假日或特別休假出勤', desc: '月薪已含原工資；經同意出勤時，8 小時內另加發一日工資。例假日非因天災、事變或突發事件原則上不得出勤。', infoClass: 'bg-rose-50 border-rose-100 text-rose-800' }
+    weekday: { title: '平日延長工時', desc: '正常上班日工作超過 8 小時後，或者是優於勞基法規定的工時後的加班。', infoClass: 'border-l-2 border-[#A58436] text-ink-700' },
+    restday: { title: '休息日出勤', desc: '每週約定的「休息日」(通常是週六)，出勤費率較高，且納入每月加班上限。', infoClass: 'border-l-2 border-[#A58436] text-ink-700' },
+    holiday: { title: '國定假日或特別休假出勤', desc: '月薪已含原工資；經同意出勤時，8 小時內另加發一日工資。例假日非因天災、事變或突發事件原則上不得出勤。', infoClass: 'border-l-2 border-[#A58436] text-ink-700' }
 };
 
 const currentType = computed(() => typeInfo[selectedType.value]);

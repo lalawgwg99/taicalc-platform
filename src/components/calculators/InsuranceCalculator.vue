@@ -9,11 +9,11 @@
             v-for="role in roles"
             :key="role.id"
             @click="currentRole = role.id"
-            class="py-2.5 px-2 text-sm font-bold rounded-xl border transition-all whitespace-nowrap"
+            class="py-2 px-0 text-sm font-bold border-b-2 transition-all whitespace-nowrap"
             :class="
               currentRole === role.id
-                ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
-                : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
+                ? 'text-ink-800 border-[#A58436]'
+                : 'text-ink-400 border-transparent hover:text-ink-600'
             "
           >
             {{ role.label }}
@@ -46,11 +46,11 @@
             v-for="n in 5"
             :key="n - 1"
             @click="dependents = n - 1"
-            class="flex h-10 w-10 items-center justify-center rounded-xl border text-sm font-bold transition-all"
+            class="flex h-10 w-10 items-center justify-center border-b-2 text-sm font-bold transition-all"
             :class="
               dependents === n - 1
-                ? 'bg-gradient-to-r from-brand-500 to-azure-500 text-white border-brand-500 shadow-card'
-                : 'bg-white text-ink-400 border-ink-100 hover:bg-paper-50'
+                ? 'text-ink-800 border-[#A58436]'
+                : 'text-ink-400 border-transparent hover:text-ink-600'
             "
           >
             {{ n - 1 }}
@@ -60,12 +60,12 @@
       </div>
 
       <!-- Results -->
-      <div class="pt-6 border-t border-paper-100 grid gap-4">
+      <div class="pt-6 border-t border-[#E3DCCB] grid gap-4">
         <!-- Worker Cost -->
         <div class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-ink-600">你每個月要繳</h3>
-            <span class="text-2xl font-bold font-mono text-brand-600 whitespace-nowrap">{{ fmt(result.workerTotal) }}</span>
+            <span class="receipt-main-value whitespace-nowrap">{{ fmt(result.workerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
@@ -83,7 +83,7 @@
         <div v-if="currentRole === 'employee'" class="calculator-subcard">
           <div class="flex justify-between items-end mb-2">
             <h3 class="text-sm font-bold text-ink-600">老闆每個月要繳</h3>
-            <span class="text-2xl font-bold font-mono text-ink-500 whitespace-nowrap">{{ fmt(result.employerTotal) }}</span>
+            <span class="receipt-main-value whitespace-nowrap">{{ fmt(result.employerTotal) }}</span>
           </div>
           <div class="space-y-1 text-xs text-ink-400">
             <div class="flex justify-between">
@@ -200,6 +200,6 @@ const premiumChartLabel = computed(() => `每月保費分攤：${premiumChart.va
 </script>
 
 <style scoped>
-.premium-chart{border:1px solid #d8e1db;border-radius:1.15rem;background:linear-gradient(145deg,#102419,#173528);padding:1rem;color:#fff;box-shadow:0 18px 44px -34px rgba(9,35,26,.55)}
-.premium-chart-heading,.premium-chart-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}.premium-chart-heading{margin-bottom:1rem}.premium-chart-heading strong,.premium-chart-heading span{display:block}.premium-chart-heading strong{font-size:.82rem}.premium-chart-heading span{margin-top:.18rem;color:#91a69a;font-size:.65rem}.premium-chart-heading small{color:#72dfba;font-size:.62rem}.premium-chart-row+.premium-chart-row{margin-top:.85rem}.premium-chart-meta span{color:#b8c8be;font-size:.68rem}.premium-chart-meta strong{font-size:.78rem}.premium-chart-scale{height:.7rem;margin-top:.35rem;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.075)}.premium-chart-total{display:flex;height:100%;min-width:3px;overflow:hidden;border-radius:inherit;transition:width .25s ease}.premium-chart-total i{display:block;height:100%;min-width:1px;transition:width .25s ease}.premium-chart-total i+i{border-left:2px solid #102419}.premium-chart-legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.9rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.08)}.premium-chart-legend span{display:flex;align-items:center;gap:.3rem;color:#a5b5aa;font-size:.62rem}.premium-dot{width:.42rem;height:.42rem;border-radius:999px}.premium-dot-labor{background:#32c99c}.premium-dot-health{background:#72dfba}.premium-dot-pension{background:#e8b26f}
+.premium-chart{border:0;border-top:1px solid #E3DCCB;border-radius:0;background:transparent;padding:1rem 0 0;color:#1C1B1A;box-shadow:none}
+.premium-chart-heading,.premium-chart-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}.premium-chart-heading{margin-bottom:1rem}.premium-chart-heading strong,.premium-chart-heading span{display:block}.premium-chart-heading strong{font-size:.82rem;color:#161511}.premium-chart-heading span{margin-top:.18rem;color:#5C665D;font-size:.65rem}.premium-chart-heading small{color:#A58436;font-size:.62rem}.premium-chart-row+.premium-chart-row{margin-top:.85rem}.premium-chart-meta span{color:#5C665D;font-size:.68rem}.premium-chart-meta strong{font-size:.78rem;color:#1C1B1A}.premium-chart-scale{height:.7rem;margin-top:.35rem;overflow:hidden;border-radius:999px;background:#E3DCCB}.premium-chart-total{display:flex;height:100%;min-width:3px;overflow:hidden;border-radius:inherit;transition:width .25s ease}.premium-chart-total i{display:block;height:100%;min-width:1px;transition:width .25s ease}.premium-chart-total i+i{border-left:2px solid #FDFCF8}.premium-chart-legend{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:.9rem;padding-top:.75rem;border-top:1px solid #E3DCCB}.premium-chart-legend span{display:flex;align-items:center;gap:.3rem;color:#5C665D;font-size:.62rem}.premium-dot{width:.42rem;height:.42rem;border-radius:999px}.premium-dot-labor{background:#32c99c}.premium-dot-health{background:#72dfba}.premium-dot-pension{background:#e8b26f}
 </style>
