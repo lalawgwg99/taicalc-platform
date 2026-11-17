@@ -115,7 +115,7 @@ const notes = computed((): string[] => {
         </label>
       </div>
 
-      <ul class="mt-4 rounded-lg bg-[#EDF5EF] px-4 py-3 text-sm leading-6 text-[#25231F]">
+      <ul class="mt-4 border-l-2 border-[#A58436] pl-4 py-1 text-sm leading-6 text-[#25231F]">
         <li v-for="n in notes" :key="n" class="flex gap-1.5"><span aria-hidden="true">・</span><span>{{ n }}</span></li>
       </ul>
 

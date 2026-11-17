@@ -48,15 +48,15 @@
         </div>
       </div>
 
-      <div v-if="selfUse && totalMonths < 72" class="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p class="text-sm font-semibold text-amber-800">⚠️ 持有未滿 6 年，不符合自用住宅優惠條件，以下按一般稅率試算</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">距自用優惠還差 {{ result.selfUseShortfallMonths }} 個月。等持有設籍滿 6 年且 6 年內未出租營業，才能適用 400 萬以下免稅、超過部分 10% 的優惠。</p>
+      <div v-if="selfUse && totalMonths < 72" class="mt-5 border-l-2 border-[#A58436] pl-4 py-1">
+        <p class="text-sm font-semibold text-ink-700">⚠️ 持有未滿 6 年，不符合自用住宅優惠條件，以下按一般稅率試算</p>
+        <p class="mt-1 text-xs leading-5 text-ink-400">距自用優惠還差 {{ result.selfUseShortfallMonths }} 個月。等持有設籍滿 6 年且 6 年內未出租營業，才能適用 400 萬以下免稅、超過部分 10% 的優惠。</p>
       </div>
 
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="text-center mb-6">
           <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">預估應納稅額</p>
-          <p class="text-4xl sm:text-5xl font-bold text-ink-800 font-mono tracking-tight whitespace-nowrap">
+          <p class="receipt-main-value whitespace-nowrap">
             <span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(result.tax) }}
           </p>
           <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">課稅所得 ${{ fmt(result.taxableIncome) }}</p>
@@ -66,25 +66,25 @@
         <div class="grid grid-cols-2 gap-4 text-center">
           <div>
             <p class="text-xs text-ink-400">課稅所得</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">${{ fmt(result.taxableIncome) }}</p>
+            <p class="text-lg font-bold text-ink-600">${{ fmt(result.taxableIncome) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400">適用稅率</p>
-            <p class="text-lg font-bold text-ink-600 font-mono">{{ rateLabel }}</p>
+            <p class="text-lg font-bold text-ink-600">{{ rateLabel }}</p>
           </div>
         </div>
 
-        <div v-if="result.selfUseApplied" class="mt-5 rounded-xl bg-paper-50 p-4">
+        <div v-if="result.selfUseApplied" class="mt-5 border-l-2 border-[#A58436] pl-4 py-1">
           <div class="space-y-1 text-sm leading-6 text-ink-700">
             <p>已適用自用住宅優惠</p>
             <p>課稅所得 <span class="whitespace-nowrap">{{ fmt(result.taxableIncome) }} 元</span></p>
             <p>400 萬以下免稅，超過部分 <span class="whitespace-nowrap">{{ fmt(Math.max(0, result.taxableIncome - 4000000)) }} 元</span> × 10%</p>
           </div>
         </div>
-        <div v-else-if="result.nextBracketMonths !== null" class="mt-5 rounded-xl bg-paper-50 p-4">
-          <p class="text-sm leading-6 text-ink-700">再持有 <strong class="font-mono">{{ result.nextBracketMonths }}</strong> 個月，稅率可從 {{ (result.rate * 100).toFixed(0) }}% 降至 {{ (result.nextBracketRate * 100).toFixed(0) }}%（持有期間跨過臨界點時適用）。</p>
+        <div v-else-if="result.nextBracketMonths !== null" class="mt-5 border-l-2 border-[#A58436] pl-4 py-1">
+          <p class="text-sm leading-6 text-ink-700">再持有 <strong>{{ result.nextBracketMonths }}</strong> 個月，稅率可從 {{ (result.rate * 100).toFixed(0) }}% 降至 {{ (result.nextBracketRate * 100).toFixed(0) }}%（持有期間跨過臨界點時適用）。</p>
         </div>
-        <div v-else class="mt-5 rounded-xl bg-paper-50 p-4">
+        <div v-else class="mt-5 border-l-2 border-[#A58436] pl-4 py-1">
           <p class="text-sm leading-6 text-ink-700">持有已超過 10 年，適用個人最低稅率 15%，沒有更低的一級可降。</p>
         </div>
 

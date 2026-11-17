@@ -1005,4 +1005,75 @@ onMounted(() => {
 }
 @media screen and (min-width:1200px){.calc-grid{grid-template-columns:minmax(0,1.42fr) minmax(300px,.68fr)}.input-panel,.result-panel{padding:1.15rem}}
 @media screen and (max-width:640px){.debt-row,.scenario-row{grid-template-columns:1fr}.debt-row strong,.scenario-row strong{grid-column:1/-1}.input-clean{min-height:2.75rem}.result-metrics{grid-template-columns:1fr}}
+
+/* ── 書式覆寫：DecisionCalculator（home-cost／car／debt／estate／pension／parental／real-return／severance 共 8 支）── */
+.book-tool .input-panel,.book-tool .result-panel{background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;padding:0 !important}
+.book-tool .result-panel{color:#1C1B1A !important;position:relative;top:auto}
+.book-tool .result-panel:before{display:none !important}
+.book-tool .panel-title>span{background:#A58436 !important;color:#FDFCF8 !important;border-radius:0 !important}
+.book-tool .panel-title h2{color:#161511 !important;font-family:"Noto Serif TC","Songti TC","PMingLiU",serif !important}
+.book-tool .panel-title p{color:#5C665D !important}
+.book-tool .panel-title-secondary{border-color:#E3DCCB !important}
+.book-tool .preset-panel{background:transparent !important;border:0 !important;border-left:2px solid #A58436 !important;border-radius:0 !important;padding:.25rem 0 .25rem .9rem !important}
+.book-tool .preset-panel label{color:#A58436 !important}
+.book-tool .preset-source{color:#5C665D !important}
+.book-tool .preset-source a{color:#1D4B34 !important}
+.book-tool .field-grid label,.book-tool .debt-row label,.book-tool .scenario-row label{color:#5C665D !important}
+.book-tool .input-clean{min-height:auto !important;background:transparent !important;border:0 !important;border-bottom:1px solid rgba(28,27,26,.55) !important;border-radius:0 !important;box-shadow:none !important;padding-left:0 !important;padding-right:0 !important}
+.book-tool .input-clean:focus{border-bottom-color:#1C1B1A !important;box-shadow:none !important}
+.book-tool .check-field{background:transparent !important;border:0 !important;border-radius:0 !important;padding:.25rem 0 !important}
+.book-tool .check-field input{accent-color:#1D4B34 !important}
+.book-tool .resale-note{border-color:#E3DCCB !important}
+.book-tool .resale-note strong{color:#161511 !important}
+.book-tool .resale-note em{color:#8A948B !important}
+.book-tool .debt-rate-note{color:#5C665D !important}
+.book-tool .debt-rate-note::before{color:#A58436 !important}
+.book-tool .scenario-actions{border-color:#E3DCCB !important}
+.book-tool .scenario-actions button{border:0 !important;border-radius:0 !important;background:transparent !important;color:#1D4B34 !important;padding:.45rem 0 !important}
+.book-tool .scenario-actions button:hover{background:transparent !important;text-decoration:underline;text-underline-offset:3px}
+.book-tool .scenario-actions span{color:#8A948B !important}
+.book-tool .scope-note,.book-tool .result-callout{background:transparent !important;border:0 !important;border-left:2px solid #A58436 !important;border-radius:0 !important;color:#5C665D !important;padding:.25rem 0 .25rem .9rem !important}
+.book-tool .result-eyebrow{color:#A58436 !important}
+.book-tool .result-copy{border:0 !important;border-radius:0 !important;color:#1D4B34 !important;padding:.35rem 0 !important}
+.book-tool .result-copy:hover{background:transparent !important;text-decoration:underline;text-underline-offset:3px}
+.book-tool .result-label{color:#5C665D !important}
+.book-tool .result-total{color:#161511 !important;font-family:"Noto Serif TC","Songti TC","PMingLiU",serif !important}
+.book-tool .result-insight{background:transparent !important;border:0 !important;border-left:2px solid #A58436 !important;border-radius:0 !important;padding:.25rem 0 .25rem .9rem !important}
+.book-tool .result-insight span{color:#A58436 !important}
+.book-tool .result-insight p{color:#5C665D !important}
+.book-tool .metric{background:transparent !important;border:0 !important;border-radius:0 !important;padding:.25rem 0 !important}
+.book-tool .metric span{color:#8A948B !important}
+.book-tool .metric strong{color:#1C1B1A !important}
+.book-tool .metric-good strong{color:#1D4B34 !important}
+.book-tool .metric-bad strong{color:#B3261E !important}
+.book-tool .cost-breakdown{background:transparent !important;border:0 !important;border-top:1px solid #E3DCCB !important;border-radius:0 !important;padding:.85rem 0 0 !important}
+.book-tool .breakdown-heading span{color:#8A948B !important}
+.book-tool .breakdown-row span{color:#5C665D !important}
+.book-tool .breakdown-row strong{color:#1C1B1A !important}
+.book-tool .breakdown-track{background:#E3DCCB !important}
+.book-tool .breakdown-track i{background:#A58436 !important}
+.book-tool .result-panel .result-callout{background:transparent !important;border:0 !important;border-left:2px solid #A58436 !important;color:#5C665D !important}
+.book-tool .debt-row,.book-tool .scenario-row{border-color:#E3DCCB !important}
+.book-tool .debt-row strong,.book-tool .scenario-row strong{color:#1C1B1A !important}
+.book-tool .return-result{background:transparent !important;border:0 !important;border-radius:0 !important;padding:.8rem 0 !important}
+.book-tool .return-result small{color:#8A948B !important}
+.book-tool .scenario-toolbar{background:transparent !important;border:0 !important;border-bottom:1px solid #E3DCCB !important;border-radius:0 !important;box-shadow:none !important;padding:.8rem 0 !important}
+.book-tool .scenario-toolbar strong{color:#1C1B1A !important}
+.book-tool .scenario-toolbar span{color:#8A948B !important}
+.book-tool .scenario-toolbar button{border:0 !important;border-radius:0 !important;background:transparent !important;color:#1D4B34 !important;padding:.4rem 0 !important}
+.book-tool .scenario-toolbar button:hover{background:transparent !important;text-decoration:underline;text-underline-offset:3px}
+.book-tool .decision-chart{background:transparent !important;border:0 !important;border-top:1px solid #E3DCCB !important;border-radius:0 !important;padding:.9rem 0 0 !important}
+.book-tool .decision-chart-heading strong{color:#1C1B1A !important}
+.book-tool .decision-chart-heading span{color:#8A948B !important}
+.book-tool .chart-stack{background:#E3DCCB !important;box-shadow:none !important}
+.book-tool .chart-stack i+i{border-color:#FDFCF8 !important}
+.book-tool .chart-legend-item span{color:#5C665D !important}
+.book-tool .chart-legend-item strong{color:#1C1B1A !important}
+.book-tool .chart-column-value{color:#1C1B1A !important}
+.book-tool .chart-column-track{background:#EDE8DB !important;box-shadow:none !important}
+.book-tool .chart-column-label{color:#8A948B !important}
+.book-tool .result-transfer{background:transparent !important;border:0 !important;border-top:1px solid #E3DCCB !important;border-radius:0 !important;color:#1D4B34 !important;padding:.75rem 0 !important}
+.book-tool .result-transfer:hover{background:transparent !important}
+@media(min-width:900px){.book-tool .result-panel{border-left:1px solid #E3DCCB !important;padding-left:1.25rem !important}}
+@media(max-width:899px){.book-tool .result-panel{border-top:1px solid #E3DCCB !important;padding-top:1.25rem !important}}
 </style>

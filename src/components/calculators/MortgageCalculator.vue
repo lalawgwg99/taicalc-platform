@@ -142,24 +142,24 @@
                 />
             </div>
 
-            <figure class="mt-4 rounded-xl border border-paper-300 bg-paper-800 p-4 text-white" role="img" :aria-label="mortgageBreakdownLabel">
+            <figure class="mt-4 border-t border-[#E3DCCB] pt-4" role="img" :aria-label="mortgageBreakdownLabel">
                 <figcaption class="mb-3 flex items-end justify-between gap-3">
-                    <span><strong class="block text-xs">總額裡面多少是本金、多少是利息</strong><small class="mt-0.5 block text-[10px] text-paper-300">一眼看出利息吃掉多少</small></span>
-                    <small class="text-[10px] text-brand-300">整個貸款期間</small>
+                    <span><strong class="block text-xs">總額裡面多少是本金、多少是利息</strong><small class="mt-0.5 block text-[10px] text-ink-400">一眼看出利息吃掉多少</small></span>
+                    <small class="text-[10px] text-ink-400">整個貸款期間</small>
                 </figcaption>
-                <div class="flex h-3 overflow-hidden rounded-full bg-white/10" aria-hidden="true">
+                <div class="flex h-3 overflow-hidden rounded-full bg-[#E3DCCB]" aria-hidden="true">
                     <i class="block h-full bg-brand-400 transition-all" :style="{ width: `${mortgagePrincipalShare}%` }"></i>
-                    <i class="block h-full border-l-2 border-ink-700 bg-amber-400 transition-all" :style="{ width: `${mortgageInterestShare}%` }"></i>
+                    <i class="block h-full border-l-2 border-[#FDFCF8] bg-amber-400 transition-all" :style="{ width: `${mortgageInterestShare}%` }"></i>
                 </div>
                 <div class="mt-3 grid grid-cols-2 gap-3 text-[10px]">
-                    <div class="flex items-center justify-between gap-2 text-paper-300"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-brand-400"></i>本金</span><strong class="text-white">$ {{ fmt(mortgagePrincipal) }}</strong></div>
-                    <div class="flex items-center justify-between gap-2 text-paper-300"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-amber-400"></i>利息</span><strong class="text-white">$ {{ fmt(results.totalInterest) }}</strong></div>
+                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-brand-400"></i>本金</span><strong class="text-ink-700">$ {{ fmt(mortgagePrincipal) }}</strong></div>
+                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-amber-400"></i>利息</span><strong class="text-ink-700">$ {{ fmt(results.totalInterest) }}</strong></div>
                 </div>
             </figure>
 
             <!-- 提前還款效益 -->
             <div v-if="prepaymentMode && (extraMonthly > 0 || extraLump > 0)"
-                class="mt-4 bg-amber-50 rounded-xl p-4 border border-amber-100 animate-fade-in-up">
+                class="mt-4 border-l-2 border-[#A58436] pl-3 py-1 animate-fade-in-up">
                 <p class="text-xs font-medium text-amber-700 mb-3">提前還款效益</p>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -178,19 +178,19 @@
         </div>
 
         <!-- 競品優勢：方案對照與年度明細展延卡 -->
-        <div class="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+        <div class="border-t border-[#E3DCCB] pt-4 space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="text-xs font-semibold text-ink-400 uppercase tracking-wider">方案與試算明細</h3>
             <button 
               @click="showSchedule = !showSchedule" 
-              class="text-xs text-brand-600 font-semibold hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"
+              class="text-xs text-[#1D4B34] font-semibold hover:underline underline-offset-4 px-0 py-1 transition-colors"
             >
               {{ showSchedule ? '收起 ▲' : '年度明細 ▼' }}
             </button>
           </div>
 
           <!-- 480期/年度還款明細表 -->
-          <div v-if="showSchedule" class="mt-3 border-t border-ink-100/60 pt-3 max-h-72 overflow-y-auto overflow-x-auto font-mono text-xs">
+          <div v-if="showSchedule" class="mt-3 border-t border-[#E3DCCB] pt-3 max-h-72 overflow-y-auto overflow-x-auto font-mono text-xs">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="border-b border-ink-100 text-ink-400 font-sans">
@@ -215,7 +215,7 @@
         <a
             :href="homeCostTransferUrl"
             data-next-tool
-            class="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100"
+            class="flex items-center justify-between gap-3 px-0 py-3 text-sm font-semibold text-brand-700 transition-all hover:underline underline-offset-4"
         >
             <span><small class="block text-[10px] font-medium text-brand-600/70">下一步</small>把房貸帶入買房持有成本</span>
             <span aria-hidden="true">→</span>
@@ -229,14 +229,14 @@
         <!-- 分享列 -->
         <div class="flex gap-2">
             <button @click="copyShareLink"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm text-ink-600 hover:text-brand-600 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
                 </svg>
                 {{ shareCopied ? '已複製連結 ✓' : '複製分享連結' }}
             </button>
             <button @click="downloadCard"
-                class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
+                class="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm text-ink-600 hover:text-brand-600 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
                 </svg>

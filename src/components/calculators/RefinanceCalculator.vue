@@ -78,44 +78,44 @@
                   </div>
       </div>
 
-      <div v-if="yearsInvalid" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p class="text-sm font-semibold text-amber-800">⚠️ 年期未填或為 0，無法試算</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">剩餘年期與新貸款年期都要填大於 0 的數字；清空欄位重打字時會短暫出現這個提示，填好就恢復正常。</p>
+      <div v-if="yearsInvalid" class="mt-6 border-l-2 border-[#A58436] pl-4 py-1">
+        <p class="text-sm font-semibold text-ink-700">⚠️ 年期未填或為 0，無法試算</p>
+        <p class="mt-1 text-xs leading-5 text-ink-400">剩餘年期與新貸款年期都要填大於 0 的數字；清空欄位重打字時會短暫出現這個提示，填好就恢復正常。</p>
       </div>
 
-      <div v-if="!yearsInvalid && monthlySaving <= 0" class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p class="text-sm font-semibold text-amber-800">⚠️ 新條件的月付沒有比較低</p>
-        <p class="mt-1 text-xs leading-5 text-amber-700">月付差額為 {{ fmt(monthlySaving) }} 元。可能是新利率不夠低，或新年期比剩餘年期短。月付沒降就不會有回本點，先確認利率與年期有沒有填錯；但全期淨效益仍可能為正，請看下方全期欄。</p>
+      <div v-if="!yearsInvalid && monthlySaving <= 0" class="mt-6 border-l-2 border-[#A58436] pl-4 py-1">
+        <p class="text-sm font-semibold text-ink-700">⚠️ 新條件的月付沒有比較低</p>
+        <p class="mt-1 text-xs leading-5 text-ink-400">月付差額為 {{ fmt(monthlySaving) }} 元。可能是新利率不夠低，或新年期比剩餘年期短。月付沒降就不會有回本點，先確認利率與年期有沒有填錯；但全期淨效益仍可能為正，請看下方全期欄。</p>
       </div>
 
       <div class="calculator-subcard md:p-6 mt-6">
         <div class="grid gap-6 md:grid-cols-2 text-center">
           <div>
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">每月少付</p>
-            <p class="text-4xl font-bold text-ink-800 font-mono tracking-tight"><span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(monthlySaving) }}</p>
+            <p class="receipt-main-value"><span class="text-2xl text-ink-400 align-top mr-1">$</span>{{ fmt(monthlySaving) }}</p>
             <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">目前月付 ${{ fmt(oldPayment) }} → 轉貸月付 ${{ fmt(newPayment) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 font-bold uppercase tracking-wider mb-2">回本時間</p>
-            <p class="text-4xl font-bold text-brand-700 font-mono tracking-tight">{{ breakevenText }}</p>
+            <p class="receipt-main-value">{{ breakevenText }}</p>
             <p class="mt-2 text-xs text-ink-400 whitespace-nowrap">一次性成本 ${{ fmt(totalCost) }} ÷ 每月少付 ${{ fmt(monthlySaving) }}</p>
           </div>
         </div>
-        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 text-center pt-6 mt-6 border-t border-ink-100">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-3 text-center pt-6 mt-6 border-t border-[#E3DCCB]">
           <div>
             <p class="text-xs text-ink-400 mb-1">不轉貸：剩餘總利息</p>
-            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(oldTotalInterest) }}</p>
+            <p class="text-lg font-bold text-ink-600 whitespace-nowrap">${{ fmt(oldTotalInterest) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">轉貸後：總利息</p>
-            <p class="text-lg font-bold text-ink-600 font-mono whitespace-nowrap">${{ fmt(newTotalInterest) }}</p>
+            <p class="text-lg font-bold text-ink-600 whitespace-nowrap">${{ fmt(newTotalInterest) }}</p>
           </div>
           <div>
             <p class="text-xs text-ink-400 mb-1">全期淨效益（利息差 − 成本）</p>
-            <p class="text-lg font-bold font-mono whitespace-nowrap" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</p>
+            <p class="text-lg font-bold whitespace-nowrap" :class="netBenefit >= 0 ? 'text-brand-700' : 'text-red-600'">${{ fmt(netBenefit) }}</p>
           </div>
         </div>
-        <div class="mt-5 rounded-xl bg-paper-100 border border-paper-300 p-4 text-left">
+        <div class="mt-5 border-l-2 border-[#A58436] pl-4 py-1 text-left">
           <p class="text-xs leading-6 text-ink-600">
             <strong>同年期對照：</strong>新月付 ${{ fmt(newPaymentSameTerm) }}，月省 ${{ fmt(sameTermSaving) }}，回本 {{ sameTermBreakevenText }}。
           </p>

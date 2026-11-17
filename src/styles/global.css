@@ -2599,6 +2599,7 @@ a.v2-card:hover {
 }
 .book-tool .receipt-divider { border-top: 1px solid #E3DCCB !important; margin: 1rem 0 !important; }
 .book-tool .stat-value-lg,
+.book-tool .stat-value-md,
 .book-tool .receipt-main-value,
 .book-tool .money-value {
     font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif !important;
@@ -2703,4 +2704,31 @@ a.v2-card:hover {
 .book-tool .calculator-shell input[type="range"][class~="bg-white"] {
     background-color: #C9C2B0 !important;
     border-radius: 9999px !important;
+}
+
+/* 結果條：bg-brand-50 是 @apply 編進 .summary-strip 的，token class 規則抓不到，須直接覆寫 */
+.book-tool .summary-strip {
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid #E3DCCB !important;
+    border-radius: 0 !important;
+    padding: 0.9rem 0 0 !important;
+}
+/* 對照表選中列：去薄荷底色，留粗體標示 */
+.book-tool .calc-table tr.row-total {
+    background: transparent !important;
+}
+/* 卡片式對照（海外刷卡等）：去盒改細線分隔，最優一張用金色頂線標示 */
+.book-tool .calc-card {
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid #E3DCCB !important;
+    border-radius: 0 !important;
+    padding: 0.9rem 0 !important;
+}
+.book-tool .calc-card--best {
+    border-top: 2px solid #A58436 !important;
+}
+.book-tool .calc-card-badge {
+    color: #A58436 !important;
 }

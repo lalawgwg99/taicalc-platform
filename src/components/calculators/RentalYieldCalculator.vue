@@ -7,7 +7,7 @@
         v-for="p in presets"
         :key="p.title"
         @click="applyPreset(p)"
-        class="text-xs font-medium bg-white hover:bg-paper-100 text-ink-600 border border-ink-100/80 px-3 py-1.5 rounded-full transition-all flex-shrink-0 active:scale-95 shadow-sm"
+        class="text-xs font-medium text-[#1D4B34] px-0 py-1.5 transition-all flex-shrink-0 hover:underline"
       >
         {{ p.title }}
       </button>
@@ -99,51 +99,51 @@
     <div class="calculator-card-accent">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-sm font-semibold text-ink-800 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-brand-500"></span> 報酬率試算結果
+          <span class="w-2 h-2 rounded-full bg-[#A58436]"></span> 報酬率試算結果
         </h2>
       </div>
 
       <div class="grid grid-cols-2 gap-3 mb-4">
-        <div class="p-4 bg-white rounded-xl border border-ink-100/80 text-center">
+        <div class="py-2 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">毛報酬率</div>
-          <div class="text-2xl font-bold font-mono text-ink-900 whitespace-nowrap">{{ grossYield }}%</div>
+          <div class="receipt-main-value whitespace-nowrap">{{ grossYield }}%</div>
           <div class="text-[11px] text-ink-400 mt-1">年租金 ÷ 房屋總價</div>
         </div>
-        <div class="p-4 bg-white rounded-xl border border-brand-500/30 text-center">
+        <div class="py-2 text-center border-l border-[#E3DCCB]">
           <div class="text-[11px] text-ink-400 font-medium mb-1">淨報酬率</div>
-          <div class="text-2xl font-bold font-mono text-brand-600 whitespace-nowrap">{{ netYield }}%</div>
+          <div class="receipt-main-value whitespace-nowrap">{{ netYield }}%</div>
           <div class="text-[11px] text-ink-400 mt-1">扣成本後 ÷ 房屋總價</div>
         </div>
       </div>
 
       <div class="space-y-2 text-sm">
-        <div class="flex justify-between py-2 border-b border-ink-100/60">
+        <div class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">年租金收入（扣空租後）</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualRent }}</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">${{ annualRent }}</span>
         </div>
-        <div class="flex justify-between py-2 border-b border-ink-100/60">
+        <div class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">年持有成本合計</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualCostFmt }}</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">${{ annualCostFmt }}</span>
         </div>
-        <div class="flex justify-between py-2 border-b border-ink-100/60">
+        <div class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">年淨收益</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ annualNetFmt }}</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">${{ annualNetFmt }}</span>
         </div>
-        <div class="flex justify-between py-2 border-b border-ink-100/60">
+        <div class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">約幾年回本</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">{{ paybackYears }} 年</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">{{ paybackYears }} 年</span>
         </div>
-        <div v-if="hasLoan" class="flex justify-between py-2 border-b border-ink-100/60">
+        <div v-if="hasLoan" class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">每月房貸月付金</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">${{ monthlyPayment }}</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">${{ monthlyPayment }}</span>
         </div>
-        <div v-if="hasLoan" class="flex justify-between py-2 border-b border-ink-100/60">
+        <div v-if="hasLoan" class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">自備款報酬率（槓桿後）</span>
-          <span class="font-mono font-semibold whitespace-nowrap text-ink-900">{{ equityYield }}%</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">{{ equityYield }}%</span>
         </div>
         <div v-if="hasLoan" class="flex justify-between py-2">
           <span class="text-ink-400">每月淨現金流<small class="block text-[10px]">租金 − 月付 − 月均成本</small></span>
-          <span class="font-mono font-semibold whitespace-nowrap" :class="monthlyCashflowRaw >= 0 ? 'text-ink-900' : 'text-red-500'">${{ monthlyCashflow }}</span>
+          <span class="font-semibold whitespace-nowrap" :class="monthlyCashflowRaw >= 0 ? 'text-ink-900' : 'text-[#B3261E]'">${{ monthlyCashflow }}</span>
         </div>
       </div>
 

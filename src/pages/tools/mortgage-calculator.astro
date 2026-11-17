@@ -141,13 +141,13 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
     </div>
     
     <style>
-        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.06); overflow-x: auto; scrollbar-width: none; }
+        .tool-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #E3DCCB; overflow-x: auto; scrollbar-width: none; }
         .tool-tabs [data-tabbtn] { white-space: nowrap; flex-shrink: 0;
             padding: 0.6rem 1.1rem; font-size: 0.875rem; font-weight: 600;
             color: #78716c; background: transparent; border: none; cursor: pointer;
             border-bottom: 2px solid transparent; margin-bottom: -2px;
         }
-        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #166534; border-bottom-color: #16a34a; }
+        .tool-tabs [data-tabbtn][aria-selected="true"] { color: #1C1B1A; border-bottom-color: #A58436; }
         .tool-tabs [data-tabbtn]:hover { color: #44403c; }
     </style>
     <IntentPanel
@@ -337,15 +337,15 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
         <h2>下一步：把試算結果拿去比價</h2>
         <p>算出月付與總利息後，下一步通常是拿這個數字去問銀行。以下為合作推廣連結（目前合作洽談中、尚未開放）：房貸試算本身完全免費，點不點都不影響試算結果與數字。</p>
         <div class="grid gap-3 sm:grid-cols-2" data-affiliate-section="mortgage_result_next">
-            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="mortgage-bank-offers" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
+            <button type="button" class="text-left border-t border-[#E3DCCB] pt-4 transition-all" data-affiliate-slot data-partner-id="mortgage-bank-offers" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
                 <span class="block text-sm font-semibold text-ink-700">銀行房貸方案比較</span>
                 <span class="mt-1 block text-xs leading-relaxed text-ink-500">各銀行房貸利率與開辦費一次比對，再決定要找哪家談。</span>
-                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+                <span class="mt-3 inline-flex px-0 py-0.5 text-[10px] font-semibold tracking-wider text-[#A58436]" data-affiliate-badge>合作洽談中</span>
             </button>
-            <button type="button" class="text-left rounded-2xl border border-paper-300 bg-paper-200 p-4 transition-all hover:border-brand-400/60 hover:-translate-y-0.5" data-affiliate-slot data-partner-id="mortgage-refinance" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
+            <button type="button" class="text-left border-t border-[#E3DCCB] pt-4 transition-all" data-affiliate-slot data-partner-id="mortgage-refinance" data-partner-placement="mortgage_result_next" data-offer-type="mortgage" data-partner-status="pending">
                 <span class="block text-sm font-semibold text-ink-700">轉貸／增貸評估</span>
                 <span class="mt-1 block text-xs leading-relaxed text-ink-500">舊房貸轉貸划不划算？先算轉貸後的月付與總利息差。</span>
-                <span class="mt-3 inline-flex rounded-full border border-paper-300 bg-paper-100 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-ink-500" data-affiliate-badge>合作洽談中</span>
+                <span class="mt-3 inline-flex px-0 py-0.5 text-[10px] font-semibold tracking-wider text-[#A58436]" data-affiliate-badge>合作洽談中</span>
             </button>
         </div>
         <p class="text-xs text-ink-400 mt-2">推廣連結說明：本站不收取試算費用；未來合作連結上線時，點擊後前往銀行或合作平台頁面，本站可能獲得推廣分潤，分潤不影響您的貸款條件，實際利率與核貸結果以銀行通知為準。</p>
