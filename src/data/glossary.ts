@@ -102,7 +102,7 @@ export const glossary: GlossaryEntry[] = [
     tools: ['/tools/labor-pension-calculator'], seeAlso: ['labor-pension-new-system'] },
   { slug: 'fire', term: 'FIRE', category: '勞保與退休',
     def: 'Financial Independence, Retire Early 的縮寫，主張透過高儲蓄率累積資產，使被動收入足以覆蓋生活費，提早達成財務自由與退休。',
-    tools: ['/tools/fire-calculator', '/tools/life-simulator'], seeAlso: ['four-percent-rule', 'real-return-rate'] },
+    tools: ['/tools/fire-calculator'], seeAlso: ['four-percent-rule', 'real-return-rate'] },
   { slug: 'four-percent-rule', term: '4% 法則', category: '勞保與退休',
     def: '退休後每年可安全提領資產約 4% 的經驗法則，用以估算退休所需本金：年支出 ÷ 4% ＝ 退休目標金額。',
     tools: ['/tools/fire-calculator'], seeAlso: ['fire', 'real-return-rate'] },

@@ -14,7 +14,6 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/delivery-income-calculator': '2026-11-15',
   '/tools/electricity-calculator': '2026-11-17',
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
-  '/tools/life-simulator': '2026-11-15',
   '/tools/mortgage-calculator': '2026-11-17',
   '/tools/salary-calculator': '2026-11-16',
   '/tools/split-calculator': '2026-11-08',

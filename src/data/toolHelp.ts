@@ -1,5 +1,4 @@
 export const toolHelp: Record<string, [string, string, string]> = {
-  '/tools/life-simulator': ['先填現在年齡、每月收入與基本支出', '現金和投資不知道精確值，可填目前大約餘額', '選擇是探索不同人生，不是預測命運'],
   '/tools/salary-calculator': ['方案 A 填目前工作，方案 B 填新工作', '年終填月數，例如 2 個月就填 2', '不確定自提比例，可先維持 0%'],
   '/tools/income-tax-calculator': ['先填全年薪資，不是每月薪資', '沒有股利、利息或租金就填 0', '列舉扣除不確定，可先用標準扣除額'],
   '/tools/mortgage-calculator': ['貸款總額以「萬元」輸入', '先填年限與銀行提供的利率', '不懂寬限期或提前還款可先保持 0'],

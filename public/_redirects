@@ -10,3 +10,7 @@
 /compare/pension-contribution-0-vs-6 /tools/labor-pension-calculator?tab=selfpay 301
 /compare/etf-0050-vs-0056-vs-006208 /tools/etf-dividend-calculator?tab=etfvs 301
 /compare/asset-real-return /tools/real-return-calculator?tab=assetvs 301
+
+# 人生模擬器下架（2026-11-18）：工具頁＋指南文皆移除，舊連結回首頁
+/tools/life-simulator / 301
+/blog/2026-taiwan-life-simulator-guide / 301

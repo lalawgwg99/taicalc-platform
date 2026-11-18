@@ -57,11 +57,6 @@
                 class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-paper-300 bg-white text-sm text-ink-600 hover:border-brand-200 hover:text-brand-600 transition-all">
                 {{ shareCopied ? '已複製連結 ✓' : '複製比較結果連結' }}
             </button>
-            <a href="/tools/life-simulator"
-                class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-brand-50 px-4 py-2.5 text-sm font-semibold text-brand-700 transition-all hover:border-brand-400 hover:bg-brand-100">
-                用人生模擬器規劃
-                <span aria-hidden="true">→</span>
-            </a>
         </div>
     </div>
 </template>
