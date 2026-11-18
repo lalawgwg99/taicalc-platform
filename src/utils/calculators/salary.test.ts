@@ -104,9 +104,9 @@ describe('calculateSalaryBreakdown', () => {
     const r30s = calculateSalaryBreakdown({ salary: 30000, bonusMonths: 0, pensionRate: 6 });
     expect([r30s.penS, r30s.mNet]).toEqual([1818, 26954]);
     const r40 = calculateSalaryBreakdown({ salary: 40000, bonusMonths: 0, pensionRate: 0 });
-    expect([r40.laborGrade, r40.healthGrade, r40.labor, r40.health, r40.mNet]).toEqual([40100, 40100, 1003, 622, 38375]);
+    expect([r40.laborGrade, r40.healthGrade, r40.labor, r40.health, r40.mNet]).toEqual([40100, 40100, 1002, 622, 38376]);
     const r40s = calculateSalaryBreakdown({ salary: 40000, bonusMonths: 0, pensionRate: 6 });
-    expect([r40s.penS, r40s.mNet]).toEqual([2406, 35969]);
+    expect([r40s.penS, r40s.mNet]).toEqual([2406, 35970]);
   });
 });
 
@@ -120,11 +120,14 @@ describe('estimateAnnualSalaryIncome', () => {
   });
 });
 
-// 2027 年三級距實拿對照表（薪資頁 2027/1/1 生效預估表，2026-11-14 第 15 輪）：
-// 勞保費率預估 13%（勞工負擔 20%）、健保 5.17%（勞工負擔 30%）。2027 年級距表
-// 依最低工資調整推估：第 1 級 30,900 元（30,300 級隨最低工資超過而刪除，其餘不變），
-// 正式數字以勞保局、健保署公告為準。關鍵邊界：月薪剛好等於級距值取該級（30,900→30,900，
-// 不是 31,800）——2027 最低工資指南文曾誤寫 31,800／勞保 827／實拿 29,580，經勞保局
+// 2027 年三級距實拿對照表（薪資頁 2027/1/1 生效，2026-11-14 第 15 輪）：
+// 勞保費率 13%（勞工負擔 20%）、健保 5.17%（勞工負擔 30%）。2027 年級距表
+// 已於 2026-11-17 由勞動部公告（勞動保 2 字第 1150092891 號）：第 1 級 30,900 元、
+// 30,300 級刪除、剩 10 級。勞保費依勞保局 116 年版分擔表：勞保 12% 與就保 1%
+// 分開四捨五入再相加（30,900 級：742＋62＝804，不是合計 13% 一次算的 803）。
+// 健保 2027 年分級表尚未公告，以下健保一欄暫以第 1 級 30,900 元推算。
+// 關鍵邊界：月薪剛好等於級距值取該級（30,900→30,900，不是 31,800）——
+// 2027 最低工資指南文曾誤寫 31,800／勞保 827／實拿 29,580，經勞保局
 // 「勞工保險投保薪資分級表」（第 1 級「29,500 元以下」→29,500 元）核實為誤，本測試釘住正確值。
 describe('2027 年實拿對照表（預估）', () => {
   const LABOR_GRADES_2027 = [30900, 31800, 33300, 34800, 36300, 38200, 40100, 42000, 43900, 45800];
@@ -136,7 +139,10 @@ describe('2027 年實拿對照表（預估）', () => {
   const calc2027 = (salary: number, pensionRate: number) => {
     const laborGrade = getInsuredSalary(salary, LABOR_GRADES_2027, 45800);
     const healthGrade = getInsuredSalary(salary, HEALTH_GRADES_2027, 313000);
-    const labor = new Decimal(laborGrade).mul(0.13).mul(0.2).round().toNumber();
+    // 勞保 12% 與就保 1% 分開四捨五入再相加（勞保局分擔表算法）
+    const laborOrdinary = new Decimal(laborGrade).mul(0.12).mul(0.2).round();
+    const laborEmployment = new Decimal(laborGrade).mul(0.01).mul(0.2).round();
+    const labor = laborOrdinary.plus(laborEmployment).toNumber();
     const health = new Decimal(healthGrade).mul(0.0517).mul(0.3).round().toNumber();
     const penS = new Decimal(Math.min(healthGrade, 150000)).mul(pensionRate).div(100).round().toNumber();
     return { laborGrade, healthGrade, labor, health, penS, mNet: salary - labor - health - penS };
@@ -147,10 +153,10 @@ describe('2027 年實拿對照表（預估）', () => {
     expect(getInsuredSalary(30900, HEALTH_GRADES_2027, 313000)).toBe(30900);
   });
 
-  it('月薪 30,900：勞保 803、健保 479、實拿 29,618、自提 6% 後 27,764', () => {
+  it('月薪 30,900：勞保 804（742＋62）、健保 479、實拿 29,617、自提 6% 後 27,763', () => {
     const r = calc2027(30900, 0);
-    expect([r.laborGrade, r.healthGrade, r.labor, r.health, r.mNet]).toEqual([30900, 30900, 803, 479, 29618]);
-    expect(calc2027(30900, 6).mNet).toBe(27764);
+    expect([r.laborGrade, r.healthGrade, r.labor, r.health, r.mNet]).toEqual([30900, 30900, 804, 479, 29617]);
+    expect(calc2027(30900, 6).mNet).toBe(27763);
     expect(calc2027(30900, 6).penS).toBe(1854);
   });
 

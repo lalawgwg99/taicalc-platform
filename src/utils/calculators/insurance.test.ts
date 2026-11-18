@@ -19,16 +19,16 @@ describe('calculateInsurancePremiums', () => {
     expect(r.employerTotal).toBe(7111);
   });
 
-  it('月薪 29500（基本工資）：勞工 738＋458＝1196，雇主 2581＋1428＋1770＝5779', () => {
+  it('月薪 29500（基本工資）：勞工 738＋458＝1196，雇主 2582＋1428＋1770＝5780', () => {
     const r = calculateInsurancePremiums({ salary: 29500, role: 'employee', dependents: 0 });
     expect(r.laborBracket).toBe(29500);
     expect(r.healthBracket).toBe(29500);
     expect(r.workerLabor).toBe(738);
     expect(r.workerHealth).toBe(458);
     expect(r.workerTotal).toBe(1196);
-    expect(r.employerLabor).toBe(2581);
+    expect(r.employerLabor).toBe(2582);
     expect(r.employerHealth).toBe(1428);
     expect(r.employerPension).toBe(1770);
-    expect(r.employerTotal).toBe(5779);
+    expect(r.employerTotal).toBe(5780);
   });
 });

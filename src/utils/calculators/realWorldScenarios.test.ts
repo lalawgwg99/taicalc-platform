@@ -7,6 +7,10 @@ import { calculateMortgageResults } from './mortgage';
 import { calculateSalaryBreakdown, estimateAnnualSalaryIncome } from './salary';
 
 describe('real-world calculator scenarios', () => {
+  // 2026-11-19：insurance.employerTotal 由 9492 修正為 9493。舊值是 Math.round
+  // 對浮點數 4007.4999999999995 的誤捨（45,800 × 12.5% × 70% 應為 4007.5→4008）；
+  // 新算法按勞保局分擔表分開四捨五入（3,687＋321＝4,008），與 salary.employerCost
+  // 9493 及官方分表一致。
   it('keeps core Taiwan calculation scenarios stable', () => {
     const salary = calculateSalaryBreakdown({
       salary: 50000,
@@ -91,7 +95,7 @@ describe('real-world calculator scenarios', () => {
           "totalTax": 26800,
         },
         "insurance": {
-          "employerTotal": 9492,
+          "employerTotal": 9493,
           "healthBracket": 50600,
           "laborBracket": 45800,
           "workerTotal": 1930,

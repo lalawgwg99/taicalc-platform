@@ -12,9 +12,9 @@ import {
   HEALTH_INSURANCE_RATE,
   LABOR_INSURANCE_GRADES,
   LABOR_INSURANCE_MAX,
-  LABOR_INSURANCE_RATE,
   LABOR_PENSION_MAX,
   SUPPLEMENTARY_HEALTH_RATE,
+  calcSplitLaborPremium,
   getInsuredSalary
 } from '../../data/calculators/taiwanInsurance';
 
@@ -86,7 +86,9 @@ export const calculateSalaryBreakdown = (
     )
   );
 
-  const labor = laborGrade.mul(LABOR_INSURANCE_RATE).mul(EMPLOYEE_LABOR_SHARE).round().toNumber();
+  // 勞保費＝勞保普通事故費＋就業保險費，各自四捨五入再相加（勞保局分擔表算法；
+  // 合計費率一次四捨五入會在 40,100 元級距差 1 元）。職災、健保與勞退算法不變。
+  const labor = calcSplitLaborPremium(laborGrade.toNumber(), EMPLOYEE_LABOR_SHARE);
   const health = healthGrade.mul(HEALTH_INSURANCE_RATE).mul(EMPLOYEE_HEALTH_SHARE).round().toNumber();
   const penS = pensionBasis.mul(pensionRate).div(100).round().toNumber();
   const mNet = salary.minus(labor).minus(health).minus(penS).toNumber();
@@ -97,7 +99,7 @@ export const calculateSalaryBreakdown = (
     ? bonusTotal.minus(fourTimesInsured).mul(SUPPLEMENTARY_HEALTH_RATE).round()
     : new Decimal(0);
 
-  const employerLabor = laborGrade.mul(LABOR_INSURANCE_RATE).mul(EMPLOYER_LABOR_SHARE).round().toNumber();
+  const employerLabor = calcSplitLaborPremium(laborGrade.toNumber(), EMPLOYER_LABOR_SHARE);
   const employerHealth = healthGrade
     .mul(HEALTH_INSURANCE_RATE)
     .mul(EMPLOYER_HEALTH_SHARE)

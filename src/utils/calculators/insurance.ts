@@ -10,11 +10,11 @@ import {
   HEALTH_INSURANCE_RATE,
   LABOR_INSURANCE_GRADES,
   LABOR_INSURANCE_MAX,
-  LABOR_INSURANCE_RATE,
   LABOR_PENSION_MAX,
   NON_EMPLOYEE_LABOR_INSURANCE_RATE,
   UNION_HEALTH_SHARE,
   UNION_LABOR_SHARE,
+  calcSplitLaborPremium,
   capHealthDependents,
   getInsuredSalary,
   type InsuranceRole
@@ -61,11 +61,12 @@ export const calculateInsurancePremiums = (
   let employerPension = 0;
 
   if (input.role === 'employee') {
-    workerLabor = Math.round(laborBracket * LABOR_INSURANCE_RATE * EMPLOYEE_LABOR_SHARE);
+    // 勞保費＝勞保普通事故費＋就業保險費，各自四捨五入再相加（勞保局分擔表算法）
+    workerLabor = calcSplitLaborPremium(laborBracket, EMPLOYEE_LABOR_SHARE);
     workerHealth = Math.round(
       healthBracket * HEALTH_INSURANCE_RATE * EMPLOYEE_HEALTH_SHARE * (1 + effectiveDependents)
     );
-    employerLabor = Math.round(laborBracket * LABOR_INSURANCE_RATE * EMPLOYER_LABOR_SHARE);
+    employerLabor = calcSplitLaborPremium(laborBracket, EMPLOYER_LABOR_SHARE);
     employerHealth = Math.round(
       healthBracket * HEALTH_INSURANCE_RATE * EMPLOYER_HEALTH_SHARE * EMPLOYER_HEALTH_DEPENDENT_FACTOR
     );
