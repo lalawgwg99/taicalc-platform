@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calculateGainsTax, generalRate, nextBracket } from './realEstateGainsTax';
+import { calculateGainsTax, generalRate, nextBracket, normalizeHoldingPeriod } from './realEstateGainsTax';
 
 describe('房地合一稅 2.0（個人）', () => {
   it('持有 18 個月：課稅所得 330 萬 × 45%＝1,485,000，再持有 7 個月降一級', () => {
@@ -99,5 +99,24 @@ describe('房地合一稅 2.0（個人）', () => {
     expect(nextBracket(120)).toEqual({ months: 1, rate: 0.15 });
     expect(nextBracket(23)).toEqual({ months: 2, rate: 0.35 });
     expect(nextBracket(121)).toBeNull();
+  });
+
+  it('持有期間正規化：1 年 12 個月＝2 年 0 個月＝24 個月（不是 23）', () => {
+    expect(normalizeHoldingPeriod(1, 12)).toEqual({ years: 2, months: 0, totalMonths: 24 });
+    expect(normalizeHoldingPeriod(1, 6)).toEqual({ years: 1, months: 6, totalMonths: 18 });
+    expect(normalizeHoldingPeriod(1, 23)).toEqual({ years: 2, months: 11, totalMonths: 35 });
+    expect(normalizeHoldingPeriod(2, -3)).toEqual({ years: 2, months: 0, totalMonths: 24 });
+  });
+
+  it('臨界點驗算：1 年 1 個月（13 個月）再持有 12 個月、1 年 6 個月（18 個月）再持有 7 個月', () => {
+    const base = {
+      salePrice: 12_000_000, purchasePrice: 8_000_000, costs: 200_000,
+      landIncrement: 0, selfUse: false,
+    };
+    const r13 = calculateGainsTax({ ...base, holdingMonths: 13 });
+    expect(r13.rate).toBe(0.45);
+    expect(r13.nextBracketMonths).toBe(12);
+    const r18 = calculateGainsTax({ ...base, holdingMonths: 18 });
+    expect(r18.nextBracketMonths).toBe(7);
   });
 });

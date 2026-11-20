@@ -11,14 +11,18 @@
         <div class="card-surface p-5 space-y-4">
             <div>
                 <label for="fld-2093a6d1" class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-                <input id="fld-2093a6d1" type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
-                    class="input-clean text-xl font-semibold tabular-nums">
+                <ThousandsInput v-model="amountWan" id="fld-2093a6d1" aria-label="貸款總額" placeholder="1000"
+                    input-class="input-clean text-xl font-semibold tabular-nums" />
+                <p v-if="amountError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ amountError }}</p>
+                <p v-else-if="amountCapNote" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ amountCapNote }}</p>
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label for="fld-cb5e11e0" class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                    <input id="fld-cb5e11e0" type="text" inputmode="decimal" v-model.number="years" aria-label="貸款年限"
+                    <input id="fld-cb5e11e0" type="text" inputmode="decimal" v-model.number="years" v-sync-change aria-label="貸款年限"
                         class="input-clean font-semibold">
+                    <p v-if="yearsError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ yearsError }}</p>
+                    <p v-else-if="yearsCapNote" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ yearsCapNote }}</p>
                 </div>
                 <div>
                     <label for="fld-1dced319" class="block text-xs font-medium text-ink-400 mb-1.5">寬限期（年）</label>
@@ -27,6 +31,7 @@
                         <option :value="0">無寬限期</option>
                         <option v-for="y in 5" :key="y" :value="y">{{ y }} 年</option>
                     </select>
+                    <p v-if="graceNote" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ graceNote }}</p>
                 </div>
             </div>
         </div>
@@ -37,8 +42,9 @@
             <div>
                 <div>
                     <label for="fld-f18441ea" class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
-                    <input id="fld-f18441ea" type="text" inputmode="decimal" v-model.number="rate1" step="0.005" aria-label="利率"
+                    <input id="fld-f18441ea" type="text" inputmode="decimal" v-model.number="rate1" v-sync-change step="0.005" aria-label="利率"
                         :class="['input-clean font-semibold tabular-nums transition-all', rateFlash ? 'border-azure shadow-input' : '']">
+                    <p v-if="rateError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ rateError }}</p>
                 </div>
                 <p v-if="preset === 'newYouth'" class="text-[11px] text-ink-400 mt-1.5 leading-5">
                     前 3 年 1.775%，之後逐年退場至 2.275%。
@@ -76,18 +82,19 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label for="fld-4409c558" class="block text-xs font-medium text-ink-400 mb-1.5">每月多還（元）</label>
-                        <input id="fld-4409c558" type="text" inputmode="decimal" v-model.number="extraMonthly" placeholder="0"
-                            class="input-clean tabular-nums">
+                        <ThousandsInput v-model="extraMonthly" id="fld-4409c558" aria-label="每月多還" placeholder="0"
+                            input-class="input-clean tabular-nums" />
                     </div>
                     <div>
                         <label for="fld-31f5edce" class="block text-xs font-medium text-ink-400 mb-1.5">單筆大額還款（萬）</label>
-                        <input id="fld-31f5edce" type="text" inputmode="decimal" v-model.number="extraLump" placeholder="0"
-                            class="input-clean tabular-nums">
+                        <ThousandsInput v-model="extraLump" id="fld-31f5edce" aria-label="單筆大額還款" placeholder="0"
+                            input-class="input-clean tabular-nums" />
                     </div>
                 </div>
+                <p v-if="extraError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ extraError }}</p>
                 <div>
                     <label for="fld-b1594c4f" class="block text-xs font-medium text-ink-400 mb-1.5">大額還款時間（第 {{ lumpYear }} 年）</label>
-                    <input id="fld-b1594c4f" type="range" v-model.number="lumpYear" min="1" :max="Math.max(1, years - 1)"
+                    <input id="fld-b1594c4f" type="range" v-model.number="lumpYear" min="1" :max="Math.max(1, (effectiveYears ?? 1) - 1)"
                         class="w-full h-2 bg-paper-200 rounded-lg appearance-none cursor-pointer accent-azure-500">
                 </div>
             </div>
@@ -101,10 +108,15 @@
             </div>
             <hr class="receipt-divider" />
 
+            <!-- 輸入無效時不顯示數字 -->
+            <div v-if="hasBlockingError" class="py-8 text-center">
+                <p class="text-sm font-medium text-ink-600">請先修正上方輸入再試算</p>
+            </div>
+            <div v-else>
             <!-- 有寬限期 -->
-            <div v-if="graceYears > 0" class="text-center">
+            <div v-if="effectiveGraceYears > 0" class="text-center">
                 <div class="mb-4">
-                    <p class="text-xs text-ink-400 mb-1">寬限期內（{{ graceYears }} 年）</p>
+                    <p class="text-xs text-ink-400 mb-1">寬限期內（{{ effectiveGraceYears }} 年）</p>
                     <p class="stat-value-lg text-azure">$ {{ fmt(results.gracePay) }}</p>
                 </div>
                 <div class="h-px bg-paper-300 w-24 mx-auto my-4"></div>
@@ -135,7 +147,7 @@
                 <SnapshotButton
                     tool-name="房貸試算"
                     :metrics="[
-                        { label: '每個月要繳', value: '$' + fmt(graceYears > 0 ? results.gracePay : results.basePay) },
+                        { label: '每個月要繳', value: '$' + fmt(effectiveGraceYears > 0 ? results.gracePay : results.basePay) },
                         { label: '利息總共繳多少', value: '$' + fmt(results.totalInterest) },
                         { label: '全部總共要繳', value: '$' + fmt(results.totalPayment) },
                     ]"
@@ -151,9 +163,9 @@
                     <i class="block h-full bg-brand-400 transition-all" :style="{ width: `${mortgagePrincipalShare}%` }"></i>
                     <i class="block h-full border-l-2 border-[#FDFCF8] bg-amber-400 transition-all" :style="{ width: `${mortgageInterestShare}%` }"></i>
                 </div>
-                <div class="mt-3 grid grid-cols-2 gap-3 text-[10px]">
-                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-brand-400"></i>本金</span><strong class="text-ink-700">$ {{ fmt(mortgagePrincipal) }}</strong></div>
-                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-amber-400"></i>利息</span><strong class="text-ink-700">$ {{ fmt(results.totalInterest) }}</strong></div>
+                <div class="mt-3 grid grid-cols-2 gap-8 text-[10px]">
+                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-brand-400"></i>本金</span><strong class="whitespace-nowrap text-ink-700">$ {{ fmt(mortgagePrincipal) }}</strong></div>
+                    <div class="flex items-center justify-between gap-2 text-ink-400"><span class="inline-flex items-center gap-1.5"><i class="h-2 w-2 rounded-full bg-amber-400"></i>利息</span><strong class="whitespace-nowrap text-ink-700">$ {{ fmt(results.totalInterest) }}</strong></div>
                 </div>
             </figure>
 
@@ -174,6 +186,7 @@
                         </p>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -247,10 +260,13 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import Decimal from 'decimal.js';
 import { calculateMortgageResults } from '../../utils/calculators/mortgage';
 import SnapshotButton from '../SnapshotButton.vue';
+import ThousandsInput from '../ThousandsInput.vue';
+import { vSyncChange } from '../../utils/vueSyncChange';
+import { getSharedLoanAmountWan, setSharedLoanAmountWan, onSharedLoanAmountChange, MORTGAGE_TAB_EVENT } from '../../utils/mortgageSharedAmount';
 
 // ── 狀態 ───────────────────────────────────────────────────────
 const amountWan    = ref(1000)
@@ -263,13 +279,59 @@ const stage1Months = ref(12)
 const preset       = ref('newYouth')
 const monthlyIncomeRef = ref(0)
 
+// ── 驗證（取代靜默 clamp：錯誤顯示紅字、結果區不顯示數字）──────────
+// 超上限（總額 > 10,000 萬、年限 > 50 年）不擋結果，按上限計算並提示；
+// 寬限期 ≥ 年限不改 ref 值，計算用有效寬限期（年限 - 1），並顯示調整原因。
+const amountError = computed(() => {
+    const v = amountWan.value
+    if (typeof v !== 'number' || !Number.isFinite(v)) return '請輸入貸款總額'
+    if (v <= 0) return '貸款總額須大於 0'
+    return ''
+})
+const amountCapNote = computed(() => (typeof amountWan.value === 'number' && amountWan.value > 10000) ? '貸款總額上限 10,000 萬（1 億元），已按上限計算' : '')
+const effectiveAmountWan = computed(() => {
+    const v = amountWan.value
+    if (typeof v !== 'number' || !Number.isFinite(v) || v <= 0) return null
+    return Math.min(v, 10000)
+})
+const yearsError = computed(() => {
+    const v = years.value
+    if (typeof v !== 'number' || !Number.isFinite(v) || v <= 0) return '貸款年限須為 1～50 年'
+    return ''
+})
+const yearsCapNote = computed(() => (typeof years.value === 'number' && years.value > 50) ? '貸款年限上限 50 年，已按 50 年計算' : '')
+const effectiveYears = computed(() => {
+    const v = years.value
+    if (typeof v !== 'number' || !Number.isFinite(v) || v <= 0) return null
+    return Math.min(v, 50)
+})
+const effectiveGraceYears = computed(() => {
+    const y = effectiveYears.value
+    const g = typeof graceYears.value === 'number' && Number.isFinite(graceYears.value) ? graceYears.value : 0
+    if (y === null) return Math.max(0, g)
+    return Math.max(0, Math.min(g, y - 1))
+})
+const graceNote = computed(() => {
+    const y = effectiveYears.value
+    if (y === null) return ''
+    if ((graceYears.value ?? 0) >= y) return `寬限期不可超過年限，已調整為 ${effectiveGraceYears.value} 年`
+    return ''
+})
+const rateError = computed(() => {
+    const v = rate1.value
+    if (typeof v !== 'number' || !Number.isFinite(v)) return '請輸入年利率'
+    if (v < 0) return '年利率不可為負數'
+    return ''
+})
+const hasBlockingError = computed(() => !!amountError.value || !!yearsError.value || !!rateError.value)
+
 const showSchedule = ref(false)
 const yearlySchedule = computed(() => {
   const list = []
-  const P = (amountWan.value || 0) * 10000
-  const Y = Math.max(1, years.value || 0)
-  const G = Math.max(0, graceYears.value || 0)
-  const r = (rate1.value || 0) / 100 / 12
+  const P = (effectiveAmountWan.value ?? 0) * 10000
+  const Y = effectiveYears.value ?? 0
+  const G = effectiveGraceYears.value
+  const r = (typeof rate1.value === 'number' && Number.isFinite(rate1.value) ? rate1.value : 0) / 100 / 12
   if (P <= 0 || Y <= 0) return []
 
   let balance = P
@@ -329,6 +391,13 @@ const extraMonthly   = ref(0)
 const extraLump      = ref(0)
 const lumpYear       = ref(3)
 
+// 提前還款欄位負數只提示、不擋結果（計算端本來就只認 > 0 的值）
+const extraError = computed(() => {
+    if ((typeof extraMonthly.value === 'number' && extraMonthly.value < 0) ||
+        (typeof extraLump.value === 'number' && extraLump.value < 0)) return '提前還款金額不可為負數'
+    return ''
+})
+
 // ── 快速預設 ───────────────────────────────────────────────────
 const applyPreset = (type) => {
     preset.value = type
@@ -366,19 +435,19 @@ const fmt = (n) => n ? new Decimal(n).round().toNumber().toLocaleString('zh-TW')
 
 // ── 核心計算 ───────────────────────────────────────────────────
 const results = computed(() => calculateMortgageResults({
-    amountWan: amountWan.value,
-    years: years.value,
-    graceYears: graceYears.value,
-    rate1: rate1.value,
+    amountWan: effectiveAmountWan.value ?? 0,
+    years: effectiveYears.value ?? 0,
+    graceYears: effectiveGraceYears.value,
+    rate1: typeof rate1.value === 'number' && Number.isFinite(rate1.value) ? rate1.value : 0,
     rate2: rate2.value,
     twoStageMode: twoStageMode.value,
     stage1Months: stage1Months.value,
     prepaymentMode: prepaymentMode.value,
-    extraMonthly: extraMonthly.value,
-    extraLump: extraLump.value,
+    extraMonthly: extraMonthly.value ?? 0,
+    extraLump: extraLump.value ?? 0,
     lumpYear: lumpYear.value,
 }))
-const mortgagePrincipal = computed(() => Math.max(0, amountWan.value * 10000))
+const mortgagePrincipal = computed(() => Math.max(0, (effectiveAmountWan.value ?? 0) * 10000))
 const mortgageBreakdownTotal = computed(() => Math.max(1, mortgagePrincipal.value + Math.max(0, results.value.totalInterest)))
 const mortgagePrincipalShare = computed(() => mortgagePrincipal.value / mortgageBreakdownTotal.value * 100)
 const mortgageInterestShare = computed(() => Math.max(0, results.value.totalInterest) / mortgageBreakdownTotal.value * 100)
@@ -386,32 +455,36 @@ const mortgageBreakdownLabel = computed(() => `總共要繳：本金 ${fmt(mortg
 const homeCostTransferUrl = computed(() => {
     const scenario = {
         home: {
-            mortgageBalance: Math.max(0, amountWan.value * 10000),
-            mortgageRate: Math.max(0, rate1.value),
-            mortgageYears: Math.max(1, years.value),
+            mortgageBalance: Math.max(0, (effectiveAmountWan.value ?? 0) * 10000),
+            mortgageRate: Math.max(0, typeof rate1.value === 'number' && Number.isFinite(rate1.value) ? rate1.value : 0),
+            mortgageYears: Math.max(1, effectiveYears.value ?? 1),
         },
     }
     return `/tools/home-ownership-cost-calculator?scenario=${encodeURIComponent(JSON.stringify(scenario))}`
 })
 
 // ── 驗證 ───────────────────────────────────────────────────────
-const validate = () => {
-    if (amountWan.value < 0)           amountWan.value = 0
-    if (years.value < 1)               years.value = 1
-    if (years.value > 50)              years.value = 50
-    if (graceYears.value < 0)          graceYears.value = 0
-    if (graceYears.value >= years.value) graceYears.value = years.value - 1
-    if (rate1.value < 0)               rate1.value = 0
-    if (rate2.value < 0)               rate2.value = 0
-    if (stage1Months.value < 1)        stage1Months.value = 1
-    const maxStageMonths = Math.max(1, years.value * 12 - 1)
-    if (stage1Months.value > maxStageMonths) stage1Months.value = maxStageMonths
-    if (extraMonthly.value < 0)        extraMonthly.value = 0
-    if (extraLump.value < 0)           extraLump.value = 0
-    if (lumpYear.value < 1)            lumpYear.value = 1
-    if (lumpYear.value > Math.max(1, years.value - 1)) lumpYear.value = Math.max(1, years.value - 1)
+// 欄位錯誤由上方的 amountError / yearsError / rateError 等 computed 呈現，
+// 不再靜默改值；只有大額還款滑桿跟著年限上限走（滑桿 max 由年限決定）。
+watch(effectiveYears, (y) => {
+    if (y === null) return
+    const maxLumpYear = Math.max(1, y - 1)
+    if (lumpYear.value > maxLumpYear) lumpYear.value = maxLumpYear
+})
+
+// ── 三分頁共用貸款總額 ─────────────────────────────────────────
+watch(amountWan, (v) => {
+    if (typeof v === 'number' && Number.isFinite(v) && v > 0) setSharedLoanAmountWan(v)
+})
+let offSharedLoanAmount = null
+const handleMortgageTab = () => {
+    const shared = getSharedLoanAmountWan()
+    if (shared !== null && shared !== amountWan.value) amountWan.value = shared
 }
-watch([amountWan, years, graceYears, rate1, rate2, stage1Months, extraMonthly, extraLump, lumpYear], validate)
+onUnmounted(() => {
+    if (offSharedLoanAmount) offSharedLoanAmount()
+    if (typeof window !== 'undefined') window.removeEventListener(MORTGAGE_TAB_EVENT, handleMortgageTab)
+})
 
 // ── Dashboard 儲存 ─────────────────────────────────────────────
 watch(results, (v) => {
@@ -429,10 +502,10 @@ const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
     const p = new URLSearchParams({
-        amount: String(amountWan.value),
-        years:  String(years.value),
-        grace:  String(graceYears.value),
-        r1:     String(rate1.value),
+        amount: String(effectiveAmountWan.value ?? 0),
+        years:  String(effectiveYears.value ?? 0),
+        grace:  String(effectiveGraceYears.value),
+        r1:     String(typeof rate1.value === 'number' && Number.isFinite(rate1.value) ? rate1.value : 0),
         r2:     String(rate2.value),
         ts:     twoStageMode.value ? '1' : '0',
         sm:     String(stage1Months.value),
@@ -483,7 +556,7 @@ const downloadCard = () => {
     // 貸款條件
     ctx.fillStyle = '#5A5A5A'
     ctx.font = '13px -apple-system, sans-serif'
-    const conditionText = `貸款 ${amountWan.value} 萬 · ${years.value} 年期 · 利率 ${rate1.value}%${graceYears.value > 0 ? ` · 寬限 ${graceYears.value} 年` : ''}`
+    const conditionText = `貸款 ${effectiveAmountWan.value ?? 0} 萬 · ${effectiveYears.value ?? 0} 年期 · 利率 ${rate1.value}%${effectiveGraceYears.value > 0 ? ` · 寬限 ${effectiveGraceYears.value} 年` : ''}`
     ctx.fillText(conditionText, 64, 136)
 
     // 分隔線
@@ -496,7 +569,7 @@ const downloadCard = () => {
 
     // 主要數字
     const mainPay = results.value.gracePay || results.value.basePay
-    const mainLabel = graceYears.value > 0 ? `寬限期每月繳（${graceYears.value} 年）` : '每月要繳'
+    const mainLabel = effectiveGraceYears.value > 0 ? `寬限期每月繳（${effectiveGraceYears.value} 年）` : '每月要繳'
     ctx.fillStyle = '#9B9890'
     ctx.font = '12px -apple-system, sans-serif'
     ctx.fillText(mainLabel, 64, 184)
@@ -505,7 +578,7 @@ const downloadCard = () => {
     ctx.fillText(`$ ${fmt(mainPay)}`, 64, 236)
 
     // 次要數字
-    if (graceYears.value > 0) {
+    if (effectiveGraceYears.value > 0) {
         ctx.fillStyle = '#9B9890'
         ctx.font = '12px -apple-system, sans-serif'
         ctx.fillText('寬限期後每月繳', 64, 266)
@@ -537,7 +610,7 @@ const downloadCard = () => {
 
     // 下載
     const a = document.createElement('a')
-    a.download = `TaiCalc-房貸試算-${amountWan.value}萬.png`
+    a.download = `TaiCalc-房貸試算-${effectiveAmountWan.value ?? 0}萬.png`
     a.href = canvas.toDataURL('image/png')
     a.click()
 }
@@ -560,6 +633,12 @@ function roundRect(ctx, x, y, w, h, r) {
 onMounted(() => {
     fetchLiveRate()
 
+    // 三分頁共用貸款總額：先掛監聽（要在 URL 早退分支之前，否則早退會漏掛）
+    offSharedLoanAmount = onSharedLoanAmountChange((v) => {
+        if (v !== amountWan.value) amountWan.value = v
+    })
+    if (typeof window !== 'undefined') window.addEventListener(MORTGAGE_TAB_EVENT, handleMortgageTab)
+
     // 1. URL 參數優先（分享連結）
     if (typeof window !== 'undefined') {
         const p = new URLSearchParams(window.location.search)
@@ -570,28 +649,37 @@ onMounted(() => {
         // 二段式已於青安3.0取消：舊分享連結的 r2/ts/sm 參數不再讀取，強制單一利率
         twoStageMode.value = false
         // 有 URL 參數時不再讀 localStorage，直接返回
-        if (p.has('amount') || p.has('r1')) { syncPresetFromFields(); return }
+        if (p.has('amount') || p.has('r1')) {
+            syncPresetFromFields()
+            if (typeof amountWan.value === 'number' && amountWan.value > 0) setSharedLoanAmountWan(amountWan.value)
+            return
+        }
     }
 
     // 2. localStorage 備份
-    if (typeof localStorage === 'undefined') return
-    try {
-        const saved = localStorage.getItem('taicalc_mortgage_inputs')
-        if (saved) {
-            const d = JSON.parse(saved)
-            if (d.amountWan)               amountWan.value    = d.amountWan
-            if (d.years)                   years.value        = d.years
-            if (d.graceYears !== undefined) graceYears.value  = d.graceYears
-            if (d.rate1)                   rate1.value        = d.rate1
-            // 舊版 localStorage 的二段式欄位不再還原，強制單一利率
-            twoStageMode.value = false
-        }
-    } catch (e) {}
+    if (typeof localStorage !== 'undefined') {
+        try {
+            const saved = localStorage.getItem('taicalc_mortgage_inputs')
+            if (saved) {
+                const d = JSON.parse(saved)
+                if (d.amountWan)               amountWan.value    = d.amountWan
+                if (d.years)                   years.value        = d.years
+                if (d.graceYears !== undefined) graceYears.value  = d.graceYears
+                if (d.rate1)                   rate1.value        = d.rate1
+                // 舊版 localStorage 的二段式欄位不再還原，強制單一利率
+                twoStageMode.value = false
+            }
+        } catch (e) {}
+    }
+    // 3. 共用貸款總額：有共用值就採用（覆蓋 localStorage 還原值），
+    //    沒有就把主分頁目前的值寫進共用值，讓另兩個分頁跟進
+    const shared = getSharedLoanAmountWan()
+    if (shared !== null) amountWan.value = shared
+    else if (typeof amountWan.value === 'number' && amountWan.value > 0) setSharedLoanAmountWan(amountWan.value)
     syncPresetFromFields()
 })
 
 watch([amountWan, years, graceYears, rate1, rate2, twoStageMode, stage1Months], (vals) => {
-    validate()
     syncPresetFromFields()
     if (typeof localStorage === 'undefined') return
     try {

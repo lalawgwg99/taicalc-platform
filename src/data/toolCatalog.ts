@@ -383,9 +383,24 @@ export const getRelatedTools = (currentHref: string, limit = 4): ToolCatalogItem
     .map((href) => getToolByHref(href))
     .filter((tool): tool is ToolCatalogItem => Boolean(tool));
 
+  // 買房置產 6 支的相關工具不推薦電費計算機：它雖同屬「居住與房產」分類，
+  // 主題是水電帳單、與買房決策無關，6 支頁面長期誤導使用者點去不相關的工具。
+  const BUY_HOUSE_TOOL_HREFS = new Set([
+    '/tools/mortgage-calculator',
+    '/tools/refinance-calculator',
+    '/tools/house-tax-calculator',
+    '/tools/home-ownership-cost-calculator',
+    '/tools/rental-yield-calculator',
+    '/tools/real-estate-gains-tax-calculator',
+  ]);
+  const isBuyHousePage = BUY_HOUSE_TOOL_HREFS.has(currentPath);
+
   const sameCategoryTools = currentTool
     ? toolCatalog.filter(
-        tool => tool.href !== currentPath && tool.category === currentTool.category
+        tool =>
+          tool.href !== currentPath &&
+          tool.category === currentTool.category &&
+          !(isBuyHousePage && tool.href === '/tools/electricity-calculator'),
       )
     : [];
   const remainingTools = toolCatalog.filter(

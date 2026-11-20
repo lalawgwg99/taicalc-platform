@@ -1,19 +1,41 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import SnapshotButton from '../SnapshotButton.vue';
+import ThousandsInput from '../ThousandsInput.vue';
+import { vSyncChange } from '../../utils/vueSyncChange';
 
 const formatTWD = (n: number) => 'NT$' + Math.round(Number(n) || 0).toLocaleString('zh-TW');
 
 type CityGroup = 'metro' | 'nonmetro';
 type Usage = 'self' | 'single' | 'rental' | 'nonowner';
 
-const assessedValue = ref(1000000);
+const ASSESSED_CAP = 1000000000;
+
+const assessedValue = ref<number | null>(1000000);
 const group = ref<CityGroup>('metro');
 const usage = ref<Usage>('self');
 const households = ref(2);
 
-// 輸入欄的 min/max 只是 HTML 屬性，打字可越過：計算一律用箝制值（現值 ≥0、戶數 ≥1 且取整）
-const safeAssessed = computed(() => Math.max(Number(assessedValue.value) || 0, 0));
+// 評定現值防呆：0／留空／負數為無效（結果區隱藏、不靜默算 $0）；
+// 超過 10 億只警告、按上限計算、結果照常顯示
+const assessedError = computed(() => {
+  const v = assessedValue.value;
+  if (v === null || v === undefined || v === 0) return '請輸入房屋評定現值';
+  if (v < 0) return '評定現值不可為負數';
+  if (v > ASSESSED_CAP) return '評定現值上限 10 億元，請確認數字';
+  return '';
+});
+const assessedInvalid = computed(
+  () => assessedValue.value === null || assessedValue.value === undefined || assessedValue.value <= 0,
+);
+
+// 輸入欄的 min/max 只是 HTML 屬性，打字可越過：計算一律用箝制值（現值 ≥0 且 ≤10 億、戶數 ≥1 且取整）；
+// 無效現值時內部算 0，但結果區已隱藏、不會把 $0 當成試算結果顯示
+const safeAssessed = computed(() => {
+  const v = assessedValue.value;
+  if (v === null || v === undefined || v <= 0) return 0;
+  return Math.min(v, ASSESSED_CAP);
+});
 const safeCount = computed(() => Math.max(1, Math.round(Number(households.value) || 1)));
 
 const usages: { value: Usage; label: string }[] = [
@@ -79,6 +101,7 @@ const notes = computed((): string[] => {
           <p>房屋評定現值不是市價，可在房屋稅稅單或房屋稅籍證明上查到。</p>
         </div>
         <SnapshotButton
+          v-if="!assessedInvalid"
           tool-name="房屋稅 2.0 試算"
           :metrics="[
             { label: '房屋評定現值', value: formatTWD(safeAssessed) },
@@ -93,7 +116,8 @@ const notes = computed((): string[] => {
       <div class="calculator-grid">
         <label class="field field--result">
           <span>房屋評定現值（元）</span>
-          <input v-model.number="assessedValue" type="number" min="0" step="10000" inputmode="numeric" />
+          <ThousandsInput v-model="assessedValue" id="house-tax-assessed" aria-label="房屋評定現值" />
+          <p v-if="assessedError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ assessedError }}</p>
         </label>
         <div class="field">
           <span>房屋所在縣市</span>
@@ -111,7 +135,7 @@ const notes = computed((): string[] => {
         </div>
         <label v-if="needsCount" class="field">
           <span>全國戶數（本人＋配偶＋未成年子女）</span>
-          <input v-model.number="households" type="number" min="1" max="99" step="1" inputmode="numeric" />
+          <input v-model.number="households" type="number" min="1" max="99" step="1" inputmode="numeric" v-sync-change />
         </label>
       </div>
 
@@ -119,6 +143,7 @@ const notes = computed((): string[] => {
         <li v-for="n in notes" :key="n" class="flex gap-1.5"><span aria-hidden="true">・</span><span>{{ n }}</span></li>
       </ul>
 
+      <template v-if="!assessedInvalid">
       <div class="summary-strip" aria-live="polite">
         <span class="summary-main">適用稅率 <strong>{{ rate }}%</strong>・年稅額 <strong>{{ formatTWD(tax) }}</strong></span>
         <span v-if="usage !== 'self'">同現值自住（1.2%）<strong>{{ formatTWD(selfTax) }}</strong></span>
@@ -139,6 +164,10 @@ const notes = computed((): string[] => {
           </tbody>
         </table>
       </div>
+      </template>
+      <div v-else class="mt-4 border-l-2 border-[#A58436] pl-4 py-1">
+        <p class="text-sm font-semibold text-[#25231F]">請先修正上方輸入再試算</p>
+      </div>
 
       <p class="mt-4 text-sm leading-6 text-[var(--color-muted)]">
         稅率依財政部差別稅率範本（房屋稅 2.0，113/7/1 施行）；各縣市實際徵收率以自治條例為準，稅額以稅單為準。資料 2026-10。
@@ -146,3 +175,30 @@ const notes = computed((): string[] => {
     </section>
   </div>
 </template>
+
+<style scoped>
+/* 縣市／使用類別兩組 seg-btn：只在本元件覆寫 .book-tool 的底線式樣式（不動 global.css）。
+   全站 .book-tool .seg-btn 用 padding .25rem 0 !important＋透明底、只靠底線區分選中；
+   這裡以更高特異度（.book-tool .seg-btn[data-v-hash]）＋ !important 蓋過，觸控目標 ≥44px、選中有深綠底白字。 */
+.book-tool .seg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.625rem 1rem !important;
+  border: 1px solid #d8d2c2 !important;
+  border-radius: 0.75rem !important;
+  background: #fffdf7 !important;
+  box-shadow: none !important;
+}
+
+.book-tool .seg-btn-active,
+.book-tool .calculator-shell .seg-btn-active {
+  background: #1d4b34 !important;
+  color: #fffdf7 !important;
+  border-color: #1d4b34 !important;
+  border-bottom-color: #1d4b34 !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+}
+</style>

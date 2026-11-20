@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import RentalYieldCalculator from '../../components/calculators/RentalYieldCalculator.vue';
 
 const title = "租金報酬率計算器｜包租投報率試算";
@@ -31,7 +32,7 @@ const faqs = [
 ---
 
 <ToolLayout title={title} description={description} keywords={keywords} category="居住與房產" kicker="房東視角：這間房收租到底划不划算" faqs={faqs}>
-    <RentalYieldCalculator client:only="vue" slot="tool" />
+    <RentalYieldCalculator client:only="vue" slot="tool"><CalculatorFallback slot="fallback" /></RentalYieldCalculator>
 
     <div slot="article">
         <h2>別只看毛報酬率：包租試算的三個層次</h2>

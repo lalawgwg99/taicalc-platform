@@ -218,7 +218,7 @@
       <div class="input-panel">
         <div class="panel-title"><span>01</span><div><h2>房屋持有條件</h2><p>房屋稅用房屋評定現值，不是成交價</p></div></div>
         <div class="field-grid">
-          <label>房屋評定現值<input v-model.number="home.assessedHouseValue" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>房屋評定現值<ThousandsInput v-model="home.assessedHouseValue" aria-label="房屋評定現值" input-class="input-clean" /></label>
           <label>房屋稅率
             <select v-model.number="home.houseTaxRate" class="input-clean">
               <option :value="1">全國單一自住 1%</option><option :value="1.2">一般自住 1.2%</option>
@@ -226,17 +226,18 @@
               <option :value="2.6">非自住 1 戶 2.6%</option><option :value="3.2">非自住 2–4 戶 3.2%</option><option :value="3.8">非自住 5–6 戶 3.8%</option><option :value="4.8">非自住 7 戶以上 4.8%</option>
             </select>
           </label>
-          <label>申報地價<input v-model.number="home.declaredLandValue" type="text" inputmode="decimal" class="input-clean"></label>
-          <label>地價稅率（%）<input v-model.number="home.landTaxRate" type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
-          <label>房貸餘額<input v-model.number="home.mortgageBalance" type="text" inputmode="decimal" class="input-clean"></label>
-          <label>房貸年利率（%）<input v-model.number="home.mortgageRate" type="text" inputmode="decimal" step="0.01" class="input-clean"></label>
-          <label>剩餘年限<input v-model.number="home.mortgageYears" type="text" inputmode="decimal" class="input-clean"></label>
-          <label>每月管理費<input v-model.number="home.managementMonthly" type="text" inputmode="decimal" class="input-clean"></label>
-          <label>每年維修準備<input v-model.number="home.repairAnnual" type="text" inputmode="decimal" class="input-clean"></label>
-          <label>每年住宅保險<input v-model.number="home.insuranceAnnual" type="text" inputmode="decimal" class="input-clean"></label>
+          <label>申報地價<ThousandsInput v-model="home.declaredLandValue" aria-label="申報地價" input-class="input-clean" /></label>
+          <label>地價稅率（%）<input v-model.number="home.landTaxRate" v-sync-change type="text" inputmode="decimal" step="0.1" class="input-clean"></label>
+          <label>房貸餘額<ThousandsInput v-model="home.mortgageBalance" aria-label="房貸餘額" input-class="input-clean" /><p v-if="homeMortgageInvalid" class="mt-1.5 text-xs font-medium text-[#B3261E]">房貸餘額不可為負數</p></label>
+          <label>房貸年利率（%）<input v-model.number="home.mortgageRate" v-sync-change type="text" inputmode="decimal" step="0.01" class="input-clean"></label>
+          <label>剩餘年限<input v-model.number="home.mortgageYears" v-sync-change type="text" inputmode="decimal" class="input-clean"></label>
+          <label>每月管理費<ThousandsInput v-model="home.managementMonthly" aria-label="每月管理費" input-class="input-clean" /></label>
+          <label>每年維修準備<ThousandsInput v-model="home.repairAnnual" aria-label="每年維修準備" input-class="input-clean" /></label>
+          <label>每年住宅保險<ThousandsInput v-model="home.insuranceAnnual" aria-label="每年住宅保險" input-class="input-clean" /></label>
         </div>
       </div>
-      <ResultPanel eyebrow="不只房貸" label="平均每個月要花" :value="currency(homeResult.monthlyCost)" :insight="homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }" :comparison-items="scenarioComparisonItems">
+      <ResultPanel eyebrow="不只房貸" label="平均每個月要花" :value="homeMortgageInvalid ? '—' : currency(homeResult.monthlyCost)" :insight="homeMortgageInvalid ? '請先修正上方輸入再試算' : homeInsight" :share-url="scenarioShareUrl" :report-title="scenarioReportTitle" :share-image-data="{ breakdown: homeChartItems }" :comparison-items="scenarioComparisonItems">
+        <template v-if="!homeMortgageInvalid">
         <Metric label="房貸月付現金流" :value="currency(homeResult.mortgagePayment)" />
         <Metric label="每年房屋稅" :value="currency(homeResult.houseTax)" />
         <Metric label="每年地價稅" :value="currency(homeResult.landTax)" />
@@ -245,6 +246,11 @@
         <Metric label="每年現金流出" :value="currency(homeResult.annualCashOutflow)" />
         <DecisionChart title="第一年持有成本有哪些" caption="沒算還掉的本金" kind="stack" :items="homeChartItems" />
         <div class="result-callout">成本沒算你還掉的本金；但每個月實際掏出去的錢是含完整房貸的。</div>
+        <div style="grid-column:1/-1" class="flex justify-center rounded-lg bg-[#f6f0e4] px-3 py-2">
+          <SnapshotButton tool-name="買房持有成本試算" :metrics="homeSnapshotMetrics" />
+        </div>
+        </template>
+        <p v-else style="grid-column:1/-1" class="rounded-lg bg-[#f6f0e4] px-3 py-2 text-center text-sm font-semibold text-[#B3261E]">請先修正上方輸入再試算</p>
       </ResultPanel>
     </section>
 
@@ -278,6 +284,9 @@
 
 <script setup>
 import { computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue';
+import ThousandsInput from '../ThousandsInput.vue';
+import SnapshotButton from '../SnapshotButton.vue';
+import { vSyncChange } from '../../utils/vueSyncChange';
 import { carPresets, getCarPreset } from '../../data/carPresets';
 import {
   calculateCarCost, calculateDebtConsolidation, calculateEstateTax, calculateGiftSplit, calculateHomeCost,
@@ -365,6 +374,15 @@ const ResultPanel = defineComponent({
   setup(p, { slots }) {
     const copied = reactive({ value: false });
     const shared = reactive({ value: false });
+    // 結果分享四顆按鈕加大為可點尺寸（min-height 44px）：render function 內以
+    // inline style 寫死，書式覆寫（.book-tool .result-copy，含 !important）才壓不過。
+    // border 用 currentColor，淺底書式與深底面板都看得見邊框。
+    const touchStyle = {
+      minHeight: '44px',
+      padding: '10px 16px !important',
+      border: '1px solid currentColor !important',
+      background: 'rgba(255,255,255,.08) !important',
+    };
     const copySummary = async () => {
       const summary = `${p.label}：${p.value}\n判斷提示：${p.insight ?? ''}\n${window.location.href}`;
       try {
@@ -477,10 +495,10 @@ const ResultPanel = defineComponent({
       h('div', { class: 'result-heading' }, [
         h('p', { class: 'result-eyebrow' }, p.eyebrow),
         h('div', { class: 'result-actions' }, [
-          h('button', { type: 'button', class: 'result-copy', onClick: copySummary, title: '複製結果摘要', 'aria-label': '複製結果摘要' }, copied.value ? '已複製' : '複製'),
-          p.shareUrl ? h('button', { type: 'button', class: 'result-copy', onClick: shareResult, title: '分享完整試算結果', 'aria-label': '分享完整試算結果' }, shared.value ? '已複製' : '分享') : null,
-          p.shareImageData ? h('button', { type: 'button', class: 'result-copy', onClick: downloadShareImage, title: '下載分享圖片', 'aria-label': '下載分享圖片' }, '分享圖') : null,
-          h('button', { type: 'button', class: 'result-copy', onClick: printReport, title: '列印或儲存 PDF', 'aria-label': '列印或儲存 PDF' }, 'PDF'),
+          h('button', { type: 'button', class: 'result-copy', style: touchStyle, onClick: copySummary, title: '複製結果摘要', 'aria-label': '複製結果摘要' }, copied.value ? '已複製' : '複製'),
+          p.shareUrl ? h('button', { type: 'button', class: 'result-copy', style: touchStyle, onClick: shareResult, title: '分享完整試算結果', 'aria-label': '分享完整試算結果' }, shared.value ? '已複製' : '分享') : null,
+          p.shareImageData ? h('button', { type: 'button', class: 'result-copy', style: touchStyle, onClick: downloadShareImage, title: '下載分享圖片', 'aria-label': '下載分享圖片' }, '分享圖') : null,
+          h('button', { type: 'button', class: 'result-copy', style: touchStyle, onClick: printReport, title: '列印或儲存 PDF', 'aria-label': '列印或儲存 PDF' }, 'PDF'),
         ]),
       ]),
       h('span', { class: 'result-label' }, p.label),
@@ -743,6 +761,14 @@ const parentalInsight = computed(() => parental.publicCare
   : '留停那段時間收入還是不夠，建議把這個缺口算進至少 6 個月的家庭預備金。');
 const home = reactive({ assessedHouseValue: 2_000_000, houseTaxRate: 1.2, declaredLandValue: 1_500_000, landTaxRate: 0.2, mortgageBalance: 10_000_000, mortgageRate: 2.3, mortgageYears: 30, managementMonthly: 3_000, repairAnnual: 50_000, insuranceAnnual: 5_000 });
 const homeResult = computed(() => calculateHomeCost(home));
+// 房貸餘額負數不可靜默以 $0 計算（monthlyPayment 會把 ≤0 本金當 0 回傳）：
+// 顯示紅字提示，結果區改顯示「請先修正上方輸入再試算」。
+const homeMortgageInvalid = computed(() => Number(home.mortgageBalance) < 0);
+const homeSnapshotMetrics = computed(() => [
+  { label: '平均每月持有成本', value: currency(homeResult.value.monthlyCost) },
+  { label: '房貸月付', value: currency(homeResult.value.mortgagePayment) },
+  { label: '每年持有成本', value: currency(homeResult.value.annualCost) },
+]);
 const homeChartItems = computed(() => [
   { label: '首年利息', value: homeResult.value.firstYearInterest },
   { label: '管理費', value: home.managementMonthly * 12 },

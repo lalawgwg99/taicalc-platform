@@ -19,17 +19,15 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="fld-ba0f95d1" class="block text-xs font-semibold text-ink-400 mb-2">房屋總價（萬元）</label>
-          <input id="fld-ba0f95d1"
-            type="text" inputmode="decimal" v-model.number="totalPriceWan"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
-          />
+          <ThousandsInput v-model="totalPriceWan" id="fld-ba0f95d1" aria-label="房屋總價（萬元）"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="totalPriceError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ totalPriceError }}</p>
         </div>
         <div>
           <label for="fld-b6d67af7" class="block text-xs font-semibold text-ink-400 mb-2">每月租金（元）</label>
-          <input id="fld-b6d67af7"
-            type="text" inputmode="decimal" v-model.number="monthlyRent"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
-          />
+          <ThousandsInput v-model="monthlyRent" id="fld-b6d67af7" aria-label="每月租金"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="monthlyRentError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ monthlyRentError }}</p>
         </div>
       </div>
     </div>
@@ -40,33 +38,39 @@
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label for="fld-3cdd99ab" class="block text-xs font-semibold text-ink-400 mb-2">管理費（月/元）</label>
-          <input id="fld-3cdd99ab" type="text" inputmode="decimal" v-model.number="mgmtMonthly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="mgmtMonthly" id="fld-3cdd99ab" aria-label="管理費"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="mgmtError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ mgmtError }}</p>
         </div>
         <div>
           <label for="fld-1ad3a797" class="block text-xs font-semibold text-ink-400 mb-2">房屋稅（年/元）</label>
-          <input id="fld-1ad3a797" type="text" inputmode="decimal" v-model.number="houseTaxYearly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="houseTaxYearly" id="fld-1ad3a797" aria-label="房屋稅"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="houseTaxError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ houseTaxError }}</p>
         </div>
         <div>
           <label for="fld-d2bc8447" class="block text-xs font-semibold text-ink-400 mb-2">地價稅（年/元）</label>
-          <input id="fld-d2bc8447" type="text" inputmode="decimal" v-model.number="landTaxYearly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="landTaxYearly" id="fld-d2bc8447" aria-label="地價稅"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="landTaxError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ landTaxError }}</p>
         </div>
         <div>
           <label for="fld-5c97bfa3" class="block text-xs font-semibold text-ink-400 mb-2">維修預算（年/元）</label>
-          <input id="fld-5c97bfa3" type="text" inputmode="decimal" v-model.number="repairYearly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="repairYearly" id="fld-5c97bfa3" aria-label="維修預算"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="repairError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ repairError }}</p>
         </div>
         <div>
           <label for="fld-bf79f8fd" class="block text-xs font-semibold text-ink-400 mb-2">火險地震險（年/元）</label>
-          <input id="fld-bf79f8fd" type="text" inputmode="decimal" v-model.number="insuranceYearly"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="insuranceYearly" id="fld-bf79f8fd" aria-label="火險地震險"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="insuranceError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ insuranceError }}</p>
         </div>
         <div>
           <label for="fld-080a1d2b" class="block text-xs font-semibold text-ink-400 mb-2">每年空租（月）</label>
-          <input id="fld-080a1d2b" type="text" inputmode="decimal" v-model.number="vacancyMonths"
+          <input id="fld-080a1d2b" type="text" inputmode="decimal" v-model.number="vacancyMonths" v-sync-change
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="vacancyError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ vacancyError }}</p>
         </div>
       </div>
     </div>
@@ -79,17 +83,18 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label for="fld-46b1790b" class="block text-xs font-semibold text-ink-400 mb-2">貸款金額（萬元）</label>
-          <input id="fld-46b1790b" type="text" inputmode="decimal" v-model.number="loanWan"
-            class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <ThousandsInput v-model="loanWan" id="fld-46b1790b" aria-label="貸款金額（萬元）"
+            input-class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
+          <p v-if="loanError" class="mt-1.5 text-xs font-medium text-[#B3261E]">{{ loanError }}</p>
         </div>
         <div>
           <label for="fld-f552ad1c" class="block text-xs font-semibold text-ink-400 mb-2">年利率（%）</label>
-          <input id="fld-f552ad1c" type="text" inputmode="decimal" v-model.number="loanRate"
+          <input id="fld-f552ad1c" type="text" inputmode="decimal" v-model.number="loanRate" v-sync-change
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
         <div>
           <label for="fld-8469f532" class="block text-xs font-semibold text-ink-400 mb-2">年限（年）</label>
-          <input id="fld-8469f532" type="text" inputmode="decimal" v-model.number="loanYears"
+          <input id="fld-8469f532" type="text" inputmode="decimal" v-model.number="loanYears" v-sync-change
             class="w-full bg-paper-50 border border-ink-100 rounded-xl py-2.5 px-3 text-ink-800 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500" />
         </div>
       </div>
@@ -103,6 +108,10 @@
         </h2>
       </div>
 
+      <div v-if="hasInputError" class="text-center py-6">
+        <p class="text-sm font-semibold text-[#B3261E]">請先修正上方輸入再試算</p>
+      </div>
+      <template v-else>
       <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="py-2 text-center">
           <div class="text-[11px] text-ink-400 font-medium mb-1">毛報酬率</div>
@@ -131,7 +140,7 @@
         </div>
         <div class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">約幾年回本</span>
-          <span class="font-semibold whitespace-nowrap text-ink-900">{{ paybackYears }} 年</span>
+          <span class="font-semibold whitespace-nowrap text-ink-900">{{ paybackYears === '—' ? '—' : paybackYears + ' 年' }}</span>
         </div>
         <div v-if="hasLoan" class="flex justify-between py-2 border-b border-[#E3DCCB]">
           <span class="text-ink-400">每月房貸月付金</span>
@@ -150,6 +159,11 @@
       <p class="text-xs text-ink-400 leading-relaxed mt-4">
         {{ verdict }}
       </p>
+
+      <div class="mt-5 flex justify-center">
+        <SnapshotButton tool-name="租金報酬率試算" :metrics="[{ label: '毛報酬率', value: grossYield + '%' }, { label: '淨報酬率', value: netYield + '%' }, { label: '年淨收益', value: '$' + annualNetFmt }]" />
+      </div>
+      </template>
     </div>
 
     <p class="text-[11px] text-ink-400 leading-relaxed px-1">
@@ -160,6 +174,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import ThousandsInput from '../ThousandsInput.vue';
+import SnapshotButton from '../SnapshotButton.vue';
+import { vSyncChange } from '../../utils/vueSyncChange';
 
 const totalPriceWan = ref(1000);
 const monthlyRent = ref(20000);
@@ -180,6 +197,9 @@ const presets = [
 ];
 
 function applyPreset(p) {
+  if (!window.confirm(`套用「${p.title}」會覆蓋目前輸入的數字，確定嗎？`)) {
+    return;
+  }
   totalPriceWan.value = p.v.totalPriceWan;
   monthlyRent.value = p.v.monthlyRent;
   mgmtMonthly.value = p.v.mgmtMonthly;
@@ -217,8 +237,39 @@ const netYield = computed(() =>
   totalPrice.value > 0 ? (annualNet.value / totalPrice.value * 100).toFixed(2) : '0.00'
 );
 const paybackYears = computed(() =>
-  annualNet.value > 0 ? (totalPrice.value / annualNet.value).toFixed(1) : '—'
+  annualNet.value > 0 && totalPrice.value > 0 ? (totalPrice.value / annualNet.value).toFixed(1) : '—'
 );
+
+// 防呆：金額欄位留空（null）→「請輸入 XXX」；負數→紅字提示。
+// 貸款金額 0 是合法值（不貸就留 0）；房屋總價 0 不在此報錯，維持 verdict 的「請先輸入房屋總價」。
+const amountError = (v, label) =>
+  v === null || v === undefined || v === '' ? `請輸入${label}` : Number(v) < 0 ? `${label}不可為負數` : '';
+const totalPriceError = computed(() => {
+  const v = totalPriceWan.value;
+  if (v === null || v === undefined || v === '') return '請輸入房屋總價';
+  return Number(v) < 0 ? '房屋總價不可為負數' : '';
+});
+const monthlyRentError = computed(() => amountError(monthlyRent.value, '每月租金'));
+const mgmtError = computed(() => amountError(mgmtMonthly.value, '管理費'));
+const houseTaxError = computed(() => amountError(houseTaxYearly.value, '房屋稅'));
+const landTaxError = computed(() => amountError(landTaxYearly.value, '地價稅'));
+const repairError = computed(() => amountError(repairYearly.value, '維修預算'));
+const insuranceError = computed(() => amountError(insuranceYearly.value, '火險地震險'));
+const loanError = computed(() => amountError(loanWan.value, '貸款金額'));
+const vacancyError = computed(() => {
+  const v = vacancyMonths.value;
+  if (v === null || v === undefined || v === '') return '請輸入每年空租月數';
+  const n = Number(v);
+  if (Number.isNaN(n)) return '請輸入每年空租月數';
+  if (n > 12) return '每年空租最多 12 個月';
+  if (n < 0) return '空租月數不可為負數';
+  return '';
+});
+const hasInputError = computed(() => Boolean(
+  totalPriceError.value || monthlyRentError.value || mgmtError.value || houseTaxError.value
+  || landTaxError.value || repairError.value || insuranceError.value || loanError.value
+  || vacancyError.value,
+));
 
 // 房貸：等額本息
 const loanAmount = computed(() => num(loanWan.value) * 10000);

@@ -1,0 +1,21 @@
+---
+// 計算器島載入骨架：client:only="vue" 的島在水合前是全空的，
+// 冷載入較慢時使用者會先看到一片空白、誤以為頁面壞掉。
+// 用法：<MyCalculator client:only="vue"><CalculatorFallback slot="fallback" /></MyCalculator>
+// 骨架內不要放 <input>，ToolLayout 的載入看門狗靠「10 秒後仍無 input」判斷是否掛載失敗。
+---
+<div class="calc-fallback" aria-hidden="true">
+  <div class="calc-fallback-title"></div>
+  <div class="calc-fallback-field"></div>
+  <div class="calc-fallback-field"></div>
+  <div class="calc-fallback-field calc-fallback-field--short"></div>
+  <p class="calc-fallback-text">計算器載入中…</p>
+</div>
+<style>
+  .calc-fallback { padding: 0.25rem 0; }
+  .calc-fallback-title { height: 0.875rem; width: 38%; border-radius: 9999px; background: #EDE9DF; margin-bottom: 1rem; animation: calc-fallback-pulse 1.4s ease-in-out infinite; }
+  .calc-fallback-field { height: 3.25rem; border-radius: 0.75rem; background: #F1EEE6; margin-bottom: 0.75rem; animation: calc-fallback-pulse 1.4s ease-in-out infinite; }
+  .calc-fallback-field--short { width: 62%; }
+  .calc-fallback-text { font-size: 0.75rem; color: #A8A29A; margin-top: 0.25rem; }
+  @keyframes calc-fallback-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+</style>

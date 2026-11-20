@@ -34,6 +34,20 @@ const num = (v: unknown): number => {
   return Number.isFinite(n) && n > 0 ? n : 0;
 };
 
+// 持有期間正規化：月數欄位標示 0–11，填 12（含）以上自動進位成年，
+// 合計月數必須正確（1 年＋12 個月＝24 個月，不是 23 個月）。
+// 舊版 totalMonths 直接把月數夾到 11（12→11），合計才會少算 1 個月。
+export function normalizeHoldingPeriod(
+  years: number,
+  months: number,
+): { years: number; months: number; totalMonths: number } {
+  const y = Math.max(0, Math.floor(num(years)));
+  const m = Math.max(0, Math.floor(num(months)));
+  const carriedYears = y + Math.floor(m / 12);
+  const restMonths = m % 12;
+  return { years: carriedYears, months: restMonths, totalMonths: carriedYears * 12 + restMonths };
+}
+
 export function generalRate(holdingMonths: number): number {
   const m = Math.floor(num(holdingMonths));
   if (m <= 24) return 0.45;

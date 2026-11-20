@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import HouseTaxCalculator from '../../components/calculators/HouseTaxCalculator.vue';
 
 const sources = [
@@ -38,13 +39,13 @@ const faqs = [
   category="居住與房產"
   kicker="房屋稅 2.0・全國歸戶・全數累進"
   dataVersion="house-tax-2026-v1"
-  dataYear={2026}
+  dataYear="2026 年度"
   lastUpdated="2026-10-22"
   sources={sources}
   faqs={faqs}
 >
   <div slot="tool">
-    <HouseTaxCalculator client:only="vue" />
+    <HouseTaxCalculator client:only="vue"><CalculatorFallback slot="fallback" /></HouseTaxCalculator>
   </div>
 
   <div slot="article">

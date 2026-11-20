@@ -6,11 +6,12 @@
         <!-- 共用輸入 -->
         <div class="card-surface p-5">
             <label for="fld-3494183e" class="block text-xs font-medium text-ink-400 mb-1.5">貸款總額（萬）</label>
-            <input id="fld-3494183e" type="text" inputmode="decimal" v-model.number="amountWan" aria-label="貸款總額" placeholder="1000"
-                class="input-clean text-xl font-semibold tabular-nums">
+            <ThousandsInput v-model="amountWan" id="fld-3494183e" aria-label="貸款總額" placeholder="1000"
+                input-class="input-clean text-xl font-semibold tabular-nums" />
+            <p v-if="amountCapNote" class="mt-1.5 text-xs font-medium text-[#A58436]">{{ amountCapNote }}</p>
             <div class="mt-3">
                 <label for="fld-7ad61440" class="block text-xs font-medium text-ink-400 mb-1.5">年利率（%）</label>
-                <input id="fld-7ad61440" type="text" inputmode="decimal" v-model.number="rate" step="0.005" aria-label="年利率"
+                <input id="fld-7ad61440" type="text" inputmode="decimal" v-model.number="rate" v-sync-change step="0.005" aria-label="年利率"
                     class="input-clean font-semibold tabular-nums">
             </div>
             <p class="mt-2 text-[11px] text-ink-400">同一筆貸款與利率，左右比較不同年限的真實負擔</p>
@@ -25,7 +26,7 @@
                 </div>
                 <div class="mt-3">
                     <label for="fld-87c46dec" class="block text-xs font-medium text-ink-400 mb-1.5">貸款年限</label>
-                    <input id="fld-87c46dec" type="text" inputmode="decimal" v-model.number="side.years" min="10" max="50" :aria-label="side.label + '年限'"
+                    <input id="fld-87c46dec" type="text" inputmode="decimal" v-model.number="side.years" v-sync-change min="10" max="50" :aria-label="side.label + '年限'"
                         class="input-clean font-semibold">
                 </div>
             </div>
@@ -37,7 +38,7 @@
                 v-for="side in sides"
                 :key="side.key"
                 :title="`${side.years} 年期`"
-                :subtitle="`${amountWan} 萬 / ${rate}%`"
+                :subtitle="`${effectiveAmountWan} 萬 / ${rate}%`"
                 main-label="每月還款"
                 :main-value="`$ ${fmt(side.res.pay)}`"
                 :main-tone="side.key === 'a' ? 'brand' : 'neutral'"
@@ -88,8 +89,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import ResultReceipt from '../ResultReceipt.vue';
+import ThousandsInput from '../ThousandsInput.vue';
+import { vSyncChange } from '../../utils/vueSyncChange';
+import { getSharedLoanAmountWan, setSharedLoanAmountWan, onSharedLoanAmountChange, MORTGAGE_TAB_EVENT } from '../../utils/mortgageSharedAmount';
 
 const amountWan = ref(1000)
 const rate = ref(2.0)
@@ -97,6 +101,18 @@ const sides = ref([
     { key: 'a', label: '30 年期', years: 30 },
     { key: 'b', label: '40 年期', years: 40 },
 ])
+
+// 總額上限改用有效值、不改寫 ref：比較分頁若把共用值夾回 10,000 萬寫回，
+// 會連帶吃掉主分頁的上限提示（主分頁輸入 20,000 萬時提示會閃一下消失）。
+// 注意：必須放在 sideA/sideB 之前——immediate watcher 會在 setup 時立即求值，
+// 放在後面會觸發 TDZ（Cannot access before initialization），整島掛載失敗。
+const effectiveAmountWan = computed(() => {
+    const v = amountWan.value
+    if (v === null || v === undefined || typeof v !== 'number' || Number.isNaN(v)) return 0
+    return Math.min(Math.max(v, 0), 10000)
+})
+const amountCapNote = computed(() => (typeof amountWan.value === 'number' && amountWan.value > 10000)
+    ? '貸款總額上限 10,000 萬（1 億元），已按上限計算' : '')
 
 function compute(years, principal) {
     const P = Math.max(0, principal || 0)
@@ -114,8 +130,8 @@ function compute(years, principal) {
     return { pay: annuity, totalInterest, totalPayment: P + totalInterest }
 }
 
-const sideA = computed(() => compute(sides.value[0].years, amountWan.value * 10000))
-const sideB = computed(() => compute(sides.value[1].years, amountWan.value * 10000))
+const sideA = computed(() => compute(sides.value[0].years, effectiveAmountWan.value * 10000))
+const sideB = computed(() => compute(sides.value[1].years, effectiveAmountWan.value * 10000))
 
 watch([sideA, sideB], () => {
     sides.value[0].res = sideA.value
@@ -135,8 +151,6 @@ const insight = computed(() => {
 const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'
 
 const validate = () => {
-    if (amountWan.value < 0) amountWan.value = 0
-    if (amountWan.value > 10000) amountWan.value = 10000
     if (rate.value < 0) rate.value = 0
     if (rate.value > 20) rate.value = 20
     sides.value.forEach(s => {
@@ -148,11 +162,25 @@ watch(amountWan, validate)
 watch(rate, validate)
 watch(sides, validate, { deep: true, immediate: true })
 
+// ── 三分頁共用貸款總額 ─────────────────────────────────────────
+watch(amountWan, (v) => {
+    if (typeof v === 'number' && Number.isFinite(v) && v > 0) setSharedLoanAmountWan(v)
+})
+let offSharedLoanAmount = null
+const handleMortgageTab = () => {
+    const shared = getSharedLoanAmountWan()
+    if (shared !== null && shared !== amountWan.value) amountWan.value = shared
+}
+onUnmounted(() => {
+    if (offSharedLoanAmount) offSharedLoanAmount()
+    if (typeof window !== 'undefined') window.removeEventListener(MORTGAGE_TAB_EVENT, handleMortgageTab)
+})
+
 const shareCopied = ref(false)
 const buildShareURL = () => {
     if (typeof window === 'undefined') return ''
     const p = new URLSearchParams({
-        amount: String(Math.round(amountWan.value)),
+        amount: String(Math.round(effectiveAmountWan.value)),
         rate: String(rate.value),
         ya: String(sides.value[0].years),
         yb: String(sides.value[1].years),
@@ -168,6 +196,10 @@ const copyShareLink = async () => {
 }
 
 onMounted(() => {
+    offSharedLoanAmount = onSharedLoanAmountChange((v) => {
+        if (v !== amountWan.value) amountWan.value = v
+    })
+    if (typeof window !== 'undefined') window.addEventListener(MORTGAGE_TAB_EVENT, handleMortgageTab)
     if (typeof window !== 'undefined') {
         const p = new URLSearchParams(window.location.search)
         if (p.has('amount')) {
@@ -175,6 +207,7 @@ onMounted(() => {
             rate.value = parseFloat(p.get('rate')) ?? rate.value
             sides.value[0].years = parseInt(p.get('ya')) || sides.value[0].years
             sides.value[1].years = parseInt(p.get('yb')) || sides.value[1].years
+            if (typeof amountWan.value === 'number' && amountWan.value > 0) setSharedLoanAmountWan(amountWan.value)
             return
         }
     }
@@ -187,6 +220,9 @@ onMounted(() => {
             if (d.sides) sides.value = d.sides
         }
     } catch (_) {}
+    // 共用貸款總額：有共用值就採用（覆蓋 localStorage 還原值）
+    const shared = getSharedLoanAmountWan()
+    if (shared !== null) amountWan.value = shared
 })
 
 watch([amountWan, rate, sides], () => {

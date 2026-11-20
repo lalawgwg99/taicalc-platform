@@ -1,5 +1,6 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
+import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import RefinanceCalculator from '../../components/calculators/RefinanceCalculator.vue';
 
 const title = "房貸轉貸試算｜每月省多少、幾個月回本、總利息差｜TaiCalc";
@@ -34,12 +35,12 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="居住與房產" kicker="利率降 0.29%、餘額 800 萬，一年少付約 1.3 萬，但成本要先攤得回來。" faqs={faqs} dataVersion="REFI-2026.10-v1" dataYear="2026 年度" lastUpdated="2026-10-22" sources={[
+<ToolLayout title={title} description={description} keywords={keywords} category="居住與房產" faqs={faqs} dataVersion="REFI-2026.10-v1" dataYear="2026 年度" lastUpdated="2026-10-22" sources={[
     { label: '中央銀行｜金融統計與利率資料', href: 'https://www.cbc.gov.tw' },
     { label: '內政部地政司｜抵押權設定規費說明', href: 'https://www.land.moi.gov.tw' },
 ]}>
     <div slot="tool">
-        <RefinanceCalculator client:only="vue" />
+        <RefinanceCalculator client:only="vue"><CalculatorFallback slot="fallback" /></RefinanceCalculator>
     </div>
 
     <div slot="article">
