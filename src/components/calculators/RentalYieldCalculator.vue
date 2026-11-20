@@ -6,11 +6,23 @@
       <button
         v-for="p in presets"
         :key="p.title"
-        @click="applyPreset(p)"
+        @click="askPreset(p)"
         class="text-xs font-medium text-[#1D4B34] px-0 py-1.5 transition-all flex-shrink-0 hover:underline"
       >
         {{ p.title }}
       </button>
+    </div>
+    <!-- 站內確認：原生 window.confirm 在自動化瀏覽器會被靜默駁回（等同取消），
+         改用站內確認列＋復原，任何環境都看得到、測得到 -->
+    <div v-if="pendingPreset" class="mt-2 flex flex-wrap items-center gap-2 rounded-xl border border-[#E3DCCB] bg-[#F7F3EA] px-3 py-2">
+      <span class="text-xs text-ink-700">套用「{{ pendingPreset.title }}」會覆蓋目前輸入的數字，確定嗎？</span>
+      <button @click="confirmPreset" class="text-xs font-semibold text-white bg-[#1D4B34] rounded-lg px-3 py-1.5 min-h-[32px]">確定套用</button>
+      <button @click="pendingPreset = null" class="text-xs font-medium text-ink-600 px-2 py-1.5 min-h-[32px]">取消</button>
+    </div>
+    <div v-if="appliedPreset" class="mt-2 flex flex-wrap items-center gap-2 rounded-xl border border-[#E3DCCB] bg-[#F7F3EA] px-3 py-2">
+      <span class="text-xs text-ink-700">已套用「{{ appliedPreset }}」。</span>
+      <button @click="undoPreset" class="text-xs font-semibold text-[#1D4B34] underline px-2 py-1.5 min-h-[32px]">復原</button>
+      <button @click="appliedPreset = ''" class="text-xs font-medium text-ink-600 px-2 py-1.5 min-h-[32px]">關閉</button>
     </div>
 
     <!-- 1. 輸入：購屋與租金 -->
@@ -196,10 +208,33 @@ const presets = [
   { title: '高雄三房', v: { totalPriceWan: 750, monthlyRent: 16000, mgmtMonthly: 1000, houseTaxYearly: 9000, landTaxYearly: 5000, repairYearly: 10000, insuranceYearly: 3500, vacancyMonths: 1, loanWan: 0 } },
 ];
 
-function applyPreset(p) {
-  if (!window.confirm(`套用「${p.title}」會覆蓋目前輸入的數字，確定嗎？`)) {
-    return;
-  }
+const pendingPreset = ref(null);
+const appliedPreset = ref('');
+const lastInputs = ref(null);
+
+function snapshotInputs() {
+  return {
+    totalPriceWan: totalPriceWan.value,
+    monthlyRent: monthlyRent.value,
+    mgmtMonthly: mgmtMonthly.value,
+    houseTaxYearly: houseTaxYearly.value,
+    landTaxYearly: landTaxYearly.value,
+    repairYearly: repairYearly.value,
+    insuranceYearly: insuranceYearly.value,
+    vacancyMonths: vacancyMonths.value,
+    loanWan: loanWan.value,
+  };
+}
+
+function askPreset(p) {
+  appliedPreset.value = '';
+  pendingPreset.value = p;
+}
+
+function confirmPreset() {
+  const p = pendingPreset.value;
+  if (!p) return;
+  lastInputs.value = snapshotInputs();
   totalPriceWan.value = p.v.totalPriceWan;
   monthlyRent.value = p.v.monthlyRent;
   mgmtMonthly.value = p.v.mgmtMonthly;
@@ -209,6 +244,24 @@ function applyPreset(p) {
   insuranceYearly.value = p.v.insuranceYearly;
   vacancyMonths.value = p.v.vacancyMonths;
   loanWan.value = p.v.loanWan;
+  pendingPreset.value = null;
+  appliedPreset.value = p.title;
+}
+
+function undoPreset() {
+  const s = lastInputs.value;
+  if (!s) return;
+  totalPriceWan.value = s.totalPriceWan;
+  monthlyRent.value = s.monthlyRent;
+  mgmtMonthly.value = s.mgmtMonthly;
+  houseTaxYearly.value = s.houseTaxYearly;
+  landTaxYearly.value = s.landTaxYearly;
+  repairYearly.value = s.repairYearly;
+  insuranceYearly.value = s.insuranceYearly;
+  vacancyMonths.value = s.vacancyMonths;
+  loanWan.value = s.loanWan;
+  lastInputs.value = null;
+  appliedPreset.value = '';
 }
 
 const num = (v) => Number(v) || 0;
