@@ -39,10 +39,22 @@ const faqs = [
         q: "聚餐加 10% 服務費，分錢怎麼算？",
         a: "服務費先併入總額再拆：4人，餐費6,000元＋10%服務費600元＝6,600元，均分每人1,650元；權重分攤同樣先算含服務費總額再拆。"
     },
+    {
+        q: "分帳計算機可以算小費嗎？",
+        a: "目前沒有獨立的小費欄位，做法是把小費併入總金額再分攤：例如餐費 6,000 元＋小費 600 元，以總額 6,600 元均分，每人 1,650 元；也可以只分餐費、小費由當下在場的人另行處理，記得先講好再結帳。"
+    },
+    {
+        q: "出國旅遊外幣分帳怎麼算？",
+        a: "先以結帳當日匯率把外幣總額換算成台幣再分攤，或直接以原幣分攤、每人再各自換匯。若有人先刷卡墊付，記在「先付」欄，系統會自動算出最精簡的轉帳方案；刷卡那筆的 1.5% 海外手續費與回饋，可先用海外刷卡試算看淨回饋再決定誰刷。"
+    },
+    {
+        q: "Netflix、Spotify 等共享訂閱怎麼分攤？",
+        a: "家庭方案月費除以共用人數就是每人月付，例如 4 人合用一個家庭方案，月費除以 4；有人中途加入或退出就按使用天數比例重算。訂閱最容易漏的是自動續訂扣款日，建議用訂閱管家把每筆訂閱的扣款日與最晚取消日記下來。"
+    },
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-07">
+<ToolLayout title={title} description={description} keywords={keywords} category="實用工具" faqs={faqs} sources={[]} lastUpdated="2026-11-23">
     <SplitCalculator client:load slot="tool" />
 
     <div slot="article">
@@ -75,11 +87,17 @@ const faqs = [
         <h3>案例 4：3 人合租，水電費 1,850 元按用量分攤</h3>
         <p>其中一人在家工作（WFH）用電明顯較多：他的權重設 2、另兩人各設 1，總權重 4。WFH 者付 925 元、另兩人各付 462.5 元，實務上湊整為 <strong>925／463／462 元</strong>，合計正好 1,850 元。分攤前可先用 <a href="/tools/electricity-calculator">電費計算機</a> 試算整戶電費，再按權重拆分，比直接均分更少爭議。</p>
 
+        <h3>案例 5：6 人日本旅遊 5 天，外幣總額先換算再拆</h3>
+        <p>民宿、交通、餐飲合計 240,000 日圓，以 0.21 的試算匯率換算為台幣 50,400 元，6 人均分<strong>每人 8,400 元</strong>。匯率以結帳當日為準，數字會隨匯率浮動；若其中一人先刷卡墊付全額，把 50,400 元記在他的「先付」欄，系統會顯示其餘 5 人各轉帳 8,400 元給他。刷卡前先用 <a href="/tools/overseas-card-calculator">海外刷卡試算</a> 看回饋扣掉 1.5% 手續費後還剩多少，再決定由誰刷卡最划算。</p>
+
         <h2>相關工具</h2>
         <ul class="list-disc pl-5 space-y-2">
             <li><a href="/tools/electricity-calculator">電費計算機</a>：合租水電先算出整戶電費，再按權重拆分。</li>
             <li><a href="/tools/car-cost-calculator">汽車持有成本計算機</a>：出遊油錢、過路費先算清楚，再決定要不要併進分帳。</li>
+            <li><a href="/tools/overseas-card-calculator">海外刷卡試算</a>：出國旅遊有人先刷卡墊付時，先算回饋扣掉 1.5% 手續費後的淨回饋。</li>
+            <li><a href="/tools/subscription-tracker">訂閱管家</a>：共享訂閱的扣款日與最晚取消日記下來，避免自動續訂多扣錢。</li>
             <li><a href="/blog/2026-travel-group-expense-splitting-guide">旅遊團體分帳完整指南</a>：長途旅遊公基金模式的完整做法。</li>
+            <li><a href="/blog/2026-dinner-aa-split-service-charge-guide">聚餐 AA 制怎麼分才不吵架</a>：4 人帳單 3,630 元含 10% 服務費的實算表，合租房租三種分法。</li>
         </ul>
     </div>
 </ToolLayout>

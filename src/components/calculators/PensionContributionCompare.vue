@@ -42,6 +42,7 @@
                 :rows="[
                 { label: '每月存入', value: `$ ${fmt(monthlyContribution)}` },
                 { label: '累積省下的稅', value: `$ ${fmt(totalTaxSaving)}`, tone: 'growth' },
+                { label: '節稅再投入後總計', value: `$ ${fmt(contributionFV + taxSavingFV)}`, tone: 'growth' },
                 ]"
             />
             <ResultReceipt
@@ -53,6 +54,7 @@
                 :rows="[
                 { label: '每月投入', value: `$ ${fmt(monthlyContribution)}` },
                 { label: '無節稅', value: '—' },
+                { label: '節稅再投入後總計', value: `$ ${fmt(investFV)}` },
                 ]"
             />
         </div>

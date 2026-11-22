@@ -72,13 +72,14 @@ const faqs = [
     <div slot="tool">
         <div class="tool-tabs" role="tablist" aria-label="勞退功能切換">
             <button type="button" data-tabbtn="calc" role="tab" aria-selected="true">勞退試算</button>
-            <button type="button" data-tabbtn="lump" role="tab" aria-selected="false">一次領 vs 月領</button>
+            <button type="button" data-tabbtn="lump" role="tab" aria-selected="false">勞保一次領 vs 月領</button>
             <button type="button" data-tabbtn="selfpay" role="tab" aria-selected="false">自提 0% vs 6%</button>
         </div>
         <div data-tabpanel="calc" role="tabpanel">
             <LaborPensionCalculator client:load />
         </div>
         <div data-tabpanel="lump" role="tabpanel" hidden>
+            <p class="text-xs leading-relaxed text-ink-500 mb-3">此分頁算的是<strong>勞保老年給付</strong>（月領每年資給 1.55%），不是上方的勞退專戶；請用你自己的平均月投保薪資與勞保年資輸入，數字與勞退試算各自獨立。</p>
             <LaborPensionLumpVsMonthly client:load />
         </div>
         <div data-tabpanel="selfpay" role="tabpanel" hidden>
