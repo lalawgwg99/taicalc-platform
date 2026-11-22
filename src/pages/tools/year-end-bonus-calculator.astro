@@ -30,7 +30,7 @@ const faqs = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs}>
+<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs} lastUpdated="2026-11-23">
     <YearEndBonusCalculator client:load slot="tool" />
 
     <div slot="article">
@@ -45,9 +45,9 @@ const faqs = [
 
         <h3>三個實戰提醒</h3>
         <ul class="list-disc pl-5 space-y-2">
-            <li><strong>預扣≠實繳：</strong> 被扣的 5% 隔年報稅可抵，多退少補。適用稅率 5% 的人，這筆幾乎會全退。</li>
+            <li><strong>預扣≠實繳：</strong> 被扣的 5% 隔年報稅可抵，多退少補。適用稅率 5% 的人，這筆幾乎會全退。報稅時實際要繳多少，可用 <a href="/tools/income-tax-calculator">所得稅試算</a>先估。</li>
             <li><strong>發放時點決定年度：</strong> 1 月發的就是當年度所得，跨年度發放會影響隔年稅額，領高年終的人可留意。</li>
-            <li><strong>談 offer 看總額：</strong> 面試談薪水時，把「保障年終幾個月」換算成年薪總額再比較。月薪 5 萬＋保障 2 個月（年薪 70 萬），贏過月薪 5.3 萬＋沒保障年終（年薪 63.6 萬）。</li>
+            <li><strong>談 offer 看總額：</strong> 面試談薪水時，把「保障年終幾個月」換算成年薪總額再比較。月薪 5 萬＋保障 2 個月（年薪 70 萬），贏過月薪 5.3 萬＋沒保障年終（年薪 63.6 萬）。月薪加年終攤開來比，可用 <a href="/tools/salary-calculator">薪資實拿計算機</a>算每月實拿。</li>
         </ul>
 
         <blockquote>
