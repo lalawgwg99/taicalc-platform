@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import YiwenPromo from '../../components/YiwenPromo.astro';
 import MortgageCalculator from '../../components/calculators/MortgageCalculator.vue';
 import MortgageTermCompare from '../../components/calculators/MortgageTermCompare.vue';
@@ -101,13 +100,13 @@ const policyRange = governance.sources.map(source => `[${source.label}](${source
             <button type="button" data-tabbtn="qingan" role="tab" aria-selected="false">青安 vs 一般</button>
         </div>
         <div data-tabpanel="calc" role="tabpanel">
-            <MortgageCalculator client:only="vue"><CalculatorFallback slot="fallback" /></MortgageCalculator>
+            <MortgageCalculator client:load></MortgageCalculator>
         </div>
         <div data-tabpanel="term" role="tabpanel" hidden>
-            <MortgageTermCompare client:only="vue"><CalculatorFallback slot="fallback" /></MortgageTermCompare>
+            <MortgageTermCompare client:load></MortgageTermCompare>
         </div>
         <div data-tabpanel="qingan" role="tabpanel" hidden>
-            <MortgageCompare client:only="vue"><CalculatorFallback slot="fallback" /></MortgageCompare>
+            <MortgageCompare client:load></MortgageCompare>
         
     <script is:inline>
         (function () {

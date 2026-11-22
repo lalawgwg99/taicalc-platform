@@ -50,10 +50,10 @@ const faqs = [
             <button type="button" data-tabbtn="etfvs" role="tab" aria-selected="false">三檔比較</button>
         </div>
         <div data-tabpanel="calc" role="tabpanel">
-            <EtfDividendCalculator client:only="vue" />
+            <EtfDividendCalculator client:load />
         </div>
         <div data-tabpanel="etfvs" role="tabpanel" hidden>
-            <EtfCompare client:only="vue" />
+            <EtfCompare client:load />
         
     <script is:inline>
         (function () {

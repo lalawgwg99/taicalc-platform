@@ -99,7 +99,7 @@ const faqs = [
 
         <section class="ec-section" id="calculator" aria-label="電費試算">
             <h2 class="ec-h2">電費試算</h2>
-            <ElectricityCalculator client:only="vue" />
+            <ElectricityCalculator client:load />
         </section>
 
         <details class="ec-section ec-collapse" aria-label="電價審議追蹤">
@@ -193,13 +193,13 @@ const faqs = [
                 </tbody>
             </table></div>
             <p class="text-xs text-ink-400 mt-2">以台電 2025-10-01 住宅費率逐級計價：每級距金額四捨五入至元後加總；度數越高、夏月貴的差距越大。下方互動比較器可輸入自己的度數即時對照。</p>
-            <ElectricityCompare client:only="vue" />
+            <ElectricityCompare client:load />
         </section>
 
         <section class="ec-section" aria-label="比家電">
             <h2 class="ec-h2">比家電：誰是吃電怪獸？</h2>
             <p class="ec-lead">看不懂能源效率標示？選家電類型，照著黃色指引找到標示上的數字，3 台家電直接比年電費：</p>
-            <ApplianceEnergyCompare client:only="vue" />
+            <ApplianceEnergyCompare client:load />
         </section>
     </div>
 

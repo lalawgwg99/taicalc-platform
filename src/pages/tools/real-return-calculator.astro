@@ -18,10 +18,10 @@ const faqs = [
       <button type="button" data-tabbtn="assetvs" role="tab" aria-selected="false">三資產比較</button>
     </div>
     <div data-tabpanel="calc" role="tabpanel">
-      <DecisionCalculator type="real-return" client:only="vue" />
+      <DecisionCalculator type="real-return" client:load />
     </div>
     <div data-tabpanel="assetvs" role="tabpanel" hidden>
-      <AssetCompare client:only="vue" />
+      <AssetCompare client:load />
     
     <script is:inline>
     (function () {

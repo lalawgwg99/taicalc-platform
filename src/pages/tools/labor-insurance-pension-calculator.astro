@@ -13,7 +13,7 @@ const faqs = [
 ];
 ---
 <ToolLayout title="勞保老年年金試算｜一次領與月領比較" description="依平均月投保薪資、勞保年資與請領年齡，試算老年年金並比較一次請領。" keywords="勞保老年年金試算,勞保退休金,一次領月領,退休年齡,平均投保薪資" category="退休與保障" kicker="把提早領、延後領和一次請領放到同一條時間軸。" faqs={faqs} dataVersion="2026.07-bli-v1" dataYear="2026 請領年齡" lastUpdated="2026-11-02" sources={sources}>
-  <DecisionCalculator type="labor-pension" client:only="vue" slot="tool" />
+  <DecisionCalculator type="labor-pension" client:load slot="tool" />
   <IntentPanel
     slot="after-tool"
     source="labor-pension"

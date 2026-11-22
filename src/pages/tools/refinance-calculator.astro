@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import RefinanceCalculator from '../../components/calculators/RefinanceCalculator.vue';
 
 const title = "房貸轉貸試算｜每月省多少、幾個月回本、總利息差｜TaiCalc";
@@ -40,7 +39,7 @@ const faqs = [
     { label: '內政部地政司｜抵押權設定規費說明', href: 'https://www.land.moi.gov.tw' },
 ]}>
     <div slot="tool">
-        <RefinanceCalculator client:only="vue"><CalculatorFallback slot="fallback" /></RefinanceCalculator>
+        <RefinanceCalculator client:load></RefinanceCalculator>
     </div>
 
     <div slot="article">

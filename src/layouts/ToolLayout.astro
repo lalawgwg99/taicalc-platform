@@ -280,8 +280,9 @@ if (calculatorPanel) {
         });
         observer.observe(calculatorPanel, { subtree: true, childList: true, characterData: true });
 
-        // 掛載看門狗：client:only 島在水合前是全空的（只有 fallback 骨架、沒有 input）。
-        // 10 秒後島區域仍無任何輸入欄位，視為載入失敗，顯示錯誤與重新載入按鈕
+        // 掛載看門狗：2026-11-22 起計算器改 SSR（client:load），輸入欄位由伺服端直出、
+        // 首屏即存在；10 秒後島區域仍無任何輸入欄位，代表整頁渲染失敗，顯示錯誤與重新載入按鈕。
+        // 注意：JS 載入失敗時輸入欄位看得見但點了沒反應，此檢查抓不到那種情況（需重整）。
         // （本站是純 MPA、沒有 client router，所謂「站內切換空白」實為冷載入水合慢）。
         window.setTimeout(() => {
             if (calculatorPanel.querySelector('input, select, textarea')) return;

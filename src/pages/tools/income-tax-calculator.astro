@@ -49,7 +49,7 @@ const faqs = [
     lastUpdated={governance.updatedAt}
     sources={governance.sources}
 >
-    <IncomeTaxCalculator client:only="vue" slot="tool" />
+    <IncomeTaxCalculator client:load slot="tool" />
     <IntentPanel
         slot="after-tool"
         source="income-tax"

@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import RealEstateGainsTaxCalculator from '../../components/calculators/RealEstateGainsTaxCalculator.vue';
 
 const faqs = [
@@ -49,7 +48,7 @@ const faqs = [
   faqs={faqs}
 >
     <div slot="tool">
-        <RealEstateGainsTaxCalculator client:only="vue"><CalculatorFallback slot="fallback" /></RealEstateGainsTaxCalculator>
+        <RealEstateGainsTaxCalculator client:load></RealEstateGainsTaxCalculator>
     </div>
 
     <div slot="article">

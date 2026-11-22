@@ -72,7 +72,7 @@ const faqs = [
     lastUpdated={governance.updatedAt}
     sources={governance.sources}
 >
-    <SalaryCalculator client:only="vue" slot="tool" />
+    <SalaryCalculator client:load slot="tool" />
 
     <div slot="article">
         <h2>2026 薪資實拿怎麼算？扣除項目全解析</h2>

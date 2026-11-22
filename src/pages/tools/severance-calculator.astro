@@ -22,7 +22,7 @@ const faqs = [
 ];
 ---
 <ToolLayout title="離職結算計算器｜資遣費、預告工資、特休" description="一次估算勞退新制資遣費、預告期間工資、未休特休與最後薪資。" keywords="資遣費計算,離職結算,預告工資,未休特休,最後薪資" category="工作與收入" kicker="離開公司前，先把每一筆應結清的項目列出來。" faqs={faqs} dataVersion="2026.07-labor-v1" dataYear="現行勞動法規" lastUpdated="2026-11-22" sources={sources}>
-  <DecisionCalculator type="separation" client:only="vue" slot="tool" />
+  <DecisionCalculator type="separation" client:load slot="tool" />
   <IntentPanel
     slot="after-tool"
     source="severance"

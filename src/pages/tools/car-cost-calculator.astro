@@ -17,7 +17,7 @@ const faqs = [
 ];
 ---
 <ToolLayout title="買車總成本計算器｜RAV4、CR-V、Corolla Cross 養車成本" description="快速帶入 2026 RAV4、CR-V、Corolla Cross 原廠車價、排氣量與油耗，再整合車貸、稅費、保險、停車、保養和折舊，算出真正每月養車成本。" keywords="買車成本計算機,養車成本,RAV4養車成本,CRV養車成本,Corolla Cross養車成本,車貸試算,牌照稅,公路養管費,汽車折舊" category="交通與購車" kicker="先選熱門車款，再用自己的成交價與使用習慣算完整持有成本。" faqs={faqs} dataVersion="2026.07-car-v3" dataYear="2026 原廠規配與現行稅費" lastUpdated="2026-07-30" sources={sources}>
-  <DecisionCalculator type="car" client:only="vue" slot="tool" />
+  <DecisionCalculator type="car" client:load slot="tool" />
   <IntentPanel
     slot="after-tool"
     source="car-cost"

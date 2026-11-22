@@ -76,13 +76,13 @@ const faqs = [
             <button type="button" data-tabbtn="selfpay" role="tab" aria-selected="false">自提 0% vs 6%</button>
         </div>
         <div data-tabpanel="calc" role="tabpanel">
-            <LaborPensionCalculator client:only="vue" />
+            <LaborPensionCalculator client:load />
         </div>
         <div data-tabpanel="lump" role="tabpanel" hidden>
-            <LaborPensionLumpVsMonthly client:only="vue" />
+            <LaborPensionLumpVsMonthly client:load />
         </div>
         <div data-tabpanel="selfpay" role="tabpanel" hidden>
-            <PensionContributionCompare client:only="vue" />
+            <PensionContributionCompare client:load />
         
     <script is:inline>
         (function () {

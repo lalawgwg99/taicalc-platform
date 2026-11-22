@@ -18,10 +18,10 @@ const faqs = [
       <button type="button" data-tabbtn="pitfall" role="tab" aria-selected="false">借錢前檢測</button>
     </div>
     <div data-tabpanel="calc" role="tabpanel">
-      <DecisionCalculator type="debt" client:only="vue" />
+      <DecisionCalculator type="debt" client:load />
     </div>
     <div data-tabpanel="pitfall" role="tabpanel" hidden>
-      <LoanPitfallDetector client:only="vue" />
+      <LoanPitfallDetector client:load />
     </div>
     <script is:inline>
       (function () {

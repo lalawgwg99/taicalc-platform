@@ -31,7 +31,7 @@ const faqs = [
 ---
 
 <ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs}>
-    <YearEndBonusCalculator client:only="vue" slot="tool" />
+    <YearEndBonusCalculator client:load slot="tool" />
 
     <div slot="article">
         <h2>年終獎金的兩道關卡：預扣稅與補充保費</h2>

@@ -1,6 +1,5 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-import CalculatorFallback from '../../components/CalculatorFallback.astro';
 import HouseTaxCalculator from '../../components/calculators/HouseTaxCalculator.vue';
 
 const sources = [
@@ -45,7 +44,7 @@ const faqs = [
   faqs={faqs}
 >
   <div slot="tool">
-    <HouseTaxCalculator client:only="vue"><CalculatorFallback slot="fallback" /></HouseTaxCalculator>
+    <HouseTaxCalculator client:load></HouseTaxCalculator>
   </div>
 
   <div slot="article">

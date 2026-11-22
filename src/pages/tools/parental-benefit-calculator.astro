@@ -13,7 +13,7 @@ const faqs = [
 ];
 ---
 <ToolLayout title="育兒津貼與育嬰留停收入試算" description="試算雙親育嬰留停給付、政府加發補助、0 至 2 歲育兒津貼與家庭收入缺口。" keywords="育兒津貼,育嬰留停津貼,育嬰假薪水,0到2歲育兒津貼,育嬰留停80%" category="家庭與育兒" kicker="兩位家長怎麼排，家庭現金流差多少，一次看懂。" faqs={faqs} dataVersion="2026.07-parental-v1" dataYear="2026 現行制度" lastUpdated="2026-11-22" sources={sources}>
-  <DecisionCalculator type="parental" client:only="vue" slot="tool" />
+  <DecisionCalculator type="parental" client:load slot="tool" />
   <IntentPanel
     slot="after-tool"
     source="parental"

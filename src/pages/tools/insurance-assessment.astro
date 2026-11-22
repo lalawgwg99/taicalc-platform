@@ -27,7 +27,7 @@ const faqs = [
 ---
 
 <ToolLayout title={title} description={description} keywords={keywords} category="理財規劃" faqs={faqs}>
-    <InsuranceAssessment client:only="vue" slot="tool" />  
+    <InsuranceAssessment client:load slot="tool" />  
 
     <div slot="article">
         <h2>買保險是保障還是投資？IRR 幫你照妖鏡</h2>
