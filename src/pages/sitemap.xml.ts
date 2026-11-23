@@ -121,7 +121,7 @@ export const GET: APIRoute = async () => {
       path: `/blog/${post.id}`,
       priority: '0.7',
       changefreq: 'monthly',
-      lastmod: post.data.date,
+      lastmod: post.data.updated ?? post.data.date,
     })),
   ];
 

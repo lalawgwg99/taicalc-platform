@@ -27,7 +27,7 @@ const articleSchema = JSON.stringify({
     "headline": post.data.title,
     "description": post.data.excerpt,
     "datePublished": post.data.date,
-    "dateModified": post.data.date,
+    "dateModified": post.data.updated ?? post.data.date,
     "mainEntityOfPage": articleURL.href,
     "image": coverImageURL,
     "author": {
