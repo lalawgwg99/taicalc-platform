@@ -27,10 +27,18 @@ const faqs = [
         q: "公司可以不發年終獎金嗎？",
         a: "勞基法未強制發年終，是否發、幾月看契約、工作規則、團體協約或慣例；契約明訂保障年薪者，年終屬工資一部分，雇主必須發；僅視營運狀況發放者非法定必要給付。"
     },
+    {
+        q: "年終獎金幾個月才正常？",
+        a: "104 調查 2026 年平均 1.61 個月，1–2 個月最常見；契約寫明保障年薪才算數，沒寫就看公司營運狀況。"
+    },
+    {
+        q: "年終獎金何時發？",
+        a: "多在農曆年前 1–2 月發放，實際日期看公司規定；發放日決定所得年度，1 月發算當年所得。"
+    },
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs} lastUpdated="2026-11-23">
+<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs} lastUpdated="2026-11-24">
     <YearEndBonusCalculator client:load slot="tool" />
 
     <div slot="article">
@@ -53,5 +61,27 @@ const faqs = [
         <blockquote>
             <strong>11 月底了，年終快發了：</strong> 104 人力銀行 11/17 調查：78.5% 企業發年終、平均 1.61 個月，金融業 2.85 個月居冠。年終通常在農曆年前（1–2 月）發放，入帳前先用計算機試算實拿、預留稅款——單次達 90,501 元先預扣 5%，全年獎金超投保金額 4 倍再扣補充保費，不要等入帳才開始想。
         </blockquote>
+
+        <h3>1 個月 vs 2 個月實拿對照</h3>
+        <p>以投保金額 45,800 元、全年僅此一筆獎金試算，用站上年終邏輯計算：</p>
+        <div class="overflow-x-auto"><table class="w-full text-sm border-collapse">
+            <thead>
+                <tr class="border-b border-paper-300 text-left text-ink-400">
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">月薪</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">年終月數</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">年終總額</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">預扣 5%</th>
+                    <th class="py-2 pr-3 font-medium whitespace-nowrap">補充保費</th>
+                    <th class="py-2 font-medium whitespace-nowrap">實拿</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-paper-200 text-ink-600">
+                <tr><td class="py-2 pr-3 whitespace-nowrap">50,000 元</td><td class="py-2 pr-3 whitespace-nowrap">1 個月</td><td class="py-2 pr-3 whitespace-nowrap">50,000 元</td><td class="py-2 pr-3 whitespace-nowrap">0 元</td><td class="py-2 pr-3 whitespace-nowrap">0 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">50,000 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">50,000 元</td><td class="py-2 pr-3 whitespace-nowrap">2 個月</td><td class="py-2 pr-3 whitespace-nowrap">100,000 元</td><td class="py-2 pr-3 whitespace-nowrap">5,000 元</td><td class="py-2 pr-3 whitespace-nowrap">0 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">95,000 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">100,000 元</td><td class="py-2 pr-3 whitespace-nowrap">1 個月</td><td class="py-2 pr-3 whitespace-nowrap">100,000 元</td><td class="py-2 pr-3 whitespace-nowrap">5,000 元</td><td class="py-2 pr-3 whitespace-nowrap">0 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">95,000 元</td></tr>
+                <tr><td class="py-2 pr-3 whitespace-nowrap">100,000 元</td><td class="py-2 pr-3 whitespace-nowrap">2 個月</td><td class="py-2 pr-3 whitespace-nowrap">200,000 元</td><td class="py-2 pr-3 whitespace-nowrap">10,000 元</td><td class="py-2 pr-3 whitespace-nowrap">354 元</td><td class="py-2 font-semibold text-ink-700 whitespace-nowrap">189,646 元</td></tr>
+            </tbody>
+        </table></div>
+        <p>月薪 5 萬領 2 個月剛過 90,501 元門檻，先扣 5,000 元；月薪 10 萬領 2 個月，全年獎金超投保金額 4 倍（183,200 元），再扣補充保費 354 元。實際金額以公司核算為準。</p>
     </div>
 </ToolLayout>

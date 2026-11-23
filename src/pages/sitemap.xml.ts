@@ -32,7 +32,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/parental-benefit-calculator': '2026-11-08',
   '/tools/real-return-calculator': '2026-11-08',
   '/tools/severance-calculator': '2026-11-23',
-  '/tools/etf-dividend-calculator': '2026-11-08',
+  '/tools/etf-dividend-calculator': '2026-11-24',
   '/tools/fire-calculator': '2026-11-08',
   '/tools/income-tax-calculator': '2026-11-08',
   '/tools/insurance-assessment': '2026-11-08',
@@ -43,7 +43,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/rental-yield-calculator': '2026-11-08',
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
-  '/tools/year-end-bonus-calculator': '2026-11-23',
+  '/tools/year-end-bonus-calculator': '2026-11-24',
   '/tools/ipo-lottery-calculator': '2026-11-12',
 };
 
