@@ -14,7 +14,13 @@
                 <input id="fld-00d1059e" type="text" inputmode="decimal" v-model.number="insuredAmount" aria-label="健保投保金額" placeholder="50600"
                     class="input-clean font-semibold tabular-nums">
             </div>
+            <div>
+                <label for="fld-other-bonus" class="block text-xs font-medium text-ink-400 mb-1.5">今年已領其他獎金（元）</label>
+                <input id="fld-other-bonus" type="text" inputmode="decimal" v-model.number="otherBonus" aria-label="今年已領其他獎金" placeholder="0"
+                    class="input-clean font-semibold tabular-nums">
+            </div>
             <p class="text-[11px] text-ink-400">預設 50,600 元對應月薪 5 萬；請依薪資單上的健保投保金額填寫（不是勞保投保薪資）。</p>
+            <p class="text-[11px] text-ink-400">三節、績效、分紅等今年已領的獎金都算在內；補充保費按全年累計超過投保金額 4 倍的部分扣 2.11%，不是只看這次年終。</p>
             <p class="text-[11px] text-ink-400">115 年度（2026）起扣點為 90,501 元；全年獎金超過當月投保金額 4 倍，超過部分扣 2.11% 補充保費。</p>
         </div>
 
@@ -27,6 +33,7 @@
                 main-tone="brand"
                 :rows="[
                     { label: '年終總額', value: `$${fmt(bonus)}` },
+                    ...(otherBonus > 0 ? [{ label: '今年已領其他獎金', value: `$${fmt(otherBonus)}` }] : []),
                     { label: '預扣所得稅 (5%)', value: withholdingTax > 0 ? `−$${fmt(withholdingTax)}` : '$0', tone: withholdingTax > 0 ? 'tax' : 'neutral' },
                     { label: '補充保費 (2.11%)', value: suppFee > 0 ? `−$${fmt(suppFee)}` : '$0', tone: suppFee > 0 ? 'tax' : 'neutral' },
                 ]"
@@ -49,7 +56,7 @@
             <ul class="text-xs leading-relaxed text-ink-500 space-y-1 list-disc pl-4">
                 <li v-for="(line, i) in insight" :key="i">{{ line }}</li>
             </ul>
-            <p class="text-[10px] text-ink-400">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費看的是全年獎金有沒有超過投保金額 4 倍，這裡用這次年終單筆來估，實際以公司核算為準。</p>
+            <p class="text-[10px] text-ink-400">預扣稅款不是最終稅額，隔年 5 月申報綜所稅時多退少補。補充保費按全年累計獎金（本次年終＋今年已領其他獎金）超過投保金額 4 倍的部分計扣，實際以公司核算為準。</p>
         </div>
 
         <div class="flex gap-2">
@@ -80,11 +87,13 @@ import {
 
 const bonus = ref(100000)
 const insuredAmount = ref(50600)
+const otherBonus = ref(0)
 
 const withholdingTax = computed(() => calculateWithholdingTax(bonus.value))
 const suppThreshold = computed(() => calculateSuppThreshold(insuredAmount.value))
-const suppFee = computed(() => calculateSuppFee(bonus.value, insuredAmount.value))
-const netBonus = computed(() => calculateNetBonus(bonus.value, insuredAmount.value))
+const suppFee = computed(() => calculateSuppFee(bonus.value, insuredAmount.value, otherBonus.value))
+const netBonus = computed(() => calculateNetBonus(bonus.value, insuredAmount.value, otherBonus.value))
+const totalBonus = computed(() => (bonus.value || 0) + (otherBonus.value || 0))
 const thresholdDiff = computed(() => {
     const b = bonus.value || 0
     if (b >= WITHHOLD_THRESHOLD) return '已超過，須預扣'
@@ -101,7 +110,7 @@ const insight = computed(() => {
         parts.push('未達起扣點，發放時免預扣，但年終仍須併入當年度薪資所得申報。')
     }
     if (suppFee.value > 0) {
-        parts.push(`年終超過投保金額 4 倍（$${fmt(suppThreshold.value)}），超過部分再扣 2.11% 補充保費 $${fmt(suppFee.value)}。`)
+        parts.push(`全年獎金累計 $${fmt(totalBonus.value)}，超過投保金額 4 倍（$${fmt(suppThreshold.value)}），本次扣 2.11% 補充保費 $${fmt(suppFee.value)}。`)
     }
     if (withholdingTax.value > 0) {
         parts.push('被預扣的 5% 不是消失，隔年報稅可抵減，多退少補。')
@@ -113,4 +122,5 @@ const fmt = (n) => n ? Math.round(n).toLocaleString('zh-TW') : '0'
 
 watch(bonus, (v) => { if (v < 0) bonus.value = 0; if (v > 100000000) bonus.value = 100000000 })
 watch(insuredAmount, (v) => { if (v < 0) insuredAmount.value = 0; if (v > 313000) insuredAmount.value = 313000 })
+watch(otherBonus, (v) => { if (v < 0) otherBonus.value = 0; if (v > 100000000) otherBonus.value = 100000000 })
 </script>

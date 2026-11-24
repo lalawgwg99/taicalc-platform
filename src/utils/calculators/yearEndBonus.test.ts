@@ -62,6 +62,30 @@ describe('calculateSuppFee', () => {
   });
 });
 
+describe('calculateSuppFee 全年累計（投保金額 45,800，門檻 183,200）', () => {
+  it('已領 100,000＋本次 100,000：累計 200,000 超 16,800，補充保費 354（單筆估會誤算為 0）', () => {
+    expect(calculateSuppFee(100000, 45800, 100000)).toBe(354);
+  });
+
+  it('已領 150,000＋本次 100,000：累計 250,000 超 66,800，補充保費 1,409', () => {
+    expect(calculateSuppFee(100000, 45800, 150000)).toBe(1409);
+  });
+
+  it('費基不超過本次給付：已領 500,000＋本次 100,000，費基取 100,000，補充保費 2,110', () => {
+    expect(calculateSuppFee(100000, 45800, 500000)).toBe(2110);
+  });
+
+  it('其他獎金為 0 時與舊行為一致', () => {
+    expect(calculateSuppFee(250000, 45800, 0)).toBe(1409);
+    expect(calculateSuppFee(100000, 45800, 0)).toBe(0);
+  });
+
+  it('其他獎金負數、NaN 一律當 0', () => {
+    expect(calculateSuppFee(100000, 45800, -50000)).toBe(0);
+    expect(calculateSuppFee(100000, 45800, NaN)).toBe(0);
+  });
+});
+
 describe('calculateNetBonus', () => {
   it('案例 1：80,000 全拿', () => {
     expect(calculateNetBonus(80000, 45800)).toBe(80000);
@@ -78,5 +102,9 @@ describe('calculateNetBonus', () => {
   it('90,501 魔咒：實拿 85,976，比 90,500 全拿少 4,524', () => {
     expect(calculateNetBonus(90501, 45800)).toBe(85976);
     expect(calculateNetBonus(90500, 45800)).toBe(90500);
+  });
+
+  it('全年累計：已領 100,000＋本次 100,000，100,000 − 5,000 − 354 = 94,646', () => {
+    expect(calculateNetBonus(100000, 45800, 100000)).toBe(94646);
   });
 });
