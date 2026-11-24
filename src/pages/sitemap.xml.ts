@@ -12,7 +12,7 @@ const SITE = 'https://taicalc.com';
 // 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
 const toolLastUpdated: Record<string, string> = {
   '/tools/delivery-income-calculator': '2026-11-15',
-  '/tools/electricity-calculator': '2026-11-23',
+  '/tools/electricity-calculator': '2026-11-25',
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
   '/tools/mortgage-calculator': '2026-11-23',
   '/tools/salary-calculator': '2026-11-16',
@@ -32,7 +32,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/parental-benefit-calculator': '2026-11-08',
   '/tools/real-return-calculator': '2026-11-08',
   '/tools/severance-calculator': '2026-11-23',
-  '/tools/etf-dividend-calculator': '2026-11-24',
+  '/tools/etf-dividend-calculator': '2026-11-25',
   '/tools/fire-calculator': '2026-11-08',
   '/tools/income-tax-calculator': '2026-11-08',
   '/tools/insurance-assessment': '2026-11-08',
@@ -43,7 +43,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/rental-yield-calculator': '2026-11-08',
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
-  '/tools/year-end-bonus-calculator': '2026-11-24',
+  '/tools/year-end-bonus-calculator': '2026-11-25',
   '/tools/ipo-lottery-calculator': '2026-11-12',
 };
 
