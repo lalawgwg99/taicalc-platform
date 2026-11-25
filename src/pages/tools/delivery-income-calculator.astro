@@ -53,10 +53,24 @@ const sources = [
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs} sources={sources} lastUpdated="2026-11-15">
+<ToolLayout title={title} description={description} keywords={keywords} category="工作計算" faqs={faqs} sources={sources} lastUpdated="2026-11-26">
     <DeliveryIncomeCalculator client:load slot="tool" />
 
     <div slot="article">
+        <h3>3 種跑法月收速查</h3>
+        <p>以下用本頁計算機公式實算（每服務小時 400 元、油價 30 元、油耗 35 公里／公升、保養攤提 0.8 元／公里、保險折舊每月 1,500 元）。詳細算式與成本拆解見<a href="/blog/2026-delivery-monthly-income-after-new-act">外送員一個月賺多少？專法後月收試算</a>。</p>
+        <div class="overflow-x-auto">
+        <table>
+            <thead><tr><th class="whitespace-nowrap">跑法</th><th class="whitespace-nowrap">月服務時數</th><th class="whitespace-nowrap">毛收入（每月）</th><th class="whitespace-nowrap">估計淨收入（每月）</th></tr></thead>
+            <tbody>
+                <tr><td class="whitespace-nowrap">假日兼職（週六日各 5 小時）</td><td class="whitespace-nowrap">40 小時</td><td class="whitespace-nowrap">16,000 元</td><td class="whitespace-nowrap">約 13,307 元</td></tr>
+                <tr><td class="whitespace-nowrap">下班兼職（平日每晚 3 小時）</td><td class="whitespace-nowrap">60 小時</td><td class="whitespace-nowrap">24,000 元</td><td class="whitespace-nowrap">約 20,710 元</td></tr>
+                <tr><td class="whitespace-nowrap">專職衝刺（打八折後）</td><td class="whitespace-nowrap">138 小時</td><td class="whitespace-nowrap">55,200 元</td><td class="whitespace-nowrap">約 49,584 元</td></tr>
+            </tbody>
+        </table>
+        </div>
+        <p>專職那欄已打八折：每周上線 40 小時以上的族群，服務時數平均減少約 21%，173 小時打八折成 138 小時才是比較接近口袋的數字。數字皆為試算，實際以你的車況與跑法為準。</p>
+
         <h2>跑外送真的好賺嗎？揭密騎士的真實時薪</h2>
         <p>外送平台的高薪神話已成過去式，取而代之的是更精算的獎勵機制。想要在外送戰場生存，您不能只看「跑單總收入」，更要學會計算「淨利」。同樣月入 4 萬的外送員，扣除成本後一個可能實拿 3.2 萬，另一個只剩 2.6 萬，差別全在成本有沒有算清楚。</p>
 

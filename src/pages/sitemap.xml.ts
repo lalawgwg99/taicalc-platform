@@ -11,7 +11,7 @@ const SITE = 'https://taicalc.com';
 // 各工具頁的實際更新日（以頁面顯示的 lastUpdated 為準，2026-11-08 同步（手機排版總檢查））。
 // 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
 const toolLastUpdated: Record<string, string> = {
-  '/tools/delivery-income-calculator': '2026-11-15',
+  '/tools/delivery-income-calculator': '2026-11-26',
   '/tools/electricity-calculator': '2026-11-25',
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
   '/tools/mortgage-calculator': '2026-11-23',
@@ -43,7 +43,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/rental-yield-calculator': '2026-11-08',
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
-  '/tools/year-end-bonus-calculator': '2026-11-25',
+  '/tools/year-end-bonus-calculator': '2026-11-26',
   '/tools/ipo-lottery-calculator': '2026-11-12',
 };
 
