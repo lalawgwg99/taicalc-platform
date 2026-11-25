@@ -12,7 +12,7 @@ const SITE = 'https://taicalc.com';
 // 頁面改版時同步更新此表；未列出的工具頁（如 /nestegg 非 ToolLayout 頁）省略 lastmod。
 const toolLastUpdated: Record<string, string> = {
   '/tools/delivery-income-calculator': '2026-11-26',
-  '/tools/electricity-calculator': '2026-11-25',
+  '/tools/electricity-calculator': '2026-11-26',
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
   '/tools/mortgage-calculator': '2026-11-23',
   '/tools/salary-calculator': '2026-11-16',

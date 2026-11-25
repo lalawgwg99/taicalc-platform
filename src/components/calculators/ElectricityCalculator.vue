@@ -79,7 +79,7 @@
           <div class="flex justify-between text-xs text-ink-400 mb-1 font-medium">
             <span>{{ tier.label }}</span>
             <span class="whitespace-nowrap shrink-0">
-              {{ trimNum(tier.kwh) }}度 × ${{ tier.rate }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
+              {{ trimNum(tier.kwh) }}度 × ${{ tier.rate.toFixed(2) }} = <span class="font-bold text-ink-600">${{ tier.cost }}</span>
             </span>
           </div>
           <div class="h-2.5 bg-paper-100 rounded-full overflow-hidden border border-ink-100">
@@ -102,7 +102,7 @@
       >
         <span>⚠️</span>
         <span>
-          貴的級距電費佔了 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級一度 ${{ breakdown[breakdown.length - 1].rate }}，是第一級的 {{ highTierMultiple }} 倍。
+          貴的級距電費佔了 <span class="font-bold">{{ highTierPercent }}%</span>，最後一級一度 ${{ breakdown[breakdown.length - 1].rate.toFixed(2) }}，是第一級的 {{ highTierMultiple }} 倍。
         </span>
       </div>
     </section>

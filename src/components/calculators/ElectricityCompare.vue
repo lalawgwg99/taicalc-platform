@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <p class="text-[11px] text-ink-400">夏月平均一度</p>
-                    <p class="text-lg font-bold tabular-nums text-ink-700">$ {{ fmt(avgSummer) }}</p>
+                    <p class="text-lg font-bold tabular-nums text-ink-700">$ {{ avgSummer.toFixed(2) }}</p>
                 </div>
             </div>
             <p class="text-xs leading-relaxed text-ink-500">{{ insight }}</p>
