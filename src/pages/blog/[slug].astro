@@ -44,10 +44,24 @@ const articleSchema = JSON.stringify({
         }
     }
 });
+const faqSchema = post.data.faqs?.length ? JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": post.data.faqs.map((f: { q: string; a: string }) => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": f.a,
+            "dateCreated": post.data.updated ?? post.data.date
+        }
+    }))
+}) : null;
 ---
 
 <Layout title={title} description={description} keywords={keywords} ogImage={coverImageURL} type="article" robots={post.data.noindex ? "noindex, follow" : undefined}>
     <script is:inline type="application/ld+json" set:html={articleSchema} slot="head" />
+    {faqSchema && <script is:inline type="application/ld+json" set:html={faqSchema} slot="head" />}
     <!-- Breadcrumb -->
     <div class="article-breadcrumb text-sm text-ink-400 mb-8 flex items-center gap-2">
         <a href="/" class="hover:text-ink-700 transition-colors">首頁</a>

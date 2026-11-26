@@ -16,7 +16,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/labor-insurance-pension-calculator': '2026-11-08',
   '/tools/mortgage-calculator': '2026-11-23',
   '/tools/salary-calculator': '2026-11-16',
-  '/tools/split-calculator': '2026-11-08',
+  '/tools/split-calculator': '2026-11-27',
   '/tools/unemployment-benefit-calculator': '2026-11-08',
   '/tools/debt-consolidation-calculator': '2026-11-08',
   '/tools/estate-gift-tax-calculator': '2026-11-09',
@@ -32,7 +32,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/parental-benefit-calculator': '2026-11-08',
   '/tools/real-return-calculator': '2026-11-08',
   '/tools/severance-calculator': '2026-11-23',
-  '/tools/etf-dividend-calculator': '2026-11-25',
+  '/tools/etf-dividend-calculator': '2026-11-27',
   '/tools/fire-calculator': '2026-11-08',
   '/tools/income-tax-calculator': '2026-11-08',
   '/tools/insurance-assessment': '2026-11-08',
@@ -43,7 +43,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/rental-yield-calculator': '2026-11-08',
   '/tools/stock-calculator': '2026-11-08',
   '/tools/subscription-tracker': '2026-11-08',
-  '/tools/year-end-bonus-calculator': '2026-11-26',
+  '/tools/year-end-bonus-calculator': '2026-11-27',
   '/tools/ipo-lottery-calculator': '2026-11-12',
 };
 

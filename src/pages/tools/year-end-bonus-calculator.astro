@@ -35,10 +35,22 @@ const faqs = [
         q: "年終獎金何時發？",
         a: "多在農曆年前 1–2 月發放，實際日期看公司規定；發放日決定所得年度，1 月發算當年所得。"
     },
+    {
+        q: "離職了還有年終獎金嗎？",
+        a: "看契約：保障年薪屬工資，離職按在職比例領；恩惠性獎金看公司規定，常要求發放時在職，提前走可能領不到。"
+    },
+    {
+        q: "年終獎金要扣勞保費嗎？",
+        a: "一般年終不計入勞保投保薪資、不扣勞保費；約定保障的年終屬工資，要計入。補充保費另計，獎金累計超 4 倍扣 2.11%。"
+    },
+    {
+        q: "年終獎金可以分次領嗎？",
+        a: "可以，但看公司是否同意；每次達 90,501 元才預扣 5%，拆開發可能避開預扣；補充保費看全年累計，拆分不影響。"
+    },
 ];
 ---
 
-<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs} lastUpdated="2026-11-26">
+<ToolLayout title={title} description={description} keywords={keywords} category="工作與收入" faqs={faqs} lastUpdated="2026-11-27">
     <YearEndBonusCalculator client:load slot="tool" />
 
     <div slot="article">

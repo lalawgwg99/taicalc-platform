@@ -25,6 +25,7 @@ const blogCollection = defineCollection({
         coverImage: z.string().optional(),
         author: z.string().default('TaiCalc 編輯部'),
         noindex: z.boolean().optional(),
+        faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     }),
 });
 
