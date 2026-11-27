@@ -11,6 +11,9 @@
     "date": {
       "type": "string"
     },
+    "updated": {
+      "type": "string"
+    },
     "category": {
       "type": "string"
     },
@@ -29,6 +32,24 @@
     },
     "noindex": {
       "type": "boolean"
+    },
+    "faqs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string"
+          },
+          "a": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "q",
+          "a"
+        ]
+      }
     },
     "$schema": {
       "type": "string"

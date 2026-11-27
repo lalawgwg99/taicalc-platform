@@ -34,7 +34,7 @@ const toolLastUpdated: Record<string, string> = {
   '/tools/severance-calculator': '2026-11-23',
   '/tools/etf-dividend-calculator': '2026-11-27',
   '/tools/fire-calculator': '2026-11-08',
-  '/tools/income-tax-calculator': '2026-11-08',
+  '/tools/income-tax-calculator': '2026-11-28',
   '/tools/insurance-assessment': '2026-11-08',
   '/tools/insurance-calculator': '2026-11-08',
   '/tools/labor-pension-calculator': '2026-11-16',
